@@ -1,0 +1,32 @@
+# Base configuration — shared defaults for all documents and environments.
+
+artifact_root = "artifacts"
+
+[pipeline]
+version = "0.1.0"
+parallelism = 4
+review_threshold = 0.80
+
+[extraction.native]
+engine = "pymupdf"
+
+[extraction.layout]
+primary = "docling"
+hard_fallback = "paddleocr"
+dpi = 300
+
+[symbols]
+match_threshold = 0.93
+
+[translation]
+provider = "openai"
+model_default = "gpt-4o"
+model_hard = "gpt-4o"
+fallback_provider = "anthropic"
+fallback_model = "claude-sonnet-4-6"
+temperature = 0.0
+batch_size = 24
+prompt_profile = "translate_rules_ru.v1"
+
+[qa]
+block_publish_on = ["error", "critical"]

@@ -1,0 +1,159 @@
+{
+  "$defs": {
+    "DifficultyScoreV1": {
+      "description": "Per-page difficulty classification.",
+      "properties": {
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "column_count": {
+          "default": 1,
+          "title": "Column Count",
+          "type": "integer"
+        },
+        "zone_overlap_ratio": {
+          "default": 0.0,
+          "title": "Zone Overlap Ratio",
+          "type": "number"
+        },
+        "native_text_coverage": {
+          "default": 1.0,
+          "title": "Native Text Coverage",
+          "type": "number"
+        },
+        "extractor_agreement": {
+          "default": 1.0,
+          "title": "Extractor Agreement",
+          "type": "number"
+        },
+        "hard_page": {
+          "default": false,
+          "title": "Hard Page",
+          "type": "boolean"
+        },
+        "recommended_route": {
+          "default": "R1",
+          "title": "Recommended Route",
+          "type": "string"
+        }
+      },
+      "required": [
+        "page_id"
+      ],
+      "title": "DifficultyScoreV1",
+      "type": "object"
+    },
+    "LayoutZone": {
+      "description": "A detected layout zone on a page.",
+      "properties": {
+        "zone_id": {
+          "title": "Zone Id",
+          "type": "string"
+        },
+        "kind": {
+          "default": "",
+          "title": "Kind",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "zone_id",
+        "bbox"
+      ],
+      "title": "LayoutZone",
+      "type": "object"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    }
+  },
+  "description": "Secondary layout evidence for a single page.",
+  "properties": {
+    "schema_version": {
+      "default": "layout_page.v1",
+      "pattern": "^layout_page\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "zones": {
+      "items": {
+        "$ref": "#/$defs/LayoutZone"
+      },
+      "title": "Zones",
+      "type": "array"
+    },
+    "reading_order_candidates": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Reading Order Candidates",
+      "type": "array"
+    },
+    "difficulty": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DifficultyScoreV1"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id"
+  ],
+  "title": "LayoutPageV1",
+  "type": "object"
+}

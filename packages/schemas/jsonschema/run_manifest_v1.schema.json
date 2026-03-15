@@ -1,0 +1,127 @@
+{
+  "$defs": {
+    "StageInvocationRef": {
+      "description": "Reference to a stage invocation within a run.",
+      "properties": {
+        "stage_name": {
+          "title": "Stage Name",
+          "type": "string"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        },
+        "entity_id": {
+          "title": "Entity Id",
+          "type": "string"
+        },
+        "cache_key": {
+          "title": "Cache Key",
+          "type": "string"
+        },
+        "status": {
+          "default": "",
+          "title": "Status",
+          "type": "string"
+        },
+        "artifact_ref": {
+          "default": "",
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "duration_ms": {
+          "default": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "stage_name",
+        "scope",
+        "entity_id",
+        "cache_key"
+      ],
+      "title": "StageInvocationRef",
+      "type": "object"
+    }
+  },
+  "description": "Metadata for a single pipeline run.",
+  "properties": {
+    "schema_version": {
+      "default": "run_manifest.v1",
+      "pattern": "^run_manifest\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "pipeline_version": {
+      "default": "",
+      "title": "Pipeline Version",
+      "type": "string"
+    },
+    "git_commit": {
+      "default": "",
+      "title": "Git Commit",
+      "type": "string"
+    },
+    "config_hash": {
+      "default": "",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "source_pdf_sha256": {
+      "default": "",
+      "title": "Source Pdf Sha256",
+      "type": "string"
+    },
+    "started_at": {
+      "default": "",
+      "title": "Started At",
+      "type": "string"
+    },
+    "finished_at": {
+      "default": "",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "stages": {
+      "items": {
+        "$ref": "#/$defs/StageInvocationRef"
+      },
+      "title": "Stages",
+      "type": "array"
+    },
+    "provider_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Provider Versions",
+      "type": "object"
+    },
+    "environment": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Environment",
+      "type": "object"
+    },
+    "qa_summary_ref": {
+      "default": "",
+      "title": "Qa Summary Ref",
+      "type": "string"
+    },
+    "release_ref": {
+      "default": "",
+      "title": "Release Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id"
+  ],
+  "title": "RunManifestV1",
+  "type": "object"
+}

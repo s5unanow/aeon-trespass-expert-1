@@ -1,0 +1,1306 @@
+{
+  "$defs": {
+    "BlockAnnotations": {
+      "description": "Annotations attached to a block.",
+      "properties": {
+        "concept_hits": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Concept Hits",
+          "type": "array"
+        },
+        "source_confidence": {
+          "default": 1.0,
+          "title": "Source Confidence",
+          "type": "number"
+        }
+      },
+      "title": "BlockAnnotations",
+      "type": "object"
+    },
+    "CalloutBlock": {
+      "description": "Callout/sidebar block.",
+      "properties": {
+        "type": {
+          "const": "callout",
+          "default": "callout",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "variant": {
+          "default": "",
+          "title": "Variant",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "CalloutBlock",
+      "type": "object"
+    },
+    "CaptionBlock": {
+      "description": "Caption block.",
+      "properties": {
+        "type": {
+          "const": "caption",
+          "default": "caption",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "CaptionBlock",
+      "type": "object"
+    },
+    "ConfidenceMetrics": {
+      "description": "Per-page confidence scores.",
+      "properties": {
+        "native_text_coverage": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Native Text Coverage",
+          "type": "number"
+        },
+        "reading_order_score": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Reading Order Score",
+          "type": "number"
+        },
+        "symbol_score": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Symbol Score",
+          "type": "number"
+        },
+        "page_confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Page Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "native_text_coverage"
+      ],
+      "title": "ConfidenceMetrics",
+      "type": "object"
+    },
+    "DividerBlock": {
+      "description": "Divider/rule block.",
+      "properties": {
+        "type": {
+          "const": "divider",
+          "default": "divider",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "translatable": {
+          "default": false,
+          "title": "Translatable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "DividerBlock",
+      "type": "object"
+    },
+    "FigureBlock": {
+      "description": "Figure block.",
+      "properties": {
+        "type": {
+          "const": "figure",
+          "default": "figure",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "asset_id": {
+          "default": "",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "FigureBlock",
+      "type": "object"
+    },
+    "FigureRefInline": {
+      "description": "Inline reference to a figure asset.",
+      "properties": {
+        "type": {
+          "const": "figure_ref",
+          "default": "figure_ref",
+          "title": "Type",
+          "type": "string"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id"
+      ],
+      "title": "FigureRefInline",
+      "type": "object"
+    },
+    "HeadingBlock": {
+      "description": "Heading block.",
+      "properties": {
+        "type": {
+          "const": "heading",
+          "default": "heading",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "level": {
+          "default": 1,
+          "maximum": 6,
+          "minimum": 1,
+          "title": "Level",
+          "type": "integer"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "style_hint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StyleHint"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "annotations": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BlockAnnotations"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "HeadingBlock",
+      "type": "object"
+    },
+    "IconInline": {
+      "description": "Inline icon node, recovered from symbol catalog matching.",
+      "properties": {
+        "type": {
+          "const": "icon",
+          "default": "icon",
+          "title": "Type",
+          "type": "string"
+        },
+        "symbol_id": {
+          "title": "Symbol Id",
+          "type": "string"
+        },
+        "instance_id": {
+          "default": "",
+          "title": "Instance Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "display_hint": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "title": "Display Hint",
+          "type": "object"
+        },
+        "source_asset_id": {
+          "default": "",
+          "title": "Source Asset Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "symbol_id"
+      ],
+      "title": "IconInline",
+      "type": "object"
+    },
+    "LanguageCode": {
+      "enum": [
+        "en",
+        "ru"
+      ],
+      "title": "LanguageCode",
+      "type": "string"
+    },
+    "LineBreakInline": {
+      "description": "Explicit line break.",
+      "properties": {
+        "type": {
+          "const": "line_break",
+          "default": "line_break",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "LineBreakInline",
+      "type": "object"
+    },
+    "ListBlock": {
+      "description": "List container block.",
+      "properties": {
+        "type": {
+          "const": "list",
+          "default": "list",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "ordered": {
+          "default": false,
+          "title": "Ordered",
+          "type": "boolean"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "ListBlock",
+      "type": "object"
+    },
+    "ListItemBlock": {
+      "description": "List item block.",
+      "properties": {
+        "type": {
+          "const": "list_item",
+          "default": "list_item",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "ListItemBlock",
+      "type": "object"
+    },
+    "PageDimensions": {
+      "description": "Source page dimensions in PDF points.",
+      "properties": {
+        "width": {
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "PageDimensions",
+      "type": "object"
+    },
+    "ParagraphBlock": {
+      "description": "Paragraph block.",
+      "properties": {
+        "type": {
+          "const": "paragraph",
+          "default": "paragraph",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "style_hint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StyleHint"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "annotations": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BlockAnnotations"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "ParagraphBlock",
+      "type": "object"
+    },
+    "ProvenanceRef": {
+      "description": "Reference to upstream evidence or extraction source.",
+      "properties": {
+        "extractor": {
+          "title": "Extractor",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "extractor",
+        "version"
+      ],
+      "title": "ProvenanceRef",
+      "type": "object"
+    },
+    "QAState": {
+      "description": "Page-level QA status summary.",
+      "properties": {
+        "blocking": {
+          "default": false,
+          "title": "Blocking",
+          "type": "boolean"
+        },
+        "errors": {
+          "default": 0,
+          "title": "Errors",
+          "type": "integer"
+        },
+        "warnings": {
+          "default": 0,
+          "title": "Warnings",
+          "type": "integer"
+        }
+      },
+      "title": "QAState",
+      "type": "object"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    },
+    "SectionHint": {
+      "description": "Section context for a page.",
+      "properties": {
+        "section_id": {
+          "default": "",
+          "title": "Section Id",
+          "type": "string"
+        },
+        "path": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Path",
+          "type": "array"
+        }
+      },
+      "title": "SectionHint",
+      "type": "object"
+    },
+    "SourceRef": {
+      "description": "Source evidence references for a block.",
+      "properties": {
+        "page_id": {
+          "default": "",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "word_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Word Ids",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "title": "SourceRef",
+      "type": "object"
+    },
+    "StyleHint": {
+      "description": "Font/spacing/classification hints for a block.",
+      "properties": {
+        "font_name": {
+          "default": "",
+          "title": "Font Name",
+          "type": "string"
+        },
+        "font_size": {
+          "default": 0.0,
+          "title": "Font Size",
+          "type": "number"
+        },
+        "is_bold": {
+          "default": false,
+          "title": "Is Bold",
+          "type": "boolean"
+        },
+        "is_italic": {
+          "default": false,
+          "title": "Is Italic",
+          "type": "boolean"
+        }
+      },
+      "title": "StyleHint",
+      "type": "object"
+    },
+    "TableBlock": {
+      "description": "Table block.",
+      "properties": {
+        "type": {
+          "const": "table",
+          "default": "table",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "TableBlock",
+      "type": "object"
+    },
+    "TermMarkInline": {
+      "description": "Glossary term marker.",
+      "properties": {
+        "type": {
+          "const": "term_mark",
+          "default": "term_mark",
+          "title": "Type",
+          "type": "string"
+        },
+        "concept_id": {
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "surface_form": {
+          "default": "",
+          "title": "Surface Form",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_id"
+      ],
+      "title": "TermMarkInline",
+      "type": "object"
+    },
+    "TextInline": {
+      "description": "Plain text inline node.",
+      "properties": {
+        "type": {
+          "const": "text",
+          "default": "text",
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "marks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Marks",
+          "type": "array"
+        },
+        "lang": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LanguageCode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_word_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Word Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "TextInline",
+      "type": "object"
+    },
+    "UnknownBlock": {
+      "description": "Unknown block — allowed only pre-publish.",
+      "properties": {
+        "type": {
+          "const": "unknown",
+          "default": "unknown",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "raw_text": {
+          "default": "",
+          "title": "Raw Text",
+          "type": "string"
+        },
+        "translatable": {
+          "default": false,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "UnknownBlock",
+      "type": "object"
+    },
+    "XrefInline": {
+      "description": "Cross-reference to another page or section.",
+      "properties": {
+        "type": {
+          "const": "xref",
+          "default": "xref",
+          "title": "Type",
+          "type": "string"
+        },
+        "target_page_id": {
+          "default": "",
+          "title": "Target Page Id",
+          "type": "string"
+        },
+        "target_section_id": {
+          "default": "",
+          "title": "Target Section Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "title": "XrefInline",
+      "type": "object"
+    }
+  },
+  "description": "Canonical page content IR.",
+  "properties": {
+    "schema_version": {
+      "default": "page_ir.v1",
+      "pattern": "^page_ir\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "page_number": {
+      "minimum": 1,
+      "title": "Page Number",
+      "type": "integer"
+    },
+    "language": {
+      "$ref": "#/$defs/LanguageCode"
+    },
+    "dimensions_pt": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PageDimensions"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "section_hint": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SectionHint"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "blocks": {
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/HeadingBlock"
+          },
+          {
+            "$ref": "#/$defs/ParagraphBlock"
+          },
+          {
+            "$ref": "#/$defs/ListBlock"
+          },
+          {
+            "$ref": "#/$defs/ListItemBlock"
+          },
+          {
+            "$ref": "#/$defs/TableBlock"
+          },
+          {
+            "$ref": "#/$defs/CalloutBlock"
+          },
+          {
+            "$ref": "#/$defs/FigureBlock"
+          },
+          {
+            "$ref": "#/$defs/CaptionBlock"
+          },
+          {
+            "$ref": "#/$defs/DividerBlock"
+          },
+          {
+            "$ref": "#/$defs/UnknownBlock"
+          }
+        ]
+      },
+      "title": "Blocks",
+      "type": "array"
+    },
+    "assets": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Assets",
+      "type": "array"
+    },
+    "reading_order": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reading Order",
+      "type": "array"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ConfidenceMetrics"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "qa_state": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/QAState"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProvenanceRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id",
+    "page_number",
+    "language"
+  ],
+  "title": "PageIRV1",
+  "type": "object"
+}

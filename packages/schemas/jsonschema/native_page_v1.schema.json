@@ -1,0 +1,233 @@
+{
+  "$defs": {
+    "ImageBlockEvidence": {
+      "description": "An image object found in the PDF page.",
+      "properties": {
+        "image_id": {
+          "title": "Image Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "width_px": {
+          "default": 0,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "default": 0,
+          "title": "Height Px",
+          "type": "integer"
+        },
+        "colorspace": {
+          "default": "",
+          "title": "Colorspace",
+          "type": "string"
+        },
+        "xref": {
+          "default": 0,
+          "title": "Xref",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "image_id",
+        "bbox"
+      ],
+      "title": "ImageBlockEvidence",
+      "type": "object"
+    },
+    "PageDimensions": {
+      "description": "Source page dimensions in PDF points.",
+      "properties": {
+        "width": {
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "PageDimensions",
+      "type": "object"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    },
+    "SpanEvidence": {
+      "description": "A text span with consistent formatting.",
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "font_name": {
+          "default": "",
+          "title": "Font Name",
+          "type": "string"
+        },
+        "font_size": {
+          "default": 0.0,
+          "title": "Font Size",
+          "type": "number"
+        },
+        "flags": {
+          "default": 0,
+          "title": "Flags",
+          "type": "integer"
+        },
+        "color": {
+          "default": 0,
+          "title": "Color",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "span_id",
+        "text",
+        "bbox"
+      ],
+      "title": "SpanEvidence",
+      "type": "object"
+    },
+    "WordEvidence": {
+      "description": "A single word extracted from the PDF.",
+      "properties": {
+        "word_id": {
+          "title": "Word Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "font_name": {
+          "default": "",
+          "title": "Font Name",
+          "type": "string"
+        },
+        "font_size": {
+          "default": 0.0,
+          "title": "Font Size",
+          "type": "number"
+        },
+        "flags": {
+          "default": 0,
+          "title": "Flags",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "word_id",
+        "text",
+        "bbox"
+      ],
+      "title": "WordEvidence",
+      "type": "object"
+    }
+  },
+  "description": "Native text and image evidence for a single page.",
+  "properties": {
+    "schema_version": {
+      "default": "native_page.v1",
+      "pattern": "^native_page\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "page_number": {
+      "minimum": 1,
+      "title": "Page Number",
+      "type": "integer"
+    },
+    "dimensions_pt": {
+      "$ref": "#/$defs/PageDimensions"
+    },
+    "words": {
+      "items": {
+        "$ref": "#/$defs/WordEvidence"
+      },
+      "title": "Words",
+      "type": "array"
+    },
+    "spans": {
+      "items": {
+        "$ref": "#/$defs/SpanEvidence"
+      },
+      "title": "Spans",
+      "type": "array"
+    },
+    "image_blocks": {
+      "items": {
+        "$ref": "#/$defs/ImageBlockEvidence"
+      },
+      "title": "Image Blocks",
+      "type": "array"
+    },
+    "extractor_meta": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Extractor Meta",
+      "type": "object"
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id",
+    "page_number",
+    "dimensions_pt"
+  ],
+  "title": "NativePageV1",
+  "type": "object"
+}

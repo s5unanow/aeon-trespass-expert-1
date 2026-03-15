@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    },
+    "SymbolMatch": {
+      "description": "A single detected symbol match on a page.",
+      "properties": {
+        "symbol_id": {
+          "title": "Symbol Id",
+          "type": "string"
+        },
+        "instance_id": {
+          "default": "",
+          "title": "Instance Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        },
+        "source_asset_id": {
+          "default": "",
+          "title": "Source Asset Id",
+          "type": "string"
+        },
+        "inline": {
+          "default": true,
+          "title": "Inline",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "symbol_id",
+        "bbox",
+        "score"
+      ],
+      "title": "SymbolMatch",
+      "type": "object"
+    }
+  },
+  "description": "All symbol detections for a single page.",
+  "properties": {
+    "schema_version": {
+      "default": "symbol_match_set.v1",
+      "pattern": "^symbol_match_set\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "matches": {
+      "items": {
+        "$ref": "#/$defs/SymbolMatch"
+      },
+      "title": "Matches",
+      "type": "array"
+    },
+    "unmatched_candidates": {
+      "default": 0,
+      "title": "Unmatched Candidates",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id"
+  ],
+  "title": "SymbolMatchSetV1",
+  "type": "object"
+}

@@ -1,0 +1,13 @@
+# ATO Core Rulebook v1.1 — the real source document.
+
+[document]
+id = "ato_core_v1_1"
+source_pdf = "materials/ATO_CORE_Rulebook_v1.1.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+
+[symbols]
+catalog = "configs/symbols/ato_core_v1_1.symbols.toml"
+
+[extraction.layout]
+dpi = 200

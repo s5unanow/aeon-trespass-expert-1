@@ -1,0 +1,3 @@
+# Everything in this directory is a pipeline output and should not be committed.
+*
+!.gitignore

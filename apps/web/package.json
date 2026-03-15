@@ -1,0 +1,40 @@
+{
+  "name": "@atr/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "react": "^19.0",
+    "react-dom": "^19.0",
+    "react-router": "^7.0"
+  },
+  "devDependencies": {
+    "@atr/schemas": "workspace:*",
+    "@playwright/test": "^1.50",
+    "@testing-library/jest-dom": "^6.6",
+    "@testing-library/react": "^16.1",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.0",
+    "@types/react-dom": "^19.0",
+    "@vitejs/plugin-react": "^4.3",
+    "eslint": "^9.0",
+    "jsdom": "^26.0",
+    "prettier": "^3.4",
+    "typescript": "^5.7",
+    "vite": "^6.0",
+    "vitest": "^3.0"
+  }
+}

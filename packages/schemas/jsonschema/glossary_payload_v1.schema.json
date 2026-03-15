@@ -1,0 +1,77 @@
+{
+  "$defs": {
+    "GlossaryEntryV1": {
+      "description": "A single glossary entry for the frontend.",
+      "properties": {
+        "concept_id": {
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "preferred_term": {
+          "title": "Preferred Term",
+          "type": "string"
+        },
+        "source_term": {
+          "default": "",
+          "title": "Source Term",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        },
+        "icon_binding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Icon Binding"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_id",
+        "preferred_term"
+      ],
+      "title": "GlossaryEntryV1",
+      "type": "object"
+    }
+  },
+  "description": "Frontend glossary payload.",
+  "properties": {
+    "schema_version": {
+      "default": "glossary_payload.v1",
+      "pattern": "^glossary_payload\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/GlossaryEntryV1"
+      },
+      "title": "Entries",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "GlossaryPayloadV1",
+  "type": "object"
+}

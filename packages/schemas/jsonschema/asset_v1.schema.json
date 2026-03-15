@@ -1,0 +1,173 @@
+{
+  "$defs": {
+    "AssetKind": {
+      "enum": [
+        "figure_image",
+        "inline_symbol",
+        "decorative",
+        "page_crop"
+      ],
+      "title": "AssetKind",
+      "type": "string"
+    },
+    "AssetVariant": {
+      "description": "A size/format variant of an asset.",
+      "properties": {
+        "variant": {
+          "title": "Variant",
+          "type": "string"
+        },
+        "path": {
+          "default": "",
+          "title": "Path",
+          "type": "string"
+        },
+        "mime_type": {
+          "default": "",
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "width_px": {
+          "default": 0,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "default": 0,
+          "title": "Height Px",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "variant"
+      ],
+      "title": "AssetVariant",
+      "type": "object"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    }
+  },
+  "description": "An extracted or catalogued asset (figure, inline symbol, etc.).",
+  "properties": {
+    "schema_version": {
+      "default": "asset.v1",
+      "pattern": "^asset\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "asset_id": {
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/AssetKind"
+    },
+    "mime_type": {
+      "default": "image/png",
+      "title": "Mime Type",
+      "type": "string"
+    },
+    "source_page_id": {
+      "default": "",
+      "title": "Source Page Id",
+      "type": "string"
+    },
+    "bbox": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Rect"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "sha256": {
+      "default": "",
+      "title": "Sha256",
+      "type": "string"
+    },
+    "phash": {
+      "default": "",
+      "title": "Phash",
+      "type": "string"
+    },
+    "pixel_size": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Pixel Size",
+      "type": "object"
+    },
+    "catalog_binding": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Catalog Binding"
+    },
+    "variants": {
+      "items": {
+        "$ref": "#/$defs/AssetVariant"
+      },
+      "title": "Variants",
+      "type": "array"
+    },
+    "placement_hint": {
+      "additionalProperties": true,
+      "title": "Placement Hint",
+      "type": "object"
+    },
+    "caption_block_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Caption Block Id"
+    }
+  },
+  "required": [
+    "asset_id",
+    "kind"
+  ],
+  "title": "AssetV1",
+  "type": "object"
+}

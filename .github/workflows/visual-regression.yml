@@ -1,0 +1,32 @@
+name: Visual Regression
+
+on:
+  workflow_call:
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @atr/web exec playwright install --with-deps chromium
+
+      - name: Build
+        run: pnpm --filter @atr/web run build
+
+      - name: Run visual regression tests
+        run: pnpm --filter @atr/web run test:e2e

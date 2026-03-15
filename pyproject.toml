@@ -1,0 +1,55 @@
+[project]
+name = "aeon-trespass-expert"
+version = "0.1.0"
+description = "IR-first document compiler for Aeon Trespass rulebook translation"
+requires-python = ">=3.12"
+readme = "README.md"
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+  "packages/schemas/python",
+  "apps/pipeline",
+]
+
+[tool.uv.sources]
+atr-schemas = { workspace = true }
+atr-pipeline = { workspace = true }
+
+[dependency-groups]
+dev = [
+  "atr-schemas",
+  "atr-pipeline",
+  "ruff>=0.9",
+  "mypy>=1.14",
+  "pytest>=8.0",
+  "pytest-cov>=6.0",
+  "pre-commit>=4.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["apps/pipeline/src", "packages/schemas/python"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["atr_pipeline", "atr_schemas"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = ["fitz.*", "docling.*", "cv2.*", "paddleocr.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["apps/pipeline/tests"]
+addopts = "-ra -q"

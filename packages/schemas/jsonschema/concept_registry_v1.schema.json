@@ -1,0 +1,193 @@
+{
+  "$defs": {
+    "ConceptSource": {
+      "description": "English source form of a concept.",
+      "properties": {
+        "lang": {
+          "default": "en",
+          "title": "Lang",
+          "type": "string"
+        },
+        "lemma": {
+          "title": "Lemma",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        },
+        "patterns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Patterns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "lemma"
+      ],
+      "title": "ConceptSource",
+      "type": "object"
+    },
+    "ConceptTarget": {
+      "description": "Russian target form of a concept.",
+      "properties": {
+        "lang": {
+          "default": "ru",
+          "title": "Lang",
+          "type": "string"
+        },
+        "lemma": {
+          "title": "Lemma",
+          "type": "string"
+        },
+        "allowed_surface_forms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Surface Forms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "lemma"
+      ],
+      "title": "ConceptTarget",
+      "type": "object"
+    },
+    "ConceptV1": {
+      "description": "A single glossary/terminology concept.",
+      "properties": {
+        "concept_id": {
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "kind": {
+          "default": "term",
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "default": "",
+          "title": "Version",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ConceptSource"
+        },
+        "target": {
+          "$ref": "#/$defs/ConceptTarget"
+        },
+        "icon_binding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Icon Binding"
+        },
+        "phrase_templates": {
+          "items": {
+            "$ref": "#/$defs/PhraseTemplate"
+          },
+          "title": "Phrase Templates",
+          "type": "array"
+        },
+        "forbidden_targets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Forbidden Targets",
+          "type": "array"
+        },
+        "validation_policy": {
+          "$ref": "#/$defs/ValidationPolicy"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_id",
+        "source",
+        "target"
+      ],
+      "title": "ConceptV1",
+      "type": "object"
+    },
+    "PhraseTemplate": {
+      "description": "High-priority multiword translation mapping.",
+      "properties": {
+        "source_pattern": {
+          "title": "Source Pattern",
+          "type": "string"
+        },
+        "target_pattern": {
+          "title": "Target Pattern",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_pattern",
+        "target_pattern"
+      ],
+      "title": "PhraseTemplate",
+      "type": "object"
+    },
+    "ValidationPolicy": {
+      "description": "Severity policy for concept enforcement.",
+      "properties": {
+        "missing": {
+          "default": "error",
+          "title": "Missing",
+          "type": "string"
+        },
+        "forbidden": {
+          "default": "error",
+          "title": "Forbidden",
+          "type": "string"
+        },
+        "non_preferred_allowed": {
+          "default": "warning",
+          "title": "Non Preferred Allowed",
+          "type": "string"
+        }
+      },
+      "title": "ValidationPolicy",
+      "type": "object"
+    }
+  },
+  "description": "Full concept registry for a document.",
+  "properties": {
+    "schema_version": {
+      "default": "concept_registry.v1",
+      "pattern": "^concept_registry\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "version": {
+      "default": "",
+      "title": "Version",
+      "type": "string"
+    },
+    "concepts": {
+      "items": {
+        "$ref": "#/$defs/ConceptV1"
+      },
+      "title": "Concepts",
+      "type": "array"
+    }
+  },
+  "title": "ConceptRegistryV1",
+  "type": "object"
+}

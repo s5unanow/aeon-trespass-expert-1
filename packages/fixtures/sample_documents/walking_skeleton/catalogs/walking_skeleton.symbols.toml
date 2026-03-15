@@ -1,0 +1,12 @@
+# Walking skeleton symbol catalog — one entry for testing.
+
+catalog_id = "walking_skeleton"
+version = "1.0"
+
+[[symbols]]
+symbol_id = "sym.progress"
+label = "Progress"
+alt_label_ru = "Прогресс"
+template_asset = "packages/fixtures/sample_documents/walking_skeleton/source/symbol_progress.png"
+match_threshold = 0.70
+inline = true

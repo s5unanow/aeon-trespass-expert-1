@@ -1,0 +1,71 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0001",
+    "title": "Проверка атаки",
+    "section_path": [],
+    "source_page_number": 1
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Проверка атаки",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Получите 1 ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.progress",
+          "alt": "Прогресс"
+        },
+        {
+          "kind": "text",
+          "text": " Прогресс.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.progress"
+  ],
+  "search": {
+    "raw_text": "Проверка атаки Получите 1 Прогресс",
+    "normalized_terms": [
+      "проверка",
+      "атака",
+      "получить",
+      "прогресс"
+    ]
+  },
+  "source_map": {
+    "page_id": "p0001",
+    "block_refs": [
+      "p0001.b001",
+      "p0001.b002"
+    ]
+  },
+  "build_meta": null
+}

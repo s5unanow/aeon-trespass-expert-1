@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python:
+    uses: ./.github/workflows/python-tests.yml
+
+  web:
+    uses: ./.github/workflows/web-tests.yml

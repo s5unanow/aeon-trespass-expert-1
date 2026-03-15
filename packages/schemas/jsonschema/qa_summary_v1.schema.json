@@ -1,0 +1,69 @@
+{
+  "$defs": {
+    "SeverityCounts": {
+      "description": "Counts by severity level.",
+      "properties": {
+        "info": {
+          "default": 0,
+          "title": "Info",
+          "type": "integer"
+        },
+        "warning": {
+          "default": 0,
+          "title": "Warning",
+          "type": "integer"
+        },
+        "error": {
+          "default": 0,
+          "title": "Error",
+          "type": "integer"
+        },
+        "critical": {
+          "default": 0,
+          "title": "Critical",
+          "type": "integer"
+        }
+      },
+      "title": "SeverityCounts",
+      "type": "object"
+    }
+  },
+  "description": "Aggregated QA summary for a document.",
+  "properties": {
+    "schema_version": {
+      "default": "qa_summary.v1",
+      "pattern": "^qa_summary\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "counts": {
+      "$ref": "#/$defs/SeverityCounts"
+    },
+    "blocking": {
+      "default": false,
+      "title": "Blocking",
+      "type": "boolean"
+    },
+    "record_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Record Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "QASummaryV1",
+  "type": "object"
+}

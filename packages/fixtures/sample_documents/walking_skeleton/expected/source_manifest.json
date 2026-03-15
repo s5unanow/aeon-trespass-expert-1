@@ -1,0 +1,15 @@
+{
+  "schema_version": "source_manifest.v1",
+  "document_id": "walking_skeleton",
+  "source_pdf_sha256": "__DYNAMIC__",
+  "page_count": 1,
+  "pages": [
+    {
+      "page_id": "p0001",
+      "page_number": 1,
+      "raster_ref": null
+    }
+  ],
+  "config_hash": "",
+  "extractor_version": ""
+}

@@ -1,0 +1,84 @@
+{
+  "$defs": {
+    "PageEntry": {
+      "description": "Metadata for a single source page.",
+      "properties": {
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "raster_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Raster Ref"
+        }
+      },
+      "required": [
+        "page_id",
+        "page_number"
+      ],
+      "title": "PageEntry",
+      "type": "object"
+    }
+  },
+  "description": "Registered source document and its pages.",
+  "properties": {
+    "schema_version": {
+      "default": "source_manifest.v1",
+      "pattern": "^source_manifest\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "source_pdf_sha256": {
+      "title": "Source Pdf Sha256",
+      "type": "string"
+    },
+    "page_count": {
+      "minimum": 1,
+      "title": "Page Count",
+      "type": "integer"
+    },
+    "pages": {
+      "items": {
+        "$ref": "#/$defs/PageEntry"
+      },
+      "title": "Pages",
+      "type": "array"
+    },
+    "config_hash": {
+      "default": "",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "extractor_version": {
+      "default": "",
+      "title": "Extractor Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "document_id",
+    "source_pdf_sha256",
+    "page_count",
+    "pages"
+  ],
+  "title": "SourceManifestV1",
+  "type": "object"
+}

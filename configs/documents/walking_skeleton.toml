@@ -1,0 +1,10 @@
+# Walking skeleton — first single-page test document.
+
+[document]
+id = "walking_skeleton"
+source_pdf = "packages/fixtures/sample_documents/walking_skeleton/source/sample_page_01.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+
+[symbols]
+catalog = "packages/fixtures/sample_documents/walking_skeleton/catalogs/walking_skeleton.symbols.toml"

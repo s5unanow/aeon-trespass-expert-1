@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "SymbolEntry": {
+      "description": "A single symbol definition in the catalog.",
+      "properties": {
+        "symbol_id": {
+          "title": "Symbol Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "alt_label_ru": {
+          "default": "",
+          "title": "Alt Label Ru",
+          "type": "string"
+        },
+        "template_asset": {
+          "default": "",
+          "title": "Template Asset",
+          "type": "string"
+        },
+        "match_threshold": {
+          "default": 0.93,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Match Threshold",
+          "type": "number"
+        },
+        "inline": {
+          "default": true,
+          "title": "Inline",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "symbol_id",
+        "label"
+      ],
+      "title": "SymbolEntry",
+      "type": "object"
+    }
+  },
+  "description": "Catalog of known symbols for matching.",
+  "properties": {
+    "schema_version": {
+      "default": "symbol_catalog.v1",
+      "pattern": "^symbol_catalog\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "catalog_id": {
+      "default": "",
+      "title": "Catalog Id",
+      "type": "string"
+    },
+    "version": {
+      "default": "",
+      "title": "Version",
+      "type": "string"
+    },
+    "symbols": {
+      "items": {
+        "$ref": "#/$defs/SymbolEntry"
+      },
+      "title": "Symbols",
+      "type": "array"
+    }
+  },
+  "title": "SymbolCatalogV1",
+  "type": "object"
+}

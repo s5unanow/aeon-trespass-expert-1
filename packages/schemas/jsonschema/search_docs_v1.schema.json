@@ -1,0 +1,72 @@
+{
+  "$defs": {
+    "SearchDocEntry": {
+      "description": "A single searchable document entry.",
+      "properties": {
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "text": {
+          "default": "",
+          "title": "Text",
+          "type": "string"
+        },
+        "normalized_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Normalized Terms",
+          "type": "array"
+        },
+        "section_path": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Section Path",
+          "type": "array"
+        },
+        "source_page_number": {
+          "default": 0,
+          "title": "Source Page Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page_id"
+      ],
+      "title": "SearchDocEntry",
+      "type": "object"
+    }
+  },
+  "description": "Collection of search documents for a document edition.",
+  "properties": {
+    "schema_version": {
+      "default": "search_docs.v1",
+      "pattern": "^search_docs\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "docs": {
+      "items": {
+        "$ref": "#/$defs/SearchDocEntry"
+      },
+      "title": "Docs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "SearchDocsV1",
+  "type": "object"
+}

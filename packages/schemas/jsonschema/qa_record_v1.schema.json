@@ -1,0 +1,153 @@
+{
+  "$defs": {
+    "AutoFix": {
+      "description": "Available auto-fix for a QA issue.",
+      "properties": {
+        "available": {
+          "default": false,
+          "title": "Available",
+          "type": "boolean"
+        },
+        "fixer": {
+          "default": "",
+          "title": "Fixer",
+          "type": "string"
+        }
+      },
+      "title": "AutoFix",
+      "type": "object"
+    },
+    "QALayer": {
+      "enum": [
+        "extraction",
+        "structure",
+        "terminology",
+        "icon_symbol",
+        "asset_link",
+        "render",
+        "visual",
+        "accessibility"
+      ],
+      "title": "QALayer",
+      "type": "string"
+    },
+    "Severity": {
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "description": "A single QA finding.",
+  "properties": {
+    "schema_version": {
+      "default": "qa_record.v1",
+      "pattern": "^qa_record\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "qa_id": {
+      "title": "Qa Id",
+      "type": "string"
+    },
+    "layer": {
+      "$ref": "#/$defs/QALayer"
+    },
+    "severity": {
+      "$ref": "#/$defs/Severity"
+    },
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "document_id": {
+      "default": "",
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Page Id"
+    },
+    "entity_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Entity Ref"
+    },
+    "message": {
+      "default": "",
+      "title": "Message",
+      "type": "string"
+    },
+    "expected": {
+      "default": null,
+      "title": "Expected"
+    },
+    "actual": {
+      "default": null,
+      "title": "Actual"
+    },
+    "auto_fix": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AutoFix"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "waived": {
+      "default": false,
+      "title": "Waived",
+      "type": "boolean"
+    },
+    "waiver_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Waiver Ref"
+    }
+  },
+  "required": [
+    "qa_id",
+    "layer",
+    "severity",
+    "code"
+  ],
+  "title": "QARecordV1",
+  "type": "object"
+}

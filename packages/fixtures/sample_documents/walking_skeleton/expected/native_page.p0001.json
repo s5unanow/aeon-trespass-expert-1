@@ -1,0 +1,16 @@
+{
+  "schema_version": "native_page.v1",
+  "document_id": "walking_skeleton",
+  "page_id": "p0001",
+  "page_number": 1,
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "words": "__DYNAMIC__",
+  "spans": [],
+  "image_blocks": "__DYNAMIC__",
+  "extractor_meta": {
+    "engine": "pymupdf"
+  }
+}

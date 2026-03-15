@@ -1,0 +1,72 @@
+{
+  "schema_version": "translation_batch.v1",
+  "batch_id": "tr.p0001.01",
+  "source_lang": "en",
+  "target_lang": "ru",
+  "prompt_profile": "translate_rules_ru.v1",
+  "segments": [
+    {
+      "segment_id": "p0001.b001",
+      "block_type": "heading",
+      "source_inline": [
+        {
+          "type": "text",
+          "text": "Attack Test",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "context": {
+        "page_id": "p0001",
+        "section_path": [],
+        "prev_heading": ""
+      },
+      "required_concepts": [],
+      "forbidden_targets": [],
+      "locked_nodes": [],
+      "source_checksum": ""
+    },
+    {
+      "segment_id": "p0001.b002",
+      "block_type": "paragraph",
+      "source_inline": [
+        {
+          "type": "text",
+          "text": "Gain 1 ",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        },
+        {
+          "type": "icon",
+          "symbol_id": "sym.progress",
+          "instance_id": "syminst.p0001.01",
+          "bbox": null,
+          "display_hint": {},
+          "source_asset_id": ""
+        },
+        {
+          "type": "text",
+          "text": " Progress.",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "context": {
+        "page_id": "p0001",
+        "section_path": [],
+        "prev_heading": "Attack Test"
+      },
+      "required_concepts": [
+        "concept.progress"
+      ],
+      "forbidden_targets": [],
+      "locked_nodes": [
+        "sym.progress"
+      ],
+      "source_checksum": ""
+    }
+  ]
+}

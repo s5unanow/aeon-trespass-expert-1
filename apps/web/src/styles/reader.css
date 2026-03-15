@@ -1,0 +1,61 @@
+.reader-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.reader-page header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.reader-content {
+  line-height: 1.7;
+}
+
+.reader-heading {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #111;
+}
+
+h2.reader-heading {
+  font-size: 1.5rem;
+}
+
+.reader-paragraph {
+  margin-bottom: 1rem;
+}
+
+.icon-inline {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  line-height: 1;
+  text-align: center;
+  vertical-align: -0.1em;
+  color: #228b22;
+  font-size: 1em;
+}
+
+.source-page-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: #666;
+  background: #f0f0f0;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+}
+
+.figure-ref {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.reader-divider {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}

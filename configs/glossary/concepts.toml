@@ -1,0 +1,21 @@
+# Concept registry — terminology rules for the walking skeleton.
+
+version = "glossary.2026-03-15.1"
+
+[[concepts]]
+concept_id = "concept.progress"
+kind = "icon_term"
+icon_binding = "sym.progress"
+forbidden_targets = ["Продвижение", "Развитие"]
+notes = "Game mechanic term and inline symbol."
+
+[concepts.source]
+lang = "en"
+lemma = "Progress"
+aliases = ["progress token"]
+patterns = ["Progress", "gain Progress", "lose Progress"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Прогресс"
+allowed_surface_forms = ["Прогресс", "Прогресса", "Прогрессу", "Прогрессом", "Прогрессе"]

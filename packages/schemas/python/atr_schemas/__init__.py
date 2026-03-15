@@ -1,0 +1,153 @@
+"""Shared Pydantic v2 schemas for the ATR document compiler pipeline."""
+
+from atr_schemas.asset_v1 import AssetV1, AssetVariant
+from atr_schemas.build_manifest_v1 import BuildManifestV1, ReleaseFile
+from atr_schemas.common import (
+    ArtifactRef,
+    ConfidenceMetrics,
+    PageDimensions,
+    ProvenanceRef,
+    QAState,
+    Rect,
+)
+from atr_schemas.concept_registry_v1 import ConceptRegistryV1, ConceptV1
+from atr_schemas.enums import (
+    AssetKind,
+    BlockType,
+    InlineType,
+    LanguageCode,
+    QALayer,
+    Severity,
+    StageScope,
+)
+from atr_schemas.glossary_payload_v1 import GlossaryEntryV1, GlossaryPayloadV1
+from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
+from atr_schemas.native_page_v1 import (
+    ImageBlockEvidence,
+    NativePageV1,
+    SpanEvidence,
+    WordEvidence,
+)
+from atr_schemas.page_ir_v1 import (
+    Block,
+    CalloutBlock,
+    CaptionBlock,
+    DividerBlock,
+    FigureBlock,
+    FigureRefInline,
+    HeadingBlock,
+    IconInline,
+    InlineNode,
+    LineBreakInline,
+    ListBlock,
+    ListItemBlock,
+    PageIRV1,
+    ParagraphBlock,
+    TableBlock,
+    TermMarkInline,
+    TextInline,
+    UnknownBlock,
+    XrefInline,
+)
+from atr_schemas.patch_set_v1 import PatchSetV1
+from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.qa_summary_v1 import QASummaryV1
+from atr_schemas.render_page_v1 import (
+    RenderBlock,
+    RenderCalloutBlock,
+    RenderDividerBlock,
+    RenderFigureBlock,
+    RenderFigureRefInline,
+    RenderHeadingBlock,
+    RenderIconInline,
+    RenderInlineNode,
+    RenderPageV1,
+    RenderParagraphBlock,
+    RenderTableBlock,
+    RenderTextInline,
+)
+from atr_schemas.run_manifest_v1 import RunManifestV1
+from atr_schemas.search_docs_v1 import SearchDocEntry, SearchDocsV1
+from atr_schemas.source_manifest_v1 import PageEntry, SourceManifestV1
+from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1, SymbolEntry
+from atr_schemas.symbol_match_set_v1 import SymbolMatch, SymbolMatchSetV1
+from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
+from atr_schemas.translation_result_v1 import TranslatedSegment, TranslationResultV1
+
+__all__ = [
+    "ArtifactRef",
+    "AssetKind",
+    "AssetV1",
+    "AssetVariant",
+    "Block",
+    "BlockType",
+    "BuildManifestV1",
+    "CalloutBlock",
+    "CaptionBlock",
+    "ConceptRegistryV1",
+    "ConceptV1",
+    "ConfidenceMetrics",
+    "DifficultyScoreV1",
+    "DividerBlock",
+    "FigureBlock",
+    "FigureRefInline",
+    "GlossaryEntryV1",
+    "GlossaryPayloadV1",
+    "HeadingBlock",
+    "IconInline",
+    "ImageBlockEvidence",
+    "InlineNode",
+    "InlineType",
+    "LanguageCode",
+    "LayoutPageV1",
+    "LayoutZone",
+    "LineBreakInline",
+    "ListBlock",
+    "ListItemBlock",
+    "NativePageV1",
+    "PageDimensions",
+    "PageEntry",
+    "PageIRV1",
+    "ParagraphBlock",
+    "PatchSetV1",
+    "ProvenanceRef",
+    "QALayer",
+    "QARecordV1",
+    "QAState",
+    "QASummaryV1",
+    "Rect",
+    "ReleaseFile",
+    "RenderBlock",
+    "RenderCalloutBlock",
+    "RenderDividerBlock",
+    "RenderFigureBlock",
+    "RenderFigureRefInline",
+    "RenderHeadingBlock",
+    "RenderIconInline",
+    "RenderInlineNode",
+    "RenderPageV1",
+    "RenderParagraphBlock",
+    "RenderTableBlock",
+    "RenderTextInline",
+    "RunManifestV1",
+    "SearchDocEntry",
+    "SearchDocsV1",
+    "Severity",
+    "SourceManifestV1",
+    "SpanEvidence",
+    "StageScope",
+    "SymbolCatalogV1",
+    "SymbolEntry",
+    "SymbolMatch",
+    "SymbolMatchSetV1",
+    "TableBlock",
+    "TermMarkInline",
+    "TextInline",
+    "TranslatedSegment",
+    "TranslationBatchV1",
+    "TranslationResultV1",
+    "TranslationSegment",
+    "UnknownBlock",
+    "WordEvidence",
+    "XrefInline",
+]

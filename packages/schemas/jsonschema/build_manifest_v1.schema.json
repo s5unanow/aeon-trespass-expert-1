@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "ReleaseFile": {
+      "description": "A file included in the release bundle.",
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "default": "",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "default": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "ReleaseFile",
+      "type": "object"
+    }
+  },
+  "description": "Manifest for a published static release.",
+  "properties": {
+    "schema_version": {
+      "default": "build_manifest.v1",
+      "pattern": "^build_manifest\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "build_id": {
+      "title": "Build Id",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "content_version": {
+      "default": "",
+      "title": "Content Version",
+      "type": "string"
+    },
+    "generated_at": {
+      "default": "",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "pipeline_version": {
+      "default": "",
+      "title": "Pipeline Version",
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/ReleaseFile"
+      },
+      "title": "Files",
+      "type": "array"
+    }
+  },
+  "required": [
+    "build_id",
+    "document_id"
+  ],
+  "title": "BuildManifestV1",
+  "type": "object"
+}

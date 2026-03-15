@@ -1,0 +1,13 @@
+{
+  "document_id": "walking_skeleton",
+  "entries": [
+    {
+      "concept_id": "concept.progress",
+      "preferred_term": "Прогресс",
+      "source_term": "Progress",
+      "aliases": [],
+      "icon_binding": "sym.progress",
+      "notes": ""
+    }
+  ]
+}

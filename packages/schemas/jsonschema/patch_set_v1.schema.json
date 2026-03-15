@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "PatchOperation": {
+      "description": "A single patch operation.",
+      "properties": {
+        "op": {
+          "title": "Op",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "value": {
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "op",
+        "path"
+      ],
+      "title": "PatchOperation",
+      "type": "object"
+    }
+  },
+  "description": "A set of typed patches for a specific artifact.",
+  "properties": {
+    "schema_version": {
+      "default": "patch_set.v1",
+      "pattern": "^patch_set\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "patch_id": {
+      "title": "Patch Id",
+      "type": "string"
+    },
+    "target_artifact_ref": {
+      "default": "",
+      "title": "Target Artifact Ref",
+      "type": "string"
+    },
+    "operations": {
+      "items": {
+        "$ref": "#/$defs/PatchOperation"
+      },
+      "title": "Operations",
+      "type": "array"
+    },
+    "reason": {
+      "default": "",
+      "title": "Reason",
+      "type": "string"
+    },
+    "author": {
+      "default": "",
+      "title": "Author",
+      "type": "string"
+    }
+  },
+  "required": [
+    "patch_id"
+  ],
+  "title": "PatchSetV1",
+  "type": "object"
+}

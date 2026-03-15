@@ -1,0 +1,21 @@
+{
+  "schema_version": "symbol_match_set.v1",
+  "document_id": "walking_skeleton",
+  "page_id": "p0001",
+  "matches": [
+    {
+      "symbol_id": "sym.progress",
+      "instance_id": "syminst.p0001.01",
+      "bbox": {
+        "x0": 130.0,
+        "y0": 112.0,
+        "x1": 146.0,
+        "y1": 128.0
+      },
+      "score": "__DYNAMIC__",
+      "source_asset_id": "",
+      "inline": true
+    }
+  ],
+  "unmatched_candidates": 0
+}

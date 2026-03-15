@@ -1,0 +1,52 @@
+{
+  "schema_version": "translation_result.v1",
+  "batch_id": "tr.p0001.01",
+  "segments": [
+    {
+      "segment_id": "p0001.b001",
+      "target_inline": [
+        {
+          "type": "text",
+          "text": "Проверка атаки",
+          "marks": [],
+          "lang": "ru",
+          "source_word_ids": []
+        }
+      ],
+      "concept_realizations": []
+    },
+    {
+      "segment_id": "p0001.b002",
+      "target_inline": [
+        {
+          "type": "text",
+          "text": "Получите 1 ",
+          "marks": [],
+          "lang": "ru",
+          "source_word_ids": []
+        },
+        {
+          "type": "icon",
+          "symbol_id": "sym.progress",
+          "instance_id": "syminst.p0001.01",
+          "bbox": null,
+          "display_hint": {},
+          "source_asset_id": ""
+        },
+        {
+          "type": "text",
+          "text": " Прогресс.",
+          "marks": [],
+          "lang": "ru",
+          "source_word_ids": []
+        }
+      ],
+      "concept_realizations": [
+        {
+          "concept_id": "concept.progress",
+          "surface_form": "Прогресс"
+        }
+      ]
+    }
+  ]
+}

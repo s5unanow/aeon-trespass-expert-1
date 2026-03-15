@@ -1,0 +1,370 @@
+{
+  "$defs": {
+    "FigureRefInline": {
+      "description": "Inline reference to a figure asset.",
+      "properties": {
+        "type": {
+          "const": "figure_ref",
+          "default": "figure_ref",
+          "title": "Type",
+          "type": "string"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id"
+      ],
+      "title": "FigureRefInline",
+      "type": "object"
+    },
+    "IconInline": {
+      "description": "Inline icon node, recovered from symbol catalog matching.",
+      "properties": {
+        "type": {
+          "const": "icon",
+          "default": "icon",
+          "title": "Type",
+          "type": "string"
+        },
+        "symbol_id": {
+          "title": "Symbol Id",
+          "type": "string"
+        },
+        "instance_id": {
+          "default": "",
+          "title": "Instance Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "display_hint": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "title": "Display Hint",
+          "type": "object"
+        },
+        "source_asset_id": {
+          "default": "",
+          "title": "Source Asset Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "symbol_id"
+      ],
+      "title": "IconInline",
+      "type": "object"
+    },
+    "LanguageCode": {
+      "enum": [
+        "en",
+        "ru"
+      ],
+      "title": "LanguageCode",
+      "type": "string"
+    },
+    "LineBreakInline": {
+      "description": "Explicit line break.",
+      "properties": {
+        "type": {
+          "const": "line_break",
+          "default": "line_break",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "LineBreakInline",
+      "type": "object"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    },
+    "SegmentContext": {
+      "description": "Contextual information for a translation segment.",
+      "properties": {
+        "page_id": {
+          "default": "",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "section_path": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Section Path",
+          "type": "array"
+        },
+        "prev_heading": {
+          "default": "",
+          "title": "Prev Heading",
+          "type": "string"
+        }
+      },
+      "title": "SegmentContext",
+      "type": "object"
+    },
+    "TermMarkInline": {
+      "description": "Glossary term marker.",
+      "properties": {
+        "type": {
+          "const": "term_mark",
+          "default": "term_mark",
+          "title": "Type",
+          "type": "string"
+        },
+        "concept_id": {
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "surface_form": {
+          "default": "",
+          "title": "Surface Form",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_id"
+      ],
+      "title": "TermMarkInline",
+      "type": "object"
+    },
+    "TextInline": {
+      "description": "Plain text inline node.",
+      "properties": {
+        "type": {
+          "const": "text",
+          "default": "text",
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "marks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Marks",
+          "type": "array"
+        },
+        "lang": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LanguageCode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_word_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Word Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "TextInline",
+      "type": "object"
+    },
+    "TranslationSegment": {
+      "description": "A single block to translate.",
+      "properties": {
+        "segment_id": {
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "block_type": {
+          "default": "",
+          "title": "Block Type",
+          "type": "string"
+        },
+        "source_inline": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              }
+            ]
+          },
+          "title": "Source Inline",
+          "type": "array"
+        },
+        "context": {
+          "$ref": "#/$defs/SegmentContext"
+        },
+        "required_concepts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Concepts",
+          "type": "array"
+        },
+        "forbidden_targets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Forbidden Targets",
+          "type": "array"
+        },
+        "locked_nodes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Locked Nodes",
+          "type": "array"
+        },
+        "source_checksum": {
+          "default": "",
+          "title": "Source Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "segment_id"
+      ],
+      "title": "TranslationSegment",
+      "type": "object"
+    },
+    "XrefInline": {
+      "description": "Cross-reference to another page or section.",
+      "properties": {
+        "type": {
+          "const": "xref",
+          "default": "xref",
+          "title": "Type",
+          "type": "string"
+        },
+        "target_page_id": {
+          "default": "",
+          "title": "Target Page Id",
+          "type": "string"
+        },
+        "target_section_id": {
+          "default": "",
+          "title": "Target Section Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "title": "XrefInline",
+      "type": "object"
+    }
+  },
+  "description": "Structured translation request.",
+  "properties": {
+    "schema_version": {
+      "default": "translation_batch.v1",
+      "pattern": "^translation_batch\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "batch_id": {
+      "title": "Batch Id",
+      "type": "string"
+    },
+    "source_lang": {
+      "default": "en",
+      "title": "Source Lang",
+      "type": "string"
+    },
+    "target_lang": {
+      "default": "ru",
+      "title": "Target Lang",
+      "type": "string"
+    },
+    "prompt_profile": {
+      "default": "",
+      "title": "Prompt Profile",
+      "type": "string"
+    },
+    "segments": {
+      "items": {
+        "$ref": "#/$defs/TranslationSegment"
+      },
+      "title": "Segments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "batch_id"
+  ],
+  "title": "TranslationBatchV1",
+  "type": "object"
+}

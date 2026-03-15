@@ -1,0 +1,7 @@
+# CI environment overlay — reduces parallelism and uses mock providers.
+
+[pipeline]
+parallelism = 2
+
+[translation]
+provider = "mock"

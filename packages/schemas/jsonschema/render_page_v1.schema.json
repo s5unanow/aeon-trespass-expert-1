@@ -1,0 +1,520 @@
+{
+  "$defs": {
+    "RenderBuildMeta": {
+      "properties": {
+        "build_id": {
+          "default": "",
+          "title": "Build Id",
+          "type": "string"
+        },
+        "generated_at": {
+          "default": "",
+          "title": "Generated At",
+          "type": "string"
+        }
+      },
+      "title": "RenderBuildMeta",
+      "type": "object"
+    },
+    "RenderCalloutBlock": {
+      "properties": {
+        "kind": {
+          "const": "callout",
+          "default": "callout",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "variant": {
+          "default": "",
+          "title": "Variant",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderCalloutBlock",
+      "type": "object"
+    },
+    "RenderDividerBlock": {
+      "properties": {
+        "kind": {
+          "const": "divider",
+          "default": "divider",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderDividerBlock",
+      "type": "object"
+    },
+    "RenderFigure": {
+      "properties": {
+        "src": {
+          "title": "Src",
+          "type": "string"
+        },
+        "alt": {
+          "default": "",
+          "title": "Alt",
+          "type": "string"
+        },
+        "caption": {
+          "default": "",
+          "title": "Caption",
+          "type": "string"
+        }
+      },
+      "required": [
+        "src"
+      ],
+      "title": "RenderFigure",
+      "type": "object"
+    },
+    "RenderFigureBlock": {
+      "properties": {
+        "kind": {
+          "const": "figure",
+          "default": "figure",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "asset_id": {
+          "default": "",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderFigureBlock",
+      "type": "object"
+    },
+    "RenderFigureRefInline": {
+      "properties": {
+        "kind": {
+          "const": "figure_ref",
+          "default": "figure_ref",
+          "title": "Kind",
+          "type": "string"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id"
+      ],
+      "title": "RenderFigureRefInline",
+      "type": "object"
+    },
+    "RenderHeadingBlock": {
+      "properties": {
+        "kind": {
+          "const": "heading",
+          "default": "heading",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "default": 1,
+          "title": "Level",
+          "type": "integer"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderHeadingBlock",
+      "type": "object"
+    },
+    "RenderIconInline": {
+      "properties": {
+        "kind": {
+          "const": "icon",
+          "default": "icon",
+          "title": "Kind",
+          "type": "string"
+        },
+        "symbol_id": {
+          "title": "Symbol Id",
+          "type": "string"
+        },
+        "alt": {
+          "default": "",
+          "title": "Alt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "symbol_id"
+      ],
+      "title": "RenderIconInline",
+      "type": "object"
+    },
+    "RenderNav": {
+      "properties": {
+        "prev": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prev"
+        },
+        "next": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next"
+        },
+        "parent_section": {
+          "default": "",
+          "title": "Parent Section",
+          "type": "string"
+        }
+      },
+      "title": "RenderNav",
+      "type": "object"
+    },
+    "RenderPageMeta": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "section_path": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Section Path",
+          "type": "array"
+        },
+        "source_page_number": {
+          "default": 0,
+          "title": "Source Page Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderPageMeta",
+      "type": "object"
+    },
+    "RenderParagraphBlock": {
+      "properties": {
+        "kind": {
+          "const": "paragraph",
+          "default": "paragraph",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderParagraphBlock",
+      "type": "object"
+    },
+    "RenderSourceMap": {
+      "properties": {
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "block_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Block Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "page_id"
+      ],
+      "title": "RenderSourceMap",
+      "type": "object"
+    },
+    "RenderTableBlock": {
+      "properties": {
+        "kind": {
+          "const": "table",
+          "default": "table",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderTableBlock",
+      "type": "object"
+    },
+    "RenderTextInline": {
+      "properties": {
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "marks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Marks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "RenderTextInline",
+      "type": "object"
+    }
+  },
+  "description": "Frontend-ready page payload.",
+  "properties": {
+    "schema_version": {
+      "default": "render_page.v1",
+      "pattern": "^render_page\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_version": {
+      "default": "",
+      "title": "Document Version",
+      "type": "string"
+    },
+    "page": {
+      "$ref": "#/$defs/RenderPageMeta"
+    },
+    "nav": {
+      "$ref": "#/$defs/RenderNav"
+    },
+    "blocks": {
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/RenderHeadingBlock"
+          },
+          {
+            "$ref": "#/$defs/RenderParagraphBlock"
+          },
+          {
+            "$ref": "#/$defs/RenderFigureBlock"
+          },
+          {
+            "$ref": "#/$defs/RenderCalloutBlock"
+          },
+          {
+            "$ref": "#/$defs/RenderTableBlock"
+          },
+          {
+            "$ref": "#/$defs/RenderDividerBlock"
+          }
+        ]
+      },
+      "title": "Blocks",
+      "type": "array"
+    },
+    "figures": {
+      "additionalProperties": {
+        "$ref": "#/$defs/RenderFigure"
+      },
+      "title": "Figures",
+      "type": "object"
+    },
+    "glossary_mentions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Glossary Mentions",
+      "type": "array"
+    },
+    "search": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        ]
+      },
+      "title": "Search",
+      "type": "object"
+    },
+    "source_map": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RenderSourceMap"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "build_meta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RenderBuildMeta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "page"
+  ],
+  "title": "RenderPageV1",
+  "type": "object"
+}
