@@ -97,10 +97,15 @@ def test_concept_registry_loader() -> None:
     """Load concept registry from TOML."""
     registry = load_concept_registry(_repo_root() / "configs" / "glossary" / "concepts.toml")
 
-    assert len(registry.concepts) == 1
-    c = registry.concepts[0]
-    assert c.concept_id == "concept.progress"
+    assert len(registry.concepts) >= 9  # stat icons + game terms
+    # Verify a known concept loads correctly
+    by_id = {c.concept_id: c for c in registry.concepts}
+    c = by_id["concept.progress"]
     assert c.source.lemma == "Progress"
     assert c.target.lemma == "Прогресс"
     assert c.icon_binding == "sym.progress"
     assert "Продвижение" in c.forbidden_targets
+    # Verify Triskelion stats are present
+    assert "concept.danger" in by_id
+    assert "concept.fate" in by_id
+    assert "concept.rage" in by_id

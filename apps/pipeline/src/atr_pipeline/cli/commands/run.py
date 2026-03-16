@@ -13,10 +13,26 @@ from atr_pipeline.runner.plan import resolve_stage_range
 from atr_pipeline.store.artifact_store import ArtifactStore
 
 
+def _parse_pages(pages_str: str, total: int) -> list[int]:
+    """Parse a page spec like '1-5', '3,7,12', or '1-3,7' into page numbers."""
+    if not pages_str.strip():
+        return list(range(1, total + 1))
+    result: set[int] = set()
+    for part in pages_str.split(","):
+        part = part.strip()
+        if "-" in part:
+            lo, hi = part.split("-", 1)
+            result.update(range(int(lo), int(hi) + 1))
+        else:
+            result.add(int(part))
+    return sorted(p for p in result if 1 <= p <= total)
+
+
 def run(
     doc: str = typer.Option(..., "--doc", help="Document id"),
     from_stage: str = typer.Option("ingest", "--from", help="First stage to run"),
     to_stage: str = typer.Option("qa", "--to", help="Last stage to run"),
+    pages: str = "",
 ) -> None:
     """Run a range of pipeline stages for a document."""
     config = load_document_config(doc)
@@ -62,6 +78,11 @@ def run(
     # Get page count from PDF for all stage entry points
     _, total_page_count = fingerprint_pdf(config.source_pdf_path)
 
+    # Parse page filter (empty = all pages)
+    page_nums = _parse_pages(pages, total_page_count)
+    if pages:
+        typer.echo(f"Page filter: {len(page_nums)} of {total_page_count} pages")
+
     # Load existing artifacts if starting from a mid-pipeline stage
     if from_stage != "ingest":
         _load_existing_artifacts(
@@ -80,8 +101,8 @@ def run(
                     page_count=page_count,
                 )
                 dpi = config.extraction.layout.dpi
-                typer.echo(f"    Rasterizing {page_count} pages at {dpi} DPI...")
-                for pnum in range(1, page_count + 1):
+                typer.echo(f"    Rasterizing {len(page_nums)} pages at {dpi} DPI...")
+                for pnum in page_nums:
                     pid = f"p{pnum:04d}"
                     png_bytes = render_page_png(
                         config.source_pdf_path, pnum, dpi=dpi,
@@ -95,14 +116,10 @@ def run(
                     document_id=doc, schema_family="source_manifest",
                     scope="document", entity_id=doc, data=manifest,
                 )
-                typer.echo(f"    {page_count} pages ingested")
+                typer.echo(f"    {len(page_nums)} pages ingested")
 
             elif stage_name == "extract_native":
-                if manifest:
-                    page_count = manifest.page_count
-                else:
-                    _, page_count = fingerprint_pdf(config.source_pdf_path)
-                for pnum in range(1, page_count + 1):
+                for pnum in page_nums:
                     pid = f"p{pnum:04d}"
                     native = extract_native_page(
                         config.source_pdf_path, page_number=pnum,

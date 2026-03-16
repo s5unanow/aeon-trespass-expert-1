@@ -54,11 +54,12 @@ def run_cmd(
     doc: str = typer.Option(..., "--doc", help="Document id"),
     from_stage: str = typer.Option("ingest", "--from", help="First stage"),
     to_stage: str = typer.Option("qa", "--to", help="Last stage"),
+    pages: str = typer.Option("", "--pages", help="Page range, e.g. '1-5' or '3,7,12'"),
 ) -> None:
     """Run pipeline stages for a document."""
     from atr_pipeline.cli.commands.run import run as _run
 
-    _run(doc=doc, from_stage=from_stage, to_stage=to_stage)
+    _run(doc=doc, from_stage=from_stage, to_stage=to_stage, pages=pages)
 
 
 @app.command(name="release")

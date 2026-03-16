@@ -281,6 +281,69 @@ match_threshold = 0.85
 inline = true
 # Open book icon. Basic Argo stat.
 
+[[symbols]]
+symbol_id = "sym.gear"
+label = "Gear"
+alt_label_ru = "Снаряжение"
+template_asset = "configs/symbols/templates/stat_gear_43x55_391612753f47d9db.png"
+match_threshold = 0.85
+inline = true
+# Spartan helmet silhouette. Craftable equipment cards.
+
+[[symbols]]
+symbol_id = "sym.evasion_rerolls"
+label = "Evasion re-rolls"
+alt_label_ru = "Перебросы Уклонения"
+template_asset = "configs/symbols/templates/stat_evasion_rerolls_50x58_8cfcef247078eb5e.png"
+match_threshold = 0.85
+inline = true
+# Circular arrows around die. Evasion dice re-roll modifier.
+
+[[symbols]]
+symbol_id = "sym.evasion_bonus"
+label = "Evasion bonus"
+alt_label_ru = "Бонус Уклонения"
+template_asset = "configs/symbols/templates/stat_evasion_bonus_47x53_62aeff23179d94eb.png"
+match_threshold = 0.85
+inline = true
+# Combat motion symbol. Evasion bonus modifier.
+
+[[symbols]]
+symbol_id = "sym.evasion_dice"
+label = "Evasion dice count"
+alt_label_ru = "Кубики Уклонения"
+template_asset = "configs/symbols/templates/stat_evasion_dice_54x54_8a32f88b3534ad62.png"
+match_threshold = 0.85
+inline = true
+# Red circle with white number. Evasion dice count indicator.
+
+[[symbols]]
+symbol_id = "sym.evasion_difficulty"
+label = "Evasion difficulty"
+alt_label_ru = "Сложность Уклонения"
+template_asset = "configs/symbols/templates/stat_evasion_difficulty_54x54_1260b1767f471529.png"
+match_threshold = 0.85
+inline = true
+# Red circle with white number. Evasion roll difficulty indicator.
+
+[[symbols]]
+symbol_id = "sym.knockback"
+label = "Knockback"
+alt_label_ru = "Отброс"
+template_asset = "configs/symbols/templates/stat_knockback_65x55_855cb51274421dab.png"
+match_threshold = 0.85
+inline = true
+# Impact X with splash marks. Combat knockback mechanic.
+
+[[symbols]]
+symbol_id = "sym.priority_target"
+label = "Priority Target"
+alt_label_ru = "Приоритетная цель"
+template_asset = "configs/symbols/templates/stat_priority_target_51x52_f87edd85add6ea74.png"
+match_threshold = 0.85
+inline = true
+# Red compass/diamond circle. Priority Target token (from Rage overflow).
+
 # =============================================================================
 # SKULL / DEATH ICONS
 # =============================================================================

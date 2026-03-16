@@ -1,21 +1,482 @@
-# Concept registry — terminology rules for the walking skeleton.
+# Concept registry — terminology rules for ATO Core Rulebook translation.
+# Each concept defines English→Russian translation constraints:
+# - forbidden_targets: translations that must NEVER be used
+# - allowed_surface_forms: all acceptable Russian inflections
+# - icon_binding: links a concept to its inline icon symbol_id
 
-version = "glossary.2026-03-15.1"
+version = "glossary.2026-03-16.1"
+
+# =============================================================================
+# TRISKELION STATS — the three Triskelion dial stats
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.danger"
+kind = "icon_term"
+icon_binding = "sym.danger"
+forbidden_targets = ["Опасность"]
+notes = "Triskelion stat (Mortal axis). Always transliterated, never translated."
+
+[concepts.source]
+lang = "en"
+lemma = "Danger"
+aliases = ["danger stat", "Danger value"]
+patterns = ["Danger", "gain Danger", "lose Danger", "your Danger", "raise Danger"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Дэнджер"
+allowed_surface_forms = ["Дэнджер", "Дэнджера", "Дэнджеру", "Дэнджером", "Дэнджере"]
+
+[[concepts]]
+concept_id = "concept.fate"
+kind = "icon_term"
+icon_binding = "sym.fate"
+forbidden_targets = ["Судьба", "Рок"]
+notes = "Triskelion stat (Divine axis). Always transliterated, never translated."
+
+[concepts.source]
+lang = "en"
+lemma = "Fate"
+aliases = ["Fate stat", "Fate value", "Fate Re-roll", "Fate re-rolls"]
+patterns = ["Fate", "gain Fate", "spend Fate", "your Fate", "gaining Fate"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Фэйт"
+allowed_surface_forms = ["Фэйт", "Фэйта", "Фэйту", "Фэйтом", "Фэйте"]
+
+[[concepts]]
+concept_id = "concept.rage"
+kind = "icon_term"
+icon_binding = "sym.rage"
+forbidden_targets = ["Гнев", "Бешенство"]
+notes = "Triskelion stat (Titan axis). Always transliterated, never translated."
+
+[concepts.source]
+lang = "en"
+lemma = "Rage"
+aliases = ["Rage stat", "Rage value"]
+patterns = ["Rage", "gain Rage", "your Rage", "Rage becomes"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Рэйдж"
+allowed_surface_forms = ["Рэйдж", "Рэйджа", "Рэйджу", "Рэйджем", "Рэйдже"]
+
+# =============================================================================
+# CAMPAIGN RESOURCES — Progress, Doom
+# =============================================================================
 
 [[concepts]]
 concept_id = "concept.progress"
 kind = "icon_term"
 icon_binding = "sym.progress"
 forbidden_targets = ["Продвижение", "Развитие"]
-notes = "Game mechanic term and inline symbol."
+notes = "Campaign progress resource. Transliterated game mechanic term."
 
 [concepts.source]
 lang = "en"
 lemma = "Progress"
-aliases = ["progress token"]
-patterns = ["Progress", "gain Progress", "lose Progress"]
+aliases = ["progress token", "Progress tokens"]
+patterns = ["Progress", "gain Progress", "lose Progress", "collect Progress"]
 
 [concepts.target]
 lang = "ru"
 lemma = "Прогресс"
 allowed_surface_forms = ["Прогресс", "Прогресса", "Прогрессу", "Прогрессом", "Прогрессе"]
+
+[[concepts]]
+concept_id = "concept.doom"
+kind = "icon_term"
+icon_binding = "sym.doom"
+forbidden_targets = ["Гибель", "Судьба"]
+notes = "Doom resource — opposite of Progress. Keep as game term."
+
+[concepts.source]
+lang = "en"
+lemma = "Doom"
+aliases = ["Doom card", "Doom token"]
+patterns = ["Doom", "gain Doom", "Doom card", "Unavoidable Doom"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Дум"
+allowed_surface_forms = ["Дум", "Дума", "Думу", "Думом", "Думе"]
+
+# =============================================================================
+# ARGO STATS — ship stats
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.crew"
+kind = "icon_term"
+icon_binding = "sym.crew"
+forbidden_targets = ["Команда", "Экипаж"]
+notes = "Argo stat. Transliterated game mechanic."
+
+[concepts.source]
+lang = "en"
+lemma = "Crew"
+aliases = ["Crew stat", "Crew value"]
+patterns = ["Crew", "your Crew", "lose Crew", "gain Crew"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Крю"
+allowed_surface_forms = ["Крю"]
+
+[[concepts]]
+concept_id = "concept.hull"
+kind = "icon_term"
+icon_binding = "sym.hull"
+forbidden_targets = ["Корпус", "Обшивка"]
+notes = "Argo stat. Transliterated game mechanic."
+
+[concepts.source]
+lang = "en"
+lemma = "Hull"
+aliases = ["Hull stat", "Hull value"]
+patterns = ["Hull", "your Hull", "lose Hull", "gain Hull"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Халл"
+allowed_surface_forms = ["Халл", "Халла", "Халлу", "Халлом", "Халле"]
+
+[[concepts]]
+concept_id = "concept.argo_fate"
+kind = "icon_term"
+icon_binding = "sym.argo_fate"
+forbidden_targets = ["Судьба Арго"]
+notes = "Argo stat — distinct from Triskelion Fate."
+
+[concepts.source]
+lang = "en"
+lemma = "Argo Fate"
+aliases = ["Argo Fate stat"]
+patterns = ["Argo Fate", "gain Argo Fate"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Арго Фэйт"
+allowed_surface_forms = ["Арго Фэйт", "Арго Фэйта", "Арго Фэйту"]
+
+[[concepts]]
+concept_id = "concept.argo_knowledge"
+kind = "icon_term"
+icon_binding = "sym.argo_knowledge"
+forbidden_targets = ["Знание Арго"]
+notes = "Argo stat."
+
+[concepts.source]
+lang = "en"
+lemma = "Argo Knowledge"
+aliases = ["Argo Knowledge stat"]
+patterns = ["Argo Knowledge", "gain Argo Knowledge"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Арго Знание"
+allowed_surface_forms = ["Арго Знание", "Арго Знания", "Арго Знанию"]
+
+# =============================================================================
+# CORE GAME ENTITIES — untranslatable proper nouns and game-specific terms
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.triskelion"
+kind = "mechanic"
+forbidden_targets = ["Трискелион"]
+notes = "Core game mechanic — the three-stat dial. Keep original English form."
+
+[concepts.source]
+lang = "en"
+lemma = "Triskelion"
+aliases = ["Triskelion dial", "Triskelion stats"]
+patterns = ["Triskelion"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Трискелион"
+allowed_surface_forms = ["Трискелион", "Трискелиона", "Трискелиону", "Трискелионом", "Трискелионе"]
+
+[[concepts]]
+concept_id = "concept.argonaut"
+kind = "entity"
+notes = "Player character type."
+
+[concepts.source]
+lang = "en"
+lemma = "Argonaut"
+aliases = ["Argonauts"]
+patterns = ["Argonaut", "Argonauts", "Argonaut's"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Аргонавт"
+allowed_surface_forms = ["Аргонавт", "Аргонавта", "Аргонавту", "Аргонавтом", "Аргонавте", "Аргонавты", "Аргонавтов", "Аргонавтам"]
+
+[[concepts]]
+concept_id = "concept.titan"
+kind = "entity"
+notes = "Controllable combat creature — linked to Argonaut via Triskelion."
+
+[concepts.source]
+lang = "en"
+lemma = "Titan"
+aliases = ["Titans"]
+patterns = ["Titan", "Titans", "Titan's"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Титан"
+allowed_surface_forms = ["Титан", "Титана", "Титану", "Титаном", "Титане", "Титаны", "Титанов", "Титанам"]
+
+[[concepts]]
+concept_id = "concept.primordial"
+kind = "entity"
+notes = "Enemy boss creature."
+
+[concepts.source]
+lang = "en"
+lemma = "Primordial"
+aliases = ["Primordials", "Primordial's"]
+patterns = ["Primordial", "Primordials"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Праймордиал"
+allowed_surface_forms = ["Праймордиал", "Праймордиала", "Праймордиалу", "Праймордиалом", "Праймордиале", "Праймордиалы", "Праймордиалов"]
+
+[[concepts]]
+concept_id = "concept.argo"
+kind = "entity"
+notes = "The player's city-ship. Proper noun, not translated."
+
+[concepts.source]
+lang = "en"
+lemma = "Argo"
+aliases = ["the Argo"]
+patterns = ["Argo", "the Argo"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Арго"
+allowed_surface_forms = ["Арго"]
+
+# =============================================================================
+# GAME PHASES AND MECHANICS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.voyage_phase"
+kind = "mechanic"
+forbidden_targets = ["Фаза путешествия"]
+notes = "Major game phase."
+
+[concepts.source]
+lang = "en"
+lemma = "Voyage Phase"
+aliases = ["Voyage"]
+patterns = ["Voyage Phase", "during the Voyage"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Фаза Вояжа"
+allowed_surface_forms = ["Фаза Вояжа", "Фазе Вояжа", "Фазу Вояжа"]
+
+[[concepts]]
+concept_id = "concept.battle_phase"
+kind = "mechanic"
+forbidden_targets = ["Фаза сражения"]
+notes = "Major game phase — Primordial combat."
+
+[concepts.source]
+lang = "en"
+lemma = "Battle Phase"
+aliases = ["Battle"]
+patterns = ["Battle Phase", "during the Battle", "in Battle"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Фаза Битвы"
+allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу Битвы", "Битва", "Битвы", "Битве", "Битву"]
+
+[[concepts]]
+concept_id = "concept.evasion_roll"
+kind = "mechanic"
+forbidden_targets = ["Бросок уклонения"]
+notes = "Combat mechanic — dice roll to dodge attacks."
+
+[concepts.source]
+lang = "en"
+lemma = "Evasion Roll"
+aliases = ["Evasion Rolls", "Evasion roll"]
+patterns = ["Evasion Roll", "Evasion Rolls"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Бросок Эвейжн"
+allowed_surface_forms = ["Бросок Эвейжн", "Броска Эвейжн", "Броски Эвейжн", "Бросков Эвейжн"]
+
+[[concepts]]
+concept_id = "concept.exploration"
+kind = "mechanic"
+notes = "Voyage phase step."
+
+[concepts.source]
+lang = "en"
+lemma = "Exploration"
+aliases = ["Exploration Step", "Exploration Draw"]
+patterns = ["Exploration", "Exploration Step", "Exploration Draw"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Исследование"
+allowed_surface_forms = ["Исследование", "Исследования", "Исследованию", "Исследованием"]
+
+[[concepts]]
+concept_id = "concept.gear"
+kind = "mechanic"
+notes = "Craftable equipment cards."
+
+[concepts.source]
+lang = "en"
+lemma = "Gear"
+aliases = ["Gear card", "Gear cards"]
+patterns = ["Gear", "craft Gear", "Gear card"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Снаряжение"
+allowed_surface_forms = ["Снаряжение", "Снаряжения", "Снаряжению", "Снаряжением"]
+
+[[concepts]]
+concept_id = "concept.technology"
+kind = "mechanic"
+notes = "Technology cards — Titan abilities and equipment."
+
+[concepts.source]
+lang = "en"
+lemma = "Technology"
+aliases = ["Technology card", "Technology cards"]
+patterns = ["Technology", "Technology card"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Технология"
+allowed_surface_forms = ["Технология", "Технологии", "Технологию", "Технологией", "Технологиям"]
+
+[[concepts]]
+concept_id = "concept.cycle"
+kind = "mechanic"
+notes = "Major campaign division (Cycle I, II, III)."
+
+[concepts.source]
+lang = "en"
+lemma = "Cycle"
+aliases = ["Cycles"]
+patterns = ["Cycle", "Cycle I", "Cycle II", "Cycle III"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Цикл"
+allowed_surface_forms = ["Цикл", "Цикла", "Циклу", "Циклом", "Цикле", "Циклы", "Циклов"]
+
+[[concepts]]
+concept_id = "concept.obol_draw"
+kind = "mechanic"
+forbidden_targets = ["Вытягивание обола"]
+notes = "Penalty mechanic — draw from the Obol bag."
+
+[concepts.source]
+lang = "en"
+lemma = "Obol Draw"
+aliases = ["Obol Draws"]
+patterns = ["Obol Draw"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Обол Дро"
+allowed_surface_forms = ["Обол Дро"]
+
+[[concepts]]
+concept_id = "concept.moiros_card"
+kind = "mechanic"
+notes = "Fate card drawn as penalty."
+
+[concepts.source]
+lang = "en"
+lemma = "Moiros card"
+aliases = ["Moiros cards"]
+patterns = ["Moiros card", "Moiros"]
+
+[concepts.target]
+lang = "ru"
+lemma = "карта Мойрос"
+allowed_surface_forms = ["карта Мойрос", "карты Мойрос", "карту Мойрос", "картой Мойрос"]
+
+[[concepts]]
+concept_id = "concept.mnemos_card"
+kind = "mechanic"
+notes = "Memory/skill cards for Argonauts."
+
+[concepts.source]
+lang = "en"
+lemma = "Mnemos card"
+aliases = ["Mnemos cards", "Fated Mnemos"]
+patterns = ["Mnemos card", "Mnemos cards", "Fated Mnemos"]
+
+[concepts.target]
+lang = "ru"
+lemma = "карта Мнемос"
+allowed_surface_forms = ["карта Мнемос", "карты Мнемос", "карту Мнемос", "картой Мнемос", "картами Мнемос"]
+
+[[concepts]]
+concept_id = "concept.wounds"
+kind = "mechanic"
+notes = "Primordial health stat."
+
+[concepts.source]
+lang = "en"
+lemma = "Wounds"
+aliases = ["Wound", "Wounds value"]
+patterns = ["Wounds", "Wound"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Раны"
+allowed_surface_forms = ["Раны", "Ран", "Ранам", "Ранами", "Рана", "Рану", "Раной"]
+
+[[concepts]]
+concept_id = "concept.retreat"
+kind = "mechanic"
+notes = "Ending a battle by choice."
+
+[concepts.source]
+lang = "en"
+lemma = "Retreat"
+aliases = ["Retreating"]
+patterns = ["Retreat", "decide to Retreat"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Отступление"
+allowed_surface_forms = ["Отступление", "Отступления", "Отступлению", "Отступить"]
+
+[[concepts]]
+concept_id = "concept.escalation"
+kind = "mechanic"
+notes = "Battle event that adds environmental hazards."
+
+[concepts.source]
+lang = "en"
+lemma = "Escalation"
+aliases = ["Escalations"]
+patterns = ["Escalation", "Escalations"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Эскалация"
+allowed_surface_forms = ["Эскалация", "Эскалации", "Эскалацию", "Эскалацией"]
