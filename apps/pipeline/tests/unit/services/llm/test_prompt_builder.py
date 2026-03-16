@@ -2,6 +2,11 @@
 
 import json
 
+from atr_pipeline.services.llm.prompt_builder import (
+    build_response_schema,
+    build_system_prompt,
+    build_user_message,
+)
 from atr_schemas.concept_registry_v1 import (
     ConceptRegistryV1,
     ConceptSource,
@@ -13,12 +18,6 @@ from atr_schemas.translation_batch_v1 import (
     SegmentContext,
     TranslationBatchV1,
     TranslationSegment,
-)
-
-from atr_pipeline.services.llm.prompt_builder import (
-    build_response_schema,
-    build_system_prompt,
-    build_user_message,
 )
 
 

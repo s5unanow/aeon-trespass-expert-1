@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from atr_schemas.concept_registry_v1 import ConceptRegistryV1
-
 from atr_pipeline.config.models import TranslationConfig
 from atr_pipeline.services.llm.base import TranslatorAdapter
+from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 
 
 def create_translator(

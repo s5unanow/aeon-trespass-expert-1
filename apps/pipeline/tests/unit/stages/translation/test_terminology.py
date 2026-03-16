@@ -1,11 +1,12 @@
 """Tests for terminology enforcement in translation planner and validator."""
 
+from atr_pipeline.stages.translation.planner import build_translation_batch
+from atr_pipeline.stages.translation.validator import validate_translation
 from atr_schemas.concept_registry_v1 import (
     ConceptRegistryV1,
     ConceptSource,
     ConceptTarget,
     ConceptV1,
-    ValidationPolicy,
 )
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import (
@@ -20,9 +21,6 @@ from atr_schemas.translation_result_v1 import (
     TranslatedSegment,
     TranslationResultV1,
 )
-
-from atr_pipeline.stages.translation.planner import build_translation_batch
-from atr_pipeline.stages.translation.validator import validate_translation
 
 
 def _registry() -> ConceptRegistryV1:

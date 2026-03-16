@@ -73,7 +73,7 @@ def test_match_with_template_cache(tmp_path: Path) -> None:
     r2 = match_symbols(native, raster_path, catalog, template_cache=cache)
 
     assert len(r1.matches) == len(r2.matches)
-    for m1, m2 in zip(r1.matches, r2.matches):
+    for m1, m2 in zip(r1.matches, r2.matches, strict=True):
         assert m1.symbol_id == m2.symbol_id
         assert m1.score == m2.score
 

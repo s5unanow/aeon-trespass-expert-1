@@ -5,15 +5,14 @@ from __future__ import annotations
 import json
 import logging
 
-from atr_schemas.concept_registry_v1 import ConceptRegistryV1
-from atr_schemas.translation_batch_v1 import TranslationBatchV1
-from atr_schemas.translation_result_v1 import TranslationResultV1
-
 from atr_pipeline.services.llm.prompt_builder import (
     build_response_schema,
     build_system_prompt,
     build_user_message,
 )
+from atr_schemas.concept_registry_v1 import ConceptRegistryV1
+from atr_schemas.translation_batch_v1 import TranslationBatchV1
+from atr_schemas.translation_result_v1 import TranslationResultV1
 
 log = logging.getLogger(__name__)
 

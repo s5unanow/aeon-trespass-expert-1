@@ -225,7 +225,7 @@ def _match_one_symbol(
         best_idx = -1
         best_loc: tuple[int, int] = (0, 0)
 
-        for i, (variant, rmap) in enumerate(result_maps):
+        for i, (_variant, rmap) in enumerate(result_maps):
             _, max_val, _, max_loc = cv2.minMaxLoc(rmap)
             if max_val > best_score:
                 best_score = max_val
@@ -249,7 +249,7 @@ def _match_one_symbol(
         # physical location is not reported again at another scale.
         cx = px + variant.tw // 2
         cy = py + variant.th // 2
-        for i, (v, rmap) in enumerate(result_maps):
+        for _i, (v, rmap) in enumerate(result_maps):
             radius = max(v.tw, v.th, variant.tw, variant.th)
             y0 = max(0, cy - v.th // 2 - radius)
             y1 = min(rmap.shape[0], cy - v.th // 2 + radius + 1)

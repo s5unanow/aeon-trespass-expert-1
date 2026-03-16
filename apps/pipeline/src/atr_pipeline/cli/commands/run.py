@@ -169,7 +169,6 @@ def run(
 
             elif stage_name == "translate":
                 # Load concept registry if available
-                from pathlib import Path as _Path
 
                 from atr_pipeline.stages.glossary.registry_loader import (
                     load_concept_registry,
@@ -264,7 +263,6 @@ def _translate_pages(
     concept_registry: object = None,
 ) -> None:
     """Translate all pages using the provided adapter."""
-    from atr_schemas.concept_registry_v1 import ConceptRegistryV1
     from atr_schemas.enums import LanguageCode
     from atr_schemas.page_ir_v1 import (
         CalloutBlock,
@@ -277,11 +275,6 @@ def _translate_pages(
         TableBlock,
     )
     from atr_schemas.translation_batch_v1 import TranslationBatchV1
-
-    from atr_pipeline.services.llm.base import TranslatorAdapter
-    from atr_pipeline.stages.translation.validator import (
-        validate_translation as _validate,
-    )
 
     _BLOCK_TYPE_MAP = {
         "heading": HeadingBlock,
