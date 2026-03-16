@@ -194,146 +194,92 @@ inline = true
 # first seen: p0082, 30x56px — black triangle/obelisk shape
 
 # =============================================================================
-# SMALL STAT/RESOURCE ICONS — flame/leaf motif in circle (~24px, from p0074)
-# These appear inline in rules text. Subtle visual differences at this size
-# make precise identification difficult; labels are best-effort.
-# VERIFY: cross-reference each with its page context for exact stat.
+# INLINE STAT / RESOURCE ICONS — vector glyphs used inline in rules text
+# These are drawn as PDF vector paths (not raster images or font characters),
+# so they are invisible to text extraction and must be detected via template
+# matching on rasterized pages. Templates cropped from 300 DPI renders.
 # =============================================================================
 
 [[symbols]]
-symbol_id = "sym.stat_icon_a"
-label = "Stat icon A"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_045_24x25_7d352aa359ea80a6.png"
-match_threshold = 0.88
+symbol_id = "sym.danger"
+label = "Danger (Δ)"
+alt_label_ru = "Опасность (Δ)"
+template_asset = "configs/symbols/templates/stat_danger_52x54_d678bf6476525367.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 24x25px — flame/leaf in dark circle
+# Triskelion stat — Mortal axis. Triangle/alpha shape. Appears inline throughout rules.
 
 [[symbols]]
-symbol_id = "sym.stat_icon_b"
-label = "Stat icon B"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_046_25x24_7fcd815f1d548148.png"
-match_threshold = 0.88
+symbol_id = "sym.fate"
+label = "Fate / Divine (Ψ)"
+alt_label_ru = "Судьба / Божественное (Ψ)"
+template_asset = "configs/symbols/templates/stat_fate_54x55_d2df7127e96bbbb1.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 25x24px
+# Triskelion stat — Divine axis. Psi/trident shape. Used for re-rolls.
 
 [[symbols]]
-symbol_id = "sym.stat_icon_c"
-label = "Stat icon C"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_047_25x24_780bba8a7c9b4e87.png"
-match_threshold = 0.88
+symbol_id = "sym.rage"
+label = "Rage / Titan (Ω)"
+alt_label_ru = "Ярость / Титан (Ω)"
+template_asset = "configs/symbols/templates/stat_rage_53x55_ee0b94396ff1657d.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 25x24px
+# Triskelion stat — Titan axis. Omega shape. Increases on attacks.
 
 [[symbols]]
-symbol_id = "sym.stat_icon_d"
-label = "Stat icon D"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_048_24x24_a5edfb387703b190.png"
-match_threshold = 0.88
+symbol_id = "sym.progress"
+label = "Progress"
+alt_label_ru = "Прогресс"
+template_asset = "configs/symbols/templates/stat_progress_53x54_c3de1fd3745640f3.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 24x24px
+# Inverted triangle with phoenix/bird. Represents campaign progress tokens.
 
 [[symbols]]
-symbol_id = "sym.stat_icon_e"
-label = "Stat icon E"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_049_25x25_a3e73160c9794097.png"
-match_threshold = 0.88
+symbol_id = "sym.doom"
+label = "Doom"
+alt_label_ru = "Рок"
+template_asset = "configs/symbols/templates/stat_doom_55x54_c7e072264a0d52ea.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 25x25px
+# Triangle with skull. Opposite of Progress — encroachment of evil forces.
 
 [[symbols]]
-symbol_id = "sym.stat_icon_f"
-label = "Stat icon F"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_050_24x24_b139784fde9c8b06.png"
-match_threshold = 0.88
+symbol_id = "sym.crew"
+label = "Crew"
+alt_label_ru = "Экипаж"
+template_asset = "configs/symbols/templates/stat_crew_56x55_e5a14372d39b7745.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 24x24px
+# Crossed X (oars/axes). Basic Argo stat.
 
 [[symbols]]
-symbol_id = "sym.stat_icon_g"
-label = "Stat icon G"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_051_25x24_1fa8c1dabf0a8f6e.png"
-match_threshold = 0.88
+symbol_id = "sym.hull"
+label = "Hull"
+alt_label_ru = "Корпус"
+template_asset = "configs/symbols/templates/stat_hull_53x55_8c9dda66fb1acd0a.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 25x24px
+# Circle with ship silhouette. Basic Argo stat.
 
 [[symbols]]
-symbol_id = "sym.stat_icon_h"
-label = "Stat icon H"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_052_24x24_1cb139c97c6a5395.png"
-match_threshold = 0.88
+symbol_id = "sym.argo_fate"
+label = "Argo Fate"
+alt_label_ru = "Судьба Арго"
+template_asset = "configs/symbols/templates/stat_argo_fate_59x54_918dd784550814d2.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 24x24px
+# Inverted triangle with flame/candle. Basic Argo stat (distinct from Triskelion Fate Ψ).
 
 [[symbols]]
-symbol_id = "sym.stat_icon_i"
-label = "Stat icon I"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_053_24x24_0a9da82d9191acd1.png"
-match_threshold = 0.88
+symbol_id = "sym.argo_knowledge"
+label = "Argo Knowledge"
+alt_label_ru = "Знание Арго"
+template_asset = "configs/symbols/templates/stat_argo_knowledge_49x54_3a633d993a40cf7b.png"
+match_threshold = 0.85
 inline = true
-# first seen: p0074, 24x24px — darker/different variant
-
-[[symbols]]
-symbol_id = "sym.stat_icon_j"
-label = "Stat icon J"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_057_25x25_20945c376065177e.png"
-match_threshold = 0.88
-inline = true
-# first seen: p0074, 25x25px — dark reddish
-
-[[symbols]]
-symbol_id = "sym.stat_icon_k"
-label = "Stat icon K"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_058_25x25_09b138e882c5afd6.png"
-match_threshold = 0.88
-inline = true
-# first seen: p0074, 25x25px — dark reddish
-
-[[symbols]]
-symbol_id = "sym.stat_icon_l"
-label = "Stat icon L"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_059_25x24_33159b65cccada91.png"
-match_threshold = 0.88
-inline = true
-# first seen: p0074, 25x24px
-
-[[symbols]]
-symbol_id = "sym.stat_icon_m"
-label = "Stat icon M"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_065_25x24_6d50b72efa86f7e3.png"
-match_threshold = 0.88
-inline = true
-# first seen: p0074, 25x24px
-
-[[symbols]]
-symbol_id = "sym.stat_icon_n"
-label = "Stat icon N"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_066_25x24_7a7cf7b490bbdf19.png"
-match_threshold = 0.88
-inline = true
-# first seen: p0074, 25x24px
-
-[[symbols]]
-symbol_id = "sym.stat_icon_o"
-label = "Stat icon O"
-alt_label_ru = ""
-template_asset = "configs/symbols/templates/icon_067_25x24_80b0ea883167590d.png"
-match_threshold = 0.88
-inline = true
-# first seen: p0074, 25x24px
+# Open book icon. Basic Argo stat.
 
 # =============================================================================
 # SKULL / DEATH ICONS
