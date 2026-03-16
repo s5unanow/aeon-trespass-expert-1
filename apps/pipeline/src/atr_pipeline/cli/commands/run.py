@@ -33,7 +33,7 @@ def run(
     typer.echo(f"Running stages: {' → '.join(stages)}")
 
     # Lazy imports
-    from atr_pipeline.services.llm.mock_translator import MockTranslator
+    from atr_pipeline.services.llm.factory import create_translator
     from atr_pipeline.services.pdf.rasterizer import render_page_png
     from atr_pipeline.stages.extract_native.pymupdf_extractor import extract_native_page
     from atr_pipeline.stages.ingest.manifest_builder import build_manifest
@@ -42,7 +42,7 @@ def run(
     from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
     from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
     from atr_pipeline.stages.symbols.catalog_loader import load_symbol_catalog
-    from atr_pipeline.stages.symbols.matcher import match_symbols
+    from atr_pipeline.stages.symbols.matcher import TemplateCache, match_symbols
     from atr_pipeline.stages.translation.planner import build_translation_batch
     from atr_pipeline.stages.translation.validator import validate_translation
     from atr_schemas.source_manifest_v1 import SourceManifestV1
@@ -119,6 +119,9 @@ def run(
                 catalog_path = config.symbol_catalog_path
                 if catalog_path and catalog_path.exists():
                     catalog = load_symbol_catalog(catalog_path)
+                    tcache = TemplateCache.from_catalog(
+                        catalog, repo_root=config.repo_root,
+                    )
                     for pid, native in native_pages.items():
                         raster_dir = store.root / doc / "raster" / "page" / pid
                         rasters = list(raster_dir.glob("*.png"))
@@ -126,6 +129,7 @@ def run(
                             matches = match_symbols(
                                 native, rasters[0], catalog,  # type: ignore[arg-type]
                                 repo_root=config.repo_root,
+                                template_cache=tcache,
                             )
                             symbol_matches_map[pid] = matches
                             store.put_json(
@@ -164,21 +168,35 @@ def run(
                 )
 
             elif stage_name == "translate":
-                # For now, only mock-translate walking skeleton
+                # Load concept registry if available
+                from pathlib import Path as _Path
+
+                from atr_pipeline.stages.glossary.registry_loader import (
+                    load_concept_registry,
+                )
+
+                concept_reg = None
+                glossary_path = config.repo_root / "configs" / "glossary" / "concepts.toml"
+                if glossary_path.exists():
+                    concept_reg = load_concept_registry(glossary_path)
+
+                # Use mock for walking skeleton, configured provider otherwise
                 if is_walking_skeleton:
-                    _translate_walking_skeleton(
-                        en_ir_map, ru_ir_map, store, doc, config,
-                        MockTranslator, build_translation_batch,
-                        validate_translation, typer,
-                    )
+                    from atr_pipeline.config.models import TranslationConfig
+
+                    mock_cfg = TranslationConfig(provider="mock")
+                    translator = create_translator(mock_cfg)
                 else:
-                    # For real doc: skip translation, copy EN IR as-is
-                    for pid, ir in en_ir_map.items():
-                        ru_ir_map[pid] = ir
-                    typer.echo(
-                        f"    Skipped translation (mock only), "
-                        f"using EN IR for {len(ru_ir_map)} pages"
+                    translator = create_translator(
+                        config.translation,
+                        concept_registry=concept_reg,
                     )
+
+                _translate_pages(
+                    en_ir_map, ru_ir_map, store, doc,
+                    translator, build_translation_batch,
+                    validate_translation, typer, concept_reg,
+                )
 
             elif stage_name == "render":
                 for pid in (ru_ir_map if ru_ir_map else en_ir_map):
@@ -234,26 +252,55 @@ def run(
         typer.echo(f"Run {run_id} completed successfully.")
 
 
-def _translate_walking_skeleton(
+def _translate_pages(
     en_ir_map: dict[str, object],
     ru_ir_map: dict[str, object],
     store: ArtifactStore,
     doc: str,
-    config: object,
-    MockTranslator: type,
+    translator: object,
     build_translation_batch: object,
     validate_translation: object,
     typer: object,
+    concept_registry: object = None,
 ) -> None:
-    """Mock-translate walking skeleton pages."""
+    """Translate all pages using the provided adapter."""
+    from atr_schemas.concept_registry_v1 import ConceptRegistryV1
     from atr_schemas.enums import LanguageCode
-    from atr_schemas.page_ir_v1 import HeadingBlock, PageIRV1, ParagraphBlock
+    from atr_schemas.page_ir_v1 import (
+        CalloutBlock,
+        CaptionBlock,
+        HeadingBlock,
+        ListBlock,
+        ListItemBlock,
+        PageIRV1,
+        ParagraphBlock,
+        TableBlock,
+    )
+    from atr_schemas.translation_batch_v1 import TranslationBatchV1
 
-    translator = MockTranslator()
+    from atr_pipeline.services.llm.base import TranslatorAdapter
+    from atr_pipeline.stages.translation.validator import (
+        validate_translation as _validate,
+    )
+
+    _BLOCK_TYPE_MAP = {
+        "heading": HeadingBlock,
+        "paragraph": ParagraphBlock,
+        "list": ListBlock,
+        "list_item": ListItemBlock,
+        "table": TableBlock,
+        "callout": CalloutBlock,
+        "caption": CaptionBlock,
+    }
+
     for pid, en_ir in en_ir_map.items():
-        batch = build_translation_batch(en_ir)  # type: ignore[operator]
-        result = translator.translate_batch(batch)
-        errors = validate_translation(batch, result)  # type: ignore[operator]
+        batch: TranslationBatchV1 = build_translation_batch(  # type: ignore[operator]
+            en_ir, concept_registry=concept_registry,
+        )
+        result = translator.translate_batch(batch)  # type: ignore[union-attr]
+        errors = validate_translation(  # type: ignore[operator]
+            batch, result, concept_registry=concept_registry,
+        )
         if errors:
             for e in errors:
                 typer.echo(f"    WARN: {e}", err=True)  # type: ignore[union-attr]
@@ -261,19 +308,20 @@ def _translate_walking_skeleton(
         ru_blocks = []
         for seg in result.segments:
             src_block = next(
-                b for b in en_ir.blocks  # type: ignore[union-attr]
-                if b.block_id == seg.segment_id
+                (b for b in en_ir.blocks if b.block_id == seg.segment_id),  # type: ignore[union-attr]
+                None,
             )
-            if src_block.type == "heading":
-                ru_blocks.append(HeadingBlock(
-                    block_id=seg.segment_id, level=2,
-                    children=list(seg.target_inline),
-                ))
-            else:
-                ru_blocks.append(ParagraphBlock(
-                    block_id=seg.segment_id,
-                    children=list(seg.target_inline),
-                ))
+            if src_block is None:
+                continue
+
+            block_cls = _BLOCK_TYPE_MAP.get(src_block.type, ParagraphBlock)
+            kwargs: dict[str, object] = {
+                "block_id": seg.segment_id,
+                "children": list(seg.target_inline),
+            }
+            if block_cls is HeadingBlock:
+                kwargs["level"] = getattr(src_block, "level", 2)
+            ru_blocks.append(block_cls(**kwargs))  # type: ignore[arg-type]
 
         ru_ir = PageIRV1(
             document_id=doc, page_id=pid,

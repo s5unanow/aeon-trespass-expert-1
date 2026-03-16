@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import re
+
+from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.page_ir_v1 import HeadingBlock, PageIRV1
 from atr_schemas.translation_batch_v1 import (
     SegmentContext,
@@ -10,8 +13,31 @@ from atr_schemas.translation_batch_v1 import (
 )
 
 
-def build_translation_batch(page_ir: PageIRV1) -> TranslationBatchV1:
-    """Build a translation batch from an English PageIRV1."""
+def build_translation_batch(
+    page_ir: PageIRV1,
+    *,
+    concept_registry: ConceptRegistryV1 | None = None,
+) -> TranslationBatchV1:
+    """Build a translation batch from an English PageIRV1.
+
+    When *concept_registry* is provided, each segment is enriched with
+    ``required_concepts`` and ``forbidden_targets`` for every concept
+    whose source pattern appears in the segment text.
+    """
+    # Pre-build concept lookup structures
+    _concept_patterns: list[tuple[re.Pattern[str], str, list[str]]] = []
+    _icon_forbidden: dict[str, list[str]] = {}  # symbol_id -> forbidden
+
+    if concept_registry:
+        for c in concept_registry.concepts:
+            # Build regex from source patterns / lemma
+            patterns = c.source.patterns or [c.source.lemma]
+            for pat in patterns:
+                rx = re.compile(re.escape(pat), re.IGNORECASE)
+                _concept_patterns.append((rx, c.concept_id, c.forbidden_targets))
+            if c.icon_binding:
+                _icon_forbidden[c.icon_binding] = c.forbidden_targets
+
     segments: list[TranslationSegment] = []
     prev_heading = ""
 
@@ -32,10 +58,31 @@ def build_translation_batch(page_ir: PageIRV1) -> TranslationBatchV1:
         # Track locked icon nodes
         for child in block.children:
             if child.type == "icon":
-                segment.locked_nodes.append(child.symbol_id)  # type: ignore[union-attr]
+                sid = child.symbol_id  # type: ignore[union-attr]
+                segment.locked_nodes.append(sid)
                 segment.required_concepts.append(
-                    f"concept.{child.symbol_id.removeprefix('sym.')}"  # type: ignore[union-attr]
+                    f"concept.{sid.removeprefix('sym.')}"
                 )
+                # Add forbidden targets from icon-bound concepts
+                if sid in _icon_forbidden:
+                    for ft in _icon_forbidden[sid]:
+                        if ft not in segment.forbidden_targets:
+                            segment.forbidden_targets.append(ft)
+
+        # Scan text for concept pattern matches
+        if _concept_patterns:
+            full_text = " ".join(
+                child.text  # type: ignore[union-attr]
+                for child in block.children
+                if child.type == "text"
+            )
+            for rx, concept_id, forbidden in _concept_patterns:
+                if rx.search(full_text):
+                    if concept_id not in segment.required_concepts:
+                        segment.required_concepts.append(concept_id)
+                    for ft in forbidden:
+                        if ft not in segment.forbidden_targets:
+                            segment.forbidden_targets.append(ft)
 
         segments.append(segment)
 
