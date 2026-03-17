@@ -510,12 +510,103 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0057.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Вытягивание карты ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Героическая Смерть",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Героическая Жизнь",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Вспоротый",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Травмы ",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0057.b015",
       "children": [
         {
           "kind": "text",
           "text": "или другой карты, вызывающей смерть.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0057.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Вытягивание карты ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Вы умерли",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Обола.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0057.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Быть вынужденным выполнить два ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Жребия Обола",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " одновременно (см. ",
           "marks": []
         }
       ]
@@ -542,12 +633,87 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0057.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Быть вынужденным вытянуть вторую ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "карту Мойрос",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " или Кратос во время Битвы.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0057.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Получение жетонов Амброзии, превышающих Лимит Амброзии ",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0057.b021",
       "children": [
         {
           "kind": "text",
           "text": "(то есть, в большинстве случаев, 5 или более жетонов)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0057.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Иметь четыре жетона Отчаяния, не находясь рядом с другим ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титаном",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0057.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Падение за край Поля или в пространство Пропасти.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0057.b024",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Быть вынужденным сместиться, когда нет законного пространства для смещения.",
           "marks": []
         }
       ]
@@ -614,12 +780,64 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0057.b028",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Во время Атаки против ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " вы игнорируете все негативные ",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0057.b029",
       "children": [
         {
           "kind": "text",
           "text": "Ответы, вызванные этой Атакой.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0057.b030",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Во время Атаки ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " завершает свою Атаку, ",
           "marks": []
         }
       ]

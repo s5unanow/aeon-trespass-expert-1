@@ -61,6 +61,46 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0007.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "1901 Карта:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " 830 Мини-американских (41 x 63 мм) 747 Стандарт-",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0007.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ных карточных игр (63,5 x 88,9 мм) 54 Таро (70 x 120 мм) ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0007.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "270 Малых квадратных - Тайлов карты (70 x 70 мм) ",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0007.b005",
       "children": [

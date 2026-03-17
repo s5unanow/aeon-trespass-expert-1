@@ -966,6 +966,24 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0072.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Щитомеч",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 2, карта 10)",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0072.b010",
       "children": [
@@ -975,6 +993,42 @@
           "marks": [
             "bold"
           ]
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Лабиринтная Булава",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 2, карта 12)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Мерцающий Саван",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 2, карта 13)",
+          "marks": []
         }
       ]
     },
@@ -992,6 +1046,24 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0072.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Пирамидион",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 46)",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0072.b015",
       "children": [
@@ -1001,6 +1073,42 @@
           "marks": [
             "bold"
           ]
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Копье-Гвоздь",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 2, карта 17)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Маска Стервятника",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 2, карта 18)",
+          "marks": []
         }
       ]
     },
@@ -1018,6 +1126,42 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0072.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Правый Кулак-Молот",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 47)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Левый Кулак-Молот",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 48)",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0072.b021",
       "children": [
@@ -1027,6 +1171,60 @@
           "marks": [
             "bold"
           ]
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Вирус Грязи",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 50)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Воспоминание",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 49)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b024",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Челюсти Льва",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 51)",
+          "marks": []
         }
       ]
     },
@@ -1044,6 +1242,114 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0072.b026",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Теневой Вирус",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 175)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b027",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Дымовой Клинок",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 178)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b028",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Некроксифос",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 177)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b029",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Слоновья Броня",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 176)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b030",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Капюшон Обугливания",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 53)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b031",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Конец",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 54)",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0072.b032",
       "children": [
@@ -1053,6 +1359,42 @@
           "marks": [
             "bold"
           ]
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b033",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Ножной Хопеш",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 52)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b034",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Бремя Сизифа",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 5, карта 60)",
+          "marks": []
         }
       ]
     },
@@ -1070,6 +1412,42 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0072.b036",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Глаз Наблюдателя",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 8, карта 84)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b037",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Парадокс",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 8, карта 85)",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0072.b038",
       "children": [
@@ -1083,6 +1461,42 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0072.b039",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Правый Коготь Рока",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 8, карта 86)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b040",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Сферо-бросок",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 8, карта 87)",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0072.b041",
       "children": [
@@ -1092,6 +1506,42 @@
           "marks": [
             "bold"
           ]
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b042",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Жребий Икара",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 8, карта 88)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0072.b043",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Падение Икара",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Секретная колода 8, карта 89)",
+          "marks": []
         }
       ]
     },

@@ -127,12 +127,34 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0012.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Во время Битвы это может привести к смерти Титана или другому мрачному эффекту ",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0012.b006",
       "children": [
         {
           "kind": "text",
           "text": "(см. стр. 56). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0012.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Вне Битв это всегда приведет к смерти Аргонавта! ",
           "marks": []
         }
       ]
@@ -307,12 +329,92 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0012.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Плитки карты (вы можете отличить их по цвету – коричневые ",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0012.b012",
       "children": [
         {
           "kind": "text",
           "text": "для Цикла I, красные для Цикла II и фиолетовые для Цикла III – или по символам Фракций)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0012.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Миниатюра Арго",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0012.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Карты Исследования",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0012.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Карты Улик",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0012.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Карты Судьбы Мнемос",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0012.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Карта Истории ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Внутренняя Одиссея",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Цикла",
           "marks": []
         }
       ]

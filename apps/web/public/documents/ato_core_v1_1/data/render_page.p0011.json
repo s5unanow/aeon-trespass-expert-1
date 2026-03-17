@@ -159,12 +159,126 @@
       ]
     },
     {
+      "kind": "list_item",
+      "id": "p0011.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Разрешение последней карты Рока Цикла.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0011.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "\bПотеря всего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Экипажа",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Корпуса",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "; это означает, что показатель  или  ",
+          "marks": []
+        }
+      ]
+    },
+    {
       "kind": "paragraph",
       "id": "p0011.b006",
       "children": [
         {
           "kind": "text",
           "text": "становится 0. Обычно легче терять и получать , чем терять и получать .",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0011.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "\bПолучение ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбы Арго",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " более 9.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0011.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Достижение конца Временной шкалы.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0011.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Начало Битвы с 0 Титанами на борту ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0011.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Другие события, связанные с сюжетом.",
           "marks": []
         }
       ]
