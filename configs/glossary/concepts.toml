@@ -204,7 +204,7 @@ patterns = ["Argo Knowledge", "gain Argo Knowledge"]
 [concepts.target]
 lang = "ru"
 lemma = "Знание Арго"
-allowed_surface_forms = ["Знание Арго", "Знания Арго", "Знанию Арго", "Знанием Арго"]
+allowed_surface_forms = ["Знание Арго", "Знания Арго", "Знанию Арго", "Знанием Арго", "Знаний Арго"]
 
 # =============================================================================
 # CORE GAME ENTITIES — proper nouns and game-specific terms
@@ -224,7 +224,7 @@ patterns = ["Triskelion"]
 [concepts.target]
 lang = "ru"
 lemma = "Трискелион"
-allowed_surface_forms = ["Трискелион", "Трискелиона", "Трискелиону", "Трискелионом", "Трискелионе"]
+allowed_surface_forms = ["Трискелион", "Трискелиона", "Трискелиону", "Трискелионом", "Трискелионе", "Трискелионы", "Трискелионов", "Трискелионам", "Трискелионами", "Трискелионах"]
 
 [[concepts]]
 concept_id = "concept.argonaut"
@@ -273,7 +273,7 @@ patterns = ["Primordial", "Primordials"]
 [concepts.target]
 lang = "ru"
 lemma = "Первозданный"
-allowed_surface_forms = ["Первозданный", "Первозданного", "Первозданному", "Первозданным", "Первозданном", "Первозданные", "Первозданных", "Первозданными"]
+allowed_surface_forms = ["Первозданный", "Первозданного", "Первозданному", "Первозданным", "Первозданном", "Первозданные", "Первозданных", "Первозданными", "Первозданной", "Первозданное"]
 
 [[concepts]]
 concept_id = "concept.argo"
@@ -310,7 +310,7 @@ patterns = ["Voyage Phase", "during the Voyage"]
 [concepts.target]
 lang = "ru"
 lemma = "Фаза Странствия"
-allowed_surface_forms = ["Фаза Странствия", "Фазе Странствия", "Фазу Странствия", "Фазы Странствия", "Странствие", "Странствия"]
+allowed_surface_forms = ["Фаза Странствия", "Фазе Странствия", "Фазу Странствия", "Фазы Странствия", "Фазами Странствия", "Странствие", "Странствия"]
 
 [[concepts]]
 concept_id = "concept.battle_phase"
@@ -326,7 +326,7 @@ patterns = ["Battle Phase", "during the Battle", "in Battle"]
 [concepts.target]
 lang = "ru"
 lemma = "Фаза Битвы"
-allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу Битвы", "Битва", "Битвы", "Битве", "Битву", "Битв"]
+allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу Битвы", "Фазы Битвы", "Фазами Битвы", "Битва", "Битвы", "Битве", "Битву", "Битв"]
 
 [[concepts]]
 concept_id = "concept.evasion_roll"
@@ -343,7 +343,7 @@ patterns = ["Evasion Roll", "Evasion Rolls"]
 [concepts.target]
 lang = "ru"
 lemma = "Бросок Уклонения"
-allowed_surface_forms = ["Бросок Уклонения", "Броска Уклонения", "Броски Уклонения", "Бросков Уклонения"]
+allowed_surface_forms = ["Бросок Уклонения", "Броска Уклонения", "Броску Уклонения", "Броском Уклонения", "Броске Уклонения", "Броски Уклонения", "Бросков Уклонения", "Бросками Уклонения", "Бросках Уклонения"]
 
 [[concepts]]
 concept_id = "concept.exploration"
@@ -391,7 +391,7 @@ patterns = ["Technology", "Technology card"]
 [concepts.target]
 lang = "ru"
 lemma = "Технология"
-allowed_surface_forms = ["Технология", "Технологии", "Технологию", "Технологией", "Технологиям"]
+allowed_surface_forms = ["Технология", "Технологии", "Технологию", "Технологией", "Технологиям", "Технологий"]
 
 [[concepts]]
 concept_id = "concept.cycle"
@@ -407,7 +407,7 @@ patterns = ["Cycle", "Cycle I", "Cycle II", "Cycle III"]
 [concepts.target]
 lang = "ru"
 lemma = "Цикл"
-allowed_surface_forms = ["Цикл", "Цикла", "Циклу", "Циклом", "Цикле", "Циклы", "Циклов"]
+allowed_surface_forms = ["Цикл", "Цикла", "Циклу", "Циклом", "Цикле", "Циклы", "Циклов", "Циклам", "Циклами"]
 
 [[concepts]]
 concept_id = "concept.obol_draw"
@@ -424,7 +424,7 @@ patterns = ["Obol Draw"]
 [concepts.target]
 lang = "ru"
 lemma = "Жребий Обола"
-allowed_surface_forms = ["Жребий Обола", "Жребия Обола", "Жребию Обола", "Жребием Обола"]
+allowed_surface_forms = ["Жребий Обола", "Жребия Обола", "Жребию Обола", "Жребием Обола", "Жребии Обола"]
 
 [[concepts]]
 concept_id = "concept.moiros_card"
@@ -440,7 +440,7 @@ patterns = ["Moiros card", "Moiros"]
 [concepts.target]
 lang = "ru"
 lemma = "карта Мойрос"
-allowed_surface_forms = ["карта Мойрос", "карты Мойрос", "карту Мойрос", "картой Мойрос"]
+allowed_surface_forms = ["карта Мойрос", "карты Мойрос", "карту Мойрос", "картой Мойрос", "картами Мойрос", "карт Мойрос", "Мойрос"]
 
 [[concepts]]
 concept_id = "concept.mnemos_card"
@@ -456,7 +456,39 @@ patterns = ["Mnemos card", "Mnemos cards", "Fated Mnemos"]
 [concepts.target]
 lang = "ru"
 lemma = "карта Мнемос"
-allowed_surface_forms = ["карта Мнемос", "карты Мнемос", "карту Мнемос", "картой Мнемос", "картами Мнемос", "Мнемос"]
+allowed_surface_forms = ["карта Мнемос", "карты Мнемос", "карту Мнемос", "картой Мнемос", "картами Мнемос", "карт Мнемос", "картам Мнемос", "Мнемос"]
+
+[[concepts]]
+concept_id = "concept.fated_mnemos"
+kind = "mechanic"
+notes = "Special Mnemos cards marked as Fated. Судьбоносный = fateful/destined."
+
+[concepts.source]
+lang = "en"
+lemma = "Fated Mnemos"
+aliases = ["Fated Mnemos card", "Fated Mnemos cards"]
+patterns = ["Fated Mnemos"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Судьбоносная Мнемос"
+allowed_surface_forms = ["Судьбоносная Мнемос", "Судьбоносные Мнемос", "Судьбоносных Мнемос", "Судьбоносную Мнемос", "Судьбоносной Мнемос", "карта Судьбоносных Мнемос", "карты Судьбоносных Мнемос", "карту Судьбоносных Мнемос", "карт Судьбоносных Мнемос", "Карта Судьбоносных Мнемос", "Карты Судьбоносных Мнемос"]
+
+[[concepts]]
+concept_id = "concept.mnemos_storage"
+kind = "mechanic"
+notes = "The storage/repository for Mnemos cards on Argonaut Sheet."
+
+[concepts.source]
+lang = "en"
+lemma = "Mnemos Storage"
+aliases = ["Mnemos storage"]
+patterns = ["Mnemos Storage"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Хранилище Мнемос"
+allowed_surface_forms = ["Хранилище Мнемос", "Хранилища Мнемос", "Хранилищу Мнемос", "Хранилищем Мнемос"]
 
 [[concepts]]
 concept_id = "concept.wounds"
@@ -472,7 +504,7 @@ patterns = ["Wounds", "Wound"]
 [concepts.target]
 lang = "ru"
 lemma = "Раны"
-allowed_surface_forms = ["Раны", "Ран", "Ранам", "Ранами", "Рана", "Рану", "Раной"]
+allowed_surface_forms = ["Раны", "Ран", "Ранам", "Ранами", "Рана", "Рану", "Раной", "Ранены"]
 
 [[concepts]]
 concept_id = "concept.retreat"
