@@ -76,7 +76,9 @@ def validate_translation(
                 if concept is None:
                     continue
                 allowed = concept.target.allowed_surface_forms
-                if allowed and cr.surface_form not in allowed:
+                # Case-insensitive match (LLM may produce ALL-CAPS headings)
+                allowed_lower = {f.lower() for f in allowed}
+                if allowed and cr.surface_form.lower() not in allowed_lower:
                     policy = concept.validation_policy
                     severity = policy.non_preferred_allowed
                     errors.append(

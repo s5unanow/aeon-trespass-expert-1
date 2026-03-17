@@ -18,6 +18,20 @@ from atr_schemas.translation_result_v1 import TranslationResultV1
 log = logging.getLogger(__name__)
 
 
+def _strip_additional_properties(schema: dict[str, object]) -> dict[str, object]:
+    """Recursively remove ``additionalProperties`` — unsupported by Gemini API."""
+    schema.pop("additionalProperties", None)
+    props = schema.get("properties")
+    if isinstance(props, dict):
+        for v in props.values():
+            if isinstance(v, dict):
+                _strip_additional_properties(v)
+    items = schema.get("items")
+    if isinstance(items, dict):
+        _strip_additional_properties(items)
+    return schema
+
+
 class GeminiAdapter:
     """Translate batches via the Google Generative AI API.
 
@@ -61,7 +75,7 @@ class GeminiAdapter:
             batch, concept_registry=self._concept_registry,
         )
         user_message = build_user_message(batch)
-        response_schema = build_response_schema()
+        response_schema = _strip_additional_properties(build_response_schema())
 
         # Build few-shot examples as conversation turns
         examples = build_few_shot_examples()

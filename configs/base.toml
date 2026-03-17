@@ -19,11 +19,11 @@ dpi = 300
 match_threshold = 0.93
 
 [translation]
-provider = "openai"
-model_default = "gpt-4o"
-model_hard = "gpt-4o"
-fallback_provider = "anthropic"
-fallback_model = "claude-sonnet-4-6"
+provider = "gemini"
+model_default = "gemini-2.5-flash"
+model_hard = "gemini-2.5-flash"
+fallback_provider = "openai"
+fallback_model = "gpt-4o"
 temperature = 0.0
 batch_size = 24
 prompt_profile = "translate_rules_ru.v1"

@@ -10,7 +10,7 @@
 #   - Game-specific invented names → transliterate (Мойрос, Мнемос)
 #   - Stat/resource names → meaningful Russian words (Опасность, not Дэнджер)
 
-version = "glossary.2026-03-17.1"
+version = "glossary.2026-03-17.2"
 
 # =============================================================================
 # TRISKELION STATS — the three Triskelion dial stats
@@ -38,7 +38,7 @@ allowed_surface_forms = ["Опасность", "Опасности", "Опасн
 concept_id = "concept.fate"
 kind = "icon_term"
 icon_binding = "sym.fate"
-forbidden_targets = ["Фэйт", "Рок"]
+forbidden_targets = ["Фэйт"]
 notes = "Triskelion stat (Divine axis). Рок reserved for Doom."
 
 [concepts.source]
@@ -69,6 +69,26 @@ patterns = ["Rage", "gain Rage", "your Rage", "Rage becomes"]
 lang = "ru"
 lemma = "Ярость"
 allowed_surface_forms = ["Ярость", "Ярости", "Яростью"]
+
+# =============================================================================
+# ARGONAUT SKILLS — distinct from Triskelion stats
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.fury_skill"
+kind = "mechanic"
+notes = "Argonaut Skill (not Triskelion stat Rage). Неистовство avoids collision with Ярость."
+
+[concepts.source]
+lang = "en"
+lemma = "Fury"
+aliases = ["Fury skill"]
+patterns = ["Fury"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Неистовство"
+allowed_surface_forms = ["Неистовство", "Неистовства", "Неистовству", "Неистовством", "Неистовстве"]
 
 # =============================================================================
 # CAMPAIGN RESOURCES — Progress, Doom
@@ -220,7 +240,7 @@ patterns = ["Argonaut", "Argonauts", "Argonaut's"]
 [concepts.target]
 lang = "ru"
 lemma = "Аргонавт"
-allowed_surface_forms = ["Аргонавт", "Аргонавта", "Аргонавту", "Аргонавтом", "Аргонавте", "Аргонавты", "Аргонавтов", "Аргонавтам"]
+allowed_surface_forms = ["Аргонавт", "Аргонавта", "Аргонавту", "Аргонавтом", "Аргонавте", "Аргонавты", "Аргонавтов", "Аргонавтам", "Аргонавтами"]
 
 [[concepts]]
 concept_id = "concept.titan"
@@ -236,7 +256,7 @@ patterns = ["Titan", "Titans", "Titan's"]
 [concepts.target]
 lang = "ru"
 lemma = "Титан"
-allowed_surface_forms = ["Титан", "Титана", "Титану", "Титаном", "Титане", "Титаны", "Титанов", "Титанам"]
+allowed_surface_forms = ["Титан", "Титана", "Титану", "Титаном", "Титане", "Титаны", "Титанов", "Титанам", "Титанами"]
 
 [[concepts]]
 concept_id = "concept.primordial"
@@ -253,7 +273,7 @@ patterns = ["Primordial", "Primordials"]
 [concepts.target]
 lang = "ru"
 lemma = "Первозданный"
-allowed_surface_forms = ["Первозданный", "Первозданного", "Первозданному", "Первозданным", "Первозданном", "Первозданные", "Первозданных"]
+allowed_surface_forms = ["Первозданный", "Первозданного", "Первозданному", "Первозданным", "Первозданном", "Первозданные", "Первозданных", "Первозданными"]
 
 [[concepts]]
 concept_id = "concept.argo"
@@ -290,7 +310,7 @@ patterns = ["Voyage Phase", "during the Voyage"]
 [concepts.target]
 lang = "ru"
 lemma = "Фаза Странствия"
-allowed_surface_forms = ["Фаза Странствия", "Фазе Странствия", "Фазу Странствия", "Странствие", "Странствия"]
+allowed_surface_forms = ["Фаза Странствия", "Фазе Странствия", "Фазу Странствия", "Фазы Странствия", "Странствие", "Странствия"]
 
 [[concepts]]
 concept_id = "concept.battle_phase"
@@ -306,7 +326,7 @@ patterns = ["Battle Phase", "during the Battle", "in Battle"]
 [concepts.target]
 lang = "ru"
 lemma = "Фаза Битвы"
-allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу Битвы", "Битва", "Битвы", "Битве", "Битву"]
+allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу Битвы", "Битва", "Битвы", "Битве", "Битву", "Битв"]
 
 [[concepts]]
 concept_id = "concept.evasion_roll"
@@ -436,7 +456,7 @@ patterns = ["Mnemos card", "Mnemos cards", "Fated Mnemos"]
 [concepts.target]
 lang = "ru"
 lemma = "карта Мнемос"
-allowed_surface_forms = ["карта Мнемос", "карты Мнемос", "карту Мнемос", "картой Мнемос", "картами Мнемос"]
+allowed_surface_forms = ["карта Мнемос", "карты Мнемос", "карту Мнемос", "картой Мнемос", "картами Мнемос", "Мнемос"]
 
 [[concepts]]
 concept_id = "concept.wounds"
