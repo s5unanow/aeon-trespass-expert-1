@@ -13,11 +13,13 @@ Uses font-based heuristics derived from the full document analysis:
 
 from __future__ import annotations
 
+from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
-from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
+from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
 from atr_schemas.page_ir_v1 import (
     CalloutBlock,
     DividerBlock,
+    FigureBlock,
     HeadingBlock,
     IconInline,
     ListItemBlock,
@@ -40,6 +42,17 @@ FOOTER_Y_THRESHOLD = 790.0
 HEADING_MIN_SIZE = 8.0
 SUBHEADING_BOLD_MIN_SIZE = 10.0
 BODY_SIZE_RANGE = (7.5, 10.0)
+
+# Vertical gap threshold multiplier for paragraph splitting.
+# A gap between consecutive lines larger than font_size * this factor
+# signals a new paragraph.
+PARAGRAPH_GAP_FACTOR = 1.5
+# Absolute fallback threshold (in PDF points) when font size is unavailable.
+PARAGRAPH_GAP_ABS = 12.0
+
+# Minimum image dimensions (in PDF points) to be promoted to a FigureBlock.
+FIGURE_MIN_WIDTH_PT = 100.0
+FIGURE_MIN_HEIGHT_PT = 100.0
 
 
 def _classify_span(span: SpanEvidence) -> str:
@@ -103,12 +116,59 @@ def _spans_to_text_inline(
     return inlines
 
 
+def _significant_image_blocks(
+    native: NativePageV1,
+) -> list[ImageBlockEvidence]:
+    """Return image blocks large enough to warrant a FigureBlock.
+
+    Filters by bounding-box size in PDF points and excludes images that sit
+    entirely within the footer region.
+    """
+    results: list[ImageBlockEvidence] = []
+    for img in native.image_blocks:
+        w = img.bbox.x1 - img.bbox.x0
+        h = img.bbox.y1 - img.bbox.y0
+        if w < FIGURE_MIN_WIDTH_PT or h < FIGURE_MIN_HEIGHT_PT:
+            continue
+        if img.bbox.y0 >= FOOTER_Y_THRESHOLD:
+            continue
+        results.append(img)
+    return results
+
+
+def _image_overlaps_text(
+    img: ImageBlockEvidence,
+    spans: list[SpanEvidence],
+    tolerance: float = 5.0,
+) -> bool:
+    """Check whether an image's bbox substantially overlaps with text spans."""
+    for span in spans:
+        # If the bounding boxes overlap vertically and horizontally
+        if (
+            img.bbox.x0 < span.bbox.x1 + tolerance
+            and img.bbox.x1 > span.bbox.x0 - tolerance
+            and img.bbox.y0 < span.bbox.y1 + tolerance
+            and img.bbox.y1 > span.bbox.y0 - tolerance
+        ):
+            return True
+    return False
+
+
 def build_page_ir_real(
     native: NativePageV1,
     symbols: SymbolMatchSetV1 | None = None,
 ) -> PageIRV1:
     """Build PageIRV1 from real page evidence using font-based heuristics."""
-    if not native.spans:
+    # Collect significant images (even if there are no text spans)
+    figure_images = _significant_image_blocks(native)
+    # Filter out images that overlap heavily with text
+    non_footer_spans = [s for s in native.spans if s.bbox.y0 < FOOTER_Y_THRESHOLD]
+    figure_images = [
+        img for img in figure_images
+        if not _image_overlaps_text(img, non_footer_spans)
+    ]
+
+    if not native.spans and not figure_images:
         return PageIRV1(
             document_id=native.document_id,
             page_id=native.page_id,
@@ -139,7 +199,11 @@ def build_page_ir_real(
         lines.append(current_line)
 
     # Build blocks from lines
-    blocks: list[HeadingBlock | ParagraphBlock | ListItemBlock | CalloutBlock | DividerBlock] = []
+    _Block = (
+        HeadingBlock | ParagraphBlock | ListItemBlock
+        | CalloutBlock | DividerBlock | FigureBlock
+    )
+    blocks: list[_Block] = []
     block_idx = 0
     current_para_spans: list[SpanEvidence] = []
 
@@ -202,10 +266,47 @@ def build_page_ir_real(
                 blocks.append(ListItemBlock(block_id=block_id, children=inlines))  # type: ignore[arg-type]
             continue
 
-        # Regular body/bold/italic spans → accumulate into paragraph
+        # Regular body/bold/italic spans → accumulate into paragraph.
+        # Detect vertical gaps between consecutive lines to split paragraphs.
+        if current_para_spans and spans_in_line:
+            last_span = current_para_spans[-1]
+            first_new = spans_in_line[0]
+            # Measure the gap from the bottom of the last accumulated line
+            # to the top of the new line.
+            y_gap = first_new.bbox.y0 - last_span.bbox.y1
+            font_size = first_new.font_size or last_span.font_size
+            threshold = (
+                font_size * PARAGRAPH_GAP_FACTOR
+                if font_size > 0
+                else PARAGRAPH_GAP_ABS
+            )
+            if y_gap > threshold:
+                flush_paragraph()
+
         current_para_spans.extend(spans_in_line)
 
     flush_paragraph()
+
+    # Append FigureBlocks for significant images that don't overlap text
+    asset_ids: list[str] = []
+    for img in figure_images:
+        block_idx += 1
+        block_id = f"{native.page_id}.b{block_idx:03d}"
+        asset_id = img.image_id
+        blocks.append(
+            FigureBlock(
+                block_id=block_id,
+                asset_id=asset_id,
+                bbox=Rect(
+                    x0=img.bbox.x0,
+                    y0=img.bbox.y0,
+                    x1=img.bbox.x1,
+                    y1=img.bbox.y1,
+                ),
+                translatable=False,
+            )
+        )
+        asset_ids.append(asset_id)
 
     reading_order = [b.block_id for b in blocks]
 
@@ -216,6 +317,7 @@ def build_page_ir_real(
         language=LanguageCode.EN,
         dimensions_pt=native.dimensions_pt,
         blocks=blocks,  # type: ignore[arg-type]
+        assets=asset_ids,
         reading_order=reading_order,
     )
 

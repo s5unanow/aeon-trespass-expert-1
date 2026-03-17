@@ -4,7 +4,9 @@ from pathlib import Path
 
 from atr_pipeline.stages.extract_native.pymupdf_extractor import extract_native_page
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
+from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.enums import LanguageCode
+from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1
 
 PDF_PATH = Path(__file__).resolve().parents[6] / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
@@ -85,3 +87,77 @@ def test_heading_levels_differentiated() -> None:
         # Should have different levels if fonts differ
         levels = {h.level for h in headings}
         assert len(levels) >= 1  # At least one level present
+
+
+def test_large_image_block_creates_figure() -> None:
+    """A large image block should produce a FigureBlock in the IR."""
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=792),
+        words=[],
+        spans=[],
+        image_blocks=[
+            ImageBlockEvidence(
+                image_id="img0000",
+                bbox=Rect(x0=50, y0=50, x1=400, y1=300),
+                width_px=700,
+                height_px=500,
+                xref=1,
+            ),
+        ],
+    )
+    ir = build_page_ir_real(native)
+    figure_blocks = [b for b in ir.blocks if b.type == "figure"]
+    assert len(figure_blocks) == 1
+    assert figure_blocks[0].asset_id == "img0000"
+    assert "img0000" in ir.assets
+
+
+def test_small_image_block_is_ignored() -> None:
+    """An image block below the size threshold should not produce a FigureBlock."""
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=792),
+        words=[],
+        spans=[],
+        image_blocks=[
+            ImageBlockEvidence(
+                image_id="img0000",
+                bbox=Rect(x0=50, y0=50, x1=80, y1=70),  # 30x20 pt — too small
+                width_px=30,
+                height_px=20,
+                xref=1,
+            ),
+        ],
+    )
+    ir = build_page_ir_real(native)
+    figure_blocks = [b for b in ir.blocks if b.type == "figure"]
+    assert len(figure_blocks) == 0
+
+
+def test_footer_image_is_ignored() -> None:
+    """An image block in the footer region should not produce a FigureBlock."""
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=792),
+        words=[],
+        spans=[],
+        image_blocks=[
+            ImageBlockEvidence(
+                image_id="img0000",
+                bbox=Rect(x0=50, y0=795, x1=400, y1=900),  # in footer
+                width_px=700,
+                height_px=200,
+                xref=1,
+            ),
+        ],
+    )
+    ir = build_page_ir_real(native)
+    figure_blocks = [b for b in ir.blocks if b.type == "figure"]
+    assert len(figure_blocks) == 0

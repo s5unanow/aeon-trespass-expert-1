@@ -42,4 +42,19 @@ describe('BlockRenderer', () => {
     const { container } = render(<BlockRenderer block={block} />);
     expect(container.querySelector('hr')).toBeDefined();
   });
+
+  it('renders a list_item block', () => {
+    const block: RenderBlock = {
+      kind: 'list_item',
+      id: 'p0001.b004',
+      children: [{ kind: 'text', text: 'Первый пункт', marks: [] }],
+    };
+
+    const { container } = render(<BlockRenderer block={block} />);
+    const li = container.querySelector('li');
+    expect(li).toBeDefined();
+    expect(li?.id).toBe('p0001.b004');
+    expect(li?.className).toBe('reader-list-item');
+    expect(screen.getByText('Первый пункт')).toBeDefined();
+  });
 });

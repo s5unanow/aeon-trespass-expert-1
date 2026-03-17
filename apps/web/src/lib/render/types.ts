@@ -48,6 +48,12 @@ export interface RenderFigureBlock {
   children: RenderInlineNode[];
 }
 
+export interface RenderListItemBlock {
+  kind: 'list_item';
+  id: string;
+  children: RenderInlineNode[];
+}
+
 export interface RenderDividerBlock {
   kind: 'divider';
   id: string;
@@ -57,6 +63,7 @@ export type RenderBlock =
   | RenderHeadingBlock
   | RenderParagraphBlock
   | RenderFigureBlock
+  | RenderListItemBlock
   | RenderDividerBlock;
 
 // --- Page-level ---

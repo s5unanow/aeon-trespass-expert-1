@@ -52,7 +52,7 @@ export function ReaderPage() {
       </header>
       <section className="reader-content">
         {page.blocks.map((block) => (
-          <BlockRenderer key={block.id} block={block} />
+          <BlockRenderer key={block.id} block={block} figures={page.figures} />
         ))}
       </section>
     </article>

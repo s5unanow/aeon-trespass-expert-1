@@ -49,6 +49,25 @@ h2.reader-heading {
   border-radius: 3px;
 }
 
+.reader-figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.reader-figure-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.reader-figure-caption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #555;
+  font-style: italic;
+}
+
 .figure-ref {
   color: #0066cc;
   text-decoration: underline;

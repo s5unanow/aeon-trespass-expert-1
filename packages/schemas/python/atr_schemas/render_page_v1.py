@@ -77,6 +77,12 @@ class RenderTableBlock(BaseModel):
     children: list[RenderInlineNode] = Field(default_factory=list)
 
 
+class RenderListItemBlock(BaseModel):
+    kind: Literal["list_item"] = "list_item"
+    id: str
+    children: list[RenderInlineNode] = Field(default_factory=list)
+
+
 class RenderDividerBlock(BaseModel):
     kind: Literal["divider"] = "divider"
     id: str
@@ -94,6 +100,7 @@ RenderBlock = Annotated[
     | Annotated[RenderFigureBlock, Tag("figure")]
     | Annotated[RenderCalloutBlock, Tag("callout")]
     | Annotated[RenderTableBlock, Tag("table")]
+    | Annotated[RenderListItemBlock, Tag("list_item")]
     | Annotated[RenderDividerBlock, Tag("divider")],
     Discriminator(_get_render_block_discriminator),
 ]
