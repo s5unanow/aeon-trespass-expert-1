@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import sqlite3
 from datetime import UTC, datetime
+from typing import cast
 
 
 def start_run(
@@ -41,7 +42,7 @@ def finish_run(
 def get_run(conn: sqlite3.Connection, run_id: str) -> sqlite3.Row | None:
     """Fetch a run by id."""
     cursor = conn.execute("SELECT * FROM runs WHERE run_id = ?", (run_id,))
-    return cursor.fetchone()
+    return cast("sqlite3.Row | None", cursor.fetchone())
 
 
 def list_runs(conn: sqlite3.Connection, document_id: str) -> list[sqlite3.Row]:

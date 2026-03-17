@@ -77,7 +77,7 @@ class OpenAIAdapter:
             model, len(batch.segments),
         )
 
-        response = self._client.chat.completions.create(
+        response = self._client.chat.completions.create(  # type: ignore[call-overload]
             model=model,
             temperature=self._temperature,
             messages=messages,

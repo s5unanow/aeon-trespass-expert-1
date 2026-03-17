@@ -5,7 +5,13 @@ from __future__ import annotations
 import re
 
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
-from atr_schemas.page_ir_v1 import HeadingBlock, PageIRV1
+from atr_schemas.page_ir_v1 import (
+    DividerBlock,
+    HeadingBlock,
+    IconInline,
+    PageIRV1,
+    UnknownBlock,
+)
 from atr_schemas.translation_batch_v1 import (
     SegmentContext,
     TranslationBatchV1,
@@ -42,6 +48,8 @@ def build_translation_batch(
     prev_heading = ""
 
     for block in page_ir.blocks:
+        if isinstance(block, (DividerBlock, UnknownBlock)):
+            continue
         if not getattr(block, "translatable", False):
             continue
 
@@ -57,8 +65,8 @@ def build_translation_batch(
 
         # Track locked icon nodes
         for child in block.children:
-            if child.type == "icon":
-                sid = child.symbol_id  # type: ignore[union-attr]
+            if isinstance(child, IconInline):
+                sid = child.symbol_id
                 segment.locked_nodes.append(sid)
                 segment.required_concepts.append(
                     f"concept.{sid.removeprefix('sym.')}"
@@ -72,9 +80,9 @@ def build_translation_batch(
         # Scan text for concept pattern matches
         if _concept_patterns:
             full_text = " ".join(
-                child.text  # type: ignore[union-attr]
+                child.text
                 for child in block.children
-                if child.type == "text"
+                if child.type == "text" and hasattr(child, "text")
             )
             for rx, concept_id, forbidden in _concept_patterns:
                 if rx.search(full_text):
@@ -87,7 +95,10 @@ def build_translation_batch(
         segments.append(segment)
 
         if isinstance(block, HeadingBlock):
-            heading_texts = [c.text for c in block.children if c.type == "text"]  # type: ignore[union-attr]
+            heading_texts = [
+                c.text for c in block.children
+                if c.type == "text" and hasattr(c, "text")
+            ]
             prev_heading = " ".join(heading_texts)
 
     return TranslationBatchV1(

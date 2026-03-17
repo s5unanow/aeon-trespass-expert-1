@@ -83,7 +83,7 @@ class AnthropicAdapter:
             messages.append({"role": "assistant", "content": ex["assistant"]})
         messages.append({"role": "user", "content": user_message})
 
-        response = self._client.messages.create(
+        response = self._client.messages.create(  # type: ignore[call-overload]
             model=model,
             max_tokens=8192,
             temperature=self._temperature,
@@ -97,7 +97,7 @@ class AnthropicAdapter:
         tool_input: dict[str, object] | None = None
         for block in response.content:
             if block.type == "tool_use" and block.name == "submit_translation":
-                tool_input = block.input  # type: ignore[assignment]
+                tool_input = block.input
                 break
 
         if tool_input is None:

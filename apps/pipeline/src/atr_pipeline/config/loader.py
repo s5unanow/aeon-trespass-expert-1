@@ -55,14 +55,14 @@ def load_document_config(
     if not base_path.exists():
         msg = f"Base config not found: {base_path}"
         raise FileNotFoundError(msg)
-    merged: dict[str, object] = _load_toml(base_path)  # type: ignore[assignment]
+    merged: dict[str, object] = _load_toml(base_path)
 
     # 2. Environment overlay
     if env:
         env_path = configs_dir / f"{env}.toml"
         if env_path.exists():
             env_data = _load_toml(env_path)
-            merged = _deep_merge(merged, env_data)  # type: ignore[arg-type]
+            merged = _deep_merge(merged, env_data)
 
     # 3. Document config
     doc_path = configs_dir / "documents" / f"{document_id}.toml"
@@ -70,12 +70,12 @@ def load_document_config(
         msg = f"Document config not found: {doc_path}"
         raise FileNotFoundError(msg)
     doc_data = _load_toml(doc_path)
-    merged = _deep_merge(merged, doc_data)  # type: ignore[arg-type]
+    merged = _deep_merge(merged, doc_data)
 
     # Resolve paths
-    merged["repo_root"] = str(root)  # type: ignore[index]
-    artifact_root = merged.get("artifact_root", "artifacts")  # type: ignore[union-attr]
+    merged["repo_root"] = str(root)
+    artifact_root = merged.get("artifact_root", "artifacts")
     if not Path(str(artifact_root)).is_absolute():
-        merged["artifact_root"] = str(root / str(artifact_root))  # type: ignore[index]
+        merged["artifact_root"] = str(root / str(artifact_root))
 
     return DocumentBuildConfig.model_validate(merged)

@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 from atr_schemas.enums import QALayer, Severity
-from atr_schemas.page_ir_v1 import PageIRV1
+from atr_schemas.page_ir_v1 import DividerBlock, PageIRV1, UnknownBlock
 from atr_schemas.qa_record_v1 import QARecordV1
-from atr_schemas.render_page_v1 import RenderPageV1
+from atr_schemas.render_page_v1 import RenderDividerBlock, RenderPageV1
 
 
 def _count_icons_ir(page_ir: PageIRV1) -> int:
     """Count inline icon nodes in a PageIRV1."""
     count = 0
     for block in page_ir.blocks:
+        if isinstance(block, (DividerBlock, UnknownBlock)):
+            continue
         for child in block.children:
             if child.type == "icon":
                 count += 1
@@ -22,8 +24,10 @@ def _count_icons_render(render: RenderPageV1) -> int:
     """Count inline icon nodes in a RenderPageV1."""
     count = 0
     for block in render.blocks:
-        for child in block.children:  # type: ignore[union-attr]
-            if child.kind == "icon":  # type: ignore[union-attr]
+        if isinstance(block, RenderDividerBlock):
+            continue
+        for child in block.children:
+            if child.kind == "icon":
                 count += 1
     return count
 

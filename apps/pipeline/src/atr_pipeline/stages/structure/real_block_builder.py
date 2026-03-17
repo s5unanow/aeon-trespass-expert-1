@@ -150,14 +150,15 @@ def build_page_ir_real(
         block_idx += 1
         block_id = f"{native.page_id}.b{block_idx:03d}"
 
-        inlines = _spans_to_text_inline(current_para_spans)
-        if not inlines:
+        text_inlines = _spans_to_text_inline(current_para_spans)
+        if not text_inlines:
             current_para_spans.clear()
             return
 
         # Insert icon nodes at matching positions
+        inlines: list[TextInline | IconInline] = list(text_inlines)
         if symbols:
-            inlines = _insert_icons(inlines, current_para_spans, symbols, native.page_id)
+            inlines = _insert_icons(text_inlines, current_para_spans, symbols, native.page_id)
 
         blocks.append(ParagraphBlock(block_id=block_id, children=inlines))  # type: ignore[arg-type]
         current_para_spans.clear()

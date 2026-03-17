@@ -8,6 +8,7 @@ scale search exits early when a near-perfect match is found.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -223,7 +224,7 @@ def _match_one_symbol(
     while len(hits) < _MAX_INSTANCES:
         best_score = -1.0
         best_idx = -1
-        best_loc: tuple[int, int] = (0, 0)
+        best_loc: Sequence[int] = (0, 0)
 
         for i, (_variant, rmap) in enumerate(result_maps):
             _, max_val, _, max_loc = cv2.minMaxLoc(rmap)

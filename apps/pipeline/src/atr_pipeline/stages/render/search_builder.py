@@ -18,9 +18,9 @@ def build_search_docs(
         texts: list[str] = []
         for block in page.blocks:
             if hasattr(block, "children"):
-                for child in block.children:  # type: ignore[union-attr]
-                    if child.kind == "text":  # type: ignore[union-attr]
-                        texts.append(child.text)  # type: ignore[union-attr]
+                for child in block.children:
+                    if child.kind == "text" and hasattr(child, "text"):
+                        texts.append(child.text)
 
         raw_text = " ".join(texts)
         # Simple normalization: lowercase, split on whitespace

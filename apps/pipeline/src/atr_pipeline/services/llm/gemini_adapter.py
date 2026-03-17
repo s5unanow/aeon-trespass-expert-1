@@ -34,7 +34,7 @@ class GeminiAdapter:
         concept_registry: ConceptRegistryV1 | None = None,
     ) -> None:
         try:
-            from google import genai
+            from google import genai  # type: ignore[import-not-found]
         except ImportError as exc:
             msg = (
                 "google-genai package is required for the Gemini adapter. "
@@ -53,7 +53,7 @@ class GeminiAdapter:
         model_profile: str = "",
     ) -> TranslationResultV1:
         """Translate a batch of segments via Gemini structured outputs."""
-        from google.genai import types
+        from google.genai import types  # type: ignore[import-not-found]
 
         model = model_profile or self._model
 

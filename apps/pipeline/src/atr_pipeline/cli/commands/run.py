@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import uuid
+from typing import Any
 
 import typer
 
@@ -68,11 +69,11 @@ def run(
 
     # Accumulated state
     manifest: SourceManifestV1 | None = None
-    native_pages: dict[str, object] = {}
-    symbol_matches_map: dict[str, object] = {}
-    en_ir_map: dict[str, object] = {}
-    ru_ir_map: dict[str, object] = {}
-    render_pages: dict[str, object] = {}
+    native_pages: dict[str, Any] = {}
+    symbol_matches_map: dict[str, Any] = {}
+    en_ir_map: dict[str, Any] = {}
+    ru_ir_map: dict[str, Any] = {}
+    render_pages: dict[str, Any] = {}
     has_errors = False
 
     # Get page count from PDF for all stage entry points
@@ -144,7 +145,7 @@ def run(
                         rasters = list(raster_dir.glob("*.png"))
                         if rasters:
                             matches = match_symbols(
-                                native, rasters[0], catalog,  # type: ignore[arg-type]
+                                native, rasters[0], catalog,
                                 repo_root=config.repo_root,
                                 template_cache=tcache,
                             )
@@ -155,7 +156,7 @@ def run(
                                 scope="page", entity_id=pid, data=matches,
                             )
                     matched = sum(
-                        len(m.matches)  # type: ignore[union-attr]
+                        len(m.matches)
                         for m in symbol_matches_map.values()
                     )
                     typer.echo(
@@ -171,14 +172,14 @@ def run(
                     if is_walking_skeleton:
                         ir = build_page_ir_simple(native, sym)  # type: ignore[arg-type]
                     else:
-                        ir = build_page_ir_real(native, sym)  # type: ignore[arg-type]
+                        ir = build_page_ir_real(native, sym)
                     en_ir_map[pid] = ir
                     store.put_json(
                         document_id=doc, schema_family="page_ir.v1.en",
                         scope="page", entity_id=pid, data=ir,
                     )
                 total_blocks = sum(
-                    len(ir.blocks) for ir in en_ir_map.values()  # type: ignore[union-attr]
+                    len(ir.blocks) for ir in en_ir_map.values()
                 )
                 typer.echo(
                     f"    {total_blocks} blocks across {len(en_ir_map)} pages"
@@ -216,9 +217,9 @@ def run(
 
             elif stage_name == "render":
                 for pid in (ru_ir_map if ru_ir_map else en_ir_map):
-                    ir = ru_ir_map.get(pid) or en_ir_map.get(pid)
-                    if ir:
-                        render = build_render_page(ir)  # type: ignore[arg-type]
+                    render_ir = ru_ir_map.get(pid) or en_ir_map.get(pid)
+                    if render_ir:
+                        render = build_render_page(render_ir)
                         render_pages[pid] = render
                         store.put_json(
                             document_id=doc,
@@ -239,7 +240,7 @@ def run(
                     ru = ru_ir_map.get(pid)
                     rp = render_pages.get(pid)
                     if en and ru and rp:
-                        records = evaluate_icon_count(en, ru, rp)  # type: ignore[arg-type]
+                        records = evaluate_icon_count(en, ru, rp)
                         qa_issues += len(records)
                         for r in records:
                             typer.echo(
@@ -269,15 +270,15 @@ def run(
 
 
 def _translate_pages(
-    en_ir_map: dict[str, object],
-    ru_ir_map: dict[str, object],
+    en_ir_map: dict[str, Any],
+    ru_ir_map: dict[str, Any],
     store: ArtifactStore,
     doc: str,
-    translator: object,
-    build_translation_batch: object,
-    validate_translation: object,
-    typer: object,
-    concept_registry: object = None,
+    translator: Any,
+    build_translation_batch: Any,
+    validate_translation: Any,
+    typer: Any,
+    concept_registry: Any = None,
 ) -> None:
     """Translate all pages using the provided adapter."""
     from atr_schemas.enums import LanguageCode
@@ -304,21 +305,21 @@ def _translate_pages(
     }
 
     for pid, en_ir in en_ir_map.items():
-        batch: TranslationBatchV1 = build_translation_batch(  # type: ignore[operator]
+        batch: TranslationBatchV1 = build_translation_batch(
             en_ir, concept_registry=concept_registry,
         )
-        result = translator.translate_batch(batch)  # type: ignore[union-attr]
-        errors = validate_translation(  # type: ignore[operator]
+        result = translator.translate_batch(batch)
+        errors = validate_translation(
             batch, result, concept_registry=concept_registry,
         )
         if errors:
             for e in errors:
-                typer.echo(f"    WARN: {e}", err=True)  # type: ignore[union-attr]
+                typer.echo(f"    WARN: {e}", err=True)
 
         ru_blocks = []
         for seg in result.segments:
             src_block = next(
-                (b for b in en_ir.blocks if b.block_id == seg.segment_id),  # type: ignore[union-attr]
+                (b for b in en_ir.blocks if b.block_id == seg.segment_id),
                 None,
             )
             if src_block is None:
@@ -331,22 +332,22 @@ def _translate_pages(
             }
             if block_cls is HeadingBlock:
                 kwargs["level"] = getattr(src_block, "level", 2)
-            ru_blocks.append(block_cls(**kwargs))  # type: ignore[arg-type]
+            ru_blocks.append(block_cls(**kwargs))
 
         ru_ir = PageIRV1(
             document_id=doc, page_id=pid,
-            page_number=en_ir.page_number,  # type: ignore[union-attr]
+            page_number=en_ir.page_number,
             language=LanguageCode.RU,
-            dimensions_pt=en_ir.dimensions_pt,  # type: ignore[union-attr]
-            blocks=ru_blocks,  # type: ignore[arg-type]
-            reading_order=en_ir.reading_order,  # type: ignore[union-attr]
+            dimensions_pt=en_ir.dimensions_pt,
+            blocks=ru_blocks,
+            reading_order=en_ir.reading_order,
         )
         ru_ir_map[pid] = ru_ir
         store.put_json(
             document_id=doc, schema_family="page_ir.v1.ru",
             scope="page", entity_id=pid, data=ru_ir,
         )
-    typer.echo(f"    Translated {len(ru_ir_map)} pages")  # type: ignore[union-attr]
+    typer.echo(f"    Translated {len(ru_ir_map)} pages")
 
 
 def _load_existing_artifacts(
@@ -354,11 +355,11 @@ def _load_existing_artifacts(
     doc: str,
     total_page_count: int,
     stages: list[str],
-    native_pages: dict[str, object],
-    en_ir_map: dict[str, object],
-    extract_native_page: object,
-    config: object,
-    build_page_ir_real: object,
+    native_pages: dict[str, Any],
+    en_ir_map: dict[str, Any],
+    extract_native_page: Any,
+    config: Any,
+    build_page_ir_real: Any,
 ) -> None:
     """Load existing artifacts from prior runs when starting mid-pipeline."""
     import json
@@ -383,8 +384,8 @@ def _load_existing_artifacts(
         if not native_pages:
             for pnum in range(1, total_page_count + 1):
                 pid = f"p{pnum:04d}"
-                native = extract_native_page(  # type: ignore[operator]
-                    config.source_pdf_path,  # type: ignore[union-attr]
+                native = extract_native_page(
+                    config.source_pdf_path,
                     page_number=pnum, document_id=doc,
                 )
                 native_pages[pid] = native

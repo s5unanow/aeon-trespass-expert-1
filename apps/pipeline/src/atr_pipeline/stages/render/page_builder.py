@@ -2,8 +2,16 @@
 
 from __future__ import annotations
 
-from atr_schemas.page_ir_v1 import HeadingBlock, PageIRV1
+from atr_schemas.page_ir_v1 import (
+    DividerBlock,
+    HeadingBlock,
+    IconInline,
+    InlineNode,
+    PageIRV1,
+    UnknownBlock,
+)
 from atr_schemas.render_page_v1 import (
+    RenderBlock,
     RenderHeadingBlock,
     RenderIconInline,
     RenderInlineNode,
@@ -17,13 +25,15 @@ from atr_schemas.render_page_v1 import (
 
 def build_render_page(page_ir: PageIRV1) -> RenderPageV1:
     """Map a translated PageIRV1 to a RenderPageV1 payload."""
-    render_blocks = []
-    block_refs = []
+    render_blocks: list[RenderBlock] = []
+    block_refs: list[str] = []
     title = ""
 
     for block in page_ir.blocks:
         block_refs.append(block.block_id)
-        children = _convert_inline_nodes(block.children)
+        if isinstance(block, (DividerBlock, UnknownBlock)):
+            continue
+        children = _convert_inline_nodes(list(block.children))
 
         if block.type == "heading":
             if not title:
@@ -48,7 +58,7 @@ def build_render_page(page_ir: PageIRV1) -> RenderPageV1:
             title=title,
             source_page_number=page_ir.page_number,
         ),
-        blocks=render_blocks,  # type: ignore[arg-type]
+        blocks=render_blocks,
         glossary_mentions=_extract_concept_mentions(page_ir),
         source_map=RenderSourceMap(
             page_id=page_ir.page_id,
@@ -57,14 +67,15 @@ def build_render_page(page_ir: PageIRV1) -> RenderPageV1:
     )
 
 
-def _convert_inline_nodes(nodes: list[object]) -> list[RenderInlineNode]:  # type: ignore[type-arg]
+def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
     """Convert IR inline nodes to render inline nodes."""
-    result: list[RenderInlineNode] = []  # type: ignore[type-arg]
+    result: list[RenderInlineNode] = []
     for node in nodes:
-        if node.type == "text":  # type: ignore[union-attr]
-            result.append(RenderTextInline(text=node.text))  # type: ignore[union-attr]
-        elif node.type == "icon":  # type: ignore[union-attr]
-            sym_id = node.symbol_id  # type: ignore[union-attr]
+        if node.type == "text":
+            result.append(RenderTextInline(text=node.text))
+        elif node.type == "icon":
+            assert isinstance(node, IconInline)
+            sym_id = node.symbol_id
             alt = sym_id.removeprefix("sym.").capitalize()
             result.append(RenderIconInline(symbol_id=sym_id, alt=alt))
     return result
@@ -74,9 +85,11 @@ def _extract_concept_mentions(page_ir: PageIRV1) -> list[str]:
     """Extract concept mentions from block annotations."""
     mentions: list[str] = []
     for block in page_ir.blocks:
+        if isinstance(block, (DividerBlock, UnknownBlock)):
+            continue
         for child in block.children:
-            if child.type == "icon":  # type: ignore[union-attr]
-                concept = f"concept.{child.symbol_id.removeprefix('sym.')}"  # type: ignore[union-attr]
+            if isinstance(child, IconInline):
+                concept = f"concept.{child.symbol_id.removeprefix('sym.')}"
                 if concept not in mentions:
                     mentions.append(concept)
     return mentions

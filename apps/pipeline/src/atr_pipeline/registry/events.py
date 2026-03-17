@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import sqlite3
 from datetime import UTC, datetime
+from typing import cast
 
 
 def record_stage_start(
@@ -55,7 +56,7 @@ def find_cached_event(
         " ORDER BY finished_at DESC LIMIT 1",
         (cache_key,),
     )
-    return cursor.fetchone()
+    return cast("sqlite3.Row | None", cursor.fetchone())
 
 
 def _now_iso() -> str:

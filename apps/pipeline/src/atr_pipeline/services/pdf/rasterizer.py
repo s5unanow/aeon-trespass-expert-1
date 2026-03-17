@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import cast
 
 import fitz
 
@@ -25,4 +26,4 @@ def render_page_png(pdf_path: Path, page_number: int, *, dpi: int = 300) -> byte
     pix = page.get_pixmap(matrix=mat)
     png_bytes = pix.tobytes("png")
     doc.close()
-    return png_bytes
+    return cast(bytes, png_bytes)
