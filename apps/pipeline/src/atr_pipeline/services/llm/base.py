@@ -12,7 +12,7 @@ from atr_schemas.translation_result_v1 import TranslationResultV1
 class TranslatorAdapter(Protocol):
     """Protocol for translation provider adapters.
 
-    Implementations: MockTranslator, OpenAIAdapter, AnthropicAdapter.
+    Implementations: MockTranslator, OpenAIAdapter, AnthropicAdapter, GeminiAdapter.
     """
 
     def translate_batch(

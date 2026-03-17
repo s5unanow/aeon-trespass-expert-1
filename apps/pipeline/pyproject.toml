@@ -15,6 +15,7 @@ dependencies = [
 llm = [
   "openai>=1.60",
   "anthropic>=0.42",
+  "google-genai>=1.0",
 ]
 
 [tool.uv.sources]

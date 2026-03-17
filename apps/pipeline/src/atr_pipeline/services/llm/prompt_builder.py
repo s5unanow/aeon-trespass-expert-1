@@ -1,3 +1,4 @@
+# ruff: noqa: RUF001  — Cyrillic text in translation examples is intentional.
 """Build LLM prompts from TranslationBatchV1 and concept constraints."""
 
 from __future__ import annotations
@@ -82,6 +83,143 @@ def build_user_message(batch: TranslationBatchV1) -> str:
         ensure_ascii=False,
         indent=2,
     )
+
+
+def build_few_shot_examples() -> list[dict[str, str]]:
+    """Return few-shot example pairs for translation consistency.
+
+    Each example is a dict with "user" (source JSON) and "assistant"
+    (target JSON) keys, demonstrating correct translation style, icon
+    preservation, and terminology usage.
+    """
+    return [
+        {
+            "user": json.dumps(
+                {
+                    "batch_id": "example_1",
+                    "source_lang": "en",
+                    "target_lang": "ru",
+                    "segments": [
+                        {
+                            "segment_id": "ex_heading",
+                            "block_type": "heading",
+                            "source_inline": [
+                                {"type": "text", "text": "Battle Phase"},
+                            ],
+                        },
+                        {
+                            "segment_id": "ex_para",
+                            "block_type": "paragraph",
+                            "source_inline": [
+                                {"type": "text", "text": "Each Argonaut has a "},
+                                {"type": "text", "text": "Danger", "marks": ["bold"]},
+                                {"type": "text", "text": " "},
+                                {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i1"},
+                                {"type": "text", "text": " stat on their Triskelion. "
+                                 "When you gain "},
+                                {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i2"},
+                                {"type": "text", "text": ", rotate the dial clockwise."},
+                            ],
+                            "locked_nodes": ["i1", "i2"],
+                            "required_concepts": ["concept.danger"],
+                        },
+                    ],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            "assistant": json.dumps(
+                {
+                    "batch_id": "example_1",
+                    "segments": [
+                        {
+                            "segment_id": "ex_heading",
+                            "target_inline": [
+                                {"type": "text", "text": "Фаза Битвы"},
+                            ],
+                            "concept_realizations": [],
+                        },
+                        {
+                            "segment_id": "ex_para",
+                            "target_inline": [
+                                {"type": "text", "text": "У каждого Аргонавта есть показатель "},
+                                {"type": "text", "text": "Опасность", "marks": ["bold"]},
+                                {"type": "text", "text": " "},
+                                {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i1"},
+                                {"type": "text", "text": " на Трискелионе. "
+                                 "Когда вы получаете "},
+                                {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i2"},
+                                {"type": "text", "text": ", поверните диск по часовой стрелке."},
+                            ],
+                            "concept_realizations": [
+                                {"concept_id": "concept.danger", "surface_form": "Опасность"},
+                            ],
+                        },
+                    ],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+        },
+        {
+            "user": json.dumps(
+                {
+                    "batch_id": "example_2",
+                    "source_lang": "en",
+                    "target_lang": "ru",
+                    "segments": [
+                        {
+                            "segment_id": "ex_list",
+                            "block_type": "paragraph",
+                            "source_inline": [
+                                {"type": "text", "text": "You must gain 1 "},
+                                {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i1"},
+                                {"type": "text", "text": " for each die you decide to re-roll. "
+                                 "Using "},
+                                {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i2"},
+                                {"type": "text", "text": ", you can re-roll "},
+                                {"type": "text", "text": "Attack Rolls", "marks": ["bold"]},
+                                {"type": "text", "text": " and "},
+                                {"type": "text", "text": "Evasion Rolls", "marks": ["bold"]},
+                                {"type": "text", "text": "."},
+                            ],
+                            "locked_nodes": ["i1", "i2"],
+                            "required_concepts": ["concept.fate"],
+                        },
+                    ],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            "assistant": json.dumps(
+                {
+                    "batch_id": "example_2",
+                    "segments": [
+                        {
+                            "segment_id": "ex_list",
+                            "target_inline": [
+                                {"type": "text", "text": "Вы должны получить 1 "},
+                                {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i1"},
+                                {"type": "text", "text": " за каждый кубик, который вы решите "
+                                 "перебросить. Используя "},
+                                {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i2"},
+                                {"type": "text", "text": ", вы можете перебросить "},
+                                {"type": "text", "text": "Броски Атаки", "marks": ["bold"]},
+                                {"type": "text", "text": " и "},
+                                {"type": "text", "text": "Броски Уклонения", "marks": ["bold"]},
+                                {"type": "text", "text": "."},
+                            ],
+                            "concept_realizations": [
+                                {"concept_id": "concept.fate", "surface_form": "Судьба"},
+                            ],
+                        },
+                    ],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+        },
+    ]
 
 
 def build_response_schema() -> dict[str, object]:

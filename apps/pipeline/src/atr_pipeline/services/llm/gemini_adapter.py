@@ -1,4 +1,4 @@
-"""OpenAI provider adapter — structured-output translation via Chat Completions."""
+"""Google Gemini provider adapter — structured-output translation via Generative AI API."""
 
 from __future__ import annotations
 
@@ -18,32 +18,31 @@ from atr_schemas.translation_result_v1 import TranslationResultV1
 log = logging.getLogger(__name__)
 
 
-class OpenAIAdapter:
-    """Translate batches via the OpenAI Chat Completions API.
+class GeminiAdapter:
+    """Translate batches via the Google Generative AI API.
 
-    Uses ``response_format={"type": "json_schema", ...}`` (structured
-    outputs) so the response is guaranteed to conform to the translation
-    result schema.
+    Uses ``response_mime_type="application/json"`` with a ``response_schema``
+    to guarantee structured output conforming to the translation result schema.
     """
 
     def __init__(
         self,
         *,
         api_key: str = "",
-        model: str = "gpt-4o",
+        model: str = "gemini-2.5-flash",
         temperature: float = 0.0,
         concept_registry: ConceptRegistryV1 | None = None,
     ) -> None:
         try:
-            from openai import OpenAI
+            from google import genai
         except ImportError as exc:
             msg = (
-                "openai package is required for the OpenAI adapter. "
+                "google-genai package is required for the Gemini adapter. "
                 "Install with: uv pip install 'atr-pipeline[llm]'"
             )
             raise ImportError(msg) from exc
 
-        self._client = OpenAI(api_key=api_key or None)
+        self._client = genai.Client(api_key=api_key or None)
         self._model = model
         self._temperature = temperature
         self._concept_registry = concept_registry
@@ -53,7 +52,9 @@ class OpenAIAdapter:
         batch: TranslationBatchV1,
         model_profile: str = "",
     ) -> TranslationResultV1:
-        """Translate a batch of segments via OpenAI structured outputs."""
+        """Translate a batch of segments via Gemini structured outputs."""
+        from google.genai import types
+
         model = model_profile or self._model
 
         system_prompt = build_system_prompt(
@@ -64,43 +65,55 @@ class OpenAIAdapter:
 
         # Build few-shot examples as conversation turns
         examples = build_few_shot_examples()
-        messages: list[dict[str, str]] = [
-            {"role": "system", "content": system_prompt},
-        ]
+        messages: list[types.Content] = []
         for ex in examples:
-            messages.append({"role": "user", "content": ex["user"]})
-            messages.append({"role": "assistant", "content": ex["assistant"]})
-        messages.append({"role": "user", "content": user_message})
+            messages.append(
+                types.Content(
+                    role="user",
+                    parts=[types.Part(text=ex["user"])],
+                ),
+            )
+            messages.append(
+                types.Content(
+                    role="model",
+                    parts=[types.Part(text=ex["assistant"])],
+                ),
+            )
+
+        # Add the actual request
+        messages.append(
+            types.Content(
+                role="user",
+                parts=[types.Part(text=user_message)],
+            ),
+        )
 
         log.info(
-            "OpenAI translate_batch: model=%s segments=%d",
+            "Gemini translate_batch: model=%s segments=%d",
             model, len(batch.segments),
         )
 
-        response = self._client.chat.completions.create(
+        response = self._client.models.generate_content(
             model=model,
-            temperature=self._temperature,
-            messages=messages,
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "translation_result",
-                    "strict": True,
-                    "schema": response_schema,
-                },
-            },
+            contents=messages,
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=self._temperature,
+                response_mime_type="application/json",
+                response_schema=response_schema,
+            ),
         )
 
-        raw = response.choices[0].message.content
+        raw = response.text
         if raw is None:
-            msg = "OpenAI returned empty response"
+            msg = "Gemini returned empty response"
             raise RuntimeError(msg)
 
         data = json.loads(raw)
         result = TranslationResultV1.model_validate(data)
 
         log.info(
-            "OpenAI translate_batch complete: segments=%d",
+            "Gemini translate_batch complete: segments=%d",
             len(result.segments),
         )
         return result

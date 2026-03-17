@@ -38,5 +38,14 @@ def create_translator(
             concept_registry=concept_registry,
         )
 
+    if provider == "gemini":
+        from atr_pipeline.services.llm.gemini_adapter import GeminiAdapter
+
+        return GeminiAdapter(
+            model=config.model_default or "gemini-2.5-flash",
+            temperature=config.temperature,
+            concept_registry=concept_registry,
+        )
+
     msg = f"Unknown translation provider: {provider!r}"
     raise ValueError(msg)

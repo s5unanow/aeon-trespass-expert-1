@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 
 from atr_pipeline.services.llm.prompt_builder import (
+    build_few_shot_examples,
     build_response_schema,
     build_system_prompt,
     build_user_message,
@@ -74,12 +75,20 @@ class AnthropicAdapter:
             "input_schema": response_schema,
         }
 
+        # Build few-shot examples as conversation turns
+        examples = build_few_shot_examples()
+        messages: list[dict[str, str]] = []
+        for ex in examples:
+            messages.append({"role": "user", "content": ex["user"]})
+            messages.append({"role": "assistant", "content": ex["assistant"]})
+        messages.append({"role": "user", "content": user_message})
+
         response = self._client.messages.create(
             model=model,
             max_tokens=8192,
             temperature=self._temperature,
             system=system_prompt,
-            messages=[{"role": "user", "content": user_message}],
+            messages=messages,
             tools=[tool],
             tool_choice={"type": "tool", "name": "submit_translation"},
         )

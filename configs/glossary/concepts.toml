@@ -3,8 +3,14 @@
 # - forbidden_targets: translations that must NEVER be used
 # - allowed_surface_forms: all acceptable Russian inflections
 # - icon_binding: links a concept to its inline icon symbol_id
+#
+# Translation philosophy:
+#   - Standard board-game terms → established Russian equivalents
+#   - Mythological proper nouns → established Russian forms (Аргонавт, Титан)
+#   - Game-specific invented names → transliterate (Мойрос, Мнемос)
+#   - Stat/resource names → meaningful Russian words (Опасность, not Дэнджер)
 
-version = "glossary.2026-03-16.1"
+version = "glossary.2026-03-17.1"
 
 # =============================================================================
 # TRISKELION STATS — the three Triskelion dial stats
@@ -14,8 +20,8 @@ version = "glossary.2026-03-16.1"
 concept_id = "concept.danger"
 kind = "icon_term"
 icon_binding = "sym.danger"
-forbidden_targets = ["Опасность"]
-notes = "Triskelion stat (Mortal axis). Always transliterated, never translated."
+forbidden_targets = ["Дэнджер", "Угроза"]
+notes = "Triskelion stat (Mortal axis). Translated as meaningful Russian word."
 
 [concepts.source]
 lang = "en"
@@ -25,15 +31,15 @@ patterns = ["Danger", "gain Danger", "lose Danger", "your Danger", "raise Danger
 
 [concepts.target]
 lang = "ru"
-lemma = "Дэнджер"
-allowed_surface_forms = ["Дэнджер", "Дэнджера", "Дэнджеру", "Дэнджером", "Дэнджере"]
+lemma = "Опасность"
+allowed_surface_forms = ["Опасность", "Опасности", "Опасностью"]
 
 [[concepts]]
 concept_id = "concept.fate"
 kind = "icon_term"
 icon_binding = "sym.fate"
-forbidden_targets = ["Судьба", "Рок"]
-notes = "Triskelion stat (Divine axis). Always transliterated, never translated."
+forbidden_targets = ["Фэйт", "Рок"]
+notes = "Triskelion stat (Divine axis). Рок reserved for Doom."
 
 [concepts.source]
 lang = "en"
@@ -43,15 +49,15 @@ patterns = ["Fate", "gain Fate", "spend Fate", "your Fate", "gaining Fate"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Фэйт"
-allowed_surface_forms = ["Фэйт", "Фэйта", "Фэйту", "Фэйтом", "Фэйте"]
+lemma = "Судьба"
+allowed_surface_forms = ["Судьба", "Судьбы", "Судьбе", "Судьбу", "Судьбой"]
 
 [[concepts]]
 concept_id = "concept.rage"
 kind = "icon_term"
 icon_binding = "sym.rage"
-forbidden_targets = ["Гнев", "Бешенство"]
-notes = "Triskelion stat (Titan axis). Always transliterated, never translated."
+forbidden_targets = ["Рэйдж", "Гнев", "Бешенство"]
+notes = "Triskelion stat (Titan axis)."
 
 [concepts.source]
 lang = "en"
@@ -61,8 +67,8 @@ patterns = ["Rage", "gain Rage", "your Rage", "Rage becomes"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Рэйдж"
-allowed_surface_forms = ["Рэйдж", "Рэйджа", "Рэйджу", "Рэйджем", "Рэйдже"]
+lemma = "Ярость"
+allowed_surface_forms = ["Ярость", "Ярости", "Яростью"]
 
 # =============================================================================
 # CAMPAIGN RESOURCES — Progress, Doom
@@ -73,7 +79,7 @@ concept_id = "concept.progress"
 kind = "icon_term"
 icon_binding = "sym.progress"
 forbidden_targets = ["Продвижение", "Развитие"]
-notes = "Campaign progress resource. Transliterated game mechanic term."
+notes = "Campaign progress resource. Прогресс is an established Russian word."
 
 [concepts.source]
 lang = "en"
@@ -90,8 +96,8 @@ allowed_surface_forms = ["Прогресс", "Прогресса", "Прогре
 concept_id = "concept.doom"
 kind = "icon_term"
 icon_binding = "sym.doom"
-forbidden_targets = ["Гибель", "Судьба"]
-notes = "Doom resource — opposite of Progress. Keep as game term."
+forbidden_targets = ["Дум", "Гибель", "Судьба"]
+notes = "Doom resource — campaign penalty, opposite of Progress. Рок = dark fate/doom."
 
 [concepts.source]
 lang = "en"
@@ -101,8 +107,8 @@ patterns = ["Doom", "gain Doom", "Doom card", "Unavoidable Doom"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Дум"
-allowed_surface_forms = ["Дум", "Дума", "Думу", "Думом", "Думе"]
+lemma = "Рок"
+allowed_surface_forms = ["Рок", "Рока", "Року", "Роком", "Роке"]
 
 # =============================================================================
 # ARGO STATS — ship stats
@@ -112,8 +118,8 @@ allowed_surface_forms = ["Дум", "Дума", "Думу", "Думом", "Дум
 concept_id = "concept.crew"
 kind = "icon_term"
 icon_binding = "sym.crew"
-forbidden_targets = ["Команда", "Экипаж"]
-notes = "Argo stat. Transliterated game mechanic."
+forbidden_targets = ["Крю", "Команда"]
+notes = "Argo stat. Standard nautical term."
 
 [concepts.source]
 lang = "en"
@@ -123,15 +129,15 @@ patterns = ["Crew", "your Crew", "lose Crew", "gain Crew"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Крю"
-allowed_surface_forms = ["Крю"]
+lemma = "Экипаж"
+allowed_surface_forms = ["Экипаж", "Экипажа", "Экипажу", "Экипажем", "Экипаже"]
 
 [[concepts]]
 concept_id = "concept.hull"
 kind = "icon_term"
 icon_binding = "sym.hull"
-forbidden_targets = ["Корпус", "Обшивка"]
-notes = "Argo stat. Transliterated game mechanic."
+forbidden_targets = ["Халл", "Обшивка"]
+notes = "Argo stat. Standard nautical term."
 
 [concepts.source]
 lang = "en"
@@ -141,15 +147,15 @@ patterns = ["Hull", "your Hull", "lose Hull", "gain Hull"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Халл"
-allowed_surface_forms = ["Халл", "Халла", "Халлу", "Халлом", "Халле"]
+lemma = "Корпус"
+allowed_surface_forms = ["Корпус", "Корпуса", "Корпусу", "Корпусом", "Корпусе"]
 
 [[concepts]]
 concept_id = "concept.argo_fate"
 kind = "icon_term"
 icon_binding = "sym.argo_fate"
-forbidden_targets = ["Судьба Арго"]
-notes = "Argo stat — distinct from Triskelion Fate."
+forbidden_targets = ["Арго Фэйт"]
+notes = "Argo stat — distinct from Triskelion Fate, same root word Судьба."
 
 [concepts.source]
 lang = "en"
@@ -159,14 +165,14 @@ patterns = ["Argo Fate", "gain Argo Fate"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Арго Фэйт"
-allowed_surface_forms = ["Арго Фэйт", "Арго Фэйта", "Арго Фэйту"]
+lemma = "Судьба Арго"
+allowed_surface_forms = ["Судьба Арго", "Судьбы Арго", "Судьбе Арго", "Судьбу Арго", "Судьбой Арго"]
 
 [[concepts]]
 concept_id = "concept.argo_knowledge"
 kind = "icon_term"
 icon_binding = "sym.argo_knowledge"
-forbidden_targets = ["Знание Арго"]
+forbidden_targets = ["Арго Знание"]
 notes = "Argo stat."
 
 [concepts.source]
@@ -177,18 +183,17 @@ patterns = ["Argo Knowledge", "gain Argo Knowledge"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Арго Знание"
-allowed_surface_forms = ["Арго Знание", "Арго Знания", "Арго Знанию"]
+lemma = "Знание Арго"
+allowed_surface_forms = ["Знание Арго", "Знания Арго", "Знанию Арго", "Знанием Арго"]
 
 # =============================================================================
-# CORE GAME ENTITIES — untranslatable proper nouns and game-specific terms
+# CORE GAME ENTITIES — proper nouns and game-specific terms
 # =============================================================================
 
 [[concepts]]
 concept_id = "concept.triskelion"
 kind = "mechanic"
-forbidden_targets = ["Трискелион"]
-notes = "Core game mechanic — the three-stat dial. Keep original English form."
+notes = "Core game mechanic — the three-stat dial. Established Russian form of the Greek/Celtic symbol."
 
 [concepts.source]
 lang = "en"
@@ -204,7 +209,7 @@ allowed_surface_forms = ["Трискелион", "Трискелиона", "Тр
 [[concepts]]
 concept_id = "concept.argonaut"
 kind = "entity"
-notes = "Player character type."
+notes = "Player character type. Established Russian mythology term."
 
 [concepts.source]
 lang = "en"
@@ -236,7 +241,8 @@ allowed_surface_forms = ["Титан", "Титана", "Титану", "Тита
 [[concepts]]
 concept_id = "concept.primordial"
 kind = "entity"
-notes = "Enemy boss creature."
+forbidden_targets = ["Праймордиал", "Примордиал"]
+notes = "Enemy boss creature. Первозданный = The Primeval One — evocative, natural Russian."
 
 [concepts.source]
 lang = "en"
@@ -246,13 +252,13 @@ patterns = ["Primordial", "Primordials"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Праймордиал"
-allowed_surface_forms = ["Праймордиал", "Праймордиала", "Праймордиалу", "Праймордиалом", "Праймордиале", "Праймордиалы", "Праймордиалов"]
+lemma = "Первозданный"
+allowed_surface_forms = ["Первозданный", "Первозданного", "Первозданному", "Первозданным", "Первозданном", "Первозданные", "Первозданных"]
 
 [[concepts]]
 concept_id = "concept.argo"
 kind = "entity"
-notes = "The player's city-ship. Proper noun, not translated."
+notes = "The player's city-ship. Proper noun, established Russian form."
 
 [concepts.source]
 lang = "en"
@@ -272,8 +278,8 @@ allowed_surface_forms = ["Арго"]
 [[concepts]]
 concept_id = "concept.voyage_phase"
 kind = "mechanic"
-forbidden_targets = ["Фаза путешествия"]
-notes = "Major game phase."
+forbidden_targets = ["Фаза Вояжа", "Фаза Путешествия"]
+notes = "Major game phase. Странствие = odyssey/wandering, fits the Odyssey theme."
 
 [concepts.source]
 lang = "en"
@@ -283,13 +289,12 @@ patterns = ["Voyage Phase", "during the Voyage"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Фаза Вояжа"
-allowed_surface_forms = ["Фаза Вояжа", "Фазе Вояжа", "Фазу Вояжа"]
+lemma = "Фаза Странствия"
+allowed_surface_forms = ["Фаза Странствия", "Фазе Странствия", "Фазу Странствия", "Странствие", "Странствия"]
 
 [[concepts]]
 concept_id = "concept.battle_phase"
 kind = "mechanic"
-forbidden_targets = ["Фаза сражения"]
 notes = "Major game phase — Primordial combat."
 
 [concepts.source]
@@ -306,8 +311,8 @@ allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу
 [[concepts]]
 concept_id = "concept.evasion_roll"
 kind = "mechanic"
-forbidden_targets = ["Бросок уклонения"]
-notes = "Combat mechanic — dice roll to dodge attacks."
+forbidden_targets = ["Бросок Эвейжн", "Эвейжн"]
+notes = "Combat mechanic — dice roll to dodge attacks. Standard board-game Russian."
 
 [concepts.source]
 lang = "en"
@@ -317,8 +322,8 @@ patterns = ["Evasion Roll", "Evasion Rolls"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Бросок Эвейжн"
-allowed_surface_forms = ["Бросок Эвейжн", "Броска Эвейжн", "Броски Эвейжн", "Бросков Эвейжн"]
+lemma = "Бросок Уклонения"
+allowed_surface_forms = ["Бросок Уклонения", "Броска Уклонения", "Броски Уклонения", "Бросков Уклонения"]
 
 [[concepts]]
 concept_id = "concept.exploration"
@@ -387,8 +392,8 @@ allowed_surface_forms = ["Цикл", "Цикла", "Циклу", "Циклом",
 [[concepts]]
 concept_id = "concept.obol_draw"
 kind = "mechanic"
-forbidden_targets = ["Вытягивание обола"]
-notes = "Penalty mechanic — draw from the Obol bag."
+forbidden_targets = ["Обол Дро", "Вытягивание Обола"]
+notes = "Penalty mechanic — draw from the Obol bag. Жребий = lot/fortune, mythological weight."
 
 [concepts.source]
 lang = "en"
@@ -398,13 +403,13 @@ patterns = ["Obol Draw"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Обол Дро"
-allowed_surface_forms = ["Обол Дро"]
+lemma = "Жребий Обола"
+allowed_surface_forms = ["Жребий Обола", "Жребия Обола", "Жребию Обола", "Жребием Обола"]
 
 [[concepts]]
 concept_id = "concept.moiros_card"
 kind = "mechanic"
-notes = "Fate card drawn as penalty."
+notes = "Fate card drawn as penalty. Game-specific name derived from Moirai."
 
 [concepts.source]
 lang = "en"
@@ -420,7 +425,7 @@ allowed_surface_forms = ["карта Мойрос", "карты Мойрос", "
 [[concepts]]
 concept_id = "concept.mnemos_card"
 kind = "mechanic"
-notes = "Memory/skill cards for Argonauts."
+notes = "Memory/skill cards for Argonauts. Game-specific name derived from Mnemosyne."
 
 [concepts.source]
 lang = "en"
