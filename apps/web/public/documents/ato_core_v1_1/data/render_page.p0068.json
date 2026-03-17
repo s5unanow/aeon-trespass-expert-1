@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0068",
-    "title": "Terrain",
+    "title": "Ландшафт",
     "section_path": [],
     "source_page_number": 68
   },
@@ -19,17 +19,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "may use this ability to ignore it.",
+          "text": "можете использовать эту способность, чтобы игнорировать его.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rush:",
-          "marks": []
+          "text": "Рывок:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Move with +1  and Melee/Reach Attack with Auto-break 1. You must move at least 3 spaces and reach your target via the shortest possible path. Possible subtypes:",
+          "text": " Переместитесь на +1 и совершите рукопашную/дальнюю атаку с Автоматическим пробитием 1. Вы должны переместиться как минимум на 3 клетки и достичь цели по кратчайшему возможному пути. Возможные подтипы:",
           "marks": []
         }
       ]
@@ -40,97 +42,115 @@
       "children": [
         {
           "kind": "text",
-          "text": "with Auto-break 1 and +1 Precision. You must move at least 3 spaces and reach your target via the shortest possible path.",
+          "text": "с Автоматическим пробитием 1 и +1 к Точности. Вы должны переместиться как минимум на 3 клетки и достичь цели по кратчайшему возможному пути.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Sacrifice:",
+          "text": "Жертвоприношение:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " В течение первого окна способностей вы можете получить +1, чтобы поместить один жетон Пробития в Пул Кратоса (см. ключевое слово Пробитие X).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the first ability window, you may gain +1  to place one Break token in the Kratos Pool (see Break X keyword).",
+          "text": "Взбирание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Когда вы собираетесь выполнить проверку для взбирания на Выгодную Позицию, вместо этого автоматически преуспейте в этой проверке.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Scale:",
+          "text": "Второй Шанс: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "После того как вы вытянете карту Травмы или Обола, вы можете игнорировать её эффект и сбросить её. Вытяните и разрешите другую карту из той же колоды (примечание: сброшенный Обол немедленно замешивается обратно в колоду Оболов). Вы не можете игнорировать второй вытягивание каким-либо образом. Эту способность можно использовать, даже если вы сбиты с ног или иным образом запрещено использовать активные способности.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " When you are about to perform a test to climb a Vantage Point, automatically succeed at that test instead.",
+          "text": "Утешение: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Сбросьте карту Состояния ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Second Chance: ",
+          "text": "Разум",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или жетон Отчаяния с себя или с соседнего Титана.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "After you draw a Trauma or Obol card, you may ignore its effect and discard it. Draw and resolve another card from the same deck (note: a discarded Obol is immediately shuffled back into the Obol deck). You cannot ignore the second draw in any way. This ability can be used even when knocked down or otherwise prohibited from using active abilities.",
+          "text": "В центре внимания:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " В течение первого окна способностей, если у вас есть жетон ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Solace: ",
+          "text": "Приоритета",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", получите +1 к этой Атаке.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Discard a ",
+          "text": "Стойкость:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Когда вы собираетесь получить Отбрасывание, вы можете использовать эту способность, чтобы игнорировать его.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mind",
-          "marks": []
+          "text": "Подавление:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Condition card or a Despair token from yourself or an adjacent Titan.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Spotlight:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " During the first ability window, if you have the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Prior-ity Token",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " token, gain +1  for this Attack.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Stalwart:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " When you are about to suffer Knockback, you may use this ability to ignore it.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Suppress:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Shuffle the discard pile denoted by the subtype into the appropriate deck. Possible subtypes:",
+          "text": " Замешайте стопку сброса, обозначенную подтипом, в соответствующую колоду. Возможные подтипы:",
           "marks": []
         }
       ]
@@ -141,37 +161,43 @@
       "children": [
         {
           "kind": "text",
-          "text": " \u0007",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Tireless:",
+          "text": "Неутомимость:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Когда вы собираетесь активировать ключевое слово Громоздкий, вы можете игнорировать его.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " When you are about to activate the Cumbersome keyword, you may ignore it.",
+          "text": "Кувырок:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Когда вы собираетесь получить Крушение, бросьте d10. На 6+ игнорируйте его.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Tumble:",
-          "marks": []
+          "text": "Прыжок:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " When you are about to suffer Crash, roll a d10. On a 6+ ignore it.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Vault:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " If you’re adjacent to the Primordial, place your minia-ture on an empty space in a straight line from you, on the op-posite side of the Primordial, adjacent to it. A Titan may use this ability in either the first or second ability window. Possible sub-types:",
+          "text": " Если вы находитесь рядом с Первозданным, поместите свою миниатюру на свободную клетку по прямой линии от вас, на противоположной стороне от Первозданного, рядом с ним. Титан может использовать эту способность как в первом, так и во втором окне способностей. Возможные подтипы:",
           "marks": []
         }
       ]
@@ -182,13 +208,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "miniature on a space in a straight line from you, on the oppo-site side of the Primordial, adjacent to it. Treat as involuntary movement. If you would have to end this movement outside the Board Edge or on an Indestructible Obstacle Terrain tile, you die instead.",
+          "text": "миниатюру на клетку по прямой линии от вас, на противоположной стороне от Первозданного, рядом с ним. Считается непроизвольным движением. Если вы должны были бы завершить это движение за пределами Края Поля или на плитке Неразрушимого Препятствия, вы умираете вместо этого.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Vault example",
-          "marks": []
+          "text": "Пример Прыжка",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -199,7 +227,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain",
+          "text": "Ландшафт",
           "marks": []
         }
       ]
@@ -210,43 +238,51 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battles don’t happen in a void. The places you face off with the Primordials matter a great deal. For the Argonauts, the more des-olate a battlefield, the better. A ",
+          "text": "Битвы не происходят в пустоте. Места, где вы сражаетесь с Первозданными, имеют большое значение. Для Аргонавтов, чем более пустынным является поле битвы, тем лучше. Плитка Ландшафта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Siren Shell",
+          "text": "Раковина Сирены",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " может обеспечить укрытие, а плитка Ландшафта Колонны — идеальная ловушка, чтобы загнать в неё Первозданного. Но монстры притягиваются к поселениям смертных, таким как Города, где они могут нанести наибольший вред. Ландшафт устанавливается как часть каждого ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Terrain tile may provide a hiding place and a Column Terrain tile is an ideal trap to push the Primordial into. But the monsters are drawn to mortal settlements, like Cities, where they can do the most harm.Terrain is set up as part of every ",
+          "text": "Боевого Сценария",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. схемы сценариев), но другие элементы игры также могут добавлять дополнительные плитки Ландшафта на Боевое Поле. Приключения в Хабе добавляют ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Battle Scenario",
+          "text": "Приключенческий Ландшафт",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. Приключенческий Ландшафт, стр. 31), в то время как некоторые другие приключения и игровые эффекты могут предписывать вам разместить дополнительные плитки Ландшафта в начале следующей Битвы. Если какой-либо эффект предписывает вам добавить Ландшафт в Битву на Временной Шкале, отметьте это на Временной Шкале.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (see scenario di-agrams), but other game elements may also introduce additional Terrain tiles to the Battle Board. Hub adventures add ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Adventure Terrain",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (see Adventure Terrain, p. 31), while some other adven-tures and game effects may instruct you to place additional Terrain tiles at the start of the next Battle. If any effect instructs you to add Terrain to a Timeline Battle, note it on the Timeline.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Terrain card",
-          "marks": []
+          "text": "Карта Ландшафта",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -257,7 +293,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Basic Terrain Rules",
+          "text": "Основные Правила Ландшафта",
           "marks": []
         }
       ]
@@ -268,7 +304,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain Tiles are made of spaces. Unless stated otherwise, you re-solve a tile effect when entering the first space of a tile. A tile does not block LoS to itself (just like a miniature). ",
+          "text": "Плитки Ландшафта состоят из клеток. Если не указано иное, вы разрешаете эффект плитки при входе на первую клетку плитки. Плитка не блокирует линию видимости к себе (как и миниатюра).",
           "marks": []
         }
       ]
@@ -280,7 +316,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Placing and Removing Terrain in Battle",
+          "text": "Размещение и Удаление Ландшафта в Битве",
           "marks": []
         }
       ]
@@ -291,27 +327,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain tiles can also be placed or destroyed during Battle as a re-sult of various effects.When a Terrain tile is ",
+          "text": "Плитки Ландшафта также могут быть размещены или уничтожены во время Битвы в результате различных эффектов. Когда плитка Ландшафта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "destroyed",
+          "text": "уничтожена",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", просто удалите её с Боевого Поля. Когда плитка Ландшафта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", simply remove it from the Battle Board.When a Terrain tile is ",
-          "marks": []
+          "text": "размещена",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "placed",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", put it in on the indicated spaces on the Battle Board. If all the Terrain tiles of this type are already on the board, remove the tile furthest from the Primordial, then place it on the indicated spaces.",
+          "text": ", поместите её на указанные клетки на Боевом Поле. Если все плитки Ландшафта этого типа уже находятся на поле, удалите плитку, наиболее удалённую от Первозданного, затем поместите её на указанные клетки.",
           "marks": []
         }
       ]
@@ -323,7 +363,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain Placement on Other Terrain",
+          "text": "Размещение Ландшафта на Другом Ландшафте",
           "marks": []
         }
       ]
@@ -334,7 +374,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "When a Terrain tile is placed on a space occupied by another Ter-rain tile:",
+          "text": "Когда плитка Ландшафта размещается на клетке, занятой другой плиткой Ландшафта:",
           "marks": []
         }
       ]
@@ -345,7 +385,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "anything on top of it. Ignore this new tile placement.",
+          "text": "ничего поверх неё. Игнорируйте это новое размещение плитки.",
           "marks": []
         }
       ]
@@ -356,7 +396,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "place the new tile.",
+          "text": "разместите новую плитку.",
           "marks": []
         }
       ]

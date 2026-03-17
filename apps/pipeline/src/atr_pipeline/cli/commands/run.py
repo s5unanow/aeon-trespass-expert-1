@@ -88,8 +88,8 @@ def run(
     if from_stage != "ingest":
         _load_existing_artifacts(
             store, doc, total_page_count,
-            stages, native_pages, en_ir_map,
-            extract_native_page, config, build_page_ir_real,
+            stages, native_pages, en_ir_map, ru_ir_map,
+            extract_native_page, config,
         )
 
     for stage_name in stages:
@@ -357,9 +357,9 @@ def _load_existing_artifacts(
     stages: list[str],
     native_pages: dict[str, Any],
     en_ir_map: dict[str, Any],
+    ru_ir_map: dict[str, Any],
     extract_native_page: Any,
     config: Any,
-    build_page_ir_real: Any,
 ) -> None:
     """Load existing artifacts from prior runs when starting mid-pipeline."""
     import json
@@ -370,6 +370,7 @@ def _load_existing_artifacts(
     # If structure or later stages need native pages, load or extract them
     needs_native = any(s in stages for s in ["structure", "symbols"])
     needs_en_ir = any(s in stages for s in ["translate", "render", "qa"])
+    needs_ru_ir = any(s in stages for s in ["render", "qa"])
 
     if needs_native and not native_pages:
         native_dir = store.root / doc / "native_page.v1" / "page"
@@ -399,3 +400,13 @@ def _load_existing_artifacts(
                     if jsons:
                         data = json.loads(jsons[0].read_text())
                         en_ir_map[page_dir.name] = PageIRV1.model_validate(data)
+
+    if needs_ru_ir and not ru_ir_map:
+        ru_dir = store.root / doc / "page_ir.v1.ru" / "page"
+        if ru_dir.exists():
+            for page_dir in sorted(ru_dir.iterdir()):
+                if page_dir.is_dir():
+                    jsons = sorted(page_dir.glob("*.json"))
+                    if jsons:
+                        data = json.loads(jsons[-1].read_text())
+                        ru_ir_map[page_dir.name] = PageIRV1.model_validate(data)

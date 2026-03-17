@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0017",
-    "title": "Gaining Resources from Exploration cards",
+    "title": "Получение ресурсов с карт Исследования",
     "section_path": [],
     "source_page_number": 17
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gaining Resources from Exploration cards",
+          "text": "Получение ресурсов с карт Исследования",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resolving most Exploration cards will provide you with useful Mortal resources, necessary for crafting Gear, as well an occasional Titan, Crew, Hull or other bonus. For more information about resources, see p. 19. For more information about gaining and losing, see p. 23.",
+          "text": "Разрешение большинства карт Исследования обеспечит вас полезными Смертными ресурсами, необходимыми для создания Снаряжения, а также случайными Титанами, Экипажем, Корпусом или другими бонусами. Для получения дополнительной информации о ресурсах см. стр. 19. Для получения дополнительной информации о получении и потере см. стр. 23.",
           "marks": []
         }
       ]
@@ -43,7 +43,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Exploration Card Penalties",
+          "text": "Штрафы карт Исследования",
           "marks": []
         }
       ]
@@ -54,7 +54,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Similarly, resolving Exploration cards can give you penalties and result in you losing stuff such as Titans, Crew, Hull. For more infor-mation about gaining and losing, see p. 23.",
+          "text": "Аналогично, разрешение карт Исследования может наложить на вас штрафы и привести к потере таких вещей, как Титанов, Экипажа, Корпуса. Для получения дополнительной информации о получении и потере см. стр. 23.",
           "marks": []
         }
       ]
@@ -66,7 +66,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Trading",
+          "text": "Торговля",
           "marks": []
         }
       ]
@@ -77,7 +77,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some rare Exploration cards will allow you to trade resources. For more information about trading, see p. 18. ",
+          "text": "Некоторые редкие карты Исследования позволят вам торговать ресурсами. Для получения дополнительной информации о торговле см. стр. 18.",
           "marks": []
         }
       ]
@@ -89,7 +89,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "3. Moving the Adversary",
+          "text": "3. Перемещение Противника",
           "marks": []
         }
       ]
@@ -100,27 +100,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Argonauts actions are sure to draw the attention of vile forc-es, represented by Adversaries. These are special Primordials that actively hunt the ",
+          "text": "Действия Аргонавтов непременно привлекут внимание гнусных сил, представленных Противниками. Это особые Первозданные, которые активно охотятся за ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на Карте. Они не привязаны строго к определённому Циклу – они будут охотиться за вами, пока не будут окончательно побеждены – или пока не будете побеждены вы! Книги Историй укажут вам, когда вводить Противника в вашу кампанию, а также как его победить. Когда Противник введён в кампанию, запишите его имя на Треке Противника. Примечание: Когда вы начинаете новый Цикл, Противник по умолчанию не размещается на карте и не начнёт преследовать вас, пока об этом не будет сказано в Книге Историй. Игнорируйте все ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " on the Map. They are not strictly tied to a specific Cycle – they will hunt you until they are permanently de-feated – or you are! The Storybooks will instruct you on when to introduce an Adversary into your campaign as well as how to de-feat it. When an Adversary is introduced into a campaign, write its name on the Adversary Track. Note: When you start a new Cycle, the Adversary is not placed on the map by default and it will not start chasing you until the Story-book says so. Ignore all ",
-          "marks": []
+          "text": "активации Противника",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Adversary activations",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " until an event instructs you to introduce it.",
+          "text": " до тех пор, пока событие не укажет вам ввести его.",
           "marks": []
         }
       ]
@@ -132,7 +136,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adversary Activation",
+          "text": "Активация Противника",
           "marks": []
         }
       ]
@@ -143,17 +147,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Once the Adversary has been introduced, whenever you encounter an ",
+          "text": "Как только Противник введён, всякий раз, когда вы сталкиваетесь с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adversary activation",
-          "marks": []
+          "text": "активацией Противника",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " on an Exploration card:",
+          "text": " на карте Исследования:",
           "marks": []
         }
       ]
@@ -164,23 +170,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "the Adversary one tile towards the ",
+          "text": "Противника на одну клетку к ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " по кратчайшему доступному пути. Затем, если Противник находится на той же клетке Карты, что и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " along the shortest available path. Then, if the Adversary is on the same Map tile as the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -189,12 +199,14 @@
         },
         {
           "kind": "text",
-          "text": "remove its miniature",
-          "marks": []
+          "text": "удалите его миниатюру",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " from the map and trigger an Ad-versary Battle (go to the corresponding Battle Scenario in the Storybook; Adversaries are not tied to a single Cycle and you may need to refer to other Cycles for Battle Setup). You must resolve the Adversary Battle at the end of your current Step!",
+          "text": " с карты и запустите Битву с Противником (перейдите к соответствующему Сценарию Битвы в Книге Историй; Противники не привязаны к одному Циклу, и вам может потребоваться обратиться к другим Циклам для настройки Битвы). Вы должны разрешить Битву с Противником в конце вашего текущего Шага!",
           "marks": []
         }
       ]
@@ -205,12 +217,14 @@
       "children": [
         {
           "kind": "text",
-          "text": "symbol encountered during this Exploration Step, nothing happens:",
-          "marks": []
+          "text": "символ, встреченный во время этого Шага Исследования, ничего не происходит:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " You’re much closer to the Adversary spawning.",
+          "text": " Вы намного ближе к появлению Противника.",
           "marks": []
         }
       ]
@@ -221,78 +235,94 @@
       "children": [
         {
           "kind": "text",
-          "text": "two  symbols during this Exploration Step, spawn the Ad-versary: ",
+          "text": "два символа во время этого Шага Исследования, породите Противника: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Разместите маленькую миниатюру текущего Противника ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Place the small miniature of the current Adversary ",
+          "text": "в четырёх клетках",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " от ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "four tiles away",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если вы не можете разместить его в четырёх клетках, разместите его как можно дальше. Если вы породили Противника во время Шага Исследования, немедленно завершите эту Активацию Противника и игнорируйте любые другие активации Противника до конца этого Шага.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " from the ",
+          "text": "Важное исключение: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Всякий раз, когда вы сталкиваетесь с символом Противника на любом другом игровом элементе, например, когда вы получаете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "уникальную карту Добычи",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", или используете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". If you can’t place it four tiles away, place it as far away as possible. If you spawned the Ad-versary during the Exploration Step, immediately end this Ad-versary Activation and ignore any other Adversary activations until the end of this Step.",
+          "text": "Призыв",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important exception: ",
+          "text": "Пробуждение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", вы должны выполнить активацию Противника как обычно, со следующим исключением:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Whenever you encounter an Adversary sym-bol  on an any other game element, for example when you gain a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "unique Loot card",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", or use a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Summoning",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " or ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Awaken",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", you must per-form an Adversary activation as normal, with the following excep-tion:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " it only takes one Adversary symbol to spawn the Adversary!",
-          "marks": []
+          "text": " для появления Противника требуется только один символ Противника!",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "icon",
@@ -308,7 +338,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adversary Movement Rules",
+          "text": "Правила Перемещения Противника",
           "marks": []
         }
       ]
@@ -319,7 +349,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "These are the specific rules governing the Adversary’s movements:",
+          "text": "Это конкретные правила, регулирующие перемещения Противника:",
           "marks": []
         }
       ]
@@ -330,7 +360,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "symbol.",
+          "text": "символ.",
           "marks": []
         }
       ]
@@ -341,7 +371,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "revealed tiles.",
+          "text": "открытые клетки.",
           "marks": []
         }
       ]
@@ -352,7 +382,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "is not connected by a directional arrow. It ignores tile sectors and all Map symbols.",
+          "text": "не соединена стрелкой направления. Он игнорирует секторы клеток и все символы Карты.",
           "marks": []
         }
       ]
@@ -363,13 +393,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "prioritizes horizontal as long as it brings it closer to the ",
+          "text": "приоритезирует горизонтальное перемещение, если оно приближает его к ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -378,8 +410,10 @@
         },
         {
           "kind": "text",
-          "text": "If there is more than one way for the Adversary to move,  it will always move horizontally.",
-          "marks": []
+          "text": "Если есть более одного способа для перемещения Противника, он всегда будет двигаться горизонтально.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -389,7 +423,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "an activation, it does not move but you still trigger the Adver-sary Battle.",
+          "text": "активации, он не перемещается, но вы всё равно запускаете Битву с Противником.",
           "marks": []
         }
       ]
@@ -400,13 +434,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "Awakening, Summoning or gaining Loot), you must resolve it as soon as the current Battle ends.",
+          "text": "Пробуждения, Призыва или получения Добычи), вы должны разрешить её сразу после окончания текущей Битвы.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: We mentioned “any game element” because the Ad-versary, though primarily active in the Exploration Step, may move during different parts of the game, for example after an Awakening or from gaining a Primordial Loot card! ",
-          "marks": []
+          "text": "Важно: Мы упомянули «любой игровой элемент», потому что Противник, хотя и активен в основном на Шаге Исследования, может перемещаться в разных частях игры, например, после Пробуждения или получения карты Добычи Первозданного! ",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -417,7 +453,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "4. Performing Acclimations",
+          "text": "4. Выполнение Акклиматизаций",
           "marks": []
         }
       ]
@@ -428,17 +464,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "As you journey across a region, get more accustomed to it and build a local network of informants and suppliers, your exploration efforts will bear more fruit. In Aeon Trespass: Odyssey, this is rep-resented by ",
+          "text": "По мере того, как вы путешествуете по региону, привыкаете к нему и строите местную сеть информаторов и поставщиков, ваши усилия по исследованию принесут больше плодов. В Aeon Trespass: Odyssey это представлено ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Acclimation",
-          "marks": []
+          "text": "скобками Акклиматизации",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " brackets.Each campaign has a fixed number of Acclimations, marked on your Timeline.",
+          "text": ". Каждая кампания имеет фиксированное количество Акклиматизаций, отмеченных на вашей Временной шкале.",
           "marks": []
         }
       ]
@@ -474,7 +512,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Acclimation 1:  4, 5, 6, 8, 19 −› 10, 11, 12, 14, 22",
+          "text": "Акклиматизация 1: 4, 5, 6, 8, 19 −› 10, 11, 12, 14, 22",
           "marks": []
         }
       ]
@@ -497,37 +535,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Whenever your current day calls for an Acclimation, first resolve all other actions during the Exploration Step, except an Adversary Battle, then perform the Acclimation.To perform an Acclimation, search the Exploration deck for the cards with numbers corresponding to the list found on the left of the ",
+          "text": "Всякий раз, когда ваш текущий день требует Акклиматизации, сначала разрешите все остальные действия во время Шага Исследования, кроме Битвы с Противником, затем выполните Акклиматизацию. Чтобы выполнить Акклиматизацию, найдите в колоде Исследования карты с номерами, соответствующими списку, расположенному слева от ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "acclimation arrow ",
+          "text": "стрелки акклиматизации",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и навсегда удалите их (верните их в коробку с игрой, вы больше не будете их использовать). Затем найдите карты Исследования с номерами, указанными ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "and permanently remove them (return them to the game box, you won’t be using them anymore). Then, find the Exploration cards with numbers listed on the ",
+          "text": "справа",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " от стрелки, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "right",
-          "marks": []
+          "text": "добавьте",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " of the arrow, ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "add",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " them to the Exploration deck and shuffle it thoroughly. ",
+          "text": " их в колоду Исследования и тщательно перемешайте её. ",
           "marks": []
         },
         {
@@ -544,7 +588,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "4. Expedition Step",
+          "text": "4. Шаг Экспедиции",
           "marks": []
         }
       ]
@@ -555,47 +599,55 @@
       "children": [
         {
           "kind": "text",
-          "text": "During the Expedition Step, if the Argo is on an ",
+          "text": "Во время Шага Экспедиции, если Арго находится на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Unexplored",
+          "text": "Неисследованной",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " клетке с символом ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tile with an ",
+          "text": "Приключения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adventure",
+          "text": "Отдыха и Восстановления",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", разрешите Фазу Приключения (см. стр. 25). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " or ",
-          "marks": []
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "R&R",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " symbol, resolve an Adventure Phase (see p. 25). ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Remember:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " All newly revealed tiles are Unex-AB0079",
+          "text": " Все вновь открытые клетки являются Неисследованными-AB0079",
           "marks": []
         }
       ]
@@ -618,8 +670,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adversary symbol",
-          "marks": []
+          "text": "Символ Противника",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

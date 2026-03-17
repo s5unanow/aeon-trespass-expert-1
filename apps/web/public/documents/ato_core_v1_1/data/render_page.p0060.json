@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0060",
-    "title": "Vantage Points",
+    "title": "Выгодные Позиции",
     "section_path": [],
     "source_page_number": 60
   },
@@ -19,22 +19,26 @@
       "children": [
         {
           "kind": "text",
-          "text": "Generic token",
+          "text": "Универсальный жетон",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Вместо этого мы сократили количество типов жетонов, включённых в игру, и создали ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Instead, we cut down on the types of tokens included in the game, and created the ",
-          "marks": []
+          "text": "универсальные жетоны",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "generic tokens",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Whenever there’s an effect that doesn’t use any of the specific tokens, you will be in-structed to use a generic token to track it. You can also use generic tokens to mark exhausted abilities or cards to conserve table space and to mark stacking Modifier tokens (see Modifier Tokens).",
+          "text": ". Всякий раз, когда есть эффект, который не использует какие-либо конкретные жетоны, вам будет предписано использовать универсальный жетон для его отслеживания. Вы также можете использовать универсальные жетоны для обозначения исчерпанных способностей или карт, чтобы сэкономить место на столе, а также для обозначения жетонов модификаторов (см. Жетон Модификатора).",
           "marks": []
         }
       ]
@@ -46,7 +50,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Vantage Points",
+          "text": "Выгодные Позиции",
           "marks": []
         }
       ]
@@ -57,17 +61,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Even though Titans are big, Primordials are much much bigger, lumbering monstrosities the size of temples! Some are so big, in fact, that you can climb them. And you will!Some Primordials may allow you to create ",
+          "text": "Хотя Титаны велики, Первозданные намного, намного больше — это громоздкие чудовища размером с храмы! Некоторые из них настолько огромны, что на них можно взобраться. И вы это сделаете! Некоторые Первозданные могут позволить вам создавать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Vantage Points (VPs) ",
-          "marks": []
+          "text": "Выгодные Позиции (ВП) ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "– special spaces on top (or inside!) of them. Titans can then climb them to strike vital body parts, avoid Primordial attacks or enable other effects and abilities. Each Primordial’s VP effects are de-scribed on its Primordial Sheet.",
+          "text": "– особые места на их вершине (или внутри!). Титаны могут затем взобраться на них, чтобы поражать жизненно важные части тела, избегать атак Первозданных или активировать другие эффекты и способности. Эффекты ВП каждого Первозданного описаны на его Планшете Первозданного.",
           "marks": []
         }
       ]
@@ -79,7 +85,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Creating VPs",
+          "text": "Создание ВП",
           "marks": []
         }
       ]
@@ -90,7 +96,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Most VPs need to be created before they are climbable:",
+          "text": "Большинство ВП необходимо создать, прежде чем на них можно будет взобраться:",
           "marks": []
         }
       ]
@@ -101,18 +107,22 @@
       "children": [
         {
           "kind": "text",
-          "text": "ed",
+          "text": "",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", прежде чем её можно будет использовать. Другими словами, пока вы не «создадите ВП», ВП является ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " before it can be used. In other words, until you “create a VP,” the VP is ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "locked",
-          "marks": []
+          "text": "заблокированной",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -127,17 +137,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "remove the interchangeable part of the Primordial miniature and switch it with the Vantage Point part. Alter-natively, if you don’t want to switch the parts, you can use the VP space marked on the Primordial Sheet in-stead. ",
+          "text": "снимите с миниатюры Первозданного сменную часть и замените её частью Выгодной Позиции. В качестве альтернативы, если вы не хотите менять части, вы можете использовать вместо этого место ВП, отмеченное на Планшете Первозданного. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Some hard-to-reach VPs are only represented on the Primordial Sheets.",
+          "text": " Некоторые труднодоступные ВП представлены только на Планшетах Первозданных.",
           "marks": []
         }
       ]
@@ -148,13 +160,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "create VPs on it by any means. These Primordials simply can-not be climbed!",
+          "text": "создавать на нём ВП никакими средствами. На этих Первозданных просто нельзя взобраться!",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Interchangeable miniature parts",
-          "marks": []
+          "text": "Сменные части миниатюры",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -165,7 +179,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Climbing and Falling from a VP",
+          "text": "Взбирание и Падение с ВП",
           "marks": []
         }
       ]
@@ -176,47 +190,55 @@
       "children": [
         {
           "kind": "text",
-          "text": "If there is an unlocked VP on the Primordial during your turn, you may climb it!",
+          "text": "Если на Первозданном есть разблокированная ВП во время вашего хода, вы можете взобраться на неё!",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Climbing a VP: ",
+          "text": "Взбирание на ВП: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титан, прилегающий к Первозданному, может выполнить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "A Titan adjacent to the Primordial may perform a ",
+          "text": "проверку Взбирания",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " как свободное действие. Просто проверьте Навык, указанный на Планшете Первозданного (см. Проверки в Битве, стр. 60). В случае успеха поместите своего Титана на место ВП.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Climb test",
+          "text": "Падение с ВП:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Первозданные не стоят на месте. В конце Раунда Первозданного большинство ВП заставляют вас выполнить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " as a free action. Simply test the Skill specified on the Primordial Sheet (see Tests in Battle, p. 60). If you succeed, place your Titan on the VP space.",
-          "marks": []
+          "text": "проверку Удержания",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Falling down from a VP:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Primordials don’t stand still. At the end of the Primordial Round, most VPs force you to perform a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Hold on ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "test to find out if you fall down. The particular effects of falling from a VP are explained on the Primordial Sheet.",
+          "text": ", чтобы узнать, упадете ли вы. Конкретные эффекты падения с ВП объяснены на Планшете Первозданного.",
           "marks": []
         }
       ]
@@ -228,7 +250,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Movement and VPs",
+          "text": "Перемещение и ВП",
           "marks": []
         }
       ]
@@ -239,7 +261,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "A Titan may move from a Primordial VP space to a space adjacent to the Primordial using a  or any move-like ability, as if they were adjacent spaces.If a Titan suffers Knockdown or involuntary movement while on a VP space, they must first be displaced to a space adjacent to the Primordial.Only one Titan can occupy a single VP at a given time. ",
+          "text": "Титан может переместиться из места ВП Первозданного в место, прилегающее к Первозданному, используя  или любую способность, связанную с перемещением, как если бы это были прилегающие места. Если Титан получает Сбивание с ног или непроизвольное перемещение, находясь на месте ВП, он должен быть сначала перемещён в место, прилегающее к Первозданному. Только один Титан может занимать одну ВП в любой момент времени.",
           "marks": []
         }
       ]
@@ -251,7 +273,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "VPs, Adjacency and Range",
+          "text": "ВП, Прилегание и Дальность",
           "marks": []
         }
       ]
@@ -262,27 +284,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titans on VPs are considered adjacent ",
+          "text": "Титаны на ВП считаются прилегающими ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "and",
+          "text": "и",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на расстоянии 1 от Первозданного и всех Титанов, прилегающих к этому Первозданному. Они измеряют дальность до других Титанов и игровых элементов от места, занимаемого Первозданным, которое находится ближе всего к этому Титану или игровому элементу. Другие Титаны, прилегающие к Первозданному, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " in range 1 to the Pri-mordial and all Titans adjacent to this Primordial. They measure range to other Titans and game elements from the space occupied by the Primordial that is closest to that Titan or game element.Other Titans adjacent to the Primordial ",
-          "marks": []
+          "text": "не считаются",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "are not",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " considered to be adjacent to Titans on VPs.",
+          "text": " прилегающими к Титанам на ВП.",
           "marks": []
         }
       ]
@@ -294,7 +320,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Awakenings",
+          "text": "Пробуждения",
           "marks": []
         }
       ]
@@ -305,13 +331,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Olympians are dead, killed during the first minutes of the Es-chaton. Their worshippers scattered, their temples abandoned, their power waned and left the world. But not completely. When the darkest hour comes and all hope seems lost, you may find it inside yourself: a glimmering ember of the old gods. If you have the audacity to reach for it, if you have the tenacity to contain it, if you have the will to wield it, that ember becomes a spark and that spark becomes a pyre in which you will burn away the darkness!Awakening will provide you with enhanced attributes and very powerful abilities that may break the normal game rules! ",
+          "text": "Олимпийцы мертвы, убиты в первые минуты Эсхатона. Их почитатели рассеяны, их храмы заброшены, их сила ослабла и покинула мир. Но не полностью. Когда наступит самый тёмный час и вся надежда покажется потерянной, вы можете найти это внутри себя: мерцающий уголёк старых богов. Если у вас хватит дерзости дотянуться до него, если у вас хватит упорства удержать его, если у вас хватит воли владеть им, этот уголёк станет искрой, а эта искра — костром, в котором вы сожжёте тьму! Пробуждение даст вам улучшенные атрибуты и очень мощные способности, которые могут нарушать обычные правила игры! ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Godform card",
-          "marks": []
+          "text": "карта Божественной формы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -327,7 +355,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unlocking the Awakening Mechanic",
+          "text": "Разблокировка Механики Пробуждения",
           "marks": []
         }
       ]
@@ -338,63 +366,75 @@
       "children": [
         {
           "kind": "text",
-          "text": "Transcend your limits and for a brief moment achieve a Godform of one of the fallen Olympians and walk their hallowed ground. Such is the power of the Godform transformations, otherwise known as ",
+          "text": "Преодолейте свои пределы и на короткий миг достигните Божественной формы одного из павших Олимпийцев и ступите на их священную землю. Такова сила трансформаций Божественной формы, иначе известных как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Awakenings",
+          "text": "Пробуждения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Как только вы получите доступ к ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".Once you gain access to the ",
+          "text": "Технологии Заброшенного Наоса",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", вы разблокируете скрытый потенциал, позволяющий Титанам ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Forlorn Naos Technology",
+          "text": "Пробуждаться",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В это время вы также навсегда добавите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", you will un-lock a hidden potential, allowing Titans to ",
+          "text": "Пробуждение",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Тяжёлую Травму в колоду Травм и замените ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Awaken",
+          "text": "Вы умерли",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Обол на его специальный вариант. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". At this time, you will also permanently add the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Awakening",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Grave Trauma to the Trauma deck and switch the",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " You died",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Obol with its special variant. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "When the Titan is on the VP, place its miniature here.",
-          "marks": []
+          "text": "Когда Титан находится на ВП, поместите его миниатюру сюда.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

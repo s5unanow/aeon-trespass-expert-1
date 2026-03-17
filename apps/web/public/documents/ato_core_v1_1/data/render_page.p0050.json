@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0050",
-    "title": "2. Raise Rage  and Check Priority Target",
+    "title": "2. Повысьте Ярость и проверьте Приоритетную Цель",
     "section_path": [],
     "source_page_number": 50
   },
@@ -19,8 +19,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "An Attack with a Reach 2 weaponAn Attack with a Ranged 3-4 weapon",
-          "marks": []
+          "text": "Атака оружием с дальностью 2Атака оружием с дальностью 3-4",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -31,7 +33,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "2. Raise Rage  and Check Priority Target",
+          "text": "2. Повысьте Ярость и проверьте Приоритетную Цель",
           "marks": []
         }
       ]
@@ -42,27 +44,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Raise your ",
+          "text": "Повысьте значение вашей ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rage",
+          "text": "Ярости",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на 1. Затем, если ваша Ярость выше, чем Ярость Приоритетной Цели, вы становитесь новой ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " value by 1. Then, if your  is higher than the Priority Target’s , you become the new ",
-          "marks": []
+          "text": "Приоритетной Целью",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Priority Target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Gain the  token.",
+          "text": ". Получите жетон Приоритетной Цели.",
           "marks": []
         }
       ]
@@ -74,7 +80,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "3. Attack Roll",
+          "text": "3. Бросок Атаки",
           "marks": []
         }
       ]
@@ -85,143 +91,181 @@
       "children": [
         {
           "kind": "text",
-          "text": "Roll a number of (d10) Attack dice equal to the  value of your weapon. Increase the result of ",
+          "text": "Бросьте количество кубиков атаки (d10), равное значению атаки вашего оружия. Увеличьте результат ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "each",
+          "text": "каждого",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " кубика атаки на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Attack die by your weapon’s ",
+          "text": "бонус Точности",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашего оружия. Помните, что вы можете использовать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Precision bonus",
+          "text": "жетоны Открытия",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " из Пула Кратоса, чтобы получить дополнительную Точность (см. Же-тоны Кратоса на стр. 45). Вы также можете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Remember that you can use ",
+          "text": "перебросить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " свои кубики, заплатив Судьбу или используя другие способности и эффекты, которые предоставляют перебросы атаки (см. Перебросы кубиков на стр. 8).Каждый кубик с результатом, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Opening tokens ",
+          "text": "равным или превышающим",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " значение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "from the Kratos Pool to gain additional Precision (see Kratos To-kens on p. 45). You can also ",
+          "text": "Попадания",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "re-roll",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " your dice by paying  or using other abilities and effects that provide Attack re-rolls (see Dice Re-rolls on p. 8).Each die with a result ",
+          "text": ", является ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "equal to or higher",
+          "text": "попаданием",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если вы попадаете всеми своими кубиками атаки, это считается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " than the Primordial’s ",
+          "text": "полным попаданием",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и активирует все способности ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "To Hit",
+          "text": "«Полное попадание:»",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (кроме тех, что на неактивном оружии). Обратите внимание, что не все способности ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " value is a ",
+          "text": "«Полное попадание»",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " активируются немедленно. Если они обозначают конкретное условие времени, они вступают в силу в это время (см. Использование способностей, стр. 60).Все кубики, которые не являются попаданиями, являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "hit",
+          "text": "промахами",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если вы промахиваетесь всеми своими кубиками атаки, это считается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". If you hit with all your Attack dice, it is con-sidered a ",
+          "text": "полным промахом",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Перейдите сразу к шагу 9 (Очистите Пул Кратоса), не разрешая никаких дальнейших шагов атаки, затем активируйте все способности ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "full hit ",
+          "text": "«Полный промах:»",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (кроме тех, что на неактивном оружии) и немедленно завершите Атаку.Обратите внимание, что некоторые карты Мнемос имеют дополнительные эффекты, которые активируются в зависимости от результата вашего Броска Атаки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "and activates all ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "“Full hit:”",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " abilities (except ones on inactive weapons). Note that not all",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " “Full hit”",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " abilities activate immediately. If they denote a specific timing condition, they take effect at that time (see Ability Usage, p. 60).All dice that are not hits are ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "misses",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". If you miss with all your At-tack dice, it is considered a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "full miss",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Go straight to step 9 (Clear the Kratos Pool), without resolving any further Attack steps, then activate all ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "“Full miss:”",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " abilities (except ones on inactive weapons) and immediately end the Attack.Note that some  cards have additional effects that activate based on the result of your Attack Roll.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Remember: A natural ‘10’ is always a hit and a natural ‘1’ is al-ways a miss no matter how many positive or negative Precision modifiers you apply.",
-          "marks": []
+          "text": "Помните: естественная «10» всегда является попаданием, а естественная «1» всегда является промахом, независимо от того, сколько положительных или отрицательных модификаторов Точности вы применяете.",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -232,7 +276,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Crit die",
+          "text": "Критический кубик",
           "marks": []
         }
       ]
@@ -243,97 +287,215 @@
       "children": [
         {
           "kind": "text",
-          "text": "Whenever you perform an Attack or Evasion Roll, one of the dice you roll must always be the white Crit die. If you roll only one die, it is always the Crit die. The Crit die is used to simulate strokes of luck, as well as unexpected failures. Whenever you roll a natural (i.e. before applying any modifiers) ‘10’ on the Crit die, you gain a “Crit Chance” for this Attack. During a Titan Attack, a Crit Chance may turn your Wound into a Critical Wound! If you successful-ly wound the Primordial while you have a Crit Chance, ignore all other responses and instead resolve the ",
+          "text": "Всякий раз, когда вы совершаете Атаку или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Critical",
+          "text": "Бросок Уклонения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". If you ",
+          "text": ", один из кубиков, которые вы бросаете, всегда должен быть белым критическим кубиком. Если вы бросаете только один кубик, это всегда критический кубик. Критический кубик используется для имитации удачных стечений обстоятельств, а также неожиданных неудач. Всякий раз, когда вы выбрасываете естественную (т.е. до применения каких-либо модификаторов) «10» на критическом кубике, вы получаете «Шанс Крита» для этой Атаки. Во время Атаки ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "fail to wound",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", resolve Responses as normal.Some  cards, Titan Sheets and Mnemos cards introduce other crit effects during and outside of attacking. These refer ",
+          "text": ", Шанс Крита может превратить вашу ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "only",
+          "text": "Рану",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " to the result on the",
+          "text": " в Критическую ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Crit die ",
+          "text": "Рану",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "and they include:",
+          "text": "! Если вы успешно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crit Chance:",
+          "text": "раните",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Resolve this effect if you roll a natural ‘10’ in the At-tack Roll (on top of gaining the “Crit Chance” as normal).",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crit Miss: ",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Resolve this effect if you roll a natural ‘1’ in the Attack Roll. You may re-roll this die as normal (using  or other effects), but ",
+          "text": ", имея Шанс Крита, игнорируйте все остальные реакции и вместо этого разрешите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crit Miss effects",
+          "text": "Критическое",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " [событие]. Если вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " must be resolved nonetheless. If you re-roll the Crit die and roll a natural ‘1’ again, resolve any Crit Miss effects an additional time.",
+          "text": "не смогли ранить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", разрешите Реакции как обычно.Некоторые карты, Листы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crit Evade: ",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Resolve this effect if you roll a natural ‘10’ in the Eva-sion Roll.",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crit Evade Fail:",
+          "text": "карты Мнемос",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Resolve this effect if you roll a natural ‘1’ in the Evasion Roll. You may re-roll this die as normal (using  or other effects), but Crit Evade Fail effects must be resolved nonetheless. If you re-roll  the Crit die and roll a natural ‘1’ again, resolve any Crit Evade Fail effects an additional time.",
+          "text": " вводят другие критические эффекты во время и вне атаки. Они относятся ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " к результату на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Критическом кубике",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и включают:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Шанс Крита:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Разрешите этот эффект, если вы выбрасываете естественную «10» в Броске Атаки (в дополнение к получению «Шанса Крита» как обычно).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Критический Промах: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Разрешите этот эффект, если вы выбрасываете естественную «1» в Броске Атаки. Вы можете перебросить этот кубик как обычно (используя Судьбу или другие эффекты), но ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "эффекты Критического Промаха",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " должны быть разрешены тем не менее. Если вы перебрасываете критический кубик и снова выбрасываете естественную «1», разрешите любые эффекты Критического Промаха дополнительный раз.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Критическое Уклонение: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Разрешите этот эффект, если вы выбрасываете естественную «10» в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Броске Уклонения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Провал Критического Уклонения:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Разрешите этот эффект, если вы выбрасываете естественную «1» в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Броске Уклонения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Вы можете перебросить этот кубик как обычно (используя Судьбу или другие эффекты), но эффекты Провала Критического Уклонения должны быть разрешены тем не менее. Если вы перебрасываете критический кубик и снова выбрасываете естественную «1», разрешите любые эффекты Провала Критического Уклонения дополнительный раз.",
           "marks": []
         }
       ]
@@ -345,7 +507,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "4. First Ability Window",
+          "text": "4. Первое Окно Способностей",
           "marks": []
         }
       ]
@@ -356,17 +518,69 @@
       "children": [
         {
           "kind": "text",
-          "text": "Activate applicable abilities from your Titan’s Kratos Table, Mne-mos cards, your active weapon and any other non-weapon  cards equipped on your Titan. ",
+          "text": "Активируйте применимые способности из Таблицы Кратоса вашего ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Onlythe attacking Titan",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " may activate abilities during this window, unless explicitly stated otherwise.Abilities used during this window will influence your own Attack. These mostly include abilities that allow you to change your Titan’s positioning or push the Primordial (such as Vault or Pushback X). Some rare abilities may also allow you to add Kratos tokens for yourself (such as Auto-break X), but most Kratos token abilities are used during the second ability window (see Kratos Tokens, p. 45). To learn more about each ability’s timing, see the Keywords List on p. 63 or the back of your Titan Sheet.",
+          "text": ", карт Мнемос, вашего активного оружия и любых других не-оружейных карт, экипированных на вашем ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титане",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Только атакующий Титан",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " может активировать способности в течение этого окна, если явно не указано иное.Способности, используемые в течение этого окна, будут влиять на вашу собственную Атаку. Они в основном включают способности, которые позволяют вам изменять позиционирование вашего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " или отталкивать ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (такие как «Прыжок» или «Отбрасывание X»). Некоторые редкие способности также могут позволить вам добавлять жетоны Кратоса для себя (такие как «Авто-прорыв X»), но большинство способностей с жетонами Кратоса используются во втором окне способностей (см. Же-тоны Кратоса, стр. 45). Чтобы узнать больше о времени действия каждой способности, см. Список ключевых слов на стр. 63 или обратную сторону вашего Листа ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
           "marks": []
         }
       ]
@@ -378,7 +592,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "5. Draw BP Card",
+          "text": "5. Возьмите карту BP",
           "marks": []
         }
       ]
@@ -389,17 +603,29 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordials are giant monsters from some Other Place and their wholly alien biology reflects that. Their bodies are as varied as they are grotesque, and that is represented by the BP cards.Draw the top card from the BP deck and reveal it. Notice the ",
+          "text": "Первозданные — это гигантские монстры из Иного Места, и их совершенно чуждая биология отражает это. Их тела так же разнообразны, как и гротескны, и это представлено картами BP.Возьмите верхнюю карту из колоды BP и покажите ее. Обратите внимание на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "roman numeral ",
+          "text": "римскую цифру",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в центре рубашки карты. Это число указывает уровень карты BP. Таким образом, хотя колода BP хранится лицом вниз, вы получаете некоторое представление о том, насколько сложно будет ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "in the center of the card back. This number indicates the level of the BP card. So, although the BP deck is kept facedown, you get some sense of how tough the next BP card will be to wound.If at any point the BP or AI decks would be empty (for example when all cards from that deck are on the corresponding discard pile) after resolving the current action, shuffle the discard pile into the deck.",
+          "text": "ранить",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " следующую карту BP.Если в какой-либо момент колоды BP или AI окажутся пустыми (например, когда все карты из этой колоды находятся на соответствующей стопке сброса) после разрешения текущего действия, перетасуйте стопку сброса в колоду.",
           "marks": []
         }
       ]

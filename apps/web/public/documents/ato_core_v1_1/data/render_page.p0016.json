@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0016",
-    "title": "3. Exploration Step",
+    "title": "3. Шаг Исследования",
     "section_path": [],
     "source_page_number": 16
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": " Resolve a Timeline Battle. Research a Structural Technology. Research a Battle Technology.",
+          "text": "Разрешите Битву на Хронологии. Исследуйте Структурную Технологию. Исследуйте Боевую Технологию.",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "3. Exploration Step",
+          "text": "3. Шаг Исследования",
           "marks": []
         }
       ]
@@ -42,17 +42,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "During the Exploration Step, you (1) resolve all active ",
+          "text": "Во время Шага Исследования вы (1) разрешаете все активные ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exploration symbols",
-          "marks": []
+          "text": "символы Исследования",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " from your current tile, (2) perform an Exploration Draw from the Exploration deck, (3) move the Adversary if required and, occasionally, (4) perform an Acclimation.",
+          "text": " с вашего текущего тайла, (2) выполняете Жребий Исследования из колоды Исследования, (3) перемещаете Противника, если требуется, и, иногда, (4) выполняете Акклиматизацию.",
           "marks": []
         },
         {
@@ -69,7 +71,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "1. Resolving Exploration Symbols",
+          "text": "1. Разрешение символов Исследования",
           "marks": []
         }
       ]
@@ -80,13 +82,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "Exploration symbols represent predictable elements present in the region, both beneficial and detrimental to your cause, things like wandering Titans, sympathetic allies and nefarious forces.  Exploration symbols are a type of Map symbol, and the most com-mon are ",
+          "text": "Символы Исследования представляют предсказуемые элементы, присутствующие в регионе, как полезные, так и вредные для вашего дела, такие как блуждающие Титаны, сочувствующие союзники и гнусные силы. Символы Исследования — это тип символов Карты, и наиболее распространёнными являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Progress",
-          "marks": []
+          "text": "Прогресс",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -95,92 +99,110 @@
         },
         {
           "kind": "text",
-          "text": "Titan",
+          "text": "Титан",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and ",
+          "text": "Рок",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". (см. Символы Исследования, с. 14) Дополнительные символы Исследования, специфичные для Цикла, вы можете найти в соответствующих Книгах Историй. Положительные символы Исследования, такие как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Doom",
+          "text": "Прогресс",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". (see Exploration Symbols, p. 14) You can find additional Cycle-specific Exploration symbols in the corresponding Storybooks. Positive Exploration symbols, like ",
+          "text": "Титан",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", активны только на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Progress",
+          "text": "Неисследованных тайлах",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и поэтому разрешаются только один раз за тайл ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "and ",
+          "text": "за Цикл",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Это означает, что если вы повторно посетите Исследованный тайл, вы не получите связанные бонусы снова (Тайлы становятся Исследованными на Шаге Завершения, см. с. 22). Отрицательные символы Исследования, такие как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Titan",
+          "text": "Рок",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", are active only on ",
+          "text": "всегда активны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", что означает, что они активны как на Исследованных, так и на Неисследованных тайлах. Это означает, что если вы повторно посетите Исследованный тайл, вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Unexplored tiles ",
-          "marks": []
+          "text": "всегда получите связанный штраф! Помните: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "and as such are only resolved once per tile",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " per Cycle",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". This means that if you revisit an Explored tile, you will not gain the associated bonuses again (Tiles become Ex-plored in the End Step, see p. 22). Negative Exploration symbols, like ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Doom",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", are",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " always active",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", meaning that they are active both on Explored and Unexplored tiles. This means that if you revisit an Explored tile, you ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "will always gain the associated penalty! Remember: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "During the End Step, if you are on an Unexplored tile, it becomes Explored.",
+          "text": "Во время Шага Завершения, если вы находитесь на Неисследованном тайле, он становится Исследованным.",
           "marks": []
         }
       ]
@@ -192,7 +214,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "2. Resolving an Exploration Draw",
+          "text": "2. Разрешение Жребия Исследования",
           "marks": []
         }
       ]
@@ -203,107 +225,127 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Exploration deck, always specific to a given Cycle, represents the efforts of your crew, scouts and diplomats at acquiring re-sources, allies and intel. ",
+          "text": "Колода Исследования, всегда специфичная для данного Цикла, представляет усилия вашего экипажа, разведчиков и дипломатов по приобретению ресурсов, союзников и разведданных. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "The Exploration Draw is the main source of Mortal resources",
+          "text": "Жребий Исследования является основным источником Смертных ресурсов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. раздел «Ресурсы» на с. 19). Чтобы выполнить Жребий Исследования, начните брать карты из Колоды Исследования. Берите карты сверху колоды и разрешайте их одну за другой, пока не возьмёте карту, на которой в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (see Resources box on p. 19).To perform an Exploration Draw, start drawing cards from the Ex-ploration Deck. Draw cards from the top of the deck and resolve them one by one until you draw a card that shows the ",
+          "text": "правом нижнем углу",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " будет ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "stack end symbol",
+          "text": "символ конца стопки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Затем повторите процесс, создав вторую стопку карт. Примечание: Карты с символом конца стопки обычно являются картами ресурсов. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " in the ",
+          "text": "Это означает, что каждый Жребий Исследования приведёт к двум стопкам карт Исследования, каждая из которых, вероятно, закончится картой ресурсов. l324",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Карты Исследования всегда разрешаются в следующем порядке:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "lower right corner",
+          "text": "1. Основной эффект:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Разрешите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Then, repeat the process, cre-ating a second stack of cards. Note: Cards that have the stack end symbol are usually resource cards. ",
+          "text": "Основной эффект",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карты, сверху вниз. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "This means that each Explora-tion Draw will result in two stacks of Exploration cards, each of which will probably end with a resource card. l324",
+          "text": "2. Активация Противника:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если на карте есть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exploration cards are always resolved in the following order:",
+          "text": "символ Противника",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", разрешите активацию Противника (см. с. 16).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\tMain Effect:",
+          "text": "3. Особый Эффект Утилизации: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Если есть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Resolve the ",
-          "marks": []
+          "text": "Особый Эффект Утилизации",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Main Effect",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " of the card, from top to bottom. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "2.\tAdversary activation:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " If there is an ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Adversary symbol",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " on the card, resolve the Adversary activation (see p. 16).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "3.\tSpecial Disposal Effect: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "If there is a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Special Disposal Effect",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", resolve it:",
+          "text": ", разрешите его:",
           "marks": []
         },
         {
@@ -319,17 +361,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "aside. It is shuffled back into the Exploration deck after you resolve a ",
+          "text": "Она замешивается обратно в колоду Исследования после того, как вы разрешите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Timeline Battle ",
-          "marks": []
+          "text": "Битву на Хронологии",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "(see Encounter Step, p. 17).",
+          "text": " (см. Шаг Встречи, с. 17).",
           "marks": []
         }
       ]
@@ -340,77 +384,91 @@
       "children": [
         {
           "kind": "text",
-          "text": "Note: Conversely, this means that all other Exploration cards are left on the table until the end of the Exploration Draw and that they will be shuffled into the deck.",
+          "text": "Примечание: И наоборот, это означает, что все остальные карты Исследования остаются на столе до конца Жребия Исследования и будут замешаны обратно в колоду.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "4.\tStack Symbol:",
+          "text": "4. Символ стопки:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если в правом нижнем углу карты есть символ «Конец стопки», завершите стопку. В противном случае, если там есть символ «Взять ещё», возьмите ещё одну карту Исследования для этой стопки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If there is a an “End stack” symbol in the lower right corner of the card, end the stack. Otherwise, if there is a “Draw another” symbol there, draw another Exploration card for that stack.",
+          "text": "Символ конца стопкиСимвол «Взять ещё»",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "После того как вы завершите первую стопку, возьмите вторую стопку (пока не замешивайте никакие карты обратно в колоду Исследования!). Когда вы завершите вторую стопку, замешайте все взятые карты Исследования, которые не были удалены из колоды, обратно в колоду.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End stack symbolDraw another symbol",
+          "text": "Примечание: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Некоторые эффекты карт Исследования могут быть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "After you end the first stack, draw the second stack (do not shuffle any cards back into the Exploration deck yet!). When you end the second stack, shuffle all drawn Exploration cards that have not been removed from the deck back into the deck.",
+          "text": "активированы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашими Очками Дипломатии, значением ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note: ",
+          "text": "Судьбы Арго",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или другими статистиками. Разрешайте только те эффекты, которые применимы. Если не указано иное, триггеры Дипломатии всегда относятся к Местной Фракции (см. Дипломатия, с. 23). Думайте о триггерах как об «усилителях». Если эффект вредит вам, отрицательный триггер усилит этот эффект. Если вы что-то получаете от Местной Фракции, положительный триггер принесёт вам лучшую награду. Некоторые распространённые Триггеры Исследования включают:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Some Exploration Card effects can be ",
+          "text": " Судьба Арго:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " высокое значение обычно плохо, так что будьте осторожны!",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "triggered",
-          "marks": []
+          "text": "Очки Дипломатии:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " by your Diplomacy Scores, ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo Fate",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " value or other statistics. Only resolve the effects that apply. Unless stated otherwise, Diplo-macy triggers always refer to the Local Faction (see Diplomacy, p. 23). Think of triggers as “intensifiers”. If an effect harms you, a nega-tive trigger will amplify that effect. If you’re gaining something from the Local Faction, a positive trigger will garner you a better reward. Some common Exploration Triggers include:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Argo Fate:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " a high  value is usually a bad thing, so be careful!",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Diplomacy Score:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " a Friendly Faction is more likely to help you than a Faction that Denounces you, not to mention being At War with someone!",
+          "text": " Дружественная Фракция с большей вероятностью поможет вам, чем Фракция, которая вас осуждает, не говоря уже о состоянии войны с кем-либо!",
           "marks": []
         }
       ]

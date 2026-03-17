@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0036",
-    "title": "Evolution Track",
+    "title": "Трек Эволюции",
     "section_path": [],
     "source_page_number": 36
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "throughout the whole campaign, but their Battles still change: this is reflected by their Battle Tracks. They are also much more pow-erful than Regular Primordials, and your first few encounters may be rough!Most Battles will tell you to either mark one Evolution box or one Battle box on the respective Primordial’s track.",
+          "text": "на протяжении всей кампании, но их Битвы всё равно меняются: это отражается на их Боевых Треках. Они также гораздо более могущественны, чем Обычные Первозданные, и ваши первые несколько столкновений могут быть тяжёлыми! Большинство Битв предписывают вам отметить либо одно поле Эволюции, либо одно поле Битвы на соответствующем треке Первозданного.",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Evolution Track",
+          "text": "Трек Эволюции",
           "marks": []
         }
       ]
@@ -42,7 +42,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Timeline BattlesHekaton0IIIIIIIIIIIIIVIVIVLabyrinthaurosIIIIIIIVIV",
+          "text": "Битвы на шкале времениHekaton0IIIIIIIIIIIIIVIVIVLabyrinthaurosIIIIIIIVIV",
           "marks": []
         }
       ]
@@ -54,7 +54,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Boss Primordial  Adversary",
+          "text": "Босс Первозданный Противник",
           "marks": []
         }
       ]
@@ -66,7 +66,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Higher Level Primordials",
+          "text": "Первозданные более высоких уровней",
           "marks": []
         }
       ]
@@ -77,7 +77,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "You may have noticed that the Primordial Sheets have Levels above 4 (for Regular Primordials) and 1 (for Adversaries and Bosses). These may be used in special, difficult encounters, but will be pri-marily encountered in the Mnestis Theatre (see p. 69).",
+          "text": "Вы могли заметить, что Листы Первозданных имеют Уровни выше 4 (для Обычных Первозданных) и 1 (для Противников и Боссов). Они могут использоваться в особых, сложных столкновениях, но в основном будут встречаться в Театре Мнестис (см. стр. 69).",
           "marks": []
         }
       ]
@@ -89,7 +89,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "4. Additional Setup",
+          "text": "4. Дополнительная подготовка",
           "marks": []
         }
       ]
@@ -100,67 +100,79 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battling each Primordial is different and battling each Primordial Level is different as well. Thus, each scenario will introduce its own ",
+          "text": "Сражение с каждым Первозданным отличается, и сражение с каждым Уровнем Первозданного также отличается. Таким образом, каждый сценарий будет вводить свои собственные ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "specific rules and setup instructions",
+          "text": "особые правила и инструкции по подготовке",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " которые вам нужно соблюдать. Аналогично, у каждого Первозданного есть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " that you need to follow. Sim-ilarly, every Primordial has ",
+          "text": "Черты",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Некоторые Черты вы найдете на самом ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Traits",
+          "text": "Листе Первозданного",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", в то время как другие будут представлены ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".You will find some Traits on the ",
+          "text": "картами Черты Первозданного",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Каждый Уровень Первозданного указывает, какие Черты использовать. Большинство Черты являются аддитивными, что означает, что по мере повышения Уровня они накапливаются. Некоторые редкие Черты (например, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial Sheet",
+          "text": "Тиз",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Преследователя) могут быть удалены навсегда при выполнении определенных условий. На этом шаге вы также должны разрешить любые дополнительные ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " itself, while oth-ers will be represented by Primordial ",
-          "marks": []
+          "text": "Эскалации",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Trait cards",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Each Primordial Level specifies which Traits to use. Most of the Traits are additive, meaning that as the Level rises, they accumulate. Some rare Traits (like the Pursuer’s ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Tease",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ") may be removed permanently when cer-tain conditions are met.In this step you should also resolve any additional ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Escala-tions",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (see Escalations Outside of Battle, p. 54)",
+          "text": " (см. Эскалации вне Битвы, стр. 54)",
           "marks": []
         }
       ]
@@ -172,7 +184,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle Sequence",
+          "text": "Последовательность Битвы",
           "marks": []
         }
       ]
@@ -183,67 +195,91 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battles in ",
+          "text": "Битвы в ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " разрешаются в серии чередующихся Раундов Первозданного и Титана. Они немедленно заканчиваются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " are resolved in a series of al-ternating Primordial and Titan Rounds. They immediately end with the ",
+          "text": "Победой Аргонавтов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", как только Первозданный убит: когда он получил ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argonauts’ Victory",
+          "text": "Раны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", равные его значению ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " as soon as the Primordial is slain: once it has suffered Wounds equal to its ",
+          "text": "Ран",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Битва немедленно заканчивается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Wounds",
+          "text": "Поражением Аргонавтов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", как только все Титаны погибают или Аргонавты решают ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "value. The Battle im-mediately ends with the ",
+          "text": "Отступить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. Отступление, стр. 57). Если эффект явно не указывает иное, все Битвы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argonauts’ Defeat",
-          "marks": []
+          "text": "начинаются с Раунда Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " as soon as all Titans die or the Argonauts decide to ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Retreat",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (see Retreat, p. 57).Unless an effect explicitly states otherwise, all Battles ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "begin with the Primordial Round",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". During the Primordial Round, you draw and resolve the top AI card and in the Titan Round each Titan takes their turn and performs their actions.",
+          "text": ". Во время Раунда Первозданного вы берете и разрешаете верхнюю карту ИИ, а в Раунде Титана каждый Титан делает свой ход и выполняет свои действия.",
           "marks": []
         }
       ]
@@ -255,7 +291,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Round",
+          "text": "Раунд Первозданного",
           "marks": []
         }
       ]
@@ -266,7 +302,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordials are governed by a set of attributes, Traits and two dis-tinct decks: the AI deck and the BP deck. They are not controlled by a specific player. Instead, players as a group will resolve instructions denoted on AI and BP cards that will dictate its behavior. ",
+          "text": "Первозданные управляются набором атрибутов, Чертами и двумя различными колодами: колодой ИИ и колодой БП. Они не контролируются конкретным игроком. Вместо этого игроки как группа будут разрешать инструкции, указанные на картах ИИ и БП, которые будут диктовать его поведение.",
           "marks": []
         }
       ]
@@ -278,7 +314,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Sheet",
+          "text": "Лист Первозданного",
           "marks": []
         }
       ]
@@ -289,33 +325,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Primordial is represented by a large Primordial Sheet that in-cludes all the basic information about a given Primordial. Besides the Primordial name, its illustration and spaces for the Signature and Routine cards (see p. 36), it shows the Primordial diagram ",
+          "text": "Каждый Первозданный представлен большим Листом Первозданного, который включает всю основную информацию о данном Первозданном. Помимо имени Первозданного, его иллюстрации и мест для карт Подписи и Рутины (см. стр. 36), он показывает диаграмму Первозданного ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "l",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", its basic Traits ",
+          "text": ", его основные Черты ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", as well as Level-specific attributes and Traits ",
+          "text": ", а также атрибуты и Черты, специфичные для Уровня ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -331,7 +373,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Diagram",
+          "text": "Диаграмма Первозданного",
           "marks": []
         }
       ]
@@ -342,33 +384,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Primordial diagram shows the number of spaces the Primor-dial occupies on the Battle Board (usually four or nine), as well as its ",
+          "text": "Диаграмма Первозданного показывает количество клеток, которые Первозданный занимает на Боевом Поле (обычно четыре или девять), а также его ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "front",
+          "text": "переднюю часть",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and the ",
-          "marks": []
+          "text": "задние",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Rear",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "R spaces. Usually, you use the front for establishing targeting of a Primordial Attack, while the Rear spaces don’t have general rules; however, other rules may re-fer to the positioning of Titans in regards to the rear.",
+          "text": " клетки. Обычно передняя часть используется для определения цели Атаки Первозданного, в то время как задние клетки не имеют общих правил; однако другие правила могут относиться к расположению Титанов относительно задней части.",
           "marks": []
         },
         {
           "kind": "text",
           "text": "312",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         }
       ]
     }

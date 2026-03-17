@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0053",
-    "title": "Wound Stack",
+    "title": "Стопка Ран",
     "section_path": [],
     "source_page_number": 53
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Wound Stack",
+          "text": "Стопка Ран",
           "marks": []
         }
       ]
@@ -31,17 +31,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Successfully wounded BP cards ",
+          "text": "Успешно раненные карты BP ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "become Wounds",
-          "marks": []
+          "text": "становятся Ранами",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " and end up on the Wound Stack. However, not all Wounds are equal!Some attacks are so devastating they inflict multiple Wounds instead! The most common source of Double Wounds are the BP III cards. Some game effects, especially Critical Wounds, can also cause you to deal Additional Single Wounds. The general rules are as follows:",
+          "text": " и попадают в Стопку Ран. Однако не все Раны одинаковы! Некоторые атаки настолько разрушительны, что наносят несколько Ран вместо одной! Наиболее частым источником Двойных Ран являются карты BP III. Некоторые игровые эффекты, особенно Критические Раны, также могут привести к тому, что вы нанесёте Дополнительные Одиночные Раны. Общие правила таковы:",
           "marks": []
         }
       ]
@@ -52,7 +54,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "the Wound Stack. This is a single Wound.",
+          "text": "Стопки Ран. Это одиночная Рана.",
           "marks": []
         }
       ]
@@ -63,22 +65,26 @@
       "children": [
         {
           "kind": "text",
-          "text": "Wound",
+          "text": "Раны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на вершину Стопки Ран и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " card on top of the Wound Stack and ",
-          "marks": []
+          "text": "откладываете раненую карту BP III в сторону",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "set the wounded BP III card aside",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". It will return to the bottom of the deck after Escalation (see Full Escalation Chart, p. 53).",
+          "text": ". Она вернётся на дно колоды после Эскалации (см. Полную Таблицу Эскалации, с. 53).",
           "marks": []
         }
       ]
@@ -89,7 +95,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Wound Stack instead. Each BP III card on the Wound Stack counts as two Wounds (just like a Double Wound would).",
+          "text": "Стопки Ран вместо этого. Каждая карта BP III в Стопке Ран считается за две Раны (точно так же, как Двойная Рана).",
           "marks": []
         }
       ]
@@ -100,7 +106,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "place a generic Single Wound card on top of the Wound Stack, in addition to any other Wounds you’ve dealt.",
+          "text": "поместите общую карту Одиночной Раны на вершину Стопки Ран, в дополнение к любым другим Ранам, которые вы нанесли.",
           "marks": []
         }
       ]
@@ -112,7 +118,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Performing Escalation",
+          "text": "Выполнение Эскалации",
           "marks": []
         }
       ]
@@ -123,7 +129,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Escalation is the process of adding more powerful cards to the BP and AI decks. It works slightly differently for each deck and in some special circumstances, but the general principle is the same. If you are instructed to search a deck and discard pile for a card, always prioritize cards from the deck. Only if you find no applicable cards in the deck should you search the discard pile.For a full breakdown of each case, see the Full Escalation Chart on the next page.For general rules, see the following paragraphs.",
+          "text": "Эскалация — это процесс добавления более мощных карт в колоды BP и AI. Она работает немного по-разному для каждой колоды и в некоторых особых обстоятельствах, но общий принцип тот же. Если вам предписано искать карту в колоде и стопке сброса, всегда отдавайте предпочтение картам из колоды. Только если вы не найдёте подходящих карт в колоде, следует искать в стопке сброса. Полное описание каждого случая см. в Полной Таблице Эскалации на следующей странице. Общие правила см. в следующих параграфах.",
           "marks": []
         }
       ]
@@ -135,7 +141,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Escalating the BP Deck",
+          "text": "Эскалация колоды BP",
           "marks": []
         }
       ]
@@ -146,17 +152,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Your attack has exposed a deeper or more important body part of the Primordial. Maybe you’ve broken through the outer defenses, maybe you’ve torn away a piece of armor or smashed a carapace plate. Beneath lies something new, something more vital to the wellbeing of the creature.In general, when the current BP card leaves the BP deck to become a Wound, you take a random BP card of a higher level from the BP Escalation deck and shuffle it into the BP deck. If the new BP card would end up as the ",
+          "text": "Ваша атака обнажила более глубокую или важную часть тела Первозданного. Возможно, вы прорвали внешнюю защиту, оторвали кусок брони или разбили панцирную пластину. Под ней лежит что-то новое, что-то более жизненно важное для благополучия существа. В общем, когда текущая карта BP покидает колоду BP, чтобы стать Раной, вы берёте случайную карту BP более высокого уровня из колоды Эскалации BP и замешиваете её в колоду BP. Если новая карта BP окажется ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "only card in the deck",
-          "marks": []
+          "text": "единственной картой в колоде",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", shuffle in the BP discard pile too.For special cases, see the Full Escalation Chart on the next page.",
+          "text": ", замешайте также стопку сброса BP. Особые случаи см. в Полной Таблице Эскалации на следующей странице.",
           "marks": []
         }
       ]
@@ -168,7 +176,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Escalating the AI Deck",
+          "text": "Эскалация колоды AI",
           "marks": []
         }
       ]
@@ -179,28 +187,35 @@
       "children": [
         {
           "kind": "text",
-          "text": "Just as your attack has exposed a more vital part of the Primordial’s body, so has it exposed the creature itself to the notion of death. It does not like it and will become more aggressive and deadly to assure it does not fall today!To escalate the AI deck, search the deck and discard pile (prioritize the deck) for a card matching the wounded BP card’s level and re-move it from the Battle. Then, take a random AI card of one level higher and shuffle it into the AI deck. If there is now only one card in the AI deck or you removed a card from the discard pile, shuffle the discard pile into the deck.If there are no AI cards that match the level of the BP card, remove a card of one level higher and escalate based on that card. This will lead you straight from a level I card to level III. ",
+          "text": "Подобно тому, как ваша атака обнажила более жизненно важную часть тела Первозданного, так и она подвергла само существо мысли о смерти. Ему это не нравится, и оно станет более агрессивным и смертоносным, чтобы не пасть сегодня! Чтобы провести эскалацию колоды AI, найдите в колоде и стопке сброса (отдавая предпочтение колоде) карту, соответствующую уровню раненой карты BP, и удалите её из Битвы. Затем возьмите случайную карту AI на один уровень выше и замешайте её в колоду AI. Если теперь в колоде AI осталась только одна карта или вы удалили карту из стопки сброса, замешайте стопку сброса в колоду. Если нет карт AI, соответствующих уровню карты BP, удалите карту на один уровень выше и проведите эскалацию на основе этой карты. Это приведёт вас прямо от карты уровня I к уровню III. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note: ",
+          "text": "Примечание: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Если нет больше текущих или более высокоуровневых карт для эскалации, вы добавите постоянный бонус к характеристикам вместо этого. Особые случаи см. в Полной Таблице Эскалации на следующей странице. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "If there are no more current or higher-level cards to escalate, you will add a permanent stat bonus instead.For special cases, see the Full Escalation Chart on the next page.",
-          "marks": []
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Example:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Herodotus wounded a BP III card! It wasn’t a Critical Wound, so the players set it aside, place a Double Wound on top of the Wound Stack, then resolve the Escalation instructions: they search the BP deck and discard pile for the lowest level BP card. They find that the lowest card in the BP deck is a BP II and the lowest card in the discard pile is a BP I. Therefore, they remove the BP I card from the discard pile from the Battle and shuffle the discard pile back into the BP deck. Then, they add a BP III card from an Escalation Deck and shuffle the BP deck again. Finally, they place the set aside BP III card at the bottom of the deck and proceed to AI escalation.They search the AI deck and discard for the lowest level card, just as they did with the BP cards. They find an AI I card both in the deck and in discard. Since none of them is lower, they prioritize the deck – the card from the AI deck is removed from the game and the discard pile returns to its place, unshuffled. Finally, they shuffle an AI III card from an Escalation deck into the AI deck and continue resolving the Titan Attack.",
-          "marks": []
+          "text": " Геродот ранил карту BP III! Это была не Критическая Рана, поэтому игроки отложили её в сторону, поместили Двойную Рану на вершину Стопки Ран, затем разрешили инструкции по Эскалации: они ищут в колоде BP и стопке сброса самую низкоуровневую карту BP. Они обнаруживают, что самая низкая карта в колоде BP — это BP II, а самая низкая карта в стопке сброса — это BP I. Следовательно, они удаляют карту BP I из стопки сброса из Битвы и замешивают стопку сброса обратно в колоду BP. Затем они добавляют карту BP III из колоды Эскалации и снова замешивают колоду BP. Наконец, они помещают отложенную карту BP III на дно колоды и переходят к эскалации AI. Они ищут в колоде AI и сбросе самую низкоуровневую карту, так же, как они делали с картами BP. Они находят карту AI I как в колоде, так и в сбросе. Поскольку ни одна из них не ниже, они отдают предпочтение колоде – карта из колоды AI удаляется из игры, а стопка сброса возвращается на своё место, не перемешиваясь. Наконец, они замешивают карту AI III из колоды Эскалации в колоду AI и продолжают разрешать Атаку Титана.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

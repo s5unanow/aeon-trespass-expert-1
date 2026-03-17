@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0030",
-    "title": "Special Events",
+    "title": "Особые События",
     "section_path": [],
     "source_page_number": 30
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Pharos Delve is a game of push your luck. It’s always worth it to start a Delve, but sometimes you will need to walk away: it’s better to run with nothing, than stay and lose. There are 15 cards in a standard Major Trauma deck. There’s a pair of each: ‘1s’, ‘2s’, ‘3s’, ‘4s’, ‘5s’, ‘6s’ and ‘7s’, and a single ‘8’.",
+          "text": "«Погружение в Фарос» — это игра на удачу. Всегда стоит начать погружение, но иногда вам придется отступить: лучше уйти ни с чем, чем остаться и проиграть. В стандартной колоде «Серьезная травма» 15 карт. В ней по паре карт: «1», «2», «3», «4», «5», «6» и «7», а также одна карта «8».",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Special Events",
+          "text": "Особые События",
           "marks": []
         }
       ]
@@ -42,17 +42,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Special Events are a broad category for unique, usually short and one of a kind adventures. There are no specific rules concerning Special Events. When instructed to resolve a Special Event, simply find an appropriately named passage in the ",
+          "text": "Особые События — это широкая категория для уникальных, обычно коротких и единственных в своем роде приключений. Нет конкретных правил, касающихся Особых Событий. Когда вам будет предписано разрешить Особое Событие, просто найдите соответствующий раздел в главе ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Special Events",
-          "marks": []
+          "text": "Особые События",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " chapter of your current Storybook and read it.",
+          "text": " вашей текущей Книги Историй и прочитайте его.",
           "marks": []
         }
       ]
@@ -64,7 +66,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Adventures",
+          "text": "Другие Приключения",
           "marks": []
         }
       ]
@@ -75,7 +77,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Aeon Trespass: Odyssey is a big game, full of exploration, discov-ery, surprises and secrets. In effect, you may encounter other types of adventures along the way (in the core game and expansions). These adventures will provide any additional rules required to re-solve them.",
+          "text": "Aeon Trespass: Odyssey — это большая игра, полная исследования, открытий, сюрпризов и секретов. По сути, вы можете столкнуться с другими типами приключений по пути (в базовой игре и дополнениях). Эти приключения предоставят любые дополнительные правила, необходимые для их разрешения.",
           "marks": []
         }
       ]
@@ -87,7 +89,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Additional Adventure Rules",
+          "text": "Дополнительные Правила Приключений",
           "marks": []
         }
       ]
@@ -99,7 +101,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemoses",
+          "text": "Мнемосы",
           "marks": []
         }
       ]
@@ -110,7 +112,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Although the Argonauts do not remember their pasts, certain Sto-ry Events and Adventures may trigger flashbacks of their defining moments. These fragmented memories are represented by Mne-mos cards. They not only allow you to learn more about your char-acter’s past, but also give access to unique abilities that can be later improved by collecting Mnemos nodes.WisdomBAN Mnemos 415268379110415268379210415268379310415268379410415268379510415268379610Siren survivorM003When you gain a Mnemos, find the associated Mnemos card in the game box and write its title on your Argonaut Sheet, in the ap-propriate space. Then, write the paragraph number of the first Mnemos Breakthroughs (see below) above the Breakthrough sym-bol on the corresponding Mnemos track. From then on, you gain access to this card’s Level 1 ability.",
+          "text": "Хотя Аргонавты не помнят своего прошлого, некоторые Сюжетные События и Приключения могут вызывать воспоминания об их определяющих моментах. Эти фрагментированные воспоминания представлены картами Мнемос. Они не только позволяют вам узнать больше о прошлом вашего персонажа, но и дают доступ к уникальным способностям, которые впоследствии можно улучшить, собирая узлы Мнемос.МудростьБАН Мнемос 415268379110415268379210415268379310415268379410415268379510415268379610Выживший сиреныM003Когда вы получаете Мнемос, найдите соответствующую карту Мнемос в коробке с игрой и запишите ее название на своем Листе Аргонавта в соответствующем месте. Затем запишите номер параграфа первого Прорыва Мнемос (см. ниже) над символом Прорыва на соответствующей дорожке Мнемос. С этого момента вы получаете доступ к способности 1-го уровня этой карты.",
           "marks": []
         }
       ]
@@ -122,7 +124,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos Cards",
+          "text": "Карты Мнемос",
           "marks": []
         }
       ]
@@ -133,72 +135,86 @@
       "children": [
         {
           "kind": "text",
-          "text": "On the back of a Mnemos card you will find a title and an illustra-tion, as well as a cryptic note as to its nature. On its front, the card shows the Cycle number ",
+          "text": "На обратной стороне карты Мнемос вы найдете название и иллюстрацию, а также загадочную заметку о ее природе. На лицевой стороне карты указан номер Цикла ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "1",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", три уровня Мнемос, каждый с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", three Mnemos levels, each with a ",
+          "text": "соответствующей способностью2",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "cor-responding ability2",
+          "text": "номером параграфа Прорыва3",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", а также ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and a ",
+          "text": "Бонусы Навыков4",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " для вашего Аргонавта и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Breakthrough paragraph number3",
+          "text": "Особенности Мнемос5",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", as well as ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Skill bonuses4",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " for your Argonaut and the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Mnemos traits5",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Mnemos card",
-          "marks": []
+          "text": "карта Мнемос",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "52341",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "You gain access to the Level 1 ability as soon as you gain the Mne-mos card, while Level 2 and Level 3 abilities are unlocked, respec-tively, by reaching the first and second Mnemos Breakthroughs.The Skill bonuses are simply applied onto your Argonaut Sheet, right after you gained the Mnemos card. They are permanent, as long as you have the Mnemos card.The Mnemos traits have no inherent effect, but they are used to determine if you gain a Mnemos node from a hub adventure (see below).",
+          "text": "Вы получаете доступ к способности 1-го уровня, как только получаете карту Мнемос, в то время как способности 2-го и 3-го уровней разблокируются, соответственно, при достижении первого и второго Прорывов Мнемос.Бонусы Навыков просто применяются к вашему Листу Аргонавта сразу после получения карты Мнемос. Они постоянны, пока у вас есть карта Мнемос.Особенности Мнемос не имеют собственного эффекта, но они используются для определения того, получаете ли вы узел Мнемос из центрального приключения (см. ниже).",
           "marks": []
         }
       ]
@@ -210,7 +226,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos Nodes",
+          "text": "Узлы Мнемос",
           "marks": []
         }
       ]
@@ -221,43 +237,51 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos nodes are like experience points for your individual Mne-mos cards. Each Mnemos progress track goes from 1 to 10 nodes. At certain thresholds (called Breakthroughs) you will experience a Mnemos adventure that further illuminates your past, as well as unlocks the next Mnemos Ability (using abilities will be described in further detail in the Battle Phase section of the Rulebook, on p. 33).You gain Mnemos nodes from various game elements, but the most common source of nodes is ",
+          "text": "Узлы Мнемос — это как очки опыта для ваших индивидуальных карт Мнемос. Каждая дорожка прогресса Мнемос содержит от 1 до 10 узлов. При достижении определенных порогов (называемых Прорывами) вы переживете приключение Мнемос, которое еще больше прояснит ваше прошлое, а также разблокирует следующую Способность Мнемос (использование способностей будет подробно описано в разделе «Фаза Битвы» Руководства, на стр. 33).Вы получаете узлы Мнемос из различных игровых элементов, но наиболее распространенным источником узлов являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "hub adventures",
+          "text": "центральные приключения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Чтобы получить узел Мнемос из центрального приключения, вам просто нужно сопоставить одну из особенностей Мнемос с особенностью приключения, указанной справа от названия приключения.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". To gain a Mnemos node from a hub adventure, you simply need to match one of the Mnemos’s traits to the adventure’s trait, found on the right of the adventure title.",
+          "text": "Пример приключения с особенностью «Боги»",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Когда вы собираетесь разрешить центральное приключение, сначала каждый Аргонавт с картой Мнемос ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example of an adventure with the Gods trait",
+          "text": "с соответствующей особенностью",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " получает 1 узел для этого Мнемос. Отметьте самый левый пустой узел на Листе Аргонавта рядом с названием этого Мнемос.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "When you are about to resolve a hub adventure, first each Argo-naut with a Mnemos card ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "with the corresponding trait",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " gains 1 node for that Mnemos. Mark the leftmost empty node on the Argo-naut Sheet next to this Mnemos’s title.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Important! This way an Argonaut can only gain 1 node per ad-venture, regardless of the number of Mnemos cards with match-ing traits they have.",
-          "marks": []
+          "text": "Важно! Таким образом, Аргонавт может получить только 1 узел за приключение, независимо от количества карт Мнемос с совпадающими особенностями, которые у него есть.",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     }

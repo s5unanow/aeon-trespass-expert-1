@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0008",
-    "title": "Important Game Rules",
+    "title": "Важные Правила Игры",
     "section_path": [],
     "source_page_number": 8
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Important Game Rules",
+          "text": "Важные Правила Игры",
           "marks": []
         }
       ]
@@ -32,11 +32,13 @@
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " is a big game, so it’s easy to get lost. That’s why we’ve taken some of the most important game rules, the golden rules if you will, and put them in a section of their own here, at the start of the Rulebook!",
+          "text": " — большая игра, поэтому в ней легко запутаться. Вот почему мы собрали некоторые из самых важных правил игры, так называемые золотые правила, и поместили их в отдельный раздел здесь, в начале Книги Правил!",
           "marks": []
         }
       ]
@@ -48,7 +50,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Cruel Fates Rule",
+          "text": "Правило Жестокой Судьбы",
           "marks": []
         }
       ]
@@ -59,7 +61,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "If you are unable to find the answer to a rules or timing conflict, re-solve the conflict in the manner that the you perceive as the worst possible at that moment, and continue with the game.",
+          "text": "Если вы не можете найти ответ на конфликт правил или тайминга, разрешите конфликт таким образом, который вы считаете наихудшим из возможных в данный момент, и продолжайте игру.",
           "marks": []
         }
       ]
@@ -71,7 +73,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Rules Precedence",
+          "text": "Приоритет Правил",
           "marks": []
         }
       ]
@@ -82,7 +84,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "In case of a rules conflict, cards and sheets take precedence over books. Cycle-specific rules found in Storybooks take precedence over the Rulebook. Specific rules take precedence over general rules.",
+          "text": "В случае конфликта правил карты и листы имеют приоритет над книгами. Правила, специфичные для ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", найденные в Книгах Историй, имеют приоритет над Книгой Правил. Конкретные правила имеют приоритет над общими правилами.",
           "marks": []
         }
       ]
@@ -94,7 +106,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Game Elements",
+          "text": "Элементы Игры",
           "marks": []
         }
       ]
@@ -105,7 +117,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Game elements include all physical components of the game as well as story passages and notes.",
+          "text": "Элементы игры включают все физические компоненты игры, а также сюжетные отрывки и заметки.",
           "marks": []
         }
       ]
@@ -117,7 +129,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Game Phases",
+          "text": "Фазы Игры",
           "marks": []
         }
       ]
@@ -128,7 +140,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "If you’re not in the Adventure Phase or the Battle Phase, you’re in the Voyage Phase.",
+          "text": "Если вы не находитесь в Фазе Приключения или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Битвы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", вы находитесь в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Странствия",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
           "marks": []
         }
       ]
@@ -140,7 +172,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Immediate Effects",
+          "text": "Немедленные Эффекты",
           "marks": []
         }
       ]
@@ -151,17 +183,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "If an effect is followed by the word ",
+          "text": "Если за эффектом следует слово ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "immediately",
-          "marks": []
+          "text": "немедленно",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " it must be resolved the moment it is triggered and takes precedence over any other lingering effects as well as overruling any conflicting rules.",
+          "text": ", он должен быть разрешен в момент его срабатывания и имеет приоритет над любыми другими длительными эффектами, а также отменяет любые конфликтующие правила.",
           "marks": []
         }
       ]
@@ -173,7 +207,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ignore and Disable",
+          "text": "Игнорирование и Отключение",
           "marks": []
         }
       ]
@@ -184,17 +218,79 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many game effects will instruct you to “Ignore” or “Disable” other rules, effects or game elements.When you are instructed to ignore something, you simply do not resolve any of its effects.If the ignore effects is activated, it affects only a specific instance (e.g. “ignore this gain,” “ignore this loss”). If the ignore effect is passive, the game element is ignored whenever the ignore effect is triggered (e.g. if a Titan has a weapon with an “ignore Wound Responses” effect, this Titan ignores Wound Responses whenever it is using this ",
+          "text": "Многие игровые эффекты будут предписывать вам «Игнорировать» или «Отключать» другие правила, эффекты или игровые элементы.Когда вам предписано что-то игнорировать, вы просто не разрешаете ни один из его эффектов.Если эффект игнорирования активирован, он влияет только на конкретный случай (например, «игнорировать это получение», «игнорировать эту потерю»). Если эффект игнорирования пассивен, игровой элемент игнорируется всякий раз, когда срабатывает эффект игнорирования (например, если у ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " card as an active weapon).“Disable” on the other hand completely deactivates a rule, effect or game element. When you are instructed to disable something, all Titans as well as the Primordial ignore this effect (or all effects associated with it in case of rules and game elements). Unless in-structed otherwise, Disable lasts until the end of Battle.",
+          "text": " есть оружие с эффектом «игнорировать реакции на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Раны",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "», этот ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " игнорирует реакции на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Раны",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " всякий раз, когда использует эту карту ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в качестве активного оружия).«Отключение», с другой стороны, полностью деактивирует правило, эффект или игровой элемент. Когда вам предписано что-то отключить, все ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титаны",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", а также ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " игнорируют этот эффект (или все эффекты, связанные с ним в случае правил и игровых элементов). Если не указано иное, Отключение длится до конца Битвы.",
           "marks": []
         }
       ]
@@ -206,7 +302,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Instead",
+          "text": "Вместо",
           "marks": []
         }
       ]
@@ -217,37 +313,63 @@
       "children": [
         {
           "kind": "text",
-          "text": "The word “Instead” always implies that the corresponding effect is resolved in place of a different effect.If the effect resolved “instead” is an improved or otherwise modi-fied variant of another effect, it replaces this effect ",
+          "text": "Слово «Вместо» всегда подразумевает, что соответствующий эффект разрешается вместо другого эффекта.Если эффект, разрешаемый «вместо», является улучшенным или иным образом модифицированным вариантом другого эффекта, он заменяет этот эффект ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "only",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и не влияет на любые другие эффекты этого элемента (например, «Открытие 2 вместо» на карте ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and does not influence any other effects of this element (e.g. “Opening 2 in-stead” on a ",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " означает, что значение его исходного ключевого слова «Открытие» меняется на 2, но остальная часть его поля способностей остается неизменной).Если эффект, разрешаемый «вместо», срабатывает от эффекта, который вы «собираетесь» разрешить, он заменяет этот эффект (например, эффект, который гласит: «Когда вы собираетесь умереть от эффекта Мгновенной Смерти, разрешите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear",
+          "text": "Жребий Обола",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " card means that the value of its original “Open-ing” keyword changes to 2, but the rest of its ability box remains unchanged).If the effect resolved “instead” is triggered by an effect you are “about to” resolve, it substitutes this effect (e.g. an effect that states “When you are about to die from an Instant Death effect, resolve an Obol Draw instead”, the original Instant Death effect is ignored and the player resolves ",
+          "text": " вместо этого», исходный эффект Мгновенной Смерти игнорируется, и игрок разрешает ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "only",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " эффект ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " the Obol Draw effect).",
+          "text": "Жребия Обола",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ").",
           "marks": []
         }
       ]
@@ -259,7 +381,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "May",
+          "text": "Можете",
           "marks": []
         }
       ]
@@ -270,27 +392,61 @@
       "children": [
         {
           "kind": "text",
-          "text": "If an effect includes the word “may”, it is not mandatory and you can choose not to resolve it. All effects that ",
+          "text": "Если эффект включает слово «можете», он не является обязательным, и вы можете выбрать не разрешать его. Все эффекты, которые ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "do not",
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " включают слово «можете», должны быть разрешены в полной мере (если возможно) каждый раз, когда они срабатывают.Разрешите все части эффекта, которые могут быть разрешены, пропуская любые части, которые невозможны (т.е. если эффект предписывает вам «потерять -1 и встать», когда вы не сбиты с ног, вы все равно снижаете свой . Аналогично, если ваш уже 0, вы не можете снизить его дальше, но вы все равно встаете, если сбиты с ног).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " include the word “may” must be resolved to their full extent (if possible) each time they are triggered.Resolve all parts of an effect that can be resolved, while skipping any parts that are impossible (i.e. if an effect instructs you to “lose -1 and stand up” when you are not knocked down, you still lower your . Similarly, if your  is already 0, you cannot lower it fur-ther, but you still stand up if you are knocked down).",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Активные способности (как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Active abilities (both Titan and Technology) are only trig-gered if you decide to pay their cost. When you do, however, you must resolve the entire ability text unless preceded by the words “you may.” To learn more, see Ability Usage (p. 60) and Technology Usage (p. 18).",
+          "text": ", так и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Технологии",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ") срабатывают только в том случае, если вы решите оплатить их стоимость. Однако, когда вы это делаете, вы должны разрешить весь текст способности, если ему не предшествуют слова «вы можете». Чтобы узнать больше, см. Использование способностей (стр. 60) и Использование ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Технологий",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (стр. 18).",
           "marks": []
         }
       ]
@@ -302,7 +458,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resolution Order",
+          "text": "Порядок Разрешения",
           "marks": []
         }
       ]
@@ -313,18 +469,83 @@
       "children": [
         {
           "kind": "text",
-          "text": "If more than one effect is triggered at the same time (e.g. “End of Primordial Round”, “during the second ability window”, etc.) you can choose the order in which these effects are resolved, unless explicitly stated otherwise. If any of these effects invalidate the conditions triggering another pending effect, that effect is no longer resolved.",
+          "text": "Если одновременно срабатывает несколько эффектов (например, «Конец раунда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example:",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " An Earthshaker Titan has an ability that allows you to place 1 Opening and 1 Break token into the Kratos Pool if you’re attacking the Primordial while the Kratos Pool is emp-ty. You also have a Mnemos card that grants -1  when at-tacking while the Kratos Pool is empty. If you decide to resolve the Mnemos card first, and then place tokens into the pool, you benefit from both of these effects. If, however, for some reason you did not want to lower your  value, you could instead resolve the Earthshaker’s ability first, invalidating the Mnemos card ability.",
+          "text": "», «во время второго окна способностей» и т.д.), вы можете выбрать порядок, в котором эти эффекты разрешаются, если явно не указано иное. Если какой-либо из этих эффектов делает недействительными условия, запускающие другой ожидающий эффект, этот эффект больше не разрешается.",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " У ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Землетрясателя есть способность, которая позволяет вам поместить 1 жетон Открытия и 1 жетон Прорыва в Пул Кратоса, если вы атакуете ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", пока Пул Кратоса пуст. У вас также есть ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "карта Мнемос",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", которая дает -1 при атаке, пока Пул Кратоса пуст. Если вы решите сначала разрешить ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "карту Мнемос",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", а затем поместить жетоны в пул, вы получите выгоду от обоих этих эффектов. Однако, если по какой-либо причине вы не хотели снижать свое значение, вы могли бы вместо этого сначала разрешить способность Землетрясателя, сделав недействительной способность ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "карты Мнемос",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

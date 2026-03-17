@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0025",
-    "title": "Gaining Other Game Elements",
+    "title": "Получение других игровых элементов",
     "section_path": [],
     "source_page_number": 25
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos card to any Argonaut (it would exceed their limit of 2 Mnemos cards), it is instead added to the Mnemos Vault (see Mnemos Cards on p. 29).",
+          "text": "карту Мнемос любому Аргонавту (она превысит их лимит в 2 карты Мнемос), она вместо этого добавляется в Хранилище Мнемос (см. Карты Мнемос на с. 29).",
           "marks": []
         }
       ]
@@ -30,42 +30,50 @@
       "children": [
         {
           "kind": "text",
-          "text": "Progress",
+          "text": "Прогресс",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " жетоны обычно помещаются на карту Истории или Внутреннюю Одиссею. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tokens will be usually placed on the Story card or Inward Odyssey. ",
+          "text": "Рок",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " жетоны помещаются на карты Рока. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Doom",
+          "text": "Амброзия",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tokens will be placed on Doom cards. ",
-          "marks": []
+          "text": "Отчаяние",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Ambrosia",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " and ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Despair",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " tokens gained outside of Battle will be held by the Argonaut who gained them.  ",
+          "text": " жетоны, полученные вне Битвы, хранятся у Аргонавта, который их получил. ",
           "marks": []
         }
       ]
@@ -77,7 +85,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gaining Other Game Elements",
+          "text": "Получение других игровых элементов",
           "marks": []
         }
       ]
@@ -88,7 +96,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some game elements are not represented by physical components. These include resources, statistics, Mnemos nodes, Titans, , , various Boons and Afflictions, permanent Skill bonuses and more. If you gain any element that is not represented by a component, note it down in the correct section of the Argo Sheet or, if it was gained by a specific Argonaut, on their Argonaut Sheet.",
+          "text": "Некоторые игровые элементы не представлены физическими компонентами. К ним относятся ресурсы, статистика, узлы Мнемос, Титаны, , , различные Благословения и Недуги, постоянные бонусы Навыков и многое другое. Если вы получаете какой-либо элемент, не представленный компонентом, запишите его в соответствующем разделе Листа Арго или, если он был получен конкретным Аргонавтом, на его Листе Аргонавта.",
           "marks": []
         }
       ]
@@ -100,7 +108,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Loss",
+          "text": "Потеря",
           "marks": []
         }
       ]
@@ -111,17 +119,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Similarly, when you ",
+          "text": "Аналогично, когда вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "lose",
-          "marks": []
+          "text": "теряете",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " a physical component, simply put it back into the game box, unless instructed otherwise. When you lose a game element that is not represented by a physical component, erase it from the appropriate sheet (if it is singular) or lower its value by a specified number.",
+          "text": " физический компонент, просто верните его в коробку с игрой, если не указано иное. Когда вы теряете игровой элемент, не представленный физическим компонентом, сотрите его из соответствующего листа (если он единственный) или уменьшите его значение на указанное число.",
           "marks": []
         }
       ]
@@ -133,7 +143,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gain/Loss Mitigation",
+          "text": "Смягчение получения/потери",
           "marks": []
         }
       ]
@@ -144,17 +154,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some Technology abilities may allow you to perform a “",
+          "text": "Некоторые способности Технологии могут позволить вам выполнить «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "save test",
-          "marks": []
+          "text": "проверку спасения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ".” These abilities will always contain the word “Save.” A successful save test allows you to ignore gaining or losing a specific game el-ement (usually a negative resource). It can be re-rolled using Argo Fate just like any other Argo test (see p. 31). Each Save ability can only be used once per a single instance of gaining/loss. However:",
+          "text": "». Эти способности всегда будут содержать слово «Спасение». Успешная проверка спасения позволяет вам игнорировать получение или потерю конкретного игрового элемента (обычно отрицательного ресурса). Его можно перебросить, используя Судьбу Арго, как и любую другую проверку Арго (см. с. 31). Каждая способность Спасения может быть использована только один раз за один случай получения/потери. Однако:",
           "marks": []
         }
       ]
@@ -165,7 +177,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "to perform a save test for the same effect, you can use as many of them as you like during one instance.",
+          "text": "выполнить проверку спасения для того же эффекта, вы можете использовать столько из них, сколько захотите, за один раз.",
           "marks": []
         }
       ]
@@ -176,7 +188,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "day from different sources, you can use the same Save abili-ty for each of these gains/losses (because these are separate “instances”).",
+          "text": "день из разных источников, вы можете использовать одну и ту же способность Спасения для каждого из этих получений/потерь (поскольку это отдельные «случаи»).",
           "marks": []
         }
       ]
@@ -187,17 +199,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "loss.",
+          "text": "потери.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note: ",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Most Save tests are influenced by your Diplomacy bonus/ penalty.",
+          "text": " Большинство проверок Спасения зависят от вашего бонуса/штрафа Дипломатии.",
           "marks": []
         }
       ]
@@ -209,7 +223,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Voluntary Gain/Loss",
+          "text": "Добровольное получение/потеря",
           "marks": []
         }
       ]
@@ -220,17 +234,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "If the gain/loss is listed in the text of an active ability, story choice or any other non-forced effect, it is considered a voluntary gain/loss (a “payment”) and cannot be mitigated in any way. To resolve this effect, you must gain/lose all listed game elements. You can’t use ",
+          "text": "Если получение/потеря указаны в тексте активной способности, сюжетного выбора или любого другого невынужденного эффекта, это считается добровольным получением/потерей («платежом») и не может быть смягчено никаким образом. Чтобы разрешить этот эффект, вы должны получить/потерять все перечисленные игровые элементы. Вы не можете использовать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Save",
-          "marks": []
+          "text": "Спасение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " abilities or any other effects that would allow you to ig-nore any of these gains/losses. These types of voluntary gain or loss may sometimes use the word “pay.”",
+          "text": " способности или любые другие эффекты, которые позволили бы вам игнорировать любое из этих получений/потерь. Эти типы добровольного получения или потери иногда могут использовать слово «платить».",
           "marks": []
         }
       ]
@@ -242,7 +258,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gaining/Losing as a Group",
+          "text": "Получение/потеря группой",
           "marks": []
         }
       ]
@@ -253,7 +269,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "When you are instructed to “gain X as a group” or “lose X as a group,” distribute the specified statistic or element among all of the Argonauts. It does not have to be distributed evenly. You may assign this gain to one Argonaut or distribute it among some or all of them.",
+          "text": "Когда вам предписано «получить X группой» или «потерять X группой», распределите указанную статистику или элемент среди всех Аргонавтов. Это не обязательно должно быть распределено равномерно. Вы можете назначить это получение одному Аргонавту или распределить его среди некоторых или всех из них.",
           "marks": []
         }
       ]

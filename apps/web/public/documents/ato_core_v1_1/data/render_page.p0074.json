@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0074",
-    "title": "Hekaton level 8+:",
+    "title": "Гекатон уровень 8+:",
     "section_path": [],
     "source_page_number": 74
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Hekaton level 8+:",
+          "text": "Гекатон уровень 8+:",
           "marks": []
         }
       ]
@@ -31,12 +31,14 @@
       "children": [
         {
           "kind": "text",
-          "text": "Required tiles: ",
-          "marks": []
+          "text": "Необходимые тайлы: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "2x City11x Column2x Labyrinth I2x Labyrinth L1x Labyrinth O2x Labyrinth Z",
+          "text": "2x Город11x Колонна2x Лабиринт I2x Лабиринт L1x Лабиринт O2x Лабиринт Z",
           "marks": []
         },
         {
@@ -73,7 +75,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Cyclonus level 8+:",
+          "text": "Циклонус уровень 8+:",
           "marks": []
         }
       ]
@@ -84,12 +86,14 @@
       "children": [
         {
           "kind": "text",
-          "text": "Required tiles:",
-          "marks": []
+          "text": "Необходимые тайлы:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "2x Fortified City1x Spartan River Works Z5x Spartan River Works 1x15x Spartan River Works 1x43x Spartan River Works 1x5",
+          "text": "2x Укреплённый Город1x Спартанские Речные Сооружения Z5x Спартанские Речные Сооружения 1x15x Спартанские Речные Сооружения 1x43x Спартанские Речные Сооружения 1x5",
           "marks": []
         },
         {
@@ -111,7 +115,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Burden level 5+:",
+          "text": "Бремя уровень 5+:",
           "marks": []
         }
       ]
@@ -122,12 +126,14 @@
       "children": [
         {
           "kind": "text",
-          "text": "Required tiles:",
-          "marks": []
+          "text": "Необходимые тайлы:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "3x Black Glacier 1x52x Black Lake9x Column3x Large Cliff O4x Small Cliff I3x Small Cliff L5x Small Cliff Z",
+          "text": "3x Чёрный Ледник 1x52x Чёрное Озеро9x Колонна3x Большой Утёс O4x Малый Утёс I3x Малый Утёс L5x Малый Утёс Z",
           "marks": []
         },
         {

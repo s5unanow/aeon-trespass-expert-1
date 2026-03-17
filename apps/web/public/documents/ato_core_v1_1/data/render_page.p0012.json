@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0012",
-    "title": "Argonaut Skills",
+    "title": "Навыки Аргонавтов",
     "section_path": [],
     "source_page_number": 12
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argonaut Skills",
+          "text": "Навыки Аргонавтов",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Argonaut has six Skills: Courage, Cunning, Endurance, Fury, Will and Wisdom. These will be used during various tests, both in Adventures and Battles. They start with a +0 modifier, meaning you neither add, nor subtract anything to/from your roll, but may go up or down as a result of other effects. The most common source of Skill bonuses are the Argonaut Portrait card and the Mnemos cards. The most common source of Skill penalties are the Fated Mnemos cards.",
+          "text": "У каждого Аргонавта есть шесть Навыков: Отвага, Хитрость, Выносливость, Ярость, Воля и Мудрость. Они будут использоваться во время различных проверок, как в Приключениях, так и в Битвах. Они начинаются с модификатором +0, что означает, что вы ничего не добавляете и не вычитаете из своего броска, но могут увеличиваться или уменьшаться в результате других эффектов. Наиболее распространенным источником бонусов к Навыкам являются карта Портрета Аргонавта и карты Мнемос. Наиболее распространенным источником штрафов к Навыкам являются карты Судьбы Мнемос.",
           "marks": []
         }
       ]
@@ -43,7 +43,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Triskelion",
+          "text": "Трискелион",
           "marks": []
         }
       ]
@@ -54,62 +54,74 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Triskelion is the heart of Aeon Trespass: Odyssey and the key component of the Inverted Combat Paradigm™. It’s a triple dial that represents the union of Mortal (",
+          "text": "Трискелион — это сердце Aeon Trespass: Odyssey и ключевой компонент Инвертированной Боевой Парадигмы™. Это тройной циферблат, который представляет собой союз Смертных (",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Danger ",
+          "text": "Опасность",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "), Божественных (",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "), Divine (",
+          "text": "Судьба",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ") и Титанических (",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fate",
+          "text": "Ярость",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ") элементов, которые делают возможным соединение между Аргонавтами и Титанами. Таким образом, эти 3 показателя являются общими для Аргонавта и Титана, которого они выбирают для Битвы. В отличие от обычных характеристик, эти три всегда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ") and Titan (",
+          "text": "в движении",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Они в основном используются в Битвах (они будут увеличиваться в результате получения урона, атаки и использования способностей), но вы также можете использовать, получать или терять их из-за различных эффектов во время Приключений и других частей Фазы Странствия. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rage",
-          "marks": []
+          "text": "Показатели Трискелиона всегда сбрасываются до 0 после каждой Битвы.",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ") elements that make the junction between Ar-gonauts and Titans possible. As such, these 3 statistics are shared between the Argonaut and the Titan they choose to take into Battle.Unlike typical stats, these three are always ",
-          "marks": []
+          "text": "Трискелион",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "in flux",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". They are mainly used in Battles (they will go up as a result of getting hit, attacking and using abilities), but you may also use, gain or lose these from various effects during Adventures and other parts of the Voyage Phase. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Triskelion stats always reset back to 0 after each Battle.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Triskelion",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Whenever you gain or lose ,  or , simply rotate the appro-priate dial by the corresponding amount.The Triskelion stats can go from 0 to 9. In general, you want them as high as possible because that means you’re using your potential to the fullest. However, the higher they are, the closer to despair, darkness and death you are! Being forced to raise any of them over 9 will always have dire consequences:  ",
+          "text": "Всякий раз, когда вы получаете или теряете ,  или , просто поворачивайте соответствующий циферблат на соответствующее значение. Показатели Трискелиона могут варьироваться от 0 до 9. В целом, вы хотите, чтобы они были как можно выше, потому что это означает, что вы используете свой потенциал в полной мере. Однако, чем выше они, тем ближе вы к отчаянию, тьме и смерти! Вынужденное повышение любого из них выше 9 всегда будет иметь ужасные последствия:  ",
           "marks": []
         }
       ]
@@ -120,7 +132,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "(see p. 56). ",
+          "text": "(см. стр. 56). ",
           "marks": []
         }
       ]
@@ -131,77 +143,91 @@
       "children": [
         {
           "kind": "text",
-          "text": "Therefore, you ",
+          "text": "Следовательно, вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "cannot",
+          "text": "не можете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " добровольно получать ,  или , если это приведет к превышению 9.  ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " voluntarily gain ,  or  if it would take you over 9.  ",
+          "text": "Опасность:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Представляет собой растущую угрозу смерти. Вы получаете, когда вас атакуют, а также в результате других негативных эффектов. Однако обратите внимание, что многие способности и карты Снаряжения становятся более мощными, когда вы достигаете определенного значения (вы даже можете зажечь искру Древних Богов внутри себя!). В Битве повышение выше 9 обычно вызывает ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Danger:",
+          "text": "Жребий Обола",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. стр. 42).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Represents the rising threat of death. You gainwhen you are attacked and also through suffering other nega-tive effects. Note, however, that many abilities and Gear cards be-come more powerful when you reach a certain value (you may even ignite a spark of the Old Gods inside you!). In Battle, raisingover 9 usually causes an ",
+          "text": "Судьба:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Представляет степень, в которой вы противостоите своей судьбе. Вы можете получить, чтобы перебросить свои кубики и оплатить мощные способности. Однако будьте осторожны, высокая может вызвать дополнительные негативные эффекты от Первозданных Атак. Если вам придется поднять свою выше 9 в Битве, немедленно вытяните карту Мойрос (см. стр. 57).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Obol Draw",
+          "text": "Ярость:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Представляет ярость Титанов. Она увеличивается каждый раз, когда вы атакуете, и делает вас более могущественным, давая доступ к дополнительным способностям из Таблицы Кратоса. Она также делает вас более вероятной Целью — всякий раз, когда ваша Ярость становится выше, чем у всех других Титанов, вы получаете жетон ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (see p. 42).",
+          "text": "Приоритетная Цель",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если вам придется поднять до более чем 9 во время Битвы, ваш Титан поглощается яростью, и вы теряете над ним контроль. В игровых терминах, Титан ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fate:",
-          "marks": []
+          "text": "погибает",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Represents the extent to which you oppose your destiny. You can gain  to re-roll your dice and to pay for powerful abilities. Be warned though, high  may enable additional negative effects from Primordial Attacks. If you would have to raise your over 9 in Battle, immediately draw a Moiros card (see p. 57).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Rage:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Represents the fury of Titans. It increases each time you attack and makes you more powerful, giving you access to additional abilities from the Kratos Table. It also makes you more likely to become a Target—whenever your Rage becomes higher than that of all other Titans, you gain the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " token. If you would have to raise  to more than 9 during a Battle, your Titan is consumed by rage and you lose control over it. In game terms, the Titan ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "dies",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " as soon as you finish your current action.",
+          "text": ", как только вы завершите свое текущее действие.",
           "marks": []
         },
         {
@@ -228,7 +254,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Campaign Setup",
+          "text": "Настройка Кампании",
           "marks": []
         }
       ]
@@ -239,33 +265,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "If this is your first campaign of",
+          "text": "Если это ваша первая кампания в",
           "marks": []
         },
         {
           "kind": "text",
           "text": " Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", мы рекомендуем начать с книги «Обучение игре», которая представит все необходимые игровые элементы по мере их актуальности. Если вы уже прошли историю «Обучение игре» и хотите начать новый Цикл, выполните следующие шаги:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", we rec-ommend starting with the Learn to Play book, which will introduce all necessary game elements as they become relevant. If you have already played through the Learn to Play story and wish to start a new Cycle, follow these steps:",
+          "text": "1.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Найдите и подготовьте следующие элементы из Цикла, в который вы собираетесь играть (первый Цикл — это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\t",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Find and prepare the following elements from a Cycle you are about to play (the first Cycle is ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Truth of the Labyrinth",
-          "marks": []
+          "text": "Истина Лабиринта",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -280,7 +312,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "for Cycle I, red for Cycle II and purple for Cycle III – or by the Faction symbols)",
+          "text": "для Цикла I, красные для Цикла II и фиолетовые для Цикла III – или по символам Фракций)",
           "marks": []
         }
       ]
@@ -291,13 +323,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "When there are 2  tokens on this card, discard them and gain +1 .When you reach a given  level, during the Story Step, after all other story events, resolve the corresponding Inward Odyssey adventure: 1: Endless Decks 2: Phos Dance 3: Glitch in the Engine 4: A Distant Thunder 5: Mark of the Maker 6: Of Dreams and Memories 7: Blood of the Mother 8: See the Forest 9: Days of Meaninglessness 10: Memory of a Distant ShoreAfter you resolve the last adventure from this list, flip this card.INWARD ODYSSEY:  TRUTH OF THE LABYRINTH",
+          "text": "Когда на этой карте 2 жетона , сбросьте их и получите +1 .Когда вы достигнете заданного уровня , во время Шага Истории, после всех других событий истории, разрешите соответствующее приключение Внутренней Одиссеи: 1: Бесконечные Палубы 2: Танец Фос 3: Сбой в Двигателе 4: Далекий Гром 5: Метка Создателя 6: О Снах и Воспоминаниях 7: Кровь Матери 8: Увидеть Лес 9: Дни Бессмысленности 10: Воспоминание о Далеком БерегеПосле того, как вы разрешите последнее приключение из этого списка, переверните эту карту.ВНУТРЕННЯЯ ОДИССЕЯ: ИСТИНА ЛАБИРИНТА",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You know precious little about the grand vessel you call home. Who built it? For what purpose? How did you come to be onboard?There are vast spaces below deck, more than should be possible, even taking into account the massive size of the ship. Each day brings a new discovery, a new secret to be unraveled. Your Inward Odyssey has just begun.",
-          "marks": []
+          "text": "Вы мало что знаете о великом судне, которое называете домом. Кто его построил? С какой целью? Как вы оказались на борту? Под палубой есть огромные пространства, больше, чем должно быть возможно, даже с учетом массивного размера корабля. Каждый день приносит новое открытие, новую тайну, которую предстоит разгадать. Ваша Внутренняя Одиссея только началась.",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -307,66 +341,80 @@
         {
           "kind": "text",
           "text": "T00T01",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Карта Истории Внутренней ОдиссеиПлитки картыМиниатюра АргоКарты Судьбы МнемосКарты УликКарты Исследования",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "ИССЛЕДОВАНИЕ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Inward Odyssey Story cardMap tilesArgo miniatureFated Mnemos cardsClue cardsExploration cards",
+          "text": "2.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Подготовьте текущий ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "EXPLORATION",
+          "text": "Лист Арго Цикла",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (они отличаются от Цикла к Циклу!), а также ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2.\t",
+          "text": "Матрицу Выбора",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (она сохраняется от Цикла к Циклу) и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Prepare the current Cycle ",
+          "text": "4 Листа Аргонавтов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (вы найдете их в конце Книги Историй или на нашем веб-сайте).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo Sheet",
-          "marks": []
+          "text": "3.",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " (these differ from Cycle to Cycle!), along with ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "a Choice Matrix",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (it persists from Cycle to Cycle) and ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "4 Argonaut Sheets",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (you will find these at the back of the Storybook or on our website).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "3.\t",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Continue campaign preparations according to your current Cycle’s Storybook.",
+          "text": "Продолжайте подготовку кампании в соответствии с Книгой Историй вашего текущего Цикла.",
           "marks": []
         },
         {

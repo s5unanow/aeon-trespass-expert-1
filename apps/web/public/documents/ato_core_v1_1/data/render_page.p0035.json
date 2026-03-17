@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0035",
-    "title": "Kratos Tokens and the Kratos Pool",
+    "title": "Жетоны Кратоса и Резерв Кратоса",
     "section_path": [],
     "source_page_number": 35
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos Tokens and the Kratos Pool",
+          "text": "Жетоны Кратоса и Резерв Кратоса",
           "marks": []
         }
       ]
@@ -31,57 +31,197 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos tokens are a special type of “cooperative” token used by the players to enhance other player’s attacks. These can help you hit and wound, escape Primordial Responses and more. The area you place Kratos tokens is called the Kratos Pool (see Kratos Tokens on p. 45 for more details).Tactical Battles against Primordial monsters are a key element of ",
+          "text": "Жетоны Кратоса — это особый тип «кооперативных» жетонов, используемых игроками для усиления атак других игроков. Они могут помочь вам попасть и нанести ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "раны",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", избежать Ответов ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и многое другое. Область, куда вы помещаете жетоны Кратоса, называется Резервом Кратоса (см. «Жетоны Кратоса» на стр. 45 для получения более подробной информации). Тактические битвы против ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " монстров являются ключевым элементом ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Во время вашего странствия вы столкнетесь со следующими типами ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". During your voyage you will face the following types of Primordials:",
+          "text": "Первозданных",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Regular Primordials:",
+          "text": ": ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " There are usually two regular Primordials in each Cycle, as noted on the Evolution Track on the Argo Sheet. You can expect to face these at regular intervals (through Time-line Battles). As the campaign progresses, they will evolve and become more powerful (see Evolution and Battle Tracks).",
+          "text": "Обычные Первозданные:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Обычно в каждом ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adversary:",
+          "text": "Цикле",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Your deeds are sure to bring unwanted attention. Ad-versaries are powerful monsters, actively hunting the ",
+          "text": " есть два обычных ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Первозданных",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " on the Voyage map (see p. 16). You can (and sometimes should!) try to run away, but sooner or later you are bound to face them. These are going to pursue you for as long as they remain undefeated, even from one Cycle to another.",
+          "text": ", как указано на Треке Эволюции на Листе ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Boss Primordial:",
+          "text": "Арго",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The ultimate foe, the boss Primordial is an en-emy unlike any other. Boss Battles may be triggered from various Story and Doom adventures, so you should always stay on your toes. Each Cycle leads to a final showdown with the boss Primor-dial. Until then, you can merely hope to keep it at bay.",
+          "text": ". Вы можете ожидать столкновения с ними через регулярные промежутки времени (в Битвах по Хронологии). По мере ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "прогресса",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " кампании они будут эволюционировать и становиться сильнее (см. «Треки Эволюции и Битвы»). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Противник:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Ваши деяния непременно привлекут нежелательное внимание. Противники — это могущественные монстры, активно охотящиеся на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на карте Странствия (см. стр. 16). Вы можете (и иногда должны!) попытаться сбежать, но рано или поздно вам придется столкнуться с ними. Они будут преследовать вас до тех пор, пока остаются непобежденными, даже от одного ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " к другому. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Босс-Первозданный:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Главный враг, босс-",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " — это враг, не похожий ни на кого другого. Битвы с боссами могут быть вызваны различными приключениями Сюжета и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Рока",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", поэтому вы всегда должны быть начеку. Каждый ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикл",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " приводит к финальной схватке с боссом-",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданным",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". До тех пор вы можете лишь надеяться сдерживать его.",
           "marks": []
         }
       ]
@@ -93,7 +233,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle Setup",
+          "text": "Подготовка к Битве",
           "marks": []
         }
       ]
@@ -104,7 +244,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "When you locate the correct Scenario, you will perform Battle Setup. There are standard elements to every Battle Setup (hence the name Standard Preparations), but most of the scenarios will introduce additional specific rules, including those found on the Primordial Sheet and Trait cards.   ",
+          "text": "Когда вы найдете правильный Сценарий, вы выполните Подготовку к Битве. В каждой Подготовке к Битве есть стандартные элементы (отсюда и название «Стандартные Приготовления»), но большинство сценариев вводят дополнительные специфические правила, включая те, что указаны на Листе ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и картах Свойств.",
           "marks": []
         }
       ]
@@ -116,7 +266,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "1. Standard Preparations",
+          "text": "1. Стандартные Приготовления",
           "marks": []
         }
       ]
@@ -127,217 +277,759 @@
       "children": [
         {
           "kind": "text",
-          "text": "Before each Battle, perform Standard Preparations. These include instructions ",
+          "text": "Перед каждой ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "that are common",
+          "text": "Битвой",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " for every Battle in every Cycle. Whenever you are instructed to setup a Battle, perform the fol-lowing steps first:",
+          "text": " выполните Стандартные Приготовления. Они включают инструкции ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\tBattle Board:",
+          "text": "которые являются общими",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " для каждой ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Place the Battle Board in the middle of the table.",
+          "text": "Битвы",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2.\tDecks and tokens:",
+          "text": " в каждом ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Shuffle the Trauma decks, the Kratos deck and the Moiros deck. Place all decks in the designated spac-es and place Kratos tokens, Attack dice and Power dice within reach of all players.",
+          "text": "Цикле",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "3.\tArgonauts:",
+          "text": ". Всякий раз, когда вам предписано подготовить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Each player places their Argonaut Portrait and Mnemos cards in front of them.",
+          "text": "Битву",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "4.\tTriskelions:",
+          "text": ", выполните следующие шаги: ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Each player places their Triskelion near their other components. The Triskelion does not reset at the beginning of Battle; you start with the Triskelion stats you’ve accumulated over the course of the other Phases.",
+          "text": "1. Поле Битвы:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Поместите Поле Битвы в центр стола. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "5.\tTitans:",
+          "text": "2. Колоды и жетоны:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Перетасуйте колоды Травм, колоду Кратоса и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Each player chooses the Titan they will control from the available Titans and takes its Titan Sheet and miniature. If at least four Titans are available, each Argonaut ",
+          "text": "колоду Мойрос",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "must",
+          "text": ". Поместите все колоды в отведенные места и разместите жетоны Кратоса, кубики Атаки и кубики Силы в пределах досягаемости всех игроков. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " control one Titan. ",
+          "text": "3. Аргонавты:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Каждый игрок размещает свой Портрет ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
+          "text": "Аргонавта",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " It does not have to be the same Titan they con-trolled in a previous Battle. ",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember: ",
+          "text": "карты Мнемос",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You cannot take more than one Titan of the same Argo-bred class into Battle.",
+          "text": " перед собой. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "6.\tGear Loadouts:",
+          "text": "4. Трискелионы:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Каждый игрок размещает свой ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Players as a group assign ",
+          "text": "Трискелион",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear",
+          "text": " рядом со своими другими компонентами. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " cards from the Argo Armory to the Titans. Each Titan has limited card slots: two ",
+          "text": "Трискелион",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "weapon",
+          "text": " не сбрасывается в начале ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " slots, two ",
+          "text": "Битвы",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "support",
+          "text": "; вы начинаете с показателями ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " slots and one ",
+          "text": "Трискелиона",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "armor",
+          "text": ", которые вы накопили в течение других Фаз. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "slot. They can also have up to three ",
+          "text": "5. Титаны:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Каждый игрок выбирает ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Attachment",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " cards at-tached to their Titan Sheet and up to one  attached to each of their  cards. A symbol in the upper left corner of a  card de-notes which slot it occupies. You cannot equip  cards that would exceed the available slots of your Titan. Each Titan can only have one copy of the same ",
+          "text": ", которым он будет управлять, из доступных ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Support",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " card.",
+          "text": " и берет его Лист ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "7.\tArgo Abilities:",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Players choose the Argo Abilities they want to use during the up-coming Battle. You may use as many Argo Ability cards as your Argo Ability (AA) Limit allows. Place the Argo Abilities you have chosen next to the Battle Board, along with the indicated number of Charge tokens. You can  learn more about Argo Abilities on p. 55.",
+          "text": " и миниатюру. Если доступно не менее четырех ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "8.\tPrimordial: ",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Place the Primordial Sheet of the Primordial you are about to fight in the designated space near the Battle Board. Place its Routine and Signature cards in the corresponding spaces (be careful not to use the Mnestis Routine side, unless you are currently playing a Mnestis Theatre Battle). Take all of the Primordial’s AI cards and divide them into three decks num-bered I, II and III (you’ll find the roman numeral on the back of the cards). Do the same for the Primordial’s BP cards. Then place the AI and BP decks numbered “I” on the appropriate spaces at the bottom of the Battle Board. Place decks num-bered “II” and “III” directly below. These are Escalation decks. Find the Trait cards for any Traits that are not described on the Primordial Sheet and  place them nearby as a reference.",
+          "text": ", каждый ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "9.\tTerrain and Titan Placement",
+          "text": "Аргонавт",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": Find all the Terrain cards and Terrain tiles used in the Battle. Place the Terrain cards near the Battle Board and the Terrain tiles on the Battle Board according to the Battle Diagram. Remember to place additional Adventure Terrain, if noted (see p. 31). Place Titans on Titan Starting Positions as indicated by the diagram. Then pro-ceed to Primordial positioning.If you have less than four Titans on the ",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "обязан",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " управлять одним ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", oh boy, you’re in for tough times! You must start the Battle with as many Titans as possible. Every Argonaut that is not assigned a Titan will not participate in Battle.",
+          "text": "Титаном",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important:",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If you are ever forced to do Battle without any Titans onboard, you immediately lose the campaign! ",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Это не обязательно должен быть тот же ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", которым они управляли в предыдущей ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Битве",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Вы не можете взять в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Битву",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " более одного ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " одного и того же класса, выведенного на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6. Комплекты Снаряжения:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Игроки группой назначают карты ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " из Оружейной ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанам",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". У каждого ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " есть ограниченное количество слотов для карт: два слота ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "оружия",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", два слота ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "поддержки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и один слот ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "брони",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Они также могут иметь до трех карт ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Прикрепления",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", прикрепленных к их Листу ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", и до одной, прикрепленной к каждой из их карт. Символ в верхнем левом углу карты обозначает, какой слот она занимает. Вы не можете экипировать карты, которые превышают доступные слоты вашего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Каждый ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " может иметь только одну копию одной и той же карты ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Поддержки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7. Способности Арго:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Игроки выбирают Способности ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", которые они хотят использовать в предстоящей ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Битве",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Вы можете использовать столько карт Способностей ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", сколько позволяет ваш Лимит Способностей ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (СА). Поместите выбранные вами Способности ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " рядом с Полем Битвы, вместе с указанным количеством жетонов Заряда. Вы можете узнать больше о Способностях ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на стр. 55. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "8. Первозданный:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Поместите Лист ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", с которым вы собираетесь сражаться, в отведенное место рядом с Полем Битвы. Поместите его карты Рутины и Подписи в соответствующие места (будьте осторожны, не используйте сторону Рутины Мнестиса, если только вы не играете в Битву Театра Мнестиса). Возьмите все карты ИИ ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и разделите их на три колоды, пронумерованные I, II и III (римскую цифру вы найдете на обратной стороне карт). Сделайте то же самое для карт БП ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Затем поместите колоды ИИ и БП, пронумерованные «I», в соответствующие места в нижней части Поля Битвы. Поместите колоды, пронумерованные «II» и «III», непосредственно под ними. Это колоды ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Эскалации",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Найдите карты Свойств для любых Свойств, которые не описаны на Листе ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", и поместите их рядом в качестве справочной информации. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "9. Размещение Ландшафта и Титанов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": Найдите все карты Ландшафта и тайлы Ландшафта, используемые в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Битве",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Поместите карты Ландшафта рядом с Полем Битвы, а тайлы Ландшафта на Поле Битвы согласно Схеме Битвы. Не забудьте разместить дополнительный Приключенческий Ландшафт, если указано (см. стр. 31). Разместите ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на Стартовых Позициях ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", как указано на схеме. Затем переходите к размещению ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Если у вас меньше четырех ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", о, мальчик, вас ждут тяжелые времена! Вы должны начать ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Битву",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " с как можно большим количеством ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Каждый ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавт",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", которому не назначен ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", не будет участвовать в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Битве",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Важно:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если вы когда-либо будете вынуждены сражаться без ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на борту, вы немедленно проиграете кампанию!",
           "marks": []
         }
       ]
@@ -349,7 +1041,12 @@
       "children": [
         {
           "kind": "text",
-          "text": "2. Primordial Positioning",
+          "text": "2. Размещение ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
           "marks": []
         }
       ]
@@ -360,7 +1057,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battles handle Primordial positioning and orientation in different ways. The rules for your particular Primordial’s placement will be found in the scenario rules, at the end of the Storybook.",
+          "text": "Битвы по-разному регулируют размещение и ориентацию ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Правила размещения вашего конкретного ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " будут найдены в правилах сценария, в конце Книги Историй.",
           "marks": []
         }
       ]
@@ -372,7 +1089,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "3. Evolution and Battle Tracks",
+          "text": "3. Треки Эволюции и Битвы",
           "marks": []
         }
       ]
@@ -383,23 +1100,57 @@
       "children": [
         {
           "kind": "text",
-          "text": "Every Primordial in Aeon Trespass: Odyssey either evolves to match the ",
+          "text": "Каждый ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo’s",
+          "text": "Первозданный",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " growing power or simply reveals more of the power it held back. This is represented by the Evolution and Battle Tracks.Regular Primordials use Evolution Tracks and, consequently, will evolve during the campaign, usually from Level 1 to Level 4.Adversaries and Cycle Bosses are almost always fought on Level 1",
+          "text": " в Aeon Trespass: Odyssey либо эволюционирует, чтобы соответствовать растущей силе ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Charge tokenTitan Starting positionPrimordial Starting Position",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", либо просто раскрывает больше силы, которую он сдерживал. Это представлено Треками Эволюции и Битвы. Обычные ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданные",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " используют Треки Эволюции и, следовательно, будут эволюционировать в ходе кампании, обычно с Уровня 1 до Уровня 4. Противники и Боссы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " почти всегда сражаются на Уровне 1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Жетон ЗарядаСтартовая позиция ТитанаСтартовая позиция Первозданного",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

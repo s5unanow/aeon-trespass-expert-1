@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0059",
-    "title": "Kratos Cards",
+    "title": "Карты Кратоса",
     "section_path": [],
     "source_page_number": 59
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos Cards",
+          "text": "Карты Кратоса",
           "marks": []
         }
       ]
@@ -31,13 +31,35 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos cards are drawn when you temporarily lose control over your Titan and their bottomless rage takes over. When a game ef-fect instructs you to draw a Kratos card, shuffle the Kratos deck and draw a random Kratos card. Keep this card until the end of Battle (even if its effects aren’t lasting).If you are ever forced to draw another Kratos card while you al-ready have one, you die instead! ",
+          "text": "Карты Кратоса берутся, когда вы временно теряете контроль над своим ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Kratos card",
+          "text": "Титаном",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", и их бездонная ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ярость",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " берёт верх. Когда игровой эффект предписывает вам взять карту Кратоса, перетасуйте колоду Кратоса и возьмите случайную карту Кратоса. Держите эту карту до конца Битвы (даже если её эффекты не являются постоянными). Если вас когда-либо заставят взять ещё одну карту Кратоса, когда у вас уже есть одна, вы умираете вместо этого! ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Карта Кратоса",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -53,7 +75,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos Roll",
+          "text": "Бросок Кратоса",
           "marks": []
         }
       ]
@@ -64,7 +86,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some effects will give you a chance to avoid drawing a Kratos card, or resolving its negative effects. This will usually be resolved through a Kratos Roll. When you are instructed to perform a Kra-tos Roll, roll a d10 and compare the result to your  value. If it is equal or higher, you succeed. If it is lower, you fail. Unless stat-ed otherwise, when you fail a Kratos Roll, you must draw a Kratos card. Note: Kratos Rolls cannot be re-rolled using .",
+          "text": "Некоторые эффекты дадут вам шанс избежать взятия карты Кратоса или разрешения её негативных эффектов. Обычно это решается с помощью Броска Кратоса. Когда вам предписано совершить Бросок Кратоса, бросьте d10 и сравните результат со своим значением. Если он равен или выше, вы преуспеваете. Если он ниже, вы терпите неудачу. Если не указано иное, при провале Броска Кратоса вы должны взять карту Кратоса. Примечание: Броски Кратоса нельзя перебрасывать с помощью .",
           "marks": []
         }
       ]
@@ -76,7 +98,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ambrosia",
+          "text": "Амброзия",
           "marks": []
         }
       ]
@@ -87,17 +109,49 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ambrosia is a mysterious substance, the life-blood of the monstrous Primordials, used as a resource and fuel for the ",
+          "text": "Амброзия — это таинственное вещество, жизненная сила чудовищных ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Первозданных",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". In its raw state, however, it is extremely harmful. Various effects cause Titans to gain Ambrosia tokens. When you gain an Ambrosia token, place it on your Titan Sheet. While other effects may trigger based on the number of Ambrosia tokens you have, the tokens themselves don’t have any inherent effects… until you exceed your limit.",
+          "text": ", используемая в качестве ресурса и топлива для ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Однако в своём сыром состоянии она чрезвычайно вредна. Различные эффекты заставляют ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " получать жетоны Амброзии. Когда вы получаете жетон Амброзии, поместите его на свой Планшет ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Хотя другие эффекты могут срабатывать в зависимости от количества имеющихся у вас жетонов Амброзии, сами жетоны не имеют никаких присущих им эффектов… пока вы не превысите свой лимит.",
           "marks": []
         }
       ]
@@ -109,7 +163,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ambrosia Limit",
+          "text": "Лимит Амброзии",
           "marks": []
         }
       ]
@@ -120,62 +174,108 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Titan has an ",
+          "text": "У каждого ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ambrosia Limit",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Unless your Titan Sheet or  cards state otherwise, your ",
+          "text": " есть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ambrosia Limit is 4",
+          "text": "Лимит Амброзии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если на вашем Планшете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". If you have mul-tiple elements that modify your Ambrosia Limit, choose the one with the highest Ambrosia Limit, then apply bonuses and penalties to that limit (if any).",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example:",
+          "text": " или картах не указано иное, ваш ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The Abysswatcher Titan has an innate Ambrosia Limit of -1. On top of that, he equips an Ambramat Armor that grants him Ambrosia Limit 5. He applies the highest Ambrosia Limit X among his Gear (5), then applies all Ambrosia Limit modifiers (-1) for a total Ambrosia Limit of 4. This means it will die as soon as it gains its 5th Ambrosia token.",
+          "text": "Лимит Амброзии равен 4",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если у вас есть несколько элементов, которые изменяют ваш Лимит Амброзии, выберите тот, у которого самый высокий Лимит Амброзии, затем примените к этому лимиту бонусы и штрафы (если таковые имеются).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "If, at any point, the number of Ambrosia tokens on your Titan Sheet is ",
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Титан Хранитель Бездны имеет врождённый Лимит Амброзии -1. Кроме того, он экипирует Броню Амбрамат, которая даёт ему Лимит Амброзии 5. Он применяет самый высокий Лимит Амброзии X среди своего ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "higher",
+          "text": "Снаряжения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " than your Ambrosia Limit, ",
+          "text": " (5), затем применяет все модификаторы Лимита Амброзии (-1) для общего Лимита Амброзии 4. Это означает, что он умрёт, как только получит свой 5-й жетон Амброзии.Если в любой момент количество жетонов Амброзии на вашем Планшете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "the Titan dies",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". You do not draw Trauma and you do not draw an Obol. You simply die. ",
+          "text": " ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "выше",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", чем ваш Лимит Амброзии, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан умирает",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Вы не берёте Карту Травмы и не берёте Жребий Обола. Вы просто умираете. ",
           "marks": []
         }
       ]
@@ -187,7 +287,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Modifier Tokens",
+          "text": "Жетоны Модификаторов",
           "marks": []
         }
       ]
@@ -198,33 +298,99 @@
       "children": [
         {
           "kind": "text",
-          "text": "Modifier tokens are used to mark temporary and permanent changes to Titans’ and the Primordials’ attributes. When a Titan or a Primordial gains a Modifier token, find a token with an icon corre-sponding to the attribute it modifies and place it on the appropriate sheet (Titan or Primordial). Modifier tokens are double-sided: each ",
+          "text": "Жетоны модификаторов используются для обозначения временных и постоянных изменений атрибутов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "negative",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (red) Modifier token changes the attribute by -1, whereas a ",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "positive",
+          "text": "Первозданных",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (blue) Modifier token changes it by +1.",
+          "text": ". Когда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Positive tokenNegative token",
+          "text": "Титан",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " получает жетон модификатора, найдите жетон с иконкой, соответствующей изменяемому атрибуту, и поместите его на соответствующий планшет (",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "). Жетоны модификаторов двусторонние: каждый ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "отрицательный",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (красный) жетон модификатора изменяет атрибут на -1, тогда как ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "положительный",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (синий) жетон модификатора изменяет его на +1.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Положительный жетонОтрицательный жетон",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -235,7 +401,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Stacking Modifier Tokens",
+          "text": "Складывание жетонов модификаторов",
           "marks": []
         }
       ]
@@ -246,17 +412,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "There may be times when you need more than one Modifier token of a given attribute, for example, you receive a Precision penalty of -5. In such a case, don’t look for five Precision Modifier tokens. Instead, take one Precision Modifier token and four ",
+          "text": "Бывают случаи, когда вам нужен не один жетон модификатора определённого атрибута, например, вы получаете штраф к Точности -5. В таком случае не ищите пять жетонов модификатора Точности. Вместо этого возьмите один жетон модификатора Точности и четыре ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "generic",
-          "marks": []
+          "text": "универсальных",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " tokens (grey) and stack them, so that the -1 Precision modifier token is on top.",
+          "text": " жетона (серых) и сложите их так, чтобы жетон модификатора Точности -1 был сверху.",
           "marks": []
         }
       ]
@@ -268,7 +436,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Temporary and Lasting Modifier Tokens",
+          "text": "Временные и постоянные жетоны модификаторов",
           "marks": []
         }
       ]
@@ -279,27 +447,101 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some Modifier tokens are ",
+          "text": "Некоторые жетоны модификаторов являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "temporary",
+          "text": "временными",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", что означает, что они сбрасываются после того, как вступят в силу (например, если вы получаете временный жетон Уклонения, сбросьте его после следующего ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", meaning that they are dis-carded after they take effect (e.g. if you gain a temporary Evasion token, discard it after the next Evasion Roll). Place temporary Ti-tan Modifier tokens on their Triskelions as a reminder. Temporary Primordial tokens are always placed in the Kratos Pool and are re-moved in the ",
+          "text": "Броска Уклонения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Clearthe Kratos Pool",
+          "text": "). Поместите временные жетоны модификаторов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " step of a Titan Attack.Other Modifier tokens are lasting, meaning that they remain with the Titan or Primordial until the end of Battle. All modifier tokens are discarded at the end of Battle.",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на их ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Трискелионах",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " в качестве напоминания. Временные жетоны ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " всегда помещаются в Пул Кратоса и удаляются на этапе ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Очистки Пула Кратоса",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Атаки ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Другие жетоны модификаторов являются постоянными, что означает, что они остаются с ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титаном",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданным",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " до конца Битвы. Все жетоны модификаторов сбрасываются в конце Битвы.",
           "marks": []
         }
       ]
@@ -311,7 +553,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Types of Modifier Tokens",
+          "text": "Типы жетонов модификаторов",
           "marks": []
         }
       ]
@@ -322,93 +564,251 @@
       "children": [
         {
           "kind": "text",
-          "text": "Possible Modifier tokens include: \u0007",
+          "text": "Возможные жетоны модификаторов включают: \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Precision:",
+          "text": "Точность:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The Titan has +/-1 Precision for each token. For each of these tokens on the Primordial, increase/lower the Evasion difficulty of each AI card by +/-1. \u0007",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evasion:Titans only.",
+          "text": " имеет +/-1 Точность за каждый жетон. За каждый из этих жетонов на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " For each of these tokens, the Titan has +/-1 Evasion . \u0007",
+          "text": "Первозданном",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "AT:Primordials only.",
+          "text": ", увеличьте/уменьшите сложность Уклонения каждой карты ИИ на +/-1. \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " For each of these tokens, the Primordial has +/-1 ",
+          "text": "Уклонение:Только для Титанов.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " За каждый из этих жетонов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "AT",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". \u0007",
+          "text": " имеет +/-1 Уклонение . \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Speed:",
+          "text": "АТ:Только для Первозданных.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " За каждый из этих жетонов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " For each of these tokens the Titan/Primordial has +/-1 Speed  . \u0007",
+          "text": "Первозданный",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evasion die:Primordials only.",
+          "text": " имеет +/-1 ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " For each of these tokens, Ti-tans must roll +/-1 Evasion die when attacked by the Primor-dial (to a minimum of 1). \u0007",
+          "text": "АТ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Danger: Primordials only.",
+          "text": "Скорость:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " За каждый из этих жетонов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " For each of these tokens the Pri-mordial deals +/-1  with each Attack (sum  from all hits first, then add/subtract  for each  token), or, in some cas-es, for each hit (see Escalation Table on p. 53). \u0007",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "To Hit: Primordials only.",
+          "text": "/Первозданный имеет +/-1 Скорость . \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " For each of these tokens, the Pri-mordial has +/-1 ",
+          "text": "Кубик Уклонения:Только для Первозданных.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " За каждый из этих жетонов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "To Hit",
+          "text": "Титаны",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " должны бросать +/-1 кубик Уклонения при атаке ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданным",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (минимум 1). \b",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Опасность: Только для Первозданных.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " За каждый из этих жетонов ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " наносит +/-1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Опасности",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " с каждой Атакой (сначала суммируйте ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Опасность",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " от всех попаданий, затем добавьте/вычтите ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Опасность",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " за каждый жетон ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Опасности",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "), или, в некоторых случаях, за каждое попадание (см. Таблицу ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Эскалации",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на стр. 53). \b",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Попадание: Только для Первозданных.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " За каждый из этих жетонов ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " имеет +/-1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Попадание",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -424,7 +824,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Generic Tokens",
+          "text": "Универсальные жетоны",
           "marks": []
         }
       ]
@@ -436,17 +836,21 @@
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это монстр среди игр. Есть множество различных эффектов, способностей и действий, которые нужно отслеживать; если бы мы хотели создать специальный жетон для каждого из них… у нас было бы очень много разных жетонов. Очень много. И вы бы потратили много времени на поиски в своей игровой коробке того единственного маркера давления двигателя.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is a monster of a game. There are various effects, abilities and actions to track; if we wanted to create a spe-cial token for each of them... we’d have a lot of different tokens. Like, a lot. And you’d spend a lot of time looking through your game box for that single Engine Pressure marker.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Ambrosia token",
-          "marks": []
+          "text": "Жетон Амброзии",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

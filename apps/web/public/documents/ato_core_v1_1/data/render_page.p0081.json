@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0081",
-    "title": "Last Page Summaries",
+    "title": "Краткие сводки последних страниц",
     "section_path": [],
     "source_page_number": 81
   },
@@ -20,161 +20,181 @@
         {
           "kind": "text",
           "text": "1. ",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Declare Attack and Active Weapon (p. 48)",
+          "text": "Объявите атаку и активное оружие (с. 48)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Raise Rage  and check ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (p. 49)",
+          "text": " Повысьте Ярость и проверьте Приоритетную цель (с. 49)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Attack Roll (p. 49)",
+          "text": " Бросок атаки (с. 49)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "4. ",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "First Ability Window (p. 49)",
+          "text": "Первое окно способностей (с. 49)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "5.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Draw BP card (p. 49)",
+          "text": " Возьмите карту BP (с. 49)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6. ",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Power Roll (p. 50)",
+          "text": "Бросок силы (с. 50)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.1.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Create the Power Pool",
+          "text": " Создайте запас силы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.2.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Roll the Dice",
+          "text": " Бросьте кубики",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.3.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Power Re-rolls",
+          "text": " Перебросы силы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.4.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Use  Potentials",
+          "text": " Используйте потенциалы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.5. ",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Resolve the Power Roll",
+          "text": "Разрешите бросок силы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "7. ",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Primordial Responses (p. 51)",
+          "text": "Ответы Первозданного (с. 51)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "8.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Wounds and Escalation (p. 51)",
+          "text": " Раны и Эскалация (с. 51)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "9. ",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Clear the Kratos Pool (p. 54)",
+          "text": "Очистите запас Кратоса (с. 54)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "10.",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Second Ability Window (p. 54)",
+          "text": " Второе окно способностей (с. 54)",
           "marks": []
         }
       ]
@@ -186,7 +206,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Last Page Summaries",
+          "text": "Краткие сводки последних страниц",
           "marks": []
         }
       ]
@@ -197,407 +217,489 @@
       "children": [
         {
           "kind": "text",
-          "text": "Rage  increases each time you attack, giving you access to addi-tional abilities from the Kratos Table. Whenever your  becomes the highest of any Titan, gain the ",
+          "text": "Ярость увеличивается каждый раз, когда вы атакуете, предоставляя вам доступ к дополнительным способностям из таблицы Кратоса. Всякий раз, когда ваша Ярость становится самой высокой среди всех Титанов, вы получаете жетон ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target",
-          "marks": []
+          "text": "Приоритетная цель",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " token. A  of more than 9 means death.Use Fate  to get re-rolls for Attack Rolls, Evasion Rolls and Skill tests, as well as to pay for powerful abilities. High  may enable ad-ditional negative effects. A  of more than 9 means you must draw a Moiros card. ",
+          "text": ". Ярость более 9 означает смерть.Используйте Судьбу для перебросов кубиков при Бросках атаки, Бросках Уклонения и проверках навыков, а также для оплаты мощных способностей. Высокая Судьба может вызвать дополнительные негативные эффекты. Судьба более 9 означает, что вы должны взять карту Мойрос. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You cannot use   to re-roll Power dice.",
-          "marks": []
+          "text": "Вы не можете использовать Судьбу для переброса кубиков Силы.",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "You gain Danger  when you are attacked and from suffering other negative effects. A  of more than 9 usually causes an Obol Draw. ",
+          "text": "Вы получаете Опасность, когда вас атакуют, и от других негативных эффектов. Опасность более 9 обычно приводит к Жребию Обола. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Opening token :",
-          "marks": []
+          "text": "Жетон Открытия :",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Each Opening token in the Kratos Pool adds +1 to each of your dice results during an Attack Roll.",
+          "text": " Каждый жетон Открытия в запасе Кратоса добавляет +1 к каждому результату ваших кубиков во время Броска атаки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Break token :",
-          "marks": []
+          "text": "Жетон Прорыва :",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Each Break token in the Kratos Pool turns 1  into 1  during your Power Roll. ",
+          "text": " Каждый жетон Прорыва в запасе Кратоса превращает 1 в 1 во время вашего Броска силы. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Movement Step (always):",
-          "marks": []
+          "text": "Шаг Перемещения (всегда):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Move the ",
+          "text": " Переместите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " onto a new tile (p. 13).",
+          "text": " на новую плитку (с. 13).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Timeline Step (always): ",
-          "marks": []
+          "text": "Шаг Хроники (всегда): ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Advance the Timeline (p. 14).",
+          "text": "Продвиньте Хронику (с. 14).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exploration Step (always):",
-          "marks": []
+          "text": "Шаг Исследования (всегда):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "1.Resolve Exploration symbols (p. 15).2.Draw two stacks of cards from the Exploration deck (p. 15).3.Move the ",
+          "text": "1.Разрешите символы Исследования (с. 15).2.Возьмите две стопки карт из колоды Исследования (с. 15).3.Переместите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adversary",
-          "marks": []
+          "text": "Противника",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " (p. 16)4.Perform an Acclimation (if applicable).",
+          "text": " (с. 16)4.Выполните акклиматизацию (если применимо).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Expedition Step (conditional):",
-          "marks": []
+          "text": "Шаг Экспедиции (условно):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " If on a tile with an adventure or R&R symbol, consult the Adventure Table and resolve an adventure (p. 16).",
+          "text": " Если вы находитесь на плитке с символом приключения или R&R, обратитесь к Таблице приключений и разрешите приключение (с. 16).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Encounter Step (conditional):",
-          "marks": []
+          "text": "Шаг Встречи (условно):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " If there are any Timeline Battles or Battle Events on the Timeline, resolve them (p. 17).",
+          "text": " Если на Хронике есть какие-либо Битвы Хроники или Боевые события, разрешите их (с. 17).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Advancement Step (optional):",
-          "marks": []
+          "text": "Шаг Продвижения (необязательно):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Craft Gear, resolve Advancement Events, develop new Technologies and use existing ones (p. 17).",
+          "text": " Создайте Снаряжение, разрешите События продвижения, разработайте новые Технологии и используйте существующие (с. 17).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Story Step (conditional):",
-          "marks": []
+          "text": "Шаг Истории (условно):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " If there are any Story Events on the Time-line, someone has an unresolved Mnemos Breakthrough or the Story progression has been triggered, resolve them (p. 20).",
+          "text": " Если на Хронике есть какие-либо События Истории, у кого-то есть неразрешенный Прорыв Мнемос или было запущено продвижение Истории, разрешите их (с. 20).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Doom Step (conditional):",
-          "marks": []
+          "text": "Шаг Рока (условно):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " If there are any Doom Events on the Time-line or the Doom progression has been triggered, resolve them (p. 21).",
+          "text": " Если на Хронике есть какие-либо События Рока или было запущено продвижение Рока, разрешите их (с. 21).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End Step (always):",
-          "marks": []
+          "text": "Конечный шаг (всегда):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " If you are on an Unexplored tile, it becomes Explored (p. 22).",
+          "text": " Если вы находитесь на Неисследованной плитке, она становится Исследованной (с. 22).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Battle Board: ",
-          "marks": []
+          "text": "Боевое поле: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Place the Battle Board in the middle of the table.",
+          "text": "Разместите Боевое поле в центре стола.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Decks and tokens:",
-          "marks": []
+          "text": "Колоды и жетоны:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Shuffle the Trauma decks, the Kratos deck and the Moiros deck. Place all decks in the designated spaces and place Kratos tokens, Attack dice and Power dice within reach of all  players.",
+          "text": " Перетасуйте колоды Травм, колоду Кратоса и колоду Мойрос. Разместите все колоды в отведенных местах и положите жетоны Кратоса, кубики Атаки и кубики Силы в пределах досягаемости всех игроков.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argonauts:",
-          "marks": []
+          "text": "Аргонавты:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Each player places their Argonaut Portrait and Mnemos cards in front of them.",
+          "text": " Каждый игрок размещает свой Портрет Аргонавта и карты Мнемос перед собой.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Triskelions: ",
-          "marks": []
+          "text": "Трискелионы: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Each player places their Triskelion near their other com-ponents. The Triskelion does not reset at the beginning of Battle; you start with the Triskelion stats you’ve accumulated over the course of the other Phases.",
+          "text": "Каждый игрок размещает свой Трискелион рядом с другими своими компонентами. Трискелион не сбрасывается в начале Битвы; вы начинаете с показателями Трискелиона, которые вы накопили в течение других Фаз.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Titans:",
-          "marks": []
+          "text": "Титаны:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Each player chooses the Titan they will control from the avail-able Titans. If at least four Titans are available, each Argonaut ",
+          "text": " Каждый игрок выбирает Титана, которым он будет управлять, из доступных Титанов. Если доступно не менее четырех Титанов, каждый Аргонавт ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "must",
-          "marks": []
+          "text": "должен",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "control one Titan. ",
+          "text": " управлять одним Титаном. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " It does not have to be the same Titan they controlled in the previous battle. ",
+          "text": " Это не обязательно должен быть тот же Титан, которым они управляли в предыдущей битве. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember:",
-          "marks": []
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " You cannot take more than one Titan of the same Argo-bred class into Battle.",
+          "text": " Вы не можете взять в Битву более одного Титана одного и того же класса, выведенного Арго.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear Loadouts:",
-          "marks": []
+          "text": "Комплекты Снаряжения:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Each Titan has limited  card slots: two ",
+          "text": " Каждый Титан имеет ограниченное количество слотов для карт Снаряжения: два слота для ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "weapon",
-          "marks": []
+          "text": "оружия",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "slots, two ",
+          "text": ", два слота для ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "support",
-          "marks": []
+          "text": "поддержки",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " slots and one ",
-          "marks": []
+          "text": " и один слот для ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "armor",
-          "marks": []
+          "text": "брони",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " slot. A symbol in the upper left corner of a  card denotes which slot it occupies. You cannot equip  cards that would exceed the available slots of your Titans. Each Titan can only have one copy of the same support  card.",
+          "text": ". Символ в верхнем левом углу карты Снаряжения обозначает, какой слот она занимает. Вы не можете экипировать карты Снаряжения, которые превышают доступные слоты ваших Титанов. Каждый Титан может иметь только одну копию одной и той же карты поддержки Снаряжения.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo Abilities: ",
-          "marks": []
+          "text": "Способности Арго: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Players choose the Argo Abilities they want to use during the upcoming Battle. You may use as many Argo Ability cards as your Argo Ability (AA) Limit allows. Place the Argo Abilities you have chosen next to the Battle Board, along with the indicated num-ber of Charge tokens.",
+          "text": "Игроки выбирают Способности Арго, которые они хотят использовать в предстоящей Битве. Вы можете использовать столько карт Способностей Арго, сколько позволяет ваш Лимит Способностей Арго (СА). Разместите выбранные вами Способности Арго рядом с Боевым полем, вместе с указанным количеством жетонов Заряда.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial:",
-          "marks": []
+          "text": "Первозданный:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Place the Primordial Sheet of the Primordial you are about to battle in the designated space near the Battle Board. Place its Routine and Signature cards in the corresponding spaces. Take all of this Primordial’s AI cards and divide them into three decks num-bered I, II and III (you’ll find the roman numeral on the back of the cards). Do the same for the Primordial’s BP cards. Then place the AI I and BP I decks on the appropriate spaces on the Battle Board. Place decks II and III directly below. These are Escalation decks. Find the Trait cards for any Traits that are not described on the Primordial Sheet and place them nearby as a reference.",
+          "text": " Разместите Лист Первозданного, с которым вы собираетесь сражаться, в отведенном месте рядом с Боевым полем. Разместите его карты Рутины и Подписи в соответствующих местах. Возьмите все карты ИИ этого Первозданного и разделите их на три колоды, пронумерованные I, II и III (римская цифра находится на обратной стороне карт). Сделайте то же самое для карт BP Первозданного. Затем разместите колоды ИИ I и BP I на соответствующих местах на Боевом поле. Разместите колоды II и III непосредственно под ними. Это колоды Эскалации. Найдите карты Черты для любых Черты, которые не описаны на Листе Первозданного, и разместите их рядом в качестве справочной информации.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Terrain and Titan Placement:",
-          "marks": []
+          "text": "Размещение Ландшафта и Титанов:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Find all the Terrain cards and Terrain tiles used in the Battle. Place the Terrain cards near the Battle Board and the Terrain tiles on the Battle Board, according to the Battle Dia-gram. Remember to place additional ",
+          "text": " Найдите все карты Ландшафта и плитки Ландшафта, используемые в Битве. Разместите карты Ландшафта рядом с Боевым полем, а плитки Ландшафта на Боевом поле, согласно Боевой диаграмме. Не забудьте разместить дополнительный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adventure Terrain",
-          "marks": []
+          "text": "Приключенческий Ландшафт",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", if noted (see p. 31). Place Titans on Titan Starting Positions as indicated by the diagram. Then proceed to Primordial positioning.",
+          "text": ", если указано (см. с. 31). Разместите Титанов на Стартовых позициях Титанов, как указано на диаграмме. Затем переходите к позиционированию Первозданного.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1. Draw AI: ",
-          "marks": []
+          "text": "1. Возьмите ИИ: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Draw the top card from the AI deck (p. 37).",
+          "text": "Возьмите верхнюю карту из колоды ИИ (с. 37).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2. \u0007Targeting: ",
-          "marks": []
+          "text": "2. Целеуказание: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Decide who or what becomes the Target of the Attack (p. 37).",
+          "text": "Решите, кто или что станет Целью Атаки (с. 37).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "3. Movement: ",
-          "marks": []
+          "text": "3. Перемещение: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Resolve any Primordial moves (p. 38).",
+          "text": "Разрешите любые перемещения Первозданного (с. 38).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "4. Attack (p. 40):4.1. Evasion Roll:",
-          "marks": []
+          "text": "4. Атака (с. 40):4.1. Бросок Уклонения:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Attempt to evade the Attack (p. 41).",
+          "text": " Попытайтесь уклониться от Атаки (с. 41).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "4.2. \u0007Attack Consequences:",
-          "marks": []
+          "text": "4.2. Последствия Атаки:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Resolve Attack effects and a Trauma Draw (p. 42).",
+          "text": " Разрешите эффекты Атаки и Жребий Травмы (с. 42).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "5. After Attack:",
-          "marks": []
+          "text": "5. После Атаки:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Resolve all After Attack effects (p. 44).14+ : Add the ",
+          "text": " Разрешите все эффекты После Атаки (с. 44).14+ : Добавьте карту ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You died horribly",
-          "marks": []
+          "text": "Вы ужасно умерли",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " card to the Obol deck.18+ : \u0007Add the ",
+          "text": " в колоду Обола.18+ : Добавьте карту ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Your gruesome death becomes legend ",
-          "marks": []
+          "text": "Ваша ужасная смерть становится легендой",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "card to the Obol deck.21+ : \u0007Add the ",
+          "text": " в колоду Обола.21+ : Добавьте карту ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Your death transcends reality",
-          "marks": []
+          "text": "Ваша смерть превосходит реальность",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " card to the Obol deck.",
+          "text": " в колоду Обола.",
           "marks": []
         }
       ]

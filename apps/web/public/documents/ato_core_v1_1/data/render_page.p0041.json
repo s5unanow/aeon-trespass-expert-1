@@ -19,8 +19,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "As a Primordial Response from a BP card, the Labyrinthauros tram-ples into the Board Edge. According to the rules, it continues to move along the edge, prioritizing movement that will initially lead it further away from the most Titans. Note that in the end this movement will still bring the Primordial closer to the Titan.",
-          "marks": []
+          "text": "В качестве Первозданного Ответа с карты БП, Лабиринтавр втаптывается в край поля. Согласно правилам, он продолжает двигаться вдоль края, отдавая приоритет движению, которое изначально уведет его дальше от большинства Титанов. Обратите внимание, что в конечном итоге это движение все равно приблизит Первозданного к Титану.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -79,7 +81,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial movement through and onto Terrain spaces",
+          "text": "Движение Первозданного через и на клетки Ландшафта",
           "marks": []
         }
       ]
@@ -90,7 +92,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "During movement, the Primordial ignores Terrain tiles, unless they have the Destructible keyword, in which case they are destroyed and removed from the Battle Board. Consequently, a Primordial can freely move through and onto spaces with most Terrain tiles (including Obstacles).",
+          "text": "Во время движения Первозданный игнорирует тайлы Ландшафта, если только у них нет ключевого слова «Разрушаемый», в этом случае они уничтожаются и удаляются с Боевого Поля. Следовательно, Первозданный может свободно перемещаться через и на клетки с большинством тайлов Ландшафта (включая Препятствия).",
           "marks": []
         },
         {
@@ -112,7 +114,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial movement through Titan spaces (Crash)",
+          "text": "Движение Первозданного через клетки Титанов (Столкновение)",
           "marks": []
         }
       ]
@@ -123,7 +125,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titans do not impede Primordial movement in any way, but a Titan on a space the Primordial moved through or onto suffers Crash. A Titan subjected to Crash gains +1  and suffers Knockdown (see Crash, p. 63 for more details).",
+          "text": "Титаны никак не препятствуют движению Первозданного, но Титан на клетке, через которую или на которую переместился Первозданный, получает Столкновение. Титан, подвергшийся Столкновению, получает +1 и страдает от Опрокидывания (см. Столкновение, стр. 63 для получения дополнительной информации).",
           "marks": []
         }
       ]
@@ -135,7 +137,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ending Primordial movement on a Titan space",
+          "text": "Завершение движения Первозданного на клетке Титана",
           "marks": []
         }
       ]
@@ -146,43 +148,51 @@
       "children": [
         {
           "kind": "text",
-          "text": "If the Primordial ends its movement on a space occupied by a Titan, that Titan suffers ",
+          "text": "Если Первозданный завершает свое движение на клетке, занятой Титаном, этот Титан получает ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crash",
+          "text": "Столкновение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and ",
-          "marks": []
+          "text": "Неизбежный Отброс",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Unavoidable Knockback",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " equal to the Primordial’s ",
+          "text": " равный значению Первозданного ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "X",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Неизбежный Отброс происходит по прямой линии от Первозданного и подчиняется всем обычным правилам Отброса (см. Отброс на стр. 63) со следующим исключением: его нельзя уменьшить или проигнорировать никаким иным способом, кроме эффектов, которые заставляют вас остановиться (например, столкновение с Препятствием) или эффектов, которые конкретно ссылаются на Неизбежный Отброс. Если есть два или более одинаково возможных направления Неизбежного Отброса, игрок выбирает одно. Некоторые Первозданные будут нацеливаться на Титанов вне их эффективной дальности Движения и Атаки. В таких случаях они все равно выполнят движение, пытаясь максимально приблизиться к своей Цели, а затем просто пропустят шаг Атаки и перейдут сразу к шагу После Атаки. Более умные Первозданные всегда целятся",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " value.The Unavoidable Knockback happens in a straight line away from the Primordial and is subject to all normal Knockback rules (see Knockback on p. 63) with the following exception: it cannot be low-ered or ignored in any way other than effects that cause you to stop (such as colliding with an Obstacle) or effects that specifically refer to Unavoidable Knockback. If there are two or more equally pos-sible Unavoidable Knockback directions, the player chooses one.Some Primordials will target Titans outside of their effective Move and Attack range. In such cases, they will still perform the movement, trying to get as close to their Target as possible, and then simply skip the Attack step and go straight to the After Attack step.Smarter Primordials always target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " in range",
-          "marks": []
+          "text": " в пределах досягаемости",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -208,7 +218,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial movement types",
+          "text": "Типы движения Первозданного",
           "marks": []
         }
       ]
@@ -219,27 +229,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "The rules above apply to most cases of movement. There are, however, some special movement types that reflect unique or un-expected ways of traversing the battlefield. They still adhere to standard Primordial Movement rules, but in case of a conflict, the rules below take precedence:",
+          "text": "Вышеуказанные правила применимы к большинству случаев движения. Однако существуют некоторые особые типы движения, которые отражают уникальные или неожиданные способы перемещения по полю боя. Они по-прежнему соответствуют стандартным правилам движения Первозданного, но в случае конфликта приоритет имеют следующие правила:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Move X: ",
+          "text": "Перемещение X: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Выполните движение на X клеток, вместо использования значения Первозданного. Например, «Перемещение 6», «Неограниченное перемещение».",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Perform movement by up to X spaces, instead of using the Primordial’s  value. For example, “Move 6”, “Move Unlimited”.",
-          "marks": []
+          "text": "Перемещение к X:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Move to X:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Perform movement to the designated area or in the indicated direction. Treat the Primordial’s  as unlimited for the duration of this movement. For example, “Move to the center of the board”.",
+          "text": " Выполните движение в указанную область или в указанном направлении. Считайте значение Первозданного неограниченным на время этого движения. Например, «Перемещение в центр поля».",
           "marks": []
         },
         {
@@ -281,7 +295,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Facing",
+          "text": "Направление Первозданного",
           "marks": []
         }
       ]
@@ -292,83 +306,99 @@
       "children": [
         {
           "kind": "text",
-          "text": "Every Primordial miniature has a ",
+          "text": "Каждая миниатюра Первозданного имеет ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "front ",
+          "text": "переднюю часть",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", направление, в котором она смотрит. Определить переднюю часть некоторых Первозданных легко, других — сложнее (в конце концов, это потусторонние монстры из Иного Места). Для игровых целей важно лишь обозначить сторону миниатюры, которую вы считаете передней (отмечена белой стрелкой на диаграммах, найденных на Листах Первозданных), и придерживаться этого. Некоторые инструкции по нацеливанию и другие игровые элементы могут ссылаться на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", the direction it is facing. Identifying the front of some Primordials is easy, of oth-ers less so (these are eldritch monsters from some Other Place af-ter all). For game purposes, it’s just important to designate a side of the miniature you considered the front (marked with a white arrow on the diagrams found on the Primordial Sheets) and sticking with it.Some targeting instructions and other game elements may refer to the Primordial’s ",
+          "text": "переднюю часть",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "front",
+          "text": "заднюю часть",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Чтобы узнать, находится ли Титан или любой другой игровой элемент ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " or ",
+          "text": "спереди",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " от Первозданного, проведите воображаемую линию вдоль краев клеток, занятых передней частью миниатюры Первозданного. Все клетки за этой линией в направлении, куда смотрит Первозданный, считаются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "rear",
+          "text": "спереди",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. диаграмму ниже).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". To find out if a Titan or any other game element is ",
+          "text": "Задняя часть",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " обозначает ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "in front",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " клетки, прилегающие к Первозданному, непосредственно за ним (по отношению к передней части). Они также всегда отмечены на диаграмме на Листе Первозданного символом клетки R Задняя часть.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " of the Primordial, draw an imaginary line passing along the edges of the spaces occupied by the Primordial miniature’s front. All spaces beyond this line in the direction the Pri-mordial is facing are considered to be ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "in front ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "(see diagram below).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Rear",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " designates ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "only",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " the spaces adjacent to the Primordial, direct-ly behind it (in relation to the front). These are also always marked on the diagram on the Primordial Sheet with the R Rear space symbol.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "White spaces are in front, while only the 2 orange spaces are considered Rear ",
-          "marks": []
+          "text": "Белые клетки находятся спереди, тогда как только 2 оранжевые клетки считаются Задней частью ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -409,7 +439,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "R  spaces",
+          "text": "Клетки R",
           "marks": []
         }
       ]
@@ -421,7 +451,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Turning",
+          "text": "Поворот Первозданного",
           "marks": []
         }
       ]
@@ -432,17 +462,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unless stated otherwise, the Primordial always bears down on its victim! Consequently, the Primordial ",
+          "text": "Если не указано иное, Первозданный всегда нападает на свою жертву! Следовательно, Первозданный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "always",
-          "marks": []
+          "text": "всегда",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " turns:",
+          "text": " поворачивается:",
           "marks": []
         }
       ]
@@ -453,7 +485,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "gets a Zone).",
+          "text": "лится на Зону).",
           "marks": []
         }
       ]
@@ -464,17 +496,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "to turn it.The Primordial ",
+          "text": "повернуть его. Первозданный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "doesn’t",
-          "marks": []
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " turn:",
+          "text": " поворачивается:",
           "marks": []
         }
       ]
@@ -485,7 +519,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "pushed back by a Titan).",
+          "text": "отталкивает Титан).",
           "marks": []
         }
       ]
@@ -496,7 +530,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "(see p. 41). ",
+          "text": "(см. стр. 41).",
           "marks": []
         }
       ]
@@ -508,7 +542,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "4. Primordial Attack",
+          "text": "4. Атака Первозданного",
           "marks": []
         }
       ]
@@ -519,7 +553,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordials always move first, then attack. For an Attack to be re-solved, the Target must be within Attack Range, as dictated by the Attack type. Note that Primordial Attack types also introduce addi-",
+          "text": "Первозданные всегда сначала двигаются, затем атакуют. Чтобы Атака была разрешена, Цель должна находиться в пределах Дальности Атаки, как это диктуется типом Атаки. Обратите внимание, что типы Атак Первозданных также вводят дополни-",
           "marks": []
         }
       ]

@@ -19,1182 +19,2003 @@
       "children": [
         {
           "kind": "text",
-          "text": "Cover",
-          "marks": []
+          "text": "Укрытие",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 68",
+          "text": ": с. 68",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Крушение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Crash",
+          "text": ": с. 63; см. также: Движение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63; see also: Primordial Move-ment Through Titan Spaces (Crash) on p. 40",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Cretan City",
+          "text": " через пространства ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle I Storybook, p. 5",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crew",
+          "text": " (Крушение) на с. 40",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Критский Город",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Basic Argo Stats, p. 9",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crippled Titans",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": " I, с. 5",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Экипаж",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Crit",
+          "text": ": см. Базовые характеристики Арго, с. 9",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Crit Die, p. 49; see also: Primordi-al Responses, p. 51; Crit Evade, p. 41",
+          "text": "Покалеченные ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титаны",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Cumbersome",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Cycle",
+          "text": " II, с. 6",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Крит",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see What is Aeon Trespass: Odys-sey?, p. 3",
+          "text": ": см. Кубик Крита, с. 49; см. также: Ответы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Danger",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Triskelion, p. 11; Gaining Dan-ger over “9”, p. 43",
+          "text": ", с. 51; Крит-уклонение, с. 41",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Daze",
+          "text": "Громоздкий",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикл",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Что такое Aeon Trespass: Odyssey?, с. 3",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Deadly",
+          "text": "Опасность",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": "Трискелион",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Death",
+          "text": ", с. 11; Получение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Death in Battle, p. 56; see also: Argonaut Death, p. 10",
+          "text": "Опасности",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Death Blows",
+          "text": " свыше «9», с. 43",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Оглушение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 57; see also: Resources for Death Blows, p. 55",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Death by Fate",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 5",
+          "text": " II, с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Смертоносный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Death X",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Смерть",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 8",
+          "text": ": см. Смерть в битве, с. 56; см. также: Смерть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Defectors",
+          "text": "Аргонавта",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 8",
+          "text": ", с. 10",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Смертельные Удары",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Despair",
+          "text": ": с. 57; см. также: Ресурсы для Смертельных Ударов, с. 55",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle I Storybook, p. 5",
+          "text": "Смерть от ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Destructible",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 68",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Diagonal Movement",
+          "text": " III, с. 5",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Смерть X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Story-book, p. 7",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Dice",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 8",
+          "text": " III, с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Перебежчики",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Dice Re-rolls",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 8",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Diplomacy",
+          "text": " II, с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Отчаяние",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 23",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Discarding",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 62",
+          "text": " I, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Displace",
+          "text": "Разрушаемый",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 68",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Движение по Диагонали",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Diversion",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": " III, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Divine Surges",
+          "text": "Кубики",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Перебросы Кубиков",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 23",
+          "text": ": с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Дипломатия",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Dodge",
+          "text": ": с. 23",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Сброс",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": ": с. 62",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Смещение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Doom",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Отвлечение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Progress and Doom, p. 9",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Божественные Всплески",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Doom Step",
+          "text": ": с. 23",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Уклонение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 21",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Рок",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Doomed",
+          "text": ": см. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63\t",
+          "text": "Прогресс",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Double Wound",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Wound Stack, p. 52",
+          "text": "Рок",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Dread",
+          "text": ", с. 9",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle I Storybook, p. 5",
+          "text": "Шаг Рока",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 21",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Обречённый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Dreams of Pharos",
+          "text": ": с. 63",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 28",
+          "text": "Двойная Рана",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Стек Ран, с. 52",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ужас",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Echoes of Recollection",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Sto-rybook, p. 6",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Effective Range",
+          "text": " I, с. 5",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Сны Фароса",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 48",
+          "text": ": с. 28",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Отголоски Воспоминаний",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Elation X",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Elevated",
+          "text": " III, с. 6",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Эффективная Дальность",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7; Cy-cle III Storybook, p. 8",
+          "text": ": с. 48",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ликование X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Encounter Step",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Возвышенный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 17",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End of Battle",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Other Round Timing Rules, p. 56",
+          "text": " II, с. 7; Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End Step",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 22",
+          "text": " III, с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Шаг Встречи",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Erased from existence",
+          "text": ": с. 17",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Конец Битвы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Sto-rybook, p. 5",
+          "text": ": см. Другие правила определения времени раунда, с. 56",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Escalate X",
+          "text": "Конечный Шаг",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 22",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Стертый из Существования",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Escalation",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Performing Escalation, p. 52; Full Escalation Chart, p. 53",
+          "text": " III, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evasion",
+          "text": "Эскалация X",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Эскалация",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Evasion Roll, p. 41; see also: Defensive Gear Stats, p. 46",
+          "text": ": см. Выполнение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Events",
+          "text": "Эскалации",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Story Events, p. 21; Special Events, p. 29",
+          "text": ", с. 52; Полная таблица Эскалации, с. 53",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Уклонение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Evolution Track",
+          "text": ": см. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Evolution and Battle tracks, p. 34",
+          "text": "Бросок Уклонения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evolving",
+          "text": ", с. 41; см. также: Характеристики защитного ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": "Снаряжения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exhaustable gear",
+          "text": ", с. 46",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "События",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 62",
+          "text": ": см. Сюжетные события, с. 21; Особые события, с. 29",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Трек Эволюции",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Exhausting",
+          "text": ": см. Треки Эволюции и Битвы, с. 34",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Эволюция",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 62",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Expedition Step",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 16",
+          "text": " II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exploration card",
+          "text": "Истощаемое ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "снаряжение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Resolving an Explo-ration Draw, p. 15",
+          "text": ": с. 62",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Истощение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Exploration Step",
+          "text": ": с. 62",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Шаг Экспедиции",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 15",
+          "text": ": с. 16",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exposed",
+          "text": "Карта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 68",
+          "text": "Исследования",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Разрешение Жребия ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Facing",
+          "text": "Исследования",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Primordial Facing, p. 40",
+          "text": ", с. 15",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Faction",
+          "text": "Шаг ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Исследования",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Diplomacy, p. 23",
+          "text": ": с. 15",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fail Trick",
+          "text": "Открытый",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 68",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Направление",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Trick in Cycle III Storybook, p. 8",
+          "text": ": см. Направление ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fate",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Triskelion, p. 11; see also Fate Ef-fect Triggers, p. 44",
+          "text": ", с. 40",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фракция",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Fate Armor",
+          "text": ": см. Дипломатия, с. 23",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Неудачный Трюк",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 8",
+          "text": ": см. Трюк в Книге Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fate Re-rolls",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 8",
+          "text": " III, с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьба",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Fated Boxes",
+          "text": ": см. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 32",
+          "text": "Трискелион",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fated Mnemoses",
+          "text": ", с. 11; см. также Триггеры эффектов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 30",
+          "text": "Судьбы",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fatigue",
+          "text": ", с. 44",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 62",
+          "text": "Броня ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Fear",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle I Storybook, p. 5",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fire X",
+          "text": " III, с. 8",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": "Перебросы ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "First ability window",
+          "text": ": с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбоносные Ящики",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 49",
+          "text": ": с. 32",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбоносные Мнемос",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Flexible abilities",
+          "text": ": с. 30",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Constant Abilities, p. 61",
+          "text": "Усталость",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 62",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Страх",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Forced Vault",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Vault, p. 67",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fractured",
+          "text": " I, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 7",
+          "text": "Огонь X",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Free Action",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 54",
+          "text": " II, с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первое окно способностей",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Frenzy",
+          "text": ": с. 49",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Гибкие способности",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": ": см. Постоянные способности, с. 61",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Вынужденный Прыжок",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Front",
+          "text": ": см. Прыжок, с. 67",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Расколотый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Primordial Facing, p. 40",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Frontlines",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": " III, с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Свободное Действие",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Frozen Time",
+          "text": ": с. 54",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Безумие",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 7 and 9",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Full hit",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Attack Roll, p. 49",
+          "text": " II, с. 6",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фронт",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Full miss",
+          "text": ": см. Направление ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Attack Roll, p. 49",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gaia-born Titans",
+          "text": ", с. 40",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Передовая",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Titan Breeding, p. 19",
+          "text": ": с. 63",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gain",
+          "text": "Замороженное Время",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 23; see also Gain/Loss Mitigation, p. 24; Voluntary Gain, p. 24; Gaining as a Group, p. 24",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Game elements",
+          "text": " III, с. 7 и 9",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Полное попадание",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7",
+          "text": ": см. Бросок атаки, с. 49",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Game Phases",
+          "text": "Полный промах",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Бросок атаки, с. 49",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титаны",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7",
+          "text": ", рожденные Геей: см. Разведение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gated",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Gated Abilities and Effects, p. 46",
+          "text": ", с. 19",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Получение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Gear Ascendancy",
+          "text": ": с. 23; см. также Смягчение получения/потери, с. 24; Добровольное получение, с. 24; Получение в группе, с. 24",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Элементы игры",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 8; Cycle III Storybook, p. 5",
+          "text": ": с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазы игры",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Gear cards",
+          "text": ": с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ограниченный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 45; see also: Crafting Gear, p. 19",
+          "text": ": см. Ограниченные способности и эффекты, с. 46",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear slots",
+          "text": "Превосходство ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 46",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear trait categories",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Story-book, p. 6",
+          "text": " II, с. 8; Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Generic tokens",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 58",
+          "text": " III, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Glaciate",
+          "text": "Карты ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 5",
+          "text": ": с. 45; см. также: Создание ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Godforms",
+          "text": "Снаряжения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Awakenings, p. 59",
+          "text": ", с. 19",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Going Beyond",
+          "text": "Слоты ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 9",
+          "text": ": с. 46",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Group",
+          "text": "Категории свойств ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Gaining as a Group, p. 24; Group Test p. 31",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Hardened",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": " II, с. 6",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Общие жетоны",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Hatred",
+          "text": ": с. 58",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": "Обледенение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Heal",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": " III, с. 5",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Божественные формы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Heartseeker",
+          "text": ": см. Пробуждения, с. 59",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Выход за Пределы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Hide",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63",
+          "text": " III, с. 9",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Группа",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Hope X",
+          "text": ": см. Получение в группе, с. 24; Групповая проверка с. 31",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Закаленный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 8",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Hub Adventures",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 26",
+          "text": " II, с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ненависть",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Hull",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Basic Argo Stats, p. 9",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ignore and Disable",
+          "text": " II, с. 6",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Исцеление",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Искатель Сердец",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Immediate effects",
+          "text": ": с. 63",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Скрытие",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7; see also: Structur-al Technologies, p. 18",
+          "text": ": с. 63",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Improved Rush",
+          "text": "Надежда X",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Rush, p. 67",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Incinerated",
+          "text": " III, с. 8",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Приключения в Хабе",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 5",
+          "text": ": с. 26",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Indestructible",
+          "text": "Корпус",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Базовые характеристики Арго, с. 9",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Игнорировать и Отключить",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 68",
+          "text": ": с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Мгновенные эффекты",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Inhabited",
+          "text": ": с. 7; см. также: Структурные технологии, с. 18",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Улучшенный Рывок",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 68",
+          "text": ": см. Рывок, с. 67",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Сожженный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Inspire X",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Instant Death Effects",
+          "text": " III, с. 5",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Неразрушимый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 57",
+          "text": ": с. 68",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Обитаемый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Instead",
+          "text": ": с. 68",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Вдохновение X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Instinct",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 51",
+          "text": " II, с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Эффекты Мгновенной Смерти",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Involuntary",
+          "text": ": с. 57",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Involuntary Movement, p. 48",
+          "text": "Вместо",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 7",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Инстинкт",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Inward Odyssey",
+          "text": ": с. 51",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 27",
+          "text": "Непроизвольный",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": см. Непроизвольное движение, с. 48",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Внутренняя Одиссея",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Judgement",
+          "text": ": с. 27",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Суждение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Primordial Attack Types, p. 41",
+          "text": ": см. Типы атак ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Jump",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7; see also: Primordial Movement type in Cycle II Sto-rybook, p. 6",
+          "text": ", с. 41",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Прыжок",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Katharsis",
+          "text": ": см. Книгу Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": see Resolved Mnemos and Katharsis, p. 30",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Keywords",
+          "text": " II, с. 7; см. также: тип движения ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63; see also: Terrain Key-words List, p. 68",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockback X",
+          "text": " в Книге Историй ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ": p. 63; see also: Unavoidable Knockback, p. 36",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockdown",
+          "text": " II, с. 6",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Катарсис",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 64",
+          "text": ": см. Разрешенные Мнемос и Катарсис, с. 30",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ключевые слова",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Kratos cards",
+          "text": ": с. 63; см. также: Список ключевых слов местности, с. 68",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Отбрасывание X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 58",
+          "text": ": с. 63; см. также: Неизбежное отбрасывание, с. 36",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Сбивание с ног",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Kratos Roll",
+          "text": ": с. 64",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Карты Кратоса",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 58",
+          "text": ": с. 58",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Kratos Table",
+          "text": "Бросок Кратоса",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ": с. 58",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Таблица Кратоса",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 45; see also: Kratos Table Abilities, p. 61",
+          "text": ": с. 45; см. также: Способности Таблицы Кратоса, с. 61",
           "marks": []
         }
       ]

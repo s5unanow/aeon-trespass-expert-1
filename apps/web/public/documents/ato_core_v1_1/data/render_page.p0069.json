@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0069",
-    "title": "Terrain Placement on a Titan",
+    "title": "Размещение ландшафта на Титане",
     "section_path": [],
     "source_page_number": 69
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain Placement on a Titan",
+          "text": "Размещение ландшафта на Титане",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "When a Terrain tile is placed on a space occupied by a Titan:",
+          "text": "Когда тайл ландшафта размещается на клетке, занятой Титаном:",
           "marks": []
         }
       ]
@@ -42,13 +42,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "stroyed and the Titan suffers ",
+          "text": "тожается, и Титан получает ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Crash",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -63,17 +65,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "and is ",
+          "text": "и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Displaced",
-          "marks": []
+          "text": "Смещается",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " to an adjacent space in a way that would allow the tile to be placed without overlapping. If there is no such space, the Titan cannot be legally Displaced and dies.",
+          "text": " на соседнюю клетку таким образом, чтобы тайл мог быть размещен без наложения. Если такой клетки нет, Титан не может быть законно Смещен и погибает.",
           "marks": []
         }
       ]
@@ -84,7 +88,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "the Titan miniature and this Titan must immediately resolve this tile’s effects (if any) as if it had just moved onto it.",
+          "text": "миниатюрой Титана, и этот Титан должен немедленно разрешить эффекты этого тайла (если таковые имеются), как если бы он только что переместился на него.",
           "marks": []
         }
       ]
@@ -96,7 +100,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain Placement on Primordial",
+          "text": "Размещение ландшафта на Первозданном",
           "marks": []
         }
       ]
@@ -107,7 +111,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "If a Terrain tile is placed on a space occupied by the Primordial:",
+          "text": "Если тайл ландшафта размещается на клетке, занятой Первозданным:",
           "marks": []
         }
       ]
@@ -118,7 +122,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "tile placement.",
+          "text": "размещение тайла.",
           "marks": []
         }
       ]
@@ -130,7 +134,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain Abilities",
+          "text": "Способности ландшафта",
           "marks": []
         }
       ]
@@ -141,27 +145,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "In a similar way to Titans and Primordials, Terrain tiles possess var-ious abilities that may greatly influence the course of the Battle. Some of them are represented by Terrain traits and their effects are explained in this section. All of these abilities are forced and ",
+          "text": "Подобно Титанам и Первозданным, тайлы ландшафта обладают различными способностями, которые могут значительно повлиять на ход Битвы. Некоторые из них представлены свойствами ландшафта, и их эффекты объясняются в этом разделе. Все эти способности являются принудительными и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "must",
+          "text": "должны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " разрешаться ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " be resolved ",
-          "marks": []
+          "text": "каждый раз",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "each time ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "they are triggered unless explicitly stated otherwise. If an ability has no trigger, its effect is constant and always active as long as this tile is present on the Battle Board.",
+          "text": ", когда они срабатывают, если явно не указано иное. Если способность не имеет триггера, ее эффект постоянен и всегда активен, пока этот тайл присутствует на Поле Битвы.",
           "marks": []
         }
       ]
@@ -173,7 +181,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain Traits List",
+          "text": "Список свойств ландшафта",
           "marks": []
         }
       ]
@@ -184,97 +192,115 @@
       "children": [
         {
           "kind": "text",
-          "text": "The following list contains Terrain Traits common to all Cycles of",
+          "text": "Следующий список содержит свойства ландшафта, общие для всех Циклов ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Свойства, введенные в конкретном Цикле, будут описаны в Книге Историй этого Цикла. Все они указаны в Главном Указателе (стр. 76).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Traits that are introduced in a specific Cycle will be described in that Cycle’s Storybook. All of these are referenced in the Master Index (p. 76).",
+          "text": "Амброзия:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Когда Титан завершает свое движение на этом тайле, добровольно или нет, он получает 1 жетон Амброзии. Если Титан начинает свой ход на этом тайле и не двигается до конца этого хода, он получает 1 жетон Амброзии. Если Титан проходит через этот тайл, но не завершает на нем свое движение, бросьте d10. На 6+, получите 1 жетон Амброзии.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ambrosia:",
+          "text": "Край поля: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Этот тайл функционирует как Край поля (см. Край поля на стр. 33), уменьшая игровую область Поля Битвы.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " When a Titan ends its movement on this tile, voluntarily or not, it gains 1 Ambrosia token. If a Titan starts its turn on this tile and doesnʼt move until the end of this turn, it gains 1 Ambrosia token. If a Titan moves through this tile, but does not end its move-ment on it, roll a d10. On a 6+, gain 1 Ambrosia token.",
+          "text": "Безграничный: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Вы не можете добровольно перемещаться на этот тайл. Если вы будете вынуждены переместиться на этот тайл или за его пределы, или за Край поля, вы погибаете.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Board Edge: ",
+          "text": "Пропасть:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Титаны не могут добровольно перемещаться через клетки Пропасти. Если Титан завершает свое движение на клетке Пропасти, он погибает. Если его отталкивают или притягивают через клетку Пропасти, он погибает. Если тайл Пропасти размещается под Титаном, он погибает. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "This tile functions like the Board Edge (see Board Edge on p. 33), reducing the play area of the Battle Board.",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Титаны не погибают от перемещения через Пропасть во время Отбрасывания, если только они не завершают на ней свое движение.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Boundless: ",
+          "text": "Укрытие:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Титаны на этом тайле имеют +1 Уклонение.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You cannot voluntarily move onto this tile. If you would be forced to move onto or beyond this tile or Board Edge, you die.",
+          "text": "Разрушаемый:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Когда Титан непроизвольно перемещается на этот тайл, тайл уничтожается. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Chasm:",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Titans cannot voluntarily move through Chasm spaces. If a Titan ends their movement on a Chasm space, it dies. If it is pushed back or pulled through a Chasm space, it dies. If a Chasm tile is placed under a Titan, it dies. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Titans do not die from moving over a Chasm during Knockback unless they end their movement on it.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Cover:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Titans on this tile have +1 Evasion .",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Destructible:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " When a Titan is involuntarily moved onto this tile, the tile is destroyed. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " If a Titan is knocked back, it ignores non-Obstacle Terrain tiles it moves through. Therefore, it will not destroy a Destructible tile unless it ends its movement on it. Pos-sible subtype:",
+          "text": " Если Титан отброшен, он игнорирует тайлы ландшафта, не являющиеся Препятствиями, через которые он перемещается. Следовательно, он не уничтожит Разрушаемый тайл, если только не завершит на нем свое движение. Возможный подтип:",
           "marks": []
         }
       ]
@@ -285,87 +311,103 @@
       "children": [
         {
           "kind": "text",
-          "text": "tile or a Titan is involuntarily moved onto it, flip this Terrain tile and corresponding Terrain card. It then becomes Destructible.",
+          "text": "тайл или Титан непроизвольно перемещается на него, переверните этот тайл ландшафта и соответствующую карту ландшафта. Затем он становится Разрушаемым.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exposed:",
+          "text": "Открытый:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если Первозданный стоит на этом тайле, он имеет -1 .",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If the Primordial stands on this tile, it has -1 .",
+          "text": "Неразрушимый:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Этот тайл ландшафта не может быть уничтожен никаким образом. Он делает недействительным размещение ландшафта поверх него.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Indestructible:",
+          "text": "Обитаемый:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Примените любые бонусы и штрафы, указанные на карте ландшафта, исходя из вашего показателя Дипломатии с Местной Фракцией. Если этот тайл ландшафта уничтожен, потеряйте -1 Дипломатии с Местной Фракцией.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " This Terrain tile cannot be destroyed in any way. It invalidates Terrain placement on top of it.",
+          "text": "Лабиринт:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Красные линии на этих тайлах следует рассматривать как Препятствия. Соединяющиеся тайлы Лабиринта считаются одним тайлом ландшафта. Подробные правила см. в Книге Историй Цикла I.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Inhabited:",
+          "text": "Затемняющий:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Этот тайл блокирует Линию Видимости.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Apply any bonuses and penalties listed on the Terrain card based on your Diplomacy Score with the Local Faction. If this Terrain tile is destroyed, lose -1 Diplomacy with the Local Faction.",
+          "text": "Препятствие: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титаны не могут перемещаться через Препятствия. Многие способности, связанные с движением, взаимодействуют с Препятствиями. См. «Отбрасывание», «Отталкивание» и «Притягивание» в разделе списка ключевых слов на стр. 63.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Labyrinth:",
+          "text": "Ловушка:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Этот тайл имеет особые взаимодействия с Первозданным, указанные на карте ландшафта.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Red lines on these tiles should be treated as Obstacles. Connecting Labyrinth tiles are considered a single Terrain tile. See detailed rules in Cycle I Storybook.",
-          "marks": []
+          "text": "Сокровище:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Obscuring:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " This tile blocks Line of Sight.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Obstacle: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Titans cannot move through Obstacles. Many move-like abilities interact with Obstacles. See Knockback, Pushback and Pull in the keywords list section on p. 63.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Trap:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " This tile has special interactions with the Primordial, listed on the Terrain card.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Treasure:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " This tile has special interactions with Titans, listed on the Terrain card.",
+          "text": " Этот тайл имеет особые взаимодействия с Титанами, указанные на карте ландшафта.",
           "marks": []
         }
       ]

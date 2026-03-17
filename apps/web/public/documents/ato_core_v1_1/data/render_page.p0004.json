@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0004",
-    "title": "Introduction",
+    "title": "Введение",
     "section_path": [],
     "source_page_number": 4
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Introduction",
+          "text": "Введение",
           "marks": []
         }
       ]
@@ -32,7 +32,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "What is Aeon Trespass: Odyssey?",
+          "text": "Что такое Aeon Trespass: Odyssey?",
           "marks": []
         }
       ]
@@ -44,101 +44,231 @@
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это игра о приключениях, исследованиях и ожесточённых битвах с гигантскими монстрами. Это кооперативная настольная игра для 1–4 игроков, проходящая в течение нескольких сессий, составляющих кампанию, называемую ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is a game about adventure, exploration and fierce battles against giant monsters. It’s a cooperative board-game experience for 1–4 players played over multiple sessions making up a campaign called a Cycle. It combines elements of both adventure and civilization-building games. You will travel around Ancient Greece aboard a giant city-ship known as the ",
+          "text": "Циклом",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": ". Она сочетает в себе элементы приключенческих игр и игр по строительству цивилизации. Вы будете путешествовать по Древней Греции на борту гигантского города-корабля, известного как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", go on adventures, develop new technologies, craft new weapons and gear, train your Argonauts, create new Titans, do battle with Pri-mordials, and much, much more.You ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", отправляться в приключения, разрабатывать новые технологии, создавать новое ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "win",
+          "text": "снаряжение",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " by following the story and defeating its main villain (or villains) or solving a crisis. You lose if your crew abandons you, your ship gets destroyed, you tempt fate too much, the villains ful-fill their own plot or time runs out. There are many ways to lose, but only a handful of paths to victory.During ",
+          "text": " и оружие, тренировать своих ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Battles",
+          "text": "Аргонавтов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", you must cooperate to defeat a giant Primordial boss type monster controlled by a sophisticated AI system. Out-side of Battles, you ",
+          "text": ", создавать новых ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Voyage",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " across a region of Hellas, exploring, gathering resources, advancing your knowledge and engaging in diplomacy. And, of course, you go on ",
+          "text": ", сражаться с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adventures",
+          "text": "Первозданными",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "! These use choice chain and choice matrix mechanics to track your decisions throughout the game. These decisions matter and will have a dras-tic impact on your campaign, as well as future play sessions, cam-paigns and playthroughs.",
+          "text": " и многое, многое другое. Вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Aeon Trespass: Odysse",
+          "text": "побеждаете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", следуя сюжету и побеждая его главного злодея (или злодеев) или разрешая кризис. Вы проигрываете, если ваш ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "y is not a legacy game, but it uses some legacy systems such as gradual mechanic introduction, secret con-tent and consequences for subsequent playthroughs (no compo-nent destruction though!). There are several Cycles in the game box, each with its own distinct story arc, feel, and mechanics. The Cycles create a greater narrative whole and lead into each other, so you should start with ",
+          "text": "Экипаж",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Cycle I: Truth of the Labyrinth",
+          "text": " покидает вас, ваш корабль уничтожен, вы слишком сильно искушаете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".All in all,",
+          "text": "Судьбу",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Aeon Trespass: Odyssey",
+          "text": ", злодеи осуществляют свой собственный план или время истекает. Есть много способов проиграть, но лишь несколько путей к победе. Во время ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " offers hundreds of hours of unique game content, countless secrets to uncover and an unprec-edented scale. Take it slowly and savor the journey. We’ve thought long and hard about what to call this genre-bending game. At the end of the day, it defies strict categorization. It’s simply an ",
+          "text": "Битв",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", вы должны сотрудничать, чтобы победить гигантского монстра-босса ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Odyssey",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "game!",
+          "text": " типа, управляемого сложной системой ИИ. Вне Битв вы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Странствуете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " по региону Эллады, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "исследуя",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", собирая ресурсы, развивая свои знания и участвуя в дипломатии. И, конечно же, вы отправляетесь в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Приключения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "! Они используют механики цепочек выбора и матриц выбора для отслеживания ваших решений на протяжении всей игры. Эти решения имеют значение и окажут существенное влияние на вашу кампанию, а также на будущие игровые сессии, кампании и прохождения. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " не является игрой-наследием, но использует некоторые системы наследия, такие как постепенное введение механик, секретный контент и последствия для последующих прохождений (хотя без уничтожения компонентов!). В коробке с игрой есть несколько ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Циклов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", каждый со своим уникальным сюжетом, атмосферой и механиками. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Циклы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " создают единое повествовательное целое и переходят один в другой, поэтому вам следует начать с ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла I: Истина Лабиринта",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В целом, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " предлагает сотни часов уникального игрового контента, бесчисленные секреты для раскрытия и беспрецедентный масштаб. Проходите её не спеша и наслаждайтесь путешествием. Мы долго и упорно думали, как назвать эту игру, ломающую жанровые рамки. В конце концов, она не поддаётся строгой категоризации. Это просто игра-",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Одиссея",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "!",
           "marks": []
         }
       ]
@@ -150,7 +280,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Using this Book",
+          "text": "Использование этой книги",
           "marks": []
         }
       ]
@@ -161,83 +291,75 @@
       "children": [
         {
           "kind": "text",
-          "text": "This ",
+          "text": "Эта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rulebook",
+          "text": "Книга правил",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " не предназначена для обучения основам ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is not meant to teach you the basics of ",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если вы новичок в игре, используйте книгу «Обучение игре» и пройдите Обучение, которое шаг за шагом представит игровые элементы и правила, необходимые для начала игры. Эта Книга правил предназначена для справки по конкретным правилам, предоставляя подробное объяснение, дополнительные примеры и разъяснения. Книга правил разделена на разделы, включая правила для основных Фаз игры:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Aeon Tres-pass: Odyssey",
+          "text": "1. Важные правила игры:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Вся основная игровая информация, включая персонажей игроков, основные характеристики и условия победы/поражения.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". If you are new to the game, use the Learn to Play book instead and play the Tutorial that will introduce game ele-ments and rules necessary to start playing step by step.This Rulebook is meant as a reference for specific rules, providing a detailed explanation, additional examples and clarification. The Rulebook has been divided into sections, including the rules for the main Phases of the game:",
+          "text": "2. Основы кампании:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Подробный разбор Раунда кампании со всеми Шагами и Фазами.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\tImportant Game Rules:",
+          "text": "3. Фаза Странствия:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Правила, касающиеся карты Странствия и всех связанных с ней игровых элементов. Если вы в данный момент не разрешаете никаких Стычек на Боевом поле или не отправляетесь в Приключение, вы находитесь в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " All the basic game information, includ-ing player characters, main statistics and win/lose conditions.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "2.\tCampaign Basics:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " A detailed breakdown of the Campaign Round with all the Steps and Phases.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "3.\tVoyage Phase:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Rules concerning the Voyage map and all the game elements connected to it. If you are currently not resolv-ing any Encounters on the Battle Board or going on an Adven-ture, you are in the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Voyage Phase",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "4.\tAdventure Phase:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Rules concerning Adventures, be they Main Story, hub adventures or even R&R! If you are currently reading through a Storybook passage, you are in the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Adventure Phase",
-          "marks": []
+          "text": "Фазе Странствия",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -246,18 +368,22 @@
         },
         {
           "kind": "text",
-          "text": "5.\tBattle Phase:",
+          "text": "4. Фаза Приключения:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Правила, касающиеся Приключений, будь то Основной сюжет, приключения в хабе или даже Отдых и Восстановление! Если вы в данный момент читаете отрывок из Книги историй, вы находитесь в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Rules concerning Battle encounters. If you are currently resolving a Primordial encounter on the Battle Board, you are in the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Battle Phase",
-          "marks": []
+          "text": "Фазе Приключения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -266,22 +392,70 @@
         },
         {
           "kind": "text",
-          "text": "6.\tMnestis Theatre: ",
+          "text": "5. Фаза Битвы:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Правила, касающиеся Боевых стычек. Если вы в данный момент разрешаете стычку с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "All rules concerning the Mnestis Theatre game mode, including the Tree of Knowledge and Mnestis rewards.",
+          "text": "Первозданным",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important!",
+          "text": " на Боевом поле, вы находитесь в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " There are a number of sealed envelopes in the game box. Do not open these unless specifically instructed to! If you’re not sure you’re instructed to open an envelope, you aren’t! Don’t spoil the fun for yourself! These are spread throughout all three Cycles and you might not even encounter them on your first play-through, so be patient!",
+          "text": "Фазе Битвы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6. Театр Мнестис:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Все правила, касающиеся игрового режима Театр Мнестис, включая Древо Знаний и награды Мнестис.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Важно!",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " В коробке с игрой есть несколько запечатанных конвертов. Не открывайте их, если это не указано специально! Если вы не уверены, что вам приказано открыть конверт, значит, это не так! Не портите себе удовольствие! Они распределены по всем трём ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Циклам",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", и вы можете даже не встретить их при первом прохождении, так что будьте терпеливы!",
           "marks": []
         }
       ]

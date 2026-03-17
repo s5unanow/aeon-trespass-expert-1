@@ -19,173 +19,362 @@
       "children": [
         {
           "kind": "text",
-          "text": "Knockdown:",
+          "text": "Опрокидывание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Получите карту состояния ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Gain the ",
+          "text": "Опрокидывание",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", стороной «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockdown",
+          "text": "Падение",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "» вверх, и положите свою миниатюру на бок. Следуйте правилам карты состояния. Если Опрокидывание вызвано Атакой, оно влияет на Цель только в том случае, если она находится в пределах эффективной дальности ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Condition card, ",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Falling down ",
+          "text": " (смежно для Атак ближнего боя, в обозначенной зоне для Зональных Атак, в пределах X клеток для Дальних Атак X и т. д.). Если оно вызвано Ответом, оно влияет на Атакующего только в том случае, если он находится в смежности. Опрокидывание — это особое состояние. Когда вас опрокидывают, вы кладёте свою миниатюру на бок и берёте карту ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "side up, and place your miniature on the side. Follow the rules of the Condition card. If Knockdown is caused by an Attack, it affects the Target only if it is within the Primordial’s effective range (ad-jacent for Melee Attacks, in the designated zone for Zone Attacks, within X spaces for Ranged X Attacks, etc.). If it’s caused by a Re-sponse, it affects the Attacker only if they are within adjacency.Knockdown is a special Condition. When you get knocked down, you put your miniature on its side and take a ",
+          "text": "Опрокидывание (падение)",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Пока у вас есть карта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockdown (falling down)",
+          "text": "Опрокидывание (падение)",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", вы не можете выполнять никаких действий, реакций или свободных действий, если не указано иное. В конце вашего следующего хода вы переворачиваете карту на сторону ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " card. While you have the ",
+          "text": "Опрокидывание (вставание)",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Все ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockdown (falling down) ",
+          "text": "Титаны",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "card, you cannot perform any actions, reactions or free actions, unless stated otherwise. At the end of your next turn, you flip the card to the ",
+          "text": " с картой ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockdown (standing up)",
+          "text": "Опрокидывание (вставание)",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " встают в начале своего следующего хода. Если по какой-либо причине эта карта сбрасывается, вы также встаёте.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " side. All Titans with a ",
+          "text": "Спасательный круг: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Когда вы собираетесь умереть от падения в клетку Пропасти, вместо этого переместитесь. В качестве альтернативы, когда вы собираетесь умереть от падения с Бесконечного Края Поля, остановитесь рядом с ним. Эту способность можно использовать, даже если вы опрокинуты или иным образом лишены возможности использовать активные способности.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockdown(standing up) ",
+          "text": "Неуклюжий:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Не может быть непроизвольно перемещён.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "card stand up at the start of their next turn. If for whatever reason this card is discarded, stand up too.",
+          "text": "Мотивировать X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время второго окна способностей выберите другого ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Lifeline: ",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "When you are about to die from falling into a Chasm space, displace instead. Alternatively, when you are about to die from falling from a Boundless Board Edge, stop adjacent to it. This ability can be used even if knocked down or otherwise prohibited from using active abilities.",
+          "text": ". Этот ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Lumbering:",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Cannot be involuntarily moved.",
+          "text": " может переместиться на X клеток. Если это ключевое слово суммируется, вы можете использовать каждый суммирующийся экземпляр на отдельном ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Motivate X:",
+          "text": "Титане",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the second ability window, choose anoth-er Titan. That Titan may move up to X spaces. If this keyword stacks, you can use each stacking instance on a separate Titan (i.e. you may use Motivate 1 from two sources to move one Titan twice or to move two Titans, one space each).",
+          "text": " (т.е. вы можете использовать Мотивировать 1 из двух источников, чтобы переместить одного ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Opening X:",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the second ability window, place X Open-ing tokens in the Kratos Pool. During the Attack Roll step, each Opening token in the Kratos Pool adds +1 to the result of ",
+          "text": " дважды или переместить двух ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "each",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " die.",
+          "text": " по одной клетке каждого).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example: ",
+          "text": "Открытие X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время второго окна способностей поместите X жетонов Открытия в Пул Кратоса. Во время шага Броска Атаки каждый жетон Открытия в Пуле Кратоса добавляет +1 к результату ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockback. The affected miniature must move  in a straight line, directly away from the source of Knockback.",
+          "text": "каждого",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " кубика.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example: ",
-          "marks": []
+          "text": "Пример: ",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Knockback to the left. Specific Knockback direction  overrides regular rules.",
-          "marks": []
+          "text": "Отбрасывание. Затронутая миниатюра должна двигаться по прямой линии, прямо от источника Отбрасывания.",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Example: ",
-          "marks": []
+          "text": "Пример: ",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "When a Titan is knocked back into the Board Edge  it continues to move along the Edge, away from the source  of Knockback (if possible).",
-          "marks": []
+          "text": "Отбрасывание влево. Конкретное направление Отбрасывания отменяет обычные правила.",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Example:",
-          "marks": []
+          "text": "Пример: ",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " Knockback 4 to the left. When a Titan is knocked back  into another Titan, the other Titan is displaced (according  to involuntary movement rules).",
-          "marks": []
+          "text": "Когда ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Example:",
-          "marks": []
+          "text": "Титан",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " Ulyssea suffers Knockback 3. When a Titan is knocked back into an Obstacle, it must stop on the Obstacle space (if Destructible) or adjacent to it (if Indestructible). Then it suffers Crash.",
-          "marks": []
+          "text": " отбрасывается к Краю Поля, он продолжает двигаться вдоль Края, от источника Отбрасывания (если возможно).",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Отбрасывание 4 влево. Когда ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " отбрасывается в другого ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", другой ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " перемещается (согласно правилам непроизвольного перемещения).",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Улиссея получает Отбрасывание 3. Когда ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " отбрасывается в Препятствие, он должен остановиться на клетке Препятствия (если оно Разрушаемое) или рядом с ним (если оно Неразрушаемое). Затем он получает Удар.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

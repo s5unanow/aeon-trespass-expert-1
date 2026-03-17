@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0039",
-    "title": "Priority Target",
+    "title": "Приоритетная Цель",
     "section_path": [],
     "source_page_number": 39
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Blindspots and Vantage Points are special types of Battle Board spaces!  Spaces are always considered Blindspots in relation to the Primordial (see Primordial Diagram on p. 35) Blindspots and Vantage Points are never in the Primordial’s Line of Sight. Vantage Points have more rules, such as special adjacency. For details see Vantage Points on p. 59.",
+          "text": "Слепые зоны и Точки обзора — это особые типы клеток на Боевом поле! Клетки всегда считаются Слепыми зонами по отношению к Первозданному (см. Схему Первозданного на стр. 35). Слепые зоны и Точки обзора никогда не находятся в Линии видимости Первозданного. Точки обзора имеют больше правил, таких как особая смежность. Подробнее см. «Точки обзора» на стр. 59.",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Priority Target",
+          "text": "Приоритетная Цель",
           "marks": []
         }
       ]
@@ -42,93 +42,111 @@
       "children": [
         {
           "kind": "text",
-          "text": "The ",
+          "text": "Жетон ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target",
+          "text": "Приоритетная Цель",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " служит для разрешения спорных ситуаций при выборе Цели. Титан с жетоном  считается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " token serves as a tiebreaker for the purpose of Target-ing. The Titan with the  token is con-sidered to be the ",
+          "text": "Приоритетной Целью",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Когда вы по какой-либо причине увеличиваете свою ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target",
+          "text": "Ярость",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", сравните свой текущий уровень с  держателя жетона. Если ваша Ярость выше, вы становитесь новой Приоритетной Целью и получаете жетон. В начале Битвы назначьте жетон  Титану с наивысшей Яростью. Если два или более Титана имеют одинаково высокую Ярость, выберите, кому назначить жетон . Если два или более Титана являются одинаково подходящими Целями (выполняют все инструкции одной и той же строки выбора цели) и один из них является ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".When you increase your ",
+          "text": "Приоритетной Целью",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", то он становится Целью. Если два или более Титана являются одинаково подходящими Целями и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rage",
+          "text": "ни один из них",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " не является ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " for any reason, compare your current level to the  of the token’s hold-er. If your Rage is higher, you become the new Priority Target and gain the token. At the start of the Battle assign the  token to a Titan with the highest . If two or more Titans have equal highest , choose which one to assign the  to.If two or more Titans are equally viable Targets (fulfill all instruc-tions of the same targeting line) and one of them is the ",
+          "text": "Приоритетной Целью",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", игроки могут выбрать, кто из них станет Целью. Когда Титан с жетоном  погибает, передайте жетон  живому Титану с наивысшей Яростью. Некоторые эффекты (такие как Пробуждения и некоторые карты Травм) указывают, что Титан не может потерять жетон . Если одновременно действуют несколько таких эффектов, Титан, получивший его раньше всех, остаётся ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target",
+          "text": "Приоритетной Целью",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Для целей передачи жетона после смерти Титана, Титаны с такими эффектами рассматриваются так, как если бы их Ярость была 9.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", that one becomes the Target.If two or more Titans are equally viable Targets and ",
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Некоторые Атаки специально нацелены на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "none of them ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "is the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", the players may choose which of them becomes the Target.When the Titan with the  token dies, pass the  token to a living Titan with the highest Rage .Some effects (such as Awakenings and some Trauma cards) state that a Titan cannot lose the  token. If there are multiple such effects in play at the same time, the Titan that got it the earliest remains the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". For the purpose of passing the token after the Titan’s death, Titans with such effects are treated as if their  was 9.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Remember:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Some Attacks specifically target the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target",
-          "marks": []
+          "text": "Приоритетную Цель",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -154,7 +172,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Line of Sight",
+          "text": "Линия видимости",
           "marks": []
         }
       ]
@@ -165,42 +183,50 @@
       "children": [
         {
           "kind": "text",
-          "text": "Line of Sight ",
+          "text": "Линия видимости",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (ЛВ) используется для определения того, имеет ли Первозданный беспрепятственный обзор Титана и наоборот. Титан должен иметь ЛВ к Первозданному, чтобы совершить Атаку. Первозданный должен иметь ЛВ к Цели, если командная строка требует, чтобы она была ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "(LoS) is used to determine whether the Primordial has an unobstructed view of a Titan and vice versa. A Titan must have LoS to the Primordial to perform an Attack. The Primordial must have LoS to the Target if the command line requires it to be ",
+          "text": "спереди",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "in front",
+          "text": "в поле зрения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Обратите внимание, что некоторые инструкции по выбору цели не требуют ЛВ (например, Цель: ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " or ",
-          "marks": []
+          "text": "Приоритетная Цель",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "in sight",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Note that some targeting instructions do not require LoS (for example,Target: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ").To check LoS, draw an imaginary straight line from a corner of any space occupied by the Attacker to a corner of any space occupied by the Target:",
+          "text": "). Чтобы проверить ЛВ, проведите воображаемую прямую линию от угла любой клетки, занятой Атакующим, до угла любой клетки, занятой Целью:",
           "marks": []
         }
       ]
@@ -211,7 +237,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "line, there is no Line of Sight.  ",
+          "text": "линию, Линии видимости нет. ",
           "marks": []
         }
       ]
@@ -222,7 +248,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "or a red line, there is no Line of Sight.",
+          "text": "или красную линию, Линии видимости нет.",
           "marks": []
         }
       ]
@@ -233,17 +259,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "or ",
+          "text": "или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "the endpoint ",
-          "marks": []
+          "text": "конечную точку",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "of a red line, there is Line of Sight. ",
+          "text": " красной линии, Линия видимости есть. ",
           "marks": []
         }
       ]
@@ -254,7 +282,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain tiles) connect diagonally (i.e. through this corner), there is no Line of Sight.",
+          "text": "тайлы Ландшафта) соединяются по диагонали (т.е. через этот угол), Линии видимости нет.",
           "marks": []
         }
       ]
@@ -265,7 +293,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Line of Sight.",
+          "text": "Линии видимости.",
           "marks": []
         }
       ]
@@ -276,7 +304,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "standing on any of its spaces  (see Terrain on p. 67).",
+          "text": "стоящим на любой из его клеток (см. «Ландшафт» на стр. 67).",
           "marks": []
         }
       ]
@@ -287,103 +315,148 @@
       "children": [
         {
           "kind": "text",
-          "text": "Line of Sight example: Herodotus ",
-          "marks": []
+          "text": "Пример Линии видимости: Геродот ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "1",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " does not have LoS because there is a red line between him and the Hekaton. Ulyssea ",
-          "marks": []
+          "text": " не имеет ЛВ, потому что между ним и Гекатоном есть красная линия. Улиссея ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "2",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " has LoS, because the line touches only the ",
-          "marks": []
+          "text": " имеет ЛВ, потому что линия касается только ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "corner",
-          "marks": []
+          "text": "угла",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " of an Obscuring Terrain tile. She wouldn’t have LoS if the line went ",
-          "marks": []
+          "text": " тайла Затемняющего Ландшафта. У неё не было бы ЛВ, если бы линия проходила ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "through",
-          "marks": []
+          "text": "через",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " the tile or ",
-          "marks": []
+          "text": " тайл или ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "along",
-          "marks": []
+          "text": "вдоль",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " its edge. Solon ",
-          "marks": []
+          "text": " его края. Солон ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "3",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "has LoS, even though he is on an Obscuring Terrain tile, because Terrain tiles never block LoS to themselves or miniatures on them. Philoctera ",
-          "marks": []
+          "text": " имеет ЛВ, хотя он находится на тайле Затемняющего Ландшафта, потому что тайлы Ландшафта никогда не блокируют ЛВ к себе или миниатюрам на них. Филоктера ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "4",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", however, is fully ",
-          "marks": []
+          "text": ", однако, полностью находится ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "behind",
-          "marks": []
+          "text": "за",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " the Obscuring Terrain so it blocks LoS for her. It is worth noting that the reverse is also true: unless the Primordial has any additional Traits or effects that would allow it to ignore game elements for the purpose of LoS, ",
-          "marks": []
+          "text": " Затемняющим Ландшафтом, поэтому он блокирует ей ЛВ. Стоит отметить, что верно и обратное: если у Первозданного нет дополнительных Черты или эффектов, которые позволяли бы ему игнорировать элементы игры для целей ЛВ, ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "the Primordial always sees Titans that can see it and vice versa",
-          "marks": []
+          "text": "Первозданный всегда видит Титанов, которые могут видеть его, и наоборот",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": ".",
-          "marks": []
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "3421",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "icon",
@@ -404,7 +477,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "3. Primordial Movement",
+          "text": "3. Перемещение Первозданного",
           "marks": []
         }
       ]
@@ -415,113 +488,135 @@
       "children": [
         {
           "kind": "text",
-          "text": "Most Primordial Attacks will instruct you to move the Primordial. In such a case, the Primordial will ",
+          "text": "Большинство Атак Первозданного будут предписывать вам переместить Первозданного. В таком случае Первозданный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "always",
+          "text": "всегда",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " будет пытаться переместиться и старается приблизиться к Цели как можно ближе, в пределах своего значения Скорости, останавливаясь только тогда, когда он становится смежным с Целью (если не указано иное). Примечание: Первозданный, выполняющий Дальнюю Атаку, остановится, как только окажется в пределах досягаемости! Если не указано иное, в начале перемещения Первозданный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " try to move and tries to move as close to the Target as possible, up to its Speed value, stopping only when it becomes adjacent to the Target (unless stat-ed otherwise). Note: A Primordial performing a Ranged Attack will stop as soon as it is within range!Unless stated otherwise, at the beginning of a move the Primordial always",
+          "text": "всегда поворачивается лицом",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " к Цели (см. «Направление Первозданного», стр. 40). Первозданный всегда движется по ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " turns to face ",
+          "text": "кратчайшему возможному пути",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", то есть через наименьшее количество клеток. Он может перемещаться через любые другие игровые компоненты (включая Титанов и Ландшафт), если явно не указано иное. Первозданный всегда перемещается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "the Target first (see Primordial Facing, p. 40).A Primordial always moves along the ",
+          "text": "по одной клетке за раз",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", в кардинальных направлениях (",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "shortest possible path",
+          "text": "не по диагонали",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "). Если Цель не находится на прямой линии от Первозданного, Первозданный будет двигаться к ней кардинально ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", that is, through the fewest number of spaces. It can move through any other game components (including Titans and Terrain) unless ex-plicitly stated otherwise.A Primordial always moves ",
+          "text": "«зигзагом»",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", меняя ось движения после каждой пройденной клетки, пока не достигнет позиции, которая позволит ему продолжить движение к Цели по прямой линии (см. примеры, стр. 39). В таких случаях игроки могут решить начальное направление (горизонтальное или вертикальное) движения Первозданного. Если два или более маршрута считаются одинаково короткими, игроки выбирают, какой из них использовать. Если какой-либо эффект заставит Первозданного переместиться за ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "one space at a time",
+          "text": "Край поля",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", он продолжит двигаться вдоль края, отдавая приоритет направлению, которое ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", in cardinal direc-tions (",
+          "text": "изначально",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " уведет его ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "not diagonally",
+          "text": "от",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " большинства Титанов (если это возможно). Большинство перемещений Первозданного будут происходить в результате карт ИИ или Черты. Однако иногда Титаны могут ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ").If the Target is not in a straight line from the Primordial, the Pri-mordial will ",
+          "text": "заставить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Первозданного переместиться (например, используя ключевое слово «Отбрасывание», см. «Непроизвольное движение», стр. 48).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "“zigzag” move",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " towards it cardinally, switching the movement axis after every space travelled until it reaches a posi-tion that would allow it to continue moving towards the Target in a straight line (see examples, p. 39). In such cases, the players may decide the starting direction (horizontal or vertical) of the Primor-dial movement.If two or more routes are considered equally short, the players choose which one to use.If any effect would cause the Primordial to move past ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "the Board Edge",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", it will continue to move along the edge prioritizing a direc-tion that will ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "initially",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " lead it ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "away",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " from the most Titans (if possible).Most Primordial moves will take place as a result of AI cards or Traits. However, sometimes Titans may ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "force",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " the Primordial to move (for example, by using the Pushback keyword, see Involun-tary Movement, p. 48).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target token",
-          "marks": []
+          "text": "жетон Приоритетной Цели",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

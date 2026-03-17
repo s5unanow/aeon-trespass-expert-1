@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0003",
-    "title": "Contents",
+    "title": "Содержание",
     "section_path": [],
     "source_page_number": 3
   },
@@ -19,13 +19,22 @@
       "children": [
         {
           "kind": "text",
-          "text": "Introduction...............................................................................................................................................3Important Game Rules...........................................................................................................................7Campaign Basics.........................................................................................................................................9Voyage Phase...........................................................................................................................................13Adventure Phase...................................................................................................................................25Battle Phase...........................................................................................................................................33Mnestis Theatre....................................................................................................................................69Master Index...........................................................................................................................................76Last Page Summaries..........................................................................................................................80",
+          "text": "Введение...............................................................................................................................................3Важные правила игры...........................................................................................................................7Основы кампании.........................................................................................................................................9Фаза Странствия...........................................................................................................................................13Фаза Приключения...................................................................................................................................25Фаза Битвы...........................................................................................................................................33Театр Мнесис....................................................................................................................................69Основной указатель...........................................................................................................................................76Краткие обзоры на последних страницах..........................................................................................................................80",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "INTO THE UNKNOWN STUDIOIdea and Worldbuilding: ",
-          "marks": []
+          "text": "СТУДИЯ INTO THE UNKNOWN",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Идея и создание мира: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -34,8 +43,10 @@
         },
         {
           "kind": "text",
-          "text": "Producer: ",
-          "marks": []
+          "text": "Продюсер: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -44,8 +55,10 @@
         },
         {
           "kind": "text",
-          "text": "Art Direction:",
-          "marks": []
+          "text": "Художественное руководство:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -54,8 +67,10 @@
         },
         {
           "kind": "text",
-          "text": "Creative Direction:",
-          "marks": []
+          "text": "Креативное руководство:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -64,8 +79,10 @@
         },
         {
           "kind": "text",
-          "text": "Game Design:",
-          "marks": []
+          "text": "Игровой дизайн:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -74,8 +91,10 @@
         },
         {
           "kind": "text",
-          "text": "Lead Writer:",
-          "marks": []
+          "text": "Ведущий сценарист:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -84,8 +103,10 @@
         },
         {
           "kind": "text",
-          "text": "Writing:",
-          "marks": []
+          "text": "Сценарий:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -94,8 +115,10 @@
         },
         {
           "kind": "text",
-          "text": "Additional Writing:",
-          "marks": []
+          "text": "Дополнительный сценарий:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -104,8 +127,10 @@
         },
         {
           "kind": "text",
-          "text": "Editing:",
-          "marks": []
+          "text": "Редактирование:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -114,8 +139,10 @@
         },
         {
           "kind": "text",
-          "text": "Graphic Design:",
-          "marks": []
+          "text": "Графический дизайн:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -124,8 +151,10 @@
         },
         {
           "kind": "text",
-          "text": "Compositor: ",
-          "marks": []
+          "text": "Верстка: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -134,8 +163,10 @@
         },
         {
           "kind": "text",
-          "text": "Cover Art:",
-          "marks": []
+          "text": "Обложка:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -144,8 +175,10 @@
         },
         {
           "kind": "text",
-          "text": "Game Art: ",
-          "marks": []
+          "text": "Игровое искусство: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -154,8 +187,10 @@
         },
         {
           "kind": "text",
-          "text": "Additional Game Art:",
-          "marks": []
+          "text": "Дополнительное игровое искусство:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -164,8 +199,10 @@
         },
         {
           "kind": "text",
-          "text": "Test Lead:",
-          "marks": []
+          "text": "Ведущий тестировщик:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -174,12 +211,14 @@
         },
         {
           "kind": "text",
-          "text": "Testers:",
-          "marks": []
+          "text": "Тестировщики:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Mikołaj Olejniczak, Rafał Skwarek, Stanisław Jakubaszek, Przemysław Mróz, Jarosław Łosiak, Łukasz Bacherycz, Rafał Godlewski, Kamil Mroczkowski, Oskar Bir, Wiktor Krogulec, Monika Wocial, Dominik Czuba, Kevin Ecker, Tony Nelson, Yuseph Maghsoudlou, Geoffrey Fuqua, Tyler Scott, David Titus, Łukasz Smurzyński, Antoni Polak-Warchałowski, Bartosz Odorowicz, Jaśmina Przybysz, Agata Różycka, Wojciech BaczyńskiInto the Unknown Sp z o.o.al. Grunwaldzka 103A 80-244 GdańskPoland",
+          "text": " Mikołaj Olejniczak, Rafał Skwarek, Stanisław Jakubaszek, Przemysław Mróz, Jarosław Łosiak, Łukasz Bacherycz, Rafał Godlewski, Kamil Mroczkowski, Oskar Bir, Wiktor Krogulec, Monika Wocial, Dominik Czuba, Kevin Ecker, Tony Nelson, Yuseph Maghsoudlou, Geoffrey Fuqua, Tyler Scott, David Titus, Łukasz Smurzyński, Antoni Polak-Warchałowski, Bartosz Odorowicz, Jaśmina Przybysz, Agata Różycka, Wojciech BaczyńskiInto the Unknown Sp z o.o.al. Grunwaldzka 103A 80-244 ГданьскПольша",
           "marks": []
         }
       ]
@@ -191,7 +230,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Contents",
+          "text": "Содержание",
           "marks": []
         }
       ]
@@ -203,7 +242,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Credits",
+          "text": "Авторы",
           "marks": []
         }
       ]

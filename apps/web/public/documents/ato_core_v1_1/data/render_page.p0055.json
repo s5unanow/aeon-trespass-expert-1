@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0055",
-    "title": "Escalations Outside of Wounding",
+    "title": "Эскалации вне Ранений",
     "section_path": [],
     "source_page_number": 55
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Escalations Outside of Wounding",
+          "text": "Эскалации вне Ранений",
           "marks": []
         }
       ]
@@ -31,17 +31,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some effects, like Responses, may instruct you to escalate the Pri-mordial even if there is no Wound or even outside of a Titan Attack. If that happens, simply perform the Escalation as normal, with the following ",
+          "text": "Некоторые эффекты, такие как Ответы, могут предписывать вам эскалировать Первозданного, даже если нет Раны или даже вне Атаки Титана. Если это происходит, просто выполните Эскалацию как обычно, со следующим ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "exception:",
-          "marks": []
+          "text": "исключением:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " as no Wound was dealt, you will have to re-move the lowest BP card from the Battle.  ",
+          "text": " поскольку Рана не была нанесена, вам придется удалить карту с наименьшим количеством BP из Битвы. ",
           "marks": []
         }
       ]
@@ -53,7 +55,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Escalations Outside of Battle",
+          "text": "Эскалации вне Битвы",
           "marks": []
         }
       ]
@@ -64,17 +66,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some effects may instruct you to escalate the Primordial outside of Battle (usually using the phrase “Escalate X,” where X is the number of Escalations to perform). If that happens, note it, then perform the Escalations during Battle Setup, as normal, with the following ",
+          "text": "Некоторые эффекты могут предписывать вам эскалировать Первозданного вне Битвы (обычно используя фразу «Эскалировать X», где X — количество Эскалаций, которые нужно выполнить). Если это происходит, отметьте это, затем выполните Эскалации во время Подготовки к Битве, как обычно, со следующим ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "exception:",
-          "marks": []
+          "text": "исключением:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " as no Wound was dealt, you will have to re-move the lowest BP card from the Battle.",
+          "text": " поскольку Рана не была нанесена, вам придется удалить карту с наименьшим количеством BP из Битвы.",
           "marks": []
         }
       ]
@@ -86,7 +90,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Escalating Only One Deck",
+          "text": "Эскалация только одной колоды",
           "marks": []
         }
       ]
@@ -97,7 +101,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some rare effects may instruct you to escalate only the BP or AI deck. If that happens, simply escalate the indicated deck and leave the other deck as is.",
+          "text": "Некоторые редкие эффекты могут предписывать вам эскалировать только колоду BP или AI. Если это происходит, просто эскалируйте указанную колоду и оставьте другую колоду как есть.",
           "marks": []
         }
       ]
@@ -109,7 +113,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "9. Clear the Kratos Pool",
+          "text": "9. Очистите Пул Кратоса",
           "marks": []
         }
       ]
@@ -120,27 +124,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "After resolving Responses and performing Escalation, remove ",
+          "text": "После разрешения Ответов и выполнения Эскалации удалите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "all",
+          "text": "все",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " жетоны из Пула Кратоса, если явно не указано иное. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "tokens from the Kratos Pool, unless explicitly instructed other-wise. ",
-          "marks": []
+          "text": "Важно:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Important:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Remember to always make use of as many Kratos tokens as possible, since they will be removed at the end of the Attack anyway.",
+          "text": " Помните, что всегда нужно использовать как можно больше жетонов Кратоса, так как они все равно будут удалены в конце Атаки.",
           "marks": []
         }
       ]
@@ -152,7 +160,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "10. Second Ability Window",
+          "text": "10. Второе окно способностей",
           "marks": []
         }
       ]
@@ -163,17 +171,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Activate applicable abilities from your Titan’s Kratos Table, Mne-mos cards, your active weapon and any other non-weapon  cards equipped on your Titan. ",
+          "text": "Активируйте применимые способности из Таблицы Кратоса вашего Титана, карты Мнемос, вашего активного оружия и любых других не-оружейных карт, экипированных на вашем Титане. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Onlythe attacking Titan",
-          "marks": []
+          "text": "Только атакующий Титан",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " may activate abilities during this window, unless explicitly stated otherwise.During this ability window, you can use most of the abilities that place tokens in the Kratos Pool (such as Opening X or Break X) to support your fellow players. Note that you often have a choice what tokens to leave, so look at the back of the top BP card and make an informed choice. To learn more about each ability’s tim-ing, see the Keywords List on p. 63 or the back of your Titan Sheet.",
+          "text": " может активировать способности в течение этого окна, если явно не указано иное. В течение этого окна способностей вы можете использовать большинство способностей, которые помещают жетоны в Пул Кратоса (такие как «Открытие X» или «Прорыв X»), чтобы поддержать своих товарищей по игре. Обратите внимание, что у вас часто есть выбор, какие жетоны оставить, поэтому посмотрите на обратную сторону верхней карты BP и сделайте осознанный выбор. Чтобы узнать больше о времени действия каждой способности, см. Список ключевых слов на стр. 63 или обратную сторону вашего Листа Титана.",
           "marks": []
         }
       ]
@@ -185,7 +195,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "End of the Titan Attack and Attack Responses",
+          "text": "Конец Атаки Титана и Ответы на Атаку",
           "marks": []
         }
       ]
@@ -196,17 +206,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "After you resolve the second ability window, leaving Kratos tokens for other players, the current Titan Attack ends. If the BP card was not wounded (did not go to the Wound Stack), discard it now. If the attack triggered an Attack Response, like a Primordial Attack or a Follow-up Titan Attack, it will happen next, starting a ",
+          "text": "После того как вы разрешите второе окно способностей, оставив жетоны Кратоса для других игроков, текущая Атака Титана завершается. Если карта BP не была ранена (не попала в Стопку Ран), сбросьте ее сейчас. Если атака вызвала Ответ на Атаку, такой как Атака Первозданного или Последующая Атака Титана, это произойдет далее, начиная ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "new attack sequence",
-          "marks": []
+          "text": "новую последовательность атак",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ". Designer’s note: Though initiated as part of a Titan At-tack, Attack Responses are resolved after the current Attack ends to avoid conflict with other effects.",
+          "text": ". Примечание дизайнера: Хотя Ответы на Атаку инициируются как часть Атаки Титана, они разрешаются после завершения текущей Атаки, чтобы избежать конфликтов с другими эффектами.",
           "marks": []
         }
       ]
@@ -218,7 +230,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "End of Titan Round",
+          "text": "Конец Раунда Титана",
           "marks": []
         }
       ]
@@ -229,7 +241,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sometimes a game effect will trigger at the end of the Titan Round. In that case, it’s resolved after all of the Titans take their turns. If there is more than one end of Round effect, the players may re-solve these effects in any order they like.Also remember to unexhaust Argo Abilities (see Argo Abilities on p. 55 for details).",
+          "text": "Иногда игровой эффект срабатывает в конце Раунда Титана. В этом случае он разрешается после того, как все Титаны сделают свои ходы. Если есть более одного эффекта конца Раунда, игроки могут разрешать эти эффекты в любом порядке, который им нравится. Также не забудьте восстановить способности Арго (подробнее см. «Способности Арго» на стр. 55).",
           "marks": []
         }
       ]
@@ -241,7 +253,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Actions in the Titan Round",
+          "text": "Другие действия в Раунде Титана",
           "marks": []
         }
       ]
@@ -253,7 +265,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Complicated Actions",
+          "text": "Сложные действия",
           "marks": []
         }
       ]
@@ -264,7 +276,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sometimes, especially complicated maneuvers (like the Rush abil-ity) will require you to use both the and  together. That’s what we call a complicated  action. Complicated actions can be performed only if the Titan can perform both and , and during their turn still has at least one unused action of each type.There is no “action space” between both parts of a complicated action, which means you cannot perform other actions during a complicated action, even if the two parts of the complicated action are easily distinguishable (for example, the Rush ability allows a Titan to move at increased Speed and Attack with additional force; though you could easily tell when the movement part of Rush ends and the Attack part begins, you cannot perform any additional ac-tions in between, even free actions). ",
+          "text": "Иногда, особенно сложные маневры (например, способность «Рывок»), потребуют от вас использования и того, и другого вместе. Это то, что мы называем сложным действием. Сложные действия могут быть выполнены только в том случае, если Титан может выполнить и то, и другое, и во время своего хода у него все еще есть хотя бы одно неиспользованное действие каждого типа. Между обеими частями сложного действия нет «пространства для действия», что означает, что вы не можете выполнять другие действия во время сложного действия, даже если две части сложного действия легко различимы (например, способность «Рывок» позволяет Титану двигаться с увеличенной Скоростью и Атаковать с дополнительной силой; хотя вы могли бы легко определить, когда заканчивается часть движения «Рывка» и начинается часть Атаки, вы не можете выполнять никаких дополнительных действий между ними, даже свободных действий). ",
           "marks": []
         },
         {
@@ -281,7 +293,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Free Actions",
+          "text": "Свободные действия",
           "marks": []
         }
       ]
@@ -292,37 +304,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many active abilities, as well as some other game effects, are acti-vated as a free action. This means that, as long as you fulfill all of its requirements, you may perform this action in your turn, with-out spending your  or . During your turn, you can perform as many ",
+          "text": "Многие активные способности, а также некоторые другие игровые эффекты, активируются как свободное действие. Это означает, что, если вы выполняете все его требования, вы можете выполнить это действие в свой ход, не тратя свои  или . В свой ход вы можете выполнить столько ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "different",
+          "text": "различных",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " свободных действий, сколько захотите, но каждое из них может быть выполнено только один раз за ход. Вы можете выполнять свободные действия до ваших  и  или между ними, но не во время другого действия.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " free actions as you want, but each of them can only be performed once per turn. You can perform free actions before your  and  or between them but not during another action.",
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если вы не получаете дополнительные действия каким-либо образом, ход Титана заканчивается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember:",
-          "marks": []
+          "text": "немедленно",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Unless you gain additional actions in some way, a Ti-tan’s turn ends ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "immediately",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " once you’ve performed both  and , leaving you no “end of turn” window to use free actions.",
+          "text": ", как только вы выполнили и то, и другое, не оставляя вам «окна конца хода» для использования свободных действий.",
           "marks": []
         }
       ]
@@ -334,7 +352,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Reactions",
+          "text": "Реакции",
           "marks": []
         }
       ]
@@ -345,43 +363,51 @@
       "children": [
         {
           "kind": "text",
-          "text": "The rarest type of Titan action is the Reaction, denoted by the re-action  symbol. Reaction are powerful effects that may be per-formed during a ",
+          "text": "Самый редкий тип действия Титана — это Реакция, обозначаемая символом реакции . Реакции — это мощные эффекты, которые могут быть выполнены во время ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "window of opportunity",
+          "text": "окна возможностей",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. стр. 43). Поскольку окна возможностей обычно находятся на картах AI, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (see p. 43). As windows of opportunity are generally found on AI cards,",
+          "text": "Реакции позволяют Титанам действовать во время Раунда Первозданного!",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Всякий раз, когда вы встречаете символ , предшествующий инструкции, вы можете активировать способности немедленно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Reactions allow Ti-tans to act during the Primordial Round!",
+          "text": "перед",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " тем, как разрешить эту инструкцию. В течение одного  каждый Титан может активировать любое количество способностей в любом порядке, но не более одной способности с одним и тем же названием на Титана (см. «Именованные способности», стр. 61).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Whenever you encounter the  symbol preceding an instruction, you may activate  abilities immediately ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "before",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " you resolve that in-struction. During a single  each Titan may activate any number of  abilities in any order, but no more than one ability with the same name per Titan (see Named Abilities, p. 61).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "AI card with windows of opportunity and a Gear card with  a reaction ability",
-          "marks": []
+          "text": "Карта AI с окнами возможностей и карта Снаряжения со способностью реакции",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

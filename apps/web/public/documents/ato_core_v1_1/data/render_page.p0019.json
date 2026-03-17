@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0019",
-    "title": "Technology Breakthroughs",
+    "title": "Прорывы в Технологии",
     "section_path": [],
     "source_page_number": 19
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Technology Breakthroughs",
+          "text": "Прорывы в Технологии",
           "marks": []
         }
       ]
@@ -31,147 +31,175 @@
       "children": [
         {
           "kind": "text",
-          "text": "New Technology cards can only be researched on specific Timeline days called ",
+          "text": "Новые карты Технологий могут быть исследованы только в определённые дни на Шкале Времени, называемые ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Technology Breakthroughs",
+          "text": "Прорывами в Технологии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Они отмечены символом ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". These are marked by the ",
+          "text": "Структурной Технологии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и символом ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Structural Technology",
+          "text": "Боевой Технологии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если на текущем дне Шкалы Времени есть символ  или , вы можете исследовать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " symbol and ",
+          "text": "одну",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Технологию соответствующего типа из ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "the Battle Technology",
+          "text": "колоды Проектов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Прогресс Структурных и Боевых Технологий полностью разделен – Технологии, к которым они ведут, всегда будут одного и того же типа. Чтобы исследовать новую карту Технологии, вы должны выполнить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "symbol.If there is a  or  symbol on your current day on the Timeline, you may research ",
+          "text": "все",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " её требования. Обычно требования для исследования карты Технологии — это другие карты Технологий. Однако некоторые Технологии имеют другие требования. Они могут включать: встречу с определённым Первозданным в Битве, встречу с определённым Первозданным заданного уровня в Битве, убийство определённого Первозданного, наличие определённого показателя Дипломатии с Фракцией и многое другое. Как только вы выберете Технологию, которую хотите исследовать, сначала найдите в Резервах все карты Технологий, к которым она ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "one",
+          "text": "ведёт",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и добавьте их в колоду Проектов. Затем добавьте исследованную карту в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Technology of the appropriate type from the ",
+          "text": "колоду Технологий",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". С этого момента вы получаете доступ ко всем преимуществам и способностям, предоставляемым этой Технологией.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Projects deck",
+          "text": "Важно:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " В целом, нет никаких дополнительных затрат на исследование новой Технологии (помимо времени, которое вам придется ждать, чтобы исследовать другую!). Если карта Технологии имеет какие-либо дополнительные затраты или условия, они будут четко описаны на самой карте. Некоторые Технологии могут потребовать от вас ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Structural and Battle Technology progress is com-pletely separate – the Technologies they lead to will always be of the same type.To research a new Technology card, you must fulfill ",
+          "text": "встретить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " определённого Первозданного заданного уровня в Битве. Это означает, что Технология будет недоступна до Технологического Прорыва, следующего за такой Битвой. Поскольку это почти всегда связано с Обычными Первозданными, встречающимися в Битвах на Шкале Времени, и Пути Эволюции Первозданных фиксированы, вы можете рассчитать, когда эта Технология станет вам доступна. Некоторые Технологии могут потребовать от вас ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "all",
+          "text": "исследовать определённое количество тайлов Карты",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Поскольку вы обычно можете исследовать один тайл в день, вы можете рассчитать самую раннюю дату, когда эта Технология станет вам доступна. Некоторые Технологии могут требовать выполнения только одного из двух условий. Если два требования разделены заглавным ИЛИ, это означает, что вы должны выполнить любое из них (например, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " of its re-quirements.Usually, the requirements for researching a Technology card are other Technology cards. However, some Technologies have other requirements. These can include: encountering a specific Primor-dial in Battle, encountering a specific Primordial of a given level in Battle, killing a specific Primordial, having a specific Diplomacy Score with a Faction and more.Once you choose a Technology you want to research, first search the Reserves for all Technology cards it ",
+          "text": "Технология Специализированного Вооружения Триремы",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " требует либо ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "leads to",
+          "text": "Телереанимации",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ИЛИ ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and add them to the Projects deck. Then add the researched card to the ",
-          "marks": []
+          "text": "Дальнобойного Вооружения Триремы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Technology deck",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". From this point onward, you gain access to all the benefits and abilities provided by this Technology.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Important:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " In general, there is no additional cost to researching a new Technology (besides the time you have to wait to research another one!). If a Technology card has any additional costs or con-ditions, they will be clearly described on the card itself. Some Technologies may require you to ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "encounter",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " a specific Pri-mordial of a given level in Battle. This means that Technology is gated until the Technological Breakthrough following such Battle. As these are almost always tied to Regular Primordials encoun-tered in Timeline Battles, and the Evolution Tracks of Primordials are fixed, you can calculate when that Technology will become available to you.Some Technologies may require you to ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "have a certain number of Map tiles Explored",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". As you can usually Explore one tile per day, you can calculate the earliest date that Technology will become available to you.Some Technologies may require only one of two conditions to be true. If two of the requirements are separated by a capital OR, it means that you must fulfill either of them (e.g. the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Specialized Trireme Weapons Technology",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " requires either ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Teleresuscitation",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "OR ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Trireme Reach Weapons",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " on top of all other requirements).",
+          "text": " в дополнение ко всем остальным требованиям).",
           "marks": []
         }
       ]
@@ -183,7 +211,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gaining Technology Cards and Project Cards",
+          "text": "Получение карт Технологий и карт Проектов",
           "marks": []
         }
       ]
@@ -195,7 +223,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "through Different Means",
+          "text": "различными способами",
           "marks": []
         }
       ]
@@ -206,17 +234,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sometimes you will gain a Technology card from a source other than a Technology Breakthrough. In that case, you simply add it to your Technology deck (remember to add any Technology cards it ",
+          "text": "Иногда вы будете получать карту Технологии из источника, отличного от Прорыва в Технологии. В этом случае вы просто добавляете её в свою колоду Технологий (не забудьте добавить все карты Технологий, к которым она ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Leads to",
-          "marks": []
+          "text": "ведёт",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " to your Projects deck).Sometimes you will be instructed to add a Technology card to the Projects as a result of something other than another Technology’s Leads to box. In that case, you simply add it to your Projects deck. ",
+          "text": " в свою колоду Проектов). Иногда вам будет предписано добавить карту Технологии в Проекты в результате чего-либо, отличного от поля «Ведёт к» другой Технологии. В этом случае вы просто добавляете её в свою колоду Проектов.",
           "marks": []
         }
       ]
@@ -228,7 +258,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Technology Usage",
+          "text": "Использование Технологий",
           "marks": []
         }
       ]
@@ -239,7 +269,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Technology cards provide access to various benefits and can be used in many different ways, both during and outside of Battle.",
+          "text": "Карты Технологий предоставляют доступ к различным преимуществам и могут быть использованы множеством разных способов, как во время, так и вне Битвы.",
           "marks": []
         }
       ]
@@ -251,7 +281,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Structural Technologies",
+          "text": "Структурные Технологии",
           "marks": []
         }
       ]
@@ -262,42 +292,50 @@
       "children": [
         {
           "kind": "text",
-          "text": "Structural Technologies",
+          "text": "Структурные Технологии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в основном используются вне Битвы. Некоторые из них предоставляют пассивные (постоянные) бонусы или должны быть разрешены в момент их исследования (немедленно). Другие предоставляют доступ к активным способностям. Если активная способность Структурной Технологии не указывает, когда она может быть использована, её можно использовать во время ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " are primarily used outside of Battle. Some of them provide passive (permanent) bonuses or must be resolved the moment they are researched (immediate). Others grant ac-cess to active abilities. If an active ability of a Structural Technolo-gy does not specify when it can be used, it can be used during the ",
+          "text": "Шага Продвижения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Каждая активная способность Технологии может быть использована ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Advancement Step",
+          "text": "один раз в день",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (то есть один раз за Раунд Кампании), за исключением способностей ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Each active Technology ability can be used ",
-          "marks": []
+          "text": "Спасения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "once per day",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (so once per Campaign Round), with the exception of ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Save",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " abilities.Below, you’ll find a complete list of the various abilities and bonuses provided by Structural Technologies:",
+          "text": ". Ниже вы найдете полный список различных способностей и бонусов, предоставляемых Структурными Технологиями:",
           "marks": []
         }
       ]
@@ -308,13 +346,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "es. They are",
+          "text": "Они ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " always active",
-          "marks": []
+          "text": "всегда активны",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -329,17 +369,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "minder. They",
+          "text": "напоминанием. Они ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " do not",
-          "marks": []
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " introduce any additional effects of their own. These are primarily Core Technologies designed to ease you into the game or update the status quo for a new Cycle.",
+          "text": " вводят никаких дополнительных эффектов сами по себе. Это в основном Базовые Технологии, разработанные для облегчения вхождения в игру или обновления статуса-кво для нового Цикла.",
           "marks": []
         }
       ]
@@ -350,7 +392,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "tive Technologies are researched.",
+          "text": "Технологий.",
           "marks": []
         }
       ]
@@ -361,17 +403,19 @@
       "children": [
         {
           "kind": "text",
-          "text": " symbol (except tiles with the",
+          "text": " (кроме тайлов с жетоном ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Last Visited City",
-          "marks": []
+          "text": "Последнего Посещенного Города",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " token, see p. 13).",
+          "text": ", см. стр. 13).",
           "marks": []
         }
       ]
@@ -382,7 +426,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "them. The only limit here is one use per ability per game effect (i.e. you cannot use one Save ability to try to mitigate the same -1  loss multiple times, but you can use it again if you suffer another -1  loss on the same day). To learn more, see Gain/Loss Mitigation, p. 24.",
+          "text": " Единственное ограничение здесь — одно использование способности на игровой эффект (т.е. вы не можете использовать одну способность Спасения, чтобы пытаться смягчить одну и ту же потерю -1  несколько раз, но вы можете использовать её снова, если вы понесете другую потерю -1  в тот же день). Чтобы узнать больше, см. Смягчение Прироста/Потери, стр. 24.",
           "marks": []
         }
       ]
@@ -393,7 +437,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Step, unless their effect denotes a specific timing condition.",
+          "text": " если их эффект не указывает конкретное условие времени.",
           "marks": []
         }
       ]
@@ -405,7 +449,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle Technologies",
+          "text": "Боевые Технологии",
           "marks": []
         }
       ]
@@ -416,42 +460,50 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle Technologies",
+          "text": "Боевые Технологии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это либо ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " are either ",
+          "text": "Производственные Объекты",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Production Facilities ",
+          "text": "Способности Арго",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Производственные Объекты дают вам доступ к новым картам Снаряжения и используются только для крафта. Способности Арго используются во время Битв. Для получения дополнительной информации о создании Снаряжения в Производственных Объектах см. Создание Снаряжения (стр. 19). Когда вы выполняете Подготовку к Битве во время Фазы Битвы, вы решаете, какие Способности Арго вы подготовите для этой Битвы. Количество Способностей Арго, которые вы можете одновременно подготовить во время Битвы, зависит от вашей текущей Технологии Пропилона (базовый ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "or ",
-          "marks": []
+          "text": "Пропилон Экспедиции",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Argo Abil-ities",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Production Facilities give you access to new Gear cards and are only used for crafting. Argo Abilities are used during Battles.For further details on Crafting Gear in Production Facilities, see Crafting Gear (p. 19).When you perform Battle Setup during the Battle Phase, you will decide which Argo Abilities you will prepare for that Battle. The number of Argo Abilities you may simultaneously prepare during a Battle depends on your current Propylon Technology (the basic ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Excursion Propylon",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " allows for use of 2 Argo Abilities). For specific rules concerning Argo Ability usage in Battle, see p. 55.",
+          "text": " позволяет использовать 2 Способности Арго). Конкретные правила использования Способностей Арго в Битве см. на стр. 55.",
           "marks": []
         }
       ]
@@ -463,7 +515,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Trading",
+          "text": "Торговля",
           "marks": []
         }
       ]
@@ -474,37 +526,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some game elements such as certain Exploration cards and Tech-nologies may allow you to ",
+          "text": "Некоторые игровые элементы, такие как определённые карты Исследования и Технологии, могут позволить вам ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Trade",
+          "text": "Торговать",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ресурсами. Каждый из этих эффектов имеет ограниченное количество ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " resources. Each of these effects has a limited number of resource ",
+          "text": "обменов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", которые вы можете совершить. Один обмен — это торговля одним типом ресурса на другой тип ресурса, согласно соотношению, указанному на карте. В рамках одного обмена вы можете торговать любым количеством единиц одного типа ресурса. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "exchanges",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " you can perform. A single exchange is a trade of one resource type for another re-source type, according to the ratio noted on the card. As a single exchange, you can trade as many units of a resource type as you like. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Traders have different exchange rates. You can usually find the best deals in cities and other highly populated areas.",
+          "text": " Торговцы имеют разные курсы обмена. Обычно лучшие предложения можно найти в городах и других густонаселенных районах.",
           "marks": []
         }
       ]

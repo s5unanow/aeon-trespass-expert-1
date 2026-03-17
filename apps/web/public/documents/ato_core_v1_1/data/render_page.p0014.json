@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0014",
-    "title": "Voyage Phase",
+    "title": "Фаза Странствия",
     "section_path": [],
     "source_page_number": 14
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Voyage Phase",
+          "text": "Фаза Странствия",
           "marks": []
         }
       ]
@@ -31,17 +31,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Think of the ",
+          "text": "Представьте себе ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Voyage Phase",
-          "marks": []
+          "text": "Фазу Странствия",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " as an all-encompassing sea: sometimes, during your journeys, you’ll stumble on an island of the Adven-ture Phase or Battle Phase. But most of the time, you’ll be sailing through the endless expanse of the Voyage Phase.For that reason, this section includes the rules for all the Campaign Round Steps. Yes, sometimes a Step will launch you into an adven-ture or battle. But when it doesn’t, you’ll still be considered to be in the Voyage Phase.",
+          "text": " как всеобъемлющее море: иногда во время ваших путешествий вы наткнетесь на остров Фазы Приключения или Фазы Битвы. Но большую часть времени вы будете плыть по бескрайним просторам Фазы Странствия. По этой причине данный раздел включает правила для всех Шагов Раунда Кампании. Да, иногда Шаг отправит вас в приключение или битву. Но когда этого не произойдет, вы все равно будете считаться находящимися в Фазе Странствия.",
           "marks": []
         }
       ]
@@ -53,7 +55,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "1. Movement Step",
+          "text": "1. Шаг Перемещения",
           "marks": []
         }
       ]
@@ -64,82 +66,99 @@
       "children": [
         {
           "kind": "text",
-          "text": "During the Movement Step, you ",
+          "text": "Во время Шага Перемещения вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "must move the ",
+          "text": "должны переместить ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на соседний тайл Карты. Стрелки направления на вашем тайле обозначают ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "водные пути",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", по которым вы можете путешествовать. Если тайл, на который вы перемещаетесь, еще не находится на столе, вам нужно найти тайл Карты с",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " to an adjacent Map tile. Directional arrows on your tile represent ",
+          "text": " соответствующим номером",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на его обратной стороне (видимым рядом со стрелкой) и разместить его рядом с тайлом Карты, с которого вы перемещаетесь, так чтобы стрелки направления на общей границе двух тайлов совпадали. Убедитесь, что новый тайл ориентирован так же, как и все остальные тайлы. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "waterways",
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " you can travel through. If the tile you’re moving to isn’t already on the table, you need to find the Map tile with",
+          "text": "должны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " перемещать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " the corre-sponding number",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ровно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " on its back (visible next to the arrow) and place it adjacent to the Map tile you are traveling from, so that the di-rectional arrows on the shared border of the two tiles align. Make sure to orient the new tile in the same way as all of the other tiles. ",
-          "marks": []
+          "text": "на один тайл",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Remember:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " You ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "must",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " move the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " exactly ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "one tile",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " each Cam-paign Round, unless an effect instructs you otherwise. In other words, you cannot “drop anchor” and stay on a tile for two consec-utive rounds in a row.",
+          "text": " в каждом Раунде Кампании, если только эффект не предписывает иное. Другими словами, вы не можете «бросить якорь» и оставаться на одном тайле два раунда подряд.",
           "marks": []
         }
       ]
@@ -151,7 +170,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Tile Sectors",
+          "text": "Секторы Тайла",
           "marks": []
         }
       ]
@@ -162,73 +181,82 @@
       "children": [
         {
           "kind": "text",
-          "text": "The ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " может перемещаться только по воде. В большинстве случаев положение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на тайле не имеет значения: как только вы входите на тайл, вы находитесь на этом тайле, и точка. Однако иногда тайл Карты делится на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " can only travel on water. Most of the time, the position of the ",
+          "text": "секторы тайла",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", обозначенные символами α и β, представляющие собой водоемы, разделенные сушей. В этом случае положение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на тайле ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " on the tile doesn’t matter: once you enter a tile, you’re on that tile, that’s it. However, sometimes a Map tile is divided into ",
+          "text": "имеет значение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "! Если ваш текущий тайл имеет две стрелки, указывающие в одном и том же основном направлении, это означает, что соседний тайл будет разделен на секторы. Вы должны выбрать, какой из этих стрелок следовать, прежде чем открыть новый тайл Карты. Как только вы разместите новый тайл Карты, совместив стрелки, вы окажетесь либо в секторе α, либо в секторе β. Вы можете покинуть сектор, только следуя стрелкам направления, отмеченным символом этого сектора. После того как вы переместитесь с тайла Карты с символом, отметьте этот тайл жетоном Последнего Посещенного Города. Вы не можете использовать способности ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "tile sectors",
+          "text": "Технологии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " «Переговоры» (см. стр. 18) на тайле с этим жетоном. Помните, что вы отмечаете только последнее посещенное вами поселение: когда вы покидаете другой тайл с символом, переместите жетон с его предыдущего местоположения. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", marked withα and β symbols, representing bodies of water separated by land. If that’s the case, the position of the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "on the tile ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "matters",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "!If your current tile has two arrows pointing in the same cardinal direction, it means that the adjacent tile will be sectored. You must choose which one of those arrows to follow before you reveal the new Map tile.Once you place the new Map tile, aligning the arrows, you’ll end up on either the α or β sector. You can leave a sector only by follow-ing the directional arrows marked with that sectors symbol.After you move from a Map tile with the  symbol, mark this tile with the Last Visited City token. You cannot use ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Negotiation",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Technology Abilities (see p. 18) on a tile with this token. Remember that you only mark the last settlement you visited: when you leave another tile with the  symbol, move the token from its previous location.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Last Visited City token ",
-          "marks": []
+          "text": "Жетон Последнего Посещенного Города",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

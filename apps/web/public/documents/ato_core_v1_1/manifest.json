@@ -3,7 +3,7 @@
   "pages": [
     {
       "page_id": "p0001",
-      "title": "RULEBOOK"
+      "title": "ПРАВИЛА ИГРЫ"
     },
     {
       "page_id": "p0002",
@@ -11,15 +11,15 @@
     },
     {
       "page_id": "p0003",
-      "title": "Contents"
+      "title": "Содержание"
     },
     {
       "page_id": "p0004",
-      "title": "Introduction"
+      "title": "Введение"
     },
     {
       "page_id": "p0005",
-      "title": "Inverted Combat Paradigm™"
+      "title": "Перевёрнутая Боевая Парадигма™"
     },
     {
       "page_id": "p0006",
@@ -31,131 +31,131 @@
     },
     {
       "page_id": "p0008",
-      "title": "Important Game Rules"
+      "title": "Важные Правила Игры"
     },
     {
       "page_id": "p0009",
-      "title": "Dice"
+      "title": "Кубики"
     },
     {
       "page_id": "p0010",
-      "title": "Campaign Basics"
+      "title": "Основы Кампании"
     },
     {
       "page_id": "p0011",
-      "title": "Campaign Win and Lose Conditions"
+      "title": "Условия победы и поражения в кампании"
     },
     {
       "page_id": "p0012",
-      "title": "Argonaut Skills"
+      "title": "Навыки Аргонавтов"
     },
     {
       "page_id": "p0013",
-      "title": "Gameplay Flow"
+      "title": "Игровой процесс"
     },
     {
       "page_id": "p0014",
-      "title": "Voyage Phase"
+      "title": "Фаза Странствия"
     },
     {
       "page_id": "p0015",
-      "title": "Other Movement Symbols"
+      "title": "Другие Символы Перемещения"
     },
     {
       "page_id": "p0016",
-      "title": "3. Exploration Step"
+      "title": "3. Шаг Исследования"
     },
     {
       "page_id": "p0017",
-      "title": "Gaining Resources from Exploration cards"
+      "title": "Получение ресурсов с карт Исследования"
     },
     {
       "page_id": "p0018",
-      "title": "5. Encounter Step"
+      "title": "5. Фаза Встречи"
     },
     {
       "page_id": "p0019",
-      "title": "Technology Breakthroughs"
+      "title": "Прорывы в Технологии"
     },
     {
       "page_id": "p0020",
-      "title": "Crafting Gear"
+      "title": "Изготовление Снаряжения"
     },
     {
       "page_id": "p0021",
-      "title": "Titan crafting using Primordial Cores (fusing)"
+      "title": "Создание Титанов с использованием Первозданных Ядер (слияние)"
     },
     {
       "page_id": "p0022",
-      "title": "Clue Cards"
+      "title": "Карты-подсказки"
     },
     {
       "page_id": "p0023",
-      "title": "9. End Step"
+      "title": "9. Завершающий Шаг"
     },
     {
       "page_id": "p0024",
-      "title": "Special Summonings and Bonus Summoning Charges"
+      "title": "Особые Призывания и Бонусные Заряды Призывания"
     },
     {
       "page_id": "p0025",
-      "title": "Gaining Other Game Elements"
+      "title": "Получение других игровых элементов"
     },
     {
       "page_id": "p0026",
-      "title": "Adventure Phase"
+      "title": "Фаза Приключения"
     },
     {
       "page_id": "p0027",
-      "title": "Choice Matrix"
+      "title": "Матрица Выбора"
     },
     {
       "page_id": "p0028",
-      "title": "R&R Adventures"
+      "title": "Приключения R&R"
     },
     {
       "page_id": "p0029",
-      "title": "Mnemos Breakthroughs Rewards"
+      "title": "Награды за прорывы Мнемос"
     },
     {
       "page_id": "p0030",
-      "title": "Special Events"
+      "title": "Особые События"
     },
     {
       "page_id": "p0031",
-      "title": "Resolved Mnemoses and Katharsis"
+      "title": "Разрешённые Мнемос и Катарсис"
     },
     {
       "page_id": "p0032",
-      "title": "Adventure Tests and Rolls"
+      "title": "Проверки и Броски в Приключении"
     },
     {
       "page_id": "p0033",
-      "title": "Fated Boxes"
+      "title": "Ячейки Судьбы"
     },
     {
       "page_id": "p0034",
-      "title": "Battle Phase"
+      "title": "Фаза Битвы"
     },
     {
       "page_id": "p0035",
-      "title": "Kratos Tokens and the Kratos Pool"
+      "title": "Жетоны Кратоса и Резерв Кратоса"
     },
     {
       "page_id": "p0036",
-      "title": "Evolution Track"
+      "title": "Трек Эволюции"
     },
     {
       "page_id": "p0037",
-      "title": "Basic Traits"
+      "title": "Базовые Черты"
     },
     {
       "page_id": "p0038",
-      "title": "1. Draw AI"
+      "title": "1. Вытягивание ИИ"
     },
     {
       "page_id": "p0039",
-      "title": "Priority Target"
+      "title": "Приоритетная Цель"
     },
     {
       "page_id": "p0040",
@@ -167,95 +167,95 @@
     },
     {
       "page_id": "p0042",
-      "title": "Primordial Attack Types"
+      "title": "Типы атак Первозданного"
     },
     {
       "page_id": "p0043",
-      "title": "Out of Reach (OoR) Evade"
+      "title": "Уклонение «Вне досягаемости» (OoR)"
     },
     {
       "page_id": "p0044",
-      "title": "Gaining Danger over ‘9’"
+      "title": "Получение Опасности свыше «9»"
     },
     {
       "page_id": "p0045",
-      "title": "Fate Effect Triggers"
+      "title": "Триггеры эффектов Судьбы"
     },
     {
       "page_id": "p0046",
-      "title": "Main Attributes:"
+      "title": "Основные Атрибуты:"
     },
     {
       "page_id": "p0047",
-      "title": "Fists"
+      "title": "Кулаки"
     },
     {
       "page_id": "p0048",
-      "title": "Backs of Gear cards"
+      "title": "Обратная сторона карт Снаряжения"
     },
     {
       "page_id": "p0049",
-      "title": "Move-like Ability"
+      "title": "Способность, подобная движению"
     },
     {
       "page_id": "p0050",
-      "title": "2. Raise Rage  and Check Priority Target"
+      "title": "2. Повысьте Ярость и проверьте Приоритетную Цель"
     },
     {
       "page_id": "p0051",
-      "title": "6. Power Roll"
+      "title": "6. Бросок Силы"
     },
     {
       "page_id": "p0052",
-      "title": "6.2 Rolling the Dice"
+      "title": "6.2 Бросок кубиков"
     },
     {
       "page_id": "p0053",
-      "title": "Wound Stack"
+      "title": "Стопка Ран"
     },
     {
       "page_id": "p0054",
-      "title": "Wounded card:BP deckAI deck"
+      "title": "Раненая карта: колода BP, колода ИИ"
     },
     {
       "page_id": "p0055",
-      "title": "Escalations Outside of Wounding"
+      "title": "Эскалации вне Ранений"
     },
     {
       "page_id": "p0056",
-      "title": "Argo Abilities"
+      "title": "Способности Арго"
     },
     {
       "page_id": "p0057",
-      "title": "Casualties"
+      "title": "Потери"
     },
     {
       "page_id": "p0058",
-      "title": "Bonus Attacks during Titan Attacks (Follow-ups)"
+      "title": "Бонусные Атаки во время Атак Титанов (Последующие)"
     },
     {
       "page_id": "p0059",
-      "title": "Kratos Cards"
+      "title": "Карты Кратоса"
     },
     {
       "page_id": "p0060",
-      "title": "Vantage Points"
+      "title": "Выгодные Позиции"
     },
     {
       "page_id": "p0061",
-      "title": "How to Awaken"
+      "title": "Как Пробудиться"
     },
     {
       "page_id": "p0062",
-      "title": "Constant Abilities"
+      "title": "Постоянные Способности"
     },
     {
       "page_id": "p0063",
-      "title": "Gated Abilities and Effects"
+      "title": "Ограниченные способности и эффекты"
     },
     {
       "page_id": "p0064",
-      "title": "Keywords"
+      "title": "Ключевые слова"
     },
     {
       "page_id": "p0065",
@@ -271,35 +271,35 @@
     },
     {
       "page_id": "p0068",
-      "title": "Terrain"
+      "title": "Ландшафт"
     },
     {
       "page_id": "p0069",
-      "title": "Terrain Placement on a Titan"
+      "title": "Размещение ландшафта на Титане"
     },
     {
       "page_id": "p0070",
-      "title": "Mnestis Theatre"
+      "title": "Театр Мнесис"
     },
     {
       "page_id": "p0071",
-      "title": "Mnestis Battle Setup"
+      "title": "Подготовка к Битве Мнестис"
     },
     {
       "page_id": "p0072",
-      "title": "Cycle Ascending Materials"
+      "title": "Материалы для возвышения Цикла"
     },
     {
       "page_id": "p0073",
-      "title": "Primordial Cores"
+      "title": "Первозданные Ядра"
     },
     {
       "page_id": "p0074",
-      "title": "Hekaton level 8+:"
+      "title": "Гекатон уровень 8+:"
     },
     {
       "page_id": "p0075",
-      "title": "Tree of Knowledge"
+      "title": "Древо Знаний"
     },
     {
       "page_id": "p0076",
@@ -307,7 +307,7 @@
     },
     {
       "page_id": "p0077",
-      "title": "Master Index"
+      "title": "Главный указатель"
     },
     {
       "page_id": "p0078",
@@ -323,11 +323,11 @@
     },
     {
       "page_id": "p0081",
-      "title": "Last Page Summaries"
+      "title": "Краткие сводки последних страниц"
     },
     {
       "page_id": "p0082",
-      "title": "The Most Popular"
+      "title": "Самые популярные"
     },
     {
       "page_id": "p0083",

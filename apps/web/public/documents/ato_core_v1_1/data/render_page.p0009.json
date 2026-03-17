@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0009",
-    "title": "Dice",
+    "title": "Кубики",
     "section_path": [],
     "source_page_number": 9
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Dice",
+          "text": "Кубики",
           "marks": []
         }
       ]
@@ -31,57 +31,77 @@
       "children": [
         {
           "kind": "text",
-          "text": "Aeon Trespass: Odyssey uses two types of dice:Custom d10 dice with numbers and the symbol, used for Attack Rolls, Evasion Rolls, Tests and other miscellaneous Rolls. Treat the  result as a ‘10’. A natural (i.e. before applying any modifiers)  ‘10’ on a d10 is ",
+          "text": "В Aeon Trespass: Odyssey используются два типа кубиков:Специальные кубики d10 с числами и символом, используемые для бросков атаки, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "always",
+          "text": "Бросков Уклонения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " a ",
+          "text": ", проверок и других различных бросков. Считайте результат «10». Естественная (т.е. до применения каких-либо модификаторов) «10» на d10 — это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "success",
+          "text": "всегда",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (or a ",
+          "text": "успех",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "hit",
+          "text": "попадание",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в случае броска атаки), тогда как естественная «1» на d10 — это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "in case of an Attack Roll) whereas a natural ‘1’ on a d10 is ",
+          "text": "всегда",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " провал (или промах в случае броска атаки). Эти кубики ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "always",
-          "marks": []
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " a fail (or a miss in case of an Attack Roll). These dice are ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "not",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " limited. If you would ever be required to roll more d10 dice than provided in the game box, substitute them with regular d10 dice or re-roll the dice as many times as necessary, noting the previous results.Custom d6 dice with  and results used for Power Rolls and Armor Rolls. These come in three different colors (see Power Dice Tiers, p. 50) and they are limited by the number of dice provided in the game box (see Power Dice Limit, p. 50). Each Pow-er die has a different spread of symbols: Power , potentials and . Don’t worry about the , you will learn about them one day…",
+          "text": " ограничены. Если вам когда-либо потребуется бросить больше кубиков d10, чем предусмотрено в коробке с игрой, замените их обычными кубиками d10 или перебрасывайте кубики столько раз, сколько необходимо, записывая предыдущие результаты.Специальные кубики d6 с  и результатами, используемые для бросков силы и бросков брони. Они бывают трех разных цветов (см. Уровни кубиков силы, стр. 50) и ограничены количеством кубиков, предусмотренных в коробке с игрой (см. Лимит кубиков силы, стр. 50). Каждый кубик силы имеет разное распределение символов: Сила , потенциалы и . Не беспокойтесь о , вы узнаете о них однажды…",
           "marks": []
         }
       ]
@@ -93,7 +113,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Dice Re-rolls",
+          "text": "Перебросы кубиков",
           "marks": []
         }
       ]
@@ -104,17 +124,29 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many effects will allow you to roll some of the dice again if you are not satisfied with their result. All of these effects are referred to as re-rolls. During a single roll, each die can only be re-rolled once. You must declare all dice you wish to re-roll before you per-form any of these ",
+          "text": "Многие эффекты позволят вам перебросить некоторые кубики, если вы не удовлетворены их результатом. Все эти эффекты называются перебросами. В течение одного броска каждый кубик может быть переброшен только один раз. Вы должны объявить все кубики, которые вы хотите перебросить, прежде чем выполнять любой из этих ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "re-rolls",
+          "text": "перебросов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если несколько игроков выполняют свои броски одновременно (например, когда текст гласит «Каждый ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". If multiple players perform their rolls at the same time (for example when the text states “Each Argonaut tests”), they must all declare whether they want to re-roll their dice before any of them performs a re-roll.",
+          "text": "Аргонавт",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " проверяет»), они все должны объявить, хотят ли они перебросить свои кубики, прежде чем кто-либо из них выполнит переброс.",
           "marks": []
         }
       ]
@@ -126,7 +158,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fate Re-rolls",
+          "text": "Перебросы Судьбы",
           "marks": []
         }
       ]
@@ -137,27 +169,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gaining ",
+          "text": "Получение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fate",
-          "marks": []
+          "text": "Судьбы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " is the most common way of re-rolling ",
+          "text": " — самый распространенный способ переброса кубиков ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "d10",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " dice. The following rules apply to Fate Re-rolls:",
+          "text": ". К перебросам Судьбы применяются следующие правила:",
           "marks": []
         }
       ]
@@ -168,7 +204,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "(see p. 31).",
+          "text": "(см. стр. 31).",
           "marks": []
         }
       ]
@@ -179,7 +215,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "other roll not listed above.",
+          "text": "другие броски, не перечисленные выше.",
           "marks": []
         }
       ]
@@ -190,7 +226,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "(see p. 31).",
+          "text": "(см. стр. 31).",
           "marks": []
         }
       ]
@@ -202,7 +238,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Choosing a Random Element",
+          "text": "Выбор случайного элемента",
           "marks": []
         }
       ]
@@ -213,7 +249,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "When you are asked to choose a random element, perform the fol-lowing:",
+          "text": "Когда вас просят выбрать случайный элемент, выполните следующее:",
           "marks": []
         }
       ]
@@ -224,7 +260,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "roll designates the randomly chosen Argonaut.",
+          "text": "бросок определяет случайно выбранного ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавта",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
           "marks": []
         }
       ]
@@ -235,7 +281,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "deck. The arrow in the bottom left corner designates the ran-domly chosen direction. If it shows , you may instead choose a direction. Place the drawn card at the bottom of the deck.",
+          "text": "колоды. Стрелка в нижнем левом углу указывает случайно выбранное направление. Если она показывает , вы можете вместо этого выбрать направление. Поместите взятую карту в низ колоды.",
           "marks": []
         }
       ]
@@ -246,7 +292,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "deck. If the designated cards do not form a deck, shuffle them together and draw one.",
+          "text": "колоды. Если указанные карты не образуют колоду, перемешайте их и возьмите одну.",
           "marks": []
         }
       ]
@@ -257,7 +303,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "cated elements. The lowest roll designates the randomly cho-sen element.",
+          "text": "элементов. Самый низкий бросок определяет случайно выбранный элемент.",
           "marks": []
         }
       ]
@@ -269,7 +315,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Secret Decks",
+          "text": "Секретные колоды",
           "marks": []
         }
       ]
@@ -280,23 +326,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "There are several Secret Decks in the game! A Se-cret Deck is separated with ",
+          "text": "В игре есть несколько Секретных колод! Секретная колода отделена ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "two",
+          "text": "двумя",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " картами-разделителями: одной спереди и одной сзади. Когда вам приказано взять карту из Секретной колоды, всегда начинайте смотреть с переднего разделителя, открывая нижние части карт (на них указаны ID-номера, см. схему).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Divider cards, one in the front and one in the back. When you are instructed to draw from a Secret Deck, always start looking from the front Divider, by revealing the bottoms of the cards (these have the ID numbers, see diagram).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Potential symbolPower symbol??? symbol",
-          "marks": []
+          "text": "Символ потенциалаСимвол силы??? символ",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

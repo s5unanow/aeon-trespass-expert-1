@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0063",
-    "title": "Gated Abilities and Effects",
+    "title": "Ограниченные способности и эффекты",
     "section_path": [],
     "source_page_number": 63
   },
@@ -19,33 +19,48 @@
       "children": [
         {
           "kind": "text",
-          "text": "Example:",
-          "marks": []
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " The Gamechanger has a Titan ability named ",
-          "marks": []
+          "text": " У Геймченджера есть способность Титана под названием ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Advanced Reflex",
-          "marks": []
+          "text": "Продвинутый Рефлекс",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": ", as well as a Iapetus Lifeguard  card with a ",
-          "marks": []
+          "text": ", а также карта «Спасатель Япета» со способностью ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Reflex",
-          "marks": []
+          "text": "Рефлекс",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " abil-ity. Even though one of them has a subtype (Advanced), while the other doesn’t, they are still named the same and as such they cannot both be used in the same . The Gamechanger has to choose which one to use. If, however, there is another  in the same Round, the player controlling the Titan may choose to use the other ability.",
-          "marks": []
+          "text": ". Несмотря на то, что одна из них имеет подтип (Продвинутый), а другая нет, они все равно называются одинаково, и поэтому обе не могут быть использованы в одном и том же раунде. Геймченджер должен выбрать, какую из них использовать. Однако, если в том же раунде есть другая способность, игрок, контролирующий Титана, может выбрать использование другой способности.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -56,7 +71,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gated Abilities and Effects",
+          "text": "Ограниченные способности и эффекты",
           "marks": []
         }
       ]
@@ -67,17 +82,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many abilities and effects of  cards, as well as Mnemos cards, Titan Sheets and other game elements, unlock when some other requirement is met, usually having an appropriately high level of ",
+          "text": "Многие способности и эффекты карт, а также карты Мнемос, планшеты Титанов и другие игровые элементы разблокируются при выполнении других требований, обычно при наличии достаточно высокого уровня ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Danger",
-          "marks": []
+          "text": "Опасности",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ". For details see p. 46. ",
+          "text": ". Подробнее см. на стр. 46. ",
           "marks": []
         }
       ]
@@ -89,7 +106,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Abilities",
+          "text": "Способности Первозданных",
           "marks": []
         }
       ]
@@ -100,27 +117,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Restrictions pertaining to ability usage do not apply to Primordials. Resolve Primordial abilities each time you are instructed to do so by an AI or BP card, Trait or any other game element. All abilities on BP and AI cards are resolved ",
+          "text": "Ограничения, касающиеся использования способностей, не распространяются на Первозданных. Разрешайте способности Первозданных каждый раз, когда вам это предписывает карта ИИ или БП, свойство или любой другой игровой элемент. Все способности на картах БП и ИИ разрешаются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "by",
+          "text": "Первозданным",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " the Primordial ",
-          "marks": []
+          "text": "против",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "against",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " a Ti-tan—the Target (in case of an Attack) or the Attacker (in case of a Response)—unless explicitly stated otherwise.",
+          "text": " Титана — Цели (в случае Атаки) или Атакующего (в случае Ответа) — если явно не указано иное.",
           "marks": []
         }
       ]
@@ -132,7 +153,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Exhausting, Discarding and Removing",
+          "text": "Истощение, сброс и удаление",
           "marks": []
         }
       ]
@@ -143,37 +164,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many effects will instruct you to exhaust, discard, or remove an element. Generally ",
+          "text": "Многие эффекты предписывают вам истощить, сбросить или удалить элемент. Обычно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "exhausting",
+          "text": "истощение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " является временным эффектом, тогда как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is a temporary effect, whereas ",
+          "text": "сброс",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " более постоянен. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "dis-carding",
-          "marks": []
+          "text": "Удаление",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " is more permanent. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Removing",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (or archiving) a game ele-ment from the game means returning it back to the game box. It will not be used again, unless explicitly stated otherwise.",
+          "text": " (или архивирование) игрового элемента из игры означает его возвращение в коробку с игрой. Он не будет использоваться снова, если явно не указано иное.",
           "marks": []
         }
       ]
@@ -185,7 +212,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Exhausting",
+          "text": "Истощение",
           "marks": []
         }
       ]
@@ -196,57 +223,67 @@
       "children": [
         {
           "kind": "text",
-          "text": "When instructed to ",
+          "text": "Когда вам предписано ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "exhaust",
+          "text": "истощить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карту, вы должны повернуть ее на 90 градусов вправо, чтобы обозначить это. Она по-прежнему считается экипированной на вашем Титане или Аргонавте, но вы не можете использовать ее как активное оружие, использовать ее защитные характеристики или активировать какие-либо ее способности, кроме эффектов, вызванных истощением (например, «если истощена») или эффектов, приводящих к ее восстановлению (например, «Когда вы сбиты с ног, восстановите эту карту»). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " a card, you should turn it 90 degrees to the right to denote it. It is still treated as equipped on your Ti-tan or Argonaut but you cannot use it as an active weapon, use its defensive statistics nor activate any of its abilities except effects triggered by exhaustion (e.g. “if exhausted”) or effects resulting in it unexhausting (e.g. “When you are knocked down, unexhaust this card”). ",
+          "text": "Примечание: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Пассивные способности (такие как Дальность 2-4 или +1 Точность) являются постоянными, поэтому они остаются в силе, даже если карта, на которой они напечатаны, истощена. Аналогично, свойства всегда активны. Карты остаются истощенными, пока они не будут восстановлены другим эффектом (см. ниже).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note: ",
+          "text": "Пример истощения",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Некоторые игровые элементы, помимо карт, могут предписывать вам их истощить. В этом случае вы истощаете только этот конкретный игровой элемент. Например, если ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Passive abilities (such as Ranged 2-4 or +1 Precision) are ongoing, therefore they remain in effect even if a card they are printed on is exhausted. Similarly,  traits are always active.Cards remain exhausted until they are unexhausted by another effect (see below).",
+          "text": "истощение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " является стоимостью способности Титана, описанной на планшете Титана, вы должны истощить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exhaust example",
-          "marks": []
+          "text": "только эту способность",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Some game elements other than cards may instruct you to exhaust them. In that case, you only exhaust that specific game element.For example, if ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "exhaust",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "is a cost of a Titan ability described on a Titan Sheet, you should exhaust ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "only this ability",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Place a generic token on this ability as a reminder that it is exhausted, but that it does not invalidate any other Titan abilities or the Kratos Table.All game elements remain exhausted until they are unexhausted by another effect (see below).",
+          "text": ". Поместите общий жетон на эту способность в качестве напоминания о том, что она истощена, но это не отменяет никаких других способностей Титана или Таблицы Кратоса. Все игровые элементы остаются истощенными, пока они не будут восстановлены другим эффектом (см. ниже).",
           "marks": []
         },
         {
@@ -263,7 +300,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unexhausting",
+          "text": "Восстановление",
           "marks": []
         }
       ]
@@ -274,37 +311,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Argonaut may spend their ",
+          "text": "Каждый Аргонавт может потратить свое ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "movement action",
+          "text": "действие передвижения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " or",
+          "text": " боевое действие",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", чтобы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " combat action",
-          "marks": []
+          "text": "восстановить все истощенные экипированные игровые элементы ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " to ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "unexhaust all exhausted equipped game elements ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "( cards, Mnemos cards, Titan abilities and so on). Some other game effects may also allow you to unexhaust some or all of your game elements.",
+          "text": "(карты, карты Мнемос, способности Титанов и так далее). Некоторые другие игровые эффекты также могут позволить вам восстановить некоторые или все ваши игровые элементы.",
           "marks": []
         }
       ]
@@ -316,7 +359,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Exhaustable Gear",
+          "text": "Истощаемое Снаряжение",
           "marks": []
         }
       ]
@@ -327,17 +370,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some game effects refer to ",
+          "text": "Некоторые игровые эффекты относятся к ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Exhaustable",
-          "marks": []
+          "text": "Истощаемому",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Gear. This category in-cludes all  cards with the Cumbersome keyword or with active abilities that include  as their cost.",
+          "text": " Снаряжению. Эта категория включает все карты с ключевым словом «Громоздкий» или с активными способностями, которые включают истощение в качестве своей стоимости.",
           "marks": []
         }
       ]
@@ -349,7 +394,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Discarding",
+          "text": "Сброс",
           "marks": []
         }
       ]
@@ -360,27 +405,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "When a game instructs you to ",
+          "text": "Когда игра предписывает вам ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "discard",
+          "text": "сбросить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " жетон, верните его в запас жетонов. Когда вам предписано ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " a token, place it back in the token pool.When instructed to ",
-          "marks": []
+          "text": "сбросить",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "discard",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " a  or Mnemos card, flip it facedown. It is unusable until the end of this Battle and it is not treated as equipped by your Titan or Argonaut. It is not, however, perma-nently removed from the game – it remains in the Argo Armory (in case of  cards) or assigned to your Argonauts (in case of Mnemos cards) and can be used in future Battles.",
+          "text": " или карту Мнемос, переверните ее лицевой стороной вниз. Она непригодна до конца этой Битвы и не считается экипированной вашим Титаном или Аргонавтом. Однако она не удаляется из игры навсегда – она остается в Оружейной Арго (в случае карт) или назначенной вашим Аргонавтам (в случае карт Мнемос) и может быть использована в будущих Битвах.",
           "marks": []
         }
       ]
@@ -392,7 +441,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Removing Elements (archiving)",
+          "text": "Удаление элементов (архивирование)",
           "marks": []
         }
       ]
@@ -403,37 +452,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "When instructed to permanently remove an element from the game, place it back in the game box. It will likely not be used in your current playthrough, unless a future effect explicitly refers to this element. Permanently removing an element may sometimes be referred to as ",
+          "text": "Когда вам предписано навсегда удалить элемент из игры, верните его в коробку с игрой. Вероятно, он не будет использоваться в вашей текущей кампании, если только будущий эффект явно не сошлется на этот элемент. Постоянное удаление элемента иногда может называться ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Archiving",
+          "text": "Архивированием",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " игрового элемента. Иногда вам может быть предписано удалить элемент на определенный срок. В таком случае отложите его в сторону и держите отдельно от других игровых элементов на этот срок. Например, когда предписано удалить элемент из Битвы, он удаляется из ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " a game element.Sometimes you may be instructed to remove an element for a spe-cific duration. In such case, set it aside and keep it separate from other game elements for this duration. For example, when instruct-ed to remove an element from a Battle, it is removed from ",
+          "text": "только этой Битвы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", но будет использоваться в последующих Битвах против того же Первозданного. Аналогично, если карта Исследования удаляется до следующей Битвы на Временной шкале, она должна быть удалена из колоды Исследования, затем замешана обратно в нее в Послесловии следующей Битвы на Временной шкале (как указано в Сценарии Битвы). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "this Battle only",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " but will be used in consequent Battles against the same Primordial.Similarly, if an Exploration card is removed until the next Timeline Battle, it should be removed from the Exploration deck, then shuf-fled back into it in the next Timeline Battle’s Aftermath (as prompt-ed in the Battle Scenario). ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Permanently removing an element from the game is a ex-tremely rare occurrence and will always be specifically referenced. If the effect does not explicitly state that an element should be per-manently removed from the game, it isn’t.",
+          "text": " Постоянное удаление элемента из игры — крайне редкое явление и всегда будет специально оговариваться. Если эффект явно не указывает, что элемент должен быть навсегда удален из игры, то это не так.",
           "marks": []
         }
       ]
@@ -445,7 +500,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fatigue",
+          "text": "Усталость",
           "marks": []
         }
       ]
@@ -456,43 +511,51 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some powerful abilities and effects may require you to gain a ",
+          "text": "Некоторые мощные способности и эффекты могут потребовать от вас получить жетон ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "movement action",
+          "text": "усталости от передвижения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " or ",
+          "text": "усталости от боя",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " . Пока у вас есть жетон усталости, вы можете использовать соответствующее действие ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "combat action",
+          "text": "только для сброса этого жетона",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Это единственный способ сбросить этот жетон. Вы не можете получить жетон усталости, если у вас уже есть один. После того как вы сбросите жетон усталости, если у вас остались какие-либо действия, вы можете выполнить их как обычно. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Fatigue token. As long as you have a Fatigue token, you can use the corresponding ac-tion ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "only to discard this token",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". This is the only way to discard this token.You cannot gain a Fatigue token if you already have one. After you discard a Fatigue token, if you have any actions remaining, you can perform them as normal. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Movement Fatigue tokenCombat Fatigue  token",
-          "marks": []
+          "text": "Жетон усталости от передвиженияЖетон усталости от боя",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0064",
-    "title": "Keywords",
+    "title": "Ключевые слова",
     "section_path": [],
     "source_page_number": 64
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Keywords",
+          "text": "Ключевые слова",
           "marks": []
         }
       ]
@@ -31,17 +31,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "A keyword is an ability which conveys specific common rules. Each keyword has its own rules which can be found on the keyword list below. These are all ",
+          "text": "Ключевое слово — это способность, которая передает определенные общие правила. Каждое ключевое слово имеет свои собственные правила, которые можно найти в списке ключевых слов ниже. Все они являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "named abilities",
-          "marks": []
+          "text": "именованными способностями",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " and follow all of the rules and restrictions of named abilities.",
+          "text": " и следуют всем правилам и ограничениям именованных способностей.",
           "marks": []
         }
       ]
@@ -53,7 +55,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Stackable Keywords",
+          "text": "Суммируемые ключевые слова",
           "marks": []
         }
       ]
@@ -64,27 +66,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Abilities do not usually stack (for example, if you have the Dead-ly keyword on your weapon and gain it from another source, you cannot use both of them to roll two additional Crit dice). There are, however, some abilities that do stack: unless the ability text says otherwise, every keyword followed by a number is a ",
+          "text": "Способности обычно не суммируются (например, если у вас есть ключевое слово «Смертоносный» на вашем оружии, и вы получаете его из другого источника, вы не можете использовать оба, чтобы бросить два дополнительных кубика крита). Однако есть некоторые способности, которые суммируются: если текст способности не указывает иное, каждое ключевое слово, за которым следует число, является ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "stackable keyword",
+          "text": "суммируемым ключевым словом",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Вы можете активировать несколько суммируемых ключевых слов с одним и тем же названием одновременно. Их эффекты затем складываются и «суммируются». Например, две отдельные способности «Открытие 1» будут фактически эквивалентны «Открытию 2». Ключевые слова, за которыми не следует число, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".You may activate several stackable keyword abilities with the same name at the same time. Their effects then add up and “stack.” For example, two separate Opening 1 abilities would effectively be the same as Opening 2.Keywords that are not followed by a number ",
-          "marks": []
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "do not ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "stack.",
+          "text": " суммируются.",
           "marks": []
         }
       ]
@@ -96,7 +102,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Keywords List",
+          "text": "Список ключевых слов",
           "marks": []
         }
       ]
@@ -107,317 +113,607 @@
       "children": [
         {
           "kind": "text",
-          "text": "The following list contains keywords common to all Cycles of ",
+          "text": "Следующий список содержит ключевые слова, общие для всех ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Циклов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " игры ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Ключевые слова, введенные в конкретном Цикле, будут описаны в Книге Историй этого Цикла. Все они указаны в Главном Указателе (см. стр. 76).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Keywords that are introduced in a specific Cy-cle will be described in that Cycle’s Storybook. All of these are ref-erenced in the Master Index (see p. 76).",
+          "text": "Лимит Амброзии X/+X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Ваш лимит Амброзии становится X или увеличивается на +X. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ambrosia Limit X/+X:",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Лимит Амброзии X не суммируется, но все бонусы +X являются кумулятивными.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Your Ambrosia Limit becomes X or is in-creased by +X. ",
+          "text": "Вознесенный:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Это игнорирует штрафы Уровня Силы (неактуально в Цикле I). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
+          "text": "Переброс Атаки X: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Во время Броска Атаки вы можете перебросить до X кубиков Атаки без дополнительной стоимости. Помните, что вы можете перебросить каждый кубик только один раз, независимо от источника переброса.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Ambrosia Limit X does not stack, but all +X bonuses are cumulative.",
+          "text": "Авто-прорыв X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время первого окна способностей поместите X жетонов Прорыва в Пул Кратоса (см. ключевое слово Прорыв X).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ascended:",
+          "text": "Блок X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " При выполнении ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " This  ignores Power Level penalties (irrelevant in Cy-cle I). ",
+          "text": "Броска Уклонения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Attack Re-roll X: ",
+          "text": " считайте X успешных попаданий уклоненными. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "During an Attack Roll, you may re-roll up to X Attack dice with no additional cost. Remember that you can only re-roll each die once, regardless of the re-roll source.",
+          "text": "Прорыв X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время второго окна способностей поместите X жетонов Прорыва в Пул Кратоса. Во время шага Броска Силы каждый жетон Прорыва в Пуле Кратоса позволяет атакующему ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Auto-break X:",
+          "text": "Титану",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the first ability window, place X Break tokens in the Kratos Pool (see Break X keyword).",
+          "text": " превратить 1 символ в 1 .",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Block X:",
+          "text": "Обход:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Вы можете перемещаться сквозь других ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " While performing an Evasion Roll, treat X successful hits as evaded. ",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Break X:",
+          "text": ". Вы не можете завершить свое добровольное перемещение на клетке, занятой другим ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the second ability window, place X Break to-kens in the Kratos Pool. During the Power Roll step, each Break token in the Kratos Pool allows the attacking Titan to turn 1  symbol into 1 .",
+          "text": "Титаном",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Bypass:",
+          "text": ".",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " You may move through other Titans. You cannot end your voluntary movement on a space occupied by another Titan.",
+          "text": "Резьба X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Когда вы раните ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Carving X:",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " When you wound the Primordial, test Wisdom (8+). On a success, you immediately gain X additional non-Core Primordial resources from that BP card. Note: These resources are ",
+          "text": ", проверьте Мудрость (8+). В случае успеха вы немедленно получаете X дополнительных не-основных ресурсов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "not",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " multi-plied by the Primordial level.",
+          "text": " с этой карты BP. Примечание: Эти ресурсы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Commit:",
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " умножаются на уровень Первозданного.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " To attack with this weapon, gain +1.",
+          "text": "Приверженность:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Чтобы атаковать этим оружием, получите +1.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crash:",
+          "text": "Крушение:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The Titan subjected to Crash gains +1  and suffers Knock-down. A Titan suffers Crash each time a Primordial moves onto or through its space, as well as when any effect forces it to move onto a space with an Obstacle Terrain tile or places an Obstacle Terrain tile on its.",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Cumbersome:",
+          "text": ", подвергшийся Крушению, получает +1 и страдает от Сбивания с ног. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the second ability window, if you successfully wounded with this weapon, exhaust it. Treat it as a voluntary exhaust.",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Deadly: ",
+          "text": " страдает от Крушения каждый раз, когда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "During an Attack Roll, replace one of your regular Attack dice with an additional Crit die. If you roll only one Attack die, you gain a Crit Chance on a natural 9–10 result instead.",
+          "text": "Первозданный",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Displace: ",
+          "text": " перемещается на его клетку или сквозь нее, а также когда любой эффект заставляет его переместиться на клетку с тайлом Препятствия или помещает тайл Препятствия на его клетку.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Move the displaced target to an empty space adjacent to its current position. If a Titan is displaced and there is no space it can be legally displaced to, it dies instead.",
+          "text": "Громоздкий:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время второго окна способностей, если вы успешно ранили этим оружием, истощите его. Считайте это добровольным истощением.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Diversion:",
+          "text": "Смертоносный: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Во время Броска Атаки замените один из ваших обычных кубиков Атаки дополнительным кубиком Крита. Если вы бросаете только один кубик Атаки, вы получаете Шанс Крита при естественном результате 9–10 вместо этого.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the second ability window, place a Diver-sion token in the Kratos Pool. An attacking Titan may use a Diversion token from the Kratos Pool to ignore Fail Responses until the end of their Attack.",
+          "text": "Смещение: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Переместите смещенную цель на пустую клетку, смежную с ее текущей позицией. Если ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Dodge: ",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "When you are about to resolve an Evasion Roll, gain +1 ",
+          "text": " смещен и нет клетки, на которую его можно законно сместить, он умирает.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evasion bonus",
+          "text": "Отвлечение:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время второго окна способностей поместите жетон Отвлечения в Пул Кратоса. Атакующий ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " for this roll.",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Doomed:",
+          "text": " может использовать жетон Отвлечения из Пула Кратоса, чтобы игнорировать Ответы на Провал до конца своей Атаки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During this Primordial Attack, Titans cannot re-roll the Evasion Roll or Judgement Test using .",
+          "text": "Уклонение: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Когда вы собираетесь разрешить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Elation X: ",
+          "text": "Бросок Уклонения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "During the second ability window, you may discard X Despair tokens or Ambrosia tokens to place X Opening to-kens in the Kratos Pool (see Opening X keyword).",
+          "text": ", получите +1 ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Escalate X:",
+          "text": "бонус к Уклонению",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " для этого броска.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Escalate ",
+          "text": "Обреченный:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время этой ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "X lowest level",
+          "text": "Первозданной",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " BP cards (remove each one from the BP deck and shuffle in a card one level higher), one at a time. Then do the same for the AI deck. Do not look at the removed cards.",
+          "text": " Атаки ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Frontlines: ",
+          "text": "Титаны",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "If your Titan is dead, at the End of Battle roll a d10. On a ‘1’, your Argonaut dies as well.",
+          "text": " не могут перебрасывать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Heal: ",
+          "text": "Бросок Уклонения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Take the top card from the Wound Stack and remove it from the Battle. It does not count as a Wound and does not provide re-sources at the end of the Battle.",
+          "text": " или Проверку Суждения, используя .",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Heartseeker:",
+          "text": "Восторг X: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Во время второго окна способностей вы можете сбросить X жетонов Отчаяния или жетонов Амброзии, чтобы поместить X жетонов Открытия в Пул Кратоса (см. ключевое слово Открытие X).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " During the Draw BP card step of the Attack, you may look at the top two BP cards and choose which one to attack. Shuffle the other card back into the deck.",
+          "text": "Эскалация X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Эскалируйте ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Hide:",
+          "text": "X карт BP самого низкого уровня",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (удалите каждую из колоды BP и замешайте карту на один уровень выше), по одной за раз. Затем сделайте то же самое для колоды ИИ. Не смотрите на удаленные карты.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If you are ",
+          "text": "Передовая: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Если ваш ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "not",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " in front of the Primordial, you may activate this ability at the end of your turn to become Hidden. If you have the PT token, pass it to the Titan with the highest ",
+          "text": " мертв, в конце Битвы бросьте d10. На «1» ваш ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rage",
+          "text": "Аргонавт",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " other than you. As long as you are Hidden, you have +1 Evasion and +1 Precision. You stop being Hidden if you move in front of the Primordial, gain the ",
+          "text": " также умирает.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target",
+          "text": "Исцеление: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Возьмите верхнюю карту из Стопки ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " token, after the second ability window of your Attack or at the end of your next turn. Place a generic token on the game element granting you Hide as a reminder.",
+          "text": "Ран",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockback X:",
+          "text": " и удалите ее из Битвы. Она не считается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " See box.Move the affected miniature X spaces directly away from the source of Knockback in a straight line (or in a specified direction in case of directional Knockback; see examples on the next page). ",
+          "text": "Раной",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и не предоставляет ресурсы в конце Битвы.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Искатель Сердец:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Во время шага «Взять карту BP» Атаки вы можете посмотреть на две верхние карты BP и выбрать, какую из них атаковать. Замешайте другую карту обратно в колоду.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Скрытие:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если вы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " находитесь перед ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданным",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", вы можете активировать эту способность в конце своего хода, чтобы стать Скрытым. Если у вас есть жетон PT, передайте его ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титану",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " с наивысшей ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Яростью",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", кроме вас. Пока вы Скрыты, у вас есть +1 к Уклонению и +1 к Точности. Вы перестаете быть Скрытым, если перемещаетесь перед ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданным",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", получаете жетон ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Приоритетной Цели",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", после второго окна способностей вашей Атаки или в конце вашего следующего хода. Поместите обычный жетон на игровой элемент, дающий вам Скрытие, в качестве напоминания.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Отбрасывание X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " См. рамку. Переместите затронутую миниатюру на X клеток прямо от источника Отбрасывания по прямой линии (или в указанном направлении в случае направленного Отбрасывания; см. примеры на следующей странице). ",
           "marks": []
         }
       ]
@@ -428,7 +724,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Target only if it is within the Attack’s effective range (adjacent for normal Attacks, in the designated zone for Zone Attacks, within X spaces for Ranged X Attacks, etc.).",
+          "text": "Цель только в том случае, если она находится в эффективной дальности Атаки (смежная для обычных Атак, в обозначенной зоне для Зональных Атак, в пределах X клеток для Дальних X Атак и т. д.).",
           "marks": []
         }
       ]
@@ -439,7 +735,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "the Attacker only if they are within adjacency.",
+          "text": "Атакующего только в том случае, если он находится в пределах смежности.",
           "marks": []
         }
       ]
@@ -450,7 +746,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "through except Obstacles.",
+          "text": "кроме Препятствий.",
           "marks": []
         }
       ]
@@ -461,13 +757,35 @@
       "children": [
         {
           "kind": "text",
-          "text": "stacle Terrain tile, stop its movement, remove the Terrain tile from the Battle Board and place the Titan in its space, then the Titan suffers ",
+          "text": "остановите его движение, удалите тайл Ландшафта с Боевого Поля и поместите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crash",
+          "text": "Титана",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на его клетку, затем ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " страдает от ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Крушения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -482,13 +800,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "Obstacle, it stops on an adjacent space right before the Ob-stacle, then suffers ",
+          "text": "Препятствие, он останавливается на смежной клетке прямо перед Препятствием, затем страдает от ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crash",
-          "marks": []
+          "text": "Крушения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -503,7 +823,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "and miniatures without hindrance. They destroy any Terrain tiles (except Indestructible) they move through and cause Crash and Unavoidable Knockback to Titans as normal.",
+          "text": "и миниатюры без препятствий. Они уничтожают любые тайлы Ландшафта (кроме Неразрушаемых), через которые они перемещаются, и вызывают Крушение и Неизбежное Отбрасывание у ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " как обычно.",
           "marks": []
         }
       ]
@@ -514,7 +844,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "ing either the second ability window. ",
+          "text": "любого из двух окон способностей.",
           "marks": []
         }
       ]
@@ -525,13 +855,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "continues to move along the edge, if possible, away from the source of Knockback. ",
+          "text": "она продолжает двигаться вдоль края, если это возможно, от источника Отбрасывания. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Diversion token",
-          "marks": []
+          "text": "Жетон Отвлечения",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

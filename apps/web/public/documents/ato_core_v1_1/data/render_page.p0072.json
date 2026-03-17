@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0072",
-    "title": "Cycle Ascending Materials",
+    "title": "Материалы для возвышения Цикла",
     "section_path": [],
     "source_page_number": 72
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Cycle Ascending Materials",
+          "text": "Материалы для возвышения Цикла",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Once you win it for the first time, each Mnestis Battle in the Tree of Knowledge will reward you with one Cycle-specific ascending material. Each Cycle has a differently named ascending material:Labyrinthized Tears are awarded for Cycle I Primordials and will al-low you to ascend your Gear to Cycle II. Excavated Tears are award-ed for Cycle II Primordials and will allow you to ascend your Gear to Cycle III. Accursed Tears are awarded for Cycle III Primordials and will allow you to ascend your Gear to Cycle IV.",
+          "text": "Как только вы выиграете её впервые, каждая Битва Мнесис в Древе Знаний наградит вас одним специфичным для Цикла материалом возвышения. Каждый Цикл имеет по-разному названный материал возвышения: Лабиринтные Слёзы выдаются за Первозданных Цикла I и позволят вам возвысить ваше Снаряжение до Цикла II. Раскопанные Слёзы выдаются за Первозданных Цикла II и позволят вам возвысить ваше Снаряжение до Цикла III. Проклятые Слёзы выдаются за Первозданных Цикла III и позволят вам возвысить ваше Снаряжение до Цикла IV.",
           "marks": []
         }
       ]
@@ -43,7 +43,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ascending Costs",
+          "text": "Стоимость возвышения",
           "marks": []
         }
       ]
@@ -54,33 +54,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "To ascend Gear, simply choose ",
+          "text": "Чтобы возвысить Снаряжение, просто выберите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "any non-Uniquecard",
+          "text": "любую неуникальную карту",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и оплатите соответствующую стоимость возвышения материалами возвышения. Ваша карта теперь возвышена до Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and pay the corresponding ascending cost in ascending materials. Your card is now ascended to the Cycle",
+          "text": " на один выше",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", чем Цикл, из которого вы использовали материал возвышения (например, вы можете использовать материалы возвышения из Битв Мнесис Цикла I, чтобы возвысить до Цикла II). Отметьте это на Листе Арго или на одном из Листов Аргонавтов. Нет причин возвышать из Цикла с более высоким номером до Цикла с более низким номером. Также обратите внимание, что вы должны возвысить карту до Цикла II, прежде чем возвышать её до Цикла III. Возвышение не даёт никаких особых способностей, но позволяет игнорировать правила возвышения для этого Цикла. Оно также даёт новый признак карте Снаряжения (Лабиринтный для Цикла II, Раскопанный для Цикла III, Проклятый для Цикла IV и так далее).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " one higher",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " than the Cycle from which you used the ascending material (e.g. you can use ascend-ing materials from Cycle I Mnestis Battles to ascend  to Cycle II). Note it on the Argo Sheet or one of the Argonaut Sheets. There is no reason to ascend  from a higher numbered Cycle to a lower numbered one. Also note that you have to ascend a card to Cycle II before ascending it to Cycle III. Ascending doesn’t grant any special abilities, but it allows you to ignore the ascendancy rules for that Cycle. It also grants a new trait to the Gear card (Labyrinthized for Cycle II, Excavated for Cycle III, Accursed for Cycle IV and so on).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Gear cards from these Production Technologies cost one as-cending material to ascend:",
-          "marks": []
+          "text": "Карты Снаряжения из этих Производственных Технологий стоят один материал возвышения для возвышения:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -89,8 +95,10 @@
         },
         {
           "kind": "text",
-          "text": "Trireme Weapons",
-          "marks": []
+          "text": "Оружие Триремы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -99,8 +107,10 @@
         },
         {
           "kind": "text",
-          "text": "Trireme Armor",
-          "marks": []
+          "text": "Броня Триремы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -109,8 +119,10 @@
         },
         {
           "kind": "text",
-          "text": "Trireme Ranged Weapons",
-          "marks": []
+          "text": "Дальнобойное Оружие Триремы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -119,8 +131,10 @@
         },
         {
           "kind": "text",
-          "text": "Siren Armor",
-          "marks": []
+          "text": "Броня Сирены",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -129,8 +143,10 @@
         },
         {
           "kind": "text",
-          "text": "Advanced Trireme Weap-ons",
-          "marks": []
+          "text": "Улучшенное Оружие Триремы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -139,8 +155,10 @@
         },
         {
           "kind": "text",
-          "text": "Basic Support Equipment",
-          "marks": []
+          "text": "Базовое Вспомогательное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -149,8 +167,10 @@
         },
         {
           "kind": "text",
-          "text": "Lakonian Support Equipment",
-          "marks": []
+          "text": "Лаконское Вспомогательное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -159,18 +179,10 @@
         },
         {
           "kind": "text",
-          "text": "Temenos Armor",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ",",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Temenos Weapons",
-          "marks": []
+          "text": "Броня Теменоса",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -179,8 +191,10 @@
         },
         {
           "kind": "text",
-          "text": "Temenos Advanced Gear",
-          "marks": []
+          "text": "Оружие Теменоса",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -189,8 +203,22 @@
         },
         {
           "kind": "text",
-          "text": "Temenos Support Equipment",
+          "text": "Улучшенное Снаряжение Теменоса",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Вспомогательное Снаряжение Теменоса",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -199,8 +227,10 @@
         },
         {
           "kind": "text",
-          "text": "Temporal Support Equipment",
-          "marks": []
+          "text": "Временное Вспомогательное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -209,8 +239,10 @@
         },
         {
           "kind": "text",
-          "text": "Nietzschean Armor",
-          "marks": []
+          "text": "Ницшеанская Броня",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -219,8 +251,10 @@
         },
         {
           "kind": "text",
-          "text": "Nietzschean Reach Weapons",
-          "marks": []
+          "text": "Ницшеанское Оружие Дальнего Боя",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -229,8 +263,10 @@
         },
         {
           "kind": "text",
-          "text": "Nietzschean Weapons",
-          "marks": []
+          "text": "Ницшеанское Оружие",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -239,8 +275,10 @@
         },
         {
           "kind": "text",
-          "text": "Delphian Siren Armor",
-          "marks": []
+          "text": "Дельфийская Броня Сирены",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -249,8 +287,10 @@
         },
         {
           "kind": "text",
-          "text": "Delphian Siren Weapons",
-          "marks": []
+          "text": "Дельфийское Оружие Сирены",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -259,8 +299,10 @@
         },
         {
           "kind": "text",
-          "text": "Hyper-time Oracle Sighting",
-          "marks": []
+          "text": "Наблюдение Гипервременного Оракула",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -269,8 +311,10 @@
         },
         {
           "kind": "text",
-          "text": "Icarian Harpy Sighting",
-          "marks": []
+          "text": "Наблюдение Икарийской Гарпии",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -279,8 +323,10 @@
         },
         {
           "kind": "text",
-          "text": "Gear cards from these Production Technologies cost two as-cending materials to ascend: ",
-          "marks": []
+          "text": "Карты Снаряжения из этих Производственных Технологий стоят два материала возвышения для возвышения: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -289,8 +335,10 @@
         },
         {
           "kind": "text",
-          "text": "Hekaton Sighting",
-          "marks": []
+          "text": "Наблюдение Гекатона",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -299,8 +347,10 @@
         },
         {
           "kind": "text",
-          "text": "Labyrinthauros Sighting",
-          "marks": []
+          "text": "Наблюдение Лабиринтавра",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -309,8 +359,10 @@
         },
         {
           "kind": "text",
-          "text": "Trireme Reach Weapons",
-          "marks": []
+          "text": "Оружие Дальнего Боя Триремы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -319,8 +371,10 @@
         },
         {
           "kind": "text",
-          "text": "Specialized Trireme Weapons",
-          "marks": []
+          "text": "Специализированное Оружие Триремы",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -329,8 +383,10 @@
         },
         {
           "kind": "text",
-          "text": "Chimera Metastasios Sighting",
-          "marks": []
+          "text": "Наблюдение Химеры Метастасиос",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -339,8 +395,10 @@
         },
         {
           "kind": "text",
-          "text": "Cyclonus Sighting",
-          "marks": []
+          "text": "Наблюдение Циклона",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -349,8 +407,10 @@
         },
         {
           "kind": "text",
-          "text": "Experimen-tal Gear",
-          "marks": []
+          "text": "Экспериментальное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -359,8 +419,10 @@
         },
         {
           "kind": "text",
-          "text": "War Support Equipment",
-          "marks": []
+          "text": "Боевое Вспомогательное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -369,8 +431,10 @@
         },
         {
           "kind": "text",
-          "text": "Sun Descendant Sighting",
-          "marks": []
+          "text": "Наблюдение Потомка Солнца",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -379,8 +443,10 @@
         },
         {
           "kind": "text",
-          "text": "Atemporal Support Equipment",
-          "marks": []
+          "text": "Атемпоральное Вспомогательное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -389,8 +455,10 @@
         },
         {
           "kind": "text",
-          "text": "Black Ice Armor",
-          "marks": []
+          "text": "Броня Чёрного Льда",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -399,8 +467,10 @@
         },
         {
           "kind": "text",
-          "text": "Advanced Trans-forming Weapons",
-          "marks": []
+          "text": "Улучшенное Трансформирующееся Оружие",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -409,8 +479,10 @@
         },
         {
           "kind": "text",
-          "text": "Argoline Transforming Weapons",
-          "marks": []
+          "text": "Трансформирующееся Оружие Арголины",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -419,8 +491,10 @@
         },
         {
           "kind": "text",
-          "text": "Gear cards from these Production Technologies cost three as-cending materials to ascend: ",
-          "marks": []
+          "text": "Карты Снаряжения из этих Производственных Технологий стоят три материала возвышения для возвышения: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -429,8 +503,10 @@
         },
         {
           "kind": "text",
-          "text": "Hekaton Autopsy",
-          "marks": []
+          "text": "Вскрытие Гекатона",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -439,8 +515,10 @@
         },
         {
           "kind": "text",
-          "text": "Labyrinthauros Autopsy",
-          "marks": []
+          "text": "Вскрытие Лабиринтавра",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -449,8 +527,10 @@
         },
         {
           "kind": "text",
-          "text": "Smelted Gear",
-          "marks": []
+          "text": "Переплавленное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -459,8 +539,10 @@
         },
         {
           "kind": "text",
-          "text": "Advanced Support Equipment",
-          "marks": []
+          "text": "Улучшенное Вспомогательное Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -469,8 +551,10 @@
         },
         {
           "kind": "text",
-          "text": "Metal Weapons",
-          "marks": []
+          "text": "Металлическое Оружие",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -479,8 +563,10 @@
         },
         {
           "kind": "text",
-          "text": "Relief Gear",
-          "marks": []
+          "text": "Облегчённое Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -489,8 +575,10 @@
         },
         {
           "kind": "text",
-          "text": "Chimera Metastasios Autopsy",
-          "marks": []
+          "text": "Вскрытие Химеры Метастасиос",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -499,8 +587,10 @@
         },
         {
           "kind": "text",
-          "text": "Cyclonus Au-topsy",
-          "marks": []
+          "text": "Вскрытие Циклона",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -509,8 +599,10 @@
         },
         {
           "kind": "text",
-          "text": "Monomythological Support",
-          "marks": []
+          "text": "Мономифологическая Поддержка",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -519,28 +611,10 @@
         },
         {
           "kind": "text",
-          "text": "Hypertime Oracle Autopsy",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ",",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Icarian Harpy Autopsy",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ",",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Helios Fanatics Equipment",
-          "marks": []
+          "text": "Вскрытие Гипервременного Оракула",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -549,8 +623,34 @@
         },
         {
           "kind": "text",
-          "text": "Apostate Ar-mor",
+          "text": "Вскрытие Икарийской Гарпии",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжение Фанатиков Гелиоса",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Броня Отступника",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -559,8 +659,10 @@
         },
         {
           "kind": "text",
-          "text": "Gear cards from these Production Technologies cost four as-cending materials to ascend: ",
-          "marks": []
+          "text": "Карты Снаряжения из этих Производственных Технологий стоят четыре материала возвышения для возвышения: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -569,8 +671,10 @@
         },
         {
           "kind": "text",
-          "text": "Hekaton Live Study",
-          "marks": []
+          "text": "Живое Изучение Гекатона",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -579,8 +683,10 @@
         },
         {
           "kind": "text",
-          "text": "Labyrinthau-ros Live Study",
-          "marks": []
+          "text": "Живое Изучение Лабиринтавра",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -589,8 +695,10 @@
         },
         {
           "kind": "text",
-          "text": "Temenos Sighting",
-          "marks": []
+          "text": "Наблюдение Теменоса",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -599,8 +707,10 @@
         },
         {
           "kind": "text",
-          "text": "Cyclonus Live Study",
-          "marks": []
+          "text": "Живое Изучение Циклона",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -609,8 +719,10 @@
         },
         {
           "kind": "text",
-          "text": "Chime-ra Metastasios Live Study",
-          "marks": []
+          "text": "Живое Изучение Химеры Метастасиос",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -619,8 +731,10 @@
         },
         {
           "kind": "text",
-          "text": "Nietzschean Meeting Study",
-          "marks": []
+          "text": "Изучение Ницшеанской Встречи",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -629,8 +743,10 @@
         },
         {
           "kind": "text",
-          "text": "Cyclopean Gear",
-          "marks": []
+          "text": "Циклопическое Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -639,8 +755,10 @@
         },
         {
           "kind": "text",
-          "text": "Spartan Weapons",
-          "marks": []
+          "text": "Спартанское Оружие",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -649,8 +767,10 @@
         },
         {
           "kind": "text",
-          "text": "Spartan Advanced Weapons",
-          "marks": []
+          "text": "Улучшенное Спартанское Оружие",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -659,8 +779,10 @@
         },
         {
           "kind": "text",
-          "text": "Cyclopean Advanced Gear",
-          "marks": []
+          "text": "Улучшенное Циклопическое Снаряжение",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -669,8 +791,10 @@
         },
         {
           "kind": "text",
-          "text": "Hypertime Oracle Live Study",
-          "marks": []
+          "text": "Живое Изучение Гипервременного Оракула",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -679,18 +803,10 @@
         },
         {
           "kind": "text",
-          "text": "Sun Descendant Partial Autopsy",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ",",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Icarian Harpy Live Study",
-          "marks": []
+          "text": "Частичное Вскрытие Потомка Солнца",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -699,8 +815,10 @@
         },
         {
           "kind": "text",
-          "text": "Sun Descendant Live Study",
-          "marks": []
+          "text": "Живое Изучение Икарийской Гарпии",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -709,8 +827,10 @@
         },
         {
           "kind": "text",
-          "text": "Helios Fanatics Light Weapons",
-          "marks": []
+          "text": "Живое Изучение Потомка Солнца",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -719,8 +839,22 @@
         },
         {
           "kind": "text",
-          "text": "Apostate Weapons",
+          "text": "Лёгкое Оружие Фанатиков Гелиоса",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Оружие Отступника",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -746,7 +880,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ascended Cores",
+          "text": "Возвышенные Ядра",
           "marks": []
         }
       ]
@@ -757,17 +891,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ascending Unique Gear cards is a lot harder, but still doable! To as-cend a Unique Gear card, you need to use one appropriate Ascend-ed Core (a Labyrinthized ",
+          "text": "Возвышение уникальных карт Снаряжения намного сложнее, но всё же возможно! Чтобы возвысить уникальную карту Снаряжения, вам нужно использовать одно соответствующее Возвышенное Ядро (Лабиринтное ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ascended Core",
-          "marks": []
+          "text": "Возвышенное Ядро",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " to ascend from Cycle I to Cycle II and so on). Ascended Cores are guaranteed rewards from some of the Battles in the Tree of Knowledge (see p. 74).",
+          "text": ", чтобы возвысить с Цикла I до Цикла II и так далее). Возвышенные Ядра являются гарантированной наградой в некоторых Битвах в Древе Знаний (см. стр. 74).",
           "marks": []
         },
         {
@@ -794,7 +930,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Guaranteed Loot",
+          "text": "Гарантированная Добыча",
           "marks": []
         }
       ]
@@ -805,23 +941,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sometimes a Mnestis Battle will reward you with Guaranteed Loot. ",
+          "text": "Иногда Битва Мнесис наградит вас Гарантированной Добычей. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Guaranteed Loot",
+          "text": "Гарантированная Добыча",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это добыча, которую вы можете получить с карт БП Первозданных. Если Битва Мнесис предписывает вам получить карту Гарантированной Добычи, возьмите случайную карту из списка ниже, соответствующую Первозданному, с которым вы сражались. Это ваша гарантированная добыча!",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is the loot you can gain from the Primordial BP cards. If a Mnestis Battle instructs you to gain a Guaranteed Loot card, gain a random card from the list below corresponding to the Primordial you fought. That’s your guaranteed loot!",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Hekaton:",
-          "marks": []
+          "text": "Гекатон:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -831,8 +971,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Labyrinthauros:",
-          "marks": []
+          "text": "Лабиринтавр:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -842,8 +984,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Temenos:",
-          "marks": []
+          "text": "Теменос:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -853,8 +997,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Pursuer:",
-          "marks": []
+          "text": "Преследователь:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -864,8 +1010,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Cyclonus:",
-          "marks": []
+          "text": "Циклон:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -875,8 +1023,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Chimera:",
-          "marks": []
+          "text": "Химера:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -886,8 +1036,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Nietzschean:",
-          "marks": []
+          "text": "Ницшеанец:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -897,8 +1049,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Burden:",
-          "marks": []
+          "text": "Бремя:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -908,8 +1062,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Oracle:",
-          "marks": []
+          "text": "Оракул:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -919,8 +1075,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Harpy:",
-          "marks": []
+          "text": "Гарпия:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -930,8 +1088,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sun Descendant:",
-          "marks": []
+          "text": "Потомок Солнца:",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -941,22 +1101,26 @@
       "children": [
         {
           "kind": "text",
-          "text": "Important:",
+          "text": "Важно:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Гарантированная Добыча ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Guaranteed Loot ",
-          "marks": []
+          "text": "добавляется",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "does get added",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " to the Argo Armory, meaning you can use it in your campaigns! (though you probably-will need to ascend it first…)",
+          "text": " в Оружейную Арго, что означает, что вы можете использовать её в своих кампаниях! (хотя вам, вероятно, сначала потребуется её возвысить…)",
           "marks": []
         }
       ]

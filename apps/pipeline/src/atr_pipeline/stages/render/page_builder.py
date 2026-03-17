@@ -72,7 +72,8 @@ def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
     result: list[RenderInlineNode] = []
     for node in nodes:
         if node.type == "text":
-            result.append(RenderTextInline(text=node.text))
+            marks = getattr(node, "marks", None) or []
+            result.append(RenderTextInline(text=node.text, marks=marks))
         elif node.type == "icon":
             assert isinstance(node, IconInline)
             sym_id = node.symbol_id

@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0013",
-    "title": "Gameplay Flow",
+    "title": "Игровой процесс",
     "section_path": [],
     "source_page_number": 13
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gameplay Flow",
+          "text": "Игровой процесс",
           "marks": []
         }
       ]
@@ -32,37 +32,45 @@
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это кампания, в которую играют в течение нескольких игровых сессий. Это большая игра с довольно гибкой структурой. В течение одной игровой сессии вы сыграете несколько ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is a campaign game played over multiple game sessions. It’s a big game and its structure is pretty fluid. On a given game session, you will play a few ",
+          "text": "Раундов Кампании",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В каждом Раунде Кампании вы пройдете через ряд ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Campaign Rounds",
+          "text": "Шагов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Каждый из этих Шагов будет включать одну или несколько Фаз игры: ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". During each Campaign Round, you’ll go through a series of ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Steps",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Each of these Steps will incorporate one or more of the game’s Phases: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Voyage Phase",
-          "marks": []
+          "text": "Фаза Странствия",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -71,62 +79,184 @@
         },
         {
           "kind": "text",
-          "text": "Adventure Phase ",
+          "text": "Фаза Приключения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "or ",
+          "text": "Фаза Битвы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Battle Phase",
+          "text": "Раунд Кампании",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляет один игровой день на Шкале Времени.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".A ",
+          "text": "Шаги",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " составляют структуру Раунда Кампании и всегда разрешаются в фиксированном порядке.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Campaign Round",
+          "text": "Фазы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " относятся к сегментам игрового процесса, которые вращаются вокруг общей игровой концепции: странствия, приключения или битвы (звучит знакомо, не так ли?). Фазы удобны, потому что они группируют наборы правил и на них ссылаются другие игровые эффекты (например, некоторые Технологии могут использоваться только в Фазе Странствия, в то время как другие — только в Фазе Битвы). Важно отметить, что вы всегда находитесь в какой-либо игровой Фазе. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " represents one in-game day on the Timeline.",
+          "text": "Простое эмпирическое правило: если вы не находитесь в Фазе Приключения или Фазе Битвы, вы находитесь в Фазе Странствия!",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " В течение каждого ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Steps",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " make up the structure of a Campaign Round and are always resolved in a fixed order.",
+          "text": " вы будете путешествовать по исследуемой карте (в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Phases",
+          "text": "Фазе Странствия",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " refer to gameplay segments that revolve around a shared game concept: voyaging, adventuring or battling (sounds familiar, right?). Phases are handy, because they group sets of rules and are referred to by other game effects (for example, some Technologies can be used only in the Voyage Phase, while others only in the Bat-tle Phase).It’s important to note that you’re always in some game Phase. ",
+          "text": "), время от времени отправляясь в приключения (в Фазе Приключения). Вы будете собирать ресурсы из приключений, с карты и из колоды ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "An easy rule of thumb is that if you’re not in the Adventure Phase or the Battle Phase, you’re in the Voyage Phase!",
+          "text": "Исследования",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "In the course of each Cycle, you will journey across an explora-ble map (the Voyage Phase), from time to time embarking on ad-ventures (the Adventure Phase). You will gather resources from adventures, from the map and from the Exploration deck (the Voyage Phase) to craft Gear, create Titans and develop new tech-nologies (the Voyage Phase). Each move on the map will advance the Timeline, getting you closer to the campaign’s resolution (the Voyage Phase again!). You will try to win by achieving story goals, described to you on a sequence of Story cards, while the villains will try to fulfil their own agenda by advancing a sequence of Doom cards (Adventure Phase). Periodically, triggered either by a Time-line Event or some other game element, you will fight a Primordial in a four-on-one Battle (the Battle Phase).Knowing what Phase of the game you’re in is important! ",
+          "text": " (в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Странствия",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "), чтобы создавать ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжение",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", создавать ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и разрабатывать новые технологии (в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Странствия",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "). Каждое перемещение по карте будет продвигать Шкалу Времени, приближая вас к завершению кампании (снова ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фаза Странствия",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!). Вы будете пытаться победить, достигая сюжетных целей, описанных вам на последовательности карт Истории, в то время как злодеи будут пытаться выполнить свою собственную повестку дня, продвигая последовательность карт ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Рока",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (Фаза Приключения). Периодически, вызванные либо Событием Шкалы Времени, либо каким-либо другим игровым элементом, вы будете сражаться с ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданным",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " в битве четыре на одного (в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Битвы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "). Знание того, в какой Фазе игры вы находитесь, важно!",
           "marks": []
         }
       ]
@@ -138,7 +268,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Campaign Round Sequence",
+          "text": "Последовательность Раунда Кампании",
           "marks": []
         }
       ]
@@ -149,177 +279,361 @@
       "children": [
         {
           "kind": "text",
-          "text": "As already mentioned, ",
+          "text": "Как уже упоминалось, в ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " играют в серии Раундов Кампании, при этом каждый Раунд Кампании представляет один игровой день на Шкале Времени. Каждый день вы будете проходить следующие девять шагов, разрешая их сверху вниз. Некоторые из этих шагов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is played in a se-ries of Campaign Rounds, with each Campaign Round representing one in-game day on the Timeline. Each day you will go through the following nine steps, resolving them from top to bottom.Some of these steps will ",
+          "text": "всегда",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " будут требовать вашего действия или решения (например, Перемещение), другие будут разрешаться только при соблюдении правильных ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "always",
+          "text": "условий",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (например, Встреча), в то время как один в основном ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " require your action or decision (like Movement), others will be resolved only if the right ",
+          "text": "необязателен",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Развитие), оставленный на усмотрение игроков (хотя вы почти всегда захотите его разрешить, потому что строительство цивилизации — это весело!).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "conditions",
+          "text": "1. Перемещение (всегда):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Переместите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " are met (like Encounter), while one is mostly ",
+          "text": "Арго",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "optional",
+          "text": " на другую плитку (стр. 13).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (Advancement), left to the discretion of the players (though you pretty much always want to resolve it, because civilization building is fun!).",
+          "text": "2. Шкала Времени (всегда):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Продвиньте Шкалу Времени (стр. 14).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\tMovement (always):",
+          "text": "3. Исследование (всегда):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Активируйте символы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Move the Argo onto a different tile (p. 13).",
+          "text": "Исследования",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2.\tTimeline (always):",
+          "text": ", затем разрешите Жребий Исследования (стр. 15). Переместите Противника, если требуется (стр. 16), затем выполните Акклиматизацию, если применимо.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Advance the Timeline (p. 14).",
+          "text": "4. Экспедиция (условно):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если вы находитесь на плитке с символом приключения или R&R, обратитесь к Таблице Приключений и разрешите приключение (стр. 16). Не забудьте получить узлы Мнемос (стр. 29) и отметить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "3.\tExploration (always):",
+          "text": "судьбоносную",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Trigger Exploration symbols, then re-solve an Exploration Draw (p. 15). Move the Adversary if re-quired (p. 16), then perform an Acclimation if applicable.",
+          "text": " ячейку (стр. 32).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "4.\tExpedition (conditional):",
+          "text": "5. Встреча (условно):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если на Шкале Времени есть какие-либо Битвы Шкалы Времени или События Битвы, разрешите их (стр. 17).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If on a tile with an adventure or R&R symbol, consult the Adventure Table and resolve an adventure (p. 16). Remember to gain Mnemos nodes (p. 29) and mark a fated box (p. 32).",
+          "text": "6. Развитие (необязательно):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Создавайте ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "5.\tEncounter (conditional):",
+          "text": "Снаряжение",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If there are any Timeline Battles or Battle Events on the Timeline, resolve them (p. 17).",
+          "text": ", разрешайте События Развития, разрабатывайте новые ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "6.\tAdvancement (optional):",
+          "text": "Технологии",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Craft Gear, resolve Advancement Events, develop new Technologies and use existing ones (p. 17).",
+          "text": " и используйте существующие (стр. 17).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "7.\tStory (conditional):",
+          "text": "7. История (условно):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если на Шкале Времени есть какие-либо События Истории, у кого-то есть неразрешенный Прорыв Мнемос или был запущен ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If there are any Story Events on the Time-line, someone has an unresolved Mnemos Breakthrough or the Story progression has been triggered, resolve them (p. 20).",
+          "text": "Прогресс",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "8.\tDoom (conditional):",
+          "text": " Истории, разрешите их (стр. 20).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If there are any Doom Events on the Time-line or the Doom progression has been triggered, resolve them (p. 21).",
+          "text": "8. Рок (условно):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если на Шкале Времени есть какие-либо События ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "9.\tEnd (always):",
+          "text": "Рока",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If you are on ",
+          "text": " или был запущен Прогресс ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "an Unexplored tile, it becomes Explored",
+          "text": "Рока",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (p. 22).After the End Step, proceed to the next Campaign Round. Continue resolving Campaign Rounds until the Cycle ends with your ",
+          "text": ", разрешите их (стр. 21).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Victory",
+          "text": "9. Конец (всегда):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если вы находитесь на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "or ",
+          "text": "неисследованной плитке, она становится исследованной",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (стр. 22). После Шага Завершения переходите к следующему Раунду Кампании. Продолжайте разрешать Раунды Кампании, пока ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Defeat",
+          "text": "Цикл",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (see Campaign Win and Lose Conditions on p. 10).The game sequence of ",
+          "text": " не закончится вашей ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Победой",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Поражением",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. Условия Победы и Поражения в Кампании на стр. 10). Последовательность игры в ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " очень гибка. Технологический прорыв может привести к приключению, а приключение (особенно основное сюжетное) может привести прямо к битве! По этой причине Раунд Кампании разделен на шаги, которые затем могут привести к одной из трех основных фаз: Странствие, Приключение и Битва. В целом, шаги Перемещения, Шкалы Времени, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is very fluid. A technological breakthrough may lead into an adventure, and an adventure (especially a Main Story one) may lead straight into battle!For this reason, the Campaign Round is divided into steps which may then lead into one of the three major phases: Voyage, Adven-ture and Battle.In general, Movement, Timeline, Exploration and Advancement steps are considered Voyage Phases, Encounter steps are Bat-tle Phases and Expedition, Story and Doom steps are Adventure Phases. However, as mentioned above, one can lead straight into another!Also, an easy rule of thumb is that if you’re not in the Adventure Phase or the Battle Phase, you’re in the Voyage Phase!",
+          "text": "Исследования",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и Развития считаются ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазами Странствия",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", шаги Встречи — ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазами Битвы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", а шаги Экспедиции, Истории и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Рока",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " — Фазами Приключения. Однако, как упоминалось выше, один может привести прямо к другому! Кроме того, простое эмпирическое правило: если вы не находитесь в Фазе Приключения или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Битвы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", вы находитесь в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Странствия",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!",
           "marks": []
         }
       ]

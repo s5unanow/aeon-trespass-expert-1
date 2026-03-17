@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0071",
-    "title": "Mnestis Battle Setup",
+    "title": "Подготовка к Битве Мнестис",
     "section_path": [],
     "source_page_number": 71
   },
@@ -19,67 +19,79 @@
       "children": [
         {
           "kind": "text",
-          "text": "of your campaign with the exception of game elements marked with the",
+          "text": "вашей кампании, за исключением игровых элементов, помеченных",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " “Mnestis Prohibited”",
+          "text": " «Мнестис Запрещено»",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. Снаряжение Мнестис). Конечно, у вас также есть доступ ко всему, что вы разблокировали до сих пор через Древо Знаний.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tag (see Mnestis Loadouts). Of course, you also have access to everything you’ve unlocked so far through the Tree of Knowledge.",
+          "text": "3. Никаких последствий (почти!):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Ничто из происходящего в Театре Мнестис не переносится в вашу текущую кампанию, если прямо не указано иное.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "3.\tNo consequences (nearly!):",
+          "text": "4. Без ограничений:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Обратите внимание, что Театр Мнестис создан для безжалостного опыта. Смерть здесь повсеместна. Используйте Лист Мнестис, чтобы отслеживать своих мертвых Титанов!",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Nothing that happens in the Mnes-tis Theatre carries over to your current campaign unless specif-ically stated otherwise.",
+          "text": "5. Только награды Мнестис:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Награды из Битв Мнестис могут быть использованы только в Битвах Мнестис. Они настолько мощны, что граничат с поломкой... в реальном мире. В Театре Мнестис они станут вашей спасительной нитью!",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "4.\tNo holds barred:",
+          "text": "6. Неограниченные Битвы:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Нет ограничений на количество Битв Мнестис, которые вы можете проводить подряд. Другими словами, если вы того пожелаете, вы можете приостановить свою кампанию, а затем пройти все доступные Битвы в Древе Знаний. Однако вы ограничены доступностью Первозданных и Битв! Например, вы не можете сражаться с Первозданными Цикла II, пока фактически не завершите Цикл II! Кроме того, нет особого смысла в гринде Битв Мнестис, поэтому, если вы столкнулись с трудностями, лучше продолжить свою кампанию!",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Note that the Mnestis Theatre is designed to be a ruthless experience. Death is rampant here. Use the Mnes-tis Sheet to track your dead Titans!",
-          "marks": []
+          "text": "7. Пробуждения:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "5.\tMnestis only rewards:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Rewards from Mnestis Battles can only be used in Mnestis Battles. They are so powerful that they bor-der on broken... in the real world. In the Mnestis Theatre, they will be your lifeline instead!",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "6.\tUnlimited Battles:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " There is no limit on the number of Mnestis Battles you can do back-to-back. In other words, if you so de-sire, you can pause your campaign and then go through all the available Battles in the Tree of Knowledge. However, you are limited by Primordial and Battle accessibility! For example, you cannot battle Cycle II Primordials until you actually complete Cycle II! Also, there is little point in grinding Mnestis Battles, so if you hit a wall, you’re better off continuing your campaign!",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "7.\tAwakenings:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Awakenings in the Mnestis Theatre are allowed and are not limited by your campaign progress. In other words, you can freely use all Godforms unlocked so far, even if you have used them up at your current point in the campaign.",
+          "text": " Пробуждения в Театре Мнестис разрешены и не ограничены прогрессом вашей кампании. Другими словами, вы можете свободно использовать все разблокированные на данный момент Божественные формы, даже если вы уже использовали их в текущей точке кампании.",
           "marks": []
         }
       ]
@@ -91,7 +103,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Battle Setup",
+          "text": "Подготовка к Битве Мнестис",
           "marks": []
         }
       ]
@@ -102,47 +114,55 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Battle Setup is performed according to the normal rules, with the following exceptions. To begin a Mnestis Theatre Battle, resolve the following steps:",
+          "text": "Подготовка к Битве Мнестис выполняется по обычным правилам, за следующими исключениями. Чтобы начать Битву в Театре Мнестис, выполните следующие шаги:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Choose a Battle:",
+          "text": "Выберите Битву:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Выберите Сценарий, в который вы хотите сыграть. Вы можете либо сыграть Сценарий через Древо Знаний, пытаясь заработать уникальные награды, либо переиграть ранее сыгранный Сценарий Битвы, ради удовольствия и тренировки! В случае Древа Знаний вы можете выбирать только те Битвы, которые",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Choose the Scenario you wish to play. You can either play a Scenario through the Tree of Knowledge in an attempt to earn unique rewards or replay a previously played Battle Sce-nario, for the fun and training of it!In the case of the Tree of Knowledge, you can only choose Battles that are",
+          "text": " не отмечены ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (вы их еще не выиграли), но которые вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " not marked ",
+          "text": "разблокировали",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (все предшествующие Битвы, ведущие к ним, отмечены, и вы завершили Цикл этого Первозданного). Используйте Лист Мнестис, чтобы отмечать Битвы, выигранные через Древо Знаний. В случае переигрывания ранее завершенной Битвы, выберите Первозданного и решите, с каким уровнем вы хотите столкнуться. Вы можете выбрать уровень Первозданного только в том случае, если вы победили его в своей кампании или в Театре Мнестис.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "(you haven’t won them yet), but that you have ",
-          "marks": []
+          "text": " Обратите внимание, что эти Битвы не дают вам никаких наград. Выполните Подготовку к Битве:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "unlocked",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (all the preceding Battles leading into them are marked and you have completed that Primordial’s Cycle). Use the Mnestis Sheet to to mark the Battles won through the Tree of Knowledge.In case of replaying a previously completed Battle, choose a Pri-mordial and decide which level you want to face. You can only choose a Primordial level if you have defeated it in your campaign or in the Mnestis Theatre.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Note that these Battles do not grant you any rewards.Perform Battle Setup:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Perform all normal preparations with the following exceptions:",
+          "text": " Выполните все обычные приготовления со следующими исключениями:",
           "marks": []
         }
       ]
@@ -153,7 +173,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "ered to be in the Cycle that the Primordial you are battling with originates from. All global rules that govern this Cycle are ap-plicable! ",
+          "text": "етесь находящимися в том Цикле, из которого происходит Первозданный, с которым вы сражаетесь. Все глобальные правила, регулирующие этот Цикл, применимы!",
           "marks": []
         }
       ]
@@ -164,7 +184,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "tute or remove cards specific to this Cycle).",
+          "text": "те или удалите карты, специфичные для этого Цикла).",
           "marks": []
         }
       ]
@@ -175,7 +195,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos cards (see Mnestis Loadouts) to each of them, one on Level 2 (with 7 nodes), and one on Level 1 (with 3 nodes). Al-ternatively, play with any deceased or retired Argonaut (just don’t tamper with their sheets!).",
+          "text": "карты Мнемос (см. Снаряжение Мнестис) каждой из них: одну на Уровень 2 (с 7 узлами) и одну на Уровень 1 (с 3 узлами). В качестве альтернативы, играйте с любым погибшим или вышедшим на пенсию Аргонавтом (только не изменяйте их листы!).",
           "marks": []
         }
       ]
@@ -186,17 +206,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "the Argonauts. Then, choose any unlocked  cards to equip (see Mnestis Loadouts). Note that any ascendancy rules",
+          "text": "Аргонавтов. Затем выберите любые разблокированные карты для снаряжения (см. Снаряжение Мнестис). Обратите внимание, что любые правила возвышения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " do not apply",
-          "marks": []
+          "text": " не применяются",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " in the Mnestis Theatre. You can use unlocked  from any Cycle with no additional penalties.",
+          "text": " в Театре Мнестис. Вы можете использовать разблокированные из любого Цикла без дополнительных штрафов.",
           "marks": []
         }
       ]
@@ -207,17 +229,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "normal, and choose the indicated number of Argo Abilities to use. Apply the",
+          "text": "и выберите указанное количество Способностей Арго для использования. Примените Технологию",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Quantum Propylon ",
-          "marks": []
+          "text": " Квантовый Пропилон ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Technology if you have it, regardless of the Cycle you’re in.",
+          "text": ", если она у вас есть, независимо от того, в каком Цикле вы находитесь.",
           "marks": []
         }
       ]
@@ -228,7 +252,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Tracks. Ignore any special Victory Conditions. You can only win by slaying the Primordial. This is just a simulation.",
+          "text": "Треках. Игнорируйте любые особые Условия Победы. Вы можете победить только убив Первозданного. Это всего лишь симуляция.",
           "marks": []
         }
       ]
@@ -239,7 +263,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "tis Routine in its Attack Type).",
+          "text": "тис» в Типе Атаки).",
           "marks": []
         }
       ]
@@ -251,7 +275,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Loadouts",
+          "text": "Снаряжение Мнестис",
           "marks": []
         }
       ]
@@ -262,7 +286,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "In the Mnestis Theatre, you have access to all Titans,  cards, Argo Abilities and Mnemos cards that you unlocked during the course of your campaign:",
+          "text": "В Театре Мнестис у вас есть доступ ко всем Титанам, картам, Способностям Арго и картам Мнемос, которые вы разблокировали в ходе своей кампании:",
           "marks": []
         }
       ]
@@ -273,7 +297,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "possess a Breeding Technology that would allow you to breed them.",
+          "text": "обладаете Технологией Разведения, которая позволила бы вам их разводить.",
           "marks": []
         }
       ]
@@ -284,7 +308,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "you possess the Production Technology that would allow you to craft them (you do not need to possess the necessary re-sources but you need to possess all unique elements required to craft them, such as other  cards).",
+          "text": "вы обладаете Технологией Производства, которая позволила бы вам их создавать (вам не нужно обладать необходимыми ресурсами, но вы должны обладать всеми уникальными элементами, необходимыми для их создания, такими как другие карты).",
           "marks": []
         }
       ]
@@ -295,7 +319,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Vault, assigned to your Argonauts or if you have already re-solved them.",
+          "text": "назначены вашим Аргонавтам или если вы уже разрешили их.",
           "marks": []
         }
       ]
@@ -306,7 +330,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "logies deck.",
+          "text": "логий.",
           "marks": []
         }
       ]
@@ -317,7 +341,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "deck or they are equipped on any of your Titans.",
+          "text": "или снаряжены на любом из ваших Титанов.",
           "marks": []
         }
       ]
@@ -328,33 +352,40 @@
       "children": [
         {
           "kind": "text",
-          "text": "Exception: You can never use game elements with the ",
+          "text": "Исключение: Вы никогда не можете использовать игровые элементы с меткой ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "“Mnestis Prohibited”",
+          "text": "«Мнестис Запрещено»",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в Театре Мнестис.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tag in Mnestis Theatre.",
+          "text": "Помните! Это всего лишь симуляция, дым и зеркала, тщательно продуманная игра.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Ничто из происходящего в Театре Мнестис не переносится в вашу кампанию, если прямо не указано иное. Вы не теряете Титанов, не получаете узлы Мнемос или не страдаете от каких-либо других негативных последствий ваших Битв. Аналогично, большинство положительных эффектов и наград доступны только в Театре Мнестис. Наиболее заметными исключениями являются",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember! This is just a simulation, smoke and mirrors, an elaborate play.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Nothing that happens in the Mnestis Theatre carries over to your campaign unless explicitly stated other-wise. You do not lose Titans, gain Mnemos nodes or  or suf-fer any other negative consequences of your Battles. Similar-ly, most positive effects and rewards are available only in the Mnestis Theatre. The most notable exceptions are",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Ascending Materials",
-          "marks": []
+          "text": "Возвышающиеся Материалы",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -363,22 +394,27 @@
         },
         {
           "kind": "text",
-          "text": "Guaranteed Loot",
+          "text": "Гарантированная Добыча",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и таинственный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and the mysterious ",
-          "marks": []
+          "text": "Титан Небесный Провидец",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Skyseer Titan",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (if you have the Skyseer Expansion)…",
+          "text": " (если у вас есть дополнение «Небесный Провидец»)...",
           "marks": []
         }
       ]
@@ -390,7 +426,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Rewards",
+          "text": "Награды Мнестис",
           "marks": []
         }
       ]
@@ -401,27 +437,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Mnestis Theatre may be an elaborate case of smoke and mir-rors, but it’s much more than what you put in. Sometimes, it offers you something unique, extraordinary, not solely based on your previous experiences. These are Mnestis rewards. ",
+          "text": "Театр Мнестис может быть сложным случаем дыма и зеркал, но он гораздо больше, чем то, что вы в него вкладываете. Иногда он предлагает вам что-то уникальное, необыкновенное, не основанное исключительно на вашем предыдущем опыте. Это награды Мнестис. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember:",
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Использование наград Мнестис ограничено Театром Мнестис, если прямо не указано иное. Всякий раз, когда вы выигрываете Битву Мнестис через Древо Знаний, вы отмечаете ее и получаете ее награды. Это означает, что вы получаете награды за данную Битву ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The use of Mnestis rewards is limited to the Mnestis Theatre, unless specifically stated otherwise.Whenever you win a Mnestis Battle through the Tree of Knowl-edge, you mark it and gain its rewards. This means you only get the rewards of a given Battle ",
-          "marks": []
+          "text": "один раз",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "once",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (even across multiple campaign playthroughs!). Each of these Battles always gives you ascending materials, but some may also grant you unique rewards.",
+          "text": " (даже при многократном прохождении кампании!). Каждая из этих Битв всегда дает вам возвышающиеся материалы, но некоторые могут также даровать вам уникальные награды.",
           "marks": []
         }
       ]

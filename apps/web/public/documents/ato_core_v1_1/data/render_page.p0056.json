@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0056",
-    "title": "Argo Abilities",
+    "title": "Способности Арго",
     "section_path": [],
     "source_page_number": 56
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argo Abilities",
+          "text": "Способности Арго",
           "marks": []
         }
       ]
@@ -31,23 +31,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argo Abilities are Technologies that can be actively used during the Battle. They represent various ways the ",
+          "text": "Способности Арго — это Технологии, которые можно активно использовать во время Битвы. Они представляют собой различные способы, которыми ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "экипаж Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " может поддерживать Титанов издалека. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "’s crew can support the Titans from afar. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo Ability",
-          "marks": []
+          "text": "Способность Арго",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -58,7 +62,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argo Ability (AA) Limit",
+          "text": "Лимит способностей Арго (СА)",
           "marks": []
         }
       ]
@@ -69,73 +73,87 @@
       "children": [
         {
           "kind": "text",
-          "text": "All Argo battle operations are coordinated from the ",
+          "text": "Все боевые операции Арго координируются с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Excursion Pro-pylon",
+          "text": "Пропилона «Экскурсия»",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Таким образом, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Thus, the ",
+          "text": "текущая Технология Пропилона",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " определяет, сколько способностей Арго вы можете использовать в одной Битве. Отметьте это число на своём Листе Арго как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "current Propylon Technology",
+          "text": "Лимит СА",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Базовый ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " dictates how many Argo Abilities you can field during a single Battle. Note this number on your Argo Sheet as the ",
+          "text": "Пропилон «Экскурсия»",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " имеет ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "AA Limit",
+          "text": "лимит в две",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если вы позже исследуете другую технологию Пропилона, примените ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". The basic ",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ту, которая позволяет использовать наибольшее количество способностей Арго, и соответствующим образом измените Лимит СА на своём Листе Арго. Вы выбираете, какие способности Арго подготовить во время подготовки к Битве (см. стр. 34).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Excursion Propylon",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "has a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "limit oftwo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". If you later research another Propylon tech-nology, apply ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "only",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " the one that allows you to use the most Argo Abilities and change the AA Limit on your Argo Sheet accordingly.You choose which Argo Abilities to prepare during Battle Setup (see p. 34).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Propylon Technology",
-          "marks": []
+          "text": "Технология Пропилона",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -161,7 +179,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argo Ability Charges",
+          "text": "Заряды способностей Арго",
           "marks": []
         }
       ]
@@ -172,17 +190,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Argo Ability has a number of ",
+          "text": "Каждая Способность Арго имеет определённое количество ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "charges",
-          "marks": []
+          "text": "зарядов",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " it gains at the start of Battle. Each time you use an Argo Ability, discard one of its charg-es. Once an Argo Ability is out of charges, it cannot be used again during the current Battle.",
+          "text": ", которые она получает в начале Битвы. Каждый раз, когда вы используете Способность Арго, сбросьте один из её зарядов. Как только у Способности Арго заканчиваются заряды, её нельзя использовать снова в текущей Битве.",
           "marks": []
         }
       ]
@@ -194,7 +214,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Using Argo Abilities",
+          "text": "Использование способностей Арго",
           "marks": []
         }
       ]
@@ -205,17 +225,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "In general, Argo Abilities can be used during any moment of the Titan Round (excluding in the middle of other actions, unless ex-plicitly stated otherwise). Some Argo Abilities, however, specify an exact moment when they can be used, either during the Titan Round or the Primordial Round.You can use as many of the active Argo Abilities each Round as you want, but each one can be used only once per Round. After using an Argo Ability, exhaust it to denote that it has already been used this Round.Argo Abilities automatically unexhaust at the end of ",
+          "text": "В целом, Способности Арго могут быть использованы в любой момент Раунда Титанов (за исключением середины других действий, если явно не указано иное). Однако некоторые Способности Арго указывают точный момент, когда они могут быть использованы, либо во время Раунда Титанов, либо во время Раунда Первозданного. Вы можете использовать столько активных способностей Арго в каждом Раунде, сколько захотите, но каждая из них может быть использована только один раз за Раунд. После использования Способности Арго истощите её, чтобы обозначить, что она уже была использована в этом Раунде. Способности Арго автоматически восстанавливаются в конце ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "each",
-          "marks": []
+          "text": "каждого",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Round—that is both the Primordial Round and the Titan Round.",
+          "text": " Раунда — то есть как Раунда Первозданного, так и Раунда Титанов.",
           "marks": []
         },
         {
@@ -242,7 +264,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle Aftermath",
+          "text": "Последствия Битвы",
           "marks": []
         }
       ]
@@ -253,7 +275,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Battle has a specific Aftermath, described in the Battle Sce-nario. Depending on whether you won or lost the Battle, the Af-termath will award you with bonuses and rewards or sometimes saddle you with additional penalties. Each Battle has unique conse-quences, but there are some more general effects of an Aftermath, including gaining Primordial resources, tallying Casualties, observ-ing the Tides of Fate and shuffling the Exploration deck.Remember to resolve any End of Battle effects before you proceed to Battle Aftermath.Also note that you can use a Sisyphus Tear before you proceed to Battle Aftermath to replay the Battle, if you’re not satisified with its outcome (see Sisyphus Tears, p. 57).",
+          "text": "Каждая Битва имеет определённые Последствия, описанные в Сценарии Битвы. В зависимости от того, выиграли вы или проиграли Битву, Последствия наградят вас бонусами и наградами или иногда обременят дополнительными штрафами. Каждая Битва имеет уникальные последствия, но есть и более общие эффекты Последствий, включая получение ресурсов Первозданного, подсчёт потерь, наблюдение за Приливами Судьбы и перетасовку колоды Исследования. Не забудьте разрешить все эффекты «Конец Битвы» до того, как перейдёте к Последствиям Битвы. Также обратите внимание, что вы можете использовать Слезу Сизифа до того, как перейдёте к Последствиям Битвы, чтобы переиграть Битву, если вы не удовлетворены её исходом (см. Слезы Сизифа, стр. 57).",
           "marks": []
         }
       ]
@@ -265,7 +287,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gaining Primordial Resources",
+          "text": "Получение ресурсов Первозданного",
           "marks": []
         }
       ]
@@ -276,47 +298,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Battle nets you Primordial resources from the Wounds you’ve dealt. Remember that you gain resources even for Battles you have lost! Generally, you gain the resources shown in the ",
+          "text": "Каждая Битва приносит вам ресурсы Первозданного от нанесённых вами Ран. Помните, что вы получаете ресурсы даже за проигранные Битвы! Обычно вы получаете ресурсы, указанные в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "upper right corner ",
+          "text": "правом верхнем углу",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " каждой карты БП в стопке Ран, умноженные на уровень Первозданного (т.е. если вы сражались с Гекатоном 3-го уровня, каждая карта БП принесёт вам в 3 раза больше указанных ресурсов). Вы также получаете одно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "of every BP card on the Wound Stack times the Primordial level (i.e. if you fought a Level 3 Hekaton, each BP card will award you with 3 times the resources shown).You also gain one ",
+          "text": "Ядро Первозданного",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " за каждую карту БП III в стопке Ран (помните, что только ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial Core",
-          "marks": []
+          "text": "критически раненые",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " re-source for each ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "BP III",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " card in the Wound Stack (remember that only ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "critically wounded",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " BP III cards land in the Wound Stack). The Core type always corresponds to the Primordial you were facing (e.g. if you faced the Hekaton, you gain a Hekaton Core).In addition, if you fight a Level 3 or 4 Primordial, you will gain bo-nus Ambrosia resources, denoted in the corresponding level stat block on the Primordial Sheet.If there are any generic Single Wounds and/or Double Wounds in the stack, first combine the BP discard pile with the BP deck and separate them by level. Then, for each set aside Single Wound, draw a random BP of the lowest available level and gain its resources. For each set aside Double Wound, draw a random BP III and gain its resources (you do not gain Cores for these BP III cards).Note the gained Primordial resources on your Argo Sheet.",
+          "text": " карты БП III попадают в стопку Ран). Тип Ядра всегда соответствует Первозданному, с которым вы сражались (например, если вы сражались с Гекатоном, вы получаете Ядро Гекатона). Кроме того, если вы сражаетесь с Первозданным 3-го или 4-го уровня, вы получите бонусные ресурсы Амброзии, указанные в соответствующем блоке характеристик уровня на Листе Первозданного. Если в стопке есть какие-либо общие одиночные Раны и/или двойные Раны, сначала объедините стопку сброса БП с колодой БП и разделите их по уровням. Затем, для каждой отложенной одиночной Раны, вытяните случайную карту БП самого низкого доступного уровня и получите её ресурсы. Для каждой отложенной двойной Раны вытяните случайную карту БП III и получите её ресурсы (вы не получаете Ядра за эти карты БП III). Отметьте полученные ресурсы Первозданного на своём Листе Арго.",
           "marks": []
         },
         {
@@ -343,7 +361,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Primordial Resources",
+          "text": "Другие ресурсы Первозданного",
           "marks": []
         }
       ]
@@ -354,7 +372,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Battle Aftermath may indicate you gain additional or other Pri-mordial resources. If it does, follow the specific instructions.",
+          "text": "Последствия Битвы могут указывать на то, что вы получаете дополнительные или другие ресурсы Первозданного. Если это так, следуйте конкретным инструкциям.",
           "marks": []
         }
       ]
@@ -366,7 +384,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resources for Death Blows",
+          "text": "Ресурсы за смертельные удары",
           "marks": []
         }
       ]
@@ -377,28 +395,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "If the Primordial was slain by a Crit Effect",
+          "text": "Если Первозданный был убит ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " that caused it to ",
+          "text": "эффектом Крита",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", который заставил его ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "die instantly",
+          "text": "мгновенно погибнуть",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Смертельный Удар), и количество Ран в стопке Ран меньше его значения, добавьте верхнюю карту из колоды БП в стопку Ран, как если бы она была ранена (используйте двойные Раны вместо карт БП III). Если это приведёт к тому, что количество Ран станет равным или превысит , продолжайте получать ресурсы как обычно. В противном случае эскалируйте колоду БП, как если бы вы только что ранили эту карту БП, затем повторите этот процесс. Продолжайте до тех пор, пока количество Ран в стопке Ран не станет равным или превысит значение Первозданного. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (a Death Blow) and the number of Wounds in the Wound Stack is lower than its  value, add the top card from the BP deck to the Wound Stack, as if it was wounded (use Double Wounds instead of BP III cards). If that causes the number of Wounds to become equal to or higher than , proceed to gaining resourc-es as normal. Otherwise, escalate the BP deck as if you have just wounded that BP card, then repeat this process. Continue until the number of Wounds in the Wound Stack is equal to or higher than the Primordial’s  value.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Resources example",
-          "marks": []
+          "text": "Пример ресурсов",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",

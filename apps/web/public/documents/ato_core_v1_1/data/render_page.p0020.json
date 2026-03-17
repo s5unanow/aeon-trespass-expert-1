@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0020",
-    "title": "Crafting Gear",
+    "title": "Изготовление Снаряжения",
     "section_path": [],
     "source_page_number": 20
   },
@@ -19,22 +19,34 @@
       "children": [
         {
           "kind": "text",
-          "text": "Trader card",
+          "text": "Карта Торговца",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Игрокам нужно 2 Мясистых Покрова, чтобы изготовить Дубину Великого Древа. К счастью, их посещает Фиванский Торговец! Они решают обменять несколько Мышечных Кластеров, но прямого обмена между этими двумя ресурсами нет. Поэтому они решают потратить один обмен, чтобы обменять 5 Мышечных Кластеров на 10 Сырой Амброзии, затем потратить второй обмен, чтобы обменять 10 Сырой Амброзии на 2 Мясистых Покрова. У них осталось еще три обмена, от которых они решают отказаться, осознав, насколько высоки коэффициенты конверсии!Некоторые способности ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Технологии",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " The players need 2 Fleshy Mantles to craft a Great Tree Club. Thankfully, they are visited by a Theban Trader! They decide to exchange some Muscle Clusters, but there is no direct exchange option between these two resources. Therefore, they decide to spend one exchange to trade 5 Muscle Clusters for 10 Raw Ambrosia, then spend their second exchange to trade 10 Raw Ambrosia for 2 Fleshy Mantles. They are left with three more ex-changes that they decide to forgo, realizing how steep the conver-sion rates are!",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Some Technology abilities include a “Cooldown: X days” instruc-tion. When you use an Ability with Cooldown, write its name down as an event on the Timeline, X days from now (your current day) with the word “Cooldown” in parentheses. Cooldown Events have no effect when resolved but you can only use the ability again af-ter you resolve its Cooldown event. Cooldown Events are consid-ered to be Advancement Events. That means you may use Abili-ties with Cooldown on the same day you resolve their Cooldown Event.",
+          "text": " включают инструкцию «Перезарядка: X дней». Когда вы используете Способность с Перезарядкой, запишите ее название как событие на Шкале Времени, через X дней от текущего дня, со словом «Перезарядка» в скобках. События Перезарядки не имеют эффекта при разрешении, но вы можете использовать способность снова только после того, как разрешите ее событие Перезарядки. События Перезарядки считаются Событиями Продвижения. Это означает, что вы можете использовать Способности с Перезарядкой в тот же день, когда разрешаете их Событие Перезарядки.",
           "marks": []
         }
       ]
@@ -46,7 +58,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Crafting Gear",
+          "text": "Изготовление Снаряжения",
           "marks": []
         }
       ]
@@ -57,107 +69,127 @@
       "children": [
         {
           "kind": "text",
-          "text": "Under Alkibiades, the Argo Works runs around the clock to create the best anti-Primordial weaponry known to mortals! As each Pri-mordial is unique, you will need a wide array of weapons, armor and support Gear to face them effectively.Crafting is the main source of new ",
+          "text": "Под руководством Алкивиада, Мастерские Арго работают круглосуточно, чтобы создать лучшее анти-Первозданное оружие, известное смертным! Поскольку каждый Первозданный уникален, вам понадобится широкий арсенал оружия, брони и вспомогательного Снаряжения, чтобы эффективно противостоять им. Изготовление является основным источником новых ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карт, которые могут значительно улучшить боевые возможности – и выживаемость – ваших Титанов. Вы можете изготовить несколько карт во время каждого Шага Продвижения, при условии, что у вас есть необходимые ресурсы. Вы можете изготовить только те, что указаны на Производственных Мощностях в вашей колоде Технологий, и вы не можете изготовить больше копий одной карты, чем доступно копий этой карты в коробке с игрой (другими словами, вы ограничены количеством предоставленных карт). Стоимость каждой карты напечатана на карте Технологии Производственной Мощности. Чтобы изготовить карту, выполните следующие шаги:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " cards that can greatly improve the combat capabilities – and survivability – of your Ti-tans. You can craft multiple  cards during every Advancement Step, provided you have the required resources. You can only craft  listed on the Production Facilities in your Technology deck and you cannot craft more copies of a single  than there are available copies of that card in the game box (in other words, you are limited by the number of cards provided). The cost of each  card is print-ed on the Production Facility Technology card.To craft a  card, perform the following steps:",
+          "text": "1. ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Выберите доступную карту, которую вы хотели бы изготовить.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\t",
+          "text": "2. ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Потратьте ресурсы, равные стоимости, указанной на соответствующей карте Технологии, и удалите эти ресурсы с вашего Листа Арго. Если другая карта указана как часть стоимости, она также тратится и должна быть возвращена в коробку с игрой.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Choose an available  card you would like to craft.",
+          "text": "3. ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Добавьте изготовленную карту в Оружейную Арго. Отныне ее можно экипировать на Титанов и использовать в Битве. Примечание: Некоторые редкие карты могут иметь дополнительные необычные стоимости. Ресурсы в основном получаются из колоды Исследования и Битв с Первозданными. Они в основном используются для изготовления ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2.\t",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карт и активации определенных способностей Технологий. Они различаются между Циклами, но есть четыре основные категории ресурсов:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Spend resources equal to the  cost found on the correspond-ing Technology card and remove those resources from your Argo Sheet. If another  card is specified as part of the cost, it is also spent and should be returned to the game box.",
+          "text": "Смертные ресурсы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляют собой обычные инструменты, сосуды и вооружение, которые можно спасти из остатков смертной цивилизации. Они отмечаются в разделе «Смертные» в отсеке Трюма на Листе Арго.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "3.\t",
+          "text": "Первозданные ресурсы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляют собой части тел убитых Первозданных и в основном зарабатываются в результате Битв с Первозданными. Они отмечаются в разделе «Первозданные» в отсеке Трюма на Листе Арго. Из всех Первозданных ресурсов, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Add the crafted  card to the Argo Armory. From now on, it can be equipped on Titans and used in Battle.Note: Some rare  cards can have additional unusual costs.Resources are mainly gained from the Exploration deck and Pri-mordial Battles. They are primarily used to craft ",
+          "text": "Ядра",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " являются наиболее ценными. Вы получаете Ядра из критически раненых карт BP III. Когда вы получаете Ядро, запишите его название и количество в Трюме под Ядрами.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear",
+          "text": "Божественные ресурсы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляют собой чрезвычайно редкие предметы, обладающие исключительными качествами или являющиеся необходимыми компонентами для некоторых из самых мощных карт. Они отмечаются в разделе «Скрытый Трюм» на Листе Арго.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " cards and activate certain Technology abilities. They differ between Cy-cles, but there are four main categories of resources:",
-          "marks": []
+          "text": "Редкие ресурсы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Mortal resources",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " represent ordinary tools, vessels and arma-ments that can be salvaged from the remnants of mortal civiliza-tion. They are noted in the Mortal part of the Cargo Hold section on the Argo Sheet.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Primordial resources",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " represent body parts of slain Primordials and are mainly earned as a result of Primordial Battles. They are noted in the Primordial part of the Cargo Hold section on the Argo Sheet.Of all Primordial resources, ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Cores",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " are the most valuable. You gain Cores from critically wounded BP III cards. When you gain a Core, write its name and quantity in the Cargo Hold under Cores.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Divine resources",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " represent extremely rare items that possess exceptional qualities or are necessary components for some of the most powerful  cards. They are noted in the Hidden Hold section of the Argo Sheet.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Rare resources",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " include all resources (other than Cores) not listed on the Argo Sheet. They are incredibly limited and can be used to craft mythical equipment. When you gain a Rare resource, write both its name and quantity under Rare Resources.",
+          "text": " включают все ресурсы (кроме Ядер), не указанные на Листе Арго. Они невероятно ограничены и могут быть использованы для изготовления мифического снаряжения. Когда вы получаете Редкий ресурс, запишите его название и количество в разделе «Редкие Ресурсы».",
           "marks": []
         }
       ]
@@ -169,7 +201,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titan Breeding",
+          "text": "Разведение Титанов",
           "marks": []
         }
       ]
@@ -180,37 +212,53 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titans have been a menace to mortal civilization for centuries. They are mindless, full of rage and the need to destroy. If the Pri-mordials weren’t threatening the world, the Titans would be next in line. Where do they come from? That is the question. They are found in the wild and special hunter teams, the Titanokinigos, bring them onto the ",
+          "text": "Титаны были угрозой для смертной цивилизации на протяжении веков. Они безмозглы, полны ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Ярости",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". There, the city-ship itself transforms them into more docile beasts that the Argonauts can junction with. This is called “breeding.”Certain Technologies allow you to breed Titans, either by evolv-ing the ones you have already captured or catching new ones to replenish your stock. Each Breeding Technology shows the costs of breeding a specific Titan and how many days it is going to take.All Titans belong to one of the following types:",
+          "text": " и жажды разрушения. Если бы Первозданные не угрожали миру, Титаны были бы следующими. Откуда они берутся? Вот в чем вопрос. Их находят в дикой природе, и специальные команды охотников, Титанокинигос, доставляют их на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gaia-born Titans:",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Там сам город-корабль превращает их в более покорных зверей, с которыми Аргонавты могут соединяться. Это называется «разведением». Определенные Технологии позволяют вам разводить Титанов, либо развивая уже захваченных, либо ловя новых, чтобы пополнить свой запас. Каждая Технология Разведения показывает стоимость разведения конкретного Титана и сколько дней это займет. Все Титаны относятся к одному из следующих типов:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Caught in the wild, prepared for junctioning, but otherwise unmodified. These are all Dreamwalker class Titans.",
+          "text": "Титаны, рожденные Геей:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Пойманные в дикой природе, подготовленные к соединению, но в остальном немодифицированные. Это все Титаны класса Сновидец.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo-bred Titans: ",
-          "marks": []
+          "text": "Титаны, выведенные на Арго: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "These are all the other Titan classes, even those gained through means other than Breeding. These Titans have been modified, conditioned or further transformed to face the Pri-mordials. There are a few restrictions relating to Argo-bred Titans:",
+          "text": "Это все остальные классы Титанов, даже те, которые получены другими способами, кроме Разведения. Эти Титаны были модифицированы, обусловлены или далее трансформированы, чтобы противостоять Первозданным. Существует несколько ограничений, касающихся Титанов, выведенных на Арго:",
           "marks": []
         }
       ]
@@ -221,13 +269,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "on the Argo, ",
+          "text": "на Арго, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "however",
-          "marks": []
+          "text": "однако",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -242,7 +292,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "ready have one onboard (but you can still gain it from other sources, such as adventures),",
+          "text": "имеете его на борту (но вы все еще можете получить его из других источников, таких как приключения),",
           "marks": []
         }
       ]
@@ -253,12 +303,14 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle",
-          "marks": []
+          "text": "Битву",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", regardless of the number of Titans of that class you have.",
+          "text": ", независимо от количества Титанов этого класса, которые у вас есть.",
           "marks": []
         }
       ]
@@ -270,7 +322,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "How to Breed a Titan",
+          "text": "Как разводить Титана",
           "marks": []
         }
       ]
@@ -281,17 +333,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titans are bred using Technology cards. When you use a Technolo-gy ability to breed a Titan, you pay any associated costs (usually a Dreamwalker Titan), then write the Titan’s class on the Timeline the indicated number of days from the current day. This is a ",
+          "text": "Титаны разводятся с использованием карт Технологий. Когда вы используете способность Технологии для разведения Титана, вы оплачиваете все связанные с этим расходы (обычно Титана класса Сновидец), затем записываете класс Титана на Шкале Времени через указанное количество дней от текущего дня. Это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Breeding Advancement Event",
-          "marks": []
+          "text": "Событие Продвижения Разведения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ". Once you reach that day, during the Advance-",
+          "text": ". Как только вы достигнете этого дня, во время Шага Продвижения-",
           "marks": []
         }
       ]

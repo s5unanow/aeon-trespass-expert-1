@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0048",
-    "title": "Backs of Gear cards",
+    "title": "Обратная сторона карт Снаряжения",
     "section_path": [],
     "source_page_number": 48
   },
@@ -19,8 +19,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gated ability example",
-          "marks": []
+          "text": "Пример способности с условием",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -31,7 +33,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Backs of Gear cards",
+          "text": "Обратная сторона карт Снаряжения",
           "marks": []
         }
       ]
@@ -42,7 +44,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gear cards are double sided. The back includes additional infor-mation, like which Cycle the Gear card belongs to, the Technology card that allows you to craft the Gear, as well as some flavor text. Some rare, unique cards may also include additional rules there.",
+          "text": "Карты Снаряжения двусторонние. Обратная сторона содержит дополнительную информацию, например, к какому Циклу относится карта Снаряжения, карта Технологии, которая позволяет вам создать это Снаряжение, а также художественный текст. Некоторые редкие, уникальные карты могут также содержать дополнительные правила.",
           "marks": []
         }
       ]
@@ -54,7 +56,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Pattern cards",
+          "text": "Карты Образцов",
           "marks": []
         }
       ]
@@ -65,37 +67,133 @@
       "children": [
         {
           "kind": "text",
-          "text": "Pattern cards represent permanent enhancements and modifica-tions applied to the Titans themselves. These can take the form of specialized ",
+          "text": "Карты Образцов представляют собой постоянные улучшения и модификации, применяемые к самим ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Training",
+          "text": "Титанам",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " or outright augmentations to the Titan’s biol-ogy, through the introduction of ",
+          "text": ". Они могут принимать форму специализированной ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Strains",
+          "text": "Тренировки",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или прямых аугментаций биологии ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".Pattern cards can modify either the Trauma Table (Trauma Pat-terns) or Kratos Table (Kratos Patterns) of a Titan Sheet.Whenever a Pattern card is applied to a Titan, name that Titan (note it on one of the Argonaut Sheets) and note its Pattern. This connection is ",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "permanent",
+          "text": " посредством введения ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". In other words, you cannot move the Pattern card to another Titan at a later time, you have to stick with what you’ve got.If a Titan with a Pattern dies, that Pattern is also lost—it’s not re-turned to the Argo Armory like  cards are. This means that Pat-terns are unique and hard to come by. If only there was a way to make the process of acquiring Patterns easier and more regular…",
+          "text": "Штаммов",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Карты Образцов могут изменять либо Таблицу Травм (Образцы Травм), либо Таблицу Кратоса (Образцы Кратоса) Листа ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Всякий раз, когда карта Образца применяется к ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титану",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", назовите этого ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (отметьте это на одном из Листов ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавта",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ") и отметьте его Образец. Эта связь является ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "постоянной",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Другими словами, вы не можете переместить карту Образца к другому ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титану",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " позже, вы должны придерживаться того, что у вас есть. Если ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " с Образцом умирает, этот Образец также теряется — он не возвращается в Оружейную ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", как карты. Это означает, что Образцы уникальны и их трудно получить. Если бы только был способ сделать процесс получения Образцов проще и регулярнее…",
           "marks": []
         }
       ]
@@ -107,7 +205,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titan Round Overview",
+          "text": "Обзор Раунда ",
           "marks": []
         }
       ]
@@ -118,37 +216,88 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unless an effect explicitly states otherwise, a Titan Round always comes after a Primordial Round. The Titan Round proceeds as fol-lows: ",
+          "text": "Если эффект явно не указывает иное, Раунд ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " всегда следует за Раундом ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Раунд ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " проходит следующим образом: ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "1.\t",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Начало Раунда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Start of Titan Round",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2.\t",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Ходы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Titan turns",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3.\t",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Конец Раунда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End of Titan Round",
+          "text": "Титанов",
           "marks": []
         }
       ]
@@ -160,7 +309,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Start of Titan Round",
+          "text": "Начало Раунда ",
           "marks": []
         }
       ]
@@ -171,7 +320,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sometimes a game effect will trigger at the start of the Titan Round. In that case, it’s resolved before any of the players take their turns. If there is more than one start of Round effect, the players may resolve these effects in any order they like.",
+          "text": "Иногда игровой эффект срабатывает в начале Раунда ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". В этом случае он разрешается до того, как любой из игроков сделает свой ход. Если эффектов начала Раунда несколько, игроки могут разрешать их в любом порядке.",
           "marks": []
         }
       ]
@@ -183,7 +342,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titan Turns",
+          "text": "Ходы ",
           "marks": []
         }
       ]
@@ -194,67 +353,209 @@
       "children": [
         {
           "kind": "text",
-          "text": "During the Titan Round, you take turns activating your Titans, one at a time, until each Titan has acted. You may take your turns in any order you like to make best of the tactical situation at hand. Just remember, you cannot pause one Titan’s turn to take another Titan’s turn! In other words, you must completely resolve one Titan turn to start another.During their turn, a Titan gets one ",
+          "text": "Во время Раунда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "combat action ",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and one ",
+          "text": " вы по очереди активируете своих ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "movement action",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". You can perform these actions in any order, but you must finish one action before you perform another. Some effects and abilities may require you to ",
+          "text": ", по одному, пока каждый ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "spend",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " one or both of your actions. You can only spend an action if you haven’t performed it yet, and after it is spent it cannot be performed this turn.",
+          "text": " не подействует. Вы можете делать свои ходы в любом порядке, чтобы наилучшим образом использовать текущую тактическую ситуацию. Просто помните, вы не можете прерывать ход одного ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Note: ",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Unless stated otherwise, you are ",
+          "text": ", чтобы сделать ход другого ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "not forced",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " to perform all of your actions, but any unused actions will be lost when the turn ends.A Titan’s turn ends ",
+          "text": "! Другими словами, вы должны полностью завершить ход одного ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "immediately",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " once it has performed all of its available actions and it cannot take their turn again until the next Titan Round. To track this, turn your Argonaut card 90 degrees to the right. Once all Titans have taken their turns, turn all Argonaut cards back to their normal positions and proceed to the Primordial Round. Note: This is not considered to be exhausting a card! ",
+          "text": ", чтобы начать другой. Во время своего хода ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " получает одно ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "боевое действие",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и одно ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "действие движения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Вы можете выполнять эти действия в любом порядке, но вы должны завершить одно действие, прежде чем выполнять другое. Некоторые эффекты и способности могут потребовать от вас ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "потратить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " одно или оба ваших действия. Вы можете потратить действие только в том случае, если вы еще не выполнили его, и после того, как оно потрачено, оно не может быть выполнено в этот ход. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если не указано иное, вы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "не обязаны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " выполнять все свои действия, но любые неиспользованные действия будут потеряны, когда ход закончится. Ход ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " заканчивается ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "немедленно",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", как только он выполнил все свои доступные действия, и он не может снова сделать свой ход до следующего Раунда ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Чтобы отслеживать это, поверните свою карту ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавта",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на 90 градусов вправо. Как только все ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титаны",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " сделали свои ходы, верните все карты ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавтов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " в их обычное положение и переходите к Раунду ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Примечание: Это не считается истощением карты!",
           "marks": []
         }
       ]
@@ -266,7 +567,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Movement action",
+          "text": "Действие движения",
           "marks": []
         }
       ]
@@ -277,17 +578,59 @@
       "children": [
         {
           "kind": "text",
-          "text": "The movement action is, generally, used to move the Titan around. You will use it to get close to the Primordial or take any other tacti-cally advantageous position.When you perform your , you can move a number of spaces up to your Titan’s ",
+          "text": "Действие движения, как правило, используется для перемещения ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Speed",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " value. First declare the space you want to reach, then move your Titan, one space at a time, resolving the effects of Terrain tiles you travel through as you move onto them.There are other general rules and restrictions that apply to move-ment actions:",
+          "text": ". Вы будете использовать его, чтобы приблизиться к ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданному",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " или занять любую другую тактически выгодную позицию. Когда вы выполняете свое действие, вы можете переместиться на количество клеток, равное значению ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Скорости",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Сначала объявите клетку, которую вы хотите достичь, затем перемещайте своего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", по одной клетке за раз, разрешая эффекты тайлов Ландшафта, через которые вы проходите, когда перемещаетесь на них. Существуют другие общие правила и ограничения, которые применяются к действиям движения:",
           "marks": []
         }
       ]
@@ -298,8 +641,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "move diagonally!",
-          "marks": []
+          "text": "перемещаться по диагонали!",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -309,28 +654,62 @@
       "children": [
         {
           "kind": "text",
-          "text": "space twice.",
+          "text": "клетку дважды. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Titan Movement Example:",
+          "text": "Пример перемещения Титана:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Titans can only move in cardinal  directions, never diagonally. They cannot voluntarily move through other miniatures.",
+          "text": "Титаны",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " могут перемещаться только по основным направлениям, никогда по диагонали. Они не могут добровольно перемещаться через другие миниатюры. ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Пример перемещения Титана:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Titan Movement Example:",
-          "marks": []
+          "text": "Титаны",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " Titans cannot move through Obstacle  Terrain tiles and red lines. They may, however, freely move through other Terrain tiles, unless stated otherwise.",
-          "marks": []
+          "text": " не могут перемещаться через тайлы Ландшафта «Препятствие» и красные линии. Однако они могут свободно перемещаться через другие тайлы Ландшафта, если не указано иное.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

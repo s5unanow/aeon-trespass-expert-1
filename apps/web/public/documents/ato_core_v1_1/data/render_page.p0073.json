@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0073",
-    "title": "Primordial Cores",
+    "title": "Первозданные Ядра",
     "section_path": [],
     "source_page_number": 73
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Cores",
+          "text": "Первозданные Ядра",
           "marks": []
         }
       ]
@@ -31,7 +31,57 @@
       "children": [
         {
           "kind": "text",
-          "text": "You may be tempted to ascend your Guaranteed Loot immediately, but it may be a better idea to reforge it first. It is worth finding out (by checking the Production Technology cards from a correspond-ing Cycle) if the  card you just earned is used as a crafting com-ponent for a more powerful item. If it is, then the Mnestis Theatre gives you an alternate way of reforging these artifacts. Whenever you score a Critical Wound on a BP III card that under normal circumstances would give you a Primordial Core, you may instead immediately craft a  card that requires a Unique  card dropped by the Primordial you are fighting, without paying any ad-ditional crafting costs.",
+          "text": "Возможно, у вас возникнет соблазн немедленно возвысить свою Гарантированную Добычу, но, возможно, лучше сначала перековать ее. Стоит выяснить (проверив карты Производственной ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Технологии",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " из соответствующего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "), используется ли только что полученная вами карта в качестве компонента для создания более мощного предмета. Если да, то Театр Мнемос предлагает вам альтернативный способ перековки этих артефактов. Всякий раз, когда вы наносите Критическую ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Рану",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " карте BP III, которая при обычных обстоятельствах дала бы вам ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданное",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Ядро, вы можете вместо этого немедленно создать карту, требующую Уникальную карту, выпавшую из ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", с которым вы сражаетесь, не оплачивая никаких дополнительных затрат на создание.",
           "marks": []
         }
       ]
@@ -43,7 +93,12 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Gear",
+          "text": "Снаряжение",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Мнемос",
           "marks": []
         }
       ]
@@ -54,7 +109,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "The toughest Mnestis Battles will award you special Mnestis Gear! These are possibly the most powerful items in the game! Re-member, these are restricted to the Mnestis Theatre; you cannot use these in normal campaign Battles (they’d probably trivialize them...).",
+          "text": "Самые сложные Битвы Мнемос наградят вас особым ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжением",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Мнемос! Это, возможно, самые мощные предметы в игре! Помните, они ограничены Театром Мнемос; вы не можете использовать их в обычных кампаниях (они, вероятно, сделали бы их слишком легкими...).",
           "marks": []
         }
       ]
@@ -66,7 +131,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Nymphs",
+          "text": "Нимфы",
           "marks": []
         }
       ]
@@ -77,27 +142,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Mnestis Theatre is a very odd place. As already mentioned, it cannot simulate the unknowable nature of the Nymphs, making their Summoning during Mnestis Battles impossible. However, the Mnestis Theatre can ",
+          "text": "Театр Мнемос — очень странное место. Как уже упоминалось, он не может симулировать непознаваемую природу Нимф, делая их Призыв во время Битв Мнемос невозможным. Однако Театр Мнемос может ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "attract the attention ",
+          "text": "привлечь внимание",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Нимф, особенно тех, кто, возможно, никогда не посещал ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "of the Nymphs, especial-ly those that may have never visited the ",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " before.Therefore, some Mnestis Battles will unlock new Nymph Summon-ings for your campaigns. These Nymphs may have been attainable during normal play, but they were missable. Now you have a chance to gain them again! And yes, you can use these Summonings during normal campaign play!",
+          "text": " раньше. Поэтому некоторые Битвы Мнемос откроют новые Призывы Нимф для ваших кампаний. Эти Нимфы могли быть доступны во время обычной игры, но их можно было пропустить. Теперь у вас есть шанс получить их снова! И да, вы можете использовать эти Призывы во время обычной кампании!",
           "marks": []
         }
       ]
@@ -109,7 +178,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Battle Diagrams",
+          "text": "Схемы Битв Мнемос",
           "marks": []
         }
       ]
@@ -120,7 +189,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "Generally, for Mnestis Battles you use the Primordial Battle Sce-narios from the Storybooks. For Adversaries and Boss Primordials use their regular Battle setup, not the final narrative Battle Scenar-io. Some Mnestis Traits may introduce alternate Battle Diagrams. You can find these on the next page.",
+          "text": "Как правило, для Битв Мнемос вы используете Сценарии Битв с ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданными",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " из Книг Историй. Для Противников и Боссов-",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " используйте их обычную боевую расстановку, а не финальный нарративный Сценарий Битвы. Некоторые Черты Мнемос могут вводить альтернативные Схемы Битвы. Вы можете найти их на следующей странице.",
           "marks": []
         }
       ]
@@ -132,7 +221,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "Skyseer Titan Expansion",
+          "text": "Дополнение «",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Небесный Провидец»",
           "marks": []
         }
       ]
@@ -143,57 +242,81 @@
       "children": [
         {
           "kind": "text",
-          "text": "And finally, we come to the strangest Mnestis Theatre reward of them all. One that should not exist. And yet, it’s there, for all those who dared to reach out towards the sun and grasp at it during the funding campaign…When you win the appropriate Mnestis Battle, if you have the Sky-seer Expansion, read the following paragraph:",
+          "text": "И наконец, мы подходим к самой странной награде Театра Мнемос из всех. Той, которой не должно существовать. И все же она есть, для всех тех, кто осмелился протянуть руку к солнцу и схватить его во время кампании по сбору средств…Когда вы выиграете соответствующую Битву Мнемос, если у вас есть Дополнение «Небесный Провидец», прочтите следующий абзац:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You enter the Mnestis Theatre and the machina does the rest, con-juring up scenes most fantastic. You inhabit your roles and the play starts. Everything goes the way it always does: you battle the dreamt-up Primordial, an impossible challenge but a marginal risk, a way to hone your skills and discover new tactics.As the monster falls to its imaginary death, something unexpected happens. The Mnestis lights dim and go out, and the scene dissi-pates before your very eyes. You’re back in the Theatre chamber, for you never truly left. It was all shadowplay.And yet, amongst you, a fifth Titan now stands, one you do not rec-ognize, but that clearly dons an Antikratos Helm. Their giant fleshy wings spread wide, like a shroud. Their coarse skin has endured much hardship, and is both sunburned and windswept.An inscription on the helm reads: child of the Icarcore, the seer not of time, but of place. But what does that mean?",
+          "text": "Вы входите в Театр Мнемос, а машина делает все остальное, вызывая самые фантастические сцены. Вы вживаетесь в свои роли, и начинается игра. Все идет так, как всегда: вы сражаетесь с вымышленным ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Первозданным",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", невозможным испытанием, но с минимальным риском, способом отточить свои навыки и открыть новую тактику.Когда монстр падает в свою воображаемую смерть, происходит нечто неожиданное. Огни Мнемос тускнеют и гаснут, и сцена рассеивается прямо у вас на глазах. Вы возвращаетесь в зал Театра, ибо вы никогда по-настоящему не покидали его. Все это было игрой теней.И все же среди вас теперь стоит пятый ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", которого вы не узнаете, но который явно носит Шлем Антикратоса. Его гигантские мясистые крылья широко расправлены, как саван. Его грубая кожа выдержала много трудностей, она обветрена и обожжена солнцем.Надпись на шлеме гласит: дитя Икаркора, провидец не времени, а места. Но что это значит?",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Получите 1 ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gain 1 Skyseer Titan and the ",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Skyreach",
+          "text": " Небесного Провидца и карты «Небесный Предел» и «Край Горизонта». Все это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and ",
+          "text": "также можно использовать",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Horizon’s Edge",
-          "marks": []
+          "text": "вне Театра Мнемос",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " cards. All of these ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "can",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " be used ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "outside of the Mnestis Theatre",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " as well.",
+          "text": ".",
           "marks": []
         }
       ]
@@ -205,7 +328,12 @@
       "children": [
         {
           "kind": "text",
-          "text": "Skyseer Technology",
+          "text": "Технология",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Небесного Провидца",
           "marks": []
         }
       ]
@@ -216,47 +344,120 @@
       "children": [
         {
           "kind": "text",
-          "text": "The ",
+          "text": "Технология",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Небесного Провидца описывает способ создания большего количества ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Skyseer Technology",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " describes the way you can create more Skyseer class Titans. This Technology can be used during ",
+          "text": " класса Небесный Провидец. Эту ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "any",
+          "text": "Технологию",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " of your campaigns (meaning the Skyseer Titan is not restricted to the Mnestis Theatre). Below, you’ll find the rules for Skyseer Breeding.",
+          "text": " можно использовать в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Skyseer Breeding: ",
+          "text": "любой",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " из ваших кампаний (что означает, что ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Lose 2 Dreamwalker Titans to note the Skyseer Event on the Timeline, 20 days from now. When you resolve this event, gain a Skyseer Titan. You cannot use this ability again until you resolve this event.",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Instant Drop:",
+          "text": " Небесный Провидец не ограничен Театром Мнемос). Ниже вы найдете правила Разведения Небесных Провидцев.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Lose 1 Ascended Core and 1 Dreamwalker Titan to immediately gain a Skyseer Titan.",
+          "text": "Разведение Небесных Провидцев: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Потеряйте 2 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Сновидцев, чтобы отметить Событие Небесного Провидца на Хронологии, через 20 дней. Когда вы разрешите это событие, получите ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Небесного Провидца. Вы не можете использовать эту способность снова, пока не разрешите это событие.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Мгновенное Получение:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Потеряйте 1 Вознесенное Ядро и 1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Сновидца, чтобы немедленно получить ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Небесного Провидца.",
           "marks": []
         }
       ]

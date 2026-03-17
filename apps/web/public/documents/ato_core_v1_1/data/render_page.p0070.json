@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0070",
-    "title": "Mnestis Theatre",
+    "title": "Театр Мнесис",
     "section_path": [],
     "source_page_number": 70
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Theatre",
+          "text": "Театр Мнесис",
           "marks": []
         }
       ]
@@ -31,8 +31,24 @@
       "children": [
         {
           "kind": "text",
-          "text": "Warning: This section contains spoilers! If you want to preserve your fun, read this section only after you gain access to the Mnestis Theatre Technology in the campaign!",
-          "marks": []
+          "text": "Внимание: Этот раздел содержит спойлеры! Если вы хотите сохранить удовольствие от игры, читайте этот раздел только после того, как получите доступ к ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Технологии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Театра Мнесис в кампании!",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -43,7 +59,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "What is the Mnestis Theatre?",
+          "text": "Что такое Театр Мнесис?",
           "marks": []
         }
       ]
@@ -54,53 +70,135 @@
       "children": [
         {
           "kind": "text",
-          "text": "The ",
+          "text": "Театр Мнесис — это особое место, как в игровом мире, на борту ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mnestis Theatre",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", так и для Aeon Trespass: Odyssey как игры. Вы будете развивать Театр Мнесис к концу ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is a special place, both in-world, onboard the ",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": " I: Истина Лабиринта как средство для достижения цели. Но эти средства быстро превзойдут эту цель, и вы будете возвращаться в Театр снова и снова. Театр Мнесис — это локация, театр воспоминаний. Он может показать вам ваше прошлое в ярких деталях, но также может создавать видения возможных будущих, основанных на невыбранных путях. Театр Мнесис имеет свою собственную, скрытую историю, распространяющуюся на все ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", and for Aeon Trespass: Odyssey as a game. You will develop the Mnestis Theatre towards the end of Cycle I: Truth of the Lab-yrinth as a means to an end. But those means will quickly outgrow that end and you’ll find yourself coming back to the Theatre for more and more.The Mnestis Theatre is a location, a theatre of memories. It can show you your past in vivid detail, but it can also create visions of possible futures based on the roads not taken. The Mnestis The-atre has its own, hidden story spread throughout all Cycles. It will serve as a place of reflection and self-actualization for the Argo-nauts. It will also allow you to delve into alternate “dream realms” to face higher level, more powerful and more deadly versions of the Primordials you’ve defeated before.The Mnestis Theatre is a ",
+          "text": "Циклы",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "special game mode",
+          "text": ". Он будет служить местом для размышлений и самореализации для ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " that allows you to test your mettle against powerful variants of the Primordials encoun-tered in your campaign of ",
+          "text": "Аргонавтов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Он также позволит вам погрузиться в альтернативные «миры снов», чтобы столкнуться с более высокоуровневыми, более мощными и более смертоносными версиями ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", которых вы побеждали ранее. Театр Мнесис — это ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "особый игровой режим",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", который позволяет вам испытать свои силы против мощных вариантов ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", встреченных в вашей кампании ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Он разработан как высшее испытание. Чтобы одержать победу, вам нужно будет использовать все доступные инструменты и эксплуатировать каждую слабость в защите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". It is designed to be the ultimate challenge. To triumph, you will need to use all the tools at your disposal and exploit every weakness in the Pri-mordial’s defense.Although it may seem real at first glance, everything that happens in the Mnestis Theatre is just a “simulation”—a play of sorts—that allows your Argonauts to relive their combat encounters and take part in simulated scenarios through the eyes of make-believe per-sonas they create for themselves.",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: The Mnestis Theatre is a bonus game mode and is not needed to complete the game! Though it will offer ascending materials you can use in your campaigns, the game is balanced without them, thus they are not required to beat any of the Cy-cles! No grinding in Aeon Trespass: Odyssey!",
+          "text": ". Хотя на первый взгляд это может показаться реальным, всё, что происходит в Театре Мнесис, — это всего лишь «симуляция» — своего рода пьеса, — которая позволяет вашим ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавтам",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " переживать свои боевые столкновения и участвовать в симулированных сценариях глазами вымышленных персонажей, которых они создают для себя.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Важно: Театр Мнесис — это бонусный игровой режим, и он не нужен для завершения игры! Хотя он будет предлагать материалы для возвышения, которые вы можете использовать в своих кампаниях, игра сбалансирована без них, поэтому они не требуются для прохождения любого из ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Циклов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "! Никакого гринда в Aeon Trespass: Odyssey!",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -111,7 +209,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Accessibility",
+          "text": "Доступность",
           "marks": []
         }
       ]
@@ -122,53 +220,143 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Mnestis Theatre is a game mode ",
+          "text": "Театр Мнесис — это игровой режим, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "separate",
+          "text": "отдельный",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", но не полностью отключенный от основной кампании. В Театре вы можете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", but not complete-ly disconnected, from the main campaign. In the Theatre, you can ",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " сражаться с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "only",
+          "text": "Первозданными",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " battle Primordials",
+          "text": " из ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " from the Cycles that you have already completed",
+          "text": "Циклов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", которые вы уже завершили. Кроме того, у вас есть доступ только к Мнемос, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Furthermore, you only have access to , Mnemoses, Argo Abilities and Titans that you have unlocked in your campaign or in the Mnestis Theatre (see Mnestis Loadouts on p. 70).The main way to experience the Mnestis Theatre is through the ",
+          "text": "способностям Арго",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Tree of Knowledge",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", which further restricts your battle choices by creating a sprawling, tailored progression path through the many Primordial encounters and levels.However, the good news is that you do not suffer any consequenc-es of Mnestis Battles—you do not lose Titans, gain  or risk per-manently losing your  or Mnemos cards. You also do not gain , Mnemos nodes or normal Primordial resources! No effects or game elements carry over from the Mnestis Theatre to your cam-paign unless ",
+          "text": "Титанам",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "explicitly stated",
+          "text": ", которые вы разблокировали в своей кампании или в Театре Мнесис (см. Снаряжение Мнесис на стр. 70). Основной способ испытать Театр Мнесис — это ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Древо Знаний",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", которое дополнительно ограничивает ваш выбор битв, создавая обширный, индивидуальный путь ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Прогресса",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " через множество столкновений и уровней ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Однако хорошая новость заключается в том, что вы не несете никаких последствий от Битв Мнесис — вы не теряете ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", не получаете или не рискуете навсегда потерять свои ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "карты Мнемос",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Вы также не получаете узлы Мнемос или обычные ресурсы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "! Никакие эффекты или игровые элементы не переносятся из Театра Мнесис в вашу кампанию, если это не ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "указано явно",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -184,7 +372,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnestis Battles",
+          "text": "Битвы Мнесис",
           "marks": []
         }
       ]
@@ -195,7 +383,57 @@
       "children": [
         {
           "kind": "text",
-          "text": "In the Mnestis Theatre, you’ll be fighting more powerful versions of normal Primordials. Specifically, Levels 5 to 9 of Regular Primor-dials, and Levels 2 to 9 of Boss and Adversary Primordials. If you tackle them through the Tree of Knowledge, you will also gain their unique rewards (only once per Primordial per Level!): ascending materials, ascended Cores and Mnestis Gear!",
+          "text": "В Театре Мнесис вы будете сражаться с более мощными версиями обычных ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". В частности, с ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданными",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " обычного типа уровней 5–9, а также с ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданными",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "-Боссами и Противниками уровней 2–9. Если вы сражаетесь с ними через Древо Знаний, вы также получите их уникальные награды (только один раз за каждого ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на каждом уровне!): материалы для возвышения, возвышенные Ядра и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжение",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Мнесис!",
           "marks": []
         }
       ]
@@ -207,7 +445,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Tree of Knowledge",
+          "text": "Древо Знаний",
           "marks": []
         }
       ]
@@ -218,37 +456,68 @@
       "children": [
         {
           "kind": "text",
-          "text": "The ",
+          "text": "Древо Знаний",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. на стр. 74-75) — это предполагаемый способ испытать Театр Мнесис. Это разветвленная перевернутая «башня» Битв. Всякий раз, когда вы впервые выигрываете определенную Битву, вы получаете её награды Мнесис, отмечаете её как завершенную и разблокируете одну или несколько связанных Битв. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Tree of Knowledge",
+          "text": "Помните: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Все ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (see on p. 74-75) is the intended way to experience the Mnestis Theatre. It’s a branching inverted “tower” of Battles. Whenever you beat a given Battle for the first time, you get its Mnestis rewards, mark it as completed and unlock one or more connected Battles. ",
+          "text": "Первозданные",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember: ",
+          "text": " из данного ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "All Primordials from a given Cycle are locked in the Mnestis Theatre until you actually complete that Cycle!Note that some Mnestis Battles are locked ",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "by more than one",
+          "text": " заблокированы в Театре Мнесис, пока вы фактически не завершите этот ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " other Battle. You can access such a Battle only if you have won all the preceding Battles!",
+          "text": "Цикл",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "! Обратите внимание, что некоторые Битвы Мнесис заблокированы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "более чем одной",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " другой Битвой. Вы можете получить доступ к такой Битве только в том случае, если вы выиграли все предыдущие Битвы!",
           "marks": []
         }
       ]
@@ -260,7 +529,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unlocking Adversaries",
+          "text": "Разблокировка Противников",
           "marks": []
         }
       ]
@@ -271,7 +540,67 @@
       "children": [
         {
           "kind": "text",
-          "text": "For the purposes of unlocking Primordials, treat the Hermesian Pursuer as a Cycle I Primordial and Burden as a Cycle II Primordial (e.g. you can only choose to battle the Hermesian Pursuer level III if you have won the Temenos level II and Labyrinthauros level VI Battles and only if you have already finished Cycle I).",
+          "text": "Для целей разблокировки ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", рассматривайте Гермесианского Преследователя как ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " I, а Бремя как ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " II (например, вы можете выбрать сражение с Гермесианским Преследователем уровня III только если вы выиграли Битвы Теменос уровня II и Лабиринтаурос уровня VI, и только если вы уже завершили ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикл",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " I).",
           "marks": []
         }
       ]
@@ -283,7 +612,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Custom Battles",
+          "text": "Пользовательские Битвы",
           "marks": []
         }
       ]
@@ -294,27 +623,105 @@
       "children": [
         {
           "kind": "text",
-          "text": "Alternatively, you can just play any Battle, with any encountered Primordial, at any level you’ve unlocked, using any combination of Gear, Mnemoses and Titans you gained access to in the campaign. In other words, you play a",
+          "text": "В качестве альтернативы, вы можете просто сыграть любую Битву, с любым встреченным ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " custom game",
+          "text": "Первозданным",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".You can even battle lower level Primordials. Always wanted to stomp that Level 1 Hekaton with Cycle III endgame gear? Well, now you can.",
+          "text": ", на любом разблокированном вами уровне, используя любую комбинацию ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "However, only progression through the Tree of Knowledge grants you Mnestis rewards.",
+          "text": "Снаряжения",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " This means that, although you can play a custom battle for the fun of it, you will not get any rewards from it: not only the normal ones, that are not available in Mnestis Theatre from the onset, but also no Mnestis resources, no Loot drops, no Mnestis Gear. Nothing! ",
+          "text": ", Мнемос и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", к которым вы получили доступ в кампании. Другими словами, вы играете в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "пользовательскую игру",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Вы даже можете сражаться с ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданными",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " более низкого уровня. Всегда хотели разгромить Гекатона 1-го уровня с помощью снаряжения поздней стадии ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " III? Что ж, теперь вы можете. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Однако только ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Прогресс",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " через Древо Знаний приносит вам награды Мнесис.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Это означает, что, хотя вы можете сыграть пользовательскую битву ради удовольствия, вы не получите от неё никаких наград: не только обычных, которые изначально недоступны в Театре Мнесис, но также никаких ресурсов Мнесис, никаких выпадений добычи, никакого ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Мнесис. Ничего!",
           "marks": []
         }
       ]
@@ -326,7 +733,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "General Mnestis Theatre Rules",
+          "text": "Общие Правила Театра Мнесис",
           "marks": []
         }
       ]
@@ -337,27 +744,71 @@
       "children": [
         {
           "kind": "text",
-          "text": "These are the cardinal rules of the Mnestis Theatre all Mnestis Bat-tles follow.",
+          "text": "Это основные правила Театра Мнесис, которым следуют все Битвы Мнесис.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\tNymphs are banned:",
+          "text": "1. Нимфы запрещены:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Призывы отключены для всех Битв Театра Мнесис. Хотя Театр способен воссоздать почти всё, он испытывает трудности с непостижимой природой Нимф.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Summonings are disabled for all Mnes-tis Theatre Battles. Although the Theatre is able to recreate almost everything, it struggles with the unknowable nature of the Nymphs.",
+          "text": "2. Доступные активы:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " У вас есть доступ ко всем ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2.\tAvailable assets:",
+          "text": "Способностям Арго",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " You have access to all Argo Abilities, Gear, Ti-tans and Mnemos cards that you unlocked during the course ",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжению",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанам",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "картам Мнемос",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", которые вы разблокировали в ходе ",
           "marks": []
         }
       ]

@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0049",
-    "title": "Move-like Ability",
+    "title": "Способность, подобная движению",
     "section_path": [],
     "source_page_number": 49
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Move-like Ability",
+          "text": "Способность, подобная движению",
           "marks": []
         }
       ]
@@ -31,27 +31,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "If an ability, Trauma, or any other effect allows you to move volun-tarily without performing a , it is considered a Move-like ability. ",
+          "text": "Если способность, Травма или любой другой эффект позволяет вам добровольно перемещаться, не выполняя , это считается способностью, подобной движению. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Move-like abilities ",
+          "text": "Способности, подобные движению",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " разрешаются так же, как действия перемещения (если не указано иное), но они ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "are resolved in the same way as movement ac-tions (unless stated otherwise), but they are ",
-          "marks": []
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "not",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " considered a for the purpose of other abilities and effects.",
+          "text": " считаются для целей других способностей и эффектов.",
           "marks": []
         }
       ]
@@ -63,7 +67,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Voluntary Movement",
+          "text": "Добровольное перемещение",
           "marks": []
         }
       ]
@@ -74,17 +78,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "All movement performed as part of a  and any move-like abili-ties are ",
+          "text": "Все перемещения, выполняемые как часть  и любые способности, подобные движению, являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "voluntary",
-          "marks": []
+          "text": "добровольными",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", meaning that you may perform as much of it as you require (i.e. if you have 5 , you may choose to move only 3 spaces; if you have the Reposition 2 keyword, you may still choose to Reposition 1 instead). ",
+          "text": ", что означает, что вы можете выполнить столько перемещений, сколько вам требуется (т.е. если у вас есть 5 , вы можете выбрать перемещение только на 3 клетки; если у вас есть ключевое слово Перемещение 2, вы все равно можете выбрать Перемещение 1 вместо этого).",
           "marks": []
         }
       ]
@@ -96,7 +102,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Involuntary Movement",
+          "text": "Принудительное перемещение",
           "marks": []
         }
       ]
@@ -107,17 +113,59 @@
       "children": [
         {
           "kind": "text",
-          "text": "All movement caused by an opposing force (i.e. Primordial actions causing Titan movement or Titan actions causing the Primordial to move) is ",
+          "text": "Все перемещения, вызванные противоборствующей силой (т.е. действия ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "involuntary",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and must be resolved up to its maximum value, unless another effect forces you to stop. The most common causes of involuntary movement are Knockbacks (see p. 63) and Pushbacks (see p. 65). Involuntary movement is resolved like vol-untary movement, with the following exceptions:",
+          "text": ", вызывающие перемещение ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", или действия ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", вызывающие перемещение ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "), являются ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "принудительными",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и должны быть выполнены до их максимального значения, если только другой эффект не заставляет вас остановиться. Наиболее частыми причинами принудительного перемещения являются Отбрасывания (см. стр. 63) и Отталкивания (см. стр. 65). Принудительное перемещение разрешается так же, как добровольное перемещение, со следующими исключениями:",
           "marks": []
         }
       ]
@@ -128,7 +176,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "other miniatures and Obstacle Terrain tiles. If a Titan is invol-untarily moved into a Board Edge, it continues to move along its edge, away from the source of the involuntary movement (if possible).",
+          "text": "другими миниатюрами и тайлами ландшафта «Препятствие». Если ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " принудительно перемещается на край поля, он продолжает двигаться вдоль этого края, удаляясь от источника принудительного перемещения (если это возможно).",
           "marks": []
         }
       ]
@@ -139,17 +197,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "another Titan, the other Titan is displaced (see ",
+          "text": "другим ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Displace",
+          "text": "Титаном",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " key-word, p. 63).",
+          "text": ", другой ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " смещается (см. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Смещение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ключевое слово, стр. 63).",
           "marks": []
         }
       ]
@@ -160,7 +240,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain tile, it suffers Crash (p. 63). If the Terrain is Destructi-ble, it is then removed from the Battle Board. If it’s Indestructi-ble, it stays on the board.",
+          "text": "он получает Урон от столкновения (Crash) (стр. 63). Если ландшафт Разрушаемый, он затем удаляется с Боевого поля. Если он Неразрушаемый, он остается на поле.",
           "marks": []
         }
       ]
@@ -171,17 +251,29 @@
       "children": [
         {
           "kind": "text",
-          "text": "Terrain tile or they are pushed onto such a space during Push-back, they die. ",
+          "text": "или его толкают на такую клетку во время Отталкивания, он погибает. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note: ",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Отброшенный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "A knocked back Titan will die by falling into a Chasm only if it ends Knockback on it, otherwise it will be moved over it.",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " погибнет, упав в Пропасть, только если он закончит Отбрасывание на ней, в противном случае он будет перемещен через нее.",
           "marks": []
         }
       ]
@@ -192,17 +284,79 @@
       "children": [
         {
           "kind": "text",
-          "text": "when a Titan or Primordial move onto them involuntarily.",
+          "text": "когда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: ",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "A single effect can be a voluntary movement for one miniature and involuntary for another. For example, when a Titan performs Pushback against a Primordial, it is a voluntary move-ment for the Titan and an involuntary one for the Primordial.",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " принудительно перемещаются на них.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Важно:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Один и тот же эффект может быть добровольным перемещением для одной миниатюры и принудительным для другой. Например, когда ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " выполняет Отталкивание против ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", это добровольное перемещение для ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и принудительное для ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
           "marks": []
         }
       ]
@@ -214,7 +368,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Involuntary Movement Reduction",
+          "text": "Снижение принудительного перемещения",
           "marks": []
         }
       ]
@@ -225,7 +379,57 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titan abilities, traits and other effects may reduce involuntary movement. Multiple effects reducing involuntary movement may be applied at the same time, e.g. if a Titan has two  cards that allow them to reduce suffered Pushbacks by 1 each, then deal a Critical Wound that reduces Primordial Pushbacks by 2, all of these effects can be combined to reduce Pushback suffered by this Titan by a total of 4.",
+          "text": "Способности ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", черты и другие эффекты могут снижать принудительное перемещение. Несколько эффектов, снижающих принудительное перемещение, могут применяться одновременно, например, если у ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " есть две карты, которые позволяют ему уменьшить полученные Отталкивания на 1 каждая, а затем наносится Критическая ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Рана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", которая уменьшает Отталкивания ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданного",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на 2, все эти эффекты могут быть объединены, чтобы уменьшить Отталкивание, полученное этим ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титаном",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", в общей сложности на 4.",
           "marks": []
         }
       ]
@@ -237,7 +441,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Uses of Movement Actions",
+          "text": "Другие применения действий перемещения",
           "marks": []
         }
       ]
@@ -248,7 +452,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "As mentioned at the start of this section, there may be some other uses for a , for example to unexhaust Gear (see Unexhausting on p. 62) and as part of a complicated action (see Complicated Actions on p. 54).  ",
+          "text": "Как упоминалось в начале этого раздела, могут быть и другие применения для , например, для восстановления ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (см. Восстановление на стр. 62) и как часть сложного действия (см. Сложные действия на стр. 54).",
           "marks": []
         }
       ]
@@ -260,7 +474,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Combat Action",
+          "text": "Боевое действие",
           "marks": []
         }
       ]
@@ -271,177 +485,281 @@
       "children": [
         {
           "kind": "text",
-          "text": "The combat action is generally used to attack the Primordial. This is how you deal Wounds and win the Battle!A  is the main way of performing Titan Attacks. To perform a Titan Attack, resolve these steps, called the ",
+          "text": "Боевое действие обычно используется для атаки ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "attack sequence",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", in the following order:",
+          "text": ". Так вы наносите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "1.\t",
+          "text": "Раны",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Declare Attack and Active Weapon",
+          "text": " и выигрываете Битву!  является основным способом выполнения Атак ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2.\t",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Raise ",
+          "text": ". Чтобы выполнить Атаку ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rage",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and check ",
+          "text": ", выполните следующие шаги, называемые ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target 3.\t",
+          "text": "последовательностью атаки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", в следующем порядке:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Attack Roll",
+          "text": "1.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Объявление атаки и активного оружия",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "4.\t",
+          "text": "2.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Повышение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "First Ability Window",
+          "text": "Ярости",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и проверка Приоритетной цели ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "5.\t",
+          "text": "3.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Бросок атаки",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Draw BP card",
+          "text": "4.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Первое окно способностей",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "6.\t",
+          "text": "5.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Взятие карты БП",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Power Roll",
+          "text": "6.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Бросок силы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.1",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Create the Power Pool",
+          "text": " Создание пула силы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.2",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Roll the Dice",
+          "text": " Бросок кубиков",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.3",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Power Re-rolls",
+          "text": " Перебросы силы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.4",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Use Potentials ",
+          "text": " Использование потенциалов ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6.5",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Разрешение броска силы",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Resolve the Power Roll",
+          "text": "7.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Ответы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "7.\t",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial Responses",
+          "text": "",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "8.\t",
+          "text": "8.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Wounds and Escalation",
+          "text": "Раны",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "9.\t",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Clear the Kratos Pool",
+          "text": "Эскалация",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "10.\t",
+          "text": "",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Second Ability Window",
+          "text": "9.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Очистка пула Кратоса",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "10.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Второе окно способностей",
           "marks": []
         }
       ]
@@ -453,7 +771,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "1. Declare Attack and Active Weapon",
+          "text": "1. Объявление атаки и активного оружия",
           "marks": []
         }
       ]
@@ -464,117 +782,149 @@
       "children": [
         {
           "kind": "text",
-          "text": "Declare you are about to Attack, then choose one of your ",
+          "text": "Объявите, что вы собираетесь Атаковать, затем выберите одно из ваших ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "unex-hausted",
+          "text": "неистощенных",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карт оружия в качестве активного оружия для этой Атаки. Вы можете выбрать оружие в качестве активного только в том случае, если цель вашей Атаки находится в пределах его ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " weapon  cards as an active weapon for this Attack. You can only choose a weapon as active if the target of your Attack is in its ",
+          "text": "эффективной дальности",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (смежная для ближнего боя, в пределах дальности X–Y для дальнего боя и т.д.) и ЛП (см. Линия видимости на стр. 38). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "effective range",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если оружие не имеет ключевого слова «Дальний бой» или «Досягаемость», оно считается оружием ближнего боя. Если вы не можете выбрать законное активное оружие или у вас нет ЛП, вы не можете выполнить Атаку. Не выполняйте дальнейшие шаги последовательности атаки. Если Атака заканчивается на этом шаге, это не вызывает Разрыва цепи (см. стр. 43). Эффективная дальность — это расстояние в клетках от Атакующего до Цели. Как и перемещение, оно рассчитывается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (adjacent for melee, within range X–Y for ranged, etc.) and LoS (see Line of Sight on p. 38). ",
+          "text": "по основным направлениям",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", никогда по диагонали. Эффективная дальность большинства видов оружия — это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
+          "text": "смежность",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", что означает, что вам нужно стоять рядом с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If a weapon does not have a Ranged or Reach keyword, it is considered Melee.If you cannot choose a legal active weapon or don’t have LoS, you cannot perform an Attack. Do not resolve any further steps of the attack sequence. If an Attack ends in this step, it does not cause a Chain Break (see p. 43).Effective range is the distance, in spaces, from the Attacker to the Target. Just like movement, it is calculated",
+          "text": "Первозданным",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " in cardinal directions",
+          "text": ", чтобы выполнить Атаку. Они называются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", never diagonally.An effective range of most weapons is ",
+          "text": "Оружие ближнего боя",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " оружием.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "adjacency",
+          "text": "Досягаемость",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " X оружие имеет эффективную дальность X, что означает, что вы можете атаковать цель на расстоянии до X клеток. Оружие с Досягаемостью также может использоваться, когда вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", meaning you need to stand next to the Primordial to perform the Attack. These are called ",
+          "text": "смежны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Melee",
+          "text": "Дальний бой",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " X–Y оружие имеет эффективную дальность X–Y, что означает, что вы можете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " weapons.",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " атаковать цель на расстоянии не менее X и не более Y клеток. Большинство видов дальнобойного оружия ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reach",
-          "marks": []
+          "text": "не может",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " X weapons have an effective range of X, meaning you can attack a target up to X spaces away. Reach weapons can also be used when ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "adjacent",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Ranged",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " X–Y weapons have an effective range of X–Y, meaning you can ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "only",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " attack a target at least X and up to Y spaces away. Most ranged weapons ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "cannot",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " be used while adjacent. ",
+          "text": " использоваться, находясь в смежной клетке. ",
           "marks": []
         }
       ]

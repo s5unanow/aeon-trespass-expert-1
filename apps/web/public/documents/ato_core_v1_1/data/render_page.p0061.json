@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0061",
-    "title": "How to Awaken",
+    "title": "Как Пробудиться",
     "section_path": [],
     "source_page_number": 61
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "How to Awaken",
+          "text": "Как Пробудиться",
           "marks": []
         }
       ]
@@ -31,17 +31,49 @@
       "children": [
         {
           "kind": "text",
-          "text": "Whenever an effect instructs you to Awaken, choose one of the available Godforms and place its card over your Titan’s illustration on the Titan Sheet. Note its name in the Godform section of the Argo Sheet and mark the associated box—this means this Godform becomes ",
+          "text": "Всякий раз, когда эффект предписывает вам Пробудиться, выберите одну из доступных Божественных форм и поместите её карту поверх иллюстрации вашего ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "unavailable",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " until the next Divine Surge (see Divine Surges on p. 23). If there are no available Godforms, you cannot Awaken. ",
+          "text": " на Листе ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Запишите её название в разделе «Божественные формы» на Листе ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и отметьте соответствующую ячейку — это означает, что данная Божественная форма становится ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "недоступной",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " до следующего Божественного Прилива (см. «Божественные Приливы» на стр. 23). Если доступных Божественных форм нет, вы не можете Пробудиться.",
           "marks": []
         }
       ]
@@ -53,7 +85,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Immediate Effects of Awakening",
+          "text": "Немедленные Эффекты Пробуждения",
           "marks": []
         }
       ]
@@ -64,7 +96,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "As soon as you Awaken, immediately:",
+          "text": "Как только вы Пробуждаетесь, немедленно:",
           "marks": []
         }
       ]
@@ -75,7 +107,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "p. 43).",
+          "text": "стр. 43).",
           "marks": []
         }
       ]
@@ -86,13 +118,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "as you are Awakened, you ",
+          "text": "вы Пробуждены, вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "cannot lose this token",
-          "marks": []
+          "text": "не можете потерять этот жетон",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -107,7 +141,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "tokens, as well as Despair tokens (but not Ambrosia tokens).",
+          "text": "а также жетоны Отчаяния (но не жетоны Амброзии).",
           "marks": []
         }
       ]
@@ -118,7 +152,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "tom right of your Awakening card (usually 2).",
+          "text": "том правом углу вашей карты Пробуждения (обычно 2).",
           "marks": []
         }
       ]
@@ -129,17 +163,19 @@
       "children": [
         {
           "kind": "text",
-          "text": " value and perform a ",
+          "text": " значению, и выполнить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Bonus Attack",
-          "marks": []
+          "text": "Бонусную Атаку",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " (see p. 56). These are not regular actions. ",
+          "text": " (см. стр. 56). Это не обычные действия.",
           "marks": []
         }
       ]
@@ -150,18 +186,23 @@
       "children": [
         {
           "kind": "text",
-          "text": "on the various game elements always include the  symbol. That’s right. Each time you Awaken, the ripples of power are felt for many, many leagues. Your Adversary takes notice and moves towards the ",
+          "text": "на различных игровых элементах, всегда включают символ. Верно. Каждый раз, когда вы Пробуждаетесь, волны силы ощущаются на многие, многие лиги. Ваш Противник замечает это и движется к ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " (see Adversary Activation, p. 16).",
-          "marks": []
+          "text": " (см. «Активация Противника», стр. 16).",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -172,7 +213,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Awakening Rules",
+          "text": "Другие Правила Пробуждения",
           "marks": []
         }
       ]
@@ -183,7 +224,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The following rules changes apply to you as long as you are Awak-ened:",
+          "text": "Следующие изменения правил применяются к вам, пока вы Пробуждены:",
           "marks": []
         }
       ]
@@ -194,17 +235,29 @@
       "children": [
         {
           "kind": "text",
-          "text": "the Power Pool",
+          "text": "Пул Силы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " instead of ",
+          "text": "вместо",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " кубика Силы вашего ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "your Titan Power die.",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
           "marks": []
         }
       ]
@@ -215,7 +268,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "card.",
+          "text": "карты.",
           "marks": []
         }
       ]
@@ -226,17 +279,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Attacks use statistics and effects denoted on the Godform card and cannot be combined with your weapons. When you declare this Attack, the Godform card is considered to be your ",
+          "text": "Атаки используют статистику и эффекты, указанные на карте Божественной формы, и не могут быть объединены с вашим оружием. Когда вы объявляете эту Атаку, карта Божественной формы считается вашей ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "active power",
-          "marks": []
+          "text": "активной силой",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " (instead of an active weapon).",
+          "text": " (вместо активного оружия).",
           "marks": []
         }
       ]
@@ -247,22 +302,46 @@
       "children": [
         {
           "kind": "text",
-          "text": "live: By the power of the Dead Gods…",
+          "text": "жив: Силой Мёртвых Богов…",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в колоду Оболов. Удалите её из колоды, когда закончите разрешать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " card into the Obol deck. Remove it from the deck when you finish resolving the Obol Draw. In other words, only you get two ",
+          "text": "Жребий Обола",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You live!",
+          "text": ". Другими словами, только вы получаете две карты Оболов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Obol cards during your Obol Draws!",
+          "text": "Ты жив!",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " во время ваших ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Жребиев Обола",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!",
           "marks": []
         }
       ]
@@ -273,7 +352,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "turn, you may discard one  token to immediately stand up. ",
+          "text": "хода вы можете сбросить один жетон, чтобы немедленно встать.",
           "marks": []
         }
       ]
@@ -285,7 +364,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ending the Awakening",
+          "text": "Завершение Пробуждения",
           "marks": []
         }
       ]
@@ -296,42 +375,60 @@
       "children": [
         {
           "kind": "text",
-          "text": "At the start of your turn",
+          "text": "В начале вашего хода",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вы должны сбросить один жетон ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", you must discard one ",
+          "text": "Посягательство",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " с вашей карты Божественной формы. Обратите внимание, что некоторые другие способности Божественной формы также могут использовать жетоны для других эффектов. Если вы не можете сбросить жетон в начале своего хода, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Trespass",
+          "text": "верните карту Божественной формы в запас",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Вы теряете все бонусы, предоставляемые ею. Затем, если вы Пробудились в результате ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " token from your Godform card. Note that some other Godform abilities may also use  tokens for other effects. If you cannot discard a  token at the start of your turn, ",
+          "text": "Жребия Обола",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "return the Godform card to the supply",
+          "text": ", вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". You lose all bonuses provided by it. Then, if you awakened as a result of an Obol Draw, ",
-          "marks": []
+          "text": "умираете",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "you die",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". If you have awakened through any other means, after you end your Awakening, continue resolv-ing your turns as normal.",
+          "text": ". Если вы Пробудились любым другим способом, после завершения Пробуждения продолжайте разрешать свои ходы как обычно.",
           "marks": []
         }
       ]
@@ -343,7 +440,12 @@
       "children": [
         {
           "kind": "text",
-          "text": "Summonings in Battle",
+          "text": "Призывы в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Битвы",
           "marks": []
         }
       ]
@@ -354,33 +456,90 @@
       "children": [
         {
           "kind": "text",
-          "text": "Summoning rules were described on p. 22. However, summoning Nymphs in Battle needs some clarification. First of all, most Sum-monings have a steep requirement that needs to be met before you are able to perform it (for example, at least one Titan needs to die). This requirement always refers to the ",
+          "text": "Правила Призыва были описаны на стр. 22. Однако Призыв Нимф в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "current Battle",
+          "text": "Фазе Битвы",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".Most Summonings specify the moment they can be used. If a Sum-moning does not specify this moment, it can be used like an Argo Ability (see Argo Abilities, p. 55), during the Titan Round.Otherwise, Summonings function according to the rules on p. 22.",
+          "text": " требует некоторых пояснений. Прежде всего, большинство Призывов имеют жёсткое требование, которое должно быть выполнено, прежде чем вы сможете его совершить (например, должен погибнуть хотя бы один ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember: Similarly to Awakenings, Summonings show the symbol. This means that, whenever you perform a Summoning, the Adversary immediately moves towards the ",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "). Это требование всегда относится к ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "текущей Битве",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Большинство Призывов указывают момент, когда они могут быть использованы. Если Призыв не указывает этот момент, он может быть использован как Способность ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (см. «Способности ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "», стр. 55) во время Раунда ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". В противном случае Призывы функционируют в соответствии с правилами на стр. 22. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Помните: Подобно Пробуждениям, Призывы показывают символ. Это означает, что всякий раз, когда вы совершаете Призыв, Противник немедленно движется к ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": ". ",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -391,7 +550,12 @@
       "children": [
         {
           "kind": "text",
-          "text": "Tests in Battle",
+          "text": "Проверки в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Фазе Битвы",
           "marks": []
         }
       ]
@@ -402,37 +566,103 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many Battle abilities and effects will instruct you to perform a ",
+          "text": "Многие способности и эффекты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "test",
+          "text": "Фазы Битвы",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".This is similar to tests during adventures (see Adventure Tests and Rolls p. 31).To perform a test, simply roll a single d10 and compare the result to the difficulty of the test. Some tests are associated with a spe-cific Argonaut Skill (e.g. Cunning 6+), allowing you to increase the result by your Skill value. Tests can be re-rolled using , just like Attack and Evasion Rolls (see Fate Re-rolls on p. 8).Some abilities and game effects may allow you to ",
+          "text": " предпишут вам выполнить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "add",
+          "text": "проверку",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Это похоже на проверки во время приключений (см. «Приключенческие Проверки и Броски» на стр. 31). Чтобы выполнить проверку, просто бросьте один d10 и сравните результат со сложностью проверки. Некоторые проверки связаны с определённым Навыком ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " a bonus to the test result. Unless stated otherwise, all of these effects must be declared before you perform the test. Then, after you roll the die, increase the result by the total bonus.Note that some effects will instruct you to simply roll a d10 and resolve an effect according to the result (e.g. “roll a d10. On a 10 you Awaken.”) ",
+          "text": "Аргонавта",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Such rolls are not tests",
+          "text": " (например, Хитрость 6+), что позволяет вам увеличить результат на значение вашего Навыка. Проверки могут быть переброшены с использованием ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (their description does not include the word “test”) and as such cannot be re-rolled us-ing .",
+          "text": "Судьбы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", так же как Броски Атаки и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Броски Уклонения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (см. «Перебросы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "» на стр. 8). Некоторые способности и игровые эффекты могут позволить вам ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "добавить",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " бонус к результату проверки. Если не указано иное, все эти эффекты должны быть объявлены до выполнения проверки. Затем, после броска кубика, увеличьте результат на общий бонус. Обратите внимание, что некоторые эффекты предпишут вам просто бросить d10 и разрешить эффект в соответствии с результатом (например, «бросьте d10. На 10 вы Пробуждаетесь»). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Такие броски не являются проверками",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (их описание не включает слово «проверка») и, как таковые, не могут быть переброшены с использованием ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Судьбы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
           "marks": []
         }
       ]
@@ -444,7 +674,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Ability Usage",
+          "text": "Использование Способностей",
           "marks": []
         }
       ]
@@ -455,27 +685,86 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titans, Mnemos cards and equipped  cards, as well as other game elements, give you access to various abilities. Some of them can be used as a free action or as a ",
+          "text": "Титаны",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "reaction",
+          "text": ", карты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", others will have a specific timing condition or even grant a constant effect.In general, each effect described within the ",
+          "text": "Мнемос",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "ability box",
+          "text": " и экипированные карты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " on Mnemos cards, Gear cards and Titan Sheets is an ability. There are a few categories of abilities.",
+          "text": "Снаряжения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", а также другие игровые элементы, предоставляют вам доступ к различным способностям. Некоторые из них могут быть использованы как свободное действие или как ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "реакция",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", другие будут иметь определённое условие времени или даже предоставлять постоянный эффект. В целом, каждый эффект, описанный в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "поле способности",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на картах ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Мнемос",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", картах ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Снаряжения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и Листах ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", является способностью. Существует несколько категорий способностей.",
           "marks": []
         }
       ]
@@ -487,7 +776,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Active Abilities",
+          "text": "Активные Способности",
           "marks": []
         }
       ]
@@ -498,27 +787,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Abilities that require you to pay a cost are ",
+          "text": "Способности, требующие оплаты стоимости, являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "active abilities",
+          "text": "активными способностями",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Стоимость всегда указывается непосредственно перед способностью. Стоимость способности может включать: Использование боевого действия, Использование действия перемещения, Использование сложного действия, Получение +1 ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". The cost is always shown directly before the ability. Ability costs may in-clude:  Using a combat action,  Using a movement action, Using a complicated action,  Gaining +",
-          "marks": []
+          "text": "Судьбы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "1 Fate",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ",  Exhausting the game element providing this ability,",
+          "text": ", Истощение игрового элемента, предоставляющего эту способность,",
           "marks": []
         }
       ]
@@ -541,43 +834,51 @@
       "children": [
         {
           "kind": "text",
-          "text": "  Discarding the game element providing this ability,  Discarding a charge.Other, more specific costs may be listed in the particular ability.Active ability usage is ",
+          "text": " Сброс игрового элемента, предоставляющего эту способность, Сброс заряда. Другие, более специфические стоимости могут быть указаны в конкретной способности. Использование активной способности ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "always voluntary",
+          "text": "всегда добровольно",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (you ",
+          "text": "можете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " оплатить стоимость для разрешения способности). Таким образом, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "may",
+          "text": "эти стоимости никогда не могут быть предотвращены или проигнорированы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " с помощью других игровых эффектов. Активные способности, имеющие определённое условие времени (например, «во время второго окна способностей», «когда вы собираетесь умереть» и т. д.), могут быть активированы только в это конкретное время активации, если не указано иное, жетон ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " pay the cost to resolve the ability). As such, ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "these costs can never be prevented or ignored",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " by the use of other game effects.Active abilities that have a specific timing condition (such as “dur-ing the second ability window,” “when you are about to die,” etc.) can be activated only during that specific activation time, unless ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Trespass token",
-          "marks": []
+          "text": "Посягательство",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0031",
-    "title": "Resolved Mnemoses and Katharsis",
+    "title": "Разрешённые Мнемос и Катарсис",
     "section_path": [],
     "source_page_number": 31
   },
@@ -19,27 +19,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "This means that if both of their Mnemos cards have the corre-sponding trait, they only gain a node for one of them. In that case, the node must go ",
+          "text": "Это означает, что если обе их карты Мойрос имеют соответствующую черту, они получают узел только для одной из них. В этом случае узел должен перейти ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "to the dominant Mnemos, that is the one with the most nodes",
+          "text": "к доминирующей Мнемос, то есть к той, у которой больше всего узлов",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В случае ничьей игрок, контролирующий этого Аргонавта, может выбрать.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". In case of a tie, the player controlling this Argo-naut may choose.",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Note:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " It’s possible to gain nodes past an unmarked Breakthrough symbol (for example, by gaining a few nodes before the next Sto-ry Step). In such a case, simply note them on the Mnemos track, then resolve the Breakthrough during the Story Step and only then mark the symbol. You’re already on your way to the next Break-through! (This may even lead to you resolving two Breakthroughs during one Story Step, one after the other!).",
+          "text": " Можно получать узлы после не отмеченного символа Прорыва (например, получив несколько узлов до следующего Шага Истории). В таком случае просто отметьте их на треке Мнемос, затем разрешите Прорыв во время Шага Истории и только после этого отметьте символ. Вы уже на пути к следующему Прорыву! (Это может даже привести к тому, что вы разрешите два Прорыва во время одного Шага Истории, один за другим!).",
           "marks": []
         }
       ]
@@ -51,7 +55,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resolved Mnemoses and Katharsis",
+          "text": "Разрешённые Мнемос и Катарсис",
           "marks": []
         }
       ]
@@ -62,27 +66,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Once you resolve the last Breakthrough of a Mnemos card, it be-comes resolved. This means that when your Argonaut dies or leaves the ",
+          "text": "Как только вы разрешаете последний Прорыв карты Мойрос, она становится разрешённой. Это означает, что когда ваш Аргонавт умирает или покидает ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", эта Мнемос не возвращается в Хранилище Мнемос. Вместо этого она помещается обратно в коробку с игрой вместе с другими неиспользованными картами Мойрос. Вы, вероятно, больше её не увидите. Особый тип разрешения Мнемос называется Катарсисом. Если вы достигаете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", this Mnemos does not return to the Mnemos Vault. Instead it is put back into the game box with other unused Mnemos cards. You probably won’t see it again.A special type of Mnemos resolution is called a Katharsis. If you reach a ",
-          "marks": []
+          "text": "Катарсис",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Katharsis",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", you will be given a code you will write in the Katharsis box on your Argonaut Sheet.",
+          "text": ", вам будет выдан код, который вы запишете в поле Катарсиса на вашем Листе Аргонавта.",
           "marks": []
         }
       ]
@@ -94,7 +102,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos Card Limit",
+          "text": "Лимит карт Мойрос",
           "marks": []
         }
       ]
@@ -105,17 +113,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Argonaut can have a ",
+          "text": "Каждый Аргонавт может иметь ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "maximum of 2",
-          "marks": []
+          "text": "максимум 2",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Mnemos cards. If you are instructed to gain a Mnemos card and you are already at the limit, the Mnemos card goes to another random Argonaut. If all Argo-nauts already have 2 Mnemos cards, the new Mnemos is instead added to the Mnemos Vault.",
+          "text": " карты Мойрос. Если вам предписано получить карту Мойрос, а вы уже достигли лимита, карта Мойрос переходит к другому случайному Аргонавту. Если у всех Аргонавтов уже есть 2 карты Мойрос, новая Мнемос вместо этого добавляется в Хранилище Мнемос.",
           "marks": []
         },
         {
@@ -132,7 +142,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos Vault",
+          "text": "Хранилище Мнемос",
           "marks": []
         }
       ]
@@ -143,7 +153,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Mnemos Vault is a deck that consists of all Mnemos cards you have unlocked during your campaign, which are not currently assigned to any Argonaut. Keep it separate from other Mnemos cards. You add Mnemos cards to the Vault in the following situa-tions:",
+          "text": "Хранилище Мнемос — это колода, состоящая из всех карт Мойрос, которые вы разблокировали во время своей кампании и которые в настоящее время не назначены ни одному Аргонавту. Держите её отдельно от других карт Мойрос. Вы добавляете карты Мойрос в Хранилище в следующих ситуациях:",
           "marks": []
         }
       ]
@@ -154,7 +164,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "return their unresolved Mnemos cards to the Vault.",
+          "text": "возвращают свои неразрешённые карты Мойрос в Хранилище.",
           "marks": []
         }
       ]
@@ -165,7 +175,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "2 Mnemos cards each, the newly acquired Mnemos card goes to the Vault instead.Usually, when a new Argonaut is introduced into the game (you will learn how this works soon enough), you will be instructed to assign them a Mnemos card from the Mnemos Vault.",
+          "text": "по 2 карты Мойрос, вновь приобретённая карта Мойрос вместо этого отправляется в Хранилище. Обычно, когда в игру вводится новый Аргонавт (вы скоро узнаете, как это работает), вам будет предписано назначить ему карту Мойрос из Хранилища Мнемос.",
           "marks": []
         }
       ]
@@ -177,7 +187,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fated Mnemoses",
+          "text": "Судьбоносные Мнемос",
           "marks": []
         }
       ]
@@ -188,27 +198,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fated Mnemoses are a different type of Mnemos cards. They are condensed mental traumas, memories not of particular events, but of the states of your mind. These memories are always bad and they weigh on your heart, introducing various mechanical hindrances.Each Argonaut can have 2 unresolved Fated Mnemos cards at the same time. These do not count towards the limit of 2 Mnemos cards per Argonaut (i.e. in total, an Argonaut can have up to 2 Mnemos cards and up to 2 Fated Mnemos cards).",
+          "text": "Судьбоносные Мнемос — это другой тип карт Мойрос. Это сгущённые ментальные травмы, воспоминания не о конкретных событиях, а о состояниях вашего разума. Эти воспоминания всегда плохие, и они давят на ваше сердце, вводя различные механические препятствия. Каждый Аргонавт может иметь 2 неразрешённые карты Судьбоносных Мнемос одновременно. Они не учитываются в лимите 2 карт Мойрос на Аргонавта (т.е. в общей сложности Аргонавт может иметь до 2 карт Мойрос и до 2 карт Судьбоносных Мнемос).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fated Mnemos cards do not count as Mnemos cards for the pur-poses of other effects.",
+          "text": "Карты Судьбоносных Мнемос не считаются картами Мойрос для целей других эффектов.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Когда вы получаете Судьбоносную Мнемос, найдите в коробке с игрой все карты Судьбоносных Мнемос, связанные с текущим Циклом, перемешайте их и вытяните случайную карту. Затем отметьте её на своём Листе Аргонавта, как обычную Мнемос. Карты Судьбоносных Мнемос всегда получаются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "When you gain a Fated Mnemos, search the game box for all of the Fated Mnemos cards associated with the Cycle you are currently playing, shuffle them and draw a random card. Then, note it on your Argonaut Sheet, just like a regular Mnemos. Fated Mnemos cards are always gained ",
-          "marks": []
+          "text": "чёрной",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "black",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " side up.",
+          "text": " стороной вверх.",
           "marks": []
         },
         {
@@ -225,7 +239,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fated Mnemos Cards",
+          "text": "Карты Судьбоносных Мнемос",
           "marks": []
         }
       ]
@@ -236,33 +250,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Fated Mnemos card has a title and an illustration, as well as a short description of the memory. Mechanically, the card includes a ",
+          "text": "Каждая карта Судьбоносных Мнемос имеет название и иллюстрацию, а также краткое описание воспоминания. Механически карта включает в себя ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "hindrancel",
+          "text": "препятствие1",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", которое вы преодолеете, а также ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", which you will overcome, as well as ",
+          "text": "штрафы к Навыкам 2",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " для вашего Аргонавта и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Skill penalties 2",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " for your Argonaut and the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Mnemos traits3",
-          "marks": []
+          "text": "черты Мнемос3",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -271,33 +291,41 @@
         },
         {
           "kind": "text",
-          "text": "Fated Mnemos card",
+          "text": "Карта Судьбоносных Мнемос",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "123",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Препятствие — это особый негативный эффект или ограничение, которому Аргонавт должен всегда следовать. Если эффекты ваших 2 карт Судьбоносных Мнемос противоречат друг другу, то приоритет имеет та, которую вы получили раньше (находится выше в разделе Мнемос на вашем Листе Аргонавта). Штрафы к Навыкам просто применяются к вашему Листу Аргонавта. Они действуют до тех пор, пока у вас есть карта Судьбоносных Мнемос. Черты Мнемос не имеют собственного эффекта, но они используются для определения того, получаете ли вы узел от приключения-хаба, как и в случае с обычными Мнемос (см. Узлы Мнемос, стр. 29). В начале приключения-хаба каждый Аргонавт, имеющий хотя бы 1 карту Судьбоносных Мнемос с соответствующей чертой, получает 1 узел для этой Судьбоносной Мнемос. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "l23",
+          "text": "Это в дополнение к любому узлу, полученному за обычную карту Мойрос!  ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Это означает, что, если черты совпадают, каждый Аргонавт может получить 1 обычный узел Мнемос и 1 узел Судьбоносной Мнемос от одного приключения. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "The hindrance is a special negative effect or limitation the Argo-naut must always adhere to. If the effects of your 2 Fated Mne-mos cards contradict each other, the one you gained earlier (is on a higher position in your Argonaut Sheet’s Mnemos section) takes precedence.The Skill penalties are simply applied onto your Argonaut Sheet. They are applicable as long as you have the Fated Mnemos card.The Mnemos traits have no inherent effect, but they are used to determine if you gain a node from a hub adventure, just like with normal Mnemoses (see Mnemos Nodes, p. 29). At the beginning of a hub adventure, each Argonaut with at least 1 Fated Mnemos card with a matching trait gains 1 node for that Fated Mnemos. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "This is in addition to any node gained for a regular Mnemos card!  ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "This means that, if traits match, each Argonaut can gain 1 regu-lar Mnemos node and 1 Fated Mnemos node from a single adven-ture. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "However, they will never gain 2 or more nodes for the same Mnemos card or the same Mnemos type (regular or Fated).",
-          "marks": []
+          "text": "Однако они никогда не получат 2 или более узлов для одной и той же карты Мойрос или одного и того же типа Мнемос (обычной или Судьбоносной).",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "icon",
@@ -313,7 +341,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resolving a Fated Mnemos and Trauma Growth",
+          "text": "Разрешение Судьбоносной Мнемос и Рост Травмы",
           "marks": []
         }
       ]
@@ -324,7 +352,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "A Fated Mnemos has no breakthrough adventures – if all the nodes to the left of the first breakthrough symbol are marked, it is auto-matically resolved during the Story Step.",
+          "text": "Судьбоносная Мнемос не имеет прорывных приключений – если все узлы слева от первого символа прорыва отмечены, она автоматически разрешается во время Шага Истории.",
           "marks": []
         }
       ]

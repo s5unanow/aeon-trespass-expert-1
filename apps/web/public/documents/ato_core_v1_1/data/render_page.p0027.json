@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0027",
-    "title": "Choice Matrix",
+    "title": "Матрица Выбора",
     "section_path": [],
     "source_page_number": 27
   },
@@ -19,13 +19,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "ignore this instruction. On very rare occasions, a game element will tell you to “cross out” or “erase” a Choice Matrix node. In that case, erase it or encircle it, to note that the choice has been reversed.",
+          "text": "игнорируйте эту инструкцию. В очень редких случаях игровой элемент может предписать вам «зачеркнуть» или «стереть» узел Матрицы Выбора. В таком случае сотрите его или обведите, чтобы отметить, что выбор был отменён.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: The Choice Matrix persists through ALL the Cycles of Aeon Trespass: Odyssey! When you progress from one Cycle to the next, carry over all marked choices to the Choice Matrix of your new Argo Sheet (or simply use the same last page).",
-          "marks": []
+          "text": "Важно: Матрица Выбора сохраняется на протяжении ВСЕХ Циклов Aeon Trespass: Odyssey! Когда вы совершаете Прогресс от одного Цикла к следующему, перенесите все отмеченные выборы в Матрицу Выбора вашего нового Листа Арго (или просто используйте ту же последнюю страницу).",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -36,7 +38,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Choice Matrix",
+          "text": "Матрица Выбора",
           "marks": []
         }
       ]
@@ -156,7 +158,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Party Leader",
+          "text": "Лидер Отряда",
           "marks": []
         }
       ]
@@ -167,17 +169,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "During each adventure (whether main story, hub or other), one of the Argonauts must become the party leader.Unless instructed otherwise, choose a party leader as soon as they are referred to in the paragraph (either in the story or in a mechan-ical instruction) or when you are faced with a choice (whichever comes first).Most importantly, the party leader breaks all decision ties during the adventure if the players cannot reach a compromise. They are also the most likely to be tested during the adventure, as well as to gain Triskelion statistics (,  or ), Boons, Afflictions, tokens and various other game elements. Finally, they resolve all other ef-fects and choices that refer to the party leader.Once the party leader is chosen, give them the ",
+          "text": "Во время каждого приключения (будь то основная история, центр или другое) один из Аргонавтов должен стать лидером отряда. Если не указано иное, выбирайте лидера отряда, как только на него ссылаются в абзаце (либо в истории, либо в механической инструкции), или когда вы сталкиваетесь с выбором (что наступит раньше).Самое главное, лидер отряда разрешает все спорные решения во время приключения, если игроки не могут прийти к компромиссу. Они также с наибольшей вероятностью будут подвергаться испытаниям во время приключения, а также получать статистику Трискелиона (,  или ), Благословения, Недуги, жетоны и различные другие игровые элементы. Наконец, они разрешают все остальные эффекты и выборы, которые относятся к лидеру отряда.Как только лидер отряда выбран, дайте ему ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target ",
-          "marks": []
+          "text": "Приоритетная Цель ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "token as a reminder. This player remains the party leader until the end of this adventure.Tip: You are free to choose whomever you want as the party leader. However, you should consider your choice well. They should be chosen based on their Triskelion statistics, Argonaut Skills and other attributes that you predict will be useful in a situation you are about to face. If you cannot reach an agree-ment on who should be the party leader, you should choose one randomly.",
+          "text": "жетон в качестве напоминания. Этот игрок остаётся лидером отряда до конца этого приключения. Совет: Вы можете свободно выбирать любого, кого захотите, в качестве лидера отряда. Однако вам следует хорошо обдумать свой выбор. Его следует выбирать исходя из его статистики Трискелиона, Навыков Аргонавта и других атрибутов, которые, по вашим прогнозам, будут полезны в ситуации, с которой вы столкнётесь. Если вы не можете прийти к соглашению о том, кто должен быть лидером отряда, вам следует выбрать его случайным образом.",
           "marks": []
         }
       ]
@@ -189,7 +193,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story Adventures",
+          "text": "Сюжетные Приключения",
           "marks": []
         }
       ]
@@ -200,22 +204,26 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story Adventure",
+          "text": "Сюжетное Приключение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это категория, которая содержит все отрывки из Книги Историй в разделе «Основная История» книги. Обычно вас направляют к ним карты Истории и Рока, но есть и другие, уникальные эффекты, которые также могут привести к Сюжетным Приключениям. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is the category that contains all Storybook pas-sages in the Main Story section of the book. Usually, you will be di-rected to them by Story and Doom cards, but there are some other, unique effects that may lead to Story Adventures as well. ",
-          "marks": []
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Remember:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " If a game element directs you to a passage without telling you which section you can find it with, you should refer to the Main Story section.There are no specific rules concerning Story Adventures. Simply find the designated paragraph and resolve it, according to general Adventure Rules.",
+          "text": " Если игровой элемент направляет вас к отрывку, не указывая, в каком разделе вы можете его найти, вам следует обратиться к разделу «Основная История». Нет никаких конкретных правил, касающихся Сюжетных Приключений. Просто найдите указанный абзац и разрешите его в соответствии с Общими Правилами Приключений.",
           "marks": []
         },
         {
@@ -242,7 +250,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Hub Adventures",
+          "text": "Центровые Приключения",
           "marks": []
         }
       ]
@@ -253,83 +261,108 @@
       "children": [
         {
           "kind": "text",
-          "text": "Besides the main story, most of the adventures will come from your Cycle’s ",
+          "text": "Помимо основной истории, большинство приключений будет исходить из ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adventure Hubs",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". You resolve a ",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Hub Adventure",
+          "text": "Центров Приключений",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Вы разрешаете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " each time you encounter an active ",
+          "text": "Центровое Приключение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " каждый раз, когда вы сталкиваетесь с активным символом ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "adventure",
+          "text": "приключения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ".Центры приключений — это группы приключений, объединённые общей темой, с фиксированными начальными и завершающими приключениями, которые рассказывают связную историю. В центровых приключениях вы встретите людей и места, относящиеся к региону, в котором в настоящее время находится ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " symbol.Adventure hubs are groups of adventures connected through a common theme, with fixed opening and closing adventures, that tell a coherent story. In hub adventures, you will encounter people and places relevant to the region the ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Некоторые из этих приключений будут побочными историями, в то время как другие могут иметь долгосрочные последствия и даже влиять на основную историю. Чтобы узнать, какое приключение вы должны разрешить, найдите таблицу ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Центров Приключений",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на первой странице вашей текущей Книги Историй. Бросьте d10 и обратитесь к столбцу, соответствующему вашей текущей Истории (карты Истории 1A и 1B — это История I, карты Истории 2A и 2B — это История II и так далее). Это сообщит вам, к какому Центру Приключений вы должны перейти, а также какой Ландшафт Приключения вы должны добавить к следующей Битве (см. Ландшафт Приключения, стр. 31).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is currently in. Some of these adventures will be side stories, while others may have lasting consequences and even influence the main story.To find out which adventure you should resolve, find the ",
-          "marks": []
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Adven-ture Hubs",
-          "marks": []
+          "text": " Игроки столкнулись с неисследованным символом. Во время Шага Экспедиции они обращаются к таблице Центров Приключений и бросают d10, получая результат «8». В настоящее время они находятся на карте Истории 2B, поэтому они обращаются к столбцу Истории II. Они выясняют, что должны разрешить Центр Приключений, соответствующий диапазону 7-8 – «Человек Цели». Прежде чем перейти к этой главе, они отмечают клетку на треке «Человек Цели» на своём Листе Арго, затем отмечают «Заброшенный Храм (Внешний 3)» в день своей следующей ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " table on the first page of your current Storybook. Roll a d10 and refer to the column corresponding to your current Story (Story cards 1A and 1B are Story I, Story cards 2A and 2B are Story II and so on). This will inform you which Adventure Hub you should go to as well as which Adventure Terrain you should add to the next Battle (see Adventure Terrain, p. 31).",
-          "marks": []
+          "text": "Битвы Временной Линии",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Example:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " The players have encountered an unexplored  sym-bol. During the Expedition Step, they go to the Adventure Hubs table and roll a d10, getting a result of ‘8’. They are currently on Story card 2B, so they refer to the Story II column. They find out they should resolve the Adventure Hub corresponding to the 7-8 range – Man of Purpose. Before they proceed to this chapter, they mark a box on the Man of Purpose track on their Argo Sheet, then note Abandoned Temple (Outer 3) on the day of their next ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Time-line Battle",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Once you know which Hub you have encountered, remember to mark a box on an adventure track on the Argo Sheet (if all boxes are already marked, re-roll to choose a different Hub). Then go to the corresponding chapter in the Storybook. Adventure Tracks Fated Conundrum Plight of the People Hidden in Plain SightMan of PurposeUneasy Rests the HeadTears of a MinotaurDreams Laid BareTutorial",
-          "marks": []
+          "text": ".Как только вы узнаете, какой Центр вы встретили, не забудьте отметить клетку на треке приключений на Листе Арго (если все клетки уже отмечены, перебросьте, чтобы выбрать другой Центр). Затем перейдите к соответствующей главе в Книге Историй. Треки Приключений: Судьбоносная Загадка, Бедствие Народа, Скрытое на Виду, Человек Цели, Неспокойно Лежит Голова, Слёзы Минотавра, Раскрытые Сны, Обучение.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -351,13 +384,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "There, you will find an Adventure Table, listing all adventures avail-able in a given Hub. If the box you marked on the Argo Sheet has the or  symbol inside, simply proceed to resolve the para-graph marked with the same symbol in this Hub’s chapter.",
+          "text": "Там вы найдёте Таблицу Приключений, перечисляющую все доступные приключения в данном Центре. Если клетка, которую вы отметили на Листе Арго, содержит символ или , просто перейдите к разрешению абзаца, отмеченного тем же символом в главе этого Центра.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target token",
-          "marks": []
+          "text": "жетон Приоритетной Цели",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",

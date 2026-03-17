@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0033",
-    "title": "Fated Boxes",
+    "title": "Ячейки Судьбы",
     "section_path": [],
     "source_page_number": 33
   },
@@ -19,42 +19,52 @@
       "children": [
         {
           "kind": "text",
-          "text": "Outer 3:",
+          "text": "Внешние 3:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Означает, что вы должны разместить тайл только в пределах 3 клеток от любого края поля.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Means you need to place the tile only within 3 spaces from any Board Edge.",
+          "text": "Схема внешних 3",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Внутренние 3:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Означает, что вы должны разместить тайл на любой клетке, которая находится не ближе 3 клеток от края поля.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Outer 3 diagram",
-          "marks": []
+          "text": "Схема внутренних 3",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Inner 3:",
-          "marks": []
+          "text": "Примечание: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Means you need to place the tile on any spaces that are not within 3 spaces of the Board Edge.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Inner 3 diagram",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Some Terrain tiles may include additional setup instructions on their Terrain card.",
+          "text": "Некоторые тайлы местности могут содержать дополнительные инструкции по размещению на их карте местности.",
           "marks": []
         },
         {
@@ -71,7 +81,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fated Boxes",
+          "text": "Ячейки Судьбы",
           "marks": []
         }
       ]
@@ -82,27 +92,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fated boxes are commonly found in adventure tables. They are used to denote that you have already encountered this part of the story. By default, you mark a fated box in an adventure table (in the R&R, Inward Odyssey or Hub section) immediately after you roll the associated number, before you proceed to resolving this adventure.If you have already marked one fated box corresponding to an ad-venture and rolled its number again, check if there is another fat-ed box associated with it. If there is, simply mark it and follow the instructions denoted next to it. If all fated boxes associated with a given adventure are marked, roll a d10 again and resolve a different adventure instead. If at any point the fated boxes of all adventures in any of the adventure tables have been marked, reset all of the boxes in this table.Note that fated boxes may also be encountered in some of the paragraphs, outside of the adventure tables. These paragraphs will inform you when to mark the fated boxes and may introduce additional effects referring to the number of marked fated boxes.",
+          "text": "Ячейки Судьбы обычно встречаются в таблицах приключений. Они используются для обозначения того, что вы уже сталкивались с этой частью истории. По умолчанию вы отмечаете ячейку Судьбы в таблице приключений (в разделе «Отдых и восстановление», «Внутренняя Одиссея» или «Хаб») сразу после того, как выбросите соответствующее число, прежде чем приступить к разрешению этого приключения. Если вы уже отметили одну ячейку Судьбы, соответствующую приключению, и снова выбросили её число, проверьте, есть ли другая связанная с ней ячейка Судьбы. Если есть, просто отметьте её и следуйте инструкциям, указанным рядом с ней. Если все ячейки Судьбы, связанные с данным приключением, отмечены, бросьте d10 снова и разрешите другое приключение. Если в какой-либо момент ячейки Судьбы всех приключений в любой из таблиц приключений были отмечены, сбросьте все ячейки в этой таблице. Обратите внимание, что ячейки Судьбы также могут встречаться в некоторых абзацах, вне таблиц приключений. Эти абзацы сообщат вам, когда отмечать ячейки Судьбы, и могут вводить дополнительные эффекты, ссылающиеся на количество отмеченных ячеек Судьбы.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example of fated boxes encountered in a story paragraph",
+          "text": "Пример ячеек Судьбы, встреченных в абзаце истории",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Ячейки Судьбы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fated boxes ",
-          "marks": []
+          "text": "переносятся между всеми вашими прохождениями",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "carry over between all your playthroughs",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " of Aeon Trespass: Odyssey. If you repeat any of the Cycles, do not reset marked fated boxes. This will allow you to experience new stories and encounter unexpected twists in the narrative.",
+          "text": " Aeon Trespass: Odyssey. Если вы повторяете какой-либо из Циклов, не сбрасывайте отмеченные ячейки Судьбы. Это позволит вам переживать новые истории и сталкиваться с неожиданными поворотами в повествовании.",
           "marks": []
         },
         {
@@ -119,7 +133,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Least and Most Likely Argonaut",
+          "text": "Наименее и наиболее вероятный Аргонавт",
           "marks": []
         }
       ]
@@ -130,17 +144,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "The least likely Argonaut is the one with the least amount of Mne-mos cards. In case of a tie, the one with the least amount of Mnemos nodes. If there’s still a tie, choose randomly from the tied players.Conversely, the most likely Argonaut (or the ‘strongest’ Argonaut) is the one with the most Mnemos cards and Mnemos nodes. If there’s a tie, choose randomly from the tied players.",
+          "text": "Наименее вероятный Аргонавт — это тот, у кого наименьшее количество карт Мнемос. В случае ничьей — тот, у кого наименьшее количество узлов Мнемос. Если ничья сохраняется, выберите случайным образом из игроков, у которых ничья. И наоборот, наиболее вероятный Аргонавт (или «сильнейший» Аргонавт) — это тот, у кого наибольшее количество карт Мнемос и узлов Мнемос. Если ничья, выберите случайным образом из игроков, у которых ничья.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: ",
-          "marks": []
+          "text": "Важно: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Fated Mnemos cards and Fated Mnemos nodes do not count towards this.",
+          "text": "Ячейки Судьбы карт Мнемос и узлов Мнемос не учитываются.",
           "marks": []
         }
       ]

@@ -19,37 +19,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "AM0308You may immediately perform a ",
+          "text": "AM0308Вы можете немедленно совершить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Bonus Attack!",
+          "text": "Бонусную Атаку!",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Если у вас есть карта Состояния ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "If you have the ",
+          "text": "Опрокидывание (падение)",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", немедленно встаньте.ОСКОРБЛЁННЫЙ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Knockdown (falling down)",
-          "marks": []
+          "text": "МЕЛКАЯ ТРАВМАМЕЛКАЯ ТРАВМА",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Condition card, immediately stand up instead.INSULTED",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "MINOR TRAUMAMINOR TRAUMA",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "MINORTRAUMA",
+          "text": "МЕЛКАЯТРАВМА",
           "marks": []
         }
       ]
@@ -60,62 +66,79 @@
       "children": [
         {
           "kind": "text",
-          "text": "233 AI Cards199 BP Cards10 Trait Cards12 Primordial Sheets13 Argonaut Cards6 Kratos Cards8 Moiros Cards10 Single/Double  Wound Cards170 Secret Cards",
-          "marks": []
+          "text": "233 карты ИИ199 карт БП10 карт Черты12 планшетов Первозданных13 карт Аргонавтов6 карт Кратоса8 карт Мойрос10 карт Одиночных/Двойных Ран170 Секретных карт",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "T01T00",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "270 Map Tiles73 Trauma Cards27 Pattern Cards",
-          "marks": []
+          "text": "270 Тайлов карты73 карты Травм27 карт Образцов",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "1-34-67-910+",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Рефлекс (Переместитесь на 1 клетку).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reflex (Move 1 space).",
+          "text": "Травма, НапряжениеТравма, Напряжение",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "AW0284ИАПЕТАНСКОЕ НАПРЯЖЕНИЕИАПЕТАНСКОЕ НАПРЯЖЕНИЕВнутренняя Одиссея",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Trauma, StrainTrauma, Strain",
+          "text": "Не оставляйте ничего на волю случая.15 планшетов Титанов3 Книги Историй",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "ЧАСТЬ ТЕЛА",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "КАРЛИКОтброс 2.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "AW0284IAPETAN STRAINIAPETAN STRAINInward Odyssey",
-          "marks": []
+          "text": "Вы уничтожили слабую опорную руку, изрешеченную осколками сиреновой раковины. Монстр остался полностью открыт! ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Do not leave anything to chance.15 Titan Sheets3 Storybooks",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "BODY PART",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "ITHE RUNTPushback 2.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "You’ve destroyed a weak support arm riddled with sirenshell slivers. The monster is left wide open! ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "During the second ability window place 2 additional Opening or Break tokens  in the Kratos Pool.2AS0416BPHEKATON",
+          "text": "Во время второго окна способностей поместите 2 дополнительных жетона Открытия или Пролома в пул Кратоса.2AS0416БПГЕКАТОН",
           "marks": []
         },
         {
@@ -168,98 +191,118 @@
       "children": [
         {
           "kind": "text",
-          "text": "You are paralyzed.  You cannot move voluntarily,  attack or use actions or abilities,  unless stated otherwise.When you are attacked, instead  of performing the Evasion Roll,  immediately die. Do not resolve  any other hit effects and  proceed to After Attack.EGOLOCK",
+          "text": "Вы парализованы. Вы не можете добровольно двигаться, атаковать или использовать действия или способности, если не указано иное.Когда вас атакуют, вместо выполнения Броска Уклонения, немедленно умрите. Не разрешайте никаких других эффектов попадания и переходите к После Атаки.ЭГОБЛОК",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "AN0372End of your turn:",
+          "text": "Конец вашего хода:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Вы можете проверить Отвагу (+). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You may test Courage (+).  ",
+          "text": "Успех:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Сбросьте эту карту.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Success:",
+          "text": "«Кто-то — или что-то — пытается захватить контроль».",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "СОСТОЯНИЕ КРАТОС (РАЗУМ)",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "КРАТОСПолучите эту карту и жетон Приоритетной Цели (даже если у кого-то есть карта Травмы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Discard this card.",
+          "text": "Отмечен Смертью",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "). Пока у вас есть эта карта, вы не можете потерять этот жетон.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "“Someone - or something -  is trying to wrest control.”",
+          "text": "Конец Битвы:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если ваш Титан мертв, разрешите Специальное Событие ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "CONDITION KRATOS (MIND)",
+          "text": "Судьба Хуже Смерти",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " .",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "KRATOSGain this card and the Priority Targettoken (even if someone has the ",
+          "text": "СОСТОЯНИЕ МОЙРОС (СУДЬБА)AO0378",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "СУДЬБА ХУЖЕ СМЕРТИМОЙРОС",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Marked for Death",
+          "text": "Все происходит от нуля до десяти в мгновение ока, и удары продолжают сыпаться.",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "ХОЛОДНЫЙ СТАРТ6+",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Trauma card). While you have this card, you cannot lose this token.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "End of Battle:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " If your Titan is dead, resolve the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Fate Worse Than Death",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Special Event.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "CONDITION MOIROS (FATE)AO0378",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "FATE WORSE  THAN DEATHMOIROS",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "It goes from zero to ten in a heartbeat and the punches keep on coming.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "COLD OPEN6+",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "ATTACK",
-          "marks": []
+          "text": "АТАКА",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -268,48 +311,58 @@
         },
         {
           "kind": "text",
-          "text": "Target:",
+          "text": "Цель:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Ближайший Титан впереди, в радиусе действия ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Closest Titan in front, in range ",
-          "marks": []
+          "text": "Цель:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Target:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Closest Titan in sightMove*&*Attack£",
+          "text": " Ближайший Титан в поле зренияПеремещение*&*Атака£",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3+:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " +1Каждое попадание наносит 1 .Отброс 3.4AR0398ГЕКАТОНГЕКАТОН",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " +1Each hit deals 1 .Pushback 3.4AR0398HEKATONHEKATON",
+          "text": "ЧЕРТА",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "AX0517Жетоны Отчаяния применяют следующие суммирующиеся штрафы (помимо их обычных эффектов):1+ жетон: Вы не можете использовать карты Мнемос.2+ жетона: Вы не можете использовать истощаемые .3+ жетона: Вы не можете выполнять .ПЕСНЯ БЕЗНАДЕЖНОСТИГЕКАТОНАЛЬФА ТЕМЕНОСГЕРОДОТСНОВИДЕЦ5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "TRAIT",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "AX0517Despair tokens apply the following stacking penalties (on top of their regular effects):1+ token: You cannot use Mnemos cards.2+ tokens: You cannot use exhaustable .3+ tokens: You cannot perform .VISONG OF  HOPELESSNESSHEKATONALPHA TEMENOSHERODOTUSDREAMWALKER5",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "1-34-67-910+ TRAUMA KRATOS551166332244",
-          "marks": []
+          "text": "1-34-67-910+ ТРАВМА КРАТОС551166332244",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -318,12 +371,14 @@
         },
         {
           "kind": "text",
-          "text": "2+",
-          "marks": []
+          "text": "2+:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Move with +1  and Melee/Reach Attack  with Auto-break 1. You must move at least 3 spaces and reach your Target via the shortest possible path.AK0291",
+          "text": " Переместитесь с +1 и Атакуйте в ближнем бою/с дистанции с Авто-проломом 1. Вы должны переместиться как минимум на 3 клетки и достичь своей Цели по кратчайшему возможному пути.AK0291",
           "marks": []
         },
         {
@@ -400,12 +455,14 @@
       "children": [
         {
           "kind": "text",
-          "text": "20 Divider Cards",
-          "marks": []
+          "text": "20 карт-разделителей",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "single wound",
+          "text": "одиночная рана",
           "marks": []
         },
         {
@@ -458,7 +515,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "When you gain Primordial resources during the Battle Aftermath, exchange this card for a random BP card of the lowest available level.double wound",
+          "text": "Когда вы получаете ресурсы Первозданных во время Последствий Битвы, обменяйте эту карту на случайную карту БП самого низкого доступного уровня.двойная рана",
           "marks": []
         }
       ]
@@ -481,7 +538,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "When you gain Primordial resources during the Battle Aftermath, exchange this card for a random BP III card.",
+          "text": "Когда вы получаете ресурсы Первозданных во время Последствий Битвы, обменяйте эту карту на случайную карту БП III.",
           "marks": []
         }
       ]
@@ -504,7 +561,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "DO NOT OPEN UNTIL TOLD TO DO SO.",
+          "text": "НЕ ОТКРЫВАТЬ, ПОКА НЕ БУДЕТ СКАЗАНО.",
           "marks": []
         }
       ]
@@ -527,13 +584,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "DO NOT OPEN UNTIL TOLD TO DO SO.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "8 Secret Envelopes",
-          "marks": []
+          "text": "НЕ ОТКРЫВАТЬ, ПОКА НЕ БУДЕТ СКАЗАНО.8 Секретных конвертов",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

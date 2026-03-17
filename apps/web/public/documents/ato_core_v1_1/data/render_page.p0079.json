@@ -19,1187 +19,1426 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos Tokens",
-          "marks": []
+          "text": "Жетоны Кратоса",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ":  p. 45; see also: Kratos To-kens and the Kratos Pool, p. 34",
+          "text": ": с. 45; см. также: Жетоны Кратоса и запас Кратоса, с. 34",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Labyrinth Set",
-          "marks": []
+          "text": "Набор Лабиринта",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Labyrinth tiles",
-          "marks": []
+          "text": "Тайлы Лабиринта",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle I Storybook, p. 4",
+          "text": ": см. Книгу Историй Цикла I, с. 4",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Labyrinth X",
-          "marks": []
+          "text": "Лабиринт X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle I Storybook, p. 4",
+          "text": ": см. Книгу Историй Цикла I, с. 4",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Land on top ",
-          "marks": []
+          "text": "Приземлиться сверху",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": ": см. Книгу Историй Цикла II, с. 6",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Laser Attack",
-          "marks": []
+          "text": "Лазерная Атака",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 6",
+          "text": ": см. Книгу Историй Цикла III, с. 6",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Laser Resistance X",
-          "marks": []
+          "text": "Лазерное Сопротивление X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Story-book, p. 8",
+          "text": ": см. Книгу Историй Цикла III, с. 8",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Last Visited City",
-          "marks": []
+          "text": "Последний Посещённый Город",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 13",
+          "text": ": с. 13",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Least Likely",
-          "marks": []
+          "text": "Наименее Вероятный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Least and Most Likely Argonaut, p. 32",
+          "text": ": см. Наименее и наиболее вероятный Аргонавт, с. 32",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Lifeline",
-          "marks": []
+          "text": "Спасательный круг",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 64",
+          "text": ": с. 64",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Line of Sight",
-          "marks": []
+          "text": "Линия Видимости",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 38",
+          "text": ": с. 38",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Loops",
-          "marks": []
+          "text": "Петли",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 9",
+          "text": ": см. Книгу Историй Цикла III, с. 9",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Lose",
-          "marks": []
+          "text": "Проигрыш",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Campaign Win and Lose Con-ditions, p. 10; see also: Battle Sequence, p. 35; Loss, p. 24",
+          "text": ": см. Условия победы и поражения в кампании, с. 10; см. также: Последовательность битвы, с. 35; Поражение, с. 24",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Lumbering",
-          "marks": []
+          "text": "Неуклюжий",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 64; see also: Basic Traits, p. 36",
+          "text": ": с. 64; см. также: Базовые черты, с. 36",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Map symbols",
-          "marks": []
+          "text": "Символы карты",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 14; see also: Tile Sectors, p. 13; Other Movement Symbols, p. 14; Map Symbols Key in Cycle I Storybook, p. 5, Cycle II Storybook, p. 7, Cycle III Sto-rybook, p. 7.",
+          "text": ": с. 14; см. также: Секторы тайлов, с. 13; Другие символы перемещения, с. 14; Ключ символов карты в Книге Историй Цикла I, с. 5, Книге Историй Цикла II, с. 7, Книге Историй Цикла III, с. 7.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Massive Danger",
-          "marks": []
+          "text": "Массивная Опасность",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 43",
+          "text": ": с. 43",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Masterwork",
-          "marks": []
+          "text": "Шедевр",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Material Traits",
-          "marks": []
+          "text": "Материальные Черты",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Gear Trait Categories in Cycle II Storybook, p. 6",
+          "text": ": см. Категории черт Снаряжения в Книге Историй Цикла II, с. 6",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "May",
-          "marks": []
+          "text": "Может",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7",
+          "text": ": с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mazetouched",
-          "marks": []
+          "text": "Затронутый Лабиринтом",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle I Storybook, p. 5",
+          "text": ": см. Книгу Историй Цикла I, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mercy Rule",
-          "marks": []
+          "text": "Правило Милосердия",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 56",
+          "text": ": с. 56",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mitigate",
-          "marks": []
+          "text": "Смягчение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Gain/Loss Mitigation, p. 24",
+          "text": ": см. Смягчение получения/потери, с. 24",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mnemos Breakthroughs",
-          "marks": []
+          "text": "Прорывы Мнемос",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 27",
+          "text": ": с. 27",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mnemos nodes",
-          "marks": []
+          "text": "Узлы Мнемос",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 29",
+          "text": ": с. 29",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mnemos Vault",
-          "marks": []
+          "text": "Хранилище Мнемос",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 30",
+          "text": ": с. 30",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mnemoses",
-          "marks": []
+          "text": "Мнемосы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 29",
+          "text": ": с. 29",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mnestis Theatre",
-          "marks": []
+          "text": "Театр Мнестис",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 69",
+          "text": ": с. 69",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Modifier tokens",
-          "marks": []
+          "text": "Жетоны модификаторов",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 58",
+          "text": ": с. 58",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Moirai Mistake",
-          "marks": []
+          "text": "Ошибка Мойрай",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла III, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Moiros cards",
-          "marks": []
+          "text": "карты Мойрос",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 57",
+          "text": ": с. 57",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Most likely",
-          "marks": []
+          "text": "Наиболее вероятный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Least and Most Likely Argonaut, p. 32",
+          "text": ": см. Наименее и наиболее вероятный Аргонавт, с. 32",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Motivate X",
-          "marks": []
+          "text": "Мотивировать X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 64",
+          "text": ": с. 64",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mount",
-          "marks": []
+          "text": "Крепление",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Move Lateral",
-          "marks": []
+          "text": "Перемещение вбок",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": ": см. Книгу Историй Цикла II, с. 6",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Move to X",
-          "marks": []
+          "text": "Переместиться к X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": ": см. Книгу Историй Цикла II, с. 6",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Move X",
-          "marks": []
+          "text": "Переместить X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": ": см. Книгу Историй Цикла II, с. 6",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Move-like ability",
-          "marks": []
+          "text": "Способность, подобная перемещению",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 48",
+          "text": ": с. 48",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Movement",
-          "marks": []
+          "text": "Перемещение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Primordial Movement, p. 38; see also: Movement Action, p. 47",
+          "text": ": см. Перемещение Первозданного, с. 38; см. также: Действие перемещения, с. 47",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Movement Step",
-          "marks": []
+          "text": "Шаг перемещения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 13",
+          "text": ": с. 13",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Movement symbols",
-          "marks": []
+          "text": "Символы перемещения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Map symbols, p. 14",
+          "text": ": см. Символы карты, с. 14",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Muffled",
-          "marks": []
+          "text": "Приглушённый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 5",
+          "text": ": см. Книгу Историй Цикла III, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Negotiation",
-          "marks": []
+          "text": "Переговоры",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Structural Technologies, p. 18",
+          "text": ": см. Структурные Технологии, с. 18",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Nymph Summonings",
-          "marks": []
+          "text": "Призывы Нимф",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 22; see also: Summonings in Battle, p. 60",
+          "text": ": с. 22; см. также: Призывы в битве, с. 60",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Obol",
-          "marks": []
+          "text": "Обол",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Obol (and Obol Draw), p. 42",
+          "text": ": см. Обол (и Жребий Обола), с. 42",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Obscuring",
-          "marks": []
+          "text": "Затемняющий",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 68",
+          "text": ": с. 68",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Obstacle",
-          "marks": []
+          "text": "Препятствие",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 68",
+          "text": ": с. 68",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "One-way canals",
-          "marks": []
+          "text": "Односторонние каналы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 5",
+          "text": ": см. Книгу Историй Цикла II, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Opening X",
-          "marks": []
+          "text": "Открытие X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 64",
+          "text": ": с. 64",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Out of Reach (OoR) Evade",
-          "marks": []
+          "text": "Уклонение вне досягаемости (УВД)",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 42",
+          "text": ": с. 42",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Overbreak X",
-          "marks": []
+          "text": "Превышение X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 65",
+          "text": ": с. 65",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Paradox",
-          "marks": []
+          "text": "Парадокс",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 5",
+          "text": ": см. Книгу Историй Цикла III, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Party Leader",
-          "marks": []
+          "text": "Лидер группы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 26",
+          "text": ": с. 26",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Pass X",
-          "marks": []
+          "text": "Проход X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 8",
+          "text": ": см. Книгу Историй Цикла III, с. 8",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Pattern cards",
-          "marks": []
+          "text": "Карты шаблонов",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 47; see also: Titan Pat-terns, p. 20",
+          "text": ": с. 47; см. также: Шаблоны Титанов, с. 20",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Peril",
-          "marks": []
+          "text": "Риск",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 31",
+          "text": ": с. 31",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Perishable",
-          "marks": []
+          "text": "Расходуемый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Permanent",
-          "marks": []
+          "text": "Постоянный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Structural Technologies, p. 18",
+          "text": ": см. Структурные Технологии, с. 18",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Pharos Delve",
-          "marks": []
+          "text": "Погружение в Фарос",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 28",
+          "text": ": с. 28",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Potential",
-          "marks": []
+          "text": "Потенциал",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Using Potentials, p. 51",
+          "text": ": см. Использование потенциалов, с. 51",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Power",
-          "marks": []
+          "text": "Сила",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Power Roll, p. 50",
+          "text": ": см. Бросок Силы, с. 50",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Power dice",
-          "marks": []
+          "text": "Кубики силы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 33; see also: Dice, p. 8, Power Dice Tiers, p. 50",
+          "text": ": с. 33; см. также: Кубики, с. 8, Уровни кубиков силы, с. 50",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Power Pool",
-          "marks": []
+          "text": "Запас силы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Power Roll, p. 50",
+          "text": ": см. Бросок Силы, с. 50",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Power Re-roll X",
-          "marks": []
+          "text": "Переброс силы X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 65; see also Power Re-Rolls, p. 51",
+          "text": ": с. 65; см. также Перебросы силы, с. 51",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Power Roll",
-          "marks": []
+          "text": "Бросок Силы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 50",
+          "text": ": с. 50",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Precise",
-          "marks": []
+          "text": "Точный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Precision",
-          "marks": []
+          "text": "Точность",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Offensive Gear Stats, p. 46; Attack Roll, p. 49",
+          "text": ": см. Показатели атакующего Снаряжения, с. 46; Бросок атаки, с. 49",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial",
-          "marks": []
+          "text": "Первозданный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 33; see also: Primordial Type, p. 34, Primordial Round, p. 35",
+          "text": ": с. 33; см. также: Тип Первозданного, с. 34, Раунд Первозданного, с. 35",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial Attributes",
-          "marks": []
+          "text": "Атрибуты Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p 36",
+          "text": ": с. 36",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial diagram",
-          "marks": []
+          "text": "Диаграмма Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 35",
+          "text": ": с. 35",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial positioning",
-          "marks": []
+          "text": "Позиционирование Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 34",
+          "text": ": с. 34",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial Resources",
-          "marks": []
+          "text": "Ресурсы Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Gaining Pri-mordial Resources, p. 55",
+          "text": ": см. Получение Ресурсов Первозданного, с. 55",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial Round",
-          "marks": []
+          "text": "Раунд Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 35; see also Primor-dial Round Overview, p. 36",
+          "text": ": с. 35; см. также Обзор Раунда Первозданного, с. 36",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Primordial Sheet",
-          "marks": []
+          "text": "Лист Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 35",
+          "text": ": с. 35",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Priority Target",
-          "marks": []
+          "text": "Приоритетная Цель",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 38",
+          "text": ": с. 38",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Prisoners!",
-          "marks": []
+          "text": "Пленники!",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 6",
+          "text": ": см. Книгу Историй Цикла II, с. 6",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Progress",
-          "marks": []
+          "text": "Прогресс",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Progress and Doom, p. 9",
+          "text": ": см. Прогресс и Рок, с. 9",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Projects deck",
-          "marks": []
+          "text": "Колода проектов",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Technology Cards, p. 17",
+          "text": ": см. Карты Технологий, с. 17",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Provoke",
-          "marks": []
+          "text": "Провокация",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 65",
+          "text": ": с. 65",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Pull X",
-          "marks": []
+          "text": "Притянуть X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 65",
+          "text": ": с. 65",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Pushback X",
-          "marks": []
+          "text": "Отбрасывание X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 65",
+          "text": ": с. 65",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Pygmalion Stones",
-          "marks": []
+          "text": "Камни Пигмалиона",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Quantum",
-          "marks": []
+          "text": "Квант",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 8",
+          "text": ": см. Книгу Историй Цикла III, с. 8",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Quantum Eye",
-          "marks": []
+          "text": "Квантовый Глаз",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 9",
+          "text": ": см. Книгу Историй Цикла III, с. 9",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "R&R Adventures",
-          "marks": []
+          "text": "Приключения R&R",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 27",
+          "text": ": с. 27",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rage",
-          "marks": []
+          "text": "Ярость",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Triskelion, p. 11",
+          "text": ": см. Трискелион, с. 11",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Range Attack X",
-          "marks": []
+          "text": "Дальняя атака X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Primordial Attack Types, p. 41",
+          "text": ": см. Типы атак Первозданного, с. 41",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ranged X–Y",
-          "marks": []
+          "text": "Дальность X–Y",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 66",
+          "text": ": с. 66",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reach X",
-          "marks": []
+          "text": "Досягаемость X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 66",
+          "text": ": с. 66",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reactions",
-          "marks": []
+          "text": "Реакции",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 54",
+          "text": ": с. 54",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rear",
-          "marks": []
+          "text": "Тыл",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Primordial Facing, p. 40",
+          "text": ": см. Ориентация Первозданного, с. 40",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reference",
-          "marks": []
+          "text": "Ссылка",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Structural Technologies, p. 18",
+          "text": ": см. Структурные Технологии, с. 18",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reflex",
-          "marks": []
+          "text": "Рефлекс",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 66",
+          "text": ": с. 66",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Refugees",
-          "marks": []
+          "text": "Беженцы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 8",
+          "text": ": см. Книгу Историй Цикла II, с. 8",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reinforce X",
-          "marks": []
+          "text": "Усилить X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 66",
+          "text": ": с. 66",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reinforced Destructible",
-          "marks": []
+          "text": "Усиленный Разрушаемый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Destructible, p. 68",
+          "text": ": см. Разрушаемый, с. 68",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Removing",
-          "marks": []
+          "text": "Удаление",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Removing elements (archi­ving), p. 62",
+          "text": ": см. Удаление элементов (архивирование), с. 62",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Reposition X",
-          "marks": []
+          "text": "Изменить позицию X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 66",
+          "text": ": с. 66",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Research",
-          "marks": []
+          "text": "Исследование",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 17",
+          "text": ": с. 17",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Resistance Hideouts",
-          "marks": []
+          "text": "Убежища Сопротивления",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Story-book, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Resolution Order",
-          "marks": []
+          "text": "Порядок разрешения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7",
+          "text": ": с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Resources",
-          "marks": []
+          "text": "Ресурсы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 19; see also: Resolving an Exploration Draw, p. 15; Gaining Primordi-al Resources, p. 55",
+          "text": ": с. 19; см. также: Разрешение Жребия Исследования, с. 15; Получение Ресурсов Первозданного, с. 55",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Responses",
-          "marks": []
+          "text": "Ответы",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Primordial Responses, p. 51",
+          "text": ": см. Ответы Первозданного, с. 51",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Restricted ",
-          "marks": []
+          "text": "Ограниченный ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "(Trait)",
-          "marks": []
+          "text": "(Черта)",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 66",
+          "text": ": с. 66",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Retirement",
-          "marks": []
+          "text": "Отставка",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Argonaut Retirement, p. 10",
+          "text": ": см. Отставка Аргонавта, с. 10",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Retreat",
-          "marks": []
+          "text": "Отступление",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 57",
+          "text": ": с. 57",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rewind",
-          "marks": []
+          "text": "Перемотка",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 8",
+          "text": ": см. Книгу Историй Цикла III, с. 8",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "River",
-          "marks": []
+          "text": "Река",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see River space in Cycle I Story-book, p. 5",
+          "text": ": см. Пространство реки в Книге Историй Цикла I, с. 5",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rocksteady",
-          "marks": []
+          "text": "Непоколебимый",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 67",
+          "text": ": с. 67",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Roll Out",
-          "marks": []
+          "text": "Развернуть",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rouse X",
-          "marks": []
+          "text": "Побудить X",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle II Storybook, p. 7",
+          "text": ": см. Книгу Историй Цикла II, с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Routine",
-          "marks": []
+          "text": "Рутина",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Signature and Routine, p. 36",
+          "text": ": см. Подпись и Рутина, с. 36",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rules Precedence",
-          "marks": []
+          "text": "Приоритет правил",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 7",
+          "text": ": с. 7",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Rush",
-          "marks": []
+          "text": "Рывок",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 67",
+          "text": ": с. 67",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Sacrifice",
-          "marks": []
+          "text": "Жертва",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 67",
+          "text": ": с. 67",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Save",
-          "marks": []
+          "text": "Сохранение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Structural Technologies, p. 18",
+          "text": ": см. Структурные Технологии, с. 18",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Saving the Campaign",
-          "marks": []
+          "text": "Сохранение кампании",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 22",
+          "text": ": с. 22",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Scale",
-          "marks": []
+          "text": "Масштаб",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": p. 67",
+          "text": ": с. 67",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Sealed",
-          "marks": []
+          "text": "Запечатанный",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ": see Cycle III Storybook, p. 5",
+          "text": ": см. Книгу Историй Цикла III, с. 5",
           "marks": []
         }
       ]

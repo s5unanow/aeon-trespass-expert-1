@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0011",
-    "title": "Campaign Win and Lose Conditions",
+    "title": "Условия победы и поражения в кампании",
     "section_path": [],
     "source_page_number": 11
   },
@@ -19,82 +19,98 @@
       "children": [
         {
           "kind": "text",
-          "text": "Crew",
+          "text": "Экипаж",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляет собой численность трудоспособных членов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " represents the strength of the able-bodied members of the ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " экипажа, будь то моряки, воины, философы, ученые и так далее. Высокое значение Экипажа (6 для Цикла I) означает, что город-корабль полностью укомплектован, в то время как низкое значение (например, 1) означает, что им управляет минимальный экипаж. Потеря слишком большого количества Экипажа приведет к поражению в кампании (см. Условия победы и поражения в кампании, стр. 10).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Корпус",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляет собой целостность ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "’s crew, be it sailors, warriors, philosophers, academ-ics and so on. A high Crew value (6 for Cycle I) means the city-ship is fully staffed, while a low value (such as 1) means it’s run by a skeleton crew. Losing too much Crew will lead to a campaign loss (see Campaign Win and Lose Conditions, p. 10).",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " корпуса, его общую мореходность. Высокое значение Корпуса (5 для Цикла I) означает, что город-корабль работает на полную мощность, в то время как низкое значение (например, 1) означает, что он близок к затоплению. Потеря слишком большого количества Корпуса приведет к поражению в кампании.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Hull",
+          "text": "Судьба Арго",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляет собой коллективную судьбу ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " represents the integrity of ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и его экипажа. Чем больше вы пытаетесь склонить судьбы в свою пользу, тем больше сопротивления окажут Мойры. В отличие от Корпуса и Экипажа, и точно так же, как показатели Трискелиона (см. стр. 11), низкое значение Судьбы Арго (0) означает, что у вас все отлично, в то время как высокое значение (например, 9) означает, что вы слишком сильно испытали удачу и можете ожидать расплаты. Получение Судьбы Арго более 9 приведет к поражению в кампании.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Знание Арго",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " представляет собой коллективное знание об ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "’s hull, its general sea-worthiness. A high Hull value (5 for Cycle I) means the city-ship is running at full capacity, while a low value (such as 1) means it’s close to sinking. Losing too much Hull will lead to a campaign loss.",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Argo Fate",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " represents the collective destiny of the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " and its crew. The more you try to bend the fates in your favor, the more resistance the Moirai will put up. Unlike Hull and Crew, and exactly like the Triskelion stats (see p. 11), a low Argo Fate value (0) means you’re doing great, while high value (such as 9) means you’ve pushed your luck too far and can expect a reckoning. Gain-ing Argo Fate over 9 will lead to a campaign loss.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo Knowledge",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " represents the collective knowledge about the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " and the state of the world. It’s a cumulative stat that will only ever go up. Argo Knowledge is directly tied to the Inward Odyssey Story card. Whenever you gain an Argo Knowledge point, you will trigger the next Inward Odyssey adventure. During each Cycle you can gain a maximum of 20 Argo Knowledge, with each of these tied to a unique adventure. When you finish one Cycle and start the next one, you will skip all unresolved adventures and move to the next Inward Odyssey card, so be sure to collect that knowledge!",
+          "text": " и состоянии мира. Это кумулятивный показатель, который будет только расти. Знание Арго напрямую связано с картой Истории «Внутренняя Одиссея». Всякий раз, когда вы получаете очко Знания Арго, вы запускаете следующее приключение «Внутренней Одиссеи». В течение каждого Цикла вы можете получить максимум 20 Знаний Арго, каждое из которых связано с уникальным приключением. Когда вы завершаете один Цикл и начинаете следующий, вы пропускаете все неразрешенные приключения и переходите к следующей карте «Внутренней Одиссеи», так что обязательно соберите это знание!",
           "marks": []
         },
         {
@@ -126,7 +142,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Campaign Win and Lose Conditions",
+          "text": "Условия победы и поражения в кампании",
           "marks": []
         }
       ]
@@ -137,7 +153,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The players’ ultimate goal is to reach the end of the current Cy-cle’s plot, represented by its Story cards. As the story unfolds, your goals should become clear. You only win if a Story Paragraph ex-plicitly says so.There are, however, quite a few ways for the Campaign to end in a game over before the Argonauts reach their objective. These include:",
+          "text": "Конечная цель игроков — достичь конца сюжета текущего Цикла, представленного его картами Истории. По мере развития сюжета ваши цели должны становиться ясными. Вы выигрываете только в том случае, если это явно указано в абзаце Истории. Однако существует довольно много способов завершить Кампанию поражением до того, как Аргонавты достигнут своей цели. К ним относятся:",
           "marks": []
         }
       ]
@@ -148,7 +164,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "goes to 0. It’s generally easier to lose and gain  than it is to lose and gain .",
+          "text": "становится 0. Обычно легче терять и получать , чем терять и получать .",
           "marks": []
         }
       ]
@@ -159,17 +175,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "When you reach some of the conditions listed above, the game will direct you to a story paragraph that informs you how to proceed. If you are not directed to a specific paragraph, see ",
+          "text": "Когда вы достигаете некоторых из перечисленных выше условий, игра направит вас к абзацу истории, который сообщит вам, как действовать. Если вы не направлены к конкретному абзацу, см. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "CampaignLoss",
-          "marks": []
+          "text": "Поражение в кампании",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " in your current Storybook.",
+          "text": " в вашей текущей Книге Историй.",
           "marks": []
         }
       ]
@@ -181,7 +199,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Argonauts",
+          "text": "Аргонавты",
           "marks": []
         }
       ]
@@ -192,37 +210,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "In ",
+          "text": "В ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", игроки берут на себя роли недавно пробудившихся Аргонавтов, единственных людей, способных управлять могучими Титанами. Всегда есть ровно 4 ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", players take the roles of newly awak-ened Argonauts, the only people capable of controlling the mighty Titans. There are always exactly 4 ",
+          "text": "активных Аргонавта",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", независимо от того, сколько игроков участвуют в кампании. Если вы играете меньшей группой, распределите Аргонавтов между игроками как можно равномернее. Игрок, управляющий данным Аргонавтом, всегда имеет последнее слово во всех решениях, касающихся этого Аргонавта. Каждый Аргонавт использует отдельный Лист Аргонавта, карту Портрета Аргонавта (с бонусом к Навыку) и диск Трискелиона. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "active Argonauts",
-          "marks": []
+          "text": "Миниатюр Аргонавтов нет!",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", no matter how many players take part in a campaign. If you play with a small-er group, distribute the Argonauts between players as evenly as possible. The player controlling a given Argonaut always has the final say in all decisions regarding that Argonaut.Each Argonaut uses a separate Argonaut Sheet, an Argonaut Por-trait card (with a Skill bonus) and a Triskelion dial. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "There are no Argonaut miniatures!",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "When they are awakened, the Argonauts are amnesiacs, with no recollection of their prior life. However, during the game, they will acquire Mnemos cards that show them glimpses of their past (see Mnemoses, p. 29). They may also acquire Fated Mnemos cards, which represent specific traumas or vices.During Battles, the players will use their Argonauts in conjunction with a Titan Sheet (see Titan Sheet on p. 44).",
+          "text": "Когда они пробуждаются, Аргонавты страдают амнезией, не помня своей прошлой жизни. Однако во время игры они будут приобретать карты Мнемос, которые показывают им проблески их прошлого (см. Мнемосы, стр. 29). Они также могут приобретать карты Судьбоносных Мнемосов, которые представляют собой конкретные травмы или пороки. Во время Битв игроки будут использовать своих Аргонавтов в сочетании с Листом Титана (см. Лист Титана на стр. 44).",
           "marks": []
         },
         {
@@ -259,7 +283,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argonaut Sheet",
+          "text": "Лист Аргонавта",
           "marks": []
         }
       ]
@@ -270,17 +294,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Argonaut Sheet, just like the Argo Sheet, is used to track pro-gress, but for a given Argonaut. Here, you will write your char-acter’s name (from the Argonaut Portrait card or one devised by you) and keep track of your Mnemos and Fated Mnemos cards and their respective progress, your Skill bonuses and note any unusual things, boons and penalties that may apply to your character (you put these under Boons, Afflictions and Notes).The Katharsis space is only used once you reach the end of a Mne-mos storyline (see Resolved Mnemoses and Katharsis on p. 30).The Triskelion space is used to save your Triskelion stats between game sessions (see below and Saving the Campaign on p. 22).",
+          "text": "Лист Аргонавта, как и Лист Арго, используется для отслеживания прогресса, но для конкретного Аргонавта. Здесь вы запишете имя своего персонажа (с карты Портрета Аргонавта или придуманное вами) и будете отслеживать свои карты Мнемос и Судьбоносных Мнемосов и их соответствующий прогресс, свои бонусы к Навыкам и отмечать любые необычные вещи, благословения и штрафы, которые могут применяться к вашему персонажу (вы помещаете их в разделы «Благословения», «Недуги» и «Примечания»). Пространство Катарсиса используется только после того, как вы достигнете конца сюжетной линии Мнемоса (см. Разрешенные Мнемосы и Катарсис на стр. 30). Пространство Трискелиона используется для сохранения ваших показателей Трискелиона между игровыми сессиями (см. ниже и Сохранение кампании на стр. 22).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argonaut Sheet",
-          "marks": []
+          "text": "Лист Аргонавта",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Argonaut Sheet Skills CourageCunningEnduranceFuryWillWisdom Abilities  Mnemos DangerRageFateName:Player:Katharsis415268379110415268379210",
+          "text": "Лист Аргонавта Навыки Отвага Хитрость Выносливость Неистовство Воля Мудрость Способности Мнемос Опасность Ярость Судьба Имя: Игрок: Катарсис415268379110415268379210",
           "marks": []
         },
         {
@@ -307,7 +333,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argonaut Death",
+          "text": "Смерть Аргонавта",
           "marks": []
         }
       ]
@@ -318,13 +344,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unlike many other adventure games, your heroes are not immortal and Argonaut deaths, though rare, will happen. In such a case, con-sult the Rude Awakening Special Event of your current Cycle, it will instruct you on how to create a new Argonaut.Remember that your Argonaut dies only when explicitly stated or when any of their Triskelion stats goes over 9 outside of Battle (see Triskelion p. 11).",
+          "text": "В отличие от многих других приключенческих игр, ваши герои не бессмертны, и смерти Аргонавтов, хотя и редкие, будут происходить. В таком случае обратитесь к Специальному событию «Грубое Пробуждение» вашего текущего Цикла, оно проинструктирует вас, как создать нового Аргонавта. Помните, что ваш Аргонавт умирает только тогда, когда это явно указано или когда любой из его показателей Трискелиона превышает 9 вне Битвы (см. Трискелион, стр. 11).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: Never discard or destroy the Argonaut Sheets of de-ceased Argonauts, as some events might reference them later! ",
-          "marks": []
+          "text": "Важно: Никогда не выбрасывайте и не уничтожайте Листы Аргонавтов умерших Аргонавтов, так как некоторые события могут ссылаться на них позже! ",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -335,7 +363,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argonaut Retirement",
+          "text": "Отставка Аргонавта",
           "marks": []
         }
       ]
@@ -346,7 +374,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some story effects may cause an Argonaut to leave the Argo. When it happens, take a new Argonaut Sheet, draw a new Portrait card (or simply choose a Skill you would like to apply the +1 bonus to) and draw a new Mnemos card from the Mnemos Vault.",
+          "text": "Некоторые сюжетные эффекты могут привести к тому, что Аргонавт покинет Арго. Когда это произойдет, возьмите новый Лист Аргонавта, вытяните новую карту Портрета (или просто выберите Навык, к которому вы хотели бы применить бонус +1) и вытяните новую карту Мнемос из Хранилища Мнемосов.",
           "marks": []
         }
       ]

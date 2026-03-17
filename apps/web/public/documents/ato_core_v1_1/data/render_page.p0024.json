@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0024",
-    "title": "Special Summonings and Bonus Summoning Charges",
+    "title": "Особые Призывания и Бонусные Заряды Призывания",
     "section_path": [],
     "source_page_number": 24
   },
@@ -19,67 +19,79 @@
       "children": [
         {
           "kind": "text",
-          "text": "Every Summoning has its own ",
+          "text": "Каждое Призывание имеет свои собственные ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "requirements",
+          "text": "требования",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и иногда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and sometimes ",
+          "text": "затраты",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Как только вы используете Призывание, вы тратите 1",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "costs",
+          "text": " Заряд Призывания",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "(см. Лимит Призываний ниже). Отметьте ячейку в разделе Призываний на Листе Арго, чтобы обозначить потраченный заряд. В общей сложности вы не можете использовать больше, чем ваш текущий Лимит Призывания. Вы найдете ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Once you use a Summoning, you use up 1",
+          "text": "Лимит Призывания",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на карте Технологии, которая позволит вам совершать Призывания. Всякий раз, когда вы исследуете или получаете карту Технологии с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Summon Charge",
+          "text": "Лимитом Призывания",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", который выше вашего текущего лимита, более высокое значение становится вашим новым Лимитом Призывания (отметьте это на Листе Арго в ячейке рядом с разделом Призываний). Кроме того, как только вы используете одно из Призываний, оно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "(see Summoning Limit below). Mark a box in the Summoning sec-tion of the Argo Sheet to denote the spent charge.In total, you cannot use more  than your current Summon Limit. You will find the ",
-          "marks": []
+          "text": "истощается",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Summon Limit",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " on the Technology card that will allow you to perform Summonings. Whenever you research or gain a Technology card with a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Summon Limit",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " that is higher than your current limit, the higher value becomes your new Summon Limit (note it on the Argo Sheet in the box near the Summoning section).On top of that, once you use one of the Summonings, it ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "exhausts",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ": write its name in the Summonings section, next to the marked Summon Charge box to denote that it is exhausted. That particu-lar Summoning then remains unusable until the next Divine Surge (see Divine Surges on p. 23). ",
+          "text": ": запишите его название в разделе Призываний, рядом с отмеченной ячейкой Заряда Призывания, чтобы обозначить, что оно истощено. Это конкретное Призывание остается непригодным для использования до следующего Божественного Всплеска (см. Божественные Всплески на стр. 23). ",
           "marks": []
         },
         {
@@ -106,7 +118,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Special Summonings and Bonus Summoning Charges",
+          "text": "Особые Призывания и Бонусные Заряды Призывания",
           "marks": []
         }
       ]
@@ -117,37 +129,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Very rarely, you may gain access to a one-off Summoning, usually of a Nymph you don’t normally have access to. When this happens, you also gain a bonus . This Charge can be only used to summon ",
+          "text": "Очень редко вы можете получить доступ к одноразовому Призыванию, обычно Нимфы, к которой у вас обычно нет доступа. Когда это происходит, вы также получаете бонусный . Этот Заряд может быть использован только для призыва ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "that particular Nymph",
+          "text": "этой конкретной Нимфы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и эта Нимфа может быть призвана только ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and that Nymph can only be summoned ",
+          "text": "один раз",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Следовательно, этот бонусный  не пополняется во время Божественного Всплеска (см. ниже), и вы должны вернуть карту Призывания в коробку, как только используете ее (если только вы уже не разблокировали ее навсегда). Запишите название этого Призывания в разделе Призываний на Листе Арго (даже если вы уже использовали его), но ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "once",
-          "marks": []
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ". Consequently, that bonus  does not get replenished dur-ing a Divine Surge (see below) and you have to return the Sum-moning card to the box as soon as you use it (unless you have al-ready unlocked it permanently). Note this Summoning’s name in the Summoning section of the Argo Sheet (even if you already used it) but ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "do not",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " mark the box next to it to indicate that it is available and does not count towards your Summon Limit. If you gain a bo-nus  that is not tied to a specific Summoning, circle one of the  boxes to denote that it does not count towards the Summon Limit.",
+          "text": " отмечайте ячейку рядом с ним, чтобы указать, что оно доступно и не учитывается в вашем Лимите Призывания. Если вы получаете бонусный , который не привязан к конкретному Призыванию, обведите одну из  ячеек, чтобы обозначить, что он не учитывается в Лимите Призывания.",
           "marks": []
         }
       ]
@@ -159,7 +177,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Summonings and the Adversary",
+          "text": "Призывания и Противник",
           "marks": []
         }
       ]
@@ -170,23 +188,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "Nymphs are unknowable, but their power is quantifiable. It’s be-yond mortal limits. Such rapid manifestations are likely to draw unwanted eyes. And whose eyes are more unwanted than your Adversary’s?All Summoning cards have the ",
+          "text": "Нимфы непостижимы, но их сила поддается измерению. Она выходит за пределы смертных возможностей. Такие быстрые проявления, вероятно, привлекут нежелательное внимание. А чьи глаза более нежелательны, чем глаза вашего Противника? Все карты Призывания имеют ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "symbol",
+          "text": "символ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Это означает, что всякий раз, когда вы совершаете Призывание, Противник немедленно движется к ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". This means, whenever you perform a Summoning, the Adversary immediately moves to-ward the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
@@ -202,7 +224,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Divine Surges",
+          "text": "Божественные Всплески",
           "marks": []
         }
       ]
@@ -213,7 +235,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Awakenings, Summonings and some other powerful effects make use of divine power. However, the Olympians are dead and any lin-gering divine power they had is hard to come by. This is represent-ed by Divine Surges: only during specific moments of a Cycle do these powers replenish.A Divine Surge is a periodic game effect that allows you to replen-ish available Godforms (see Awakenings, p. 59), as well as Sum-monings and Summon Charges (p. 22). Divine Surges are mainly associated with major breakthroughs in the Story. Whenever you are instructed to perform a Divine Surge, simply erase all marks and names from the Godforms section and Summonings section of the Argo Sheet.",
+          "text": "Пробуждения, Призывания и некоторые другие мощные эффекты используют божественную силу. Однако олимпийцы мертвы, и любую оставшуюся у них божественную силу трудно получить. Это представлено Божественными Всплесками: только в определенные моменты Цикла эти силы пополняются. Божественный Всплеск — это периодический игровой эффект, который позволяет вам пополнять доступные Божественные Формы (см. Пробуждения, стр. 59), а также Призывания и Заряды Призывания (стр. 22). Божественные Всплески в основном связаны с крупными прорывами в Сюжете. Всякий раз, когда вам предписано совершить Божественный Всплеск, просто сотрите все отметки и имена из раздела Божественных Форм и раздела Призываний на Листе Арго.",
           "marks": []
         }
       ]
@@ -225,7 +247,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Diplomacy",
+          "text": "Дипломатия",
           "marks": []
         }
       ]
@@ -236,87 +258,103 @@
       "children": [
         {
           "kind": "text",
-          "text": "During your voyages you will meet many peoples. Some of these peoples will represent major Factions you can interact with. Each Cycle has a different set of Factions. Your standing with a given Faction (called a ",
+          "text": "Во время ваших странствий вы встретите множество народов. Некоторые из этих народов будут представлять основные Фракции, с которыми вы можете взаимодействовать. Каждый Цикл имеет свой набор Фракций. Ваше положение с данной Фракцией (называемое ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Diplomacy Score",
+          "text": "Показателем Дипломатии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ") будет влиять на все: от ресурсов, которые вы получаете во время Шага Исследования, и доступных вариантов во время многочисленных приключений, до Битв и различных проверок (таких как проверки Навыков или Спасброски). Вы должны отмечать свое текущее положение с различными Фракциями на соответствующей шкале Дипломатии. Всякий раз, когда вы получаете или теряете Дипломатию с Фракцией, отметьте соответствующее место на соответствующей шкале. Каждая шкала разделена на секции, представляющие различные Пороги Дипломатии (например, Дружественный или Осужденный). Шкалы Дипломатии: В состоянии войны (-3) Осужденный (-2) Недружелюбный (-1) Нейтральный (+0) Дружественный (+1) Союзный (+2) Минойцы -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10 Лабиринтийцы -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10 Рогатые -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10 Различные игровые элементы будут включать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ") will influence everything from the resources you gain during the Exploration Step, and the avail-able choices during the many adventures, to Battles and various tests (like Skill tests or Saves).You should note your current standing with different Factions on the corresponding Diplomacy track. Whenever you gain or lose Diplomacy with a Faction, mark the appropriate space on the cor-responding track. Each track is divided into sections representing different Diplomacy Thresholds (like Friendly or Denounced). Diplomacy Tracks At War (-3)Denounced (-2)Unfriendly (-1)Neutral (+0)Friendly (+1)Allied (+2)Minoans -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10Labyrinthians -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10Hornsworn -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10Various game elements will include ",
+          "text": "триггеры Дипломатии",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", которые могут изменять их игровой эффект или расширять/ограничивать ваши возможности. Если явно не указано иное, они всегда относятся к вашему Порогу Дипломатии (т.е. «Дружественный или лучше») или Показателю (т.е. «Дипломатия 5+») с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Diplomacy triggers",
+          "text": "Местной Фракцией",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (Фракцией, чей символ находится в правом нижнем углу тайла Карты, на котором в данный момент находится ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " that may modify their game effect or extend or restrict your options. Unless explicitly stated otherwise, these always refer to your Diplomacy Threshold (i.e. “Friendly or better”) or Score (i.e. “Diplomacy 5+”) with the ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "). Как и в случае с другими триггерами, такими как  или , следующие эффекты разрешаются только в том случае, если ваше положение с этой Фракцией находится в указанном диапазоне (например, если вы сталкиваетесь с игровым элементом с эффектом, которому предшествуетå_____________________ß",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Local Faction",
+          "text": "Дружественный+",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или словами «Дружественный или лучше», он разрешается только в том случае, если вы Дружественны или Союзны с Местной Фракцией). Местная Фракция — это Фракция, чей символ находится в правом нижнем углу тайла Карты, на котором в данный момент находится ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (the Faction whose symbol is in the bot-tom right corner of the Map tile the ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если на тайле более одного символа фракции, вы можете выбрать, какую из Местных Фракций вы хотите принять во внимание при применении модификаторов и триггеров. Числа в скобках над секциями шкалы обозначают Бонус/Штраф Дипломатии, который вы должны применить, если вы находитесь в пределах данного порога. Всякий раз, когда вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "проверяете Дипломатию",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (например, при использовании способностей Переговоров), повышайте или понижайте свой результат на значение этого бонуса или штрафа. Если вы когда-либо достигнете раздела ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is currently on). As with other triggers, like  or , the following effects are resolved only if your standing with this Faction is within the specified range (e.g. if you encounter a game element with an effect preceded byå_____________________ß",
-          "marks": []
+          "text": "В состоянии войны",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Friendly+",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "  or the words “Friendly or better,” it is resolved only if you are Friendly or Allied with the Local Faction).The Local Faction is the Faction whose symbol is in the bottom right corner of the Map tile the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " is currently on. If there is more than one faction symbol on a tile, you can choose which of the Local Factions you want to take into considera-tion when applying modifiers and triggers.The numbers in parenthesis above the track sections denote the Diplomacy Bonus/Penalty you should apply if you are within a giv-en threshold. Whenever you ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "test Diplomacy",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (for example when using Negotiation abilities), raise or lower your result by the value of that bonus or penalty.If you ever reach the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "At War",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " section of any Faction’s Diplomacy track, there is no going back: you can no longer gain or lose Diplo-macy with this Faction. Simply ignore all gains and losses of this Faction’s Diplomacy.",
+          "text": " любой шкалы Дипломатии Фракции, пути назад нет: вы больше не можете получать или терять Дипломатию с этой Фракцией. Просто игнорируйте все получения и потери Дипломатии этой Фракции.",
           "marks": []
         },
         {
@@ -343,7 +381,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Gain",
+          "text": "Получение",
           "marks": []
         }
       ]
@@ -354,17 +392,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "During the game, you will gain a lot of different things! (And lose those things too…) You may gain or lose resources, ",
+          "text": "Во время игры вы будете получать много разных вещей! (И терять эти вещи тоже…) Вы можете получать или терять ресурсы, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear",
-          "marks": []
+          "text": "Снаряжение",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " cards, Mnemos cards, Technologies and other game elements from Bat-tles, adventures and other sources. Whenever you gain a card, sim-ply find it and add it to the appropriate place:",
+          "text": " карты, карты Мнемос, Технологии и другие игровые элементы из Битв, приключений и других источников. Всякий раз, когда вы получаете карту, просто найдите ее и добавьте в соответствующее место:",
           "marks": []
         }
       ]
@@ -375,33 +415,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "if for whatever reason you gain a  card during a Battle, the Titan responsible for the gain can immediately ",
+          "text": "если по какой-либо причине вы получаете  карту во время Битвы, Титан, ответственный за получение, может немедленно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "equip",
+          "text": "экипировать",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " эту карту (сбрасывая любую другую , если необходимо). Например, это может произойти в результате ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " that card (discarding any other  if needed). For example, this may happen as a result of a ",
+          "text": "Критической Раны ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Critical Wound ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "or a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Search test",
-          "marks": []
+          "text": "проверки Поиска",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -410,18 +456,22 @@
         },
         {
           "kind": "text",
-          "text": "Impor-tant: ",
+          "text": "Важно: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Если вы получаете карту с ключевым словом «Владение», Титан или Аргонавт ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "If you gain a card with a Possession keyword, the Titan or Argonaut ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "must immediately equip it",
-          "marks": []
+          "text": "должен немедленно экипировать ее",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -436,7 +486,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story and Doom cards.",
+          "text": "картами Сюжета и Рока.",
           "marks": []
         }
       ]
@@ -447,7 +497,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "naut who gained them. If it is impossible to distribute a gained ",
+          "text": "навта, который их получил. Если невозможно распределить полученную ",
           "marks": []
         }
       ]

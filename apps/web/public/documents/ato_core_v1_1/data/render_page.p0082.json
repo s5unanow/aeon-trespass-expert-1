@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0082",
-    "title": "The Most Popular",
+    "title": "Самые популярные",
     "section_path": [],
     "source_page_number": 82
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Most Popular",
+          "text": "Самые популярные",
           "marks": []
         }
       ]
@@ -32,7 +32,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "in-game Symbols",
+          "text": "внутриигровые символы",
           "marks": []
         }
       ]
@@ -43,17 +43,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "DangerAttack dieRed diePotentialFateCrit dieBlack diePowerRage‘10’ Armor dieYou will find out in due time...Break  tokenATProgressCrewOpening tokenWindow of OpportunityDoomHullExhaustPriority TargetCityArgo FateReaction",
+          "text": "ОпасностьКубик атакиКрасный кубикПотенциалСудьбаКубик критаЧёрный кубикСилаЯростьКубик брони «10»Вы узнаете в своё время...Жетон прорываАТПрогрессЭкипажЖетон открытияОкно возможностейРокКорпусИстощениеПриоритетная цельГородСудьба АргоРеакция",
           "marks": []
         },
         {
           "kind": "text",
           "text": "X",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Unavoidable KnockbackTitanArgo  KnowledgeGearTo hitAdventureSummon ChargeOne  handedSpeedR&R  AdventureTwo  handedWoundsRestrictedThree  handedEscalationEnd stackArmorBlindspotDraw  anotherSupport",
+          "text": "Неизбежный отбросТитанЗнание АргоСнаряжениеПопаданиеПриключениеЗаряд призываОдноручноеСкоростьПриключение «Отдых и восстановление»ДвуручноеРаныОграниченоТрёхручноеЭскалацияКонец стопкиБроняСлепое пятноВытянуть ещёПоддержка",
           "marks": []
         },
         {
@@ -86,7 +88,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "RearAdversary ActivationCombat  Action",
+          "text": "ТылАктивация противникаБоевое действие",
           "marks": []
         }
       ]
@@ -109,7 +111,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "WeakspotTimeline  BattleMovement ActionCombat  TechnologyComplicated ActionStructural Technology",
+          "text": "Уязвимое местоХронологияБитваДействие перемещенияБоевая ТехнологияСложное действиеСтруктурная Технология",
           "marks": []
         }
       ]

@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0062",
-    "title": "Constant Abilities",
+    "title": "Постоянные Способности",
     "section_path": [],
     "source_page_number": 62
   },
@@ -19,48 +19,59 @@
       "children": [
         {
           "kind": "text",
-          "text": "another rule overrides this timing (for example, by instructing you to resolve the ability ",
+          "text": "другое правило отменяет этот тайминг (например, предписывая вам разрешить способность ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "immediately",
+          "text": "немедленно",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " после того, как произойдет что-то другое). Активные способности, не имеющие конкретного условия тайминга, могут быть использованы как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " once something else occurs).Active abilities that do not have a specific timing condition can be used as a ",
+          "text": "свободное действие",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. стр. 54). Вы не можете активировать способность, если не можете оплатить ее полную стоимость (например, способность требует от вас поднять Судьбу и ваша Судьба уже на 9, или способность требует от вас сбросить заряд, а их не осталось). Вы можете использовать каждую доступную активную способность на одном игровом элементе ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "free action",
+          "text": "один раз за Раунд",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (see p. 54).You cannot activate an ability if you cannot pay its full cost (e.g. an ability requires you to raise  and your Fate is already at 9, or an ability requires you to discard a charge and there are none remaining).You can use each available active ability on a single game element ",
-          "marks": []
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "once per Round",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Example:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " During his turn, Herodotus uses a Primordial Lure  card to place the top card from the BP deck at the bottom of the deck. The Titan still has another charge on it, but since it is an ac-tive ability, it remains unusable until the end of this Titan Round.",
-          "marks": []
+          "text": " Во время своего хода Геродот использует карту Приманка Первозданного, чтобы поместить верхнюю карту из колоды BP в низ колоды. У Титана все еще есть один заряд, но поскольку это активная способность, она остается непригодной для использования до конца этого Раунда Титана.",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -76,7 +87,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Constant Abilities",
+          "text": "Постоянные Способности",
           "marks": []
         }
       ]
@@ -87,118 +98,143 @@
       "children": [
         {
           "kind": "text",
-          "text": "Abilities that ",
+          "text": "Способности, которые ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "do not",
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " требуют оплаты стоимости, являются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " require you to pay a cost are ",
+          "text": "постоянными способностями",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Большинство постоянных способностей постоянно ищут конкретные условия тайминга и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "constant abilities",
+          "text": "должны быть разрешены",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " всякий раз, когда указанное условие выполняется, если только текст способности прямо не указывает, что «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".Most constant abilities continuously seek specific timing conditions and ",
+          "text": "вы можете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "» разрешить ее эффект. Как правило, вы всегда должны разрешать ключевые слова, которые помещают жетоны Кратоса в Пул Кратоса (например, Открытие X или Прорыв X), а также ключевые слова, которые каким-либо образом препятствуют вам (например, Обременительный или Обязательство). Вы, как правило, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "must be resolved",
+          "text": "можете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " использовать способности, которые дают вам способности, похожие на движение (например, Перемещение X), или позволяют вам принудительно перемещать Первозданного (например, Отбрасывание X). См. Список ключевых слов на стр. 63, чтобы узнать больше об использовании других ключевых способностей. Постоянные способности, имеющие конкретное условие тайминга (например, «во время второго окна способностей», «когда вы собираетесь умереть» и т. д.), всегда вступают в силу в этом окне, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " anytime the specified condition is met, unless the ability text itself specifically says that “",
+          "text": "поэтому их можно использовать несколько раз в течение одного Раунда",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "you may",
+          "text": "Исключение:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Некоторые мощные постоянные способности, называемые ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "” resolve its effect.As a general rule, you must always resolve keywords that place Kratos tokens in the Kratos Pool (like Opening X or Break X), as well as keywords that hinder you in any way (like Cumbersome or Commit). You generally ",
+          "text": "гибкими способностями",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (например, Отбрасывание X или Прыжок), имеют двойные условия тайминга, а именно, они могут быть активированы либо во время первого, либо во время второго окна способностей Атаки Титана. Вы можете использовать такие способности в любом из окон, но не в обоих. (Например, Титаны могут использовать Отбрасывание X либо в первом, либо во втором окне способностей, но не в обоих). Постоянные способности, не имеющие конкретного условия тайминга, называются пассивными и обеспечивают ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "may",
+          "text": "пассивный постоянный эффект",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (например, «+1 Точность», «Дальность 2–4» и т. д.). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " use abilities that grant you move-like abilities (like Reposition X) or allow you to forcefully move the Pri-mordial (like Pushback X). See the Keywords List on p. 63 to learn more about using other keyword abilities.Constant abilities that have a specific timing condition (such as “during second ability window,” “when you are about to die,” etc.) always take effect in that window, ",
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Лабиринтавр движется через пространство, занятое Филоктерой, активируя способность Кувырок на ее ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Расплавленном Нагруднике",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "therefore they can be used mul-tiple times during the same Round",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Exception:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Some powerful constant abilities, called ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "flexible abili-ties",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (like Pushback X or Vault), have dual timing conditions, name-ly, they can be triggered during either the first or the second ability window of a Titan Attack. You may use such abilities in either of the windows, but not in both. (E.g. Titans may use Pushback X in either the first or  second ability window but not in both).Constant abilities that do not have a specific timing condition are called passives and provide a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "passive ongoing effect",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (such as “+1 Precision,” “Ranged 2–4”, etc.).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Example:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " The Labyrinthauros moves through a space occupied by Philoctera, triggering the Tumble ability on her ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Smelted Breast-plate",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " card. She passes the Tumble roll and does not suffer Crash! Later in the same Primordial Round, the monster moves through her space one more time! Since Tumble has no cost and is a passive ability, she will then attempt to avoid Crash again.",
-          "marks": []
+          "text": " карте. Она проходит проверку Кувырка и не получает Урона! Позже в том же Раунде Первозданного монстр снова движется через ее пространство! Поскольку Кувырок не имеет стоимости и является пассивной способностью, она снова попытается избежать Урона.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -209,7 +245,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos Table Abilities",
+          "text": "Способности Таблицы Кратоса",
           "marks": []
         }
       ]
@@ -220,218 +256,273 @@
       "children": [
         {
           "kind": "text",
-          "text": "Kratos Table abilities are a unique ability type, represented by icons in the ",
+          "text": "Способности Таблицы Кратоса — это уникальный тип способностей, представленный значками в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Kratos Tables",
+          "text": "Таблицах Кратоса",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Обзор символов, используемых в каждой Таблице Кратоса, можно найти на обратной стороне соответствующего Листа Титана или карты Образца. Подобно постоянным способностям, способности Таблицы Кратоса не имеют стоимости, но разрешаются немного иначе. Большинство способностей Таблицы Кратоса изменяют вашу Атаку, предоставляя вам доступ к дополнительным ключевым словам (например,  или  или уникальным мощным эффектам, таким как ). Значки Таблицы Кратоса, представляющие ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". You can find an overview of the symbols used in each Kratos Table on the back of the corresponding Titan Sheet or Pattern card. Similarly to constant abilities, Kratos Table abili-ties do not have a cost, but they are resolved slightly differently.Most Kratos Table abilities modify your Attack, either by giving you access to additional keywords (like  or  or unique powerful effects, such as ).Kratos Table icons representing ",
+          "text": "ключевые слова",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " должны рассматриваться как таковые (они могут суммироваться с ключевыми словами из других источников, см. Суммируемые ключевые слова, стр. 63). Каждая способность Таблицы Кратоса ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "keywords",
+          "text": "ограничена",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашим текущим уровнем Кратоса. По мере получения Кратоса вы открываете более мощные способности и эффекты. Вы можете применять бонусы от ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " should be treated as such (they can stack with keywords from other sources, see Stack-able Keywords, p. 63).Each Kratos Table ability is ",
+          "text": "каждого",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " уровня Таблицы Кратоса ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "gated",
+          "text": "равного или ниже",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашего текущего Кратоса. Большинство уровней Таблицы Кратоса дают вам выбор из двух вариантов. Они всегда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " by your current  level. As you gain , you unlock more powerful abilities and effects.You can apply bonuses from ",
+          "text": "взаимоисключающие:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если вы решите применить один из этих вариантов, вы не сможете применить другой. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "each",
+          "text": "Примечание: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Некоторые варианты могут включать более одного эффекта. Символы Таблицы Кратоса, связанные символом «+», являются частью одного и того же варианта. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Kratos Table level ",
+          "text": "В этом примере игрок может выбрать либо использовать Прорыв 1 ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "и",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Мотивация 1, либо использовать Переброс Силы 1. Вы всегда должны максимально использовать свою Таблицу Кратоса. Когда вы достигаете ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "второго окна способностей",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашей Атаки, вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "equal to or lower ",
+          "text": "должны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " применить соответствующие эффекты с каждого уровня Таблицы Кратоса, который все еще доступен. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "than your current .Most Kratos Table levels give you a choice of two options. These are always ",
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если текст способности говорит, что «вы можете» что-то сделать, это никогда не является принудительным. Вы можете применить эту способность, а затем решить не разрешать ее эффект. Вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "exclusive:",
+          "text": "не обязаны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " использовать какие-либо из ваших способностей Таблицы Кратоса ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If you decide to apply one of these options, you cannot apply the other. ",
+          "text": "пока не достигнете второго окна способностей",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", после чего вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note: ",
+          "text": "должны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " активировать все применимые эффекты из вашей Таблицы Кратоса (1 вариант на уровень), которые все еще ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Some options may include more than one effect. Kratos Table symbols that are linked with a “+” symbol are both part of the same option.",
+          "text": "доступны",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "In this example, the player can choose to either use Break 1 ",
-          "marks": []
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "and",
-          "marks": []
+          "text": " У Геродота 5 Кратоса, что означает, что игрок имеет доступ к довольно многим способностям и эффектам! Они атакуют и попадают по Первозданному. В первом окне способностей они решают активировать ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Motivate 1 or to use Power Re-roll 1.",
-          "marks": []
+          "text": "Отбрасывание 1",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "You must always make as much use of your Kratos Table as possi-ble. When you reach the ",
-          "marks": []
+          "text": " с 4-го уровня Кратоса. Затем они собирают свой Пул Кубиков Силы, добавляя дополнительный красный кубик с 5-го уровня Кратоса. Они выполняют Бросок Силы и получают ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "second ability window",
-          "marks": []
+          "text": "Переброс Силы 1",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " of your Attack, you ",
-          "marks": []
+          "text": " со 2-го уровня Кратоса. Если бы они не использовали способность Отбрасывание, они могли бы получить дополнительный Переброс Силы 1 с 4-го уровня Кратоса, фактически сделав его Перебросом Силы 2 (согласно правилу Суммируемых ключевых слов). Однако игрок решает, что он доволен результатами своего Броска Силы и ничего не перебрасывает: Переброс Силы X не является принудительным (его описание говорит, что «вы можете» перебросить свои кубики), поэтому они могут выбрать его активацию, а затем решить не разрешать его эффект. Наконец, они достигают второго окна способностей и применяют любые оставшиеся доступные эффекты: они решают разрешить ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "must",
-          "marks": []
+          "text": "Открытие 1 ",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " apply relevant effects from each level of the Kratos Table that is still available. ",
-          "marks": []
+          "text": "и ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Remember:",
-          "marks": []
+          "text": "Прорыв 1 ",
+          "marks": [
+            "bold",
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " If an ability text says that “you may” do something, it is never forced. You can apply this ability, then decide not to resolve its effect.You do ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "not have to",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " use any of your Kratos Table abilities ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "until you reach the second ability window",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", at which point you ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "must",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "activate all applicable effects from your Kratos Table (1 option per level) that are still ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "available",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Example:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Herodotus has 5 , which means that the player has access to quite a few abilities and effects! They attack and hit the Primordial. In the first ability window, they decide to activate ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Pushback 1",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " from Kratos level 4.Then, they gather their Power Dice Pool, adding an additional red die from Kratos level 5. They perform a Power Roll and gain a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Power Re-roll 1",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " from Kratos Level 2. If they haven’t used the Pushback ability, they could have gained an additional Power Re-roll 1 from Kratos level 4, effectively making it Power Re-roll 2 (according to Stackable Keywords rule).However, the player decides that they are satisfied with their Pow-er Roll results and don’t re-roll anything: Power Re-roll X is not forced (its description says that “you may” re-roll your dice) so they can choose to activate it, then decide not to resolve its effect.Finally, they reach the second ability window and apply any re-maining available effects: they choose to resolve ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Opening 1 ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "and ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Break 1 ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "from Kratos levels 1 and 3 to place 1 Opening token and 1 Break token in the Kratos Pool.",
-          "marks": []
+          "text": "с 1-го и 3-го уровней Кратоса, чтобы поместить 1 жетон Открытия и 1 жетон Прорыва в Пул Кратоса.",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -447,7 +538,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Named Abilities",
+          "text": "Именованные Способности",
           "marks": []
         }
       ]
@@ -458,57 +549,67 @@
       "children": [
         {
           "kind": "text",
-          "text": "The text of some abilities is preceded by an ",
+          "text": "Текст некоторых способностей предваряется ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "ability name",
+          "text": "названием способности",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (например, Жертвоприношение, Рефлекс) и, опционально, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " (e.g. Sacrifice, Reflex) and, optionally, a ",
+          "text": "подтипом",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", предшествующим их названию (например, Улучшенный Рефлекс, Превосходный Прыжок и т. д.). Вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "subtype",
+          "text": "не можете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " использовать несколько способностей с одним и тем же названием одновременно (если только это не суммируемые ключевые слова, см. стр. 63). Например, вы не можете использовать способность Рефлекс и способность Улучшенный Рефлекс в одном и том же окне возможностей (см. Окно Возможностей, стр. 43). Вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", preceding their name (such as Advanced Reflex, Superior Jump, etc.).You ",
+          "text": "можете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " использовать несколько ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "cannot",
-          "marks": []
+          "text": "активных способностей",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " use multiple abilities with the same name at the same time (unless they are stackable keywords, see p. 63). For example, you cannot use a Reflex ability and an Advanced Reflex ability in the same window of opportunity (see Window of Opportunity, p. 43).You ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "can",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " use multiple ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "active abilities ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "with the same name during a single Round, provided that they come from different game el-ements (as each single active ability can only be used once per Round!).",
+          "text": " с одним и тем же названием в течение одного Раунда, при условии, что они исходят от разных игровых элементов (поскольку каждая отдельная активная способность может быть использована только один раз за Раунд!).",
           "marks": []
         }
       ]

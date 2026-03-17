@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0043",
-    "title": "Out of Reach (OoR) Evade",
+    "title": "Уклонение «Вне досягаемости» (OoR)",
     "section_path": [],
     "source_page_number": 43
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "you simply trigger that effect. A Crit result can trigger multiple Crit Evade effects (but you cannot activate Crit Evade effects from two different weapons—only one active weapon at a time!).",
+          "text": "вы просто активируете этот эффект. Результат «Крит» может активировать несколько эффектов «Крит. Уклонение» (но вы не можете активировать эффекты «Крит. Уклонение» от двух разных видов оружия — только одно активное оружие за раз!).",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Out of Reach (OoR) Evade",
+          "text": "Уклонение «Вне досягаемости» (OoR)",
           "marks": []
         }
       ]
@@ -42,23 +42,67 @@
       "children": [
         {
           "kind": "text",
-          "text": "If, for some reason, a Titan moves outside of the Attack’s effective range after becoming its Target but before resolving an Evasion Roll (for example, by using a  ability), the Attack cannot be per-formed and the Evasion Roll, as well as any Attack effects, are not resolved. Instead, the Primordial resolves its movement towards the Target, then proceeds straight to the",
+          "text": "Если по какой-либо причине ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " After Attack",
+          "text": "Титан",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " actions and effects. This maneuver is colloquially called an ",
+          "text": " перемещается за пределы эффективной дальности Атаки после того, как стал её Целью, но до разрешения ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Out of Reach Evade",
+          "text": "Броска Уклонения",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (например, используя способность), Атака не может быть выполнена, и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Бросок Уклонения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", а также любые эффекты Атаки, не разрешаются. Вместо этого ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " разрешает своё движение к Цели, затем переходит непосредственно к действиям и эффектам ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "После Атаки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Этот манёвр в просторечии называется ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Уклонение «Вне досягаемости»",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -67,18 +111,10 @@
         },
         {
           "kind": "text",
-          "text": "The Hekaton targets Herodotus (who is 6 spaces away) with the Cold Open AI card. In the first window of opportunity, Herodotus uses his ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Iapetus Lifeguard  card",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " to move out of the Attack’s effective range. Consequently, the Hekaton moves up to its Speed value, stops 1 space short of adjacency and does not perform the Attack—the player goes straight to the After Attack and proceeds to resolve Pushback 3.",
-          "marks": []
+          "text": "Гекатон нацеливается на Геродота (который находится в 6 клетках) с помощью карты ИИ «Холодный старт». В первое окно возможностей Геродот использует свою карту «Спасатель Япета», чтобы выйти за пределы эффективной дальности Атаки. Следовательно, Гекатон перемещается на значение своей Скорости, останавливается в 1 клетке от смежности и не выполняет Атаку — игрок сразу переходит к фазе «После Атаки» и приступает к разрешению Отбрасывания 3.",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -89,7 +125,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "4.2 Attack Consequences",
+          "text": "4.2 Последствия Атаки",
           "marks": []
         }
       ]
@@ -100,7 +136,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "If, after performing the Evasion Roll, any re-rolls and using Block, the Titan is left with at least one hit, you resolve Attack Conse-quences. The most common consequences are effects and Trauma Draws.",
+          "text": "Если после выполнения ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Броска Уклонения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", любых перебросов и использования Блока у ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " остался хотя бы один удар, вы разрешаете Последствия Атаки. Наиболее распространёнными последствиями являются эффекты и Жребии Травмы.",
           "marks": []
         }
       ]
@@ -112,7 +168,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Attack Effects",
+          "text": "Эффекты Атаки",
           "marks": []
         }
       ]
@@ -123,97 +179,115 @@
       "children": [
         {
           "kind": "text",
-          "text": "If ",
+          "text": "Если ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "at least one die is a hit",
+          "text": "хотя бы один кубик является попаданием",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", вы должны активировать ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", you must trigger ",
+          "text": "все эффекты",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карты ИИ. К счастью, большинство Атак масштабируются с количеством полученных попаданий, поэтому даже частичное уклонение сделает Атаку слабее. Разрешите все эффекты Атаки в порядке их написания на карте, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "all effects",
+          "text": "по одному предложению за раз",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Существует множество возможных эффектов Атаки, но наиболее распространёнными являются следующие:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " of the AI card. Thankfully, most Attacks scale with the number of hits you receive, so even a partial evade will make the Attack weaker. Resolve all At-tack effects in the order they are written on the card, one ",
+          "text": "Опасность: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Большинство карт ИИ ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "sentence at a time",
+          "text": "наносят",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Опасность. Когда это происходит, получите Опасность, равную нанесённому значению, затем разрешите Жребий Травмы (см. ниже).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". There are many possible Attack effects, but these are the most common ones:",
+          "text": "Другие характеристики и жетоны:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Эффекты Атаки также могут наносить Опасность, Судьбу, Ярость, Прогресс, Рок, Экипаж или жетоны Корпуса (например, жетоны Амброзии или Отчаяния). Это разрешается так же, как и нанесение Опасности (получите характеристику или количество жетонов, равное нанесённому значению), но ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Danger: ",
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вызывает Жребий Травмы, если Опасность также не была нанесена.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Most AI cards ",
+          "text": "Состояния, другие эффекты и способности:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Некоторые Атаки также включают эффекты, которые заставляют вас получить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "deal",
-          "marks": []
+          "text": "Состояние",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ". When this happens, gain  equal to the value dealt, then resolve a Trauma Draw (see below).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Other statistics and tokens:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Attack effects may also deal ,   or tokens (for example, Ambrosia or Despair tokens). This is resolved the same way as being dealt  (gain a statistic or a number of to-kens equal to the value dealt) but ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "does not",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " cause a Trauma Draw unless  is dealt as well.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Conditions, other effects and abilities:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Some Attacks also include effects that cause you to gain a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Condition",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " or another game element, or suffer the effects of abilities (such as Pushback or Knockback).",
+          "text": " или другой игровой элемент, или испытать эффекты способностей (таких как Отбрасывание или Отталкивание).",
           "marks": []
         }
       ]
@@ -225,7 +299,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Armor Roll",
+          "text": "Бросок Брони",
           "marks": []
         }
       ]
@@ -236,37 +310,53 @@
       "children": [
         {
           "kind": "text",
-          "text": "When you are dealt  as a consequence of a Pri-mordial Attack, if you have any  cards with ",
+          "text": "Когда вам наносится Опасность в результате Атаки ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Ar-mor dice",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", you must perform an Armor Roll. Roll a pool of Power dice equal to the total of all Armor dice on all of your equipped  cards (exception: remember that if you use a weapon to defend, you cannot use other equipped weapons during the same Attack. See Defensive weapons, p. 41). ",
+          "text": ", если у вас есть какие-либо карты Снаряжения с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "During an Armor Roll, you count symbols, not . ",
+          "text": "кубиками Брони",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", вы должны выполнить Бросок Брони. Бросьте пул кубиков Силы, равный общему количеству всех кубиков Брони на всех ваших экипированных картах Снаряжения (исключение: помните, что если вы используете оружие для защиты, вы не можете использовать другое экипированное оружие во время той же Атаки. См. Защитное оружие, стр. 41). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Subtract all  symbols rolled from the total value of  dealt. If it reduces your  gain to 0, do not resolve a Trauma Draw. ",
+          "text": "Во время Броска Брони вы считаете символы, а не попадания. ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Вычтите все выпавшие символы Брони из общего значения нанесённой Опасности. Если это уменьшает ваш прирост Опасности до 0, не разрешайте Жребий Травмы. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Like Power dice, Armor dice cannot be re-rolled using .",
+          "text": " Как и кубики Силы, кубики Брони не могут быть переброшены с помощью Судьбы.",
           "marks": []
         }
       ]
@@ -278,7 +368,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Trauma Draw",
+          "text": "Жребий Травмы",
           "marks": []
         }
       ]
@@ -289,23 +379,77 @@
       "children": [
         {
           "kind": "text",
-          "text": "In Aeon Trespass: Odyssey, there are no hit points or health. When you are hit, your  Danger level simply rises. This leads to you draw-ing Trauma cards of rising severity (Minor, Major, Grave, Obol). These cards can take the form of injuries and negative Conditions, but they are equally as likely to present you with opportunities or allow you to perform heroic deeds. Getting hit in Aeon Trespass: Odyssey doesn’t make you weaker, it makes you stronger!When any is dealt to you, raise your  value on the Triskelion, then, before resolving any subsequent effects, immediately per-form a Trauma Draw.To perform a ",
+          "text": "В Aeon Trespass: Odyssey нет очков здоровья или здоровья. Когда вы получаете удар, ваш уровень ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Trauma Draw",
+          "text": "Опасности",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", consult your Trauma Table (found on the Titan Sheet, see p. 44) and draw a Trauma card of a severity corresponding with your current  value.There are three normal severity levels of Trauma cards: ",
+          "text": " просто повышается. Это приводит к тому, что вы вытягиваете карты Травмы возрастающей серьёзности (Малая, Средняя, Тяжёлая, Обол). Эти карты могут принимать форму травм и негативных Состояний, но они с такой же вероятностью могут предоставить вам возможности или позволить совершать героические поступки. Получение удара в Aeon Trespass: Odyssey не делает вас слабее, оно делает вас сильнее!Когда вам наносится Опасность, повысьте значение вашей ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Minor",
+          "text": "Опасности",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Трискелионе",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", затем, прежде чем разрешать какие-либо последующие эффекты, немедленно выполните Жребий Травмы.Чтобы выполнить ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Жребий Травмы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", обратитесь к вашей Таблице Травм (находится на Листе ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", см. стр. 44) и вытяните карту Травмы серьёзности, соответствующей вашему текущему значению ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Опасности",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".Существует три обычных уровня серьёзности карт Травмы: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Малая",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -314,68 +458,112 @@
         },
         {
           "kind": "text",
-          "text": "Ma-jor",
+          "text": "Средняя",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and ",
+          "text": "Тяжёлая",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", относящиеся к порогам, указанным в вашей Таблице Травм. Существует четвёртый, особый уровень серьёзности, называемый Обол (см. ниже), но он следует нескольким другим правилам.Некоторые карты Травмы являются мгновенными, в то время как другие сохраняются на протяжении всей Битвы или заставляют вас получить карту Состояния. После разрешения эффектов карты Травмы сбросьте её (если не указано иное). Любая сброшенная карта Травмы должна быть помещена на дно соответствующей колоды.Некоторые игровые эффекты также могут специально предписывать вам разрешить Жребий Травмы, в этом случае вы должны вытянуть карту Травмы, соответствующую вашему текущему уровню ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Grave",
+          "text": "Опасности",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", referring to the thresholds found in your Trauma Table. There is a fourth, special severity level, called the Obol (see below) but it follows a few different rules.Some Trauma cards are instantaneous, while others persist throughout the Battle or force you to gain a Condition card. After resolving the Trauma card effects, discard it (unless stated other-wise). Any Trauma card you discard should be put at the bottom of the corresponding deck.Some game effects may also specifically instruct you to resolve a Trauma Draw, in which case you should draw a Trauma card cor-responding to your current  level, without raising it (if your is 0, nothing happens). When instructed to draw a Trauma card of a specific severity or to draw an Obol card, simply resolve the Trauma Draw from the designated deck, regardless of your current  value.",
+          "text": ", не повышая его (если ваша ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "After you draw a Trauma card, remember to resolve any lingering Attack effects, then proceed to the After Attack effects.Remember:",
+          "text": "Опасность",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " A Trauma Draw is ",
+          "text": " равна 0, ничего не происходит). Когда вам предписано вытянуть карту Травмы определённой серьёзности или вытянуть карту Обола, просто разрешите Жребий Травмы из обозначенной колоды, независимо от вашего текущего значения ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "resolved only",
+          "text": "Опасности",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " when you are ",
+          "text": ".",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "dealt",
+          "text": "После того, как вы вытянули карту Травмы, не забудьте разрешить любые оставшиеся эффекты Атаки, затем переходите к эффектам После Атаки.Помните:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Жребий Травмы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "from an Attack, not when you gain  from other sources (unless it goes over 9, as explained further). Perform a Trauma Draw ",
+          "text": "разрешается только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", когда вам ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "immedi-ately after ",
+          "text": "наносится",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Опасность от Атаки, а не когда вы получаете Опасность из других источников (если только она не превышает 9, как объясняется далее). Выполните Жребий Травмы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "you finish resolving an Attack effect that dealt.",
+          "text": "сразу после",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " того, как вы закончите разрешать эффект Атаки, который нанёс Опасность.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "    Minor Trauma            Major Trauma       Grave Trauma              Obol",
-          "marks": []
+          "text": "    Малая Травма            Средняя Травма       Тяжёлая Травма              Обол",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -386,7 +574,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Obol (and Obol Draw)",
+          "text": "Обол (и Жребий Обола)",
           "marks": []
         }
       ]
@@ -397,63 +585,105 @@
       "children": [
         {
           "kind": "text",
-          "text": "If you have to draw an Obol (either as a result of a Trauma Draw or when another effect instructs you to), you’re in real peril. There is a 50:50 chance you will die on the spot!To draw an Obol, shuffle the Obol deck and draw the top card. There are only 2 Obol cards in the standard Obol deck: a ",
+          "text": "Если вам нужно вытянуть Обол (либо в результате ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You live! ",
+          "text": "Жребия Обола",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "card and a ",
+          "text": ", либо когда другой эффект предписывает вам это), вы находитесь в реальной опасности. Есть 50:50 шанс, что вы умрёте на месте!Чтобы вытянуть Обол, перетасуйте колоду Оболов и вытяните верхнюю карту. В стандартной колоде Оболов всего 2 карты Оболов: карта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You died",
+          "text": "Вы живы!",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и карта ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " card. More cards may be added or changed through other game effects (for example, as a result ofMassive Danger, see p. 43). Some game effects may refer to the ",
+          "text": "Вы умерли",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Больше карт может быть добавлено или изменено с помощью других игровых эффектов (например, в результате Массивной ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You died",
+          "text": "Опасности",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Obol cards. This term includes all Obol cards that result in the Titan dying.Resolved and discarded Obols are ",
+          "text": ", см. стр. 43). Некоторые игровые эффекты могут ссылаться на карты Оболов ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "always shuffled back",
+          "text": "Вы умерли",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Этот термин включает все карты Оболов, которые приводят к смерти ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " into the Obol deck.",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note: ",
+          "text": ".Разрешённые и сброшенные Оболы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Drawing an Obol is often times called an Obol Draw, though technically it’s still a Trauma Draw.",
+          "text": "всегда перетасовываются обратно",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в колоду Оболов.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Armor die symbol",
+          "text": "Примечание: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Вытягивание Обола часто называют Жребием Обола, хотя технически это всё ещё Жребий Травмы.",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Символ кубика брони",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

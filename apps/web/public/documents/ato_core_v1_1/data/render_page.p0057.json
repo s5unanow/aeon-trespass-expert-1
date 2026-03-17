@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0057",
-    "title": "Casualties",
+    "title": "Потери",
     "section_path": [],
     "source_page_number": 57
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Casualties",
+          "text": "Потери",
           "marks": []
         }
       ]
@@ -31,23 +31,57 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battles, especially lost ones, can be grim affairs. During the Casual-ties step, note the loss of any Titans on the Argo Sheet.Also during this step, you discard all Conditions, Condition tokens and tokens on Titan Sheets (like Ambrosia, Modifier tokens, etc.). Note that some game elements and Conditions may have ",
+          "text": "Битвы, особенно проигранные, могут быть мрачными событиями. Во время шага Потерь отметьте потерю любых ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End of Battle",
+          "text": "Титанов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " effects. Make sure you have resolved all of these effects be-fore you discard these Condition cards.",
+          "text": " на Листе ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End of Battle effect.",
+          "text": "Арго",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Также на этом шаге вы сбрасываете все Состояния, жетоны Состояний и жетоны на Листах ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (такие как Амброзия, жетоны Модификаторов и т.д.). Обратите внимание, что некоторые игровые элементы и Состояния могут иметь ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "эффекты Конца Битвы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Убедитесь, что вы разрешили все эти эффекты, прежде чем сбросить эти карты Состояний.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Эффект Конца Битвы.",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -63,7 +97,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Tides of Fate",
+          "text": "Приливы Судьбы",
           "marks": []
         }
       ]
@@ -74,7 +108,97 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battles push both the Argonauts and their Titans to their limits. As a consequence, debts accrued with the Moirai are partially paid.Tides of Fate mechanics affect both Argonauts and the Argo itself. Each Argonaut resets their Triskelion values to triple ‘0’. As for the Argo, you lower its  value by the indicated number. In Cycle I, this is usually -2 .",
+          "text": "Битвы доводят как ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавтов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", так и их ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титанов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " до предела. Как следствие, долги, накопленные перед Мойрами, частично погашаются. Механики ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Приливов Судьбы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " влияют как на ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавтов",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", так и на само ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Каждый ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавт",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " сбрасывает значения своего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Трискелиона",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " до тройного «0». Что касается ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", вы понижаете его значение на указанное число. В ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикле",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " I это обычно -2.",
           "marks": []
         }
       ]
@@ -86,7 +210,12 @@
       "children": [
         {
           "kind": "text",
-          "text": "Shuffling the Exploration Deck",
+          "text": "Перетасовка колоды ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Исследования",
           "marks": []
         }
       ]
@@ -97,17 +226,49 @@
       "children": [
         {
           "kind": "text",
-          "text": "Finally, as the Battle Aftermath comes to a close, the ",
+          "text": "Наконец, когда последствия Битвы подходят к концу, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ловит новый ветер в свои паруса (или течение в свои турбины). Ждут новые возможности! В результате, после каждой Битвы Временной Линии, вы должны перетасовать все карты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " catches new wind in its sails (or current in its turbines). New opportunities await!As a result, during the aftermath of every Timeline Battle, you should shuffle all Exploration cards removed from the Exploration deck as a result of the Timeline Battle Special Disposal Effect back into the deck. This way, you have refreshed the Exploration deck!",
+          "text": "Исследования",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", удаленные из колоды ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Исследования",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " в результате Специального Эффекта Утилизации Битвы Временной Линии, обратно в колоду. Таким образом, вы обновили колоду ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Исследования",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!",
           "marks": []
         }
       ]
@@ -119,7 +280,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Final Battle",
+          "text": "Финальная Битва",
           "marks": []
         }
       ]
@@ -130,7 +291,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "If your current Cycle has a final Battle, if there is no specific After-math, note Casualties and perform Tides of Fate.",
+          "text": "Если в вашем текущем ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикле",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " есть финальная Битва, и если нет конкретных Последствий, отметьте Потери и выполните ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Приливы Судьбы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
           "marks": []
         }
       ]
@@ -142,7 +323,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Additional Battle Rules",
+          "text": "Дополнительные Правила Битвы",
           "marks": []
         }
       ]
@@ -154,7 +335,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Death in Battle",
+          "text": "Смерть в Битве",
           "marks": []
         }
       ]
@@ -165,33 +346,119 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unlike Argonauts, Titans are expendable. In most cases, when you die in Battle you only lose the Titan you are currently junctioned with. This Titan is then removed from the Battle Board (note its loss on the Argo Sheet) and cannot be used in any way. Do not discard its Conditions and tokens or reset its Triskelion stats until instructed to do so (see Casualties, p. 56).However, Story Events, as well as some especially brutal effects, may result in the ",
+          "text": "В отличие от ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argonaut dying",
+          "text": "Аргонавтов",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". In that case, consult the current Cycle’s Rude Awakening Special Event. Remember that Argonaut Death happens ",
+          "text": ", ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "only",
+          "text": "Титаны",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " when explicitly stated!",
+          "text": " расходуемы. В большинстве случаев, когда вы умираете в Битве, вы теряете только ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: Never discard or destroy the Argonaut Sheets of de-ceased Argonauts, as some events might reference them later!",
+          "text": "Титана",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", с которым вы в данный момент соединены. Этот ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " затем удаляется с Поля Битвы (отметьте его потерю на Листе ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ") и не может быть использован никаким образом. Не сбрасывайте его Состояния и жетоны и не сбрасывайте его характеристики ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Трискелиона",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", пока не будет дано соответствующее указание (см. Потери, с. 56). Однако Сюжетные События, а также некоторые особенно жестокие эффекты, могут привести к тому, что ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавт умрет",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В этом случае обратитесь к Специальному Событию «Грубое Пробуждение» текущего ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Помните, что Смерть ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавта",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " происходит ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " когда это явно указано!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Важно: Никогда не сбрасывайте и не уничтожайте Листы Аргонавтов умерших Аргонавтов, так как некоторые события могут ссылаться на них позже!",
+          "marks": [
+            "bold"
+          ]
         }
       ]
     },
@@ -202,7 +469,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many Ways to Die",
+          "text": "Множество Способов Умереть",
           "marks": []
         }
       ]
@@ -213,27 +480,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "There are many ways to die in Battles! The most common are draw-ing a ",
+          "text": "Есть много способов умереть в Битвах! Наиболее распространенными являются вытягивание карты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Disemboweled",
+          "text": "Вспоротый",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Травмы или карты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Trauma card or a ",
-          "marks": []
+          "text": "Вы умерли",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "You died ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Obol card. But there are many possible instances of death, including:",
+          "text": " Обола. Но есть много возможных случаев смерти, включая:",
           "marks": []
         }
       ]
@@ -244,7 +515,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "cards or another death-inducing card.",
+          "text": "или другой карты, вызывающей смерть.",
           "marks": []
         }
       ]
@@ -255,7 +526,17 @@
       "children": [
         {
           "kind": "text",
-          "text": "example in Obol Draw, p. 42).",
+          "text": "пример в ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Жребии Обола",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", с. 42).",
           "marks": []
         }
       ]
@@ -266,7 +547,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "(so, in most cases, 5 or more tokens)",
+          "text": "(то есть, в большинстве случаев, 5 или более жетонов)",
           "marks": []
         }
       ]
@@ -277,7 +558,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "placed to (see Displace on p. 63).",
+          "text": " (см. Смещение на с. 63).",
           "marks": []
         }
       ]
@@ -289,7 +570,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mercy Rule",
+          "text": "Правило Милосердия",
           "marks": []
         }
       ]
@@ -301,11 +582,33 @@
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — сложная игра, но перед лицом смерти ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is a challenging game, but in the face of a Titan’s death, it offers a glimmer of respite in the form of this Mercy Rule. If a Titan dies:",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " она предлагает проблеск передышки в виде этого Правила Милосердия. Если ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " умирает:",
           "marks": []
         }
       ]
@@ -316,7 +619,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Responses elicited by that Attack.",
+          "text": "Ответы, вызванные этой Атакой.",
           "marks": []
         }
       ]
@@ -327,7 +630,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "going all lingering Attack effects and After Attack effects tar-geting that Titan. Conversely, if a Titan dies, but the Attack has an effect that is separate from the Target or has other Targets, those effects should still be resolved. ",
+          "text": "отменяя все затяжные эффекты Атаки и эффекты После Атаки, нацеленные на этого ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титана",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". И наоборот, если ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " умирает, но Атака имеет эффект, который отделен от Цели или имеет другие Цели, эти эффекты все равно должны быть разрешены.",
           "marks": []
         }
       ]
@@ -339,7 +662,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Round Timing Rules",
+          "text": "Другие Правила Времени Раунда",
           "marks": []
         }
       ]
@@ -350,77 +673,124 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some Primordial Traits,  cards and abilities may introduce ef-fects that trigger at specific moments during the Primordial Round or Titan Round. These include:",
+          "text": "Некоторые Черты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Start of Battle: ",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Resolve this effect after you finish Battle Setup, but before the first Round begins.",
+          "text": ", карты и способности могут вводить эффекты, которые срабатывают в определенные моменты во время Раунда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End of Battle:",
+          "text": "Первозданного",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Resolve this effect when the Battle ends (regardless of its outcome), before you proceed to the Battle Aftermath.",
+          "text": " или Раунда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "When:",
+          "text": "Титана",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Resolve this effect after you resolve the effect it refers to (or, in some cases, when you begin to resolve it), but before any other actions or effects.",
+          "text": ". К ним относятся:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Example:",
+          "text": "Начало Битвы: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Разрешите этот эффект после завершения Подготовки к Битве, но до начала первого Раунда.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " If an effect triggers “When you draw a Trauma card,” it activates immediately after you draw the card but before you resolve it.",
+          "text": "Конец Битвы:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Разрешите этот эффект, когда Битва заканчивается (независимо от ее исхода), прежде чем перейти к Последствиям Битвы.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "When you are about to: ",
+          "text": "Когда:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Разрешите этот эффект после того, как вы разрешите эффект, на который он ссылается (или, в некоторых случаях, когда вы начинаете его разрешать), но до любых других действий или эффектов.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Occurs immediately before you resolve the effect that is ",
+          "text": "Пример:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если эффект срабатывает «Когда вы вытягиваете карту Травмы», он активируется сразу после того, как вы вытянули карту, но до того, как вы ее разрешите.",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Когда вы собираетесь: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Происходит непосредственно перед тем, как вы разрешите эффект, который ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "about to",
+          "text": "собирается",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " произойти (т.е. если способность срабатывает «когда вы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " happen (i.e. if an ability is triggered “when you are ",
-          "marks": []
+          "text": "собираетесь умереть",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "about to die",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ",” it activates after another effect instructs you to die, but before it is actually resolved).Note that it does not invalidate the effect that triggered it unless explicitly stated otherwise, even if it causes a Chain Break (e.g. if you resolve an Attack triggered by a “When you are about to die” effect, it causes a Chain Break—no further effects of this Attack are resolved, but it does not allow you to avoid death itself). Any other effects and abilities with a specific trigger must be resolved after the trigger occurs, before resolving any effects other than the ones caused or enabled by it.",
+          "text": "», она активируется после того, как другой эффект предписывает вам умереть, но до того, как он фактически разрешен). Обратите внимание, что это не отменяет эффект, который его вызвал, если явно не указано иное, даже если это вызывает Разрыв Цепи (например, если вы разрешаете Атаку, вызванную эффектом «Когда вы собираетесь умереть», это вызывает Разрыв Цепи — дальнейшие эффекты этой Атаки не разрешаются, но это не позволяет вам избежать самой смерти). Любые другие эффекты и способности с определенным триггером должны быть разрешены после срабатывания триггера, прежде чем разрешать любые эффекты, кроме тех, которые были вызваны или включены им.",
           "marks": []
         }
       ]
@@ -432,7 +802,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Bonus Attacks",
+          "text": "Бонусные Атаки",
           "marks": []
         }
       ]
@@ -443,37 +813,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "A Bonus Attack is an effect that allows you to perform an ",
+          "text": "Бонусная Атака — это эффект, который позволяет вам выполнить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "immedi-ate",
+          "text": "немедленную",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Атаку, часто вне вашего хода. Большинство Бонусных Атак вызывают ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Attack, often outside of your turn. Most Bonus Attacks cause a ",
+          "text": "Разрыв Цепи",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. исключение ниже). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Chain Break",
-          "marks": []
+          "text": "Для Бонусной Атаки вы можете объявить истощенное оружие своим активным оружием.",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " (see exception below). ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "For a Bonus Attack you may declare an exhausted weapon as your active weapon.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " If you do, unexhaust it, then continue the Attack. During a Bonus Attack you ",
+          "text": " Если вы это сделаете, восстановите его, затем продолжите Атаку. Во время Бонусной Атаки вы ",
           "marks": []
         }
       ]

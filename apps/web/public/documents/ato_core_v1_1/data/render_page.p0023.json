@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0023",
-    "title": "9. End Step",
+    "title": "9. Завершающий Шаг",
     "section_path": [],
     "source_page_number": 23
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "9. End Step",
+          "text": "9. Завершающий Шаг",
           "marks": []
         }
       ]
@@ -31,27 +31,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "During the End Step, if you are on an ",
+          "text": "Во время Завершающего Шага, если вы находитесь на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Unexplored",
+          "text": "Неисследованной",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " плитке, она просто становится ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tile, it simply be-comes ",
-          "marks": []
+          "text": "Исследованной",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Explored",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". This means that if you’re already on an Explored tile, nothing happens.During the first game session, knowing which tiles are Explored is easy: it’s basically all the tiles revealed on the table. The rest of the Map tiles are Unexplored. However, once you play a few more game sessions, saving the game in between, it will become a bit tougher to keep track of. That’s why it’s important to remember how to save the Map properly (see Saving the Campaign below).After you resolve the End Step, proceed to the next Campaign Round.",
+          "text": ". Это означает, что если вы уже находитесь на Исследованной плитке, ничего не происходит. Во время первой игровой сессии легко понять, какие плитки Исследованы: это, по сути, все плитки, выложенные на столе. Остальные плитки Карты являются Неисследованными. Однако, как только вы сыграете еще несколько игровых сессий, сохраняя игру между ними, отслеживать это станет немного сложнее. Вот почему важно помнить, как правильно сохранять Карту (см. «Сохранение Кампании» ниже). После завершения Завершающего Шага переходите к следующему Раунду Кампании.",
           "marks": []
         },
         {
@@ -68,7 +72,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Additional Voyage Rules",
+          "text": "Дополнительные Правила Странствия",
           "marks": []
         }
       ]
@@ -79,7 +83,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "This section covers all the additional rules governing the Voyage Phase that are not specifically tied to any of the Campaign Round Steps.",
+          "text": "Этот раздел охватывает все дополнительные правила, регулирующие Фазу Странствия, которые не привязаны к каким-либо Шагам Раунда Кампании.",
           "marks": []
         },
         {
@@ -96,7 +100,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Saving the Campaign",
+          "text": "Сохранение Кампании",
           "marks": []
         }
       ]
@@ -108,71 +112,85 @@
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это игра-одиссея. Вы не закончите ее за одну игровую сессию. И даже за две. На самом деле, один Цикл займет у вас десятки часов. Чтобы справиться с этим, вам нужно будет периодически ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is an odyssey of a game. You won’t finish it in one game session. You won’t finish it in two. In fact, a single Cycle will take you dozens of hours. To manage that, you will need to periodically ",
+          "text": "сохранять кампанию",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В этом разделе приведены правила, как это сделать. В конце любого Шага Раунда Кампании вы можете решить сохранить прогресс игры и завершить текущую игровую сессию. Мы советуем сохраняться в конце Завершающего Шага, чтобы вы могли начать следующую игру в начале нового дня. Чтобы сохранить игру, возьмите Лист Арго и выполните следующие шаги: Запишите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "save the campaign",
+          "text": "номер и букву",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашей текущей ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". This section provides the rules on how to do it.At the end of any Campaign Round Step, you may decide to save your game progress and end your current game session. We advise saving at the end of the End Step so that you can begin your next game at the start of a new day. To save your game, take out the Argo Sheet and perform the following steps:Note the ",
+          "text": "карты Истории",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вместе с количеством собранных жетонов (в скобках). Запишите ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "number and letter",
+          "text": "номер и букву",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вашей текущей ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " of your current ",
+          "text": "карты Рока",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вместе с количеством собранных жетонов (в скобках). Запишите номер текущего тайла Карты (на котором находится ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Story card",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " along with the number of gathered  tokens (in parentheses).Note the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "number and letter",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " of your current ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Doom card",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " along with the number of gathered  tokens (in parentheses).Note the number of the current Map tile (the one the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " is on).",
+          "text": ").",
           "marks": []
         }
       ]
@@ -184,7 +202,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argo Sheet",
+          "text": "Лист Арго",
           "marks": []
         }
       ]
@@ -196,7 +214,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Cycle I:",
+          "text": "Цикл I:",
           "marks": []
         }
       ]
@@ -208,7 +226,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Truth of the Labyrinth",
+          "text": "Истина Лабиринта",
           "marks": []
         }
       ]
@@ -219,7 +237,7 @@
       "children": [
         {
           "kind": "text",
-          "text": " Doom Card ",
+          "text": "Карта Рока",
           "marks": []
         }
       ]
@@ -230,7 +248,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story Card ",
+          "text": "Карта Истории",
           "marks": []
         }
       ]
@@ -241,7 +259,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Map Tile ",
+          "text": "Тайл Карты",
           "marks": []
         }
       ]
@@ -264,88 +282,82 @@
       "children": [
         {
           "kind": "text",
-          "text": "Campaign save example",
+          "text": "Пример сохранения кампании",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "На последней странице листа, справа от Матрицы Выбора, запишите любые другие номера тайлов Карты, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "On the last page of the sheet, to the right of the Choice Matrix, note any other Map tile numbers ",
+          "text": "относящиеся к текущим картам Истории и Рока",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", а также все номера тайлов Карты с ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "relevant to the current Story and Doom",
+          "text": "другими игровыми элементами",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", такими как жетоны и плитки, размещенные на них (например, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " cards, as well as all numbers of Map tiles with ",
+          "text": "маркер Лабиринтного Храма",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "), а также текущее положение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "other game elements",
+          "text": "Противника",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Запишите текущие характеристики ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", such as tokens and tiles, placed on them (e.g. ",
+          "text": "Трискелиона",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " каждого Аргонавта на их соответствующих Листах Аргонавтов. Храните вашу ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Lab-yrinthian Templemarker",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "), as well as the current position of the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Adversary",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".Note the current ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Triskelion",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " stats of each Argonaut on their re-spective Argonaut Sheets.Store your ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Technology deck",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ",",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Projects deck",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo Armory deck",
-          "marks": []
+          "text": "колоду Технологий",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -354,8 +366,10 @@
         },
         {
           "kind": "text",
-          "text": "Exploration deck",
-          "marks": []
+          "text": "колоду Проектов",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -364,57 +378,86 @@
         },
         {
           "kind": "text",
-          "text": "Mnemos Vault",
+          "text": "колоду Оружейной Арго",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", gained ",
+          "text": "колоду Исследования",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Clue cards",
+          "text": "Хранилище Мнемос",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", полученные ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and all un-locked ",
+          "text": "карты Подсказок",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и все разблокированные карты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Godform",
+          "text": "Богоформы",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and ",
+          "text": "Призыва",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " отдельно от других компонентов того же типа, чтобы легко получить к ним доступ при возобновлении кампании. Поместите все исследованные тайлы Карты в пространство для исследованных тайлов Карты в органайзере игры. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Summoning",
-          "marks": []
+          "text": "Важно:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " cards separate from other com-ponents of the same type, to easily access them when you resume your campaign.Place all Explored Map tiles into the Explored Map space in the game insert. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Important: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Always remember to put all the Explored Map tiles in this space! During the next game session, you may re-construct the whole Map at the start or only reconstruct the parts relevant for that game session (the Map is big!).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "If you don’t reconstruct the whole Map, be sure to leave all the unused Explored Map tiles in the Explored Map space in the game insert.",
+          "text": " Всегда помните помещать все исследованные тайлы Карты в это пространство! Во время следующей игровой сессии вы можете восстановить всю Карту в начале или восстановить только те части, которые актуальны для этой игровой сессии (Карта большая!). Если вы не восстанавливаете всю Карту, обязательно оставьте все неиспользованные исследованные тайлы Карты в пространстве для исследованных тайлов Карты в органайзере игры.",
           "marks": []
         },
         {
@@ -466,7 +509,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Nymph Summonings",
+          "text": "Призывы Нимф",
           "marks": []
         }
       ]
@@ -477,13 +520,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "During the course of a campaign, you will unlock various mythic allies that can be summoned to turn the tide of Battle or enable game-changing Voyage abilities. As such, the usage of these allies is extremely limited.Each Nymph Summoning has a corresponding tarot-sized Sum-moning card and a matching Summoning token. ",
+          "text": "В ходе кампании вы будете открывать различных мифических союзников, которых можно призывать, чтобы переломить ход Битвы или активировать изменяющие игру способности Странствия. Таким образом, использование этих союзников крайне ограничено. Каждый Призыв Нимфы имеет соответствующую карту Призыва размера таро и соответствующий жетон Призыва. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Summoning cardExplored Map space in the game insert",
-          "marks": []
+          "text": "Карта Призыва. Пространство для исследованных тайлов Карты в органайзере игры",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",

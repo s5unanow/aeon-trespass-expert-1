@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0010",
-    "title": "Campaign Basics",
+    "title": "Основы Кампании",
     "section_path": [],
     "source_page_number": 10
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Campaign Basics",
+          "text": "Основы Кампании",
           "marks": []
         }
       ]
@@ -32,7 +32,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Argo",
+          "text": "Арго",
           "marks": []
         }
       ]
@@ -43,47 +43,55 @@
       "children": [
         {
           "kind": "text",
-          "text": "The ",
+          "text": "«",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "» — это гигантский таинственный город-корабль из металла, который вы используете для перемещения по Гелласу. «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " is the giant mysterious city-ship made of metal that you use to move around Hellas. The ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "» хранит множество секретов, некоторые из которых будут раскрыты в ходе основной сюжетной линии, в то время как другие ограничены прогрессом «Внутренней Одиссеи» (стр. 27) или скрыты ещё надёжнее... В игре «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "» представлен миниатюрой «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " holds many secrets, some of which will be revealed during the main story, while others are restricted to Inward Odyssey progress (p. 27) or are hidden even more securely...In the game, the ",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " is represented by the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " miniature that you move on the map. The Argo miniature is always on a Map tile.",
+          "text": "», которую вы перемещаете по карте. Миниатюра «Арго» всегда находится на тайле карты.",
           "marks": []
         }
       ]
@@ -95,7 +103,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Argo Sheet",
+          "text": "Планшет Арго",
           "marks": []
         }
       ]
@@ -106,7 +114,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Argo Sheet serves as the main means of tracking your cam-paign progress, resources, diplomacy, available Titans and other campaign statistics. Whenever you gain or lose any of these sta-tistics, adjust their value in the corresponding section of the Argo Sheet. You will find a print-friendly version of the Argo Sheet at the back of every Storybook (they’re different), as well as on our official website.",
+          "text": "Планшет Арго служит основным средством отслеживания прогресса вашей кампании, ресурсов, дипломатии, доступных Титанов и других статистических данных кампании. Всякий раз, когда вы получаете или теряете какие-либо из этих статистических данных, корректируйте их значение в соответствующем разделе Планшета Арго. Вы найдёте версию Планшета Арго для печати в конце каждой Книги Историй (они разные), а также на нашем официальном сайте.",
           "marks": []
         },
         {
@@ -128,7 +136,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Timeline",
+          "text": "Хронология",
           "marks": []
         }
       ]
@@ -139,7 +147,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Timeline serves to organize your campaign, giving it a defini-tive beginning, middle and end. Game time is measured in days and each day is a Campaign Round. The Timeline has some fixed events on it, while other events will be added by the players. T0T1T2T3T4T5T6/00010203040506Cackle Special Event41424344454647484950515253Voyage Timeline",
+          "text": "Хронология служит для организации вашей кампании, определяя её начало, середину и конец. Игровое время измеряется в днях, и каждый день — это Раунд Кампании. Хронология содержит некоторые фиксированные события, в то время как другие события будут добавляться игроками. T0T1T2T3T4T5T6/00010203040506Cackle Special Event41424344454647484950515253Voyage Timeline",
           "marks": []
         },
         {
@@ -161,7 +169,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Progress and Doom",
+          "text": "Прогресс и Рок",
           "marks": []
         }
       ]
@@ -172,53 +180,63 @@
       "children": [
         {
           "kind": "text",
-          "text": "To succeed in a campaign of ",
+          "text": "Чтобы преуспеть в кампании ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", вам потребуется выполнить различные задачи, указанные на картах Истории. Многие из них потребуют от вас сбора ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " you will be required to complete various tasks designated by the Story cards. Many of them will require you to collect ",
+          "text": "Прогресса",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", представленного жетонами. За каждый полученный Прогресс вы должны поместить 1 жетон на вашу текущую карту Истории или карту «Внутренней Одиссеи» (см. «Внутренняя Одиссея» на стр. 27). Прогресс в основном достигается путём исследования карты и разрешения Приключений.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Progress",
+          "text": "Рок",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " — это противоположность Прогресса. За каждый полученный Рок вы должны поместить 1 жетон Рока на вашу текущую карту Рока. Эти карты представляют собой наступление злых сил. Достижение конца последней карты Рока неизбежно приведёт к вашему поражению.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " represented by the  tokens. For each Progress you gain, you must place 1 token on your current Story card or the Inward Odyssey card (see Inward Odyssey on p. 27). Progress is primarily gained by explor-ing the map and resolving Adventures.",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Некоторые редкие эффекты могут вызвать Неизбежный Рок. Это означает, что этот прирост Рока не может быть смягчён или уменьшен каким-либо образом.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Doom",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " is the opposite of Progress. For each  you gain, you must place 1  token on your current Doom card. These cards represent the encroachment of evil forces. Reaching the end of the last Doom card will inevitably lead to your failure.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Some rare effects may cause Unavoidable . It means that this  gain cannot be mitigated or lowered in any way.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Doom tokenProgress token",
-          "marks": []
+          "text": "Жетоны РокаЖетоны Прогресса",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -239,7 +257,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Basic Argo Stats",
+          "text": "Основные характеристики Арго",
           "marks": []
         }
       ]
@@ -250,23 +268,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Argo Sheet tracks various statistics throughout the game. These will be described as they become relevant throughout this Rulebook and the various Storybooks. However, a few key statis-tics are important enough to warrant a separate section. These are collectively called Basic Argo Stats and include ",
+          "text": "Планшет Арго отслеживает различные статистические данные на протяжении всей игры. Они будут описаны по мере их актуальности в данном Своде Правил и различных Книгах Историй. Однако несколько ключевых статистических данных достаточно важны, чтобы выделить их в отдельный раздел. Они совокупно называются Основными характеристиками Арго и включают ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Crew",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Hull",
-          "marks": []
+          "text": "Экипаж",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -275,22 +285,38 @@
         },
         {
           "kind": "text",
-          "text": "Argo Fate",
+          "text": "Корпус",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and ",
+          "text": "Судьбу Арго",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo Knowledge ",
-          "marks": []
+          "text": "Знание Арго",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ".Argo KnowledgeStrangers Doom Card TitansTitan Limit/Crew6543210If 0 or less, see 0562Hull543210If 0 or less, see 0415Story Card Map Tile AA Limit",
+          "text": ".Знание АргоНезнакомцы Карта Рока ТитаныЛимит Титанов/Экипаж6543210Если 0 или меньше, см. 0562Корпус543210Если 0 или меньше, см. 0415Карта Истории Тайл Карты Лимит АА",
           "marks": []
         }
       ]

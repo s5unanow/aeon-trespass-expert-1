@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0022",
-    "title": "Clue Cards",
+    "title": "Карты-подсказки",
     "section_path": [],
     "source_page_number": 22
   },
@@ -19,8 +19,10 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story card",
-          "marks": []
+          "text": "Карта истории",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -31,7 +33,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Clue Cards",
+          "text": "Карты-подсказки",
           "marks": []
         }
       ]
@@ -42,43 +44,61 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each story is different, and it’s hard to include everything on stand-ardized game elements. That is why each Cycle has a number of Clue cards that influence the game, introducing new rules, me-chanics and hints. Clue cards might represent new rules referenc-es, story passages, maps, layouts, events and more.Clue cards have a distinct back, showing the ",
+          "text": "Каждая история уникальна, и сложно уместить всё на стандартных игровых элементах. Поэтому каждый ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "number of the Cycle ",
+          "text": "Цикл",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "they belong to and the ",
+          "text": " содержит несколько карт-подсказок, которые влияют на игру, вводя новые правила, механики и подсказки. Карты-подсказки могут представлять собой ссылки на новые правила, отрывки истории, карты, схемы, события и многое другое. Карты-подсказки имеют отличительную рубашку, показывающую ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "number of the Story(or Doom)card",
+          "text": "номер Цикла",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", к которому они относятся, и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " they will be introduced with. ",
+          "text": "номер карты Истории (или Рока)",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", с которой они будут введены. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: You should never look at any Clue cards if you were not specifically instructed to!",
+          "text": "Важно: Вы никогда не должны смотреть на карты-подсказки, если вам не было дано конкретных указаний!",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Другие игровые элементы, такие как упомянутые выше карты Истории, подскажут вам, как использовать конкретные карты-подсказки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Other game elements, like the aforementioned Story cards, will tell you how to use particular Clue cards.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Clue card",
-          "marks": []
+          "text": "Карта-подсказка",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",
@@ -94,7 +114,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story Events",
+          "text": "События Истории",
           "marks": []
         }
       ]
@@ -105,27 +125,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story Events are story related. They happen on a certain day and start an adventure. They are like Battle Events and Advancement Events in that they are either already printed on your Timeline (this is a fixed Story Event) or you will add them there yourself (for ex-ample, one of the ",
+          "text": "События Истории связаны с сюжетом. Они происходят в определённый день и начинают приключение. Они похожи на Боевые События и События Прогресса тем, что либо уже напечатаны на вашей Хронологии (это фиксированное Событие Истории), либо вы добавите их туда сами (например, одно из ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Dreams of Pharos",
+          "text": " Снов Фароса",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "). Если на вашем текущем дне отмечено Событие Истории (т.е. событие, которое не является ни Прогрессом, ни Битвой), найдите отрывок, к которому оно ведёт в Книге Историй, и прочитайте его. Обратите внимание, что Особые События (такие как ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ").If there is a Story Event noted on your current day (i.e. an Event that is neither an Advancement nor a Battle), find the passage it leads to in the Storybook and read it. Note that Special Events (such as the ",
-          "marks": []
+          "text": "Хихиканье",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Cackle",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Special Event) do not lead to specific para-graphs. To resolve them, find a passage with the designated name in the Special Events section of the Storybook.",
+          "text": " Особое Событие) не ведут к конкретным параграфам. Чтобы разрешить их, найдите отрывок с указанным названием в разделе Особых Событий Книги Историй.",
           "marks": []
         }
       ]
@@ -137,7 +161,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos Breakthroughs",
+          "text": "Прорывы Мнемос",
           "marks": []
         }
       ]
@@ -148,7 +172,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos Breakthroughs are pieces of your lost memories. Once you gain enough Mnemos nodes, you will trigger the next Mne-mos Breakthrough. For detailed rules on resolving Mnemos Break-throughs, see p. 27.",
+          "text": "Прорывы Мнемос — это фрагменты ваших утраченных воспоминаний. Как только вы наберёте достаточно узлов Мнемос, вы запустите следующий Прорыв Мнемос. Подробные правила разрешения Прорывов Мнемос см. на стр. 27.",
           "marks": []
         },
         {
@@ -165,7 +189,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Secret Codes",
+          "text": "Секретные Коды",
           "marks": []
         }
       ]
@@ -176,7 +200,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Rarely, you will find a secret 4-digit number on a game element. If you do, during the Story Step you may find the corresponding paragraph in the main story section of your current Storybook and resolve it. Unless stated otherwise, each secret code paragraph can only be resolved once.For detailed rules on resolving Storybook paragraphs, see the Ad-venture Phase section of the Rulebook (p. 25).",
+          "text": "Изредка вы будете находить секретный 4-значный номер на игровом элементе. Если вы это сделаете, во время Шага Истории вы можете найти соответствующий параграф в основном разделе истории вашей текущей Книги Историй и разрешить его. Если не указано иное, каждый параграф секретного кода может быть разрешён только один раз. Подробные правила разрешения параграфов Книги Историй см. в разделе Фаза Приключения Правил (стр. 25).",
           "marks": []
         },
         {
@@ -193,7 +217,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "8. Doom Step",
+          "text": "8. Шаг Рока",
           "marks": []
         }
       ]
@@ -204,68 +228,172 @@
       "children": [
         {
           "kind": "text",
-          "text": "Doom",
+          "text": "Рок",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", представленный жетонами и картами Рока, является антитезой жетонам, развитию сюжета и картам Истории. Если карты Истории ведут вас к победе, то карты Рока ведут к поражению. Карты Рока показывают медленно разворачивающиеся планы злодея (или злодеев) ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", represented by  tokens and Doom cards, is like an antithesis to  tokens, story progression and Story cards. If the Story cards lead you to victory, Doom cards lead you to defeat. Doom cards show the slowly unfolding plans of the villain (or vil-lains) of the Cycle and how they come to fruition. Doom progression is resolved only if you fulfill all the requirements noted on your current Doom cards. Usually, doom progression triggers when there are ",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "a certain number of  tokens on thecur-rent Doom card",
+          "text": " и то, как они воплощаются в жизнь. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".When you meet the current Doom card’s requirements, you will resolve its doom progression during the Doom Step.Most of the time, resolving doom progression involves ",
+          "text": "Прогресс",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "flipping the Doom card",
+          "text": " Рока разрешается только в том случае, если вы выполняете все требования, указанные на ваших текущих картах Рока. Обычно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " to the other side or ",
+          "text": "прогресс",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "referring to a paragraph",
+          "text": " Рока запускается, когда на текущей карте Рока находится ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " in your current Storybook or on another game element. When you resolve the current doom progression,",
+          "text": "определённое количество жетонов на текущей карте Рока",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Когда вы выполняете требования текущей карты Рока, вы разрешаете её ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " discard exactly as many",
+          "text": "прогресс",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tokens collected on the current Doom card as the requirement and ",
+          "text": " Рока во время Шага Рока. В большинстве случаев разрешение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "move all excess",
+          "text": "прогресса",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " tokens to either the other side of the card (if pro-gressing from side A) or the next Doom card (if progressing from side B).If you’re on the B side of the last Doom card of the Cycle, be wary: if your Doom progresses one more time, you will lose the game!For detailed rules on resolving Storybook paragraphs, see the Ad-venture Phase section of the Rulebook (Story Adventures, p. 26).",
+          "text": " Рока включает в себя ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Doom card",
+          "text": "переворачивание карты Рока",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " на другую сторону или ",
           "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "обращение к параграфу",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в вашей текущей Книге Историй или на другом игровом элементе. Когда вы разрешаете текущий ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "прогресс",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Рока, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "сбросьте ровно столько",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " жетонов, собранных на текущей карте Рока, сколько требуется, и ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "переместите все излишки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " жетонов либо на другую сторону карты (если ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "прогресс",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " идёт со стороны А), либо на следующую карту Рока (если ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "прогресс",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " идёт со стороны Б). Если вы находитесь на стороне Б последней карты Рока ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Цикла",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", будьте осторожны: если ваш Рок продвинется ещё раз, вы проиграете игру! Подробные правила разрешения параграфов Книги Историй см. в разделе Фаза Приключения Правил (Приключения Истории, стр. 26).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Карта Рока",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "icon",

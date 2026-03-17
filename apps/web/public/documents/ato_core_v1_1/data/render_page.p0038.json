@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0038",
-    "title": "1. Draw AI",
+    "title": "1. Вытягивание ИИ",
     "section_path": [],
     "source_page_number": 38
   },
@@ -19,62 +19,74 @@
       "children": [
         {
           "kind": "text",
-          "text": "1.\tDraw AI (p. 37):",
+          "text": "1. Вытягивание ИИ (с. 37):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Вытяните верхнюю карту из колоды ИИ.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Draw the top card from the AI deck.",
+          "text": "2. Выбор цели (с. 37):",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Решите, кто или что станет Целью Атаки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "2.\tTargeting (p. 37):",
+          "text": "3. Перемещение (с. 38): ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Разрешите любые перемещения Первозданного.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Decide who or what becomes the Target of the Attack.",
+          "text": "4. Атака (с. 40):4.1. Бросок Уклонения (с. 41): ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Попытайтесь уклониться от Атаки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "3.\tMovement (p. 38): ",
+          "text": "4.2. Последствия Атаки (с. 42): ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Разрешите эффекты Атаки и Жребий Травмы.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Resolve any Primordial moves.",
-          "marks": []
+          "text": "5. После Атаки (с. 44):",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "4.\tAttack (p. 40):4.1. Evasion Roll (p. 41): ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Attempt to evade the Attack.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "4.2. \u0007Attack Consequences (p. 42): ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Resolve Attack effects and a Trauma Draw.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "5.\tAfter Attack (p. 44):",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Resolve all After Attack effects.",
+          "text": " Разрешите все эффекты После Атаки.",
           "marks": []
         }
       ]
@@ -86,7 +98,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "1. Draw AI",
+          "text": "1. Вытягивание ИИ",
           "marks": []
         }
       ]
@@ -97,93 +109,111 @@
       "children": [
         {
           "kind": "text",
-          "text": "To determine the Primordial’s behavior, draw an AI card from the top of the AI deck. Notice the ",
+          "text": "Чтобы определить поведение Первозданного, вытяните карту ИИ с верха колоды ИИ.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "roman numeral",
-          "marks": []
+          "text": "Обратите внимание на римскую цифру",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " in the center of the card back. This number indicates the level of the AI card. So, al-though the AI cards are facedown, you get some sense of how dan-gerous the next Primordial Attack will be.",
+          "text": " в центре рубашки карты. Это число указывает на уровень карты ИИ. Таким образом, хотя карты ИИ лежат лицом вниз, вы получаете некоторое представление о том, насколько опасной будет следующая Атака Первозданного.",
           "marks": []
         },
         {
           "kind": "text",
           "text": "7",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "AI card elements include the Primordial type ",
+          "text": "Элементы карты ИИ включают тип Первозданного ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "1",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", Card Level ",
+          "text": ", Уровень карты ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", Evasion stats ",
+          "text": ", характеристики Уклонения ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", Targeting ",
+          "text": ", Выбор цели ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "4",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", Move & Attack instructions ",
+          "text": ", инструкции по Перемещению и Атаке ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "5",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", After Attack effects ",
+          "text": ", эффекты После Атаки ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "6",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " and the Attack type ",
+          "text": " и тип Атаки ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "7",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
@@ -199,7 +229,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "2. Targeting",
+          "text": "2. Выбор цели",
           "marks": []
         }
       ]
@@ -210,37 +240,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "After you reveal the AI card, check the targeting to see who or what is being attacked. Targeting is a series of increasingly general separate instructions called ",
+          "text": "После того как вы вскроете карту ИИ, проверьте выбор цели, чтобы узнать, кто или что подвергается атаке. Выбор цели — это серия всё более общих отдельных инструкций, называемых ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "lines",
+          "text": "линиями",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Каждая линия состоит из слова «Цель:», за которым следуют инструкции по выбору цели. Обратите внимание, что одна линия выбора цели может занимать больше места, чем текстовая строка.  ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Each line consists of the word “Target:” followed by targeting instructions. Note that a single tar-geting line can in fact take up more space than a text line.  ",
+          "text": "Пример выбора цели",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Чтобы проверить, кто является Целью Атаки Первозданного, читайте строки в области «выбор цели» карты ИИ одну за другой сверху вниз, пока не найдёте первую, которую сможете разрешить. Не проверяйте дальнейшие линии выбора цели. Чтобы стать Целью, Титан должен выполнить все требования одной линии выбора цели. Если нет действительной Цели ни для одной из инструкций по выбору цели, карта ИИ сбрасывается, и Первозданный вместо этого выполняет свою Рутину. Обратите внимание, что некоторые Зональные Атаки нацелены на клетки, а не на конкретных Титанов, и они считаются выполненными, даже если в обозначенной Зоне нет Титанов (поэтому они не приводят к Рутине).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Targeting example",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "To check who is the Target of the Primordial Attack, read the lines in the “targeting” area of the AI card, one by one from top to bot-tom until you find the first one that you can resolve. Do not check further targeting lines.To become the Target, a Titan must fulfill all requirements of a sin-gle targeting line. If there is no valid Target for any of the targeting instructions, the AI card is discarded and the Primordial performs its Routine instead. Note that some Zone Attacks target spaces, not specific Titans and they are considered performed even if there are no Titans in the designated Zone (therefore they do not result in a Routine).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Some targeting instructions will require you to measure dis-tance (e.g. Closest or Furthest). Distance in Aeon Trespass: Od-yssey is always measured in spaces and orthogonally (in cardinal directions), never diagonally.",
+          "text": " Некоторые инструкции по выбору цели потребуют от вас измерения расстояния (например, Ближайший или Дальнейший). Расстояние в Aeon Trespass: Odyssey всегда измеряется в клетках и ортогонально (по основным направлениям), никогда по диагонали.",
           "marks": []
         }
       ]
@@ -252,7 +288,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Specific Targets",
+          "text": "Конкретные цели",
           "marks": []
         }
       ]
@@ -263,7 +299,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some game effects will instruct you to resolve an Attack against a specific Target (e.g. “Perform Signature against the Attacker”). When it happens, this instruction overrules any targeting instruc-tions on the card itself. Note that if a Titan becomes a Target in the Targeting step, it remains the Target until the end of this AI card unless an effect specifically states otherwise.",
+          "text": "Некоторые игровые эффекты будут предписывать вам разрешить Атаку против конкретной Цели (например, «Выполните Фирменную Атаку против Атакующего»). Когда это происходит, эта инструкция отменяет любые инструкции по выбору цели на самой карте. Обратите внимание, что если Титан становится Целью на этапе Выбора цели, он остаётся Целью до конца действия этой карты ИИ, если эффект специально не указывает иное.",
           "marks": []
         }
       ]
@@ -275,7 +311,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Typical Targeting Instructions",
+          "text": "Типичные инструкции по выбору цели",
           "marks": []
         }
       ]
@@ -286,193 +322,219 @@
       "children": [
         {
           "kind": "text",
-          "text": "Possible targeting instructions include:",
+          "text": "Возможные инструкции по выбору цели включают:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adjacent:",
+          "text": "Смежный:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Цель находится на клетке, которая имеет общую грань с клеткой, занятой Первозданным.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The Target is on a space that shares an edge with a space occupied by the Primordial.",
+          "text": "Поле: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Это нацелено на все клетки на Поле.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Board: ",
+          "text": "Ближайший:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Цель находится на кратчайшем расстоянии (в клетках) от Первозданного (считается через Препятствия и красные линии) среди всех возможных Целей.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "This targets all spaces on the Board.",
+          "text": "Дальнейший:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Цель находится на наибольшем расстоянии (в клетках) от Первозданного (считается через Препятствия и красные линии) среди всех возможных Целей.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Closest:",
+          "text": "Впереди: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Цель находится на любой клетке впереди (см. Ориентация Первозданного, с. 40) и в пределах Линии Видимости (см. с. 38) Первозданного.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The Target is the shortest distance (in spaces) from the Primordial (counted through Obstacles and red lines) among all possible Targets.",
+          "text": "В радиусе действия: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Первозданный может достичь Цели, переместившись на количество клеток, равное его значению Скорости, и выполнить Атаку против Цели.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Furthest:",
+          "text": "В поле зрения: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Цель находится в пределах Линии Видимости (см. с. 38) Первозданного.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The Target is the furthest distance (in spaces) from the Primordial (counted through Obstacles and red lines) among all possible Targets.",
+          "text": "В/на X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Цель находится в указанной области или на указанной клетке. Например, В Слепой Зоне, На Лабиринте, На Выгодной Позиции.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "In front: ",
+          "text": "Последний нанёсший Рану:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Титан, который последним успешно нанёс Рану Первозданному Атакой.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "The Target is on any space in front (see Primordial facing p. 40) and within Line of Sight (see p. 38) of the Primordial.",
+          "text": "Наименьшее X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Наименьшее значение/количество указанной статистики/ресурса. Например, Наименьшая , Наименьшее количество узлов Мнемос.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "In range: ",
+          "text": "Наибольшее X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Наибольшее значение/количество указанной статистики/ресурса. Например, Наибольшая Скорость, Наибольшая .",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "The Primordial can reach the Target by moving a number of spaces up to its Speed value and perform an Attack against the Target.",
+          "text": "Не в/на X: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Цель не находится в указанной области или на указанной клетке. Например, Не в Тылу, Не на Выгодной Позиции.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "In sight: ",
+          "text": "Нет цели: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Всегда разрешайте эту инструкцию, если никакая другая инструкция по выбору цели неприменима.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "The Target is within Line of Sight (see p. 38) of the Pri-mordial.",
+          "text": "Приоритетная цель:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Цель с жетоном Приоритетной цели.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "In/on X:",
+          "text": "С X: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Титан с определённым игровым элементом, таким как карта, карта Состояния, значение статистики. Например, С 6+ , С Уникальной .",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The Target is in the specified area or on the specified space. For example, In Blindspot, On Labyrinth, On Vantage Point.",
+          "text": "X Титанов:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Указанное количество Титанов.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Last to Wound:",
-          "marks": []
+          "text": "Зона: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " The Titan who was the last to successfully wound the Primordial with an Attack.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Least X:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Least value/amount of a specified statistic/resource. For example, Least , Least Mnemos nodes.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Most X:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Most value/amount of a specified statistic/resource. For example, Most Speed, Most .",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Not in/on X: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "The Target is not in a specified area or on a specified space. For example, Not in Rear, Not on Vantage Point.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "No Target: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Always resolve this instruction if no other targeting in-struction is applicable.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " The Target with the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Priority Target",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " token.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "With X: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Titan with a specific game element, like a  card, Condition card, statistic value. For example, With 6+ , With a Unique .",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "X Titans:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Specified number of Titans.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Zone: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "All spaces in an indicated area. This targeting line triggers even if there are no Titans within the indicated area. Some Zones have been named for narrative reasons. These are resolved like or-dinary Zone Attacks, unless instructed otherwise.",
+          "text": "Все клетки в указанной области. Эта линия выбора цели срабатывает, даже если в указанной области нет Титанов. Некоторые Зоны были названы по сюжетным причинам. Они разрешаются как обычные Зональные Атаки, если не указано иное.",
           "marks": []
         },
         {
           "kind": "text",
           "text": "l23456",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         }
       ]
     }

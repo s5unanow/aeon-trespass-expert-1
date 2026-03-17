@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0037",
-    "title": "Basic Traits",
+    "title": "Базовые Черты",
     "section_path": [],
     "source_page_number": 37
   },
@@ -19,27 +19,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "There are two special types of positioning symbols that may be found on the Primordial diagram. These symbols show the spaces where some Basic Traits take effect:",
+          "text": "На диаграмме Первозданного могут быть найдены два особых типа символов позиционирования. Эти символы показывают пространства, где действуют некоторые Базовые Черты:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Blindspots:",
+          "text": "Слепые зоны:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Слепые зоны — это пространства, которые Первозданный не может видеть. Титаны в Слепых зонах исключаются из нацеливания, если только нацеливание специально не упоминает Слепые зоны. Титан в Слепой зоне получает бонус +1 к Точности (см. Характеристики Аборонного Снаряжения, с. 46) к своим Атакам.W",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Blindspots are spaces the Primordial cannot see. Titans in Blindspots are excluded from targeting, un-less the targeting specifically mentions Blindspots. A Titan in the Blindspot gains a +1 Precision bonus (see Offensive Gear Stats, p. 46) to their Attacks.W",
-          "marks": []
+          "text": "Уязвимые места: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Weakspots: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Weakspots can have different effects depend-ing on the Primordial and are usually unlocked by some oth-er effect or game element. In other words, Weakspots don’t have any inherent effects of their own, and a Weakspot space only indi-cates a space where a Weakspot may be created.",
+          "text": "Уязвимые места могут иметь различные эффекты в зависимости от Первозданного и обычно разблокируются каким-либо другим эффектом или игровым элементом. Другими словами, Уязвимые места не имеют собственных присущих эффектов, и пространство Уязвимого места лишь указывает на пространство, где может быть создано Уязвимое место.",
           "marks": []
         }
       ]
@@ -51,7 +55,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Basic Traits",
+          "text": "Базовые Черты",
           "marks": []
         }
       ]
@@ -62,57 +66,67 @@
       "children": [
         {
           "kind": "text",
-          "text": "Basic Traits are universal Primordial abilities or features. A Primor-dial may have any number of Basic Traits. The common Basic Traits throughout all Cycles are:",
+          "text": "Базовые Черты — это универсальные способности или особенности Первозданного. У Первозданного может быть любое количество Базовых Чертов. Общие Базовые Черты для всех Циклов:",
           "marks": []
         },
         {
           "kind": "text",
           "text": "X",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " \u0007",
+          "text": "Неизбежный Отброс:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Значение Неизбежного Отброса, совершаемого Первозданным, если он завершает своё Движение на том же пространстве, что и Титан (см. с. 40). \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Unavoidable Knockback:",
+          "text": "Слепая зона:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Первозданный имеет ограниченное поле зрения и, следовательно, имеет Слепые зоны (см. с. 38).W \b \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " The value of the Unavoidable Knockback done by the Primordial if it ends its Movement on the same space as a Titan (see p. 40). \u0007",
+          "text": "Уязвимые места:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Первозданный имеет некую врождённую слабость или изъян, которые могут быть использованы, и, следовательно, имеет Уязвимые места (см. Диаграмму Первозданного). \b \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Blindspot:",
-          "marks": []
+          "text": "Неповоротливость: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " The Primordial has a limited field of view and consequently has Blindspots (see p. 38).W \u0007 \u0007",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Weakspots:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " The Primordial has some inherent weakness or flaw that may be exploited and consequently has Weak-spots (see Primordial Diagram). \u0007 \u0007",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Lumbering: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "The Primordial is massive or is nigh immovable, and as a consequence cannot suffer Pushback or be moved involuntary in any other way (see p. 63 and 65).",
+          "text": "Первозданный массивен или почти неподвижен и, как следствие, не может быть отброшен или перемещён принудительно каким-либо другим способом (см. с. 63 и 65).",
           "marks": []
         }
       ]
@@ -124,7 +138,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "VP",
+          "text": "ОП",
           "marks": []
         }
       ]
@@ -135,17 +149,19 @@
       "children": [
         {
           "kind": "text",
-          "text": " \u0007",
+          "text": " \b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Vantage Points:",
-          "marks": []
+          "text": "Опорные Пункты:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " The Primordial can be mounted and conse-quently has Vantage Points (see p. 59).",
+          "text": " На Первозданного можно взобраться, и, следовательно, у него есть Опорные Пункты (см. с. 59).",
           "marks": []
         }
       ]
@@ -157,7 +173,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Level-specific attributes and Traits",
+          "text": "Атрибуты и Черты Первозданного, зависящие от Уровня",
           "marks": []
         }
       ]
@@ -168,67 +184,79 @@
       "children": [
         {
           "kind": "text",
-          "text": "The rest of the Primordial Sheet is dedicated to Primordial attrib-utes and Traits, grouped by Levels. This is because the attribute values and Traits depend on the Level of the Primordial you are currently facing. Remember to always refer to the attributes and Traits associated with its current level (designated by the roman numeral).",
+          "text": "Остальная часть Листа Первозданного посвящена атрибутам и Чертам Первозданного, сгруппированным по Уровням. Это связано с тем, что значения атрибутов и Черты зависят от Уровня Первозданного, с которым вы в данный момент сталкиваетесь. Всегда помните о необходимости обращаться к атрибутам и Чертам, связанным с его текущим уровнем (обозначенным римской цифрой).",
           "marks": []
         },
         {
           "kind": "text",
           "text": "12354",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "A Primordial Level box will include the Level numeral ",
+          "text": "Блок Уровня Первозданного будет включать номер Уровня ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "1",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", Main At-tributes ",
+          "text": ", Основные Атрибуты ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Bonuses ",
+          "text": " Бонусы ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", a list of added or removed Traits ",
+          "text": ", список добавленных или удалённых Чертов ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "4",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " and, sometimes, a definition of a newly introduced Trait ",
+          "text": " и, иногда, определение новой введённой Черты ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "5",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ". Remember to always check Traits added and removed on the current level as well as all previous levels and to find the Trait cards for Traits not explained on the Primordial Sheet.",
+          "text": ". Всегда проверяйте Черты, добавленные и удалённые на текущем уровне, а также на всех предыдущих уровнях, и находите карты Чертов для Чертов, не объяснённых на Листе Первозданного.",
           "marks": []
         }
       ]
@@ -240,7 +268,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Main Attributes:",
+          "text": "Основные Атрибуты:",
           "marks": []
         }
       ]
@@ -251,37 +279,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "\u0007",
+          "text": "\b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "To Hit:",
+          "text": "Попадание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Насколько трудно попасть по Первозданному (см.: Бросок Атаки на с. 49).\b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " How hard the Primordial is to hit (see: Attack Roll on p. 49).\u0007",
+          "text": "Скорость: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Максимальное количество клеток, которое Первозданный может пройти за один ход. \b\t\b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Speed: ",
-          "marks": []
+          "text": "Раны:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Maximum number of spaces the Primordial can tra- vel with a single move. \u0007\t\u0007",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Wounds:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " The number of Wounds required to slay the Pri-mordial.",
+          "text": " Количество Ран, необходимое для убийства Первозданного.",
           "marks": []
         }
       ]
@@ -293,7 +327,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Bonuses",
+          "text": "Бонусы",
           "marks": []
         }
       ]
@@ -304,72 +338,86 @@
       "children": [
         {
           "kind": "text",
-          "text": " AT bonus: ",
+          "text": " Бонус к АТ: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Увеличьте АТ ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Increase the AT of ",
+          "text": "каждой",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карты БП на это значение.\b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "each",
+          "text": "Бонус к Опасности:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Увеличьте наносимую ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " BP card by this value.\u0007",
+          "text": "каждой",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Атакой Первозданного (не каждым попаданием, если специально не указано; см. Бросок Уклонения, с. 41) на это значение.\b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Danger bonus:",
+          "text": "Бонус к кубикам Уклонения:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Увеличьте значение кубиков Уклонения ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Increase the dealt by ",
+          "text": "каждой",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Атаки Первозданного на это значение.\t\b",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "each",
-          "marks": []
+          "text": "Эскалации: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Primordial At-tack (not by each hit, unless specifically stated; see Evasion Roll, p. 41) by this value.\u0007",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Evasion dice bonus:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Increase the Evasion dice value of ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "each",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Primordial Attack by this value.\t\u0007",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Escalations: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "At the start of Battle, Escalate the Primordial a number of times equal to this value.",
+          "text": "В начале Битвы Эскалируйте Первозданного количество раз, равное этому значению.",
           "marks": []
         }
       ]
@@ -381,7 +429,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Traits",
+          "text": "Черты Первозданного",
           "marks": []
         }
       ]
@@ -392,17 +440,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Traits cover a broad spectrum of additional abilities, effects and special rules. Some Traits are described on the Primor-dial Sheet, while others are represented by Primordial Trait cards. Many Primordial levels introduce new Traits, some of which trans-form the Battle completely. Always make sure you are familiar with all Primordial Traits as you prepare for Battle. ",
+          "text": "Черты Первозданного охватывают широкий спектр дополнительных способностей, эффектов и особых правил. Некоторые Черты описаны на Листе Первозданного, в то время как другие представлены картами Чертов Первозданного. Многие уровни Первозданного вводят новые Черты, некоторые из которых полностью меняют Битву. Всегда убедитесь, что вы знакомы со всеми Чертами Первозданного, готовясь к Битве. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember:",
-          "marks": []
+          "text": "Помните:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Usually, your current Level has all the Traits of the previous Levels. ",
+          "text": " Обычно ваш текущий Уровень обладает всеми Чертами предыдущих Уровней. ",
           "marks": []
         }
       ]
@@ -414,7 +464,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Signature and Routine",
+          "text": "Фирменная Атака и Рутина",
           "marks": []
         }
       ]
@@ -425,37 +475,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Primordial Sheet has spaces for two special cards: the Signa-ture and the Routine. These represent the Primordial’s typical be-haviors. The Signature is the “signature attack,” while the Routine is what it does when there is no one around to attack.The Signature is the creature’s iconic default Attack. It behaves like an AI card, but is ",
+          "text": "Лист Первозданного имеет места для двух специальных карт: Фирменной Атаки и Рутины. Они представляют типичное поведение Первозданного. Фирменная Атака — это «фирменная атака», в то время как Рутина — это то, что он делает, когда вокруг нет никого, кого можно было бы атаковать. Фирменная Атака — это знаковая атака существа по умолчанию. Она ведёт себя как карта ИИ, но ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "not an AI card",
+          "text": "не является картой ИИ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если другая карта, Черта или любой другой эффект предписывает вам выполнить Фирменную Атаку, это та Атака, которую вы должны разрешить. Рутина — это специальное действие, которое существо выполняет, когда нет подходящей Цели для любой из линий нацеливания на его текущей Атаке. Обычно Рутины — это разрушительные эффекты, которых следует избегать любой ценой! Они часто затрагивают не только Титанов или Боевое Поле, но и ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". If another card, Trait or any other effect instructs you to perform Signature, this is the Attack you should resolve.The Routine is a special action the creature performs when there is no eligible Target for any of the targeting lines on its current Attack. Usually, Routines are devastating effects that should be avoided at all costs! They often affect not only the Titans or the Battle Board, but the ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " само по себе.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
+          "text": "Примечание: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " itself.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Note: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Most Routines have a Mnestis Theatre version on the back. Make sure to use the regular Routine during your campaign battles.All Signatures and some Routines are Attacks, but they are not AI cards for the purpose of any other effects.",
+          "text": "Большинство Рутин имеют версию для Театра Мнемос на обратной стороне. Убедитесь, что вы используете обычную Рутину во время своих кампаний. Все Фирменные Атаки и некоторые Рутины являются Атаками, но они не являются картами ИИ для целей любых других эффектов.",
           "marks": []
         }
       ]
@@ -467,7 +523,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Round Overview",
+          "text": "Обзор Раунда Первозданного",
           "marks": []
         }
       ]
@@ -478,57 +534,67 @@
       "children": [
         {
           "kind": "text",
-          "text": "Unless an effect explicitly states otherwise, all Battles in ",
+          "text": "Если эффект явно не указывает иное, все Битвы в ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " begin with the Primordial Round. The Primordial Round proceeds in the following order: ",
+          "text": " начинаются с Раунда Первозданного. Раунд Первозданного проходит в следующем порядке: ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "1.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Start of Primordial Round (see below)",
+          "text": "Начало Раунда Первозданного (см. ниже)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Resolve AI (see below)",
+          "text": "Разрешение ИИ (см. ниже)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Resolve Other Actions (p. 44)",
+          "text": "Разрешение Других Действий (с. 44)",
           "marks": []
         },
         {
           "kind": "text",
           "text": "4.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "End of Primordial Round (p. 44)",
+          "text": "Конец Раунда Первозданного (с. 44)",
           "marks": []
         }
       ]
@@ -540,7 +606,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Start of Primordial Round",
+          "text": "Начало Раунда Первозданного",
           "marks": []
         }
       ]
@@ -551,7 +617,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sometimes the Primordial will have an effect that triggers at the start of the Primordial Round. In that case, it’s resolved before drawing the AI card. If there is more than one start of Round effect, the players may resolve these effects in any order they like.",
+          "text": "Иногда у Первозданного будет эффект, который срабатывает в начале Раунда Первозданного. В этом случае он разрешается до вытягивания карты ИИ. Если существует более одного эффекта начала Раунда, игроки могут разрешать эти эффекты в любом порядке, который им нравится.",
           "marks": []
         }
       ]
@@ -563,7 +629,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resolve AI",
+          "text": "Разрешение ИИ",
           "marks": []
         }
       ]
@@ -574,7 +640,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The AI cards are the heart of the Primordial Round. Most AI cards are Primordial Attacks. You resolve an AI card by performing these steps (in the following order):",
+          "text": "Карты ИИ — это сердце Раунда Первозданного. Большинство карт ИИ — это Атаки Первозданного. Вы разрешаете карту ИИ, выполняя следующие шаги (в указанном порядке):",
           "marks": []
         }
       ]

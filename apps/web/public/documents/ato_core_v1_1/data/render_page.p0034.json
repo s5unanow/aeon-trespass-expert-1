@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0034",
-    "title": "Battle Phase",
+    "title": "Фаза Битвы",
     "section_path": [],
     "source_page_number": 34
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle Phase",
+          "text": "Фаза Битвы",
           "marks": []
         }
       ]
@@ -31,17 +31,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "When the cataclysmic Eschaton happened, mortals thought it was the end of the world. That was not the case: the world continued, although diminished, without the Olympian gods’ guidance... and then the Primordials appeared. Giant monsters from some Oth-er Place, here to finish the mortals once and for all. There is no power capable of stopping them, as nothing pierces through their unearthly armor, the",
+          "text": "Когда произошел катаклизм Эсхатон, смертные думали, что это конец света. Но это было не так: мир продолжался, хотя и ослабленный, без руководства олимпийских богов... а затем появились Первозданные. Гигантские монстры из некоего Иного Места, явившиеся, чтобы покончить со смертными раз и навсегда. Нет силы, способной остановить их, поскольку ничто не пробивает их неземную броню, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Aeon Trespass field",
-          "marks": []
+          "text": "поле Эон Треспасс",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " (AT for short). Nothing, save the Titans.  ",
+          "text": " (сокращенно ЭТ). Ничто, кроме Титанов.  ",
           "marks": []
         }
       ]
@@ -53,7 +55,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "What are Battles?",
+          "text": "Что такое Битвы?",
           "marks": []
         }
       ]
@@ -64,27 +66,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battles happen when the ",
+          "text": "Битвы происходят, когда ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " сталкивается с одним из Первозданных. Аргонавты спускаются в Баланейон и соединяются с 30-футовыми Титанами, затем встречаются с гигантским монстром и, будем надеяться, убивают его, прежде чем он убьет их. Такова жизнь на ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " encounters one of the Primordials. Argonauts descend into the Balaneion and junction with 30 ft. high Titans, then meet the giant monster and, hopefully, kill it before it kills them. That is the life on the ",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ".In Battle, each player controls an Argonaut/Titan pair, while the Primordial is controlled by a deck of advanced AI cards. The Titans (usually four of them) want to deal a set number of Wounds to slay the Primordial (in general ten Wounds are required), while the Pri-mordial tries to kill the Titans. Whoever prevails, wins.Whenever the game instructs you to resolve a Battle, you begin the Battle Phase. Timeline Battles will be resolved in the Encoun-ter Step, while other Battles (such as Adversary attacks or narra-tive encounters resulting from a Story card progression) may take place during other Steps.",
+          "text": ".В Битве каждый игрок управляет парой Аргонавт/Титан, в то время как Первозданный управляется колодой продвинутых карт ИИ. Титаны (обычно их четверо) хотят нанести определенное количество Ран, чтобы убить Первозданного (обычно требуется десять Ран), в то время как Первозданный пытается убить Титанов. Кто победит, тот и выигрывает.Всякий раз, когда игра предписывает вам разрешить Битву, вы начинаете Фазу Битвы. Битвы по Хронологии будут разрешаться на Шаге Столкновения, в то время как другие Битвы (такие как атаки Противника или нарративные столкновения, возникающие в результате прогресса карты Истории) могут происходить на других Шагах.",
           "marks": []
         }
       ]
@@ -96,7 +102,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resolving Battles",
+          "text": "Разрешение Битв",
           "marks": []
         }
       ]
@@ -107,47 +113,55 @@
       "children": [
         {
           "kind": "text",
-          "text": "During each Battle you will follow the same steps:",
+          "text": "Во время каждой Битвы вы будете следовать одним и тем же шагам:",
           "marks": []
         },
         {
           "kind": "text",
           "text": "1.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Find the correct Battle Scenario",
+          "text": "Найдите правильный Сценарий Битвы",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Perform Setup",
+          "text": "Выполните Подготовку",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Resolve the Battle",
+          "text": "Разрешите Битву",
           "marks": []
         },
         {
           "kind": "text",
           "text": "4.\t",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Resolve the Aftermath",
+          "text": "Разрешите Последствия",
           "marks": []
         }
       ]
@@ -159,7 +173,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battles Scenarios",
+          "text": "Сценарии Битв",
           "marks": []
         }
       ]
@@ -170,17 +184,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "When instructed to resolve a Battle, unless directed to a specific page, find the Battle Scenario corresponding to the particular Pri-mordial you’re facing. The scenario includes all the setup rules of this specific Battle and may sometimes introduce additional narra-tive elements and mechanics. These scenarios will help you set up the Battle Board, the Primordial, Terrain tiles and make any other applicable preparations. You will find the scenarios of the Battle from a particular Cycle in that Cycle’s Storybook.All Battles are played on the Battle Board.",
+          "text": "Когда вам предписано разрешить Битву, если не указана конкретная страница, найдите Сценарий Битвы, соответствующий конкретному Первозданному, с которым вы сталкиваетесь. Сценарий включает все правила подготовки этой конкретной Битвы и иногда может вводить дополнительные нарративные элементы и механики. Эти сценарии помогут вам настроить Игровое поле Битвы, Первозданного, тайлы Ландшафта и выполнить любые другие применимые приготовления. Сценарии Битвы из определенного Цикла вы найдете в Книге Историй этого Цикла. Все Битвы разыгрываются на Игровом поле Битвы.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
-          "marks": []
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " If you want to conserve space, you may want to save your campaign before the Battle (see Saving the Campaign, p. 22) and set aside all elements not used during this Phase: the Map tiles, Technologies (other than Argo Abilities), Story and Doom cards as well as any Clue cards.",
+          "text": " Если вы хотите сэкономить место, вы можете сохранить свою кампанию перед Битвой (см. Сохранение кампании, стр. 22) и отложить все элементы, не используемые на этой Фазе: тайлы Карты, Технологии (кроме Способностей Арго), карты Истории и Рока, а также любые карты Подсказок.",
           "marks": []
         }
       ]
@@ -192,7 +208,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Basic Terms",
+          "text": "Основные Термины",
           "marks": []
         }
       ]
@@ -203,7 +219,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "These are the most common game terms used in the Battle Phase.",
+          "text": "Это наиболее распространенные игровые термины, используемые в Фазе Битвы.",
           "marks": []
         }
       ]
@@ -215,7 +231,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titan",
+          "text": "Титан",
           "marks": []
         }
       ]
@@ -226,7 +242,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "During Battle, game elements may refer to the Titan. The Titan is represented by the Titan Sheet and a Titan miniature. However, in some cases, this term will also include the Argonaut junctioning with the Titan (e.g. the Primordial Attack makes you draw a Fated Mnemos card. The Argonaut will gain it, not the Titan itself).",
+          "text": "Во время Битвы игровые элементы могут ссылаться на Титана. Титан представлен Листом Титана и миниатюрой Титана. Однако в некоторых случаях этот термин также будет включать Аргонавта, соединяющегося с Титаном (например, Атака Первозданного заставляет вас вытянуть карту Судьбы Мнемос. Ее получит Аргонавт, а не сам Титан).",
           "marks": []
         }
       ]
@@ -238,7 +254,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial",
+          "text": "Первозданный",
           "marks": []
         }
       ]
@@ -249,7 +265,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "During Battle, game elements may refer to the Primordial. The Pri-mordial is represented by the Primordial Sheet and a Primordial miniature.",
+          "text": "Во время Битвы игровые элементы могут ссылаться на Первозданного. Первозданный представлен Листом Первозданного и миниатюрой Первозданного.",
           "marks": []
         }
       ]
@@ -261,7 +277,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Battle Board",
+          "text": "Игровое поле Битвы",
           "marks": []
         }
       ]
@@ -272,37 +288,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Battle Board is made up of ",
+          "text": "Игровое поле Битвы состоит из ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "spaces",
+          "text": "пространств",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Только пространства и их края считаются составляющими Игрового поля Битвы. Игровое поле Битвы имеет два коротких и два длинных Края Поля. Короткие Края Поля отмечены ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Only spaces and their edg-es are considered to make up the Battle Board. The Battle Board has two short and two long Board Edges. Short Board Edges are marked with ",
+          "text": "буквами",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", чтобы обозначить ряды, а длинные Края Поля отмечены ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "letters",
-          "marks": []
+          "text": "числами",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " to identify rows, and the long Board Edges are marked with ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "numbers",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " to identify columns.",
+          "text": ", чтобы обозначить столбцы.",
           "marks": []
         }
       ]
@@ -314,7 +336,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Spaces",
+          "text": "Пространства",
           "marks": []
         }
       ]
@@ -325,7 +347,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Spaces are square boxes you place other game elements on. A Ti-tan takes up one space. A Primordial typically takes up four or nine spaces. Spaces are occupied if there is a miniature or an Obstacle Terrain tile on them. All other spaces are considered empty spaces. ",
+          "text": "Пространства — это квадратные ячейки, на которые вы размещаете другие игровые элементы. Титан занимает одно пространство. Первозданный обычно занимает четыре или девять пространств. Пространства считаются занятыми, если на них находится миниатюра или тайл Ландшафта-Препятствия. Все остальные пространства считаются пустыми.",
           "marks": []
         }
       ]
@@ -337,7 +359,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adjacent",
+          "text": "Смежный",
           "marks": []
         }
       ]
@@ -348,13 +370,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "Something is adjacent if the space it’s on shares at least one edge with the other space. ",
+          "text": "Что-либо является смежным, если пространство, на котором оно находится, имеет хотя бы одну общую грань с другим пространством. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "White spaces are adjacent to the Hekaton",
-          "marks": []
+          "text": "Белые пространства смежны с Гекатоном",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -365,7 +389,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Board Edge",
+          "text": "Край Поля",
           "marks": []
         }
       ]
@@ -376,7 +400,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Edges not shared with another space are considered to be part of the Board Edge (see Battle Board).",
+          "text": "Края, не разделяемые с другим пространством, считаются частью Края Поля (см. Игровое поле Битвы).",
           "marks": []
         }
       ]
@@ -388,7 +412,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Attack Dice",
+          "text": "Кубики Атаки",
           "marks": []
         }
       ]
@@ -399,7 +423,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Custom d10 dice (see Dice, p. 8).",
+          "text": "Специальные кубики d10 (см. Кубики, стр. 8).",
           "marks": []
         }
       ]
@@ -411,7 +435,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Power Dice",
+          "text": "Кубики Силы",
           "marks": []
         }
       ]
@@ -422,7 +446,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Custom d6 dice (see Dice, p. 8).",
+          "text": "Специальные кубики d6 (см. Кубики, стр. 8).",
           "marks": []
         }
       ]

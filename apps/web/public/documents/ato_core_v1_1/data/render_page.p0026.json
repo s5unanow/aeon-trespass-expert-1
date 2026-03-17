@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0026",
-    "title": "Adventure Phase",
+    "title": "Фаза Приключения",
     "section_path": [],
     "source_page_number": 26
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adventure Phase",
+          "text": "Фаза Приключения",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Adventure Phase is not as structured as the Battle and Voyage Phases. There is no strict round sequence to follow, but there are some important rules and ramifications nonetheless. There are at least 7 types of adventures in Aeon Trespass: Odyssey:",
+          "text": "Фаза Приключения не так структурирована, как Фазы Битвы и Странствия. Нет строгой последовательности раундов, которой нужно следовать, но тем не менее есть несколько важных правил и последствий. В Aeon Trespass: Odyssey существует как минимум 7 типов приключений:",
           "marks": []
         }
       ]
@@ -42,7 +42,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Continue reading to learn more about general Adventure rules, or proceed to the paragraph concerning a specific adventure type to learn how to resolve it. ",
+          "text": "Продолжайте читать, чтобы узнать больше об общих правилах Приключений, или перейдите к абзацу, касающемуся конкретного типа приключения, чтобы узнать, как его разрешить. ",
           "marks": []
         },
         {
@@ -64,7 +64,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "A Narrative Game of Choice",
+          "text": "Нарративная Игра Выбора",
           "marks": []
         }
       ]
@@ -75,27 +75,51 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Olympian Gods are dead, Hellas has been rocked by the cat-aclysmic Eschaton. Primordials ravage what is left of mortal civili-zation.The ",
+          "text": "Олимпийские Боги мертвы, Эллада потрясена катаклизмическим Эсхатоном. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
+          "text": "Первозданные",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " sails the Great Sea towards a destination unknown. It brings with it hope for a better future for all mortals. But those onboard have no such luxury of fallback: people look to them, but they can only look to each other, there is no greater authority here. The burden of responsibility is heavy indeed.You, the Argonauts, will have to make those choices… and live with the consequences.",
+          "text": " опустошают то, что осталось от смертной цивилизации. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " плывет по Великому Морю к неизвестной цели. Он несет с собой надежду на лучшее будущее для всех смертных. Но у тех, кто на борту, нет такой роскоши отступления: люди смотрят на них, но они могут смотреть только друг на друга, здесь нет высшей власти. Бремя ответственности действительно тяжело. Вы, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавты",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", должны будете сделать этот выбор… и жить с его последствиями.",
           "marks": []
         },
         {
           "kind": "text",
           "text": "Aeon Trespass: Odyssey",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " is a game about stories, more so than most adventure games. Though, on the outset, the narrative may look like a choose your own adventure, it’s much more than that. Your choices will not only inform where you end up at, but also who you truly are. Usually, there are no inherently good or evil choices. There are hard choices, difficult choices, moral choices, pragmat-ic choices. Weighty choices that will have major consequences for your games going forward.  ",
+          "text": " — это игра о историях, больше, чем большинство приключенческих игр. Хотя на первый взгляд повествование может показаться приключением, где вы выбираете свой путь, это гораздо больше. Ваш выбор будет определять не только то, где вы окажетесь, но и то, кто вы на самом деле. Обычно нет изначально хороших или плохих выборов. Есть трудные выборы, сложные выборы, моральные выборы, прагматичные выборы. Весомые выборы, которые будут иметь серьезные последствия для ваших будущих игр.  ",
           "marks": []
         },
         {
@@ -112,7 +136,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "What are Adventures?",
+          "text": "Что такое Приключения?",
           "marks": []
         }
       ]
@@ -123,17 +147,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Aeon Trespass: Odyssey will send you on myriad adventures: from swashbuckling clashes on high seas, through stealth infiltration missions, war stories and diplomatic negotiations, to introvertive pieces about your character or the ",
+          "text": "Aeon Trespass: Odyssey отправит вас в бесчисленные приключения: от лихих столкновений в открытом море, через миссии по скрытному проникновению, военные истории и дипломатические переговоры, до интроспективных фрагментов о вашем персонаже или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": " as a whole.So, what makes an adventure and when does the Adventure Phase start? The general rule is, everything that sends you to a Storybook paragraph is considered an adventure.",
+          "text": " в целом. Итак, что делает приключение приключением и когда начинается Фаза Приключения? Общее правило таково: все, что отправляет вас к абзацу Книги Историй, считается приключением.",
           "marks": []
         }
       ]
@@ -145,7 +171,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Navigating Storybooks",
+          "text": "Навигация по Книгам Историй",
           "marks": []
         }
       ]
@@ -156,37 +182,93 @@
       "children": [
         {
           "kind": "text",
-          "text": "Storybooks contain all the story paragraphs and Battle Setups as-sociated with a given Cycle, as well as Cycle-specific rules. When playing a given Cycle, you will mostly be required to use the Story-book associated with that Cycle, although some, such as ",
+          "text": "Книги Историй содержат все сюжетные абзацы и Сценарии Битв, связанные с данным ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mnemos Breakthroughs",
+          "text": "Циклом",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " or ",
+          "text": ", а также правила, специфичные для ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Adversary Battles",
+          "text": "Цикла",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", are not strictly connected to a single Cycle and as such may require you to refer to other Storybooks.The first and most important rule of the Storybook is: ",
+          "text": ". При игре в данный ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "never read story passages unless you are clearly instructed to!",
+          "text": "Цикл",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " This will ensure you don’t spoil the story for yourself. On that note, read only the paragraphs you’ve been directed to and try not to look at those around them. When you begin resolving a story paragraph, it marks the beginning of the Adventure Phase.",
+          "text": " вам в основном потребуется использовать Книгу Историй, связанную с этим ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Циклом",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", хотя некоторые, такие как ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Прорывы Мнемос",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Битвы с Противниками",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", не строго связаны с одним ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Циклом",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и как таковые могут потребовать от вас обращения к другим Книгам Историй. Первое и самое важное правило Книги Историй: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "никогда не читайте сюжетные отрывки, если вам это не указано явно!",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Это гарантирует, что вы не испортите себе историю. В связи с этим, читайте только те абзацы, к которым вас направили, и старайтесь не смотреть на те, что вокруг них. Когда вы начинаете разрешать сюжетный абзац, это знаменует начало Фазы Приключения.",
           "marks": []
         },
         {
@@ -213,7 +295,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Following the Paragraphs",
+          "text": "Следуя Абзацам",
           "marks": []
         }
       ]
@@ -224,27 +306,41 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many Storybook paragraphs include an outcome pointing you to another paragraph. When you are done resolving them along with all associated effects, simply proceed to the paragraph you were directed to. Alternatively, a story paragraph may end with the words “Return to the Voyage Phase” or simply conclude, with no further direction. This means that the adventure is over and you should return to the Campaign Round Step you were on when you were instructed to read the paragraph.Gain +1 , then ",
+          "text": "Многие абзацы Книги Историй включают исход, указывающий на другой абзац. Когда вы закончите их разрешение вместе со всеми связанными эффектами, просто перейдите к абзацу, к которому вас направили. В качестве альтернативы, сюжетный абзац может заканчиваться словами «Вернитесь в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "return to the Voyage Phase.Remember: ",
+          "text": "Фазу Странствия",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "The adventure ends ",
+          "text": "» или просто завершаться без дальнейших указаний. Это означает, что приключение окончено, и вы должны вернуться к Шагу Раунда Кампании, на котором вы находились, когда вам было поручено прочитать абзац. Получите +1 , затем ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "only",
+          "text": "вернитесь в Фазу Странствия",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Помните: приключение заканчивается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " if you are instructed to “Re-turn to the Voyage Phase” or there is no further paragraph men-tioned. You must always resolve all chained paragraphs before you can perform any other actions or resolve further Campaign Round Steps.",
+          "text": "только",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " в том случае, если вам указано «Вернуться в Фазу Странствия» или не упомянут следующий абзац. Вы всегда должны разрешить все связанные абзацы, прежде чем сможете выполнять какие-либо другие действия или разрешать дальнейшие Шаги Раунда Кампании.",
           "marks": []
         },
         {
@@ -271,7 +367,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Story Choices",
+          "text": "Сюжетные Выборы",
           "marks": []
         }
       ]
@@ -282,27 +378,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some of the story paragraphs have choice-based outcomes. De-pending on your decision, they will point you to different para-graphs, and sometimes will list some of the gains and losses as-sociated with a given choice. We’ve ",
+          "text": "Некоторые сюжетные абзацы имеют исходы, основанные на выборе. В зависимости от вашего решения, они будут указывать вам на разные абзацы, а иногда будут перечислять некоторые приобретения и потери, связанные с данным выбором. Мы ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "intentionally",
+          "text": "намеренно",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " разработали эти выборы, чтобы дать вам представление об их исходах, позволяя вам принимать",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " designed these choices to give you insight into their outcomes, allowing you to make",
-          "marks": []
+          "text": " информированные, стратегические и нарративные решения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " informed, strategic and narrative decisions",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". Read all of your choices and weigh your options. Some consequences of your choic-es are supposed to remain obscured and these have been moved to the next paragraph in the chain. Some choices are only available if you fulfill specific conditions. Even if you do, however, you are not forced to choose a given option, unless stated otherwise.",
+          "text": ". Прочитайте все свои варианты и взвесьте их. Некоторые последствия вашего выбора должны оставаться скрытыми, и они были перенесены в следующий абзац в цепочке. Некоторые выборы доступны только при выполнении определенных условий. Однако, даже если вы их выполняете, вы не обязаны выбирать данный вариант, если не указано иное.",
           "marks": []
         }
       ]
@@ -314,7 +414,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Making Notes",
+          "text": "Делаем Заметки",
           "marks": []
         }
       ]
@@ -325,7 +425,27 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some story paragraphs will instruct you to note some information. If they specify where to note it, write it down in the appropriate section of your Argo Sheet or Argonaut Sheet. Otherwise, simply remember it for the duration of your current adventure.",
+          "text": "Некоторые сюжетные абзацы будут указывать вам записать некоторую информацию. Если они указывают, где ее записать, запишите ее в соответствующем разделе вашего Листа ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " или Листа ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Аргонавта",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". В противном случае, просто запомните ее на время вашего текущего приключения.",
           "marks": []
         }
       ]
@@ -337,7 +457,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Choice Matrix",
+          "text": "Матрица Выбора",
           "marks": []
         }
       ]
@@ -348,17 +468,29 @@
       "children": [
         {
           "kind": "text",
-          "text": "In",
+          "text": "В",
           "marks": []
         },
         {
           "kind": "text",
           "text": " Aeon Trespass: Odyssey",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", Матрица Выбора — это система, используемая для отслеживания важных выборов и обращения к ним во время будущих событий. Всякий раз, когда игра указывает вам отметить узел Матрицы Выбора (например, «отметьте A1»), вы должны взять свой Лист ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", the Choice Matrix is a system used to track important choices and refer to them during future events. Whenever the game instructs you to mark a Choice Matrix node (for example, “mark A1”), you should take your Argo Sheet and mark an appropriate space with an X. Later, the game may instruct you to check if a given box is marked. You cannot mark a box twice. If a box is already marked when the game instructs you to mark it, Fail: See 0006. Success: See 0005.",
+          "text": "Арго",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " и отметить соответствующее место крестиком. Позже игра может указать вам проверить, отмечена ли данная ячейка. Вы не можете отметить ячейку дважды. Если ячейка уже отмечена, когда игра указывает вам отметить ее, Провал: См. 0006. Успех: См. 0005.",
           "marks": []
         },
         {

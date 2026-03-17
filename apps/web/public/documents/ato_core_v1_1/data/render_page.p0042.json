@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0042",
-    "title": "Primordial Attack Types",
+    "title": "Типы атак Первозданного",
     "section_path": [],
     "source_page_number": 42
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordial Attack Types",
+          "text": "Типы атак Первозданного",
           "marks": []
         }
       ]
@@ -31,147 +31,175 @@
       "children": [
         {
           "kind": "text",
-          "text": "Usually, an Attack without a specific type is considered ",
+          "text": "Обычно атака без определённого типа считается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Melee",
+          "text": "Рукопашной",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и требует ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " and requires ",
+          "text": "смежности",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Ниже вы найдёте список типов атак, встречающихся в",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "adjacency",
+          "text": " Цикле I: Истина Лабиринта",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Из-за уникальной природы каждого Первозданного и развивающейся механики игры, будущие Циклы могут вводить новые типы атак, которые будут описаны в соответствующих Книгах Историй. Атака может не иметь типов, иметь один или несколько. Если у неё более одного типа атаки, применяются все правила, относящиеся к этим типам.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Below, you will find a list of Attack types en-countered in",
+          "text": "Дальняя атака X:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Может быть выполнена против Титана в пределах X клеток от Первозданного. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Cycle I: Truth of the Labyrinth",
+          "text": "Одновременная атака:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Выполняется против нескольких Целей. Каждая из них разрешает атаку отдельно (выполняет отдельный Бросок Уклонения) в любом порядке, но считается, что это происходит одновременно, поэтому ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Due to each Primor-dial’s unique nature and the game’s evolving mechanics, future Cy-cles may introduce new Attack types, which will be described in the appropriate Storybooks. An Attack may have none, one, or multiple types. If it has more than one Attack type, all rules referring to these types apply.",
+          "text": "Разрыв цепи",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. стр. 43), вызванный одним Титаном, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Range Attack X:",
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " отменяет неразрешённые атаки против других Титанов.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Can be performed against a Titan within X spaces of the Primordial. ",
+          "text": "Последовательная атака:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Выполняется против нескольких Целей, по одной за раз, в определённом порядке. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Simultaneous Attack:",
+          "text": "Разрыв цепи",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (см. стр. 43) во время одной из этих атак останавливает последовательность и отменяет любые оставшиеся атаки. Если последовательная атака нацелена на",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Performed against multiple Targets. Each of them resolves the Attack separately (performs a separate Evasion Roll) in any order, but it is considered to happen at the same time, therefore a ",
+          "text": " «Всех Титанов на пути»,",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " она происходит во время движения Первозданного. Перемещайте Первозданного к его Цели по одной клетке за раз. Когда он должен переместиться на клетку, занятую Титаном, вместо того чтобы пройти сквозь неё, остановитесь, разрешите атаку, затем продолжайте движение к исходной Цели. Когда он достигнет своей исходной Цели, разрешите атаку и против этой Цели. Движение Первозданного во время этой атаки ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Chain Break",
-          "marks": []
+          "text": "не вызывает Столкновения",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " (see p. 43) caused by one Titan ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "does not ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "invalidate unresolved Attacks against other Titans.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Sequential Attack:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Performed against multiple Targets, one at a time, in a specific order. A ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Chain Break",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " (see p. 43) during one of these Attacks stops the sequence and invalidates any lingering Attacks.If a Sequential Attack targets",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " “All Titans in path,”",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " it happens during the Primordial’s movement. Move the Primordial towards its Target one space at a time. When it would move onto a space occupied by a Titan, instead of moving through it, stop, resolve an Attack, then continue moving towards the original Target. When it reaches its original Target, resolve an Attack against that Target as well. Pri-mordial movement during this Attack ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "does not cause Crash",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". If at any point while resolving this Attack the Primordial stops on a space occupied by a Titan (for example, to attack another Titan), this Titan suffers Unavoidable Knockback equal to the Primordial’s ",
+          "text": ". Если в любой момент разрешения этой атаки Первозданный останавливается на клетке, занятой Титаном (например, чтобы атаковать другого Титана), этот Титан получает Неизбежный Отброс, равный значению ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "X",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Первозданного, как обычно.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "value, as normal.",
+          "text": "Зональная атака:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Выполняется против всех Титанов в обозначенной зоне. Каждый Титан выполняет отдельный Бросок Уклонения, но считается, что они",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Zone Attack:",
-          "marks": []
+          "text": " происходят одновременно ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " Performed against all Titans in a designated zone. Each Titan performs a separate Evasion Roll but they are consid-ered to",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " happen simultaneously ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "(similarly to a Simultaneous At-tack). The following rules apply:",
+          "text": "(аналогично Одновременной атаке). Применяются следующие правила:",
           "marks": []
         }
       ]
@@ -182,7 +210,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "unresolved Attacks against other Titans.",
+          "text": "неразрешённые атаки против других Титанов.",
           "marks": []
         }
       ]
@@ -193,7 +221,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "ready begun to resolve this Attack against other Titans in the Zone (i.e. performed an Evasion Roll and applied Attack ef-fects) it does not invalidate an Attack against it.",
+          "text": "начали разрешать эту атаку против других Титанов в Зоне (т.е. выполнили Бросок Уклонения и применили эффекты атаки), это не отменяет атаку против него.",
           "marks": []
         }
       ]
@@ -204,18 +232,22 @@
       "children": [
         {
           "kind": "text",
-          "text": "and diagonally",
+          "text": "и диагонали",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " от источника Зоны X.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " from the source of Zone X.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Zone 2 example",
-          "marks": []
+          "text": "Пример Зоны 2",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -225,7 +257,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "selves. These Zones target the specific spaces shown on the diagram.",
+          "text": "Эти Зоны нацелены на конкретные клетки, показанные на диаграмме.",
           "marks": []
         }
       ]
@@ -236,7 +268,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titans in the designated area.",
+          "text": "Титанов в обозначенной области.",
           "marks": []
         }
       ]
@@ -247,77 +279,91 @@
       "children": [
         {
           "kind": "text",
-          "text": "ing from it and neither are Titans on Vantage Points.",
+          "text": "от неё, как и Титаны на Выгодных Позициях.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Judgement: ",
+          "text": "Суждение: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Это ментальные атаки, которые заставляют Цель выполнить специальную проверку Навыка. Каждое Суждение будет обозначать конкретный Навык, который оно проверяет (если оно обозначает два, Цель выбирает, какой использовать). Обычно они имеют неограниченную дальность. Суждение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "These are mental assaults that force the Target to per-form a special Skill test. Each Judgement will designate a specific Skill it tests (if it designates two, the Target chooses which one to use). They usually have unlimited range. A Judgement is ",
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " считается Атакой для целей других эффектов, и Цель должна разрешить проверку ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "not",
+          "text": "вместо",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Броска Уклонения. Следовательно, Суждение ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " con-sidered an Attack for the purpose of other effects and the Target must resolve a test ",
+          "text": "не может",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " быть смягчено Броском Брони, быть переброшено с помощью ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "instead of",
+          "text": "перебросов Уклонения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или заблокировано ключевым словом Блок X. Применяются все правила, относящиеся к проверкам Навыков. Суждения могут быть изменены типами атак, так же как и Атака (т.е. Зональное Суждение затрагивает всех Титанов в обозначенной Зоне). Все эффекты карт ИИ и БП разрешаются ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " an Evasion Roll. Therefore, a Judge-ment ",
+          "text": "Первозданным",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "cannot",
-          "marks": []
+          "text": "против",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " be mitigated with an Armor Roll, be re-rolled using ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Evasion Re-rolls",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " or blocked with the Block X keyword. All rules referring to Skill tests apply. Judgements can be modified by Attack types, just like Attack (i.e. a Zone Judgements affects all Titans in a designated Zone).All effects of AI and BP cards are resolved ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "by",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " the Primordial ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "against",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " the Target (in case of an AI) or the Attacker (in case of a BP), unless stated otherwise. For example, this means that when an AI card deals , it’s the Primordial dealing Danger to the Ti-tan, or if a BP card triggers a Knockback ability, it’s the Primordial who knocks back the Titan.",
+          "text": " Цели (в случае ИИ) или Атакующего (в случае БП), если не указано иное. Например, это означает, что когда карта ИИ наносит , это Первозданный наносит Опасность Титану, или если карта БП запускает способность Отброса, это Первозданный отбрасывает Титана.",
           "marks": []
         }
       ]
@@ -329,7 +375,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "4.1 Evasion Roll",
+          "text": "4.1 Бросок Уклонения",
           "marks": []
         }
       ]
@@ -340,157 +386,187 @@
       "children": [
         {
           "kind": "text",
-          "text": "In Aeon Trespass: Odyssey, the Primordial doesn’t roll to hit the Titan. It always hits, unless the Target man-ages to evade the attack! In the upper right corner of the AI card, each Primordial Attack has a number of Evasion dice ",
+          "text": "В Aeon Trespass: Odyssey Первозданный не бросает кубики, чтобы попасть по Титану. Он всегда попадает, если только Цель не сможет уклониться от атаки! В правом верхнем углу карты ИИ каждая атака Первозданного имеет количество кубиков Уклонения ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "1",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " and the Evasion Roll difficulty",
+          "text": " и сложность Броска Уклонения ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "2",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Чтобы выполнить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". To perform an ",
+          "text": "Бросок Уклонения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " вы должны бросить указанное количество кубиков (которое всегда должно включать один Критический кубик, см. стр. 49), стараясь выбросить значение, равное или большее сложности. Если у вас есть какие-либо карты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evasion Roll",
+          "text": "Снаряжения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или эффекты, дающие бонус к Уклонению, добавьте его к результату ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " you must roll the specified number of dice (which must always include one Crit die, see p. 49), trying to roll equal to or higher than the difficulty.If you have any ",
+          "text": "каждого брошенного кубика",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Некоторые карты могут предоставить вам ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gear",
+          "text": "перебросы Уклонения ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "которые теперь можно использовать для переброса указанного количества кубиков. Вы также можете использовать  для переброса кубиков Уклонения (см. стр. 8). ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " cards or effects that give you an Evasion bonus , add it to the result of ",
+          "text": "Помните: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Каждый кубик может быть переброшен только один раз, независимо от источника переброса! Затем сравните результаты со сложностью Броска Уклонения. Каждый результат, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "each die rolled",
+          "text": "равный",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Some  cards may grant you ",
+          "text": "больший",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " чем ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evasion re-rolls ",
+          "text": "сложность Броска Уклонения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", является успешным уклонением, тогда как каждый результат ниже сложности — это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " that can now be used to re-roll the specified number of dice. You may also use  to re-roll Evasion dice (see p. 8). ",
+          "text": "попадание",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Если у вас есть ключевое слово Блок X, вы можете активировать его сейчас, чтобы игнорировать X попаданий. Если попаданий нет (что означает, что вы успешно уклонились всеми кубиками), это считается ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Remember: ",
+          "text": "полным уклонением",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и вы должны перейти непосредственно к части ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Each die can only be re-rolled once, regardless of the source of the re-roll!Then compare the results to the Evasion Roll difficulty. Each result ",
+          "text": "После атаки ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "карты ИИ, а также активировать все способности ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "equal",
+          "text": "«Полное уклонение:»",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В противном случае перейдите к ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " to or ",
-          "marks": []
+          "text": "эффектам атаки",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "higher",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " than the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Evasion Roll difficulty",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " value is a suc-cessful evade, whereas each result lower than the difficulty is a ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "hit",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". If you have the Block X keyword, you may trigger it now to ignore X hits.If there are no hits (meaning that you successfully evaded with all dice), it is considered to be a",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " full evade",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " and you should proceed straight to the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "After Attack ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "part of the AI card, as well as trigger all ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "“Full Evade:”",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " abilities. Otherwise, proceed to the",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Attack effects",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "(see Attack Consequences on p. 42).",
+          "text": " (см. Последствия атаки на стр. 42).",
           "marks": []
         }
       ]
@@ -502,7 +578,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Defensive Weapons",
+          "text": "Защитное Оружие",
           "marks": []
         }
       ]
@@ -513,37 +589,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some weapons (like Shields) have defensive capabilities: they can provide ",
+          "text": "Некоторое оружие (например, Щиты) обладает защитными возможностями: оно может предоставить ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Evasion re-rolls",
+          "text": "перебросы Уклонения",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ", an",
+          "text": "бонус к Уклонению",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", Блок (см. ключевое слово Блок X) или кубики Брони (см. стр. 42). Если вы используете любой из этих эффектов во время Броска Уклонения или Последствий Атаки, это оружие становится вашим активным оружием ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Evasion bonus",
-          "marks": []
+          "text": "до конца этой Атаки Первозданного",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ", a Block (see Block X keyword) or Armor dice (see p. 42). If you use any of these effects during the Evasion Roll or Attack Consequences, that weap-on  becomes your active weapon ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "until the end of this Primordial Attack",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ". You can only have one active weapon at a time—until the end of this Attack you cannot use any other weapon  (for either defensive or offensive capabilities!).",
+          "text": ". Вы можете иметь только одно активное оружие одновременно — до конца этой Атаки вы не можете использовать никакое другое оружие (ни для защитных, ни для наступательных возможностей!).",
           "marks": []
         }
       ]
@@ -555,7 +637,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Crit Evade",
+          "text": "Критическое Уклонение",
           "marks": []
         }
       ]
@@ -566,13 +648,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some  cards may provide you with Crit Evade abilities and effects. If you roll a Crit during the Evasion Roll (see Crit Die on p. 49), ",
+          "text": "Некоторые карты могут предоставить вам способности и эффекты Критического Уклонения. Если вы выбрасываете Крит во время Броска Уклонения (см. Критический кубик на стр. 49), ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "l2",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         }
       ]
     }

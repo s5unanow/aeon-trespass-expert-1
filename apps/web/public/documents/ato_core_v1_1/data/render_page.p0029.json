@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0029",
-    "title": "Mnemos Breakthroughs Rewards",
+    "title": "Награды за прорывы Мнемос",
     "section_path": [],
     "source_page_number": 29
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos breakthrough adventures are similar to hub adventures, but they only involve the Argonaut that the memory belongs to. These are their personal stories that may influence their mindset to a great extent and define their character.For this reason, we encourage you to read Mnemos paragraphs alone. This is important, because people process emotions differ-ently in a group and the stories told in the Mnemoses are quite intimate. Then, you should decide if you want to read it out loud, or just share what you’ve learned, disclosing as much as you wish and including your own interpretation of these events, tailoring them to better fit your outlook on the Argonaut you play as. These are only faint memories, after all, they don’t define you.For the same reason, to deepen the immersion, we advise you to take into consideration what kind of person you believe your Argo-naut to be, as you debate on future story choices.However, if you wish to read a Mnemos aloud to the whole group straight away, that’s fine too! Just note that Mnemos Break-through adventures don’t have a party leader: it’s all up to the one Argonaut.",
+          "text": "Приключения-прорывы Мнемос похожи на узловые приключения, но в них участвует только тот Аргонавт, которому принадлежит воспоминание. Это их личные истории, которые могут в значительной степени повлиять на их образ мышления и определить их характер. По этой причине мы рекомендуем вам читать параграфы Мнемос в одиночку. Это важно, потому что люди по-разному обрабатывают эмоции в группе, а истории, рассказанные в Мнемос, довольно интимны. Затем вы должны решить, хотите ли вы прочитать их вслух или просто поделиться тем, что вы узнали, раскрывая столько, сколько пожелаете, и включая свою собственную интерпретацию этих событий, адаптируя их, чтобы они лучше соответствовали вашему взгляду на Аргонавта, за которого вы играете. В конце концов, это всего лишь смутные воспоминания, они не определяют вас. По той же причине, чтобы углубить погружение, мы советуем вам учитывать, каким человеком вы считаете своего Аргонавта, когда обсуждаете будущие сюжетные выборы. Однако, если вы хотите сразу прочитать Мнемос вслух всей группе, это тоже хорошо! Просто обратите внимание, что приключения-прорывы Мнемос не имеют лидера группы: всё зависит от одного Аргонавта.",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Mnemos Breakthroughs Rewards",
+          "text": "Награды за прорывы Мнемос",
           "marks": []
         }
       ]
@@ -42,17 +42,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Your main reward for resolving a Mnemos Breakthrough is learn-ing more about your Argonaut’s past and unlocking a new Mnemos ability (see Mnemos Cards, p. 29). Most Mnemos Breakthroughs, however, will grant you additional unique rewards. Note them on your Argonaut Sheet.",
+          "text": "Ваша главная награда за разрешение прорыва Мнемос — это возможность узнать больше о прошлом вашего Аргонавта и разблокировать новую способность Мнемос (см. карты Мойрос, стр. 29). Однако большинство прорывов Мнемос предоставят вам дополнительные уникальные награды. Отметьте их на листе Аргонавта.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important: ",
-          "marks": []
+          "text": "Важно: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "If you gain a  card from a previous Cycle as a Mnemos Breakthrough reward, it counts as a card from the current Cycle, overriding their original Cycle affiliation.",
+          "text": "Если вы получаете карту из предыдущего Цикла в качестве награды за прорыв Мнемос, она считается картой из текущего Цикла, переопределяя её первоначальную принадлежность к Циклу.",
           "marks": []
         }
       ]
@@ -64,7 +66,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Dreams of Pharos",
+          "text": "Сны Фароса",
           "marks": []
         }
       ]
@@ -75,17 +77,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Dreams of Pharos are… different. These adventures take you to a mysterious place, seemingly outside of reality itself: Alexandria, the day before it was obliterated during the Eschaton. There, you will explore its famous library for clues and secrets, both concern-ing the current Cycles, as well as the Aeon Trespass setting as a whole.Dreams of Pharos, sometimes denoted by the symbol: , are mys-terious adventures initiated by specific game effects and usually added to the Timeline as Story Events. Unless stated otherwise, a Dream of Pharos is resolved in the Story Step (just like any other Story Event). To resolve it, go the Dreams of Pharos chapter of your current Storybook. Roll a d10 and consult the Dreams of Pharos Adventure Table to find the adventure you have to resolve. ",
+          "text": "Сны Фароса… отличаются. Эти приключения переносят вас в таинственное место, казалось бы, за пределами самой реальности: Александрию, за день до её уничтожения во время Эсхатона. Там вы будете исследовать её знаменитую библиотеку в поисках подсказок и секретов, касающихся как текущих Циклов, так и сеттинга Aeon Trespass в целом. Сны Фароса, иногда обозначаемые символом: , являются таинственными приключениями, инициируемыми определёнными игровыми эффектами и обычно добавляемыми на Хронологию как Сюжетные События. Если не указано иное, Сон Фароса разрешается на Шаге Сюжета (как и любое другое Сюжетное Событие). Чтобы разрешить его, перейдите к главе «Сны Фароса» вашей текущей Книги Сюжета. Бросьте d10 и обратитесь к Таблице Приключений «Сны Фароса», чтобы найти приключение, которое вы должны разрешить. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Mark a fated box ",
-          "marks": []
+          "text": "Отметьте отмеченную Судьбой ячейку ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "(see Fated Boxes on p. 32) next to this adventure’s name, then find it in the Dreams of Pharos chapter and read it.The main reward for resolving a Dream of Pharos is cryptic knowl-edge! It’s for you to figure it out. Dreams of Pharos will also offer more tangible rewards, but these carry with them a peculiar risk represented by the Pharos Delve mechanic.",
+          "text": "(см. Отмеченные Судьбой Ячейки на стр. 32) рядом с названием этого приключения, затем найдите его в главе «Сны Фароса» и прочитайте. Главная награда за разрешение Сна Фароса — это загадочное знание! Вам предстоит это выяснить. Сны Фароса также предложат более ощутимые награды, но они несут с собой особый риск, представленный механикой «Погружение Фароса».",
           "marks": []
         }
       ]
@@ -97,7 +101,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Pharos Delve",
+          "text": "Погружение Фароса",
           "marks": []
         }
       ]
@@ -108,107 +112,127 @@
       "children": [
         {
           "kind": "text",
-          "text": "Most Dreams of Pharos include a unique push your luck mechanic, called the ",
+          "text": "Большинство Снов Фароса включают уникальную механику «испытай удачу», называемую ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Pharos Delve",
+          "text": "Погружение Фароса",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Когда вы видите подсказку «Погружение Фароса» (см. пример ниже), начните брать карты из колоды «Серьёзная Травма», складывая числа в ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".  When you see the Pharos Delve prompt (see example below), start drawing cards from the Major Trauma deck, adding the numbers in the ",
+          "text": "нижнем левом углу",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " карт. После каждого взятия вы можете решить либо остановить Погружение, либо продолжить. Если вы продолжаете, возьмите ещё одну карту и добавьте указанное на ней число. Чтобы преуспеть в Погружении, сумма ваших карт должна быть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "lower left corner",
+          "text": "равна",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " или ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " of the cards. After each draw, you may decide to either stop the Delve or to continue. If you continue, draw another card and add the number denoted on it.To succeed in a Delve, the sum of your cards must be ",
+          "text": "выше",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " сложности Погружения (указанной в скобках), но",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "equal",
+          "text": " ниже 16",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " to or ",
+          "text": "Пример Погружения Фароса: игроки должны стремиться к сумме от 12 до 15.",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Если сумма в любой момент равна или выше 16, вы немедленно ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "higher than",
+          "text": "Проваливаете",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Погружение Фароса и разрешаете эффект Провала. Если вы решите остановить Погружение до достижения 16, проверьте, равна ли сумма или выше сложности Погружения. Если да, разрешите эффект ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " the Delve difficulty (denoted in brackets), but",
+          "text": "Успеха",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В противном случае ничего не происходит. Некоторые другие игровые эффекты также могут использовать механику «Погружение Фароса». Когда эффект предписывает вам использовать правила Погружения Фароса, это означает, что он будет разрешён точно так же, как Погружение Фароса, но не считается Погружением Фароса (или Сном Фароса, если на то пошло!). Погружение Фароса (12) ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " lower than 16",
+          "text": "Успех:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Сыграйте следующую битву, открыв верхнюю карту BP из колоды BP. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".",
-          "marks": []
+          "text": "Провал:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Pharos Delve example: players should aim for a total between 12 and 15.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "If the total is at any point equal to or higher than 16, you immedi-ately ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Fail",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " the Pharos Delve and resolve the Fail effect.If you decide to stop the Delve before reaching 16, check if the total is equal to or higher than the Delve difficulty. If it is, resolve the ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Success",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " effect. Otherwise nothing happens.Some other game effects may also use the Pharos Delve mechanic. When an effect tells you to use the Pharos Delve rules, it means it will be resolved exactly like a Pharos Delve, but is not considered a Pharos Delve (or a Dream of Pharos for that matter!).Pharos Delve (12) ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Success:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Play the next battle with the top BP card in the BP deck revealed. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Fail:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " Lose -1 .or , whichever you have more.",
+          "text": " Потеряйте -1 .или , чего у вас больше.",
           "marks": []
         },
         {

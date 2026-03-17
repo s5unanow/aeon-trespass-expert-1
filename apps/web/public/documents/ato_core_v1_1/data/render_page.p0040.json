@@ -19,18 +19,24 @@
       "children": [
         {
           "kind": "text",
-          "text": "The Hekaton moves towards the Titan. As it is not in a straight line from it, it will first “zigzag” towards it. In the example above the play-ers decided to first move horizontally (1), then vertically (2) and then continue to move horizontally (as at this point the Hekaton can move in a straight line).Note that the players could have also moved up first, and then continue to move in a straight line towards the Target.",
-          "marks": []
+          "text": "Гекатон движется к Титану. Поскольку он находится не на прямой линии от него, он сначала будет «зигзагом» двигаться к нему. В примере выше игроки решили сначала двигаться горизонтально (1), затем вертикально (2) и затем продолжить движение горизонтально (так как в этот момент Гекатон может двигаться по прямой). Обратите внимание, что игроки могли также сначала двинуться вверх, а затем продолжить движение по прямой к Цели.",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
           "text": "345623456123456",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "In this example, the Hekaton targets Herodotus. To move adjacent,  it will have to zigzag. Since players can choose the starting direction of the zigzag move (as long it brings the Hekaton closer to the Target), they may decide to move it in a way that is less harmful, i.e. not through Ulissea!",
-          "marks": []
+          "text": "В этом примере Гекатон нацелен на Геродота. Чтобы переместиться в соседнюю клетку, ему придется двигаться зигзагом. Поскольку игроки могут выбирать начальное направление зигзагообразного движения (при условии, что оно приближает Гекатона к Цели), они могут решить переместить его таким образом, чтобы это было менее вредно, то есть не через Улиссею!",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },

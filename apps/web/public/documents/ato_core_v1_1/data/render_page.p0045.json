@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0045",
-    "title": "Fate Effect Triggers",
+    "title": "Триггеры эффектов Судьбы",
     "section_path": [],
     "source_page_number": 45
   },
@@ -20,7 +20,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fate Effect Triggers",
+          "text": "Триггеры эффектов Судьбы",
           "marks": []
         }
       ]
@@ -31,17 +31,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fate is a cruel mistress. It allows you to re-roll your Attack and Eva-sion dice and pay for abilities, but luck eventually runs out and you have to pay out.Some AI cards have additional or stronger effects depending on your  level. This is always indicated by a special banner, showing the  level needed for the effect to trigger, such as ",
+          "text": "Судьба — жестокая хозяйка. Она позволяет вам перебрасывать кубики Атаки и Уклонения и оплачивать способности, но удача в конце концов иссякает, и вам приходится расплачиваться. Некоторые карты ИИ имеют дополнительные или более сильные эффекты в зависимости от вашего уровня. Это всегда указывается специальным баннером, показывающим уровень, необходимый для срабатывания эффекта, например, ",
           "marks": []
         },
         {
           "kind": "text",
           "text": "3+: +1",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": ". In this example, if your Fate was 3 or higher, you’d have to roll an additional Evasion die.",
+          "text": ". В этом примере, если ваша Судьба была 3 или выше, вам пришлось бы бросить дополнительный кубик Уклонения.",
           "marks": []
         }
       ]
@@ -53,7 +55,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Effect Triggers",
+          "text": "Триггеры других эффектов",
           "marks": []
         }
       ]
@@ -64,7 +66,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "There may be other effect triggers out there, based not on , but other Triskelion statistics or even completely different game elements. These will be represented the same way but with corre-sponding symbols or descriptions. Stay vigilant! ",
+          "text": "Могут существовать и другие триггеры эффектов, основанные не на , а на других показателях Трискелиона или даже на совершенно других игровых элементах. Они будут представлены таким же образом, но с соответствующими символами или описаниями. Будьте бдительны!",
           "marks": []
         }
       ]
@@ -76,7 +78,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "5. After Attack",
+          "text": "5. После Атаки",
           "marks": []
         }
       ]
@@ -87,47 +89,55 @@
       "children": [
         {
           "kind": "text",
-          "text": "The After Attack section of an AI card has additional effects that happen after you resolve, or evade, the main part of the Primor-dial Attack. Note that these are completely separate from the At-tack, therefore they get resolved even if the actual Attack was fully evaded or if it wasn’t performed at all (because the Target was out of range). The only thing capable of canceling the After Attack ef-fects is a Chain Break (see p. 43) or the Mercy Rule (see p. 56).Unless stated otherwise, all After Attack effects targeting a single Titan affect the original Target of the Attack.",
+          "text": "Раздел «После Атаки» карты ИИ содержит дополнительные эффекты, которые происходят после того, как вы разрешаете или уклоняетесь от основной части Атаки Первозданного. Обратите внимание, что они полностью отделены от Атаки, поэтому они разрешаются, даже если фактическая Атака была полностью уклонена или если она вообще не была выполнена (поскольку Цель находилась вне зоны досягаемости). Единственное, что может отменить эффекты «После Атаки», — это Разрыв Цепи (см. стр. 43) или Правило Милосердия (см. стр. 56). Если не указано иное, все эффекты «После Атаки», нацеленные на одного Титана, влияют на первоначальную Цель Атаки.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Note:",
+          "text": "Примечание:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Инструкция «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " An ",
+          "text": "После Атаки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "» на карте ИИ, которая нацелена на нескольких Титанов, разрешается против каждого из этих Титанов. Однако, если Атака включает инструкцию «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "After Attack",
+          "text": "После Финальной Атаки",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "», она вступает в силу только после разрешения Атаки против ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " instruction on an AI card that targets mul-tiple Titans is resolved against each of these Titans. However, if an Attack includes an ",
-          "marks": []
+          "text": "последней",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "After Final Attack",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " instruction, it only takes effect after resolving the Attack against ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "the last",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " of its Targets.Once you finish resolving the After Attack effect (if there is any), discard the AI card. If there are no more cards in the AI decks, shuf-fle the discard to form the new AI deck.",
+          "text": " из её Целей. Как только вы закончите разрешение эффекта «После Атаки» (если таковой имеется), сбросьте карту ИИ. Если в колодах ИИ больше нет карт, перетасуйте сброс, чтобы сформировать новую колоду ИИ.",
           "marks": []
         }
       ]
@@ -139,7 +149,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Resolve Other Actions",
+          "text": "Разрешить другие действия",
           "marks": []
         }
       ]
@@ -150,7 +160,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Primordials are unspeakable monsters and they have many tricks up their sleeves. Some may perform additional Attacks after the mandatory AI Draw, while others will trigger Trait effects and other effects.Any additional Attacks are resolved using the normal rules ex-plained above. Every Trait that triggers an additional effect will introduce its own rules.",
+          "text": "Первозданные — невыразимые чудовища, и у них много хитростей в запасе. Некоторые могут выполнять дополнительные Атаки после обязательного Жребия ИИ, в то время как другие будут запускать эффекты Черты и другие эффекты. Любые дополнительные Атаки разрешаются с использованием обычных правил, объясненных выше. Каждая Черта, которая запускает дополнительный эффект, будет вводить свои собственные правила.",
           "marks": []
         }
       ]
@@ -162,7 +172,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "End of Primordial Round",
+          "text": "Конец Раунда Первозданного",
           "marks": []
         }
       ]
@@ -173,7 +183,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sometimes the Primordial will have some effect that triggers at the end of the Primordial Round. In that case, it’s resolved after all oth-er actions. If the Primordial has more than one end of Round effect, the players may resolve these effects in any order they choose. Also remember to unexhaust Argo Abilities (see Argo Abilities on p. 55 for details).",
+          "text": "Иногда у Первозданного будет какой-либо эффект, который срабатывает в конце Раунда Первозданного. В этом случае он разрешается после всех остальных действий. Если у Первозданного есть более одного эффекта конца Раунда, игроки могут разрешать эти эффекты в любом порядке, который они выберут. Также не забудьте восстановить способности Арго (подробнее см. «Способности Арго» на стр. 55).",
           "marks": []
         }
       ]
@@ -185,7 +195,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titan Round",
+          "text": "Раунд Титана",
           "marks": []
         }
       ]
@@ -196,7 +206,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "So, you survived the Primordial Round? Good for you! Now’s the time to fight back! This section covers everything that happens during the Titan Round, including Titan turns, using Argo Abilities, Awakenings and more.First, let’s start with the basics: the Titan Sheet and Titan equipment.",
+          "text": "Итак, вы пережили Раунд Первозданного? Отлично! Теперь пришло время дать отпор! Этот раздел охватывает всё, что происходит во время Раунда Титана, включая ходы Титанов, использование способностей Арго, Пробуждения и многое другое. Сначала давайте начнём с основ: Планшет Титана и снаряжение Титана.",
           "marks": []
         }
       ]
@@ -208,7 +218,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Titan Sheet",
+          "text": "Планшет Титана",
           "marks": []
         }
       ]
@@ -219,13 +229,15 @@
       "children": [
         {
           "kind": "text",
-          "text": "During Battles, you play as mortal Argonauts junctioning with mighty Titans using the Triskelion, therefore you use a combina-tion of an Argonaut Sheet (see p. 10), a Triskelion triple dial (see p. 11) and a Titan Sheet (see below). The Titan serves as a “vessel,” while the Argonaut is the “pilot,” providing their expertise (in the form of Skills and Mnemos Abilities, see p. 11 and 29).",
+          "text": "Во время Сражений вы играете за смертных Аргонавтов, соединяющихся с могучими Титанами с помощью Трискелиона, поэтому вы используете комбинацию Планшета Аргонавта (см. стр. 10), тройного диска Трискелиона (см. стр. 11) и Планшета Титана (см. ниже). Титан служит «сосудом», в то время как Аргонавт является «пилотом», предоставляя свой опыт (в виде Навыков и Способностей Мнемос, см. стр. 11 и 29).",
           "marks": []
         },
         {
           "kind": "text",
           "text": "12345",
-          "marks": []
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "icon",

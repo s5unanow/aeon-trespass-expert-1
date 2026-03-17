@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0058",
-    "title": "Bonus Attacks during Titan Attacks (Follow-ups)",
+    "title": "Бонусные Атаки во время Атак Титанов (Последующие)",
     "section_path": [],
     "source_page_number": 58
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "may ignore Attack Responses (see p. 51) to this Attack. When the Attack ends, continue resolving the Battle Round that was inter-rupted by the Bonus Attack. All other restrictions and rules of a combat action apply.",
+          "text": "может игнорировать Ответы на Атаку (см. стр. 51) на эту Атаку. Когда Атака заканчивается, продолжайте разрешать Раунд Битвы, который был прерван Бонусной Атакой. Все остальные ограничения и правила боевого действия применяются.",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Bonus Attacks during Titan Attacks (Follow-ups)",
+          "text": "Бонусные Атаки во время Атак Титанов (Последующие)",
           "marks": []
         }
       ]
@@ -42,37 +42,43 @@
       "children": [
         {
           "kind": "text",
-          "text": "A Bonus Attack during a Titan Attack is also called a ",
+          "text": "Бонусная Атака во время Атаки Титана также называется ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Follow-up Titan Attack ",
+          "text": "Последующей Атакой Титана",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " и будет разрешена ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "and will be resolved ",
+          "text": "сразу после",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " окончания текущей Атаки Титана. Другими словами, она ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "immediately after",
-          "marks": []
+          "text": "не",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " the current Titan Attack ends. In other words, it ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "does not",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " cause a Chain Break. All other Bonus Attack rules apply.",
+          "text": " вызывает Разрыва Цепи. Все остальные правила Бонусной Атаки применяются.",
           "marks": []
         }
       ]
@@ -84,7 +90,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Instant Death Effects",
+          "text": "Эффекты Мгновенной Смерти",
           "marks": []
         }
       ]
@@ -95,7 +101,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Instant Death effects are special effects of Primordial Attacks and Responses that cause a Titan to die immediately, without drawing an Obol or a Trauma card.",
+          "text": "Эффекты Мгновенной Смерти — это особые эффекты Атак и Ответов Первозданных, которые приводят к немедленной гибели Титана, без вытягивания Обола или карты Травмы.",
           "marks": []
         }
       ]
@@ -107,7 +113,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Death Blows",
+          "text": "Смертельные Удары",
           "marks": []
         }
       ]
@@ -118,17 +124,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some rare Critical effects may allow you to slay the Primordial before dealing all required Wounds. These may be referred to as ",
+          "text": "Некоторые редкие Критические эффекты могут позволить вам убить Первозданного до нанесения всех необходимых Ран. Их можно называть ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Death Blows ",
-          "marks": []
+          "text": "Смертельными Ударами",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "(see p. 55).",
+          "text": " (см. стр. 55).",
           "marks": []
         }
       ]
@@ -140,7 +148,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Retreat",
+          "text": "Отступление",
           "marks": []
         }
       ]
@@ -151,7 +159,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Most Battles give the players a chance to retreat if they think their chances of winning are slim. Usually, a retreat is only possible after at least 2 Titans died in the current Battle. If Retreat is possible, you may retreat at the beginning of a Titan Round (before you take any Titan turns). For all purposes a retreat is treated as a defeat, but allows you to save the remaining Titans to fight another day. Note that a retreat is not possible in most Battles against Adver-saries and Boss Primordials.",
+          "text": "Большинство Битв дают игрокам шанс отступить, если они считают свои шансы на победу невысокими. Обычно отступление возможно только после гибели как минимум 2 Титанов в текущей Битве. Если Отступление возможно, вы можете отступить в начале Раунда Титанов (прежде чем совершать какие-либо ходы Титанов). Во всех отношениях отступление рассматривается как поражение, но позволяет вам сохранить оставшихся Титанов для битвы в другой день. Обратите внимание, что отступление невозможно в большинстве Битв против Противников и Боссов-Первозданных.",
           "marks": []
         }
       ]
@@ -163,7 +171,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sisyphus Tears",
+          "text": "Слёзы Сизифа",
           "marks": []
         }
       ]
@@ -174,7 +182,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Sisyphus Tears are mysterious Divine resources of unknown ori-gin. When a Battle ends, players as a group may decide to spend one Sisyphus Tear to replay the Battle, without suffering any of its consequences: do not lose Titans, gain  or resolve End of Battle effects. Simply restore the game to the state from before the Battle (that includes any spent Godforms and Summonings). You can freely change your Titans and loadouts and prepared Argo Abilities before you attempt the Battle again. Note, however, that Sisyphus Tears are an extremely rare resource and should not be spent lightly.",
+          "text": "Слёзы Сизифа — это таинственные Божественные ресурсы неизвестного происхождения. Когда Битва заканчивается, игроки как группа могут решить потратить одну Слезу Сизифа, чтобы переиграть Битву, не страдая от каких-либо её последствий: не теряйте Титанов, получайте или разрешайте эффекты Конца Битвы. Просто восстановите игру до состояния, предшествовавшего Битве (это включает любые потраченные Божественные Формы и Призывы). Вы можете свободно менять своих Титанов и снаряжение, а также подготовленные Способности Арго, прежде чем снова попытаться провести Битву. Однако обратите внимание, что Слёзы Сизифа — чрезвычайно редкий ресурс, и их не следует тратить легкомысленно.",
           "marks": []
         }
       ]
@@ -186,7 +194,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Wise Providence",
+          "text": "Мудрое Провидение",
           "marks": []
         }
       ]
@@ -197,27 +205,31 @@
       "children": [
         {
           "kind": "text",
-          "text": "Wise Providence is a rare ",
+          "text": "Мудрое Провидение — это редкое ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "temporary boon",
+          "text": "временное благословение",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ", которое даёт вам преимущество в бою. Если оно у вас есть, вы получаете инициативу для предстоящей Битвы — эта Битва начинается с Раунда Титанов вместо Раунда Первозданных. В целом, ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " that gives you an edge in combat. If you have it, you gain the initiative for the upcoming Battle—that Battle begins with a Titan Round instead of the Pri-mordial Round. In general, ",
-          "marks": []
+          "text": "Мудрое Провидение влияет только на следующую Битву на Временной Шкале",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "Wise Providence impacts the next Timeline Battle only",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "—note it on the Timeline, on the day of the first upcoming Timeline Battle. Sometimes, however, Wise Provi-dence may refer to a specific Battle in which case it should be noted in the “Boons, Afflictions, Notes” section of the Argo Sheet.",
+          "text": " — отметьте это на Временной Шкале, в день первой предстоящей Битвы на Временной Шкале. Иногда, однако, Мудрое Провидение может относиться к конкретной Битве, и в этом случае его следует отметить в разделе «Благословения, Недуги, Заметки» на Листе Арго.",
           "marks": []
         }
       ]
@@ -229,7 +241,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Conditions",
+          "text": "Состояния",
           "marks": []
         }
       ]
@@ -240,33 +252,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "Various effects (like Trauma cards or Primordi-al Attacks) cause Titans and Argonauts to gain Condition cards that apply additional negative or positive effects. When you gain a Condition card, place it next to your Titan Sheet. Some Conditions may also require you to gain ",
+          "text": "Различные эффекты (например, карты Травмы или Атаки Первозданных) приводят к тому, что Титаны и Аргонавты получают карты Состояний, которые применяют дополнительные отрицательные или положительные эффекты. Когда вы получаете карту Состояния, поместите её рядом с Листом Титана. Некоторые Состояния также могут потребовать от вас получения ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Con-dition tokens",
+          "text": "жетонов Состояния",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". Они всегда размещаются на соответствующей карте Состояния. Все Состояния сбрасываются во время шага «Потери» в Послесловии Битвы. Некоторые Состояния могут иметь дополнительные эффекты ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". These are always placed on the corresponding Condition card. All Conditions are discarded during the Casualties step of the Battle Aftermath. Some Conditions may have additional ",
+          "text": "«Конец Битвы»:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " которые срабатывают, если вы не смогли избавиться от них до окончания Битвы. Если вы получаете карту Состояния вне Битвы, она остаётся активной до конца следующей Битвы. Некоторые карты предписывают вам получить определённое Состояние, в то время как другие сами становятся Состояниями (см. карты Мойрос и Кратос ниже). Вы не можете получить Состояние, если оно у вас уже есть, но некоторые Состояния могут вызывать дополнительные эффекты, если вы получите их снова. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "End of Battle:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " effects that trigger if you were unable to get rid of them before the Battle ended.If you gain a Condition card outside of Battle, it remains active until the end of the next Battle.Some cards instruct you to gain a certain Condition, while others become Conditions themselves (See Moiros and Kratos cards be-low). You cannot gain a Condition if you already have it, but some Conditions may trigger additional effects if you would gain them again.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Condition card",
-          "marks": []
+          "text": "Карта Состояния",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     },
@@ -277,7 +295,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Afflictions and Boons",
+          "text": "Недуги и Благословения",
           "marks": []
         }
       ]
@@ -288,7 +306,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "As with Conditions, Afflictions introduce additional effects and are more closely tied to the Argonauts. Unlike Conditions, they are not represented by physical components. Instead, whenever you gain an Affliction, write it down in the “Afflictions” section of your Ar-gonaut Sheet. Afflictions are bad things, like curses and sickness, that plague the Argonaut. Afflictions are permanent—you can only remove them if an effect explicitly tells you to!Boons, though rarer, are the positive equivalent of Afflictions. These can come in the form of personal traits, equipment or allies! You also note these on your Argonaut Sheets.",
+          "text": "Как и Состояния, Недуги вводят дополнительные эффекты и более тесно связаны с Аргонавтами. В отличие от Состояний, они не представлены физическими компонентами. Вместо этого, всякий раз, когда вы получаете Недуг, запишите его в раздел «Недуги» на вашем Листе Аргонавта. Недуги — это плохие вещи, такие как проклятия и болезни, которые мучают Аргонавта. Недуги постоянны — вы можете удалить их, только если эффект явно предписывает это! Благословения, хотя и более редкие, являются положительным эквивалентом Недугов. Они могут быть в форме личных черт, снаряжения или союзников! Вы также отмечаете их на своих Листах Аргонавтов.",
           "marks": []
         }
       ]
@@ -300,7 +318,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Moiros Cards",
+          "text": "Карты Мойрос",
           "marks": []
         }
       ]
@@ -311,33 +329,39 @@
       "children": [
         {
           "kind": "text",
-          "text": "Moiros cards represent the consequences of trying to cheat fate one too many times. When you push it too far, it pushes back. When any effect requires you to raise your  over 9 you must immediately shuffle the Moiros deck and draw a random Moiros card. Keep this card until the end of Battle (even if its effects aren’t lasting).There may be other effects that instruct you to draw a Moiros card. ",
+          "text": "Карты Мойрос представляют собой последствия попыток слишком часто обманывать судьбу. Когда вы заходите слишком далеко, она даёт отпор. Когда любой эффект требует от вас поднять вашу Судьбу выше 9, вы должны немедленно перетасовать колоду Мойрос и вытянуть случайную карту Мойрос. Держите эту карту до конца Битвы (даже если её эффекты не являются постоянными). Могут быть и другие эффекты, которые предписывают вам вытянуть карту Мойрос. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Be warned: ",
+          "text": "Будьте осторожны:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Последствия вашей безрассудности могут затронуть не только вас, но и других Титанов или даже само ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "The consequences of your recklessness may not only affect you, but also other Titans or even the ",
+          "text": "Арго",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "! Кроме того, если вас когда-либо заставят вытянуть ещё одну карту Мойрос, когда у вас уже есть одна, вы умираете вместо этого! ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Argo",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " itself!Also, if you are ever forced to draw another Moiros card while you already have one, you die instead!",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Moiros cardCondition token",
-          "marks": []
+          "text": "Карта МойросЖетон Состояния",
+          "marks": [
+            "italic"
+          ]
         }
       ]
     }

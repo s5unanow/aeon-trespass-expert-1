@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0032",
-    "title": "Adventure Tests and Rolls",
+    "title": "Проверки и Броски в Приключении",
     "section_path": [],
     "source_page_number": 32
   },
@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "However, overcoming any mental hurdle makes you grow. This is reflected by the trauma growth abilities found on the backs (blue side) of Fated Mnemos cards. Each resolved Fated Mnemos gives you a positive ability that you should write down on your Argonaut Sheet, then return the card to the Fated Mnemos deck. There is no limit to the amount of trauma growth abilities a single Argonaut can have (you can even gain the same trauma growth ability more than once and their effects will stack).If you fully evade an attack, lose –1Ψ",
+          "text": "Однако преодоление любого ментального препятствия способствует вашему росту. Это отражается в способностях роста от травм, которые находятся на обратной (синей) стороне карт Судьбы Мнемос. Каждая разрешённая карта Судьбы Мнемос даёт вам положительную способность, которую вы должны записать на свой Лист Аргонавта, а затем вернуть карту в колоду карт Судьбы Мнемос. Нет ограничений на количество способностей роста от травм, которые может иметь один Аргонавт (вы даже можете получить одну и ту же способность роста от травм более одного раза, и их эффекты будут суммироваться). Если вы полностью уклоняетесь от атаки, теряете –1Ψ",
           "marks": []
         }
       ]
@@ -31,7 +31,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adventure Tests and Rolls",
+          "text": "Проверки и Броски в Приключении",
           "marks": []
         }
       ]
@@ -42,7 +42,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adventures in Aeon Trespass: Odyssey are based around your ab-solute and informed choices. However, sometimes we’re not fully in control, sometimes it’s up to chance and effort. When the outcome of a given choice is undetermined, you will be instructed to per-form a test, a roll or some other activity.",
+          "text": "Приключения в Aeon Trespass: Odyssey основаны на ваших абсолютных и осознанных выборах. Однако иногда мы не полностью контролируем ситуацию, иногда всё зависит от случая и усилий. Когда исход данного выбора не определён, вам будет предложено выполнить проверку, бросок или другое действие.",
           "marks": []
         }
       ]
@@ -54,7 +54,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adventure Tests",
+          "text": "Проверки в Приключении",
           "marks": []
         }
       ]
@@ -65,77 +65,91 @@
       "children": [
         {
           "kind": "text",
-          "text": "Many adventures will instruct you to perform a test. To do it, sim-ply roll a single d10 and compare the result to the difficulty of the test (i.e. 6+). If the result is equal to or higher than the difficulty, it is a ",
+          "text": "Многие приключения будут предписывать вам выполнить проверку. Для этого просто бросьте один d10 и сравните результат со сложностью проверки (т.е. 6+). Если результат равен или выше сложности, это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Success",
+          "text": "Успех",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". В противном случае это ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ". Otherwise it is a ",
+          "text": "Провал",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": ". ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fail",
+          "text": "Важно:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Аналогично другим броскам d10, естественная «10» всегда является успехом, а естественная «1» всегда является провалом. Некоторые способности и игровые эффекты (например, отмеченный выбор Матрицы или Очки Дипломатии) могут позволить вам добавить бонус к результату проверки. Если не указано иное, все эти эффекты должны быть объявлены ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": ".",
+          "text": "до",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " того, как вы выполните проверку. Затем, после того как вы бросите кубик, увеличьте результат на бонус. Если не указано иное, эти эффекты могут быть использованы один раз за проверку. В Фазе Приключения существует два типа проверок:",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Important:",
+          "text": "Проверки Аргонавтов: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Проверки, выполняемые конкретным Аргонавтом (или каждым Аргонавтом). Они обычно связаны с определённым Навыком Аргонавта (например, Хитрость или Выносливость). В этом случае вы должны увеличить (а в некоторых ситуациях уменьшить) результат проверки на значение вашего Навыка. Проверки Аргонавтов можно перебрасывать, используя  так же, как Броски Атаки и Броски Уклонения (см. Перебросы Судьбы на стр. 8).",
           "marks": []
         },
         {
           "kind": "text",
-          "text": " Similarly to other d10 rolls, a natural ‘10’ is always a success, while a natural ‘1’ is always a failure.Some abilities and game effects (like a marked Matrix choice or a Diplomacy Score) may allow you to add a bonus to the test re-sult. Unless stated otherwise, all of these effects must be declared ",
+          "text": "Проверки Арго: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Проверки, которые не разрешаются конкретным Аргонавтом, являются проверками Арго. Они часто встречаются на картах Технологий. Их можно перебрасывать, повышая ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "before",
-          "marks": []
+          "text": "Судьбу Арго",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": " you perform the test. Then, after you roll the die, increase the result by the bonus. Unless stated otherwise those effects can be used once per test.There are two types of tests in the Adventure Phase:",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argonaut Tests: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Tests performed by a specific Argonaut (or each Argonaut). These are generally associated with a specific Argonaut Skill (e.g. Cunning or Endurance). In this case, you must increase (and in certain situations decrease) the test result by your Skill val-ue. Argonaut tests can be re-rolled using  just like Attack and Evasion Rolls (see Fate Re-rolls on p. 8).",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo Tests: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Tests that are not resolved by a specific Argonaut are Argo tests. They are commonly found on Technology cards. These can be re-rolled by raising ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Argo Fate",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " instead of an Argonaut’s statistic. For all other purposes they are resolved like Argonaut tests.",
+          "text": " вместо статистики Аргонавта. Во всех остальных целях они разрешаются как проверки Аргонавтов.",
           "marks": []
         }
       ]
@@ -147,7 +161,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Solo vs. Group Tests",
+          "text": "Одиночные против Групповых Проверок",
           "marks": []
         }
       ]
@@ -158,7 +172,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some tests will require only one Argonaut to make the test (usu-ally the party leader), while others will have each Argonaut make a separate test.A solo test is a make it or break it affair, the Argonaut will either succeed or fail. Usually, other Argonauts will get the chance to in-fluence the test slightly (i.e. gain  to add +1 to the result), but the pressure is on the single Argonaut.Group tests are different, in that an individual success or failure means less. Usually, a group test has success ranges. After every Argonaut makes their test, the Argonauts sum up their successes and consult the results. This means a group test usually has more than two possible outcomes: typically an outright failure (0-1 suc-cesses), a moderate success (2-3 successes) and a full success (4 successes).",
+          "text": "Некоторые проверки потребуют, чтобы только один Аргонавт выполнил проверку (обычно лидер группы), в то время как другие потребуют, чтобы каждый Аргонавт выполнил отдельную проверку. Одиночная проверка — это дело принципа: Аргонавт либо преуспеет, либо потерпит неудачу. Обычно другие Аргонавты получают шанс немного повлиять на проверку (т.е. получить , чтобы добавить +1 к результату), но всё давление ложится на одного Аргонавта. Групповые проверки отличаются тем, что индивидуальный успех или неудача значат меньше. Обычно групповая проверка имеет диапазоны успеха. После того как каждый Аргонавт выполнит свою проверку, Аргонавты суммируют свои успехи и сверяются с результатами. Это означает, что групповая проверка обычно имеет более двух возможных исходов: как правило, полный провал (0-1 успех), умеренный успех (2-3 успеха) и полный успех (4 успеха).",
           "marks": []
         }
       ]
@@ -170,7 +184,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Fail: Effects",
+          "text": "Провал: Эффекты",
           "marks": []
         }
       ]
@@ -181,17 +195,19 @@
       "children": [
         {
           "kind": "text",
-          "text": "Group tests also introduce “",
+          "text": "Групповые проверки также вводят эффекты «",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fail:",
-          "marks": []
+          "text": "Провал:",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "” effects. A Fail effect is applied to the individual Argonaut who failed the test and not the whole group. It’s entirely possible to succeed at a group test as a group, but fail as an individual Argonaut.",
+          "text": "». Эффект провала применяется к отдельному Аргонавту, который провалил проверку, а не ко всей группе. Вполне возможно успешно пройти групповую проверку как группа, но провалиться как отдельный Аргонавт.",
           "marks": []
         }
       ]
@@ -203,7 +219,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Other Adventure Rolls",
+          "text": "Другие Броски в Приключении",
           "marks": []
         }
       ]
@@ -214,7 +230,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "There are many types of rolls you may be required to make during an adventure. Not all rolls are tests. An effect may instruct you to sim-ply roll a d10 and resolve it according to the result (e.g. “roll a d10. On a 10 you Awaken.”) Such rolls are not tests (their description does not include the word ‘test’) and cannot be re-rolled using  .",
+          "text": "Существует множество типов бросков, которые вам может потребоваться сделать во время приключения. Не все броски являются проверками. Эффект может предписывать вам просто бросить d10 и разрешить его в соответствии с результатом (например, «бросьте d10. На 10 вы Пробуждаетесь»). Такие броски не являются проверками (их описание не включает слово «проверка») и не могут быть переброшены с помощью .",
           "marks": []
         }
       ]
@@ -226,7 +242,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Peril",
+          "text": "Опасность",
           "marks": []
         }
       ]
@@ -237,7 +253,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Some choices, tests and rolls are marked with the Peril keyword. The Peril keyword states that the party leader must make the de-cision, test or roll without consulting the other players. This means no talking, no discussing, no meaningful glance. It’s all on you.",
+          "text": "Некоторые выборы, проверки и броски отмечены ключевым словом «Опасность». Ключевое слово «Опасность» означает, что лидер группы должен принять решение, выполнить проверку или бросок, не советуясь с другими игроками. Это означает никаких разговоров, никаких обсуждений, никаких многозначительных взглядов. Всё зависит от вас.",
           "marks": []
         }
       ]
@@ -249,7 +265,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Adventure Terrain",
+          "text": "Ландшафт Приключения",
           "marks": []
         }
       ]
@@ -260,52 +276,64 @@
       "children": [
         {
           "kind": "text",
-          "text": "Each Adventure Hub has an associated Terrain tile that you add to the upcoming Timeline Battle if you go on an adventure from that hub. Once you establish which Adventure Hub you are about to resolve, consult the Adventure Terrain column in the same row. Note this Terrain’s placement instructions on the Timeline, on the day of the earliest upcoming Timeline Battle. This Terrain affects only a Timeline Battle, not a Battle triggered in any other way. If an Adventure Terrain is already noted for this day, ignore this in-struction.During the Battle Setup of a Timeline Battle with an Adventure Ter-rain, place the corresponding Terrain tile(s) on the Battle Board, after you place all Battle-specific Terrain tiles. This Terrain tile(s) cannot overlap with Titans, the Primordial, or other Terrain tiles. Adventure Terrain placement instructions include:Each Argonaut tests Endurance or Fury (8+). Gain +1  to add +1. ",
+          "text": "Каждый Центр Приключений имеет связанную с ним плитку Ландшафта, которую вы добавляете к предстоящей Битве на Шкале Времени, если отправляетесь в приключение из этого центра. Как только вы определите, какой Центр Приключений вы собираетесь разрешить, обратитесь к столбцу «Ландшафт Приключения» в той же строке. Запишите инструкции по размещению этого Ландшафта на Шкале Времени, в день самой ранней предстоящей Битвы на Шкале Времени. Этот Ландшафт влияет только на Битву на Шкале Времени, а не на Битву, вызванную каким-либо другим способом. Если Ландшафт Приключения уже отмечен на этот день, игнорируйте эту инструкцию. Во время Подготовки к Битве на Шкале Времени с Ландшафтом Приключения разместите соответствующие плитки Ландшафта на Боевом Поле после того, как разместите все плитки Ландшафта, специфичные для Битвы. Эти плитки Ландшафта не могут перекрываться с Титанами, Первозданным или другими плитками Ландшафта. Инструкции по размещению Ландшафта Приключения включают: Каждый Аргонавт проверяет Выносливость или Неистовство (8+). Получите +1 , чтобы добавить +1. ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Fail: ",
+          "text": "Провал: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Вы тяжело ранены во время битвы. ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Получите +2 . ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "You are gravely wounded during the battle. ",
+          "text": "0–2 успеха: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Вам удаётся удержаться, но ваш экипаж платит высшую цену за вашу безопасность. ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Потеряйте -1 . ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Gain +2 . ",
-          "marks": []
+          "text": "3–4 успеха: ",
+          "marks": [
+            "bold"
+          ]
         },
         {
           "kind": "text",
-          "text": "0–2 successes: ",
-          "marks": []
+          "text": "Вы быстро берёте верх и отбрасываете нападающих. ",
+          "marks": [
+            "italic"
+          ]
         },
         {
           "kind": "text",
-          "text": "You manage to hold your own, but your crew pays the ultimate price for your safety. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Lose -1 . ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "3–4 successes: ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "You quickly gain the upper hand and push the attackers back. ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Subtract -1 . ",
+          "text": "Вычтите -1 . ",
           "marks": []
         },
         {
@@ -332,7 +360,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "See 0074.",
+          "text": "См. 0074.",
           "marks": []
         }
       ]
