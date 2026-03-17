@@ -100,7 +100,7 @@ label = "Dark marker"
 alt_label_ru = "Тёмная метка"
 template_asset = "configs/symbols/templates/icon_003_21x20_c1a3b4c3af8297a7.png"
 match_threshold = 0.85
-inline = true
+inline = false
 # first seen: p0006, 21x20px — small dark silhouette inline icon
 
 [[symbols]]
@@ -145,7 +145,7 @@ label = "Laurel / Victory"
 alt_label_ru = "Лавр / Победа"
 template_asset = "configs/symbols/templates/icon_009_41x41_8e614e8c9d5c47fa.png"
 match_threshold = 0.85
-inline = true
+inline = false
 # first seen: p0007, 41x41px — brown crown/laurel wreath shape
 
 [[symbols]]
@@ -154,7 +154,7 @@ label = "Laurel / Victory (variant)"
 alt_label_ru = "Лавр / Победа (вариант)"
 template_asset = "configs/symbols/templates/icon_010_42x42_a032753f51700472.png"
 match_threshold = 0.85
-inline = true
+inline = false
 # first seen: p0007, 42x42px — similar crown/laurel
 
 [[symbols]]
@@ -172,7 +172,7 @@ label = "Attack die (d10)"
 alt_label_ru = "Кубик атаки (d10)"
 template_asset = "configs/symbols/templates/icon_030_71x78_3e72c085add4d06e.png"
 match_threshold = 0.85
-inline = true
+inline = false
 # first seen: p0051, 71x78px — red die
 
 [[symbols]]

@@ -13,6 +13,8 @@ Uses font-based heuristics derived from the full document analysis:
 
 from __future__ import annotations
 
+import re
+
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
@@ -103,6 +105,12 @@ def _spans_to_text_inline(
         if not text.strip():
             continue
 
+        # Ensure whitespace between adjacent spans
+        if inlines:
+            prev_text = inlines[-1].text
+            if prev_text and text and not prev_text[-1].isspace() and not text[0].isspace():
+                text = " " + text
+
         # Merge with previous if same marks
         if inlines and inlines[-1].marks == marks:
             inlines[-1] = TextInline(
@@ -152,6 +160,140 @@ def _image_overlaps_text(
         ):
             return True
     return False
+
+
+# Sentence boundary: ". " followed by uppercase Latin or Cyrillic letter.
+_SENTENCE_BOUNDARY_RE = re.compile(r"\. (?=[A-ZА-ЯЁ])")  # noqa: RUF001
+
+
+def _split_long_paragraphs(
+    blocks: list[object],
+    max_chars: int = 600,
+) -> list[object]:
+    """Split paragraph blocks whose text exceeds *max_chars* at sentence boundaries."""
+    result: list[object] = []
+    for block in blocks:
+        if not isinstance(block, ParagraphBlock):
+            result.append(block)
+            continue
+
+        total_text = "".join(
+            c.text for c in block.children if hasattr(c, "text")
+        )
+        if len(total_text) <= max_chars:
+            result.append(block)
+            continue
+
+        # We need to split children list at a sentence boundary.
+        # Strategy: walk through children accumulating text length; when we
+        # exceed *max_chars* find the last sentence boundary in the
+        # accumulated text and split there.
+        remaining_children: list[TextInline | IconInline] = list(block.children)
+        base_id = block.block_id
+        part = 0
+
+        while remaining_children:
+            remaining_text = "".join(
+                c.text for c in remaining_children if hasattr(c, "text")
+            )
+            if len(remaining_text) <= max_chars:
+                part_id = f"{base_id}.{part}" if part > 0 else base_id
+                result.append(
+                    ParagraphBlock(block_id=part_id, children=remaining_children)
+                )
+                break
+
+            # Build a mapping of character offset → (child_index, char_within_child)
+            char_offset = 0
+            offset_map: list[tuple[int, int]] = []  # (child_idx, pos_in_child)
+            for ci, child in enumerate(remaining_children):
+                if hasattr(child, "text"):
+                    for pos in range(len(child.text)):
+                        offset_map.append((ci, pos))
+                    char_offset += len(child.text)
+
+            # Find the last sentence boundary before max_chars
+            accumulated = remaining_text[:max_chars]
+            split_pos = -1
+            for m in _SENTENCE_BOUNDARY_RE.finditer(accumulated):
+                # Split after the period+space → keep ". " with the first part
+                split_pos = m.start() + 2  # position right after ". "
+
+            if split_pos <= 0:
+                # No sentence boundary found before limit; keep block as-is
+                part_id = f"{base_id}.{part}" if part > 0 else base_id
+                result.append(
+                    ParagraphBlock(block_id=part_id, children=remaining_children)
+                )
+                break
+
+            # Map split_pos back to child index and position
+            child_idx, pos_in_child = offset_map[split_pos - 1]
+            # split_pos - 1 is the last char that goes into the first part
+
+            # Build first-part children
+            first_children: list[TextInline | IconInline] = []
+            second_children: list[TextInline | IconInline] = []
+
+            for ci, child in enumerate(remaining_children):
+                if ci < child_idx:
+                    first_children.append(child)
+                elif ci == child_idx and hasattr(child, "text"):
+                    # Split this text child
+                    cut = pos_in_child + 1
+                    left_text = child.text[:cut]
+                    right_text = child.text[cut:]
+                    if left_text:
+                        first_children.append(
+                            TextInline(
+                                text=left_text,
+                                marks=child.marks,
+                                lang=child.lang,
+                            )
+                        )
+                    if right_text:
+                        second_children.append(
+                            TextInline(
+                                text=right_text,
+                                marks=child.marks,
+                                lang=child.lang,
+                            )
+                        )
+                elif ci == child_idx:
+                    # Non-text child (icon) at the split boundary → put in second
+                    second_children.append(child)
+                else:
+                    second_children.append(child)
+
+            part_id = f"{base_id}.{part}" if part > 0 else base_id
+            if first_children:
+                result.append(
+                    ParagraphBlock(block_id=part_id, children=first_children)
+                )
+            part += 1
+            remaining_children = second_children
+
+    return result
+
+
+def _deduplicate_blocks(blocks: list[object]) -> list[object]:
+    """Remove consecutive blocks with identical text content (first 80 chars)."""
+    if not blocks:
+        return blocks
+
+    def _block_text_key(block: object) -> str:
+        children = getattr(block, "children", [])
+        text = "".join(c.text for c in children if hasattr(c, "text"))
+        return text[:80]
+
+    result: list[object] = [blocks[0]]
+    for block in blocks[1:]:
+        prev_key = _block_text_key(result[-1])
+        curr_key = _block_text_key(block)
+        if prev_key and prev_key == curr_key:
+            continue
+        result.append(block)
+    return result
 
 
 def build_page_ir_real(
@@ -308,7 +450,11 @@ def build_page_ir_real(
         )
         asset_ids.append(asset_id)
 
-    reading_order = [b.block_id for b in blocks]
+    # Post-processing: split overly long paragraphs, then deduplicate.
+    blocks = _split_long_paragraphs(blocks)  # type: ignore[arg-type]
+    blocks = _deduplicate_blocks(blocks)  # type: ignore[arg-type]
+
+    reading_order = [b.block_id for b in blocks]  # type: ignore[union-attr]
 
     return PageIRV1(
         document_id=native.document_id,
@@ -341,6 +487,8 @@ def _insert_icons(
         region_y_max = max(s.bbox.y1 for s in spans)
 
         for match in symbols.matches:
+            if not match.inline:
+                continue
             if match.bbox.y0 >= region_y_min - 5 and match.bbox.y1 <= region_y_max + 5:
                 result.append(
                     IconInline(
