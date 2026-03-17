@@ -530,9 +530,120 @@
           "alt": "Board_tile_n"
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0000",
+      "asset_id": "p0012.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0002",
+      "asset_id": "p0012.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0003",
+      "asset_id": "p0012.img0003",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0004",
+      "asset_id": "p0012.img0004",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0005",
+      "asset_id": "p0012.img0005",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0006",
+      "asset_id": "p0012.img0006",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0007",
+      "asset_id": "p0012.img0007",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0008",
+      "asset_id": "p0012.img0008",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0010",
+      "asset_id": "p0012.img0010",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0011",
+      "asset_id": "p0012.img0011",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0012.fig.p0012.img0012",
+      "asset_id": "p0012.img0012",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0012.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0000.jpeg",
+      "alt": "p0012.img0000"
+    },
+    "p0012.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0002.jpeg",
+      "alt": "p0012.img0002"
+    },
+    "p0012.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0003.jpeg",
+      "alt": "p0012.img0003"
+    },
+    "p0012.img0004": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0004.jpeg",
+      "alt": "p0012.img0004"
+    },
+    "p0012.img0005": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0005.jpeg",
+      "alt": "p0012.img0005"
+    },
+    "p0012.img0006": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0006.jpeg",
+      "alt": "p0012.img0006"
+    },
+    "p0012.img0007": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0007.jpeg",
+      "alt": "p0012.img0007"
+    },
+    "p0012.img0008": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0008.jpeg",
+      "alt": "p0012.img0008"
+    },
+    "p0012.img0010": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0010.jpeg",
+      "alt": "p0012.img0010"
+    },
+    "p0012.img0011": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0011.jpeg",
+      "alt": "p0012.img0011"
+    },
+    "p0012.img0012": {
+      "src": "/documents/ato_core_v1_1/images/p0012.img0012.jpeg",
+      "alt": "p0012.img0012"
+    }
+  },
   "glossary_mentions": [
     "concept.fate",
     "concept.board_tile_c",

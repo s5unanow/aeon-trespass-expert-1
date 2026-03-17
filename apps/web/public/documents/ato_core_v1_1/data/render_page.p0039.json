@@ -765,9 +765,60 @@
           ]
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0039.fig.p0039.img0000",
+      "asset_id": "p0039.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0039.fig.p0039.img0001",
+      "asset_id": "p0039.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0039.fig.p0039.img0003",
+      "asset_id": "p0039.img0003",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0039.fig.p0039.img0004",
+      "asset_id": "p0039.img0004",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0039.fig.p0039.img0009",
+      "asset_id": "p0039.img0009",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0039.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0039.img0000.jpeg",
+      "alt": "p0039.img0000"
+    },
+    "p0039.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0039.img0001.jpeg",
+      "alt": "p0039.img0001"
+    },
+    "p0039.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0039.img0003.jpeg",
+      "alt": "p0039.img0003"
+    },
+    "p0039.img0004": {
+      "src": "/documents/ato_core_v1_1/images/p0039.img0004.jpeg",
+      "alt": "p0039.img0004"
+    },
+    "p0039.img0009": {
+      "src": "/documents/ato_core_v1_1/images/p0039.img0009.jpeg",
+      "alt": "p0039.img0009"
+    }
+  },
   "glossary_mentions": [
     "concept.art_ruins_small_b",
     "concept.art_ruins_small_c"

@@ -323,9 +323,20 @@
           "marks": []
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0004.fig.p0004.img0000",
+      "asset_id": "p0004.img0000",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0004.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0004.img0000.jpeg",
+      "alt": "p0004.img0000"
+    }
+  },
   "glossary_mentions": [],
   "search": {},
   "source_map": {

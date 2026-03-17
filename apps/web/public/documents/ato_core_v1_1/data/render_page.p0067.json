@@ -19,7 +19,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Когда Титан отталкивается в Колонну, он получает Крах, получая 1 и получая Опрокидывание. Колонна разрушается, и Гекатон продолжает толкать опрокинутого Титана, пока Отталкивание не будет полностью разрешено. Улиссея отталкивается в красную линию, которая является Неразрушимым Препятствием. Нет смежных клеток, на которые она может быть законно перемещена, что позволило бы Гекатону переместиться на её клетку и продолжить Отталкивание, поэтому она умирает, раздавленная Первозданным.",
+          "text": "Когда Титан отталкивается в Колонну, он получает Крах, получая 1 и страдая от Опрокидывания. Колонна разрушается, и Гекатон продолжает толкать опрокинутого Титана, пока Отталкивание не будет полностью разрешено. Улиссея отталкивается в красную линию, которая является Неразрушимым Препятствием. Нет смежных клеток, на которые она могла бы быть законно перемещена, что позволило бы Гекатону переместиться на её клетку и продолжить Отталкивание, поэтому она умирает, раздавленная Первозданным.",
           "marks": [
             "italic"
           ]
@@ -128,6 +128,11 @@
       "children": [
         {
           "kind": "text",
+          "text": " ",
+          "marks": []
+        },
+        {
+          "kind": "text",
           "text": "Перемещение X:",
           "marks": [
             "bold"
@@ -167,7 +172,7 @@
         },
         {
           "kind": "text",
-          "text": "Укрепление X:",
+          "text": "Усиление X:",
           "marks": [
             "bold"
           ]
@@ -185,7 +190,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Продвинутое Укрепление X:",
+          "text": "Продвинутое Усиление X:",
           "marks": [
             "bold"
           ]
@@ -214,7 +219,7 @@
       "children": [
         {
           "kind": "text",
-          "text": "Превосходное Укрепление X:",
+          "text": "Превосходное Усиление X:",
           "marks": [
             "bold"
           ]
@@ -236,9 +241,120 @@
           "marks": []
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0000",
+      "asset_id": "p0067.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0004",
+      "asset_id": "p0067.img0004",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0005",
+      "asset_id": "p0067.img0005",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0006",
+      "asset_id": "p0067.img0006",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0008",
+      "asset_id": "p0067.img0008",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0009",
+      "asset_id": "p0067.img0009",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0010",
+      "asset_id": "p0067.img0010",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0011",
+      "asset_id": "p0067.img0011",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0012",
+      "asset_id": "p0067.img0012",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0013",
+      "asset_id": "p0067.img0013",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0067.fig.p0067.img0014",
+      "asset_id": "p0067.img0014",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0067.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0000.jpeg",
+      "alt": "p0067.img0000"
+    },
+    "p0067.img0004": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0004.jpeg",
+      "alt": "p0067.img0004"
+    },
+    "p0067.img0005": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0005.jpeg",
+      "alt": "p0067.img0005"
+    },
+    "p0067.img0006": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0006.jpeg",
+      "alt": "p0067.img0006"
+    },
+    "p0067.img0008": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0008.jpeg",
+      "alt": "p0067.img0008"
+    },
+    "p0067.img0009": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0009.jpeg",
+      "alt": "p0067.img0009"
+    },
+    "p0067.img0010": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0010.jpeg",
+      "alt": "p0067.img0010"
+    },
+    "p0067.img0011": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0011.jpeg",
+      "alt": "p0067.img0011"
+    },
+    "p0067.img0012": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0012.jpeg",
+      "alt": "p0067.img0012"
+    },
+    "p0067.img0013": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0013.jpeg",
+      "alt": "p0067.img0013"
+    },
+    "p0067.img0014": {
+      "src": "/documents/ato_core_v1_1/images/p0067.img0014.jpeg",
+      "alt": "p0067.img0014"
+    }
+  },
   "glossary_mentions": [],
   "search": {},
   "source_map": {

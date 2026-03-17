@@ -375,9 +375,40 @@
           "marks": []
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0032.fig.p0032.img0000",
+      "asset_id": "p0032.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0032.fig.p0032.img0001",
+      "asset_id": "p0032.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0032.fig.p0032.img0002",
+      "asset_id": "p0032.img0002",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0032.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0032.img0000.png",
+      "alt": "p0032.img0000"
+    },
+    "p0032.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0032.img0001.jpeg",
+      "alt": "p0032.img0001"
+    },
+    "p0032.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0032.img0002.jpeg",
+      "alt": "p0032.img0002"
+    }
+  },
   "glossary_mentions": [
     "concept.board_tile_c",
     "concept.board_tile_g",

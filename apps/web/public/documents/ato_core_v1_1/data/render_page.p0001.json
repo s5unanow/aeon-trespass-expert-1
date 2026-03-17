@@ -24,9 +24,30 @@
           "marks": []
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0001.fig.p0001.img0000",
+      "asset_id": "p0001.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0001.fig.p0001.img0001",
+      "asset_id": "p0001.img0001",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0001.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0001.img0000.png",
+      "alt": "p0001.img0000"
+    },
+    "p0001.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0001.img0001.png",
+      "alt": "p0001.img0001"
+    }
+  },
   "glossary_mentions": [],
   "search": {},
   "source_map": {

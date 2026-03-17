@@ -251,9 +251,30 @@
           "alt": "Board_tile_n"
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0029.fig.p0029.img0000",
+      "asset_id": "p0029.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0029.fig.p0029.img0001",
+      "asset_id": "p0029.img0001",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0029.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0029.img0000.png",
+      "alt": "p0029.img0000"
+    },
+    "p0029.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0029.img0001.png",
+      "alt": "p0029.img0001"
+    }
+  },
   "glossary_mentions": [
     "concept.board_tile_c",
     "concept.board_tile_g",

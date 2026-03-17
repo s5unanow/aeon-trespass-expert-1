@@ -304,9 +304,50 @@
           "alt": "Board_tile_n"
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0028.fig.p0028.img0000",
+      "asset_id": "p0028.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0028.fig.p0028.img0001",
+      "asset_id": "p0028.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0028.fig.p0028.img0002",
+      "asset_id": "p0028.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0028.fig.p0028.img0003",
+      "asset_id": "p0028.img0003",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0028.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0028.img0000.jpeg",
+      "alt": "p0028.img0000"
+    },
+    "p0028.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0028.img0001.jpeg",
+      "alt": "p0028.img0001"
+    },
+    "p0028.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0028.img0002.png",
+      "alt": "p0028.img0002"
+    },
+    "p0028.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0028.img0003.png",
+      "alt": "p0028.img0003"
+    }
+  },
   "glossary_mentions": [
     "concept.board_tile_c",
     "concept.board_tile_g",

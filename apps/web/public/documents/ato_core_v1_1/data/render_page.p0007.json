@@ -3,7 +3,7 @@
   "document_version": "",
   "page": {
     "id": "p0007",
-    "title": "I",
+    "title": "Я",
     "section_path": [],
     "source_page_number": 7
   },
@@ -19,7 +19,18 @@
       "children": [
         {
           "kind": "text",
-          "text": "AM0308Вы можете немедленно совершить ",
+          "text": "AM0308",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Вы можете немедленно совершить ",
           "marks": []
         },
         {
@@ -36,16 +47,22 @@
         },
         {
           "kind": "text",
-          "text": "Опрокидывание (падение)",
+          "text": "Нокдаун (падение)",
           "marks": [
             "italic"
           ]
         },
         {
           "kind": "text",
-          "text": ", немедленно встаньте.ОСКОРБЛЁННЫЙ",
+          "text": ", немедленно встаньте вместо этого.ОСКОРБЛЁН",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b003",
+      "children": [
         {
           "kind": "text",
           "text": "МЕЛКАЯ ТРАВМАМЕЛКАЯ ТРАВМА",
@@ -62,7 +79,7 @@
     },
     {
       "kind": "list_item",
-      "id": "p0007.b002",
+      "id": "p0007.b004",
       "children": [
         {
           "kind": "text",
@@ -73,44 +90,132 @@
         },
         {
           "kind": "text",
-          "text": " 830 Мини-американских (41 x 63 мм) 747 Стандарт-",
+          "text": " 830 Мини Американских (41 x 63 мм) 747 Стандарт-",
           "marks": []
         }
       ]
     },
     {
       "kind": "list_item",
-      "id": "p0007.b003",
+      "id": "p0007.b005",
       "children": [
         {
           "kind": "text",
-          "text": "ных карточных игр (63,5 x 88,9 мм) 54 Таро (70 x 120 мм) ",
+          "text": "ных Карточных Игр (63,5 x 88,9 мм) 54 Таро (70 x 120 мм)",
           "marks": []
         }
       ]
     },
     {
       "kind": "list_item",
-      "id": "p0007.b004",
+      "id": "p0007.b006",
       "children": [
         {
           "kind": "text",
-          "text": "270 Малых квадратных - Тайлов карты (70 x 70 мм) ",
+          "text": "270 Малых Квадратных - Тайлов Карты (70 x 70 мм)",
           "marks": []
         }
       ]
     },
     {
       "kind": "paragraph",
-      "id": "p0007.b005",
+      "id": "p0007.b007",
       "children": [
         {
           "kind": "text",
-          "text": "233 карты ИИ199 карт БП10 карт Черты12 планшетов Первозданных13 карт Аргонавтов6 карт Кратоса8 карт Мойрос10 карт Одиночных/Двойных Ран170 Секретных карт",
+          "text": "233 Карты ИИ",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "199 Карт BP10 Карт Черты",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "12 Листов Первозданных",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "13 Карт Аргонавтов6 Карт Кратоса",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "8 карт Мойрос10 Карт Одиночных/Двойных Ран170 Секретных Карт",
           "marks": [
             "italic"
           ]
         },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b012",
+      "children": [
         {
           "kind": "text",
           "text": "T01T00",
@@ -119,22 +224,131 @@
           ]
         },
         {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b013",
+      "children": [
+        {
           "kind": "text",
-          "text": "270 Тайлов карты73 карты Травм27 карт Образцов",
+          "text": "270 Тайлов Карты73 Карты Травм",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "27 Карт Паттернов",
           "marks": [
             "italic"
           ]
         },
         {
           "kind": "text",
-          "text": "1-34-67-910+",
+          "text": "1-3",
           "marks": [
             "bold"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b015",
+      "children": [
         {
           "kind": "text",
-          "text": "Рефлекс (Переместитесь на 1 клетку).",
+          "text": "4-6",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "7-9",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "10+",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Рефлекс (Перемещение на 1 клетку).",
           "marks": []
         },
         {
@@ -147,16 +361,78 @@
         },
         {
           "kind": "text",
-          "text": "AW0284ИАПЕТАНСКОЕ НАПРЯЖЕНИЕИАПЕТАНСКОЕ НАПРЯЖЕНИЕВнутренняя Одиссея",
+          "text": "AW0284ИАПЕТАНСКОЕ НАПРЯЖЕНИЕИАПЕТАНСКОЕ НАПРЯЖЕНИЕ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Внутренняя Одиссея",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Не оставляйте ничего на волю случая.15 планшетов Титанов3 Книги Историй",
+          "text": "Не оставляйте ничего на волю случая.15 Листов Титанов3 Сборника Рассказов",
           "marks": [
             "italic"
           ]
         },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b020",
+      "children": [
         {
           "kind": "text",
           "text": "ЧАСТЬ ТЕЛА",
@@ -166,84 +442,133 @@
         },
         {
           "kind": "text",
-          "text": "КАРЛИКОтброс 2.",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Вы уничтожили слабую опорную руку, изрешеченную осколками сиреновой раковины. Монстр остался полностью открыт! ",
-          "marks": [
-            "italic"
-          ]
-        },
-        {
-          "kind": "text",
-          "text": "Во время второго окна способностей поместите 2 дополнительных жетона Открытия или Пролома в пул Кратоса.2AS0416БПГЕКАТОН",
-          "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        }
-      ]
-    },
-    {
-      "kind": "heading",
-      "id": "p0007.b006",
-      "level": 3,
-      "children": [
-        {
-          "kind": "text",
-          "text": "I",
+          "text": "Я НЕДОМЕРОК",
           "marks": []
         }
       ]
     },
     {
       "kind": "paragraph",
-      "id": "p0007.b007",
+      "id": "p0007.b021",
       "children": [
         {
           "kind": "text",
-          "text": "Вы парализованы. Вы не можете добровольно двигаться, атаковать или использовать действия или способности, если не указано иное.Когда вас атакуют, вместо выполнения Броска Уклонения, немедленно умрите. Не разрешайте никаких других эффектов попадания и переходите к После Атаки.ЭГОБЛОК",
+          "text": "Отбрасывание 2.",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Конец вашего хода:",
+          "text": "Вы уничтожили слабую опорную руку, изрешеченную осколками сиренового панциря. Монстр остался полностью открыт!",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Во время второго окна способностей поместите 2 дополнительных жетона Открытия или Пролома в Пул Кратоса.2",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "AS0416BP",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ГЕКАТОН",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b024",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Я",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b025",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Вы парализованы. Вы не можете добровольно двигаться, атаковать или использовать действия или способности, если не указано иное.Когда вас атакуют, вместо выполнения ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Броска Уклонения",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", немедленно умрите. Не разрешайте никаких других эффектов попадания и переходите к После Атаки.ЭГОЛОК",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b026",
+      "children": [
+        {
+          "kind": "text",
+          "text": "AN0372Конец вашего хода:",
           "marks": [
             "bold"
           ]
         },
         {
           "kind": "text",
-          "text": "Вы можете проверить Отвагу (+). ",
+          "text": "Вы можете проверить Отвагу (+).",
           "marks": []
         },
         {
@@ -266,6 +591,27 @@
           ]
         },
         {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b027",
+      "children": [
+        {
           "kind": "text",
           "text": "СОСТОЯНИЕ КРАТОС (РАЗУМ)",
           "marks": [
@@ -274,7 +620,18 @@
         },
         {
           "kind": "text",
-          "text": "КРАТОСПолучите эту карту и жетон Приоритетной Цели (даже если у кого-то есть карта Травмы ",
+          "text": "КРАТОС",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b028",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Получите эту карту и жетон Приоритетной Цели (даже если у кого-то есть карта Травмы ",
           "marks": []
         },
         {
@@ -298,7 +655,17 @@
         },
         {
           "kind": "text",
-          "text": " Если ваш Титан мертв, разрешите Специальное Событие ",
+          "text": " Если ваш ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " мертв, разрешите Особое Событие ",
           "marks": []
         },
         {
@@ -310,9 +677,15 @@
         },
         {
           "kind": "text",
-          "text": " .",
+          "text": ".",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b029",
+      "children": [
         {
           "kind": "text",
           "text": "СОСТОЯНИЕ МОЙРОС (СУДЬБА)AO0378",
@@ -322,21 +695,79 @@
         },
         {
           "kind": "text",
-          "text": "СУДЬБА ХУЖЕ СМЕРТИМОЙРОС",
+          "text": "СУДЬБА ХУЖЕ СМЕРТИ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b030",
+      "children": [
+        {
+          "kind": "text",
+          "text": "МОЙРОС",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Все происходит от нуля до десяти в мгновение ока, и удары продолжают сыпаться.",
+          "text": "От нуля до десяти за мгновение ока, и удары продолжаются.",
           "marks": [
             "italic"
           ]
         },
         {
           "kind": "text",
-          "text": "ХОЛОДНЫЙ СТАРТ6+",
+          "text": "ХОЛОДНОЕ ОТКРЫТИЕ",
           "marks": []
         },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b031",
+      "children": [
+        {
+          "kind": "text",
+          "text": "6+",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b032",
+      "children": [
         {
           "kind": "text",
           "text": "АТАКА",
@@ -346,7 +777,35 @@
         },
         {
           "kind": "text",
-          "text": "I",
+          "text": "Я",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b033",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Цель:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Ближайший ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Титан",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " впереди, в радиусе действия ",
           "marks": []
         },
         {
@@ -358,19 +817,17 @@
         },
         {
           "kind": "text",
-          "text": " Ближайший Титан впереди, в радиусе действия ",
+          "text": " Ближайший ",
           "marks": []
         },
         {
           "kind": "text",
-          "text": "Цель:",
-          "marks": [
-            "bold"
-          ]
+          "text": "Титан",
+          "marks": []
         },
         {
           "kind": "text",
-          "text": " Ближайший Титан в поле зренияПеремещение*&*Атака£",
+          "text": " в поле зренияПеремещение*&*Атака£",
           "marks": []
         },
         {
@@ -382,7 +839,18 @@
         },
         {
           "kind": "text",
-          "text": " +1Каждое попадание наносит 1 .Отброс 3.4AR0398ГЕКАТОНГЕКАТОН",
+          "text": " +1Каждое попадание наносит 1 .Отбрасывание 3.4",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b034",
+      "children": [
+        {
+          "kind": "text",
+          "text": "AR0398ГЕКАТОНГЕКАТОН",
           "marks": []
         },
         {
@@ -394,12 +862,118 @@
         },
         {
           "kind": "text",
-          "text": "AX0517Жетоны Отчаяния применяют следующие суммирующиеся штрафы (помимо их обычных эффектов):1+ жетон: Вы не можете использовать карты Мнемос.2+ жетона: Вы не можете использовать истощаемые .3+ жетона: Вы не можете выполнять .ПЕСНЯ БЕЗНАДЕЖНОСТИГЕКАТОНАЛЬФА ТЕМЕНОСГЕРОДОТСНОВИДЕЦ5",
+          "text": "AX0517Жетоны Отчаяния применяют следующие суммирующиеся штрафы (помимо их обычных эффектов):1+ жетон: Вы не можете использовать карты Мнемос.2+ жетона: Вы не можете использовать истощаемые .3+ жетона: Вы не можете выполнять .ПЕСНЯ БЕЗНАДЕЖНОСТИ",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b035",
+      "children": [
         {
           "kind": "text",
-          "text": "1-34-67-910+ ТРАВМА КРАТОС551166332244",
+          "text": "ГЕКАТОНАЛЬФА ТЕМЕНОСГЕРОДОТХОДЯЩИЙ ВО СНЕ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b036",
+      "children": [
+        {
+          "kind": "text",
+          "text": "5",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b037",
+      "children": [
+        {
+          "kind": "text",
+          "text": "1-3",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b038",
+      "children": [
+        {
+          "kind": "text",
+          "text": "4-6",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b039",
+      "children": [
+        {
+          "kind": "text",
+          "text": "7-9",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b040",
+      "children": [
+        {
+          "kind": "text",
+          "text": "10+",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b041",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ТРАВМА КРАТОС5511",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b042",
+      "children": [
+        {
+          "kind": "text",
+          "text": "663322",
+          "marks": [
+            "bold"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b043",
+      "children": [
+        {
+          "kind": "text",
+          "text": "44",
           "marks": [
             "bold"
           ]
@@ -418,44 +992,25 @@
         },
         {
           "kind": "text",
-          "text": " Переместитесь с +1 и Атакуйте в ближнем бою/с дистанции с Авто-проломом 1. Вы должны переместиться как минимум на 3 клетки и достичь своей Цели по кратчайшему возможному пути.AK0291",
+          "text": " Переместитесь с +1 и Атакуйте в Ближнем Бою/Дальнем Бою с Авто-проломом 1. Вы должны переместиться как минимум на 3 клетки и достичь своей Цели по кратчайшему возможному пути.",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b044",
+      "children": [
         {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
+          "kind": "text",
+          "text": "AK0291",
+          "marks": []
         }
       ]
     },
     {
       "kind": "heading",
-      "id": "p0007.b008",
+      "id": "p0007.b045",
       "level": 1,
       "children": [
         {
@@ -467,7 +1022,7 @@
     },
     {
       "kind": "heading",
-      "id": "p0007.b009",
+      "id": "p0007.b046",
       "level": 1,
       "children": [
         {
@@ -479,7 +1034,7 @@
     },
     {
       "kind": "heading",
-      "id": "p0007.b010",
+      "id": "p0007.b047",
       "level": 1,
       "children": [
         {
@@ -491,55 +1046,31 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0007.b011",
+      "id": "p0007.b048",
       "children": [
         {
           "kind": "text",
-          "text": "20 карт-разделителей",
+          "text": "20 Карт Разделителей",
           "marks": [
             "italic"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b049",
+      "children": [
         {
           "kind": "text",
           "text": "одиночная рана",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
     {
       "kind": "heading",
-      "id": "p0007.b012",
+      "id": "p0007.b050",
       "level": 2,
       "children": [
         {
@@ -551,18 +1082,38 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0007.b013",
+      "id": "p0007.b051",
       "children": [
         {
           "kind": "text",
-          "text": "Когда вы получаете ресурсы Первозданных во время Последствий Битвы, обменяйте эту карту на случайную карту БП самого низкого доступного уровня.двойная рана",
+          "text": "Когда вы получаете ресурсы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " во время ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Послесловия Битвы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", обменяйте эту карту на случайную карту BP самого низкого доступного уровня.двойная рана",
           "marks": []
         }
       ]
     },
     {
       "kind": "heading",
-      "id": "p0007.b014",
+      "id": "p0007.b052",
       "level": 2,
       "children": [
         {
@@ -574,18 +1125,38 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0007.b015",
+      "id": "p0007.b053",
       "children": [
         {
           "kind": "text",
-          "text": "Когда вы получаете ресурсы Первозданных во время Последствий Битвы, обменяйте эту карту на случайную карту БП III.",
+          "text": "Когда вы получаете ресурсы ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Первозданных",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " во время ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Послесловия Битвы",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", обменяйте эту карту на случайную карту BP III.",
           "marks": []
         }
       ]
     },
     {
       "kind": "heading",
-      "id": "p0007.b016",
+      "id": "p0007.b054",
       "level": 2,
       "children": [
         {
@@ -597,7 +1168,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0007.b017",
+      "id": "p0007.b055",
       "children": [
         {
           "kind": "text",
@@ -608,7 +1179,7 @@
     },
     {
       "kind": "heading",
-      "id": "p0007.b018",
+      "id": "p0007.b056",
       "level": 2,
       "children": [
         {
@@ -620,19 +1191,501 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0007.b019",
+      "id": "p0007.b057",
       "children": [
         {
           "kind": "text",
-          "text": "НЕ ОТКРЫВАТЬ, ПОКА НЕ БУДЕТ СКАЗАНО.8 Секретных конвертов",
+          "text": "НЕ ОТКРЫВАТЬ, ПОКА НЕ БУДЕТ СКАЗАНО.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b058",
+      "children": [
+        {
+          "kind": "text",
+          "text": "8 Секретных Конвертов",
           "marks": [
             "italic"
           ]
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0000",
+      "asset_id": "p0007.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0001",
+      "asset_id": "p0007.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0002",
+      "asset_id": "p0007.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0003",
+      "asset_id": "p0007.img0003",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0004",
+      "asset_id": "p0007.img0004",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0005",
+      "asset_id": "p0007.img0005",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0006",
+      "asset_id": "p0007.img0006",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0007",
+      "asset_id": "p0007.img0007",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0008",
+      "asset_id": "p0007.img0008",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0014",
+      "asset_id": "p0007.img0014",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0015",
+      "asset_id": "p0007.img0015",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0016",
+      "asset_id": "p0007.img0016",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0017",
+      "asset_id": "p0007.img0017",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0018",
+      "asset_id": "p0007.img0018",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0020",
+      "asset_id": "p0007.img0020",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0025",
+      "asset_id": "p0007.img0025",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0026",
+      "asset_id": "p0007.img0026",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0027",
+      "asset_id": "p0007.img0027",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0028",
+      "asset_id": "p0007.img0028",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0031",
+      "asset_id": "p0007.img0031",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0032",
+      "asset_id": "p0007.img0032",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0033",
+      "asset_id": "p0007.img0033",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0035",
+      "asset_id": "p0007.img0035",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0036",
+      "asset_id": "p0007.img0036",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0038",
+      "asset_id": "p0007.img0038",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0040",
+      "asset_id": "p0007.img0040",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0041",
+      "asset_id": "p0007.img0041",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0042",
+      "asset_id": "p0007.img0042",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0049",
+      "asset_id": "p0007.img0049",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0050",
+      "asset_id": "p0007.img0050",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0051",
+      "asset_id": "p0007.img0051",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0052",
+      "asset_id": "p0007.img0052",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0053",
+      "asset_id": "p0007.img0053",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0054",
+      "asset_id": "p0007.img0054",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0055",
+      "asset_id": "p0007.img0055",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0058",
+      "asset_id": "p0007.img0058",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0059",
+      "asset_id": "p0007.img0059",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0061",
+      "asset_id": "p0007.img0061",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0062",
+      "asset_id": "p0007.img0062",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0063",
+      "asset_id": "p0007.img0063",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0064",
+      "asset_id": "p0007.img0064",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0065",
+      "asset_id": "p0007.img0065",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0066",
+      "asset_id": "p0007.img0066",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0073",
+      "asset_id": "p0007.img0073",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0075",
+      "asset_id": "p0007.img0075",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0076",
+      "asset_id": "p0007.img0076",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0007.fig.p0007.img0077",
+      "asset_id": "p0007.img0077",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0007.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0000.jpeg",
+      "alt": "p0007.img0000"
+    },
+    "p0007.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0001.jpeg",
+      "alt": "p0007.img0001"
+    },
+    "p0007.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0002.jpeg",
+      "alt": "p0007.img0002"
+    },
+    "p0007.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0003.jpeg",
+      "alt": "p0007.img0003"
+    },
+    "p0007.img0004": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0004.jpeg",
+      "alt": "p0007.img0004"
+    },
+    "p0007.img0005": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0005.jpeg",
+      "alt": "p0007.img0005"
+    },
+    "p0007.img0006": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0006.jpeg",
+      "alt": "p0007.img0006"
+    },
+    "p0007.img0007": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0007.jpeg",
+      "alt": "p0007.img0007"
+    },
+    "p0007.img0008": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0008.jpeg",
+      "alt": "p0007.img0008"
+    },
+    "p0007.img0014": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0014.jpeg",
+      "alt": "p0007.img0014"
+    },
+    "p0007.img0015": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0015.jpeg",
+      "alt": "p0007.img0015"
+    },
+    "p0007.img0016": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0016.jpeg",
+      "alt": "p0007.img0016"
+    },
+    "p0007.img0017": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0017.jpeg",
+      "alt": "p0007.img0017"
+    },
+    "p0007.img0018": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0018.jpeg",
+      "alt": "p0007.img0018"
+    },
+    "p0007.img0020": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0020.png",
+      "alt": "p0007.img0020"
+    },
+    "p0007.img0025": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0025.jpeg",
+      "alt": "p0007.img0025"
+    },
+    "p0007.img0026": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0026.jpeg",
+      "alt": "p0007.img0026"
+    },
+    "p0007.img0027": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0027.jpeg",
+      "alt": "p0007.img0027"
+    },
+    "p0007.img0028": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0028.jpeg",
+      "alt": "p0007.img0028"
+    },
+    "p0007.img0031": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0031.png",
+      "alt": "p0007.img0031"
+    },
+    "p0007.img0032": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0032.jpeg",
+      "alt": "p0007.img0032"
+    },
+    "p0007.img0033": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0033.jpeg",
+      "alt": "p0007.img0033"
+    },
+    "p0007.img0035": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0035.jpeg",
+      "alt": "p0007.img0035"
+    },
+    "p0007.img0036": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0036.jpeg",
+      "alt": "p0007.img0036"
+    },
+    "p0007.img0038": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0038.png",
+      "alt": "p0007.img0038"
+    },
+    "p0007.img0040": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0040.jpeg",
+      "alt": "p0007.img0040"
+    },
+    "p0007.img0041": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0041.jpeg",
+      "alt": "p0007.img0041"
+    },
+    "p0007.img0042": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0042.jpeg",
+      "alt": "p0007.img0042"
+    },
+    "p0007.img0049": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0049.jpeg",
+      "alt": "p0007.img0049"
+    },
+    "p0007.img0050": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0050.jpeg",
+      "alt": "p0007.img0050"
+    },
+    "p0007.img0051": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0051.jpeg",
+      "alt": "p0007.img0051"
+    },
+    "p0007.img0052": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0052.jpeg",
+      "alt": "p0007.img0052"
+    },
+    "p0007.img0053": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0053.png",
+      "alt": "p0007.img0053"
+    },
+    "p0007.img0054": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0054.jpeg",
+      "alt": "p0007.img0054"
+    },
+    "p0007.img0055": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0055.jpeg",
+      "alt": "p0007.img0055"
+    },
+    "p0007.img0058": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0058.jpeg",
+      "alt": "p0007.img0058"
+    },
+    "p0007.img0059": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0059.jpeg",
+      "alt": "p0007.img0059"
+    },
+    "p0007.img0061": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0061.jpeg",
+      "alt": "p0007.img0061"
+    },
+    "p0007.img0062": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0062.jpeg",
+      "alt": "p0007.img0062"
+    },
+    "p0007.img0063": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0063.png",
+      "alt": "p0007.img0063"
+    },
+    "p0007.img0064": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0064.png",
+      "alt": "p0007.img0064"
+    },
+    "p0007.img0065": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0065.png",
+      "alt": "p0007.img0065"
+    },
+    "p0007.img0066": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0066.jpeg",
+      "alt": "p0007.img0066"
+    },
+    "p0007.img0073": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0073.png",
+      "alt": "p0007.img0073"
+    },
+    "p0007.img0075": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0075.png",
+      "alt": "p0007.img0075"
+    },
+    "p0007.img0076": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0076.png",
+      "alt": "p0007.img0076"
+    },
+    "p0007.img0077": {
+      "src": "/documents/ato_core_v1_1/images/p0007.img0077.png",
+      "alt": "p0007.img0077"
+    }
+  },
   "glossary_mentions": [
     "concept.board_tile_c",
     "concept.board_tile_g",
@@ -660,7 +1713,46 @@
       "p0007.b016",
       "p0007.b017",
       "p0007.b018",
-      "p0007.b019"
+      "p0007.b019",
+      "p0007.b020",
+      "p0007.b021",
+      "p0007.b022",
+      "p0007.b023",
+      "p0007.b024",
+      "p0007.b025",
+      "p0007.b026",
+      "p0007.b027",
+      "p0007.b028",
+      "p0007.b029",
+      "p0007.b030",
+      "p0007.b031",
+      "p0007.b032",
+      "p0007.b033",
+      "p0007.b034",
+      "p0007.b035",
+      "p0007.b036",
+      "p0007.b037",
+      "p0007.b038",
+      "p0007.b039",
+      "p0007.b040",
+      "p0007.b041",
+      "p0007.b042",
+      "p0007.b043",
+      "p0007.b044",
+      "p0007.b045",
+      "p0007.b046",
+      "p0007.b047",
+      "p0007.b048",
+      "p0007.b049",
+      "p0007.b050",
+      "p0007.b051",
+      "p0007.b052",
+      "p0007.b053",
+      "p0007.b054",
+      "p0007.b055",
+      "p0007.b056",
+      "p0007.b057",
+      "p0007.b058"
     ]
   },
   "build_meta": null

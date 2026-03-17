@@ -453,9 +453,180 @@
           ]
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0000",
+      "asset_id": "p0005.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0001",
+      "asset_id": "p0005.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0002",
+      "asset_id": "p0005.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0003",
+      "asset_id": "p0005.img0003",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0004",
+      "asset_id": "p0005.img0004",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0005",
+      "asset_id": "p0005.img0005",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0008",
+      "asset_id": "p0005.img0008",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0009",
+      "asset_id": "p0005.img0009",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0010",
+      "asset_id": "p0005.img0010",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0024",
+      "asset_id": "p0005.img0024",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0025",
+      "asset_id": "p0005.img0025",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0029",
+      "asset_id": "p0005.img0029",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0031",
+      "asset_id": "p0005.img0031",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0032",
+      "asset_id": "p0005.img0032",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0033",
+      "asset_id": "p0005.img0033",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0034",
+      "asset_id": "p0005.img0034",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0005.fig.p0005.img0035",
+      "asset_id": "p0005.img0035",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0005.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0000.jpeg",
+      "alt": "p0005.img0000"
+    },
+    "p0005.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0001.jpeg",
+      "alt": "p0005.img0001"
+    },
+    "p0005.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0002.jpeg",
+      "alt": "p0005.img0002"
+    },
+    "p0005.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0003.jpeg",
+      "alt": "p0005.img0003"
+    },
+    "p0005.img0004": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0004.jpeg",
+      "alt": "p0005.img0004"
+    },
+    "p0005.img0005": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0005.jpeg",
+      "alt": "p0005.img0005"
+    },
+    "p0005.img0008": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0008.jpeg",
+      "alt": "p0005.img0008"
+    },
+    "p0005.img0009": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0009.jpeg",
+      "alt": "p0005.img0009"
+    },
+    "p0005.img0010": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0010.jpeg",
+      "alt": "p0005.img0010"
+    },
+    "p0005.img0024": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0024.jpeg",
+      "alt": "p0005.img0024"
+    },
+    "p0005.img0025": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0025.jpeg",
+      "alt": "p0005.img0025"
+    },
+    "p0005.img0029": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0029.jpeg",
+      "alt": "p0005.img0029"
+    },
+    "p0005.img0031": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0031.png",
+      "alt": "p0005.img0031"
+    },
+    "p0005.img0032": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0032.png",
+      "alt": "p0005.img0032"
+    },
+    "p0005.img0033": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0033.jpeg",
+      "alt": "p0005.img0033"
+    },
+    "p0005.img0034": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0034.jpeg",
+      "alt": "p0005.img0034"
+    },
+    "p0005.img0035": {
+      "src": "/documents/ato_core_v1_1/images/p0005.img0035.png",
+      "alt": "p0005.img0035"
+    }
+  },
   "glossary_mentions": [
     "concept.danger"
   ],

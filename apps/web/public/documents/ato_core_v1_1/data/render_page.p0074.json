@@ -167,9 +167,30 @@
           "alt": "Board_tile_n"
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0074.fig.p0074.img0000",
+      "asset_id": "p0074.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0074.fig.p0074.img0012",
+      "asset_id": "p0074.img0012",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0074.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0074.img0000.jpeg",
+      "alt": "p0074.img0000"
+    },
+    "p0074.img0012": {
+      "src": "/documents/ato_core_v1_1/images/p0074.img0012.jpeg",
+      "alt": "p0074.img0012"
+    }
+  },
   "glossary_mentions": [
     "concept.art_ruins_ref",
     "concept.board_tile_c",

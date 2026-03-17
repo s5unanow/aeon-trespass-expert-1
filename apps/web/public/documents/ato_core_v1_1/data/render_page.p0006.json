@@ -633,9 +633,320 @@
           ]
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0000",
+      "asset_id": "p0006.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0002",
+      "asset_id": "p0006.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0003",
+      "asset_id": "p0006.img0003",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0004",
+      "asset_id": "p0006.img0004",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0005",
+      "asset_id": "p0006.img0005",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0006",
+      "asset_id": "p0006.img0006",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0007",
+      "asset_id": "p0006.img0007",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0008",
+      "asset_id": "p0006.img0008",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0009",
+      "asset_id": "p0006.img0009",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0010",
+      "asset_id": "p0006.img0010",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0013",
+      "asset_id": "p0006.img0013",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0014",
+      "asset_id": "p0006.img0014",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0015",
+      "asset_id": "p0006.img0015",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0016",
+      "asset_id": "p0006.img0016",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0019",
+      "asset_id": "p0006.img0019",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0021",
+      "asset_id": "p0006.img0021",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0022",
+      "asset_id": "p0006.img0022",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0025",
+      "asset_id": "p0006.img0025",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0026",
+      "asset_id": "p0006.img0026",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0027",
+      "asset_id": "p0006.img0027",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0028",
+      "asset_id": "p0006.img0028",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0029",
+      "asset_id": "p0006.img0029",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0030",
+      "asset_id": "p0006.img0030",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0032",
+      "asset_id": "p0006.img0032",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0033",
+      "asset_id": "p0006.img0033",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0035",
+      "asset_id": "p0006.img0035",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0036",
+      "asset_id": "p0006.img0036",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0038",
+      "asset_id": "p0006.img0038",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0042",
+      "asset_id": "p0006.img0042",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0044",
+      "asset_id": "p0006.img0044",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0006.fig.p0006.img0045",
+      "asset_id": "p0006.img0045",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0006.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0000.jpeg",
+      "alt": "p0006.img0000"
+    },
+    "p0006.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0002.jpeg",
+      "alt": "p0006.img0002"
+    },
+    "p0006.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0003.png",
+      "alt": "p0006.img0003"
+    },
+    "p0006.img0004": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0004.jpeg",
+      "alt": "p0006.img0004"
+    },
+    "p0006.img0005": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0005.jpeg",
+      "alt": "p0006.img0005"
+    },
+    "p0006.img0006": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0006.png",
+      "alt": "p0006.img0006"
+    },
+    "p0006.img0007": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0007.jpeg",
+      "alt": "p0006.img0007"
+    },
+    "p0006.img0008": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0008.jpeg",
+      "alt": "p0006.img0008"
+    },
+    "p0006.img0009": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0009.png",
+      "alt": "p0006.img0009"
+    },
+    "p0006.img0010": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0010.png",
+      "alt": "p0006.img0010"
+    },
+    "p0006.img0013": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0013.jpeg",
+      "alt": "p0006.img0013"
+    },
+    "p0006.img0014": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0014.jpeg",
+      "alt": "p0006.img0014"
+    },
+    "p0006.img0015": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0015.jpeg",
+      "alt": "p0006.img0015"
+    },
+    "p0006.img0016": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0016.png",
+      "alt": "p0006.img0016"
+    },
+    "p0006.img0019": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0019.jpeg",
+      "alt": "p0006.img0019"
+    },
+    "p0006.img0021": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0021.jpeg",
+      "alt": "p0006.img0021"
+    },
+    "p0006.img0022": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0022.jpeg",
+      "alt": "p0006.img0022"
+    },
+    "p0006.img0025": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0025.jpeg",
+      "alt": "p0006.img0025"
+    },
+    "p0006.img0026": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0026.jpeg",
+      "alt": "p0006.img0026"
+    },
+    "p0006.img0027": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0027.jpeg",
+      "alt": "p0006.img0027"
+    },
+    "p0006.img0028": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0028.jpeg",
+      "alt": "p0006.img0028"
+    },
+    "p0006.img0029": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0029.jpeg",
+      "alt": "p0006.img0029"
+    },
+    "p0006.img0030": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0030.jpeg",
+      "alt": "p0006.img0030"
+    },
+    "p0006.img0032": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0032.png",
+      "alt": "p0006.img0032"
+    },
+    "p0006.img0033": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0033.jpeg",
+      "alt": "p0006.img0033"
+    },
+    "p0006.img0035": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0035.jpeg",
+      "alt": "p0006.img0035"
+    },
+    "p0006.img0036": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0036.jpeg",
+      "alt": "p0006.img0036"
+    },
+    "p0006.img0038": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0038.jpeg",
+      "alt": "p0006.img0038"
+    },
+    "p0006.img0042": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0042.jpeg",
+      "alt": "p0006.img0042"
+    },
+    "p0006.img0044": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0044.png",
+      "alt": "p0006.img0044"
+    },
+    "p0006.img0045": {
+      "src": "/documents/ato_core_v1_1/images/p0006.img0045.png",
+      "alt": "p0006.img0045"
+    }
+  },
   "glossary_mentions": [
     "concept.board_tile_n"
   ],

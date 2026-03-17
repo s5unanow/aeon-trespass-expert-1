@@ -401,9 +401,40 @@
           "alt": "Art_texture_light_b"
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0022.fig.p0022.img0000",
+      "asset_id": "p0022.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0022.fig.p0022.img0001",
+      "asset_id": "p0022.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0022.fig.p0022.img0002",
+      "asset_id": "p0022.img0002",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0022.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0022.img0000.jpeg",
+      "alt": "p0022.img0000"
+    },
+    "p0022.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0022.img0001.jpeg",
+      "alt": "p0022.img0001"
+    },
+    "p0022.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0022.img0002.jpeg",
+      "alt": "p0022.img0002"
+    }
+  },
   "glossary_mentions": [
     "concept.art_texture_light_b",
     "concept.board_tile_n",

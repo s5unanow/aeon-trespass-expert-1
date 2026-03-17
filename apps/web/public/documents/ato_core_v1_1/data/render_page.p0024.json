@@ -581,9 +581,30 @@
           "marks": []
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0024.fig.p0024.img0000",
+      "asset_id": "p0024.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0024.fig.p0024.img0001",
+      "asset_id": "p0024.img0001",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0024.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0024.img0000.jpeg",
+      "alt": "p0024.img0000"
+    },
+    "p0024.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0024.img0001.png",
+      "alt": "p0024.img0001"
+    }
+  },
   "glossary_mentions": [
     "concept.board_tile_c",
     "concept.board_tile_g",

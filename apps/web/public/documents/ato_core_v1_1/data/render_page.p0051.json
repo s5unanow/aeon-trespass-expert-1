@@ -442,9 +442,100 @@
           "marks": []
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0000",
+      "asset_id": "p0051.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0001",
+      "asset_id": "p0051.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0002",
+      "asset_id": "p0051.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0003",
+      "asset_id": "p0051.img0003",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0005",
+      "asset_id": "p0051.img0005",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0006",
+      "asset_id": "p0051.img0006",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0007",
+      "asset_id": "p0051.img0007",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0008",
+      "asset_id": "p0051.img0008",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0051.fig.p0051.img0010",
+      "asset_id": "p0051.img0010",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0051.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0000.jpeg",
+      "alt": "p0051.img0000"
+    },
+    "p0051.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0001.jpeg",
+      "alt": "p0051.img0001"
+    },
+    "p0051.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0002.jpeg",
+      "alt": "p0051.img0002"
+    },
+    "p0051.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0003.jpeg",
+      "alt": "p0051.img0003"
+    },
+    "p0051.img0005": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0005.jpeg",
+      "alt": "p0051.img0005"
+    },
+    "p0051.img0006": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0006.jpeg",
+      "alt": "p0051.img0006"
+    },
+    "p0051.img0007": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0007.jpeg",
+      "alt": "p0051.img0007"
+    },
+    "p0051.img0008": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0008.jpeg",
+      "alt": "p0051.img0008"
+    },
+    "p0051.img0010": {
+      "src": "/documents/ato_core_v1_1/images/p0051.img0010.jpeg",
+      "alt": "p0051.img0010"
+    }
+  },
   "glossary_mentions": [
     "concept.marker_dark",
     "concept.crown_laurel_a",

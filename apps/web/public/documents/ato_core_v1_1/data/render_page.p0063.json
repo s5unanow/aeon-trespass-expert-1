@@ -558,9 +558,50 @@
           ]
         }
       ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0063.fig.p0063.img0000",
+      "asset_id": "p0063.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0063.fig.p0063.img0001",
+      "asset_id": "p0063.img0001",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0063.fig.p0063.img0002",
+      "asset_id": "p0063.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0063.fig.p0063.img0003",
+      "asset_id": "p0063.img0003",
+      "children": []
     }
   ],
-  "figures": {},
+  "figures": {
+    "p0063.img0000": {
+      "src": "/documents/ato_core_v1_1/images/p0063.img0000.jpeg",
+      "alt": "p0063.img0000"
+    },
+    "p0063.img0001": {
+      "src": "/documents/ato_core_v1_1/images/p0063.img0001.jpeg",
+      "alt": "p0063.img0001"
+    },
+    "p0063.img0002": {
+      "src": "/documents/ato_core_v1_1/images/p0063.img0002.jpeg",
+      "alt": "p0063.img0002"
+    },
+    "p0063.img0003": {
+      "src": "/documents/ato_core_v1_1/images/p0063.img0003.jpeg",
+      "alt": "p0063.img0003"
+    }
+  },
   "glossary_mentions": [
     "concept.art_texture_light_a"
   ],
