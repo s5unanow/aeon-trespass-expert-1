@@ -83,7 +83,7 @@ class AnthropicAdapter:
             messages.append({"role": "assistant", "content": ex["assistant"]})
         messages.append({"role": "user", "content": user_message})
 
-        response = self._client.messages.create(  # type: ignore[call-overload]
+        response = self._client.messages.create(  # type: ignore[call-overload,unused-ignore]
             model=model,
             max_tokens=8192,
             temperature=self._temperature,
