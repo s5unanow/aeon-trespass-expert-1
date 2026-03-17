@@ -1,0 +1,2732 @@
+{
+  "audit_date": "2026-03-17",
+  "total_pages": 83,
+  "summary": {
+    "pages_fully_russian": 77,
+    "pages_with_english": 4,
+    "pages_with_duplicates": 4,
+    "pages_with_images": 65,
+    "pages_with_icons": 29,
+    "pages_with_long_paragraphs": 60,
+    "pages_with_few_blocks": 6,
+    "pages_with_decorative_icons": 25,
+    "pages_with_glued_text": 4,
+    "total_issues": 139
+  },
+  "pages": [
+    {
+      "page_id": "p0001",
+      "title": "ПРАВИЛА ИГРЫ",
+      "blocks": {
+        "heading": 1,
+        "paragraph": 0,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 3,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 0,
+      "issues": []
+    },
+    {
+      "page_id": "p0002",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 0,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 0,
+      "is_russian": false,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 0,
+      "issues": [
+        {
+          "type": "few_blocks",
+          "count": 0
+        }
+      ]
+    },
+    {
+      "page_id": "p0003",
+      "title": "Содержание",
+      "blocks": {
+        "heading": 2,
+        "paragraph": 2,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 4,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1774,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0003.b001",
+          "char_count": 1369
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0003.b002",
+          "char_count": 1774
+        }
+      ]
+    },
+    {
+      "page_id": "p0004",
+      "title": "Введение",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 3,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 7,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2267,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0004.b003",
+          "char_count": 2267
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0004.b005",
+          "char_count": 1406
+        }
+      ]
+    },
+    {
+      "page_id": "p0005",
+      "title": "Перевёрнутая Боевая Парадигма™",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 13,
+        "list_item": 0,
+        "figure": 17
+      },
+      "total_blocks": 35,
+      "is_russian": true,
+      "figure_count": 17,
+      "icon_count": 4,
+      "icon_types": [
+        "sym.danger"
+      ],
+      "stat_icons": [
+        "sym.danger"
+      ],
+      "decorative_icons": [],
+      "max_paragraph_length": 1314,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0005.b002",
+          "char_count": 1314
+        },
+        {
+          "type": "glued_text",
+          "block_id": "p0005.b018",
+          "detail": "5 instances of glued text (lowercase immediately followed by uppercase)",
+          "examples": [
+            "яЖ",
+            "ыЖ",
+            "аЖ",
+            "аЖ",
+            "оЖ"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0006",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 37,
+        "list_item": 0,
+        "figure": 31
+      },
+      "total_blocks": 68,
+      "is_russian": true,
+      "figure_count": 31,
+      "icon_count": 6,
+      "icon_types": [
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 692,
+      "issues": [
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0007",
+      "title": "Я",
+      "blocks": {
+        "heading": 8,
+        "paragraph": 47,
+        "list_item": 3,
+        "figure": 47
+      },
+      "total_blocks": 105,
+      "is_russian": true,
+      "figure_count": 47,
+      "icon_count": 39,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 282,
+      "issues": [
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0007.b015",
+            "p0007.b038"
+          ],
+          "text_preview": "4-6"
+        },
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0007.b016",
+            "p0007.b039"
+          ],
+          "text_preview": "7-9"
+        },
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0007.b017",
+            "p0007.b040"
+          ],
+          "text_preview": "10+"
+        },
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0007.b051",
+            "p0007.b053"
+          ],
+          "text_preview": "Когда вы получаете ресурсы Первозданных во время П"
+        },
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0007.b055",
+            "p0007.b057"
+          ],
+          "text_preview": "НЕ ОТКРЫВАТЬ, ПОКА НЕ БУДЕТ СКАЗАНО."
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0008",
+      "title": "Важные Правила Игры",
+      "blocks": {
+        "heading": 10,
+        "paragraph": 10,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 20,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 985,
+      "issues": []
+    },
+    {
+      "page_id": "p0009",
+      "title": "Кубики",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 12,
+        "list_item": 8,
+        "figure": 2
+      },
+      "total_blocks": 27,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1058,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0009.b002",
+          "char_count": 1058
+        },
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0009.b009",
+            "p0009.b013"
+          ],
+          "text_preview": "(см. стр. 31)."
+        }
+      ]
+    },
+    {
+      "page_id": "p0010",
+      "title": "Основы Кампании",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 5,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 13,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 6,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 870,
+      "issues": [
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0011",
+      "title": "Условия победы и поражения в кампании",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 8,
+        "list_item": 6,
+        "figure": 0
+      },
+      "total_blocks": 19,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 12,
+      "icon_types": [
+        "sym.argo_fate",
+        "sym.argo_knowledge",
+        "sym.board_tile_n",
+        "sym.crew",
+        "sym.hull"
+      ],
+      "stat_icons": [
+        "sym.argo_fate",
+        "sym.argo_knowledge",
+        "sym.crew",
+        "sym.hull"
+      ],
+      "decorative_icons": [
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1896,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0011.b001",
+          "char_count": 1896
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0011.b013",
+          "char_count": 1030
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0012",
+      "title": "Навыки Аргонавтов",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 7,
+        "list_item": 8,
+        "figure": 11
+      },
+      "total_blocks": 29,
+      "is_russian": true,
+      "figure_count": 11,
+      "icon_count": 5,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_n",
+        "sym.fate"
+      ],
+      "stat_icons": [
+        "sym.fate"
+      ],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1383,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0012.b004",
+          "char_count": 1265
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0012.b008",
+          "char_count": 1383
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0012.b018",
+          "char_count": 1331
+        },
+        {
+          "type": "glued_text",
+          "block_id": "p0012.b018",
+          "detail": "7 instances of glued text (lowercase immediately followed by uppercase)",
+          "examples": [
+            "еП",
+            "иП",
+            "ыМ",
+            "оК",
+            "сК"
+          ]
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0013",
+      "title": "Игровой процесс",
+      "blocks": {
+        "heading": 2,
+        "paragraph": 3,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 6,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2066,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0013.b002",
+          "char_count": 2025
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0013.b004",
+          "char_count": 2066
+        }
+      ]
+    },
+    {
+      "page_id": "p0014",
+      "title": "Фаза Странствия",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 3,
+        "list_item": 0,
+        "figure": 5
+      },
+      "total_blocks": 11,
+      "is_russian": true,
+      "figure_count": 5,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1224,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0014.b006",
+          "char_count": 1224
+        }
+      ]
+    },
+    {
+      "page_id": "p0015",
+      "title": "Другие Символы Перемещения",
+      "blocks": {
+        "heading": 16,
+        "paragraph": 6,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 24,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1279,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0015.b005",
+          "char_count": 1279
+        },
+        {
+          "type": "english_text",
+          "block_id": "p0015.b016",
+          "detail": "English words found: Voyage",
+          "words": [
+            "Voyage"
+          ]
+        },
+        {
+          "type": "english_text",
+          "block_id": "p0015.b023",
+          "detail": "English words found: SCOUTS",
+          "words": [
+            "SCOUTS"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0016",
+      "title": "3. Шаг Исследования",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 6,
+        "list_item": 2,
+        "figure": 2
+      },
+      "total_blocks": 13,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 2,
+      "icon_types": [
+        "sym.marker_dark"
+      ],
+      "stat_icons": [
+        "sym.marker_dark"
+      ],
+      "decorative_icons": [],
+      "max_paragraph_length": 1447,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0016.b005",
+          "char_count": 1171
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0016.b007",
+          "char_count": 1083
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0016.b011",
+          "char_count": 1447
+        }
+      ]
+    },
+    {
+      "page_id": "p0017",
+      "title": "Получение ресурсов с карт Исследования",
+      "blocks": {
+        "heading": 13,
+        "paragraph": 20,
+        "list_item": 9,
+        "figure": 5
+      },
+      "total_blocks": 47,
+      "is_russian": true,
+      "figure_count": 5,
+      "icon_count": 2,
+      "icon_types": [
+        "sym.die_red"
+      ],
+      "stat_icons": [
+        "sym.die_red"
+      ],
+      "decorative_icons": [],
+      "max_paragraph_length": 747,
+      "issues": [
+        {
+          "type": "english_text",
+          "block_id": "p0017.b036",
+          "detail": "English words found: Acclimation",
+          "words": [
+            "Acclimation"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0018",
+      "title": "5. Фаза Встречи",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 6,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 14,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 3,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 2226,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0018.b010",
+          "char_count": 2226
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0019",
+      "title": "Прорывы в Технологии",
+      "blocks": {
+        "heading": 7,
+        "paragraph": 12,
+        "list_item": 6,
+        "figure": 0
+      },
+      "total_blocks": 25,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2519,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0019.b002",
+          "char_count": 2519
+        }
+      ]
+    },
+    {
+      "page_id": "p0020",
+      "title": "Создание Снаряжения",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 7,
+        "list_item": 3,
+        "figure": 1
+      },
+      "total_blocks": 14,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2913,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0020.b001",
+          "char_count": 1091
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0020.b003",
+          "char_count": 2913
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0020.b005",
+          "char_count": 1201
+        }
+      ]
+    },
+    {
+      "page_id": "p0021",
+      "title": "Создание Титана с использованием Первозданных Ядер (слияние)",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 7,
+        "list_item": 0,
+        "figure": 4
+      },
+      "total_blocks": 17,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 14,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1199,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0021.b013",
+          "char_count": 1199
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0022",
+      "title": "Карты-подсказки",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 6,
+        "list_item": 0,
+        "figure": 3
+      },
+      "total_blocks": 14,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 4,
+      "icon_types": [
+        "sym.art_texture_light_b",
+        "sym.board_tile_n",
+        "sym.progress"
+      ],
+      "stat_icons": [
+        "sym.progress"
+      ],
+      "decorative_icons": [
+        "sym.art_texture_light_b",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1398,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0022.b011",
+          "char_count": 1398
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.art_texture_light_b, sym.board_tile_n",
+          "icons": [
+            "sym.art_texture_light_b",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0023",
+      "title": "9. Завершающий Шаг",
+      "blocks": {
+        "heading": 8,
+        "paragraph": 10,
+        "list_item": 0,
+        "figure": 3
+      },
+      "total_blocks": 21,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 24,
+      "icon_types": [
+        "sym.board_tile_a",
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_i",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_a",
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_i",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1107,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0023.b016",
+          "char_count": 1107
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_a, sym.board_tile_c, sym.board_tile_g, sym.board_tile_i, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_a",
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_i",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0024",
+      "title": "Особые Призывания и Бонусные Заряды Призывания",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 9,
+        "list_item": 4,
+        "figure": 2
+      },
+      "total_blocks": 20,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 6,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 2810,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0024.b001",
+          "char_count": 1029
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0024.b009",
+          "char_count": 2810
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0025",
+      "title": "Получение других игровых элементов",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 10,
+        "list_item": 4,
+        "figure": 1
+      },
+      "total_blocks": 20,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 546,
+      "issues": []
+    },
+    {
+      "page_id": "p0026",
+      "title": "Фаза Приключений",
+      "blocks": {
+        "heading": 8,
+        "paragraph": 9,
+        "list_item": 7,
+        "figure": 0
+      },
+      "total_blocks": 24,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 12,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1020,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0026.b012",
+          "char_count": 1020
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0027",
+      "title": "Матрица Выбора",
+      "blocks": {
+        "heading": 14,
+        "paragraph": 5,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 21,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 6,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 2067,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0027.b015",
+          "char_count": 1305
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0027.b019",
+          "char_count": 2067
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0028",
+      "title": "Приключения R&R",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 5,
+        "list_item": 0,
+        "figure": 4
+      },
+      "total_blocks": 13,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 9,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1815,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0028.b005",
+          "char_count": 1815
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0028.b009",
+          "char_count": 1388
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0029",
+      "title": "Награды за прорывы Мнемос",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 4,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 9,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 3,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1372,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0029.b001",
+          "char_count": 1162
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0029.b005",
+          "char_count": 1203
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0029.b007",
+          "char_count": 1372
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0030",
+      "title": "Особые События",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 6,
+        "list_item": 0,
+        "figure": 4
+      },
+      "total_blocks": 16,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1168,
+      "issues": [
+        {
+          "type": "english_text",
+          "block_id": "p0030.b001",
+          "detail": "English words found: Pharos, Delve",
+          "words": [
+            "Pharos",
+            "Delve"
+          ]
+        },
+        {
+          "type": "english_text",
+          "block_id": "p0030.b008",
+          "detail": "English words found: WisdomBAN",
+          "words": [
+            "WisdomBAN"
+          ]
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0030.b012",
+          "char_count": 1168
+        }
+      ]
+    },
+    {
+      "page_id": "p0031",
+      "title": "Разрешённые Мнемос и Катарсис",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 12,
+        "list_item": 2,
+        "figure": 3
+      },
+      "total_blocks": 23,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 3,
+      "icon_types": [
+        "sym.board_tile_c"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c"
+      ],
+      "max_paragraph_length": 1127,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0031.b018",
+          "char_count": 1127
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c",
+          "icons": [
+            "sym.board_tile_c"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0032",
+      "title": "Проверки и Броски в Приключениях",
+      "blocks": {
+        "heading": 8,
+        "paragraph": 9,
+        "list_item": 0,
+        "figure": 3
+      },
+      "total_blocks": 20,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 3,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1503,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0032.b006",
+          "char_count": 1503
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0032.b016",
+          "char_count": 1317
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0033",
+      "title": "Ячейки Судьбы",
+      "blocks": {
+        "heading": 2,
+        "paragraph": 6,
+        "list_item": 0,
+        "figure": 3
+      },
+      "total_blocks": 11,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1119,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0033.b005",
+          "char_count": 1119
+        }
+      ]
+    },
+    {
+      "page_id": "p0034",
+      "title": "Фаза Битвы",
+      "blocks": {
+        "heading": 13,
+        "paragraph": 13,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 28,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 894,
+      "issues": [
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0034.b012",
+            "p0034.b014"
+          ],
+          "text_preview": "Во время Битвы игровые элементы могут ссылаться на"
+        }
+      ]
+    },
+    {
+      "page_id": "p0035",
+      "title": "Жетоны Кратоса и Пул Кратоса",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 9,
+        "list_item": 0,
+        "figure": 3
+      },
+      "total_blocks": 17,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 3420,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0035.b003",
+          "char_count": 1199
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0035.b007",
+          "char_count": 3420
+        }
+      ]
+    },
+    {
+      "page_id": "p0036",
+      "title": "Трек Эволюции",
+      "blocks": {
+        "heading": 8,
+        "paragraph": 10,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 19,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 813,
+      "issues": []
+    },
+    {
+      "page_id": "p0037",
+      "title": "Базовые Черты",
+      "blocks": {
+        "heading": 10,
+        "paragraph": 11,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 23,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1104,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0037.b015",
+          "char_count": 1104
+        }
+      ]
+    },
+    {
+      "page_id": "p0038",
+      "title": "1. Вытягивание ИИ",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 12,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 18,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2066,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0038.b013",
+          "char_count": 2066
+        }
+      ]
+    },
+    {
+      "page_id": "p0039",
+      "title": "Приоритетная Цель",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 12,
+        "list_item": 7,
+        "figure": 5
+      },
+      "total_blocks": 27,
+      "is_russian": true,
+      "figure_count": 5,
+      "icon_count": 6,
+      "icon_types": [
+        "sym.art_ruins_small_b",
+        "sym.art_ruins_small_c"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.art_ruins_small_b",
+        "sym.art_ruins_small_c"
+      ],
+      "max_paragraph_length": 1851,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0039.b003",
+          "char_count": 1347
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0039.b023",
+          "char_count": 1851
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.art_ruins_small_b, sym.art_ruins_small_c",
+          "icons": [
+            "sym.art_ruins_small_b",
+            "sym.art_ruins_small_c"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0040",
+      "title": "1",
+      "blocks": {
+        "heading": 2,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 9
+      },
+      "total_blocks": 12,
+      "is_russian": true,
+      "figure_count": 9,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 789,
+      "issues": []
+    },
+    {
+      "page_id": "p0041",
+      "title": "1",
+      "blocks": {
+        "heading": 12,
+        "paragraph": 12,
+        "list_item": 6,
+        "figure": 3
+      },
+      "total_blocks": 33,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 16,
+      "icon_types": [
+        "sym.art_ruins_ref"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.art_ruins_ref"
+      ],
+      "max_paragraph_length": 1124,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0041.b015",
+          "char_count": 1124
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.art_ruins_ref",
+          "icons": [
+            "sym.art_ruins_ref"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0042",
+      "title": "Типы Атак Первозданного",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 10,
+        "list_item": 6,
+        "figure": 3
+      },
+      "total_blocks": 23,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2056,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0042.b002",
+          "char_count": 2056
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0042.b014",
+          "char_count": 1075
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0042.b016",
+          "char_count": 1568
+        }
+      ]
+    },
+    {
+      "page_id": "p0043",
+      "title": "Уклонение «Вне досягаемости» (OoR)",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 7,
+        "list_item": 0,
+        "figure": 5
+      },
+      "total_blocks": 18,
+      "is_russian": true,
+      "figure_count": 5,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2398,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0043.b007",
+          "char_count": 1174
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0043.b011",
+          "char_count": 2398
+        }
+      ]
+    },
+    {
+      "page_id": "p0044",
+      "title": "Получение  Опасности  свыше «9»",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 8,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 13,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1603,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0044.b008",
+          "char_count": 1182
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0044.b012",
+          "char_count": 1603
+        }
+      ]
+    },
+    {
+      "page_id": "p0045",
+      "title": "Триггеры эффектов Судьбы",
+      "blocks": {
+        "heading": 7,
+        "paragraph": 10,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 18,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1091,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0045.b006",
+          "char_count": 1091
+        }
+      ]
+    },
+    {
+      "page_id": "p0046",
+      "title": "Основные Атрибуты:",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 16,
+        "list_item": 4,
+        "figure": 2
+      },
+      "total_blocks": 28,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 779,
+      "issues": [
+        {
+          "type": "english_text",
+          "block_id": "p0046.b009",
+          "detail": "English words found: Inverted, Combat, Paradigm",
+          "words": [
+            "Inverted",
+            "Combat",
+            "Paradigm"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0047",
+      "title": "Кулаки",
+      "blocks": {
+        "heading": 7,
+        "paragraph": 14,
+        "list_item": 7,
+        "figure": 1
+      },
+      "total_blocks": 29,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 884,
+      "issues": []
+    },
+    {
+      "page_id": "p0048",
+      "title": "Обратная сторона карт Снаряжения",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 11,
+        "list_item": 5,
+        "figure": 4
+      },
+      "total_blocks": 26,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1431,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0048.b011",
+          "char_count": 1431
+        }
+      ]
+    },
+    {
+      "page_id": "p0049",
+      "title": "Способность, подобная движению",
+      "blocks": {
+        "heading": 7,
+        "paragraph": 12,
+        "list_item": 5,
+        "figure": 0
+      },
+      "total_blocks": 24,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1549,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0049.b024",
+          "char_count": 1549
+        }
+      ]
+    },
+    {
+      "page_id": "p0050",
+      "title": "2. Повысьте Ярость и проверьте Приоритетную Цель",
+      "blocks": {
+        "heading": 5,
+        "paragraph": 6,
+        "list_item": 0,
+        "figure": 3
+      },
+      "total_blocks": 14,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1835,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0050.b005",
+          "char_count": 1628
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0050.b007",
+          "char_count": 1835
+        }
+      ]
+    },
+    {
+      "page_id": "p0051",
+      "title": "6. Бросок Силы",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 4,
+        "list_item": 0,
+        "figure": 9
+      },
+      "total_blocks": 16,
+      "is_russian": true,
+      "figure_count": 9,
+      "icon_count": 12,
+      "icon_types": [
+        "sym.crown_laurel_a",
+        "sym.crown_laurel_b",
+        "sym.marker_dark"
+      ],
+      "stat_icons": [
+        "sym.marker_dark"
+      ],
+      "decorative_icons": [
+        "sym.crown_laurel_a",
+        "sym.crown_laurel_b"
+      ],
+      "max_paragraph_length": 1451,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0051.b001",
+          "char_count": 1068
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0051.b005",
+          "char_count": 1451
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.crown_laurel_a, sym.crown_laurel_b",
+          "icons": [
+            "sym.crown_laurel_a",
+            "sym.crown_laurel_b"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0052",
+      "title": "6.2 Бросок кубиков",
+      "blocks": {
+        "heading": 7,
+        "paragraph": 7,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 15,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1756,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0052.b008",
+          "char_count": 1018
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0052.b010",
+          "char_count": 1756
+        }
+      ]
+    },
+    {
+      "page_id": "p0053",
+      "title": "Стек Ран",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 9,
+        "list_item": 4,
+        "figure": 3
+      },
+      "total_blocks": 20,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1088,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0053.b017",
+          "char_count": 1088
+        }
+      ]
+    },
+    {
+      "page_id": "p0054",
+      "title": "Раненая карта: колода БП, колода ИИ",
+      "blocks": {
+        "heading": 1,
+        "paragraph": 5,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 6,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 812,
+      "issues": []
+    },
+    {
+      "page_id": "p0055",
+      "title": "Эскалации вне Ран",
+      "blocks": {
+        "heading": 11,
+        "paragraph": 10,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 23,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 1,
+      "icon_types": [
+        "sym.art_texture_light_b"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.art_texture_light_b"
+      ],
+      "max_paragraph_length": 889,
+      "issues": [
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.art_texture_light_b",
+          "icons": [
+            "sym.art_texture_light_b"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0056",
+      "title": "Способности Арго",
+      "blocks": {
+        "heading": 8,
+        "paragraph": 10,
+        "list_item": 0,
+        "figure": 3
+      },
+      "total_blocks": 21,
+      "is_russian": true,
+      "figure_count": 3,
+      "icon_count": 9,
+      "icon_types": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c",
+        "sym.board_tile_g",
+        "sym.board_tile_n"
+      ],
+      "max_paragraph_length": 1329,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0056.b014",
+          "char_count": 1329
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c, sym.board_tile_g, sym.board_tile_n",
+          "icons": [
+            "sym.board_tile_c",
+            "sym.board_tile_g",
+            "sym.board_tile_n"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0057",
+      "title": "Потери",
+      "blocks": {
+        "heading": 10,
+        "paragraph": 18,
+        "list_item": 10,
+        "figure": 1
+      },
+      "total_blocks": 39,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 845,
+      "issues": []
+    },
+    {
+      "page_id": "p0058",
+      "title": "Бонусные Атаки во время Атак Титанов (Последующие)",
+      "blocks": {
+        "heading": 9,
+        "paragraph": 12,
+        "list_item": 0,
+        "figure": 4
+      },
+      "total_blocks": 25,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1031,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0058.b015",
+          "char_count": 1031
+        }
+      ]
+    },
+    {
+      "page_id": "p0059",
+      "title": "Карты Кратоса",
+      "blocks": {
+        "heading": 9,
+        "paragraph": 9,
+        "list_item": 0,
+        "figure": 4
+      },
+      "total_blocks": 22,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 1,
+      "icon_types": [
+        "sym.board_tile_c"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.board_tile_c"
+      ],
+      "max_paragraph_length": 1001,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0059.b016",
+          "char_count": 1001
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.board_tile_c",
+          "icons": [
+            "sym.board_tile_c"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0060",
+      "title": "Выгодные Позиции",
+      "blocks": {
+        "heading": 7,
+        "paragraph": 13,
+        "list_item": 3,
+        "figure": 7
+      },
+      "total_blocks": 30,
+      "is_russian": true,
+      "figure_count": 7,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 595,
+      "issues": []
+    },
+    {
+      "page_id": "p0061",
+      "title": "Как Пробудиться",
+      "blocks": {
+        "heading": 9,
+        "paragraph": 20,
+        "list_item": 12,
+        "figure": 1
+      },
+      "total_blocks": 42,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1112,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0061.b035",
+          "char_count": 1112
+        }
+      ]
+    },
+    {
+      "page_id": "p0062",
+      "title": "Постоянные Способности",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 4,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 8,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 2,
+      "icon_types": [
+        "sym.die_red"
+      ],
+      "stat_icons": [
+        "sym.die_red"
+      ],
+      "decorative_icons": [],
+      "max_paragraph_length": 3268,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0062.b003",
+          "char_count": 2171
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0062.b005",
+          "char_count": 3268
+        }
+      ]
+    },
+    {
+      "page_id": "p0063",
+      "title": "Ограниченные способности и эффекты",
+      "blocks": {
+        "heading": 9,
+        "paragraph": 10,
+        "list_item": 0,
+        "figure": 4
+      },
+      "total_blocks": 23,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 1,
+      "icon_types": [
+        "sym.art_texture_light_a"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.art_texture_light_a"
+      ],
+      "max_paragraph_length": 1352,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0063.b009",
+          "char_count": 1352
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0063.b017",
+          "char_count": 1081
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.art_texture_light_a",
+          "icons": [
+            "sym.art_texture_light_a"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0064",
+      "title": "Ключевые слова",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 11,
+        "list_item": 8,
+        "figure": 0
+      },
+      "total_blocks": 22,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 4378,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0064.b006",
+          "char_count": 4378
+        }
+      ]
+    },
+    {
+      "page_id": "p0065",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 9
+      },
+      "total_blocks": 10,
+      "is_russian": true,
+      "figure_count": 9,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 2712,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0065.b001",
+          "char_count": 2712
+        }
+      ]
+    },
+    {
+      "page_id": "p0066",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 18,
+        "list_item": 14,
+        "figure": 1
+      },
+      "total_blocks": 33,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 578,
+      "issues": [
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0066.b008",
+            "p0066.b021"
+          ],
+          "text_preview": "любых тайлов Ландшафта, через которые она перемеща"
+        },
+        {
+          "type": "duplicate_text",
+          "block_ids": [
+            "p0066.b010",
+            "p0066.b025"
+          ],
+          "text_preview": "Разрушаемое Препятствие (например, Колонну), удали"
+        }
+      ]
+    },
+    {
+      "page_id": "p0067",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 4,
+        "list_item": 4,
+        "figure": 11
+      },
+      "total_blocks": 19,
+      "is_russian": true,
+      "figure_count": 11,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 801,
+      "issues": []
+    },
+    {
+      "page_id": "p0068",
+      "title": "Ландшафт",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 10,
+        "list_item": 7,
+        "figure": 4
+      },
+      "total_blocks": 25,
+      "is_russian": true,
+      "figure_count": 4,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1299,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0068.b004",
+          "char_count": 1299
+        }
+      ]
+    },
+    {
+      "page_id": "p0069",
+      "title": "Размещение ландшафта на Титане",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 9,
+        "list_item": 6,
+        "figure": 1
+      },
+      "total_blocks": 20,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1618,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0069.b017",
+          "char_count": 1618
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0069.b019",
+          "char_count": 1207
+        }
+      ]
+    },
+    {
+      "page_id": "p0070",
+      "title": "Театр Мнесис",
+      "blocks": {
+        "heading": 8,
+        "paragraph": 8,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 16,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1819,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0070.b004",
+          "char_count": 1819
+        }
+      ]
+    },
+    {
+      "page_id": "p0071",
+      "title": "Настройка Битвы Мнестис",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 18,
+        "list_item": 13,
+        "figure": 0
+      },
+      "total_blocks": 34,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1529,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0071.b001",
+          "char_count": 1529
+        },
+        {
+          "type": "long_paragraph",
+          "block_id": "p0071.b003",
+          "char_count": 1078
+        }
+      ]
+    },
+    {
+      "page_id": "p0072",
+      "title": "Материалы Вознесения Цикла",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 15,
+        "list_item": 25,
+        "figure": 0
+      },
+      "total_blocks": 44,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 5,
+      "icon_types": [
+        "sym.art_texture_light_a",
+        "sym.art_texture_light_b"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.art_texture_light_a",
+        "sym.art_texture_light_b"
+      ],
+      "max_paragraph_length": 3020,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0072.b004",
+          "char_count": 3020
+        },
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.art_texture_light_a, sym.art_texture_light_b",
+          "icons": [
+            "sym.art_texture_light_a",
+            "sym.art_texture_light_b"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0073",
+      "title": "Первозданные Ядра",
+      "blocks": {
+        "heading": 6,
+        "paragraph": 6,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 13,
+      "is_russian": true,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1378,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0073.b010",
+          "char_count": 1378
+        }
+      ]
+    },
+    {
+      "page_id": "p0074",
+      "title": "Гекатон уровень 8+:",
+      "blocks": {
+        "heading": 3,
+        "paragraph": 3,
+        "list_item": 0,
+        "figure": 2
+      },
+      "total_blocks": 8,
+      "is_russian": true,
+      "figure_count": 2,
+      "icon_count": 13,
+      "icon_types": [
+        "sym.art_ruins_dark",
+        "sym.art_ruins_ref",
+        "sym.board_tile_c",
+        "sym.board_tile_e",
+        "sym.board_tile_f",
+        "sym.board_tile_g",
+        "sym.board_tile_h",
+        "sym.board_tile_n",
+        "sym.terrain_city_a",
+        "sym.terrain_cliff",
+        "sym.terrain_glacier"
+      ],
+      "stat_icons": [],
+      "decorative_icons": [
+        "sym.art_ruins_dark",
+        "sym.art_ruins_ref",
+        "sym.board_tile_c",
+        "sym.board_tile_e",
+        "sym.board_tile_f",
+        "sym.board_tile_g",
+        "sym.board_tile_h",
+        "sym.board_tile_n",
+        "sym.terrain_city_a",
+        "sym.terrain_cliff",
+        "sym.terrain_glacier"
+      ],
+      "max_paragraph_length": 180,
+      "issues": [
+        {
+          "type": "decorative_icons",
+          "detail": "Decorative/layout icons present: sym.art_ruins_dark, sym.art_ruins_ref, sym.board_tile_c, sym.board_tile_e, sym.board_tile_f, sym.board_tile_g, sym.board_tile_h, sym.board_tile_n, sym.terrain_city_a, sym.terrain_cliff, sym.terrain_glacier",
+          "icons": [
+            "sym.art_ruins_dark",
+            "sym.art_ruins_ref",
+            "sym.board_tile_c",
+            "sym.board_tile_e",
+            "sym.board_tile_f",
+            "sym.board_tile_g",
+            "sym.board_tile_h",
+            "sym.board_tile_n",
+            "sym.terrain_city_a",
+            "sym.terrain_cliff",
+            "sym.terrain_glacier"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0075",
+      "title": "Древо Знаний",
+      "blocks": {
+        "heading": 1,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 75
+      },
+      "total_blocks": 77,
+      "is_russian": true,
+      "figure_count": 75,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 887,
+      "issues": [
+        {
+          "type": "glued_text",
+          "block_id": "p0075.b002",
+          "detail": "7 instances of glued text (lowercase immediately followed by uppercase)",
+          "examples": [
+            "аГ",
+            "аГ",
+            "аБ",
+            "аГ",
+            "аГ"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0076",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 80
+      },
+      "total_blocks": 81,
+      "is_russian": true,
+      "figure_count": 80,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 1206,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0076.b001",
+          "char_count": 1206
+        },
+        {
+          "type": "glued_text",
+          "block_id": "p0076.b001",
+          "detail": "4 instances of glued text (lowercase immediately followed by uppercase)",
+          "examples": [
+            "аС",
+            "аГ",
+            "оЧ",
+            "сЛ"
+          ]
+        }
+      ]
+    },
+    {
+      "page_id": "p0077",
+      "title": "Главный Указатель",
+      "blocks": {
+        "heading": 1,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 2,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 4554,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0077.b002",
+          "char_count": 4554
+        },
+        {
+          "type": "few_blocks",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "page_id": "p0078",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 1,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 4825,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0078.b001",
+          "char_count": 4825
+        },
+        {
+          "type": "few_blocks",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "page_id": "p0079",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 1,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 4750,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0079.b001",
+          "char_count": 4750
+        },
+        {
+          "type": "few_blocks",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "page_id": "p0080",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 1,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 1,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 4514,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0080.b001",
+          "char_count": 4514
+        },
+        {
+          "type": "few_blocks",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "page_id": "p0081",
+      "title": "Краткие сводки последних страниц",
+      "blocks": {
+        "heading": 1,
+        "paragraph": 2,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 3,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 5453,
+      "issues": [
+        {
+          "type": "long_paragraph",
+          "block_id": "p0081.b003",
+          "char_count": 5453
+        }
+      ]
+    },
+    {
+      "page_id": "p0082",
+      "title": "Самые популярные",
+      "blocks": {
+        "heading": 4,
+        "paragraph": 18,
+        "list_item": 0,
+        "figure": 0
+      },
+      "total_blocks": 22,
+      "is_russian": true,
+      "figure_count": 0,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 48,
+      "issues": []
+    },
+    {
+      "page_id": "p0083",
+      "title": "",
+      "blocks": {
+        "heading": 0,
+        "paragraph": 0,
+        "list_item": 0,
+        "figure": 1
+      },
+      "total_blocks": 1,
+      "is_russian": false,
+      "figure_count": 1,
+      "icon_count": 0,
+      "icon_types": [],
+      "stat_icons": [],
+      "decorative_icons": [],
+      "max_paragraph_length": 0,
+      "issues": [
+        {
+          "type": "few_blocks",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
