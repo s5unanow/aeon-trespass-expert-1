@@ -1,0 +1,137 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0082",
+    "title": "The Most Popular",
+    "section_path": [],
+    "source_page_number": 82
+  },
+  "nav": {
+    "prev": "p0081",
+    "next": "p0083",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0082.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Most Popular",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0082.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "in-game Symbols",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0082.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "DangerAttack dieRed diePotentialFateCrit dieBlack diePowerRage‘10’ Armor dieYou will find out in due time...Break  tokenATProgressCrewOpening tokenWindow of OpportunityDoomHullExhaustPriority TargetCityArgo FateReaction",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unavoidable KnockbackTitanArgo  KnowledgeGearTo hitAdventureSummon ChargeOne  handedSpeedR&R  AdventureTwo  handedWoundsRestrictedThree  handedEscalationEnd stackArmorBlindspotDraw  anotherSupport",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.titan_helmet",
+          "alt": "Titan_helmet"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0082.b004",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "R",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0082.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "RearAdversary ActivationCombat  Action",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0082.b006",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "W",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0082.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "WeakspotTimeline  BattleMovement ActionCombat  TechnologyComplicated ActionStructural Technology",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.marker_dark",
+    "concept.titan_helmet"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0082",
+    "block_refs": [
+      "p0082.b001",
+      "p0082.b002",
+      "p0082.b003",
+      "p0082.b004",
+      "p0082.b005",
+      "p0082.b006",
+      "p0082.b007"
+    ]
+  },
+  "build_meta": null
+}

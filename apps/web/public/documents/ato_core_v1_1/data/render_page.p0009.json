@@ -1,0 +1,338 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0009",
+    "title": "Dice",
+    "section_path": [],
+    "source_page_number": 9
+  },
+  "nav": {
+    "prev": "p0008",
+    "next": "p0010",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0009.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Dice",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey uses two types of dice:Custom d10 dice with numbers and the symbol, used for Attack Rolls, Evasion Rolls, Tests and other miscellaneous Rolls. Treat the  result as a ‘10’. A natural (i.e. before applying any modifiers)  ‘10’ on a d10 is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "always",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "success",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (or a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "in case of an Attack Roll) whereas a natural ‘1’ on a d10 is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "always",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a fail (or a miss in case of an Attack Roll). These dice are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " limited. If you would ever be required to roll more d10 dice than provided in the game box, substitute them with regular d10 dice or re-roll the dice as many times as necessary, noting the previous results.Custom d6 dice with  and results used for Power Rolls and Armor Rolls. These come in three different colors (see Power Dice Tiers, p. 50) and they are limited by the number of dice provided in the game box (see Power Dice Limit, p. 50). Each Pow-er die has a different spread of symbols: Power , potentials and . Don’t worry about the , you will learn about them one day…",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0009.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Dice Re-rolls",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many effects will allow you to roll some of the dice again if you are not satisfied with their result. All of these effects are referred to as re-rolls. During a single roll, each die can only be re-rolled once. You must declare all dice you wish to re-roll before you per-form any of these ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If multiple players perform their rolls at the same time (for example when the text states “Each Argonaut tests”), they must all declare whether they want to re-roll their dice before any of them performs a re-roll.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0009.b005",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fate Re-rolls",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gaining ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is the most common way of re-rolling ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "d10",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " dice. The following rules apply to Fate Re-rolls:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "(see p. 31).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "other roll not listed above.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "(see p. 31).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0009.b014",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Choosing a Random Element",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When you are asked to choose a random element, perform the fol-lowing:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "roll designates the randomly chosen Argonaut.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "deck. The arrow in the bottom left corner designates the ran-domly chosen direction. If it shows , you may instead choose a direction. Place the drawn card at the bottom of the deck.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "deck. If the designated cards do not form a deck, shuffle them together and draw one.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "cated elements. The lowest roll designates the randomly cho-sen element.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0009.b024",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Secret Decks",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0009.b025",
+      "children": [
+        {
+          "kind": "text",
+          "text": "There are several Secret Decks in the game! A Se-cret Deck is separated with ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "two",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Divider cards, one in the front and one in the back. When you are instructed to draw from a Secret Deck, always start looking from the front Divider, by revealing the bottoms of the cards (these have the ID numbers, see diagram).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Potential symbolPower symbol??? symbol",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0009",
+    "block_refs": [
+      "p0009.b001",
+      "p0009.b002",
+      "p0009.b003",
+      "p0009.b004",
+      "p0009.b005",
+      "p0009.b006",
+      "p0009.b007",
+      "p0009.b008",
+      "p0009.b009",
+      "p0009.b010",
+      "p0009.b011",
+      "p0009.b012",
+      "p0009.b013",
+      "p0009.b014",
+      "p0009.b015",
+      "p0009.b016",
+      "p0009.b017",
+      "p0009.b018",
+      "p0009.b019",
+      "p0009.b020",
+      "p0009.b021",
+      "p0009.b022",
+      "p0009.b023",
+      "p0009.b024",
+      "p0009.b025"
+    ]
+  },
+  "build_meta": null
+}

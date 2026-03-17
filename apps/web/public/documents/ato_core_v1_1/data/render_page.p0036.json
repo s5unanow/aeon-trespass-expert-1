@@ -1,0 +1,401 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0036",
+    "title": "Evolution Track",
+    "section_path": [],
+    "source_page_number": 36
+  },
+  "nav": {
+    "prev": "p0035",
+    "next": "p0037",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0036.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "throughout the whole campaign, but their Battles still change: this is reflected by their Battle Tracks. They are also much more pow-erful than Regular Primordials, and your first few encounters may be rough!Most Battles will tell you to either mark one Evolution box or one Battle box on the respective Primordial’s track.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b002",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Evolution Track",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0036.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Timeline BattlesHekaton0IIIIIIIIIIIIIVIVIVLabyrinthaurosIIIIIIIVIV",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b004",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Boss Primordial  Adversary",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Higher Level Primordials",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0036.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "You may have noticed that the Primordial Sheets have Levels above 4 (for Regular Primordials) and 1 (for Adversaries and Bosses). These may be used in special, difficult encounters, but will be pri-marily encountered in the Mnestis Theatre (see p. 69).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4. Additional Setup",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0036.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battling each Primordial is different and battling each Primordial Level is different as well. Thus, each scenario will introduce its own ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "specific rules and setup instructions",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that you need to follow. Sim-ilarly, every Primordial has ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Traits",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".You will find some Traits on the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Sheet",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " itself, while oth-ers will be represented by Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trait cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Each Primordial Level specifies which Traits to use. Most of the Traits are additive, meaning that as the Level rises, they accumulate. Some rare Traits (like the Pursuer’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tease",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ") may be removed permanently when cer-tain conditions are met.In this step you should also resolve any additional ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Escala-tions",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see Escalations Outside of Battle, p. 54)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b010",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle Sequence",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0036.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battles in ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are resolved in a series of al-ternating Primordial and Titan Rounds. They immediately end with the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argonauts’ Victory",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as soon as the Primordial is slain: once it has suffered Wounds equal to its ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wounds",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "value. The Battle im-mediately ends with the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argonauts’ Defeat",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as soon as all Titans die or the Argonauts decide to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Retreat",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see Retreat, p. 57).Unless an effect explicitly states otherwise, all Battles ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "begin with the Primordial Round",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". During the Primordial Round, you draw and resolve the top AI card and in the Titan Round each Titan takes their turn and performs their actions.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b012",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0036.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordials are governed by a set of attributes, Traits and two dis-tinct decks: the AI deck and the BP deck. They are not controlled by a specific player. Instead, players as a group will resolve instructions denoted on AI and BP cards that will dictate its behavior. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Sheet",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0036.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Primordial is represented by a large Primordial Sheet that in-cludes all the basic information about a given Primordial. Besides the Primordial name, its illustration and spaces for the Signature and Routine cards (see p. 36), it shows the Primordial diagram ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "l",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", its basic Traits ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", as well as Level-specific attributes and Traits ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0036.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Diagram",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0036.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Primordial diagram shows the number of spaces the Primor-dial occupies on the Battle Board (usually four or nine), as well as its ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "front",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "R spaces. Usually, you use the front for establishing targeting of a Primordial Attack, while the Rear spaces don’t have general rules; however, other rules may re-fer to the positioning of Titans in regards to the rear.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "312",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0036",
+    "block_refs": [
+      "p0036.b001",
+      "p0036.b002",
+      "p0036.b003",
+      "p0036.b004",
+      "p0036.b006",
+      "p0036.b007",
+      "p0036.b008",
+      "p0036.b009",
+      "p0036.b010",
+      "p0036.b011",
+      "p0036.b012",
+      "p0036.b013",
+      "p0036.b014",
+      "p0036.b015",
+      "p0036.b016",
+      "p0036.b017"
+    ]
+  },
+  "build_meta": null
+}

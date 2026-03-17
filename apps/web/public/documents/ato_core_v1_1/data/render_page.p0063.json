@@ -1,0 +1,530 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0063",
+    "title": "Gated Abilities and Effects",
+    "section_path": [],
+    "source_page_number": 63
+  },
+  "nav": {
+    "prev": "p0062",
+    "next": "p0064",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0063.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Gamechanger has a Titan ability named ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advanced Reflex",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", as well as a Iapetus Lifeguard  card with a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reflex",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abil-ity. Even though one of them has a subtype (Advanced), while the other doesn’t, they are still named the same and as such they cannot both be used in the same . The Gamechanger has to choose which one to use. If, however, there is another  in the same Round, the player controlling the Titan may choose to use the other ability.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gated Abilities and Effects",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many abilities and effects of  cards, as well as Mnemos cards, Titan Sheets and other game elements, unlock when some other requirement is met, usually having an appropriately high level of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". For details see p. 46. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Abilities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Restrictions pertaining to ability usage do not apply to Primordials. Resolve Primordial abilities each time you are instructed to do so by an AI or BP card, Trait or any other game element. All abilities on BP and AI cards are resolved ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "by",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "against",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a Ti-tan—the Target (in case of an Attack) or the Attacker (in case of a Response)—unless explicitly stated otherwise.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Exhausting, Discarding and Removing",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many effects will instruct you to exhaust, discard, or remove an element. Generally ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exhausting",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a temporary effect, whereas ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "dis-carding",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is more permanent. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Removing",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (or archiving) a game ele-ment from the game means returning it back to the game box. It will not be used again, unless explicitly stated otherwise.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Exhausting",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When instructed to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exhaust",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a card, you should turn it 90 degrees to the right to denote it. It is still treated as equipped on your Ti-tan or Argonaut but you cannot use it as an active weapon, use its defensive statistics nor activate any of its abilities except effects triggered by exhaustion (e.g. “if exhausted”) or effects resulting in it unexhausting (e.g. “When you are knocked down, unexhaust this card”). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Passive abilities (such as Ranged 2-4 or +1 Precision) are ongoing, therefore they remain in effect even if a card they are printed on is exhausted. Similarly,  traits are always active.Cards remain exhausted until they are unexhausted by another effect (see below).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exhaust example",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Some game elements other than cards may instruct you to exhaust them. In that case, you only exhaust that specific game element.For example, if ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exhaust",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "is a cost of a Titan ability described on a Titan Sheet, you should exhaust ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only this ability",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Place a generic token on this ability as a reminder that it is exhausted, but that it does not invalidate any other Titan abilities or the Kratos Table.All game elements remain exhausted until they are unexhausted by another effect (see below).",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_texture_light_a",
+          "alt": "Art_texture_light_a"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unexhausting",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Argonaut may spend their ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "movement action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " combat action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "unexhaust all exhausted equipped game elements ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "( cards, Mnemos cards, Titan abilities and so on). Some other game effects may also allow you to unexhaust some or all of your game elements.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Exhaustable Gear",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some game effects refer to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exhaustable",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Gear. This category in-cludes all  cards with the Cumbersome keyword or with active abilities that include  as their cost.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Discarding",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When a game instructs you to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "discard",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a token, place it back in the token pool.When instructed to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "discard",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a  or Mnemos card, flip it facedown. It is unusable until the end of this Battle and it is not treated as equipped by your Titan or Argonaut. It is not, however, perma-nently removed from the game – it remains in the Argo Armory (in case of  cards) or assigned to your Argonauts (in case of Mnemos cards) and can be used in future Battles.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Removing Elements (archiving)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When instructed to permanently remove an element from the game, place it back in the game box. It will likely not be used in your current playthrough, unless a future effect explicitly refers to this element. Permanently removing an element may sometimes be referred to as ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Archiving",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a game element.Sometimes you may be instructed to remove an element for a spe-cific duration. In such case, set it aside and keep it separate from other game elements for this duration. For example, when instruct-ed to remove an element from a Battle, it is removed from ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "this Battle only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " but will be used in consequent Battles against the same Primordial.Similarly, if an Exploration card is removed until the next Timeline Battle, it should be removed from the Exploration deck, then shuf-fled back into it in the next Timeline Battle’s Aftermath (as prompt-ed in the Battle Scenario). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Permanently removing an element from the game is a ex-tremely rare occurrence and will always be specifically referenced. If the effect does not explicitly state that an element should be per-manently removed from the game, it isn’t.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0063.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fatigue",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0063.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some powerful abilities and effects may require you to gain a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "movement action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "combat action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Fatigue token. As long as you have a Fatigue token, you can use the corresponding ac-tion ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only to discard this token",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". This is the only way to discard this token.You cannot gain a Fatigue token if you already have one. After you discard a Fatigue token, if you have any actions remaining, you can perform them as normal. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Movement Fatigue tokenCombat Fatigue  token",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.art_texture_light_a"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0063",
+    "block_refs": [
+      "p0063.b001",
+      "p0063.b002",
+      "p0063.b003",
+      "p0063.b004",
+      "p0063.b005",
+      "p0063.b006",
+      "p0063.b007",
+      "p0063.b008",
+      "p0063.b009",
+      "p0063.b010",
+      "p0063.b011",
+      "p0063.b012",
+      "p0063.b013",
+      "p0063.b014",
+      "p0063.b015",
+      "p0063.b016",
+      "p0063.b017",
+      "p0063.b018",
+      "p0063.b019"
+    ]
+  },
+  "build_meta": null
+}

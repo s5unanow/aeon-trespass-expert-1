@@ -1,0 +1,442 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0051",
+    "title": "6. Power Roll",
+    "section_path": [],
+    "source_page_number": 51
+  },
+  "nav": {
+    "prev": "p0050",
+    "next": "p0052",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0051.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "23l4567",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "BP cards include the following information:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "lPrimordial Symbol:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Shows the Primordial the BP card belongs to.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2Name:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Name of the Primordial body part you are attacking.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Card Level: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The level of the BP card. The higher the level, the more vital the body part and the higher the AT and the conse-quences of the Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Resources:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The resources you will gain after the Bat-tle, if the BP card is in the Wound Stack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AT:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Aeon Trespass field, the Primordial’s supernatural resist-ance to harm. The higher the AT, the more Power  is required to wound it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Responses:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Primordial will usually react to your Attack, de-pending on whether you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wound",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " it, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fail",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to wound or regardless of your wound attempt, on ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Instinct",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Critical:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you manage to deal a Critical Wound, you will deal a powerful blow to the Primordial. Read the flavor text and enjoy your spoils! You ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "do not ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "resolve any other Responses if you criti-cally wound the BP card. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " A Crit Chance by itself is not a Critical! If you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "fail ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "to wound the Primordial, it’s just a fail!",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_a",
+          "alt": "Crown_laurel_a"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_a",
+          "alt": "Crown_laurel_a"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_b",
+          "alt": "Crown_laurel_b"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_b",
+          "alt": "Crown_laurel_b"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0051.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6. Power Roll",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0051.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Hitting the Primordial is only the beginning. These beings are made of otherworldly flesh and surrounded by a strange field we call the Aeon Trespass field (AT field). No mortal weapon can penetrate the AT field. Only the tenacity and supernatural power of a Titan can break through and deal a Wound!To do that, your Total Power must be equal to or higher than the current BP card’s AT value. To perform the Power Roll, follow these steps:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.1\t ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Create the Power Pool",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.2\t ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Roll the Dice",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.3\t ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.4\t ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Use ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Potentials 6.5\t ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve the Power Roll ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0051.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6.1 Creating the Power Pool",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0051.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "First, gather your Power Pool. The pool is comprised of Power dice of various colors (red, black and white) and, sometimes, of raw ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " . The higher the number of dice in the pool, the better your chances of wounding a Primordial.Each successful hit grants you as many Power dice as your active weapon’s Weapon Power attribute. In other words, the more hits you score on your Attack dice, the more powerful your Attack is going to be. Some weapons also have the Bonus Power attribute, which is added to the pool if you score at least one hit.Then, add your Titan’s Power die and any other bonuses from your Kratos Table, equipped non-weapon Gear, Mnemos cards and oth-er applicable game effects.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Herodotus attacks with a Maze Rake. He hits with both of his Attack dice, so he adds two dice to the Power Pool from the Maze Rake’s Weapon Power attribute. Maze Rake also has a Bonus Power attribute that grants him an additional single red die (note that Bonus Power is not multiplied by the number of hits!). By performing this Attack, Hero-dotus raised his  up to 5 so he gains another red die from the Kratos Table. Finally, he adds his Titan’s Power die, resulting in an impressive Power Pool of 5 red dice!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "In Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", there are three tiers of Power dice. If an effect instructs you to use a dice of a higher tier, use the following chart to make the upgrade:",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_a",
+          "alt": "Crown_laurel_a"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_a",
+          "alt": "Crown_laurel_a"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_b",
+          "alt": "Crown_laurel_b"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crown_laurel_b",
+          "alt": "Crown_laurel_b"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0051.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Power Dice Limit",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0051.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some powerful weapons combined with additional bonuses may allow you to generate a Power Pool surpassing the number of dice provided in the game box. If you are required to add a die to the Power Pool and there are no dice of that type available, instead roll a die one tier higher instead of two of these dice (i.e. if you were required to roll 7 red Power dice, instead roll 5 red dice and 1 black die).",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.marker_dark",
+    "concept.crown_laurel_a",
+    "concept.crown_laurel_b"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0051",
+    "block_refs": [
+      "p0051.b001",
+      "p0051.b002",
+      "p0051.b003",
+      "p0051.b004",
+      "p0051.b005",
+      "p0051.b006",
+      "p0051.b007"
+    ]
+  },
+  "build_meta": null
+}

@@ -1,0 +1,472 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0071",
+    "title": "Mnestis Battle Setup",
+    "section_path": [],
+    "source_page_number": 71
+  },
+  "nav": {
+    "prev": "p0070",
+    "next": "p0072",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0071.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "of your campaign with the exception of game elements marked with the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " “Mnestis Prohibited”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tag (see Mnestis Loadouts). Of course, you also have access to everything you’ve unlocked so far through the Tree of Knowledge.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\tNo consequences (nearly!):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Nothing that happens in the Mnes-tis Theatre carries over to your current campaign unless specif-ically stated otherwise.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\tNo holds barred:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Note that the Mnestis Theatre is designed to be a ruthless experience. Death is rampant here. Use the Mnes-tis Sheet to track your dead Titans!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5.\tMnestis only rewards:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Rewards from Mnestis Battles can only be used in Mnestis Battles. They are so powerful that they bor-der on broken... in the real world. In the Mnestis Theatre, they will be your lifeline instead!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.\tUnlimited Battles:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " There is no limit on the number of Mnestis Battles you can do back-to-back. In other words, if you so de-sire, you can pause your campaign and then go through all the available Battles in the Tree of Knowledge. However, you are limited by Primordial and Battle accessibility! For example, you cannot battle Cycle II Primordials until you actually complete Cycle II! Also, there is little point in grinding Mnestis Battles, so if you hit a wall, you’re better off continuing your campaign!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7.\tAwakenings:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Awakenings in the Mnestis Theatre are allowed and are not limited by your campaign progress. In other words, you can freely use all Godforms unlocked so far, even if you have used them up at your current point in the campaign.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0071.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Battle Setup",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Battle Setup is performed according to the normal rules, with the following exceptions. To begin a Mnestis Theatre Battle, resolve the following steps:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Choose a Battle:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Choose the Scenario you wish to play. You can either play a Scenario through the Tree of Knowledge in an attempt to earn unique rewards or replay a previously played Battle Sce-nario, for the fun and training of it!In the case of the Tree of Knowledge, you can only choose Battles that are",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " not marked ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(you haven’t won them yet), but that you have ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "unlocked",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (all the preceding Battles leading into them are marked and you have completed that Primordial’s Cycle). Use the Mnestis Sheet to to mark the Battles won through the Tree of Knowledge.In case of replaying a previously completed Battle, choose a Pri-mordial and decide which level you want to face. You can only choose a Primordial level if you have defeated it in your campaign or in the Mnestis Theatre.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Note that these Battles do not grant you any rewards.Perform Battle Setup:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Perform all normal preparations with the following exceptions:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ered to be in the Cycle that the Primordial you are battling with originates from. All global rules that govern this Cycle are ap-plicable! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "tute or remove cards specific to this Cycle).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos cards (see Mnestis Loadouts) to each of them, one on Level 2 (with 7 nodes), and one on Level 1 (with 3 nodes). Al-ternatively, play with any deceased or retired Argonaut (just don’t tamper with their sheets!).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "the Argonauts. Then, choose any unlocked  cards to equip (see Mnestis Loadouts). Note that any ascendancy rules",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " do not apply",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in the Mnestis Theatre. You can use unlocked  from any Cycle with no additional penalties.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "normal, and choose the indicated number of Argo Abilities to use. Apply the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Quantum Propylon ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Technology if you have it, regardless of the Cycle you’re in.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Tracks. Ignore any special Victory Conditions. You can only win by slaying the Primordial. This is just a simulation.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "tis Routine in its Attack Type).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0071.b018",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Loadouts",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In the Mnestis Theatre, you have access to all Titans,  cards, Argo Abilities and Mnemos cards that you unlocked during the course of your campaign:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "possess a Breeding Technology that would allow you to breed them.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "you possess the Production Technology that would allow you to craft them (you do not need to possess the necessary re-sources but you need to possess all unique elements required to craft them, such as other  cards).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b025",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Vault, assigned to your Argonauts or if you have already re-solved them.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b027",
+      "children": [
+        {
+          "kind": "text",
+          "text": "logies deck.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b029",
+      "children": [
+        {
+          "kind": "text",
+          "text": "deck or they are equipped on any of your Titans.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b031",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Exception: You can never use game elements with the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "“Mnestis Prohibited”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tag in Mnestis Theatre.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember! This is just a simulation, smoke and mirrors, an elaborate play.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Nothing that happens in the Mnestis Theatre carries over to your campaign unless explicitly stated other-wise. You do not lose Titans, gain Mnemos nodes or  or suf-fer any other negative consequences of your Battles. Similar-ly, most positive effects and rewards are available only in the Mnestis Theatre. The most notable exceptions are",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ascending Materials",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Guaranteed Loot",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and the mysterious ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Skyseer Titan",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (if you have the Skyseer Expansion)…",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0071.b032",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Rewards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0071.b033",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Mnestis Theatre may be an elaborate case of smoke and mir-rors, but it’s much more than what you put in. Sometimes, it offers you something unique, extraordinary, not solely based on your previous experiences. These are Mnestis rewards. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The use of Mnestis rewards is limited to the Mnestis Theatre, unless specifically stated otherwise.Whenever you win a Mnestis Battle through the Tree of Knowl-edge, you mark it and gain its rewards. This means you only get the rewards of a given Battle ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "once",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (even across multiple campaign playthroughs!). Each of these Battles always gives you ascending materials, but some may also grant you unique rewards.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0071",
+    "block_refs": [
+      "p0071.b001",
+      "p0071.b002",
+      "p0071.b003",
+      "p0071.b004",
+      "p0071.b005",
+      "p0071.b006",
+      "p0071.b007",
+      "p0071.b008",
+      "p0071.b009",
+      "p0071.b010",
+      "p0071.b011",
+      "p0071.b012",
+      "p0071.b013",
+      "p0071.b014",
+      "p0071.b015",
+      "p0071.b016",
+      "p0071.b017",
+      "p0071.b018",
+      "p0071.b019",
+      "p0071.b020",
+      "p0071.b021",
+      "p0071.b022",
+      "p0071.b023",
+      "p0071.b024",
+      "p0071.b025",
+      "p0071.b026",
+      "p0071.b027",
+      "p0071.b028",
+      "p0071.b029",
+      "p0071.b030",
+      "p0071.b031",
+      "p0071.b032",
+      "p0071.b033"
+    ]
+  },
+  "build_meta": null
+}

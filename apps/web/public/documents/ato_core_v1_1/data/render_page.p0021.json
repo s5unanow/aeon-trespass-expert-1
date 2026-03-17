@@ -1,0 +1,402 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0021",
+    "title": "Titan crafting using Primordial Cores (fusing)",
+    "section_path": [],
+    "source_page_number": 21
+  },
+  "nav": {
+    "prev": "p0020",
+    "next": "p0022",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0021.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ment Step, you resolve it and gain a new Titan.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Important: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "A given Technology card may be involved in only one breeding process at a time. This means once you put a Titan class on the Timeline, you will be able to breed more Titans from that Technology card ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only after",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that Breeding Advancement Event is resolved. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0021.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan crafting using Primordial Cores (fusing)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0021.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Breeding a new Titan requires advanced technology, time and ex-perimentation. However, there is a quicker way to gain access to new Argo-bred Titans: by fusing a Primordial’s core with a malle-able Titan. Crafting Titans using Primordial Cores is called ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fusing",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".Some ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Production Facilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " allow you to craft Titans alongside cards. Fusing a Titan in such a way requires two things: 1 Gaia-born Titan (Dreamwalker) and 1 specific Primordial Core. If you have these, you simply pay this cost and immediately gain access to the new Titan!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Crafting Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some Titans on Production Facilities are Prototypes. Those Titans can only be crafted during the Cycle that Technology originates from. ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0021.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Named Titans",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0021.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titans are more animal than mortal. One could even argue that they are more war machines than animals—and so are treated as such. Nameless, expendable, unmourned. And easily replaceable. However, from time to time, a Titan will stand out. Maybe it’s big-ger, nimbler or has a natural aptitude for some things. Or maybe it was involved in a particularly heroic deed and became memorable.These types of Titans get ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "names",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". There is nothing stopping you from naming all your Titans, however",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Named Titans",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " usually have some special quality to them. The most common one is that they have a Pattern.Some effects may also require you to note a Titan’s name some-where (like the Timeline). In such case, if the Titan is not named, you must immediately name it to resolve this effect.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0021.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan Patterns",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0021.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Patterns are a catchall category for all things that further modify the Titans, be it special training, special conditioning or some unu-sual trait. Whenever a Titan is assigned a Pattern, they should get a name.Patterns will override the Titan’s basic Trauma Table or Kratos Ta-ble and sometimes introduce new special rules or abilities. A Titan can have more than one Pattern, but if both Patterns relate to the same game element, the newer one will override the older (and that card will be discarded).At the start of Cycle I, Patterns are unique, one-of-a-kind things: a Titan is assigned a Pattern through a story event and it becomes its permanent feature (it cannot be removed). When a Titan with an assigned Pattern dies, that Pattern is discarded and lost forever.Maybe down the line, there will be a way to assign Patterns more freely…",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pattern card",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0021.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Advancement Timeline Events",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0021.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Note that the list of Advancement Events is open and it is not lim-ited to Technology Breakthroughs and Breeding. There are many unique Advancement Events you will gain access to throughout the campaign. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "all Events added to the Timeline using Technologies are Advancement Events and should be resolved in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advancement Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0021.b010",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "7. Story Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0021.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the Story Step, you resolve main story progression, Time-line Story Events, Mnemos Breakthroughs and any secret codes you manage to find. All adventures triggered during this Step will be resolved using the Adventure Phase rules (p. 25). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0021.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story Progression",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0021.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Don’t let the size of this section fool you. Story progression is important! Paramount, even. This is how you win the game, by following the narrative presented on the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", unraveling the mysteries of your current Cycle and thwarting the plans of the villains. And all of that happens right here, during the Story Step.Main story progression is resolved only if you fulfill all require-ments noted on your current Story card. Usually, story progression triggers when there are",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a certain number of Progress  tokensonthe current Story card. Another common requirement is being on a certain Map tile.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " In general, your current Story card will spec-ify the exact thing you need to do to trigger its story progression.When you meet the current Story card’s requirements, you will re-solve its story progression during the Story Step.Most of the time, resolving story progression involves ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "flipping the Story card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to the other side or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "referring to a paragraph",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in your current Storybook or on another game element. When you resolve the current story progression, discard all tokens collected on the current Story card (unless explicitly stated otherwise).",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0021",
+    "block_refs": [
+      "p0021.b001",
+      "p0021.b002",
+      "p0021.b003",
+      "p0021.b004",
+      "p0021.b005",
+      "p0021.b006",
+      "p0021.b007",
+      "p0021.b008",
+      "p0021.b009",
+      "p0021.b010",
+      "p0021.b011",
+      "p0021.b012",
+      "p0021.b013"
+    ]
+  },
+  "build_meta": null
+}

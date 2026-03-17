@@ -1,0 +1,498 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0038",
+    "title": "1. Draw AI",
+    "section_path": [],
+    "source_page_number": 38
+  },
+  "nav": {
+    "prev": "p0037",
+    "next": "p0039",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0038.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "1.\tDraw AI (p. 37):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Draw the top card from the AI deck.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\tTargeting (p. 37):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Decide who or what becomes the Target of the Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\tMovement (p. 38): ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve any Primordial moves.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\tAttack (p. 40):4.1. Evasion Roll (p. 41): ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Attempt to evade the Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.2. \u0007Attack Consequences (p. 42): ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve Attack effects and a Trauma Draw.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5.\tAfter Attack (p. 44):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve all After Attack effects.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0038.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1. Draw AI",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0038.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "To determine the Primordial’s behavior, draw an AI card from the top of the AI deck. Notice the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "roman numeral",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in the center of the card back. This number indicates the level of the AI card. So, al-though the AI cards are facedown, you get some sense of how dan-gerous the next Primordial Attack will be.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AI card elements include the Primordial type ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", Card Level ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", Evasion stats ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", Targeting ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", Move & Attack instructions ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", After Attack effects ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and the Attack type ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0038.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "2. Targeting",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0038.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "After you reveal the AI card, check the targeting to see who or what is being attacked. Targeting is a series of increasingly general separate instructions called ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "lines",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Each line consists of the word “Target:” followed by targeting instructions. Note that a single tar-geting line can in fact take up more space than a text line.  ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Targeting example",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "To check who is the Target of the Primordial Attack, read the lines in the “targeting” area of the AI card, one by one from top to bot-tom until you find the first one that you can resolve. Do not check further targeting lines.To become the Target, a Titan must fulfill all requirements of a sin-gle targeting line. If there is no valid Target for any of the targeting instructions, the AI card is discarded and the Primordial performs its Routine instead. Note that some Zone Attacks target spaces, not specific Titans and they are considered performed even if there are no Titans in the designated Zone (therefore they do not result in a Routine).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some targeting instructions will require you to measure dis-tance (e.g. Closest or Furthest). Distance in Aeon Trespass: Od-yssey is always measured in spaces and orthogonally (in cardinal directions), never diagonally.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0038.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Specific Targets",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0038.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some game effects will instruct you to resolve an Attack against a specific Target (e.g. “Perform Signature against the Attacker”). When it happens, this instruction overrules any targeting instruc-tions on the card itself. Note that if a Titan becomes a Target in the Targeting step, it remains the Target until the end of this AI card unless an effect specifically states otherwise.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0038.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Typical Targeting Instructions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0038.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Possible targeting instructions include:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adjacent:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Target is on a space that shares an edge with a space occupied by the Primordial.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Board: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "This targets all spaces on the Board.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Closest:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Target is the shortest distance (in spaces) from the Primordial (counted through Obstacles and red lines) among all possible Targets.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Furthest:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Target is the furthest distance (in spaces) from the Primordial (counted through Obstacles and red lines) among all possible Targets.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "In front: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Target is on any space in front (see Primordial facing p. 40) and within Line of Sight (see p. 38) of the Primordial.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "In range: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Primordial can reach the Target by moving a number of spaces up to its Speed value and perform an Attack against the Target.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "In sight: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Target is within Line of Sight (see p. 38) of the Pri-mordial.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "In/on X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Target is in the specified area or on the specified space. For example, In Blindspot, On Labyrinth, On Vantage Point.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Last to Wound:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Titan who was the last to successfully wound the Primordial with an Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Least X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Least value/amount of a specified statistic/resource. For example, Least , Least Mnemos nodes.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Most X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Most value/amount of a specified statistic/resource. For example, Most Speed, Most .",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Not in/on X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Target is not in a specified area or on a specified space. For example, Not in Rear, Not on Vantage Point.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "No Target: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Always resolve this instruction if no other targeting in-struction is applicable.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Target with the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "With X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan with a specific game element, like a  card, Condition card, statistic value. For example, With 6+ , With a Unique .",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "X Titans:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Specified number of Titans.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Zone: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "All spaces in an indicated area. This targeting line triggers even if there are no Titans within the indicated area. Some Zones have been named for narrative reasons. These are resolved like or-dinary Zone Attacks, unless instructed otherwise.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "l23456",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0038",
+    "block_refs": [
+      "p0038.b001",
+      "p0038.b002",
+      "p0038.b003",
+      "p0038.b004",
+      "p0038.b005",
+      "p0038.b006",
+      "p0038.b007",
+      "p0038.b008",
+      "p0038.b009"
+    ]
+  },
+  "build_meta": null
+}

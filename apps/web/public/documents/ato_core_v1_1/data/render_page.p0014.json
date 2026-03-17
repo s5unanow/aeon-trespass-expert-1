@@ -1,0 +1,251 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0014",
+    "title": "Voyage Phase",
+    "section_path": [],
+    "source_page_number": 14
+  },
+  "nav": {
+    "prev": "p0013",
+    "next": "p0015",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0014.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Voyage Phase",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0014.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Think of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Voyage Phase",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as an all-encompassing sea: sometimes, during your journeys, you’ll stumble on an island of the Adven-ture Phase or Battle Phase. But most of the time, you’ll be sailing through the endless expanse of the Voyage Phase.For that reason, this section includes the rules for all the Campaign Round Steps. Yes, sometimes a Step will launch you into an adven-ture or battle. But when it doesn’t, you’ll still be considered to be in the Voyage Phase.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0014.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1. Movement Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0014.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the Movement Step, you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must move the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to an adjacent Map tile. Directional arrows on your tile represent ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "waterways",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you can travel through. If the tile you’re moving to isn’t already on the table, you need to find the Map tile with",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the corre-sponding number",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on its back (visible next to the arrow) and place it adjacent to the Map tile you are traveling from, so that the di-rectional arrows on the shared border of the two tiles align. Make sure to orient the new tile in the same way as all of the other tiles. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " move the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " exactly ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "one tile",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " each Cam-paign Round, unless an effect instructs you otherwise. In other words, you cannot “drop anchor” and stay on a tile for two consec-utive rounds in a row.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0014.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Tile Sectors",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0014.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " can only travel on water. Most of the time, the position of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on the tile doesn’t matter: once you enter a tile, you’re on that tile, that’s it. However, sometimes a Map tile is divided into ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "tile sectors",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", marked withα and β symbols, representing bodies of water separated by land. If that’s the case, the position of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "on the tile ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "matters",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!If your current tile has two arrows pointing in the same cardinal direction, it means that the adjacent tile will be sectored. You must choose which one of those arrows to follow before you reveal the new Map tile.Once you place the new Map tile, aligning the arrows, you’ll end up on either the α or β sector. You can leave a sector only by follow-ing the directional arrows marked with that sectors symbol.After you move from a Map tile with the  symbol, mark this tile with the Last Visited City token. You cannot use ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Negotiation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Technology Abilities (see p. 18) on a tile with this token. Remember that you only mark the last settlement you visited: when you leave another tile with the  symbol, move the token from its previous location.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Last Visited City token ",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0014",
+    "block_refs": [
+      "p0014.b001",
+      "p0014.b002",
+      "p0014.b003",
+      "p0014.b004",
+      "p0014.b005",
+      "p0014.b006"
+    ]
+  },
+  "build_meta": null
+}

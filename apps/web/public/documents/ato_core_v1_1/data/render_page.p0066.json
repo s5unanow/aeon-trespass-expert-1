@@ -1,0 +1,320 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0066",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 66
+  },
+  "nav": {
+    "prev": "p0065",
+    "next": "p0067",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0066.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Overbreak X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the second ability window, if your Total Power exceeds  by 1 or more, place X Break tokens in the Kratos Pool (see Break X keyword).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Peril:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You must make this decision on your own. Do not consult other players.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Possession: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Once you equip this Gear  card on a Titan, you have to equip it on this Titan for every subsequent Battle. You may, however, junction this Titan with a different Argonaut. Possi-ble subtypes:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "any Titan controlled by this Argonaut in every subsequent Battle.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unique:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " There can be no more than one instance of a unique card in play or in the Argo Armory at any given time. Other game ele-ments may interact with this keyword.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Provoke: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During the first ability window, gain the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token and turn the Primordial to face you.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Re-roll X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the Power Roll step of an Attack, you may re-roll up to X Power dice. Remember, you cannot re-roll Power dice using . ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pull X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pull the target towards you X spaces. See box.Move the affected miniature X spaces towards the source of the Pull, along the shortest possible path (see examples in Primordial Movement section, p. 38).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "spaces occupied by other miniatures.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "any Terrain tiles it moves through.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Destructible Obstacle (e.g. a Column), remove the Terrain tile from the Battle Board, the Titan suffers Crash, then continue the Pull.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "an Indestructible Obstacle, it suffers Crash and continues to move along the Obstacle’s edge along the shortest possible path towards the Primordial.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "to the source, the Pull does not end. Instead, move the source directly away from the affected miniature the remaining number of spaces, then finish the Pull. The source follows the rules of voluntary movement (i.e. Pulling Primordials can move through Obstacles and other miniatures, but Pulling Ti-tans cannot).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ther the first or second ability window.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pushback X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Push the target in front of you X spaces, moving along with it. See box.Turn the source towards the affected miniature. Then, move X spaces in the direction of the affected miniature, pushing it in a straight line.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "occupied by other miniatures. If a Titan ends involuntary movement on a space with another miniature, the other min-iature is Displaced.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "any Terrain tiles it moves through.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "the source in its direction along the shortest possible path (see examples in the Primordial Movement section, p. 38).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Destructible Obstacle (e.g. a Column), remove the Terrain tile from the Battle Board, the Titan suffers ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crash",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", then continue Pushback.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b025",
+      "children": [
+        {
+          "kind": "text",
+          "text": "an Indestructible Obstacle, displace it to an adjacent space that would allow the Primordial to continue movement onto a space previously occupied by the Titan, then continue Push-back. If displacement is impossible, the Titan dies and, once the Primordial has moved into the  space formerly occupied by the targeted Titan, the Pushback stops.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b027",
+      "children": [
+        {
+          "kind": "text",
+          "text": "into the Board Edge, it is displaced to an adjacent space in a way that would allow the source of Pushback to move onto a space previously occupied by the affected miniature, then continue Pushback. If displacement is impossible, the Titan dies and the Pushback stops.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0066.b029",
+      "children": [
+        {
+          "kind": "text",
+          "text": "during either the first or second ability window of their Attack or when specifically instructed to resolve it immediately. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Titan is pushed back and reaches the Board Edge. Since the Push-back has not been fully resolved yet, it must be displaced in a way that will allow the Hekaton to continue the Pushback along the Board Edge.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0066",
+    "block_refs": [
+      "p0066.b001",
+      "p0066.b002",
+      "p0066.b003",
+      "p0066.b004",
+      "p0066.b005",
+      "p0066.b006",
+      "p0066.b007",
+      "p0066.b008",
+      "p0066.b009",
+      "p0066.b010",
+      "p0066.b011",
+      "p0066.b012",
+      "p0066.b013",
+      "p0066.b014",
+      "p0066.b015",
+      "p0066.b016",
+      "p0066.b017",
+      "p0066.b018",
+      "p0066.b019",
+      "p0066.b020",
+      "p0066.b021",
+      "p0066.b022",
+      "p0066.b023",
+      "p0066.b024",
+      "p0066.b025",
+      "p0066.b026",
+      "p0066.b027",
+      "p0066.b028",
+      "p0066.b029"
+    ]
+  },
+  "build_meta": null
+}

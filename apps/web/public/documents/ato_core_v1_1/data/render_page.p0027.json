@@ -1,0 +1,412 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0027",
+    "title": "Choice Matrix",
+    "section_path": [],
+    "source_page_number": 27
+  },
+  "nav": {
+    "prev": "p0026",
+    "next": "p0028",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0027.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ignore this instruction. On very rare occasions, a game element will tell you to “cross out” or “erase” a Choice Matrix node. In that case, erase it or encircle it, to note that the choice has been reversed.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: The Choice Matrix persists through ALL the Cycles of Aeon Trespass: Odyssey! When you progress from one Cycle to the next, carry over all marked choices to the Choice Matrix of your new Argo Sheet (or simply use the same last page).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Choice Matrix",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b005",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "A1A2A3A4A5A6A7A8A9A10A11A12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b006",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "B1B2B3B4B5B6B7B8B9B10B11B12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b007",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "C1C2C3C4C5C6C7C8C9C10C11C12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b008",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "D1D2D3D4D5D6D7D8D9D10D11D12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b009",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "E1E2E3E4E5E6E7E8E9E10E11E12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b010",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "F1F2F3F4F5F6F7F8F9F10F11F12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b011",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "G1G2G3G4G5G6G7G8G9G10G11G12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b012",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "H1H2H3H4H5H6H7H8H9H10H11H12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b013",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "I1I2I3I4I5I6I7I8I9I10I11I12",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b014",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Party Leader",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0027.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During each adventure (whether main story, hub or other), one of the Argonauts must become the party leader.Unless instructed otherwise, choose a party leader as soon as they are referred to in the paragraph (either in the story or in a mechan-ical instruction) or when you are faced with a choice (whichever comes first).Most importantly, the party leader breaks all decision ties during the adventure if the players cannot reach a compromise. They are also the most likely to be tested during the adventure, as well as to gain Triskelion statistics (,  or ), Boons, Afflictions, tokens and various other game elements. Finally, they resolve all other ef-fects and choices that refer to the party leader.Once the party leader is chosen, give them the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "token as a reminder. This player remains the party leader until the end of this adventure.Tip: You are free to choose whomever you want as the party leader. However, you should consider your choice well. They should be chosen based on their Triskelion statistics, Argonaut Skills and other attributes that you predict will be useful in a situation you are about to face. If you cannot reach an agree-ment on who should be the party leader, you should choose one randomly.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b016",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story Adventures",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0027.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story Adventure",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is the category that contains all Storybook pas-sages in the Main Story section of the book. Usually, you will be di-rected to them by Story and Doom cards, but there are some other, unique effects that may lead to Story Adventures as well. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If a game element directs you to a passage without telling you which section you can find it with, you should refer to the Main Story section.There are no specific rules concerning Story Adventures. Simply find the designated paragraph and resolve it, according to general Adventure Rules.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b018",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Hub Adventures",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0027.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Besides the main story, most of the adventures will come from your Cycle’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adventure Hubs",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". You resolve a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hub Adventure",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " each time you encounter an active ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "adventure",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " symbol.Adventure hubs are groups of adventures connected through a common theme, with fixed opening and closing adventures, that tell a coherent story. In hub adventures, you will encounter people and places relevant to the region the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is currently in. Some of these adventures will be side stories, while others may have lasting consequences and even influence the main story.To find out which adventure you should resolve, find the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adven-ture Hubs",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " table on the first page of your current Storybook. Roll a d10 and refer to the column corresponding to your current Story (Story cards 1A and 1B are Story I, Story cards 2A and 2B are Story II and so on). This will inform you which Adventure Hub you should go to as well as which Adventure Terrain you should add to the next Battle (see Adventure Terrain, p. 31).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The players have encountered an unexplored  sym-bol. During the Expedition Step, they go to the Adventure Hubs table and roll a d10, getting a result of ‘8’. They are currently on Story card 2B, so they refer to the Story II column. They find out they should resolve the Adventure Hub corresponding to the 7-8 range – Man of Purpose. Before they proceed to this chapter, they mark a box on the Man of Purpose track on their Argo Sheet, then note Abandoned Temple (Outer 3) on the day of their next ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Time-line Battle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Once you know which Hub you have encountered, remember to mark a box on an adventure track on the Argo Sheet (if all boxes are already marked, re-roll to choose a different Hub). Then go to the corresponding chapter in the Storybook. Adventure Tracks Fated Conundrum Plight of the People Hidden in Plain SightMan of PurposeUneasy Rests the HeadTears of a MinotaurDreams Laid BareTutorial",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0027.b020",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "xx",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0027.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "There, you will find an Adventure Table, listing all adventures avail-able in a given Hub. If the box you marked on the Argo Sheet has the or  symbol inside, simply proceed to resolve the para-graph marked with the same symbol in this Hub’s chapter.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target token",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0027",
+    "block_refs": [
+      "p0027.b001",
+      "p0027.b003",
+      "p0027.b005",
+      "p0027.b006",
+      "p0027.b007",
+      "p0027.b008",
+      "p0027.b009",
+      "p0027.b010",
+      "p0027.b011",
+      "p0027.b012",
+      "p0027.b013",
+      "p0027.b014",
+      "p0027.b015",
+      "p0027.b016",
+      "p0027.b017",
+      "p0027.b018",
+      "p0027.b019",
+      "p0027.b020",
+      "p0027.b021"
+    ]
+  },
+  "build_meta": null
+}

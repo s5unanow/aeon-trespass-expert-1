@@ -1,0 +1,24 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0083",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 83
+  },
+  "nav": {
+    "prev": "p0082",
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0083",
+    "block_refs": []
+  },
+  "build_meta": null
+}

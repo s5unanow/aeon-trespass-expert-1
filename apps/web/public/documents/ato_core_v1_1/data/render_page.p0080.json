@@ -1,0 +1,1043 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0080",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 80
+  },
+  "nav": {
+    "prev": "p0079",
+    "next": "p0081",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0080.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Second ability window",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 54",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Second Chance",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Self Combo-Breaker",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Combo-Breaker in Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Sequential Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Attack Types on p. 41",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Set abilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7; see also: Bleeding Set in Cycle III Story-book, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Shaded",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Signature",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Signature and Routine, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Simultaneous Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Attack Types, p. 41",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Single Wound",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Wound Stack, p. 52",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Sisyphus Tears",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 57",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Skills",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Argonaut Skills, p. 11",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Slippery",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Solace",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Spaces",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 33",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Spartan Stronghold",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Story-book, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Special Events",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 29",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Speed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Main Attributes (Titan), p. 45; Main Attributes (Primordial), p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Spiral X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Spotlight",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Stalwart",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Standard Preparations",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 34",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Start of Battle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Other Round Timing Rules, p. 56",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Stepping Stone",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story Adventures",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 26",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Story Step, p. 20",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 20",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Strangers",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Succor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Summonings",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Nymph Summonings, p. 22",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Sun Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Superior Reflex",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Reflex, p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Superior Reinforce X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Reinforce X, p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Support",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gear Cards, p. 45",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Suppress",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Targeting, p. 37; see also: Typ-ical Targeting Instructions, p. 37",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Research, p. 17; see also: Technology Usage, p. 18",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Teleport",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Teleporting Titans in Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Temporal Reflex",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Terrain",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67; see also: Adventure Terrain, p. 31; Climbable Terrain in Cycle III Story-book, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Test",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Adventure Tests and Rolls, p. 31; see also: Tests in Battle, p. 60",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Strong Eat",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tides of Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 56",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tile sectors",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 13",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Time Anchor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Backwards Momentum in Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Time Portals",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Time Wound",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Time-clocked",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Timeline",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Timeline events",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 14",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Timeline Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 14",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tireless",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 33",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan breeding",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 19",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan crafting",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Titan Crafting Using Primordial Cores, p. 20",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Possession",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 65",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Round",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 44; see also: Titan Round Overview, p. 47",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Sheet",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 44",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan turns",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 47",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "To hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Main Attributes, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Total Power",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Resolve the Power Roll, p. 51",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trading",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 18",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Traits",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Traits, p. 36; see also: Other Gear Stats and Qualities, p. 46; Mnemos Cards, p. 29; Gear Trait Catego-ries, Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trample",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Transform",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Transforming weapons",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Sto-rybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trap",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma Draw",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 42",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma Growth",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Resolving a Fated Mnemos and Trauma Growth, p. 30",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma Level",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Raising Trauma Level in Cycle III Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma Table",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 45",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma Trick",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Trick in Cycle III Story-book, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Treasure",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tree of Knowledge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 69 and p. 74",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trespass",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Awakenings, p. 59",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trick",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trigger",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Fate Effect Triggers and Other Effect Triggers, p. 44",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trireme Argo Abilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Story-book, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Triskelion",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 11 and p. 45",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tumble",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Turn",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Titan Turns, p. 47",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unexhausting",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 62",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unique",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 65",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unoccupied",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cretan City space in Cy-cle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Vantage Points",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 59; see also: Vantage Point Levels in Cycle III Storybook, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Vault",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Voluntary",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Voluntary Gain/Loss, p. 24; see also: Voluntary Movement, p. 48",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Voyage Phase",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 13",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Weakspots",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Basic Traits, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Weapon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gear Cards, p. 45; see also: Defensive Weapons, p. 41",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Weapon Class Traits",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gear Trait Cate-gories in Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Weighty",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Other Round Timing Rules, p. 56",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When you are about to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Other Round Timing Rules, p. 56",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Win",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": for Campaign, see Campaign Win and Lose Conditions, p. 10; for Battle, see Bat-tle Sequence, p. 35",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Window of Opportunity",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 43",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wise Providence",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 57",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wound Stack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 52",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wish Armor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wound Trick",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Trick in Cycle III Story-book, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wounds",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Main Attributes, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Zone Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Attack Types, p. 41",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0080",
+    "block_refs": [
+      "p0080.b001"
+    ]
+  },
+  "build_meta": null
+}

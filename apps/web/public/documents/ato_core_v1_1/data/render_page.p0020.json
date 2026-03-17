@@ -1,0 +1,322 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0020",
+    "title": "Crafting Gear",
+    "section_path": [],
+    "source_page_number": 20
+  },
+  "nav": {
+    "prev": "p0019",
+    "next": "p0021",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0020.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Trader card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The players need 2 Fleshy Mantles to craft a Great Tree Club. Thankfully, they are visited by a Theban Trader! They decide to exchange some Muscle Clusters, but there is no direct exchange option between these two resources. Therefore, they decide to spend one exchange to trade 5 Muscle Clusters for 10 Raw Ambrosia, then spend their second exchange to trade 10 Raw Ambrosia for 2 Fleshy Mantles. They are left with three more ex-changes that they decide to forgo, realizing how steep the conver-sion rates are!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Some Technology abilities include a “Cooldown: X days” instruc-tion. When you use an Ability with Cooldown, write its name down as an event on the Timeline, X days from now (your current day) with the word “Cooldown” in parentheses. Cooldown Events have no effect when resolved but you can only use the ability again af-ter you resolve its Cooldown event. Cooldown Events are consid-ered to be Advancement Events. That means you may use Abili-ties with Cooldown on the same day you resolve their Cooldown Event.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0020.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Crafting Gear",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0020.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Under Alkibiades, the Argo Works runs around the clock to create the best anti-Primordial weaponry known to mortals! As each Pri-mordial is unique, you will need a wide array of weapons, armor and support Gear to face them effectively.Crafting is the main source of new ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards that can greatly improve the combat capabilities – and survivability – of your Ti-tans. You can craft multiple  cards during every Advancement Step, provided you have the required resources. You can only craft  listed on the Production Facilities in your Technology deck and you cannot craft more copies of a single  than there are available copies of that card in the game box (in other words, you are limited by the number of cards provided). The cost of each  card is print-ed on the Production Facility Technology card.To craft a  card, perform the following steps:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Choose an available  card you would like to craft.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Spend resources equal to the  cost found on the correspond-ing Technology card and remove those resources from your Argo Sheet. If another  card is specified as part of the cost, it is also spent and should be returned to the game box.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Add the crafted  card to the Argo Armory. From now on, it can be equipped on Titans and used in Battle.Note: Some rare  cards can have additional unusual costs.Resources are mainly gained from the Exploration deck and Pri-mordial Battles. They are primarily used to craft ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards and activate certain Technology abilities. They differ between Cy-cles, but there are four main categories of resources:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mortal resources",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represent ordinary tools, vessels and arma-ments that can be salvaged from the remnants of mortal civiliza-tion. They are noted in the Mortal part of the Cargo Hold section on the Argo Sheet.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial resources",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represent body parts of slain Primordials and are mainly earned as a result of Primordial Battles. They are noted in the Primordial part of the Cargo Hold section on the Argo Sheet.Of all Primordial resources, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cores",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are the most valuable. You gain Cores from critically wounded BP III cards. When you gain a Core, write its name and quantity in the Cargo Hold under Cores.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Divine resources",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represent extremely rare items that possess exceptional qualities or are necessary components for some of the most powerful  cards. They are noted in the Hidden Hold section of the Argo Sheet.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rare resources",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " include all resources (other than Cores) not listed on the Argo Sheet. They are incredibly limited and can be used to craft mythical equipment. When you gain a Rare resource, write both its name and quantity under Rare Resources.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0020.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan Breeding",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0020.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titans have been a menace to mortal civilization for centuries. They are mindless, full of rage and the need to destroy. If the Pri-mordials weren’t threatening the world, the Titans would be next in line. Where do they come from? That is the question. They are found in the wild and special hunter teams, the Titanokinigos, bring them onto the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". There, the city-ship itself transforms them into more docile beasts that the Argonauts can junction with. This is called “breeding.”Certain Technologies allow you to breed Titans, either by evolv-ing the ones you have already captured or catching new ones to replenish your stock. Each Breeding Technology shows the costs of breeding a specific Titan and how many days it is going to take.All Titans belong to one of the following types:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gaia-born Titans:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Caught in the wild, prepared for junctioning, but otherwise unmodified. These are all Dreamwalker class Titans.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo-bred Titans: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "These are all the other Titan classes, even those gained through means other than Breeding. These Titans have been modified, conditioned or further transformed to face the Pri-mordials. There are a few restrictions relating to Argo-bred Titans:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0020.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "on the Argo, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "however",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ",",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0020.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ready have one onboard (but you can still gain it from other sources, such as adventures),",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0020.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", regardless of the number of Titans of that class you have.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0020.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "How to Breed a Titan",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0020.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titans are bred using Technology cards. When you use a Technolo-gy ability to breed a Titan, you pay any associated costs (usually a Dreamwalker Titan), then write the Titan’s class on the Timeline the indicated number of days from the current day. This is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Breeding Advancement Event",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Once you reach that day, during the Advance-",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0020",
+    "block_refs": [
+      "p0020.b001",
+      "p0020.b002",
+      "p0020.b003",
+      "p0020.b004",
+      "p0020.b005",
+      "p0020.b006",
+      "p0020.b007",
+      "p0020.b008",
+      "p0020.b009",
+      "p0020.b010",
+      "p0020.b011",
+      "p0020.b012",
+      "p0020.b013"
+    ]
+  },
+  "build_meta": null
+}

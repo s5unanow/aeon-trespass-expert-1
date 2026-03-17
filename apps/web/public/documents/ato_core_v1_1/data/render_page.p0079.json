@@ -1,0 +1,1218 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0079",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 79
+  },
+  "nav": {
+    "prev": "p0078",
+    "next": "p0080",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0079.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Tokens",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ":  p. 45; see also: Kratos To-kens and the Kratos Pool, p. 34",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Labyrinth Set",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Labyrinth tiles",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Labyrinth X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Land on top ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Laser Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Laser Resistance X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Story-book, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Last Visited City",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 13",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Least Likely",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Least and Most Likely Argonaut, p. 32",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lifeline",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 64",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Line of Sight",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 38",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Loops",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lose",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Campaign Win and Lose Con-ditions, p. 10; see also: Battle Sequence, p. 35; Loss, p. 24",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lumbering",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 64; see also: Basic Traits, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Map symbols",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 14; see also: Tile Sectors, p. 13; Other Movement Symbols, p. 14; Map Symbols Key in Cycle I Storybook, p. 5, Cycle II Storybook, p. 7, Cycle III Sto-rybook, p. 7.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Massive Danger",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 43",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Masterwork",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Material Traits",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gear Trait Categories in Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "May",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mazetouched",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mercy Rule",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 56",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mitigate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gain/Loss Mitigation, p. 24",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos Breakthroughs",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 27",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos nodes",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 29",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos Vault",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 30",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemoses",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 29",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnestis Theatre",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 69",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Modifier tokens",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 58",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Moirai Mistake",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Moiros cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 57",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Most likely",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Least and Most Likely Argonaut, p. 32",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Motivate X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 64",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mount",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move Lateral",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move to X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move-like ability",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 48",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Movement",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Movement, p. 38; see also: Movement Action, p. 47",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Movement Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 13",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Movement symbols",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Map symbols, p. 14",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Muffled",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Negotiation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Structural Technologies, p. 18",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Nymph Summonings",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 22; see also: Summonings in Battle, p. 60",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Obol",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Obol (and Obol Draw), p. 42",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Obscuring",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Obstacle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "One-way canals",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Opening X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 64",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Out of Reach (OoR) Evade",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 42",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Overbreak X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 65",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Paradox",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Party Leader",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 26",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pass X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pattern cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 47; see also: Titan Pat-terns, p. 20",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Peril",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 31",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Perishable",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Permanent",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Structural Technologies, p. 18",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pharos Delve",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 28",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Potential",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Using Potentials, p. 51",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Power Roll, p. 50",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power dice",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 33; see also: Dice, p. 8, Power Dice Tiers, p. 50",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Pool",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Power Roll, p. 50",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Re-roll X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 65; see also Power Re-Rolls, p. 51",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 50",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Precise",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Precision",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Offensive Gear Stats, p. 46; Attack Roll, p. 49",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 33; see also: Primordial Type, p. 34, Primordial Round, p. 35",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Attributes",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial diagram",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 35",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial positioning",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 34",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Resources",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gaining Pri-mordial Resources, p. 55",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Round",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 35; see also Primor-dial Round Overview, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Sheet",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 35",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 38",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Prisoners!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Progress",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Progress and Doom, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Projects deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Technology Cards, p. 17",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Provoke",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 65",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pull X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 65",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pushback X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 65",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pygmalion Stones",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Quantum",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Quantum Eye",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "R&R Adventures",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 27",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rage",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Triskelion, p. 11",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Range Attack X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Attack Types, p. 41",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ranged X–Y",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reach X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reactions",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 54",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Facing, p. 40",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reference",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Structural Technologies, p. 18",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reflex",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Refugees",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reinforce X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reinforced Destructible",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Destructible, p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Removing",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Removing elements (archi­ving), p. 62",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reposition X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Research",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 17",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resistance Hideouts",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Story-book, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolution Order",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resources",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 19; see also: Resolving an Exploration Draw, p. 15; Gaining Primordi-al Resources, p. 55",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Responses",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Responses, p. 51",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Restricted ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(Trait)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 66",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Retirement",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Argonaut Retirement, p. 10",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Retreat",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 57",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rewind",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "River",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see River space in Cycle I Story-book, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rocksteady",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Roll Out",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rouse X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Routine",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Signature and Routine, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rules Precedence",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rush",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Sacrifice",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Save",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Structural Technologies, p. 18",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Saving the Campaign",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 22",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Scale",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Sealed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 5",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0079",
+    "block_refs": [
+      "p0079.b001"
+    ]
+  },
+  "build_meta": null
+}

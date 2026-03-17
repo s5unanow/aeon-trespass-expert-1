@@ -1,0 +1,613 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0037",
+    "title": "Basic Traits",
+    "section_path": [],
+    "source_page_number": 37
+  },
+  "nav": {
+    "prev": "p0036",
+    "next": "p0038",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0037.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "There are two special types of positioning symbols that may be found on the Primordial diagram. These symbols show the spaces where some Basic Traits take effect:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Blindspots:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Blindspots are spaces the Primordial cannot see. Titans in Blindspots are excluded from targeting, un-less the targeting specifically mentions Blindspots. A Titan in the Blindspot gains a +1 Precision bonus (see Offensive Gear Stats, p. 46) to their Attacks.W",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Weakspots: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Weakspots can have different effects depend-ing on the Primordial and are usually unlocked by some oth-er effect or game element. In other words, Weakspots don’t have any inherent effects of their own, and a Weakspot space only indi-cates a space where a Weakspot may be created.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Basic Traits",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Basic Traits are universal Primordial abilities or features. A Primor-dial may have any number of Basic Traits. The common Basic Traits throughout all Cycles are:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unavoidable Knockback:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The value of the Unavoidable Knockback done by the Primordial if it ends its Movement on the same space as a Titan (see p. 40). \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Blindspot:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Primordial has a limited field of view and consequently has Blindspots (see p. 38).W \u0007 \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Weakspots:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Primordial has some inherent weakness or flaw that may be exploited and consequently has Weak-spots (see Primordial Diagram). \u0007 \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lumbering: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Primordial is massive or is nigh immovable, and as a consequence cannot suffer Pushback or be moved involuntary in any other way (see p. 63 and 65).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b004",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "VP",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Vantage Points:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Primordial can be mounted and conse-quently has Vantage Points (see p. 59).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Level-specific attributes and Traits",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The rest of the Primordial Sheet is dedicated to Primordial attrib-utes and Traits, grouped by Levels. This is because the attribute values and Traits depend on the Level of the Primordial you are currently facing. Remember to always refer to the attributes and Traits associated with its current level (designated by the roman numeral).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "12354",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "A Primordial Level box will include the Level numeral ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", Main At-tributes ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Bonuses ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", a list of added or removed Traits ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and, sometimes, a definition of a newly introduced Trait ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Remember to always check Traits added and removed on the current level as well as all previous levels and to find the Trait cards for Traits not explained on the Primordial Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Main Attributes:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "\u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "To Hit:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " How hard the Primordial is to hit (see: Attack Roll on p. 49).\u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Speed: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Maximum number of spaces the Primordial can tra- vel with a single move. \u0007\t\u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wounds:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The number of Wounds required to slay the Pri-mordial.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Bonuses",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": " AT bonus: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Increase the AT of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " BP card by this value.\u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger bonus:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Increase the dealt by ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Primordial At-tack (not by each hit, unless specifically stated; see Evasion Roll, p. 41) by this value.\u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion dice bonus:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Increase the Evasion dice value of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Attack by this value.\t\u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Escalations: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "At the start of Battle, Escalate the Primordial a number of times equal to this value.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Traits",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Traits cover a broad spectrum of additional abilities, effects and special rules. Some Traits are described on the Primor-dial Sheet, while others are represented by Primordial Trait cards. Many Primordial levels introduce new Traits, some of which trans-form the Battle completely. Always make sure you are familiar with all Primordial Traits as you prepare for Battle. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Usually, your current Level has all the Traits of the previous Levels. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Signature and Routine",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Primordial Sheet has spaces for two special cards: the Signa-ture and the Routine. These represent the Primordial’s typical be-haviors. The Signature is the “signature attack,” while the Routine is what it does when there is no one around to attack.The Signature is the creature’s iconic default Attack. It behaves like an AI card, but is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not an AI card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If another card, Trait or any other effect instructs you to perform Signature, this is the Attack you should resolve.The Routine is a special action the creature performs when there is no eligible Target for any of the targeting lines on its current Attack. Usually, Routines are devastating effects that should be avoided at all costs! They often affect not only the Titans or the Battle Board, but the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " itself.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Most Routines have a Mnestis Theatre version on the back. Make sure to use the regular Routine during your campaign battles.All Signatures and some Routines are Attacks, but they are not AI cards for the purpose of any other effects.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b016",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Round Overview",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unless an effect explicitly states otherwise, all Battles in ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " begin with the Primordial Round. The Primordial Round proceeds in the following order: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Start of Primordial Round (see below)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve AI (see below)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve Other Actions (p. 44)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Primordial Round (p. 44)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Start of Primordial Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sometimes the Primordial will have an effect that triggers at the start of the Primordial Round. In that case, it’s resolved before drawing the AI card. If there is more than one start of Round effect, the players may resolve these effects in any order they like.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0037.b020",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resolve AI",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0037.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The AI cards are the heart of the Primordial Round. Most AI cards are Primordial Attacks. You resolve an AI card by performing these steps (in the following order):",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0037",
+    "block_refs": [
+      "p0037.b001",
+      "p0037.b002",
+      "p0037.b003",
+      "p0037.b004",
+      "p0037.b005",
+      "p0037.b006",
+      "p0037.b007",
+      "p0037.b008",
+      "p0037.b009",
+      "p0037.b010",
+      "p0037.b011",
+      "p0037.b012",
+      "p0037.b013",
+      "p0037.b014",
+      "p0037.b015",
+      "p0037.b016",
+      "p0037.b017",
+      "p0037.b018",
+      "p0037.b019",
+      "p0037.b020",
+      "p0037.b021"
+    ]
+  },
+  "build_meta": null
+}

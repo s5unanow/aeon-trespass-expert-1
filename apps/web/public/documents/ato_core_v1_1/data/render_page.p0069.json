@@ -1,0 +1,402 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0069",
+    "title": "Terrain Placement on a Titan",
+    "section_path": [],
+    "source_page_number": 69
+  },
+  "nav": {
+    "prev": "p0068",
+    "next": "p0070",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0069.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain Placement on a Titan",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When a Terrain tile is placed on a space occupied by a Titan:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "stroyed and the Titan suffers ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crash",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "and is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Displaced",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to an adjacent space in a way that would allow the tile to be placed without overlapping. If there is no such space, the Titan cannot be legally Displaced and dies.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "the Titan miniature and this Titan must immediately resolve this tile’s effects (if any) as if it had just moved onto it.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0069.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain Placement on Primordial",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If a Terrain tile is placed on a space occupied by the Primordial:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "tile placement.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0069.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain Abilities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In a similar way to Titans and Primordials, Terrain tiles possess var-ious abilities that may greatly influence the course of the Battle. Some of them are represented by Terrain traits and their effects are explained in this section. All of these abilities are forced and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " be resolved ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each time ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "they are triggered unless explicitly stated otherwise. If an ability has no trigger, its effect is constant and always active as long as this tile is present on the Battle Board.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0069.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain Traits List",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The following list contains Terrain Traits common to all Cycles of",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Traits that are introduced in a specific Cycle will be described in that Cycle’s Storybook. All of these are referenced in the Master Index (p. 76).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ambrosia:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When a Titan ends its movement on this tile, voluntarily or not, it gains 1 Ambrosia token. If a Titan starts its turn on this tile and doesnʼt move until the end of this turn, it gains 1 Ambrosia token. If a Titan moves through this tile, but does not end its move-ment on it, roll a d10. On a 6+, gain 1 Ambrosia token.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Board Edge: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "This tile functions like the Board Edge (see Board Edge on p. 33), reducing the play area of the Battle Board.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Boundless: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You cannot voluntarily move onto this tile. If you would be forced to move onto or beyond this tile or Board Edge, you die.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Chasm:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Titans cannot voluntarily move through Chasm spaces. If a Titan ends their movement on a Chasm space, it dies. If it is pushed back or pulled through a Chasm space, it dies. If a Chasm tile is placed under a Titan, it dies. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Titans do not die from moving over a Chasm during Knockback unless they end their movement on it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cover:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Titans on this tile have +1 Evasion .",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Destructible:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When a Titan is involuntarily moved onto this tile, the tile is destroyed. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If a Titan is knocked back, it ignores non-Obstacle Terrain tiles it moves through. Therefore, it will not destroy a Destructible tile unless it ends its movement on it. Pos-sible subtype:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0069.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "tile or a Titan is involuntarily moved onto it, flip this Terrain tile and corresponding Terrain card. It then becomes Destructible.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exposed:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If the Primordial stands on this tile, it has -1 .",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Indestructible:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " This Terrain tile cannot be destroyed in any way. It invalidates Terrain placement on top of it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Inhabited:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Apply any bonuses and penalties listed on the Terrain card based on your Diplomacy Score with the Local Faction. If this Terrain tile is destroyed, lose -1 Diplomacy with the Local Faction.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Labyrinth:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Red lines on these tiles should be treated as Obstacles. Connecting Labyrinth tiles are considered a single Terrain tile. See detailed rules in Cycle I Storybook.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Obscuring:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " This tile blocks Line of Sight.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Obstacle: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titans cannot move through Obstacles. Many move-like abilities interact with Obstacles. See Knockback, Pushback and Pull in the keywords list section on p. 63.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trap:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " This tile has special interactions with the Primordial, listed on the Terrain card.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Treasure:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " This tile has special interactions with Titans, listed on the Terrain card.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0069",
+    "block_refs": [
+      "p0069.b001",
+      "p0069.b002",
+      "p0069.b003",
+      "p0069.b004",
+      "p0069.b005",
+      "p0069.b006",
+      "p0069.b007",
+      "p0069.b008",
+      "p0069.b009",
+      "p0069.b010",
+      "p0069.b011",
+      "p0069.b012",
+      "p0069.b013",
+      "p0069.b014",
+      "p0069.b015",
+      "p0069.b016",
+      "p0069.b017",
+      "p0069.b018",
+      "p0069.b019"
+    ]
+  },
+  "build_meta": null
+}

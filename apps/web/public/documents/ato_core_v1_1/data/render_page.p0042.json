@@ -1,0 +1,609 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0042",
+    "title": "Primordial Attack Types",
+    "section_path": [],
+    "source_page_number": 42
+  },
+  "nav": {
+    "prev": "p0041",
+    "next": "p0043",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0042.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Attack Types",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Usually, an Attack without a specific type is considered ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Melee",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and requires ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "adjacency",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Below, you will find a list of Attack types en-countered in",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Cycle I: Truth of the Labyrinth",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Due to each Primor-dial’s unique nature and the game’s evolving mechanics, future Cy-cles may introduce new Attack types, which will be described in the appropriate Storybooks. An Attack may have none, one, or multiple types. If it has more than one Attack type, all rules referring to these types apply.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Range Attack X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Can be performed against a Titan within X spaces of the Primordial. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Simultaneous Attack:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Performed against multiple Targets. Each of them resolves the Attack separately (performs a separate Evasion Roll) in any order, but it is considered to happen at the same time, therefore a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Chain Break",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see p. 43) caused by one Titan ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "does not ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "invalidate unresolved Attacks against other Titans.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Sequential Attack:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Performed against multiple Targets, one at a time, in a specific order. A ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Chain Break",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see p. 43) during one of these Attacks stops the sequence and invalidates any lingering Attacks.If a Sequential Attack targets",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " “All Titans in path,”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " it happens during the Primordial’s movement. Move the Primordial towards its Target one space at a time. When it would move onto a space occupied by a Titan, instead of moving through it, stop, resolve an Attack, then continue moving towards the original Target. When it reaches its original Target, resolve an Attack against that Target as well. Pri-mordial movement during this Attack ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "does not cause Crash",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If at any point while resolving this Attack the Primordial stops on a space occupied by a Titan (for example, to attack another Titan), this Titan suffers Unavoidable Knockback equal to the Primordial’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "value, as normal.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Zone Attack:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Performed against all Titans in a designated zone. Each Titan performs a separate Evasion Roll but they are consid-ered to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " happen simultaneously ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(similarly to a Simultaneous At-tack). The following rules apply:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "unresolved Attacks against other Titans.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ready begun to resolve this Attack against other Titans in the Zone (i.e. performed an Evasion Roll and applied Attack ef-fects) it does not invalidate an Attack against it.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "and diagonally",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from the source of Zone X.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Zone 2 example",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "selves. These Zones target the specific spaces shown on the diagram.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titans in the designated area.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ing from it and neither are Titans on Vantage Points.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Judgement: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "These are mental assaults that force the Target to per-form a special Skill test. Each Judgement will designate a specific Skill it tests (if it designates two, the Target chooses which one to use). They usually have unlimited range. A Judgement is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " con-sidered an Attack for the purpose of other effects and the Target must resolve a test ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "instead of",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " an Evasion Roll. Therefore, a Judge-ment ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "cannot",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " be mitigated with an Armor Roll, be re-rolled using ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion Re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or blocked with the Block X keyword. All rules referring to Skill tests apply. Judgements can be modified by Attack types, just like Attack (i.e. a Zone Judgements affects all Titans in a designated Zone).All effects of AI and BP cards are resolved ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "by",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "against",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Target (in case of an AI) or the Attacker (in case of a BP), unless stated otherwise. For example, this means that when an AI card deals , it’s the Primordial dealing Danger to the Ti-tan, or if a BP card triggers a Knockback ability, it’s the Primordial who knocks back the Titan.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0042.b015",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4.1 Evasion Roll",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In Aeon Trespass: Odyssey, the Primordial doesn’t roll to hit the Titan. It always hits, unless the Target man-ages to evade the attack! In the upper right corner of the AI card, each Primordial Attack has a number of Evasion dice ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and the Evasion Roll difficulty",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". To perform an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion Roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you must roll the specified number of dice (which must always include one Crit die, see p. 49), trying to roll equal to or higher than the difficulty.If you have any ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards or effects that give you an Evasion bonus , add it to the result of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each die rolled",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Some  cards may grant you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion re-rolls ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that can now be used to re-roll the specified number of dice. You may also use  to re-roll Evasion dice (see p. 8). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Each die can only be re-rolled once, regardless of the source of the re-roll!Then compare the results to the Evasion Roll difficulty. Each result ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "equal",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "higher",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " than the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion Roll difficulty",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " value is a suc-cessful evade, whereas each result lower than the difficulty is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you have the Block X keyword, you may trigger it now to ignore X hits.If there are no hits (meaning that you successfully evaded with all dice), it is considered to be a",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " full evade",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and you should proceed straight to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "After Attack ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "part of the AI card, as well as trigger all ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "“Full Evade:”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abilities. Otherwise, proceed to the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Attack effects",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(see Attack Consequences on p. 42).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0042.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Defensive Weapons",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some weapons (like Shields) have defensive capabilities: they can provide ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", an",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Evasion bonus",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", a Block (see Block X keyword) or Armor dice (see p. 42). If you use any of these effects during the Evasion Roll or Attack Consequences, that weap-on  becomes your active weapon ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "until the end of this Primordial Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". You can only have one active weapon at a time—until the end of this Attack you cannot use any other weapon  (for either defensive or offensive capabilities!).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0042.b019",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Crit Evade",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0042.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some  cards may provide you with Crit Evade abilities and effects. If you roll a Crit during the Evasion Roll (see Crit Die on p. 49), ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "l2",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0042",
+    "block_refs": [
+      "p0042.b001",
+      "p0042.b002",
+      "p0042.b003",
+      "p0042.b004",
+      "p0042.b005",
+      "p0042.b006",
+      "p0042.b007",
+      "p0042.b008",
+      "p0042.b009",
+      "p0042.b010",
+      "p0042.b011",
+      "p0042.b012",
+      "p0042.b013",
+      "p0042.b014",
+      "p0042.b015",
+      "p0042.b016",
+      "p0042.b017",
+      "p0042.b018",
+      "p0042.b019",
+      "p0042.b020"
+    ]
+  },
+  "build_meta": null
+}

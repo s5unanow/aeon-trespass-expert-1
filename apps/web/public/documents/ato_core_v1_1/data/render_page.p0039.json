@@ -1,0 +1,562 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0039",
+    "title": "Priority Target",
+    "section_path": [],
+    "source_page_number": 39
+  },
+  "nav": {
+    "prev": "p0038",
+    "next": "p0040",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0039.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Blindspots and Vantage Points are special types of Battle Board spaces!  Spaces are always considered Blindspots in relation to the Primordial (see Primordial Diagram on p. 35) Blindspots and Vantage Points are never in the Primordial’s Line of Sight. Vantage Points have more rules, such as special adjacency. For details see Vantage Points on p. 59.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0039.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token serves as a tiebreaker for the purpose of Target-ing. The Titan with the  token is con-sidered to be the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".When you increase your ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rage",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " for any reason, compare your current level to the  of the token’s hold-er. If your Rage is higher, you become the new Priority Target and gain the token. At the start of the Battle assign the  token to a Titan with the highest . If two or more Titans have equal highest , choose which one to assign the  to.If two or more Titans are equally viable Targets (fulfill all instruc-tions of the same targeting line) and one of them is the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", that one becomes the Target.If two or more Titans are equally viable Targets and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "none of them ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "is the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", the players may choose which of them becomes the Target.When the Titan with the  token dies, pass the  token to a living Titan with the highest Rage .Some effects (such as Awakenings and some Trauma cards) state that a Titan cannot lose the  token. If there are multiple such effects in play at the same time, the Titan that got it the earliest remains the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". For the purpose of passing the token after the Titan’s death, Titans with such effects are treated as if their  was 9.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some Attacks specifically target the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_small_b",
+          "alt": "Art_ruins_small_b"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_small_c",
+          "alt": "Art_ruins_small_c"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0039.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Line of Sight",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Line of Sight ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(LoS) is used to determine whether the Primordial has an unobstructed view of a Titan and vice versa. A Titan must have LoS to the Primordial to perform an Attack. The Primordial must have LoS to the Target if the command line requires it to be ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "in front",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "in sight",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Note that some targeting instructions do not require LoS (for example,Target: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ").To check LoS, draw an imaginary straight line from a corner of any space occupied by the Attacker to a corner of any space occupied by the Target:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "line, there is no Line of Sight.  ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "or a red line, there is no Line of Sight.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the endpoint ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "of a red line, there is Line of Sight. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain tiles) connect diagonally (i.e. through this corner), there is no Line of Sight.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Line of Sight.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "standing on any of its spaces  (see Terrain on p. 67).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Line of Sight example: Herodotus ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " does not have LoS because there is a red line between him and the Hekaton. Ulyssea ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " has LoS, because the line touches only the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "corner",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of an Obscuring Terrain tile. She wouldn’t have LoS if the line went ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "through",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the tile or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "along",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " its edge. Solon ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "has LoS, even though he is on an Obscuring Terrain tile, because Terrain tiles never block LoS to themselves or miniatures on them. Philoctera ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", however, is fully ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "behind",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Obscuring Terrain so it blocks LoS for her. It is worth noting that the reverse is also true: unless the Primordial has any additional Traits or effects that would allow it to ignore game elements for the purpose of LoS, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the Primordial always sees Titans that can see it and vice versa",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3421",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_small_b",
+          "alt": "Art_ruins_small_b"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_small_c",
+          "alt": "Art_ruins_small_c"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0039.b021",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "3. Primordial Movement",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0039.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Most Primordial Attacks will instruct you to move the Primordial. In such a case, the Primordial will ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "always",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " try to move and tries to move as close to the Target as possible, up to its Speed value, stopping only when it becomes adjacent to the Target (unless stat-ed otherwise). Note: A Primordial performing a Ranged Attack will stop as soon as it is within range!Unless stated otherwise, at the beginning of a move the Primordial always",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " turns to face ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the Target first (see Primordial Facing, p. 40).A Primordial always moves along the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "shortest possible path",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", that is, through the fewest number of spaces. It can move through any other game components (including Titans and Terrain) unless ex-plicitly stated otherwise.A Primordial always moves ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "one space at a time",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", in cardinal direc-tions (",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not diagonally",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ").If the Target is not in a straight line from the Primordial, the Pri-mordial will ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "“zigzag” move",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " towards it cardinally, switching the movement axis after every space travelled until it reaches a posi-tion that would allow it to continue moving towards the Target in a straight line (see examples, p. 39). In such cases, the players may decide the starting direction (horizontal or vertical) of the Primor-dial movement.If two or more routes are considered equally short, the players choose which one to use.If any effect would cause the Primordial to move past ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the Board Edge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", it will continue to move along the edge prioritizing a direc-tion that will ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "initially",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " lead it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "away",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from the most Titans (if possible).Most Primordial moves will take place as a result of AI cards or Traits. However, sometimes Titans may ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "force",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Primordial to move (for example, by using the Pushback keyword, see Involun-tary Movement, p. 48).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target token",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.art_ruins_small_b",
+    "concept.art_ruins_small_c"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0039",
+    "block_refs": [
+      "p0039.b001",
+      "p0039.b002",
+      "p0039.b003",
+      "p0039.b004",
+      "p0039.b005",
+      "p0039.b006",
+      "p0039.b007",
+      "p0039.b008",
+      "p0039.b009",
+      "p0039.b010",
+      "p0039.b011",
+      "p0039.b012",
+      "p0039.b013",
+      "p0039.b014",
+      "p0039.b015",
+      "p0039.b016",
+      "p0039.b017",
+      "p0039.b018",
+      "p0039.b020",
+      "p0039.b021",
+      "p0039.b022"
+    ]
+  },
+  "build_meta": null
+}

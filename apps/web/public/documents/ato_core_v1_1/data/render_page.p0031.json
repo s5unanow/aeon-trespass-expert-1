@@ -1,0 +1,361 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0031",
+    "title": "Resolved Mnemoses and Katharsis",
+    "section_path": [],
+    "source_page_number": 31
+  },
+  "nav": {
+    "prev": "p0030",
+    "next": "p0032",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0031.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "This means that if both of their Mnemos cards have the corre-sponding trait, they only gain a node for one of them. In that case, the node must go ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "to the dominant Mnemos, that is the one with the most nodes",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". In case of a tie, the player controlling this Argo-naut may choose.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " It’s possible to gain nodes past an unmarked Breakthrough symbol (for example, by gaining a few nodes before the next Sto-ry Step). In such a case, simply note them on the Mnemos track, then resolve the Breakthrough during the Story Step and only then mark the symbol. You’re already on your way to the next Break-through! (This may even lead to you resolving two Breakthroughs during one Story Step, one after the other!).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0031.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resolved Mnemoses and Katharsis",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Once you resolve the last Breakthrough of a Mnemos card, it be-comes resolved. This means that when your Argonaut dies or leaves the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", this Mnemos does not return to the Mnemos Vault. Instead it is put back into the game box with other unused Mnemos cards. You probably won’t see it again.A special type of Mnemos resolution is called a Katharsis. If you reach a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Katharsis",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", you will be given a code you will write in the Katharsis box on your Argonaut Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0031.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Card Limit",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Argonaut can have a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "maximum of 2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Mnemos cards. If you are instructed to gain a Mnemos card and you are already at the limit, the Mnemos card goes to another random Argonaut. If all Argo-nauts already have 2 Mnemos cards, the new Mnemos is instead added to the Mnemos Vault.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0031.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Vault",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Mnemos Vault is a deck that consists of all Mnemos cards you have unlocked during your campaign, which are not currently assigned to any Argonaut. Keep it separate from other Mnemos cards. You add Mnemos cards to the Vault in the following situa-tions:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "return their unresolved Mnemos cards to the Vault.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "2 Mnemos cards each, the newly acquired Mnemos card goes to the Vault instead.Usually, when a new Argonaut is introduced into the game (you will learn how this works soon enough), you will be instructed to assign them a Mnemos card from the Mnemos Vault.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0031.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fated Mnemoses",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fated Mnemoses are a different type of Mnemos cards. They are condensed mental traumas, memories not of particular events, but of the states of your mind. These memories are always bad and they weigh on your heart, introducing various mechanical hindrances.Each Argonaut can have 2 unresolved Fated Mnemos cards at the same time. These do not count towards the limit of 2 Mnemos cards per Argonaut (i.e. in total, an Argonaut can have up to 2 Mnemos cards and up to 2 Fated Mnemos cards).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fated Mnemos cards do not count as Mnemos cards for the pur-poses of other effects.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When you gain a Fated Mnemos, search the game box for all of the Fated Mnemos cards associated with the Cycle you are currently playing, shuffle them and draw a random card. Then, note it on your Argonaut Sheet, just like a regular Mnemos. Fated Mnemos cards are always gained ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "black",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " side up.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0031.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fated Mnemos Cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Fated Mnemos card has a title and an illustration, as well as a short description of the memory. Mechanically, the card includes a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "hindrancel",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", which you will overcome, as well as ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Skill penalties 2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " for your Argonaut and the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos traits3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fated Mnemos card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "l23",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The hindrance is a special negative effect or limitation the Argo-naut must always adhere to. If the effects of your 2 Fated Mne-mos cards contradict each other, the one you gained earlier (is on a higher position in your Argonaut Sheet’s Mnemos section) takes precedence.The Skill penalties are simply applied onto your Argonaut Sheet. They are applicable as long as you have the Fated Mnemos card.The Mnemos traits have no inherent effect, but they are used to determine if you gain a node from a hub adventure, just like with normal Mnemoses (see Mnemos Nodes, p. 29). At the beginning of a hub adventure, each Argonaut with at least 1 Fated Mnemos card with a matching trait gains 1 node for that Fated Mnemos. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "This is in addition to any node gained for a regular Mnemos card!  ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "This means that, if traits match, each Argonaut can gain 1 regu-lar Mnemos node and 1 Fated Mnemos node from a single adven-ture. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "However, they will never gain 2 or more nodes for the same Mnemos card or the same Mnemos type (regular or Fated).",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0031.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resolving a Fated Mnemos and Trauma Growth",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0031.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "A Fated Mnemos has no breakthrough adventures – if all the nodes to the left of the first breakthrough symbol are marked, it is auto-matically resolved during the Story Step.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0031",
+    "block_refs": [
+      "p0031.b001",
+      "p0031.b002",
+      "p0031.b003",
+      "p0031.b004",
+      "p0031.b005",
+      "p0031.b006",
+      "p0031.b007",
+      "p0031.b008",
+      "p0031.b009",
+      "p0031.b010",
+      "p0031.b011",
+      "p0031.b012",
+      "p0031.b013",
+      "p0031.b014",
+      "p0031.b015",
+      "p0031.b016",
+      "p0031.b017"
+    ]
+  },
+  "build_meta": null
+}

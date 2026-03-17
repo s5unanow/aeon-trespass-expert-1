@@ -1,0 +1,466 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0034",
+    "title": "Battle Phase",
+    "section_path": [],
+    "source_page_number": 34
+  },
+  "nav": {
+    "prev": "p0033",
+    "next": "p0035",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0034.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle Phase",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When the cataclysmic Eschaton happened, mortals thought it was the end of the world. That was not the case: the world continued, although diminished, without the Olympian gods’ guidance... and then the Primordials appeared. Giant monsters from some Oth-er Place, here to finish the mortals once and for all. There is no power capable of stopping them, as nothing pierces through their unearthly armor, the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Aeon Trespass field",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (AT for short). Nothing, save the Titans.  ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "What are Battles?",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battles happen when the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " encounters one of the Primordials. Argonauts descend into the Balaneion and junction with 30 ft. high Titans, then meet the giant monster and, hopefully, kill it before it kills them. That is the life on the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".In Battle, each player controls an Argonaut/Titan pair, while the Primordial is controlled by a deck of advanced AI cards. The Titans (usually four of them) want to deal a set number of Wounds to slay the Primordial (in general ten Wounds are required), while the Pri-mordial tries to kill the Titans. Whoever prevails, wins.Whenever the game instructs you to resolve a Battle, you begin the Battle Phase. Timeline Battles will be resolved in the Encoun-ter Step, while other Battles (such as Adversary attacks or narra-tive encounters resulting from a Story card progression) may take place during other Steps.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b005",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resolving Battles",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During each Battle you will follow the same steps:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Find the correct Battle Scenario",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Perform Setup",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve the Battle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve the Aftermath",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b007",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battles Scenarios",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When instructed to resolve a Battle, unless directed to a specific page, find the Battle Scenario corresponding to the particular Pri-mordial you’re facing. The scenario includes all the setup rules of this specific Battle and may sometimes introduce additional narra-tive elements and mechanics. These scenarios will help you set up the Battle Board, the Primordial, Terrain tiles and make any other applicable preparations. You will find the scenarios of the Battle from a particular Cycle in that Cycle’s Storybook.All Battles are played on the Battle Board.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you want to conserve space, you may want to save your campaign before the Battle (see Saving the Campaign, p. 22) and set aside all elements not used during this Phase: the Map tiles, Technologies (other than Argo Abilities), Story and Doom cards as well as any Clue cards.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Basic Terms",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "These are the most common game terms used in the Battle Phase.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b011",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During Battle, game elements may refer to the Titan. The Titan is represented by the Titan Sheet and a Titan miniature. However, in some cases, this term will also include the Argonaut junctioning with the Titan (e.g. the Primordial Attack makes you draw a Fated Mnemos card. The Argonaut will gain it, not the Titan itself).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b013",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During Battle, game elements may refer to the Primordial. The Pri-mordial is represented by the Primordial Sheet and a Primordial miniature.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b015",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle Board",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Battle Board is made up of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "spaces",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Only spaces and their edg-es are considered to make up the Battle Board. The Battle Board has two short and two long Board Edges. Short Board Edges are marked with ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "letters",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to identify rows, and the long Board Edges are marked with ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "numbers",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to identify columns.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Spaces",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Spaces are square boxes you place other game elements on. A Ti-tan takes up one space. A Primordial typically takes up four or nine spaces. Spaces are occupied if there is a miniature or an Obstacle Terrain tile on them. All other spaces are considered empty spaces. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b019",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adjacent",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Something is adjacent if the space it’s on shares at least one edge with the other space. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "White spaces are adjacent to the Hekaton",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b021",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Board Edge",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Edges not shared with another space are considered to be part of the Board Edge (see Battle Board).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b023",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Attack Dice",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b024",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Custom d10 dice (see Dice, p. 8).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0034.b025",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Power Dice",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0034.b026",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Custom d6 dice (see Dice, p. 8).",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0034",
+    "block_refs": [
+      "p0034.b001",
+      "p0034.b002",
+      "p0034.b003",
+      "p0034.b004",
+      "p0034.b005",
+      "p0034.b006",
+      "p0034.b007",
+      "p0034.b008",
+      "p0034.b009",
+      "p0034.b010",
+      "p0034.b011",
+      "p0034.b012",
+      "p0034.b013",
+      "p0034.b014",
+      "p0034.b015",
+      "p0034.b016",
+      "p0034.b017",
+      "p0034.b018",
+      "p0034.b019",
+      "p0034.b020",
+      "p0034.b021",
+      "p0034.b022",
+      "p0034.b023",
+      "p0034.b024",
+      "p0034.b025",
+      "p0034.b026"
+    ]
+  },
+  "build_meta": null
+}

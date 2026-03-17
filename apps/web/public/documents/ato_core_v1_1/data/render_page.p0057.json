@@ -1,0 +1,528 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0057",
+    "title": "Casualties",
+    "section_path": [],
+    "source_page_number": 57
+  },
+  "nav": {
+    "prev": "p0056",
+    "next": "p0058",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0057.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Casualties",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battles, especially lost ones, can be grim affairs. During the Casual-ties step, note the loss of any Titans on the Argo Sheet.Also during this step, you discard all Conditions, Condition tokens and tokens on Titan Sheets (like Ambrosia, Modifier tokens, etc.). Note that some game elements and Conditions may have ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Battle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " effects. Make sure you have resolved all of these effects be-fore you discard these Condition cards.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Battle effect.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Tides of Fate",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battles push both the Argonauts and their Titans to their limits. As a consequence, debts accrued with the Moirai are partially paid.Tides of Fate mechanics affect both Argonauts and the Argo itself. Each Argonaut resets their Triskelion values to triple ‘0’. As for the Argo, you lower its  value by the indicated number. In Cycle I, this is usually -2 .",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Shuffling the Exploration Deck",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Finally, as the Battle Aftermath comes to a close, the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " catches new wind in its sails (or current in its turbines). New opportunities await!As a result, during the aftermath of every Timeline Battle, you should shuffle all Exploration cards removed from the Exploration deck as a result of the Timeline Battle Special Disposal Effect back into the deck. This way, you have refreshed the Exploration deck!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Final Battle",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If your current Cycle has a final Battle, if there is no specific After-math, note Casualties and perform Tides of Fate.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Additional Battle Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Death in Battle",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unlike Argonauts, Titans are expendable. In most cases, when you die in Battle you only lose the Titan you are currently junctioned with. This Titan is then removed from the Battle Board (note its loss on the Argo Sheet) and cannot be used in any way. Do not discard its Conditions and tokens or reset its Triskelion stats until instructed to do so (see Casualties, p. 56).However, Story Events, as well as some especially brutal effects, may result in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argonaut dying",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". In that case, consult the current Cycle’s Rude Awakening Special Event. Remember that Argonaut Death happens ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " when explicitly stated!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: Never discard or destroy the Argonaut Sheets of de-ceased Argonauts, as some events might reference them later!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many Ways to Die",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "There are many ways to die in Battles! The most common are draw-ing a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Disemboweled",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Trauma card or a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You died ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Obol card. But there are many possible instances of death, including:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "cards or another death-inducing card.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "example in Obol Draw, p. 42).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "(so, in most cases, 5 or more tokens)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b025",
+      "children": [
+        {
+          "kind": "text",
+          "text": "placed to (see Displace on p. 63).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b026",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mercy Rule",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b027",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a challenging game, but in the face of a Titan’s death, it offers a glimmer of respite in the form of this Mercy Rule. If a Titan dies:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b029",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Responses elicited by that Attack.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b031",
+      "children": [
+        {
+          "kind": "text",
+          "text": "going all lingering Attack effects and After Attack effects tar-geting that Titan. Conversely, if a Titan dies, but the Attack has an effect that is separate from the Target or has other Targets, those effects should still be resolved. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b032",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Round Timing Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b033",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some Primordial Traits,  cards and abilities may introduce ef-fects that trigger at specific moments during the Primordial Round or Titan Round. These include:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Start of Battle: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve this effect after you finish Battle Setup, but before the first Round begins.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Battle:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve this effect when the Battle ends (regardless of its outcome), before you proceed to the Battle Aftermath.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve this effect after you resolve the effect it refers to (or, in some cases, when you begin to resolve it), but before any other actions or effects.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If an effect triggers “When you draw a Trauma card,” it activates immediately after you draw the card but before you resolve it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When you are about to: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Occurs immediately before you resolve the effect that is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "about to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " happen (i.e. if an ability is triggered “when you are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "about to die",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ",” it activates after another effect instructs you to die, but before it is actually resolved).Note that it does not invalidate the effect that triggered it unless explicitly stated otherwise, even if it causes a Chain Break (e.g. if you resolve an Attack triggered by a “When you are about to die” effect, it causes a Chain Break—no further effects of this Attack are resolved, but it does not allow you to avoid death itself). Any other effects and abilities with a specific trigger must be resolved after the trigger occurs, before resolving any effects other than the ones caused or enabled by it.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0057.b034",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Bonus Attacks",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0057.b035",
+      "children": [
+        {
+          "kind": "text",
+          "text": "A Bonus Attack is an effect that allows you to perform an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "immedi-ate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Attack, often outside of your turn. Most Bonus Attacks cause a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Chain Break",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see exception below). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "For a Bonus Attack you may declare an exhausted weapon as your active weapon.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you do, unexhaust it, then continue the Attack. During a Bonus Attack you ",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.marker_dark"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0057",
+    "block_refs": [
+      "p0057.b001",
+      "p0057.b002",
+      "p0057.b003",
+      "p0057.b004",
+      "p0057.b005",
+      "p0057.b006",
+      "p0057.b007",
+      "p0057.b008",
+      "p0057.b009",
+      "p0057.b010",
+      "p0057.b011",
+      "p0057.b012",
+      "p0057.b013",
+      "p0057.b014",
+      "p0057.b015",
+      "p0057.b016",
+      "p0057.b017",
+      "p0057.b018",
+      "p0057.b019",
+      "p0057.b020",
+      "p0057.b021",
+      "p0057.b022",
+      "p0057.b023",
+      "p0057.b024",
+      "p0057.b025",
+      "p0057.b026",
+      "p0057.b027",
+      "p0057.b028",
+      "p0057.b029",
+      "p0057.b030",
+      "p0057.b031",
+      "p0057.b032",
+      "p0057.b033",
+      "p0057.b034",
+      "p0057.b035"
+    ]
+  },
+  "build_meta": null
+}

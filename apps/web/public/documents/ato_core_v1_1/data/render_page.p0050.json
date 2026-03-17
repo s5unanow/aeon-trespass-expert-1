@@ -1,0 +1,428 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0050",
+    "title": "2. Raise Rage  and Check Priority Target",
+    "section_path": [],
+    "source_page_number": 50
+  },
+  "nav": {
+    "prev": "p0049",
+    "next": "p0051",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0050.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "An Attack with a Reach 2 weaponAn Attack with a Ranged 3-4 weapon",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0050.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "2. Raise Rage  and Check Priority Target",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0050.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Raise your ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rage",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " value by 1. Then, if your  is higher than the Priority Target’s , you become the new ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Gain the  token.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0050.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "3. Attack Roll",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0050.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Roll a number of (d10) Attack dice equal to the  value of your weapon. Increase the result of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Attack die by your weapon’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Precision bonus",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Remember that you can use ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Opening tokens ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "from the Kratos Pool to gain additional Precision (see Kratos To-kens on p. 45). You can also ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "re-roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " your dice by paying  or using other abilities and effects that provide Attack re-rolls (see Dice Re-rolls on p. 8).Each die with a result ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "equal to or higher",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " than the Primordial’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "To Hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " value is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you hit with all your Attack dice, it is con-sidered a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "full hit ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and activates all ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "“Full hit:”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abilities (except ones on inactive weapons). Note that not all",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " “Full hit”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abilities activate immediately. If they denote a specific timing condition, they take effect at that time (see Ability Usage, p. 60).All dice that are not hits are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "misses",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you miss with all your At-tack dice, it is considered a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "full miss",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Go straight to step 9 (Clear the Kratos Pool), without resolving any further Attack steps, then activate all ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "“Full miss:”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abilities (except ones on inactive weapons) and immediately end the Attack.Note that some  cards have additional effects that activate based on the result of your Attack Roll.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember: A natural ‘10’ is always a hit and a natural ‘1’ is al-ways a miss no matter how many positive or negative Precision modifiers you apply.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0050.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Crit die",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0050.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Whenever you perform an Attack or Evasion Roll, one of the dice you roll must always be the white Crit die. If you roll only one die, it is always the Crit die. The Crit die is used to simulate strokes of luck, as well as unexpected failures. Whenever you roll a natural (i.e. before applying any modifiers) ‘10’ on the Crit die, you gain a “Crit Chance” for this Attack. During a Titan Attack, a Crit Chance may turn your Wound into a Critical Wound! If you successful-ly wound the Primordial while you have a Crit Chance, ignore all other responses and instead resolve the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Critical",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "fail to wound",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", resolve Responses as normal.Some  cards, Titan Sheets and Mnemos cards introduce other crit effects during and outside of attacking. These refer ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to the result on the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Crit die ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and they include:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crit Chance:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve this effect if you roll a natural ‘10’ in the At-tack Roll (on top of gaining the “Crit Chance” as normal).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crit Miss: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve this effect if you roll a natural ‘1’ in the Attack Roll. You may re-roll this die as normal (using  or other effects), but ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crit Miss effects",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " must be resolved nonetheless. If you re-roll the Crit die and roll a natural ‘1’ again, resolve any Crit Miss effects an additional time.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crit Evade: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve this effect if you roll a natural ‘10’ in the Eva-sion Roll.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crit Evade Fail:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve this effect if you roll a natural ‘1’ in the Evasion Roll. You may re-roll this die as normal (using  or other effects), but Crit Evade Fail effects must be resolved nonetheless. If you re-roll  the Crit die and roll a natural ‘1’ again, resolve any Crit Evade Fail effects an additional time.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0050.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4. First Ability Window",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0050.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Activate applicable abilities from your Titan’s Kratos Table, Mne-mos cards, your active weapon and any other non-weapon  cards equipped on your Titan. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Onlythe attacking Titan",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " may activate abilities during this window, unless explicitly stated otherwise.Abilities used during this window will influence your own Attack. These mostly include abilities that allow you to change your Titan’s positioning or push the Primordial (such as Vault or Pushback X). Some rare abilities may also allow you to add Kratos tokens for yourself (such as Auto-break X), but most Kratos token abilities are used during the second ability window (see Kratos Tokens, p. 45). To learn more about each ability’s timing, see the Keywords List on p. 63 or the back of your Titan Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0050.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "5. Draw BP Card",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0050.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordials are giant monsters from some Other Place and their wholly alien biology reflects that. Their bodies are as varied as they are grotesque, and that is represented by the BP cards.Draw the top card from the BP deck and reveal it. Notice the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "roman numeral ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "in the center of the card back. This number indicates the level of the BP card. So, although the BP deck is kept facedown, you get some sense of how tough the next BP card will be to wound.If at any point the BP or AI decks would be empty (for example when all cards from that deck are on the corresponding discard pile) after resolving the current action, shuffle the discard pile into the deck.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0050",
+    "block_refs": [
+      "p0050.b001",
+      "p0050.b002",
+      "p0050.b003",
+      "p0050.b004",
+      "p0050.b005",
+      "p0050.b006",
+      "p0050.b007",
+      "p0050.b008",
+      "p0050.b009",
+      "p0050.b010",
+      "p0050.b011"
+    ]
+  },
+  "build_meta": null
+}

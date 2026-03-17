@@ -1,0 +1,389 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0011",
+    "title": "Campaign Win and Lose Conditions",
+    "section_path": [],
+    "source_page_number": 11
+  },
+  "nav": {
+    "prev": "p0010",
+    "next": "p0012",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0011.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Crew",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represents the strength of the able-bodied members of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "’s crew, be it sailors, warriors, philosophers, academ-ics and so on. A high Crew value (6 for Cycle I) means the city-ship is fully staffed, while a low value (such as 1) means it’s run by a skeleton crew. Losing too much Crew will lead to a campaign loss (see Campaign Win and Lose Conditions, p. 10).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hull",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represents the integrity of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "’s hull, its general sea-worthiness. A high Hull value (5 for Cycle I) means the city-ship is running at full capacity, while a low value (such as 1) means it’s close to sinking. Losing too much Hull will lead to a campaign loss.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represents the collective destiny of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and its crew. The more you try to bend the fates in your favor, the more resistance the Moirai will put up. Unlike Hull and Crew, and exactly like the Triskelion stats (see p. 11), a low Argo Fate value (0) means you’re doing great, while high value (such as 9) means you’ve pushed your luck too far and can expect a reckoning. Gain-ing Argo Fate over 9 will lead to a campaign loss.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Knowledge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represents the collective knowledge about the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and the state of the world. It’s a cumulative stat that will only ever go up. Argo Knowledge is directly tied to the Inward Odyssey Story card. Whenever you gain an Argo Knowledge point, you will trigger the next Inward Odyssey adventure. During each Cycle you can gain a maximum of 20 Argo Knowledge, with each of these tied to a unique adventure. When you finish one Cycle and start the next one, you will skip all unresolved adventures and move to the next Inward Odyssey card, so be sure to collect that knowledge!",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crew",
+          "alt": "Crew"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.hull",
+          "alt": "Hull"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.argo_fate",
+          "alt": "Argo_fate"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.argo_knowledge",
+          "alt": "Argo_knowledge"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0011.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Campaign Win and Lose Conditions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0011.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The players’ ultimate goal is to reach the end of the current Cy-cle’s plot, represented by its Story cards. As the story unfolds, your goals should become clear. You only win if a Story Paragraph ex-plicitly says so.There are, however, quite a few ways for the Campaign to end in a game over before the Argonauts reach their objective. These include:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0011.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "goes to 0. It’s generally easier to lose and gain  than it is to lose and gain .",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0011.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When you reach some of the conditions listed above, the game will direct you to a story paragraph that informs you how to proceed. If you are not directed to a specific paragraph, see ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "CampaignLoss",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in your current Storybook.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0011.b012",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Argonauts",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0011.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", players take the roles of newly awak-ened Argonauts, the only people capable of controlling the mighty Titans. There are always exactly 4 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "active Argonauts",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", no matter how many players take part in a campaign. If you play with a small-er group, distribute the Argonauts between players as evenly as possible. The player controlling a given Argonaut always has the final say in all decisions regarding that Argonaut.Each Argonaut uses a separate Argonaut Sheet, an Argonaut Por-trait card (with a Skill bonus) and a Triskelion dial. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "There are no Argonaut miniatures!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When they are awakened, the Argonauts are amnesiacs, with no recollection of their prior life. However, during the game, they will acquire Mnemos cards that show them glimpses of their past (see Mnemoses, p. 29). They may also acquire Fated Mnemos cards, which represent specific traumas or vices.During Battles, the players will use their Argonauts in conjunction with a Titan Sheet (see Titan Sheet on p. 44).",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.crew",
+          "alt": "Crew"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.hull",
+          "alt": "Hull"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.argo_fate",
+          "alt": "Argo_fate"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.argo_knowledge",
+          "alt": "Argo_knowledge"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0011.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argonaut Sheet",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0011.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Argonaut Sheet, just like the Argo Sheet, is used to track pro-gress, but for a given Argonaut. Here, you will write your char-acter’s name (from the Argonaut Portrait card or one devised by you) and keep track of your Mnemos and Fated Mnemos cards and their respective progress, your Skill bonuses and note any unusual things, boons and penalties that may apply to your character (you put these under Boons, Afflictions and Notes).The Katharsis space is only used once you reach the end of a Mne-mos storyline (see Resolved Mnemoses and Katharsis on p. 30).The Triskelion space is used to save your Triskelion stats between game sessions (see below and Saving the Campaign on p. 22).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argonaut Sheet",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argonaut Sheet Skills CourageCunningEnduranceFuryWillWisdom Abilities  Mnemos DangerRageFateName:Player:Katharsis415268379110415268379210",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.argo_fate",
+          "alt": "Argo_fate"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.argo_knowledge",
+          "alt": "Argo_knowledge"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0011.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argonaut Death",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0011.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unlike many other adventure games, your heroes are not immortal and Argonaut deaths, though rare, will happen. In such a case, con-sult the Rude Awakening Special Event of your current Cycle, it will instruct you on how to create a new Argonaut.Remember that your Argonaut dies only when explicitly stated or when any of their Triskelion stats goes over 9 outside of Battle (see Triskelion p. 11).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: Never discard or destroy the Argonaut Sheets of de-ceased Argonauts, as some events might reference them later! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0011.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argonaut Retirement",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0011.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some story effects may cause an Argonaut to leave the Argo. When it happens, take a new Argonaut Sheet, draw a new Portrait card (or simply choose a Skill you would like to apply the +1 bonus to) and draw a new Mnemos card from the Mnemos Vault.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.crew",
+    "concept.hull",
+    "concept.argo_fate",
+    "concept.argo_knowledge",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0011",
+    "block_refs": [
+      "p0011.b001",
+      "p0011.b002",
+      "p0011.b003",
+      "p0011.b004",
+      "p0011.b005",
+      "p0011.b006",
+      "p0011.b007",
+      "p0011.b008",
+      "p0011.b009",
+      "p0011.b010",
+      "p0011.b011",
+      "p0011.b012",
+      "p0011.b013",
+      "p0011.b014",
+      "p0011.b015",
+      "p0011.b016",
+      "p0011.b017",
+      "p0011.b018",
+      "p0011.b019"
+    ]
+  },
+  "build_meta": null
+}

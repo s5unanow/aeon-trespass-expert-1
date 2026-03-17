@@ -1,0 +1,361 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0008",
+    "title": "Important Game Rules",
+    "section_path": [],
+    "source_page_number": 8
+  },
+  "nav": {
+    "prev": "p0007",
+    "next": "p0009",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0008.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Important Game Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a big game, so it’s easy to get lost. That’s why we’ve taken some of the most important game rules, the golden rules if you will, and put them in a section of their own here, at the start of the Rulebook!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Cruel Fates Rule",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If you are unable to find the answer to a rules or timing conflict, re-solve the conflict in the manner that the you perceive as the worst possible at that moment, and continue with the game.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b005",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Rules Precedence",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In case of a rules conflict, cards and sheets take precedence over books. Cycle-specific rules found in Storybooks take precedence over the Rulebook. Specific rules take precedence over general rules.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b007",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Game Elements",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Game elements include all physical components of the game as well as story passages and notes.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Game Phases",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If you’re not in the Adventure Phase or the Battle Phase, you’re in the Voyage Phase.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b011",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Immediate Effects",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If an effect is followed by the word ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "immediately",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " it must be resolved the moment it is triggered and takes precedence over any other lingering effects as well as overruling any conflicting rules.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b013",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Ignore and Disable",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many game effects will instruct you to “Ignore” or “Disable” other rules, effects or game elements.When you are instructed to ignore something, you simply do not resolve any of its effects.If the ignore effects is activated, it affects only a specific instance (e.g. “ignore this gain,” “ignore this loss”). If the ignore effect is passive, the game element is ignored whenever the ignore effect is triggered (e.g. if a Titan has a weapon with an “ignore Wound Responses” effect, this Titan ignores Wound Responses whenever it is using this ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card as an active weapon).“Disable” on the other hand completely deactivates a rule, effect or game element. When you are instructed to disable something, all Titans as well as the Primordial ignore this effect (or all effects associated with it in case of rules and game elements). Unless in-structed otherwise, Disable lasts until the end of Battle.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b015",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Instead",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The word “Instead” always implies that the corresponding effect is resolved in place of a different effect.If the effect resolved “instead” is an improved or otherwise modi-fied variant of another effect, it replaces this effect ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and does not influence any other effects of this element (e.g. “Opening 2 in-stead” on a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card means that the value of its original “Open-ing” keyword changes to 2, but the rest of its ability box remains unchanged).If the effect resolved “instead” is triggered by an effect you are “about to” resolve, it substitutes this effect (e.g. an effect that states “When you are about to die from an Instant Death effect, resolve an Obol Draw instead”, the original Instant Death effect is ignored and the player resolves ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Obol Draw effect).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b017",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "May",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If an effect includes the word “may”, it is not mandatory and you can choose not to resolve it. All effects that ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "do not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " include the word “may” must be resolved to their full extent (if possible) each time they are triggered.Resolve all parts of an effect that can be resolved, while skipping any parts that are impossible (i.e. if an effect instructs you to “lose -1 and stand up” when you are not knocked down, you still lower your . Similarly, if your  is already 0, you cannot lower it fur-ther, but you still stand up if you are knocked down).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Active abilities (both Titan and Technology) are only trig-gered if you decide to pay their cost. When you do, however, you must resolve the entire ability text unless preceded by the words “you may.” To learn more, see Ability Usage (p. 60) and Technology Usage (p. 18).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0008.b019",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resolution Order",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0008.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If more than one effect is triggered at the same time (e.g. “End of Primordial Round”, “during the second ability window”, etc.) you can choose the order in which these effects are resolved, unless explicitly stated otherwise. If any of these effects invalidate the conditions triggering another pending effect, that effect is no longer resolved.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " An Earthshaker Titan has an ability that allows you to place 1 Opening and 1 Break token into the Kratos Pool if you’re attacking the Primordial while the Kratos Pool is emp-ty. You also have a Mnemos card that grants -1  when at-tacking while the Kratos Pool is empty. If you decide to resolve the Mnemos card first, and then place tokens into the pool, you benefit from both of these effects. If, however, for some reason you did not want to lower your  value, you could instead resolve the Earthshaker’s ability first, invalidating the Mnemos card ability.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0008",
+    "block_refs": [
+      "p0008.b001",
+      "p0008.b002",
+      "p0008.b003",
+      "p0008.b004",
+      "p0008.b005",
+      "p0008.b006",
+      "p0008.b007",
+      "p0008.b008",
+      "p0008.b009",
+      "p0008.b010",
+      "p0008.b011",
+      "p0008.b012",
+      "p0008.b013",
+      "p0008.b014",
+      "p0008.b015",
+      "p0008.b016",
+      "p0008.b017",
+      "p0008.b018",
+      "p0008.b019",
+      "p0008.b020"
+    ]
+  },
+  "build_meta": null
+}

@@ -1,0 +1,304 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0004",
+    "title": "Introduction",
+    "section_path": [],
+    "source_page_number": 4
+  },
+  "nav": {
+    "prev": "p0003",
+    "next": "p0005",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0004.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Introduction",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0004.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "What is Aeon Trespass: Odyssey?",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0004.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a game about adventure, exploration and fierce battles against giant monsters. It’s a cooperative board-game experience for 1–4 players played over multiple sessions making up a campaign called a Cycle. It combines elements of both adventure and civilization-building games. You will travel around Ancient Greece aboard a giant city-ship known as the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", go on adventures, develop new technologies, craft new weapons and gear, train your Argonauts, create new Titans, do battle with Pri-mordials, and much, much more.You ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "win",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " by following the story and defeating its main villain (or villains) or solving a crisis. You lose if your crew abandons you, your ship gets destroyed, you tempt fate too much, the villains ful-fill their own plot or time runs out. There are many ways to lose, but only a handful of paths to victory.During ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Battles",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", you must cooperate to defeat a giant Primordial boss type monster controlled by a sophisticated AI system. Out-side of Battles, you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Voyage",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " across a region of Hellas, exploring, gathering resources, advancing your knowledge and engaging in diplomacy. And, of course, you go on ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adventures",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "! These use choice chain and choice matrix mechanics to track your decisions throughout the game. These decisions matter and will have a dras-tic impact on your campaign, as well as future play sessions, cam-paigns and playthroughs.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odysse",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "y is not a legacy game, but it uses some legacy systems such as gradual mechanic introduction, secret con-tent and consequences for subsequent playthroughs (no compo-nent destruction though!). There are several Cycles in the game box, each with its own distinct story arc, feel, and mechanics. The Cycles create a greater narrative whole and lead into each other, so you should start with ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cycle I: Truth of the Labyrinth",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".All in all,",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " offers hundreds of hours of unique game content, countless secrets to uncover and an unprec-edented scale. Take it slowly and savor the journey. We’ve thought long and hard about what to call this genre-bending game. At the end of the day, it defies strict categorization. It’s simply an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "game!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0004.b004",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Using this Book",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0004.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "This ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rulebook",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is not meant to teach you the basics of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Tres-pass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you are new to the game, use the Learn to Play book instead and play the Tutorial that will introduce game ele-ments and rules necessary to start playing step by step.This Rulebook is meant as a reference for specific rules, providing a detailed explanation, additional examples and clarification. The Rulebook has been divided into sections, including the rules for the main Phases of the game:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\tImportant Game Rules:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " All the basic game information, includ-ing player characters, main statistics and win/lose conditions.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\tCampaign Basics:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " A detailed breakdown of the Campaign Round with all the Steps and Phases.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\tVoyage Phase:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Rules concerning the Voyage map and all the game elements connected to it. If you are currently not resolv-ing any Encounters on the Battle Board or going on an Adven-ture, you are in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Voyage Phase",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\tAdventure Phase:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Rules concerning Adventures, be they Main Story, hub adventures or even R&R! If you are currently reading through a Storybook passage, you are in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adventure Phase",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5.\tBattle Phase:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Rules concerning Battle encounters. If you are currently resolving a Primordial encounter on the Battle Board, you are in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Battle Phase",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.\tMnestis Theatre: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "All rules concerning the Mnestis Theatre game mode, including the Tree of Knowledge and Mnestis rewards.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " There are a number of sealed envelopes in the game box. Do not open these unless specifically instructed to! If you’re not sure you’re instructed to open an envelope, you aren’t! Don’t spoil the fun for yourself! These are spread throughout all three Cycles and you might not even encounter them on your first play-through, so be patient!",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0004",
+    "block_refs": [
+      "p0004.b001",
+      "p0004.b002",
+      "p0004.b003",
+      "p0004.b004",
+      "p0004.b005"
+    ]
+  },
+  "build_meta": null
+}

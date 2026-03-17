@@ -1,0 +1,286 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0030",
+    "title": "Special Events",
+    "section_path": [],
+    "source_page_number": 30
+  },
+  "nav": {
+    "prev": "p0029",
+    "next": "p0031",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0030.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Pharos Delve is a game of push your luck. It’s always worth it to start a Delve, but sometimes you will need to walk away: it’s better to run with nothing, than stay and lose. There are 15 cards in a standard Major Trauma deck. There’s a pair of each: ‘1s’, ‘2s’, ‘3s’, ‘4s’, ‘5s’, ‘6s’ and ‘7s’, and a single ‘8’.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0030.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Special Events",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0030.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Special Events are a broad category for unique, usually short and one of a kind adventures. There are no specific rules concerning Special Events. When instructed to resolve a Special Event, simply find an appropriately named passage in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Special Events",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " chapter of your current Storybook and read it.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0030.b004",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Adventures",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0030.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey is a big game, full of exploration, discov-ery, surprises and secrets. In effect, you may encounter other types of adventures along the way (in the core game and expansions). These adventures will provide any additional rules required to re-solve them.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0030.b006",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Additional Adventure Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0030.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemoses",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0030.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Although the Argonauts do not remember their pasts, certain Sto-ry Events and Adventures may trigger flashbacks of their defining moments. These fragmented memories are represented by Mne-mos cards. They not only allow you to learn more about your char-acter’s past, but also give access to unique abilities that can be later improved by collecting Mnemos nodes.WisdomBAN Mnemos 415268379110415268379210415268379310415268379410415268379510415268379610Siren survivorM003When you gain a Mnemos, find the associated Mnemos card in the game box and write its title on your Argonaut Sheet, in the ap-propriate space. Then, write the paragraph number of the first Mnemos Breakthroughs (see below) above the Breakthrough sym-bol on the corresponding Mnemos track. From then on, you gain access to this card’s Level 1 ability.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0030.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0030.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "On the back of a Mnemos card you will find a title and an illustra-tion, as well as a cryptic note as to its nature. On its front, the card shows the Cycle number ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", three Mnemos levels, each with a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "cor-responding ability2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Breakthrough paragraph number3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", as well as ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Skill bonuses4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " for your Argonaut and the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos traits5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "52341",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You gain access to the Level 1 ability as soon as you gain the Mne-mos card, while Level 2 and Level 3 abilities are unlocked, respec-tively, by reaching the first and second Mnemos Breakthroughs.The Skill bonuses are simply applied onto your Argonaut Sheet, right after you gained the Mnemos card. They are permanent, as long as you have the Mnemos card.The Mnemos traits have no inherent effect, but they are used to determine if you gain a Mnemos node from a hub adventure (see below).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0030.b011",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Nodes",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0030.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos nodes are like experience points for your individual Mne-mos cards. Each Mnemos progress track goes from 1 to 10 nodes. At certain thresholds (called Breakthroughs) you will experience a Mnemos adventure that further illuminates your past, as well as unlocks the next Mnemos Ability (using abilities will be described in further detail in the Battle Phase section of the Rulebook, on p. 33).You gain Mnemos nodes from various game elements, but the most common source of nodes is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "hub adventures",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". To gain a Mnemos node from a hub adventure, you simply need to match one of the Mnemos’s traits to the adventure’s trait, found on the right of the adventure title.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example of an adventure with the Gods trait",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When you are about to resolve a hub adventure, first each Argo-naut with a Mnemos card ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "with the corresponding trait",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " gains 1 node for that Mnemos. Mark the leftmost empty node on the Argo-naut Sheet next to this Mnemos’s title.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important! This way an Argonaut can only gain 1 node per ad-venture, regardless of the number of Mnemos cards with match-ing traits they have.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0030",
+    "block_refs": [
+      "p0030.b001",
+      "p0030.b002",
+      "p0030.b003",
+      "p0030.b004",
+      "p0030.b005",
+      "p0030.b006",
+      "p0030.b007",
+      "p0030.b008",
+      "p0030.b009",
+      "p0030.b010",
+      "p0030.b011",
+      "p0030.b012"
+    ]
+  },
+  "build_meta": null
+}

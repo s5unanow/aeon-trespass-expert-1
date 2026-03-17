@@ -1,0 +1,322 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0010",
+    "title": "Campaign Basics",
+    "section_path": [],
+    "source_page_number": 10
+  },
+  "nav": {
+    "prev": "p0009",
+    "next": "p0011",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0010.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Campaign Basics",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0010.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Argo",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0010.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is the giant mysterious city-ship made of metal that you use to move around Hellas. The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " holds many secrets, some of which will be revealed during the main story, while others are restricted to Inward Odyssey progress (p. 27) or are hidden even more securely...In the game, the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is represented by the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " miniature that you move on the map. The Argo miniature is always on a Map tile.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0010.b004",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argo Sheet",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0010.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Argo Sheet serves as the main means of tracking your cam-paign progress, resources, diplomacy, available Titans and other campaign statistics. Whenever you gain or lose any of these sta-tistics, adjust their value in the corresponding section of the Argo Sheet. You will find a print-friendly version of the Argo Sheet at the back of every Storybook (they’re different), as well as on our official website.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0010.b006",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Timeline",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0010.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Timeline serves to organize your campaign, giving it a defini-tive beginning, middle and end. Game time is measured in days and each day is a Campaign Round. The Timeline has some fixed events on it, while other events will be added by the players. T0T1T2T3T4T5T6/00010203040506Cackle Special Event41424344454647484950515253Voyage Timeline",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0010.b008",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Progress and Doom",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0010.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "To succeed in a campaign of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you will be required to complete various tasks designated by the Story cards. Many of them will require you to collect ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Progress",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " represented by the  tokens. For each Progress you gain, you must place 1 token on your current Story card or the Inward Odyssey card (see Inward Odyssey on p. 27). Progress is primarily gained by explor-ing the map and resolving Adventures.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is the opposite of Progress. For each  you gain, you must place 1  token on your current Doom card. These cards represent the encroachment of evil forces. Reaching the end of the last Doom card will inevitably lead to your failure.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some rare effects may cause Unavoidable . It means that this  gain cannot be mitigated or lowered in any way.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom tokenProgress token",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0010.b010",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Basic Argo Stats",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0010.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Argo Sheet tracks various statistics throughout the game. These will be described as they become relevant throughout this Rulebook and the various Storybooks. However, a few key statis-tics are important enough to warrant a separate section. These are collectively called Basic Argo Stats and include ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crew",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hull",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Knowledge ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".Argo KnowledgeStrangers Doom Card TitansTitan Limit/Crew6543210If 0 or less, see 0562Hull543210If 0 or less, see 0415Story Card Map Tile AA Limit",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0010",
+    "block_refs": [
+      "p0010.b001",
+      "p0010.b002",
+      "p0010.b003",
+      "p0010.b004",
+      "p0010.b005",
+      "p0010.b006",
+      "p0010.b007",
+      "p0010.b008",
+      "p0010.b009",
+      "p0010.b010",
+      "p0010.b011"
+    ]
+  },
+  "build_meta": null
+}

@@ -1,0 +1,450 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0056",
+    "title": "Argo Abilities",
+    "section_path": [],
+    "source_page_number": 56
+  },
+  "nav": {
+    "prev": "p0055",
+    "next": "p0057",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0056.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argo Abilities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argo Abilities are Technologies that can be actively used during the Battle. They represent various ways the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "’s crew can support the Titans from afar. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Ability",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0056.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argo Ability (AA) Limit",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "All Argo battle operations are coordinated from the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Excursion Pro-pylon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Thus, the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "current Propylon Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " dictates how many Argo Abilities you can field during a single Battle. Note this number on your Argo Sheet as the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AA Limit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". The basic ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Excursion Propylon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "has a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "limit oftwo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you later research another Propylon tech-nology, apply ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the one that allows you to use the most Argo Abilities and change the AA Limit on your Argo Sheet accordingly.You choose which Argo Abilities to prepare during Battle Setup (see p. 34).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Propylon Technology",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0056.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argo Ability Charges",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Argo Ability has a number of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "charges",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " it gains at the start of Battle. Each time you use an Argo Ability, discard one of its charg-es. Once an Argo Ability is out of charges, it cannot be used again during the current Battle.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0056.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Using Argo Abilities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In general, Argo Abilities can be used during any moment of the Titan Round (excluding in the middle of other actions, unless ex-plicitly stated otherwise). Some Argo Abilities, however, specify an exact moment when they can be used, either during the Titan Round or the Primordial Round.You can use as many of the active Argo Abilities each Round as you want, but each one can be used only once per Round. After using an Argo Ability, exhaust it to denote that it has already been used this Round.Argo Abilities automatically unexhaust at the end of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Round—that is both the Primordial Round and the Titan Round.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0056.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle Aftermath",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Battle has a specific Aftermath, described in the Battle Sce-nario. Depending on whether you won or lost the Battle, the Af-termath will award you with bonuses and rewards or sometimes saddle you with additional penalties. Each Battle has unique conse-quences, but there are some more general effects of an Aftermath, including gaining Primordial resources, tallying Casualties, observ-ing the Tides of Fate and shuffling the Exploration deck.Remember to resolve any End of Battle effects before you proceed to Battle Aftermath.Also note that you can use a Sisyphus Tear before you proceed to Battle Aftermath to replay the Battle, if you’re not satisified with its outcome (see Sisyphus Tears, p. 57).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0056.b011",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gaining Primordial Resources",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Battle nets you Primordial resources from the Wounds you’ve dealt. Remember that you gain resources even for Battles you have lost! Generally, you gain the resources shown in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "upper right corner ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "of every BP card on the Wound Stack times the Primordial level (i.e. if you fought a Level 3 Hekaton, each BP card will award you with 3 times the resources shown).You also gain one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Core",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " re-source for each ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "BP III",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card in the Wound Stack (remember that only ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "critically wounded",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " BP III cards land in the Wound Stack). The Core type always corresponds to the Primordial you were facing (e.g. if you faced the Hekaton, you gain a Hekaton Core).In addition, if you fight a Level 3 or 4 Primordial, you will gain bo-nus Ambrosia resources, denoted in the corresponding level stat block on the Primordial Sheet.If there are any generic Single Wounds and/or Double Wounds in the stack, first combine the BP discard pile with the BP deck and separate them by level. Then, for each set aside Single Wound, draw a random BP of the lowest available level and gain its resources. For each set aside Double Wound, draw a random BP III and gain its resources (you do not gain Cores for these BP III cards).Note the gained Primordial resources on your Argo Sheet.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0056.b013",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Primordial Resources",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Battle Aftermath may indicate you gain additional or other Pri-mordial resources. If it does, follow the specific instructions.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0056.b015",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resources for Death Blows",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0056.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If the Primordial was slain by a Crit Effect",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that caused it to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "die instantly",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (a Death Blow) and the number of Wounds in the Wound Stack is lower than its  value, add the top card from the BP deck to the Wound Stack, as if it was wounded (use Double Wounds instead of BP III cards). If that causes the number of Wounds to become equal to or higher than , proceed to gaining resourc-es as normal. Otherwise, escalate the BP deck as if you have just wounded that BP card, then repeat this process. Continue until the number of Wounds in the Wound Stack is equal to or higher than the Primordial’s  value.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resources example",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0056",
+    "block_refs": [
+      "p0056.b001",
+      "p0056.b002",
+      "p0056.b003",
+      "p0056.b004",
+      "p0056.b005",
+      "p0056.b006",
+      "p0056.b007",
+      "p0056.b008",
+      "p0056.b009",
+      "p0056.b010",
+      "p0056.b011",
+      "p0056.b012",
+      "p0056.b013",
+      "p0056.b014",
+      "p0056.b015",
+      "p0056.b016"
+    ]
+  },
+  "build_meta": null
+}

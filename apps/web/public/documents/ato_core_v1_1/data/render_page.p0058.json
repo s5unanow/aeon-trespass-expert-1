@@ -1,0 +1,373 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0058",
+    "title": "Bonus Attacks during Titan Attacks (Follow-ups)",
+    "section_path": [],
+    "source_page_number": 58
+  },
+  "nav": {
+    "prev": "p0057",
+    "next": "p0059",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0058.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "may ignore Attack Responses (see p. 51) to this Attack. When the Attack ends, continue resolving the Battle Round that was inter-rupted by the Bonus Attack. All other restrictions and rules of a combat action apply.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Bonus Attacks during Titan Attacks (Follow-ups)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "A Bonus Attack during a Titan Attack is also called a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Follow-up Titan Attack ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and will be resolved ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "immediately after",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the current Titan Attack ends. In other words, it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "does not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cause a Chain Break. All other Bonus Attack rules apply.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Instant Death Effects",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Instant Death effects are special effects of Primordial Attacks and Responses that cause a Titan to die immediately, without drawing an Obol or a Trauma card.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Death Blows",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some rare Critical effects may allow you to slay the Primordial before dealing all required Wounds. These may be referred to as ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Death Blows ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(see p. 55).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Retreat",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Most Battles give the players a chance to retreat if they think their chances of winning are slim. Usually, a retreat is only possible after at least 2 Titans died in the current Battle. If Retreat is possible, you may retreat at the beginning of a Titan Round (before you take any Titan turns). For all purposes a retreat is treated as a defeat, but allows you to save the remaining Titans to fight another day. Note that a retreat is not possible in most Battles against Adver-saries and Boss Primordials.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sisyphus Tears",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sisyphus Tears are mysterious Divine resources of unknown ori-gin. When a Battle ends, players as a group may decide to spend one Sisyphus Tear to replay the Battle, without suffering any of its consequences: do not lose Titans, gain  or resolve End of Battle effects. Simply restore the game to the state from before the Battle (that includes any spent Godforms and Summonings). You can freely change your Titans and loadouts and prepared Argo Abilities before you attempt the Battle again. Note, however, that Sisyphus Tears are an extremely rare resource and should not be spent lightly.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Wise Providence",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Wise Providence is a rare ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "temporary boon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that gives you an edge in combat. If you have it, you gain the initiative for the upcoming Battle—that Battle begins with a Titan Round instead of the Pri-mordial Round. In general, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wise Providence impacts the next Timeline Battle only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "—note it on the Timeline, on the day of the first upcoming Timeline Battle. Sometimes, however, Wise Provi-dence may refer to a specific Battle in which case it should be noted in the “Boons, Afflictions, Notes” section of the Argo Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Conditions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Various effects (like Trauma cards or Primordi-al Attacks) cause Titans and Argonauts to gain Condition cards that apply additional negative or positive effects. When you gain a Condition card, place it next to your Titan Sheet. Some Conditions may also require you to gain ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Con-dition tokens",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". These are always placed on the corresponding Condition card. All Conditions are discarded during the Casualties step of the Battle Aftermath. Some Conditions may have additional ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Battle:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " effects that trigger if you were unable to get rid of them before the Battle ended.If you gain a Condition card outside of Battle, it remains active until the end of the next Battle.Some cards instruct you to gain a certain Condition, while others become Conditions themselves (See Moiros and Kratos cards be-low). You cannot gain a Condition if you already have it, but some Conditions may trigger additional effects if you would gain them again.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Condition card",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Afflictions and Boons",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "As with Conditions, Afflictions introduce additional effects and are more closely tied to the Argonauts. Unlike Conditions, they are not represented by physical components. Instead, whenever you gain an Affliction, write it down in the “Afflictions” section of your Ar-gonaut Sheet. Afflictions are bad things, like curses and sickness, that plague the Argonaut. Afflictions are permanent—you can only remove them if an effect explicitly tells you to!Boons, though rarer, are the positive equivalent of Afflictions. These can come in the form of personal traits, equipment or allies! You also note these on your Argonaut Sheets.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0058.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Moiros Cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0058.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Moiros cards represent the consequences of trying to cheat fate one too many times. When you push it too far, it pushes back. When any effect requires you to raise your  over 9 you must immediately shuffle the Moiros deck and draw a random Moiros card. Keep this card until the end of Battle (even if its effects aren’t lasting).There may be other effects that instruct you to draw a Moiros card. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Be warned: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The consequences of your recklessness may not only affect you, but also other Titans or even the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " itself!Also, if you are ever forced to draw another Moiros card while you already have one, you die instead!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Moiros cardCondition token",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0058",
+    "block_refs": [
+      "p0058.b001",
+      "p0058.b002",
+      "p0058.b003",
+      "p0058.b004",
+      "p0058.b005",
+      "p0058.b006",
+      "p0058.b007",
+      "p0058.b008",
+      "p0058.b009",
+      "p0058.b010",
+      "p0058.b011",
+      "p0058.b012",
+      "p0058.b013",
+      "p0058.b014",
+      "p0058.b015",
+      "p0058.b016",
+      "p0058.b017",
+      "p0058.b018",
+      "p0058.b019"
+    ]
+  },
+  "build_meta": null
+}

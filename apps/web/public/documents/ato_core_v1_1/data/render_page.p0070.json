@@ -1,0 +1,391 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0070",
+    "title": "Mnestis Theatre",
+    "section_path": [],
+    "source_page_number": 70
+  },
+  "nav": {
+    "prev": "p0069",
+    "next": "p0071",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0070.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Theatre",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Warning: This section contains spoilers! If you want to preserve your fun, read this section only after you gain access to the Mnestis Theatre Technology in the campaign!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0070.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "What is the Mnestis Theatre?",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnestis Theatre",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a special place, both in-world, onboard the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", and for Aeon Trespass: Odyssey as a game. You will develop the Mnestis Theatre towards the end of Cycle I: Truth of the Lab-yrinth as a means to an end. But those means will quickly outgrow that end and you’ll find yourself coming back to the Theatre for more and more.The Mnestis Theatre is a location, a theatre of memories. It can show you your past in vivid detail, but it can also create visions of possible futures based on the roads not taken. The Mnestis The-atre has its own, hidden story spread throughout all Cycles. It will serve as a place of reflection and self-actualization for the Argo-nauts. It will also allow you to delve into alternate “dream realms” to face higher level, more powerful and more deadly versions of the Primordials you’ve defeated before.The Mnestis Theatre is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "special game mode",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that allows you to test your mettle against powerful variants of the Primordials encoun-tered in your campaign of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". It is designed to be the ultimate challenge. To triumph, you will need to use all the tools at your disposal and exploit every weakness in the Pri-mordial’s defense.Although it may seem real at first glance, everything that happens in the Mnestis Theatre is just a “simulation”—a play of sorts—that allows your Argonauts to relive their combat encounters and take part in simulated scenarios through the eyes of make-believe per-sonas they create for themselves.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: The Mnestis Theatre is a bonus game mode and is not needed to complete the game! Though it will offer ascending materials you can use in your campaigns, the game is balanced without them, thus they are not required to beat any of the Cy-cles! No grinding in Aeon Trespass: Odyssey!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0070.b005",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Accessibility",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Mnestis Theatre is a game mode ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "separate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", but not complete-ly disconnected, from the main campaign. In the Theatre, you can ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " battle Primordials",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from the Cycles that you have already completed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Furthermore, you only have access to , Mnemoses, Argo Abilities and Titans that you have unlocked in your campaign or in the Mnestis Theatre (see Mnestis Loadouts on p. 70).The main way to experience the Mnestis Theatre is through the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tree of Knowledge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", which further restricts your battle choices by creating a sprawling, tailored progression path through the many Primordial encounters and levels.However, the good news is that you do not suffer any consequenc-es of Mnestis Battles—you do not lose Titans, gain  or risk per-manently losing your  or Mnemos cards. You also do not gain , Mnemos nodes or normal Primordial resources! No effects or game elements carry over from the Mnestis Theatre to your cam-paign unless ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "explicitly stated",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0070.b007",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Battles",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In the Mnestis Theatre, you’ll be fighting more powerful versions of normal Primordials. Specifically, Levels 5 to 9 of Regular Primor-dials, and Levels 2 to 9 of Boss and Adversary Primordials. If you tackle them through the Tree of Knowledge, you will also gain their unique rewards (only once per Primordial per Level!): ascending materials, ascended Cores and Mnestis Gear!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0070.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Tree of Knowledge",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tree of Knowledge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see on p. 74-75) is the intended way to experience the Mnestis Theatre. It’s a branching inverted “tower” of Battles. Whenever you beat a given Battle for the first time, you get its Mnestis rewards, mark it as completed and unlock one or more connected Battles. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "All Primordials from a given Cycle are locked in the Mnestis Theatre until you actually complete that Cycle!Note that some Mnestis Battles are locked ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "by more than one",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " other Battle. You can access such a Battle only if you have won all the preceding Battles!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0070.b011",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unlocking Adversaries",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "For the purposes of unlocking Primordials, treat the Hermesian Pursuer as a Cycle I Primordial and Burden as a Cycle II Primordial (e.g. you can only choose to battle the Hermesian Pursuer level III if you have won the Temenos level II and Labyrinthauros level VI Battles and only if you have already finished Cycle I).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0070.b013",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Custom Battles",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Alternatively, you can just play any Battle, with any encountered Primordial, at any level you’ve unlocked, using any combination of Gear, Mnemoses and Titans you gained access to in the campaign. In other words, you play a",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " custom game",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".You can even battle lower level Primordials. Always wanted to stomp that Level 1 Hekaton with Cycle III endgame gear? Well, now you can.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "However, only progression through the Tree of Knowledge grants you Mnestis rewards.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " This means that, although you can play a custom battle for the fun of it, you will not get any rewards from it: not only the normal ones, that are not available in Mnestis Theatre from the onset, but also no Mnestis resources, no Loot drops, no Mnestis Gear. Nothing! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0070.b015",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "General Mnestis Theatre Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0070.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "These are the cardinal rules of the Mnestis Theatre all Mnestis Bat-tles follow.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\tNymphs are banned:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Summonings are disabled for all Mnes-tis Theatre Battles. Although the Theatre is able to recreate almost everything, it struggles with the unknowable nature of the Nymphs.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\tAvailable assets:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You have access to all Argo Abilities, Gear, Ti-tans and Mnemos cards that you unlocked during the course ",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0070",
+    "block_refs": [
+      "p0070.b001",
+      "p0070.b002",
+      "p0070.b003",
+      "p0070.b004",
+      "p0070.b005",
+      "p0070.b006",
+      "p0070.b007",
+      "p0070.b008",
+      "p0070.b009",
+      "p0070.b010",
+      "p0070.b011",
+      "p0070.b012",
+      "p0070.b013",
+      "p0070.b014",
+      "p0070.b015",
+      "p0070.b016"
+    ]
+  },
+  "build_meta": null
+}

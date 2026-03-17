@@ -1,0 +1,39 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0001",
+    "title": "RULEBOOK",
+    "section_path": [],
+    "source_page_number": 1
+  },
+  "nav": {
+    "prev": null,
+    "next": "p0002",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "RULEBOOK",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0001",
+    "block_refs": [
+      "p0001.b001"
+    ]
+  },
+  "build_meta": null
+}

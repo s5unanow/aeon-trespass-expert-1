@@ -1,0 +1,51 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0054",
+    "title": "Wounded card:BP deckAI deck",
+    "section_path": [],
+    "source_page_number": 54
+  },
+  "nav": {
+    "prev": "p0053",
+    "next": "p0055",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0054.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Wounded card:BP deckAI deck",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0054.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "BP I  (Place the wounded card on the Wound Stack)Shuffle a BP II card from the Escalation deck into the BP deck.Search the AI deck and the AI discard pile for an AI I card and remove it from the Battle. If you removed a card from the discard pile, shuffle the discard pile into the AI deck. Shuf-fle an AI II card from the Escalation deck into the AI deck.BP II(Place the wounded card on the Wound Stack)Shuffle a BP III card from the Escalation deck into the BP deck. Search the AI deck and the AI discard pile for an AI II card and remove it from the Battle. If you removed a card from the discard pile, shuffle the discard pile into the AI deck. Shuf-fle an AI III card from the Escalation deck into the AI deck.BP III  (Set the wounded card aside and place a generic Double Wound on the Wound Stack)Search the BP deck and BP discard pile for the lowest level BP card and remove it from the Battle. If you removed a card from the discard pile, shuffle the discard pile into the deck. Shuf-fle a BP III card from the Escalation deck into the BP deck. Place the set aside BP III card at the bottom of the BP deck.Search the AI deck and the AI discard pile for the lowest level AI card and remove it from the Battle. If you removed a card from the discard pile, shuffle the discard into the AI deck. Shuf-fle an AI III card from the Escalation deck into the AI deck.BP III – Critical Wound(Place the wounded card on the Wound Stack – it counts as  2 Wounds)Search the BP deck and BP discard pile for the lowest level BP card and remove it from the Battle. If you removed a card from the dis-card pile, shuffle the discard pile into the deck. Shuffle two BP III cards from the Escalation deck into the BP deck.BP III – When there are no BP III cards in the Escalation decks.(Set the wounded card aside and place a generic Double Wound on the Wound Stack)Shuffle the BP discard pile into the BP deck. Place the set aside BP III card at the bottom of the BP deck.Search the AI deck and the AI discard pile for the lowest level AI card and remove it from the Battle. If you removed a card from the discard pile, shuffle the discard into the AI deck. Shuf-fle an AI III card from the Escalation deck into the AI deck. If there are no level III AI cards in the Escalation decks, instead the Primordi-al gains 1 bonus per Wound, in the following order:+1  dealt per hit, +1 , +1 , +1 .BP III – Critical Wound, when there are no BP III cards in the Escalation decks.(Place the wounded card on the Wound Stack – it counts as  2 Wounds)Shuffle the BP discard pile into the BP deck.Note: the BP deck will have 1 card less.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0054",
+    "block_refs": [
+      "p0054.b001",
+      "p0054.b002"
+    ]
+  },
+  "build_meta": null
+}

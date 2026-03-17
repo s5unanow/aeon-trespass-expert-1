@@ -1,0 +1,552 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0023",
+    "title": "9. End Step",
+    "section_path": [],
+    "source_page_number": 23
+  },
+  "nav": {
+    "prev": "p0022",
+    "next": "p0024",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0023.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "9. End Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the End Step, if you are on an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unexplored",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tile, it simply be-comes ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Explored",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". This means that if you’re already on an Explored tile, nothing happens.During the first game session, knowing which tiles are Explored is easy: it’s basically all the tiles revealed on the table. The rest of the Map tiles are Unexplored. However, once you play a few more game sessions, saving the game in between, it will become a bit tougher to keep track of. That’s why it’s important to remember how to save the Map properly (see Saving the Campaign below).After you resolve the End Step, proceed to the next Campaign Round.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_a",
+          "alt": "Board_tile_a"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0023.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Additional Voyage Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "This section covers all the additional rules governing the Voyage Phase that are not specifically tied to any of the Campaign Round Steps.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0023.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Saving the Campaign",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is an odyssey of a game. You won’t finish it in one game session. You won’t finish it in two. In fact, a single Cycle will take you dozens of hours. To manage that, you will need to periodically ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "save the campaign",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". This section provides the rules on how to do it.At the end of any Campaign Round Step, you may decide to save your game progress and end your current game session. We advise saving at the end of the End Step so that you can begin your next game at the start of a new day. To save your game, take out the Argo Sheet and perform the following steps:Note the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "number and letter",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of your current ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " along with the number of gathered  tokens (in parentheses).Note the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "number and letter",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of your current ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " along with the number of gathered  tokens (in parentheses).Note the number of the current Map tile (the one the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is on).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0023.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argo Sheet",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0023.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Cycle I:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0023.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Truth of the Labyrinth",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": " Doom Card ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story Card ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Map Tile ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0023.b015",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1A (3)1B (0)27",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Campaign save example",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "On the last page of the sheet, to the right of the Choice Matrix, note any other Map tile numbers ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "relevant to the current Story and Doom",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards, as well as all numbers of Map tiles with ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "other game elements",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", such as tokens and tiles, placed on them (e.g. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lab-yrinthian Templemarker",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "), as well as the current position of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adversary",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".Note the current ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Triskelion",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " stats of each Argonaut on their re-spective Argonaut Sheets.Store your ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Technology deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ",",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Projects deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Armory deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos Vault",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", gained ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Clue cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and all un-locked ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Godform",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Summoning",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards separate from other com-ponents of the same type, to easily access them when you resume your campaign.Place all Explored Map tiles into the Explored Map space in the game insert. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Always remember to put all the Explored Map tiles in this space! During the next game session, you may re-construct the whole Map at the start or only reconstruct the parts relevant for that game session (the Map is big!).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If you don’t reconstruct the whole Map, be sure to leave all the unused Explored Map tiles in the Explored Map space in the game insert.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_a",
+          "alt": "Board_tile_a"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_i",
+          "alt": "Board_tile_i"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0023.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Nymph Summonings",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the course of a campaign, you will unlock various mythic allies that can be summoned to turn the tide of Battle or enable game-changing Voyage abilities. As such, the usage of these allies is extremely limited.Each Nymph Summoning has a corresponding tarot-sized Sum-moning card and a matching Summoning token. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Summoning cardExplored Map space in the game insert",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_i",
+          "alt": "Board_tile_i"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_a",
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_i",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0023",
+    "block_refs": [
+      "p0023.b001",
+      "p0023.b002",
+      "p0023.b003",
+      "p0023.b004",
+      "p0023.b005",
+      "p0023.b006",
+      "p0023.b007",
+      "p0023.b008",
+      "p0023.b009",
+      "p0023.b010",
+      "p0023.b012",
+      "p0023.b014",
+      "p0023.b015",
+      "p0023.b016",
+      "p0023.b017",
+      "p0023.b018"
+    ]
+  },
+  "build_meta": null
+}

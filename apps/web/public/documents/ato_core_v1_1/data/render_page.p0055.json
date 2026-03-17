@@ -1,0 +1,421 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0055",
+    "title": "Escalations Outside of Wounding",
+    "section_path": [],
+    "source_page_number": 55
+  },
+  "nav": {
+    "prev": "p0054",
+    "next": "p0056",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0055.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Escalations Outside of Wounding",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some effects, like Responses, may instruct you to escalate the Pri-mordial even if there is no Wound or even outside of a Titan Attack. If that happens, simply perform the Escalation as normal, with the following ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exception:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as no Wound was dealt, you will have to re-move the lowest BP card from the Battle.  ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Escalations Outside of Battle",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some effects may instruct you to escalate the Primordial outside of Battle (usually using the phrase “Escalate X,” where X is the number of Escalations to perform). If that happens, note it, then perform the Escalations during Battle Setup, as normal, with the following ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exception:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as no Wound was dealt, you will have to re-move the lowest BP card from the Battle.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Escalating Only One Deck",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some rare effects may instruct you to escalate only the BP or AI deck. If that happens, simply escalate the indicated deck and leave the other deck as is.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "9. Clear the Kratos Pool",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "After resolving Responses and performing Escalation, remove ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "all",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "tokens from the Kratos Pool, unless explicitly instructed other-wise. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Remember to always make use of as many Kratos tokens as possible, since they will be removed at the end of the Attack anyway.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "10. Second Ability Window",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Activate applicable abilities from your Titan’s Kratos Table, Mne-mos cards, your active weapon and any other non-weapon  cards equipped on your Titan. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Onlythe attacking Titan",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " may activate abilities during this window, unless explicitly stated otherwise.During this ability window, you can use most of the abilities that place tokens in the Kratos Pool (such as Opening X or Break X) to support your fellow players. Note that you often have a choice what tokens to leave, so look at the back of the top BP card and make an informed choice. To learn more about each ability’s tim-ing, see the Keywords List on p. 63 or the back of your Titan Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b011",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "End of the Titan Attack and Attack Responses",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "After you resolve the second ability window, leaving Kratos tokens for other players, the current Titan Attack ends. If the BP card was not wounded (did not go to the Wound Stack), discard it now. If the attack triggered an Attack Response, like a Primordial Attack or a Follow-up Titan Attack, it will happen next, starting a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "new attack sequence",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Designer’s note: Though initiated as part of a Titan At-tack, Attack Responses are resolved after the current Attack ends to avoid conflict with other effects.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b013",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "End of Titan Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sometimes a game effect will trigger at the end of the Titan Round. In that case, it’s resolved after all of the Titans take their turns. If there is more than one end of Round effect, the players may re-solve these effects in any order they like.Also remember to unexhaust Argo Abilities (see Argo Abilities on p. 55 for details).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b015",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Actions in the Titan Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Complicated Actions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sometimes, especially complicated maneuvers (like the Rush abil-ity) will require you to use both the and  together. That’s what we call a complicated  action. Complicated actions can be performed only if the Titan can perform both and , and during their turn still has at least one unused action of each type.There is no “action space” between both parts of a complicated action, which means you cannot perform other actions during a complicated action, even if the two parts of the complicated action are easily distinguishable (for example, the Rush ability allows a Titan to move at increased Speed and Attack with additional force; though you could easily tell when the movement part of Rush ends and the Attack part begins, you cannot perform any additional ac-tions in between, even free actions). ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_texture_light_b",
+          "alt": "Art_texture_light_b"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Free Actions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many active abilities, as well as some other game effects, are acti-vated as a free action. This means that, as long as you fulfill all of its requirements, you may perform this action in your turn, with-out spending your  or . During your turn, you can perform as many ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "different",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " free actions as you want, but each of them can only be performed once per turn. You can perform free actions before your  and  or between them but not during another action.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Unless you gain additional actions in some way, a Ti-tan’s turn ends ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "immediately",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " once you’ve performed both  and , leaving you no “end of turn” window to use free actions.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0055.b020",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Reactions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0055.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The rarest type of Titan action is the Reaction, denoted by the re-action  symbol. Reaction are powerful effects that may be per-formed during a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "window of opportunity",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see p. 43). As windows of opportunity are generally found on AI cards,",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Reactions allow Ti-tans to act during the Primordial Round!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Whenever you encounter the  symbol preceding an instruction, you may activate  abilities immediately ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "before",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you resolve that in-struction. During a single  each Titan may activate any number of  abilities in any order, but no more than one ability with the same name per Titan (see Named Abilities, p. 61).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AI card with windows of opportunity and a Gear card with  a reaction ability",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.art_texture_light_b"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0055",
+    "block_refs": [
+      "p0055.b001",
+      "p0055.b002",
+      "p0055.b003",
+      "p0055.b004",
+      "p0055.b005",
+      "p0055.b006",
+      "p0055.b007",
+      "p0055.b008",
+      "p0055.b009",
+      "p0055.b010",
+      "p0055.b011",
+      "p0055.b012",
+      "p0055.b013",
+      "p0055.b014",
+      "p0055.b015",
+      "p0055.b016",
+      "p0055.b017",
+      "p0055.b018",
+      "p0055.b019",
+      "p0055.b020",
+      "p0055.b021"
+    ]
+  },
+  "build_meta": null
+}

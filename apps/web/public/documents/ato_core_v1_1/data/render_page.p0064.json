@@ -1,0 +1,570 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0064",
+    "title": "Keywords",
+    "section_path": [],
+    "source_page_number": 64
+  },
+  "nav": {
+    "prev": "p0063",
+    "next": "p0065",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0064.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Keywords",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "A keyword is an ability which conveys specific common rules. Each keyword has its own rules which can be found on the keyword list below. These are all ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "named abilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and follow all of the rules and restrictions of named abilities.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0064.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Stackable Keywords",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Abilities do not usually stack (for example, if you have the Dead-ly keyword on your weapon and gain it from another source, you cannot use both of them to roll two additional Crit dice). There are, however, some abilities that do stack: unless the ability text says otherwise, every keyword followed by a number is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "stackable keyword",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".You may activate several stackable keyword abilities with the same name at the same time. Their effects then add up and “stack.” For example, two separate Opening 1 abilities would effectively be the same as Opening 2.Keywords that are not followed by a number ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "do not ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "stack.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0064.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Keywords List",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The following list contains keywords common to all Cycles of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Keywords that are introduced in a specific Cy-cle will be described in that Cycle’s Storybook. All of these are ref-erenced in the Master Index (see p. 76).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ambrosia Limit X/+X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Your Ambrosia Limit becomes X or is in-creased by +X. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Ambrosia Limit X does not stack, but all +X bonuses are cumulative.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ascended:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " This  ignores Power Level penalties (irrelevant in Cy-cle I). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Attack Re-roll X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During an Attack Roll, you may re-roll up to X Attack dice with no additional cost. Remember that you can only re-roll each die once, regardless of the re-roll source.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Auto-break X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the first ability window, place X Break tokens in the Kratos Pool (see Break X keyword).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Block X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " While performing an Evasion Roll, treat X successful hits as evaded. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Break X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the second ability window, place X Break to-kens in the Kratos Pool. During the Power Roll step, each Break token in the Kratos Pool allows the attacking Titan to turn 1  symbol into 1 .",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Bypass:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You may move through other Titans. You cannot end your voluntary movement on a space occupied by another Titan.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Carving X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When you wound the Primordial, test Wisdom (8+). On a success, you immediately gain X additional non-Core Primordial resources from that BP card. Note: These resources are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " multi-plied by the Primordial level.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Commit:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " To attack with this weapon, gain +1.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crash:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Titan subjected to Crash gains +1  and suffers Knock-down. A Titan suffers Crash each time a Primordial moves onto or through its space, as well as when any effect forces it to move onto a space with an Obstacle Terrain tile or places an Obstacle Terrain tile on its.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cumbersome:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the second ability window, if you successfully wounded with this weapon, exhaust it. Treat it as a voluntary exhaust.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Deadly: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During an Attack Roll, replace one of your regular Attack dice with an additional Crit die. If you roll only one Attack die, you gain a Crit Chance on a natural 9–10 result instead.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Displace: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move the displaced target to an empty space adjacent to its current position. If a Titan is displaced and there is no space it can be legally displaced to, it dies instead.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diversion:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the second ability window, place a Diver-sion token in the Kratos Pool. An attacking Titan may use a Diversion token from the Kratos Pool to ignore Fail Responses until the end of their Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Dodge: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When you are about to resolve an Evasion Roll, gain +1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion bonus",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " for this roll.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doomed:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During this Primordial Attack, Titans cannot re-roll the Evasion Roll or Judgement Test using .",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Elation X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During the second ability window, you may discard X Despair tokens or Ambrosia tokens to place X Opening to-kens in the Kratos Pool (see Opening X keyword).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Escalate X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Escalate ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "X lowest level",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " BP cards (remove each one from the BP deck and shuffle in a card one level higher), one at a time. Then do the same for the AI deck. Do not look at the removed cards.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Frontlines: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If your Titan is dead, at the End of Battle roll a d10. On a ‘1’, your Argonaut dies as well.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Heal: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Take the top card from the Wound Stack and remove it from the Battle. It does not count as a Wound and does not provide re-sources at the end of the Battle.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Heartseeker:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the Draw BP card step of the Attack, you may look at the top two BP cards and choose which one to attack. Shuffle the other card back into the deck.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hide:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in front of the Primordial, you may activate this ability at the end of your turn to become Hidden. If you have the PT token, pass it to the Titan with the highest ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rage",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " other than you. As long as you are Hidden, you have +1 Evasion and +1 Precision. You stop being Hidden if you move in front of the Primordial, gain the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token, after the second ability window of your Attack or at the end of your next turn. Place a generic token on the game element granting you Hide as a reminder.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockback X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " See box.Move the affected miniature X spaces directly away from the source of Knockback in a straight line (or in a specified direction in case of directional Knockback; see examples on the next page). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Target only if it is within the Attack’s effective range (adjacent for normal Attacks, in the designated zone for Zone Attacks, within X spaces for Ranged X Attacks, etc.).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "the Attacker only if they are within adjacency.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "through except Obstacles.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "stacle Terrain tile, stop its movement, remove the Terrain tile from the Battle Board and place the Titan in its space, then the Titan suffers ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crash",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Obstacle, it stops on an adjacent space right before the Ob-stacle, then suffers ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crash",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "and miniatures without hindrance. They destroy any Terrain tiles (except Indestructible) they move through and cause Crash and Unavoidable Knockback to Titans as normal.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ing either the second ability window. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0064.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "continues to move along the edge, if possible, away from the source of Knockback. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diversion token",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0064",
+    "block_refs": [
+      "p0064.b001",
+      "p0064.b002",
+      "p0064.b003",
+      "p0064.b004",
+      "p0064.b005",
+      "p0064.b006",
+      "p0064.b007",
+      "p0064.b008",
+      "p0064.b009",
+      "p0064.b010",
+      "p0064.b011",
+      "p0064.b012",
+      "p0064.b013",
+      "p0064.b014",
+      "p0064.b015",
+      "p0064.b016",
+      "p0064.b017",
+      "p0064.b018",
+      "p0064.b019",
+      "p0064.b020",
+      "p0064.b021",
+      "p0064.b022"
+    ]
+  },
+  "build_meta": null
+}

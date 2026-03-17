@@ -1,0 +1,365 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0018",
+    "title": "5. Encounter Step",
+    "section_path": [],
+    "source_page_number": 18
+  },
+  "nav": {
+    "prev": "p0017",
+    "next": "p0019",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0018.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "plored and they become Explored during the End Step (see p. 22). If you move back onto an explored tile, you do not resolve the and  symbols!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0018.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "5. Encounter Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0018.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the Encounter Step, you meet the monstrous, unknowable Primordials, giant beings that invaded Hellas after the death of the Olympian Gods. Only the Argonauts, controlling the mighty Titans, stand a chance of slaying such foes!During this Step, you resolve ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Timeline Battles",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and any other battles noted on the Timeline. If more than one Battle happens on the same day, you may choose the order in which they are resolved.For Timeline Battles, choose which of the two Regular Primordials (shown on the Evolution Track on the Argo Sheet) from your cur-rent Cycle you want to face, then proceed to the corresponding Timeline Battle Setup in the Storybook.For Adversary Battles (see Adversary Activation on p. 16), find the corresponding Battle Setup in the Storybook.Additional Battles will point you to a specific page of the Storybook containing the Battle Setup.Resolving a Battle happens during a Battle Phase. Detailed rules for the Battle Phase can be found on p. 33.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0018.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Campaign Battles Flow",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0018.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Timeline Battles are spaced regularly across the Timeline to give your campaign a certain flow and to order your game sessions. Many things accompany a Timeline Battle such as Primordial Evo-lutions (see Evolution and Battle Tracks, p. 34) and Tides of Fate, which reduce your overall  and reset Triskelions.Primordial Evolutions are particularly important because they mean that, over time, you’ll be facing increasingly harder monsters. As they are tied to the passage of time, you should be always on your toes, advancing your capabilities, researching new Technolo-gies and crafting new powerful Gear.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0018.b006",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6. Advancement Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0018.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a magnificent ship crewed by pretty extraordinary peo-ple! Be it the shipbreakers from the Argo Works, the philosophers from the Last Academy, various merchants coming and going from the Trade Fleet Dock or the Titan Enamotas, everyone is working towards a common goal: the betterment of your lives and the sal-vation of Hellas!During the Advancement Step, you research new Technologies, trade, craft Gear, create new Titans and make use of Argo Facilities.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0018.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Research",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0018.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Technology Cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0018.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Researching Technology is your main way of keeping up with the rapidly evolving Primordials. You research Technology by gaining new Technology cards. These come in a variety of types and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "sizes",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!One thing every Technology card has in common is that it is dou-ble-sided. One side shows a science project, a field of study or hypothesis. Here you will find the Technology’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Requirements",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and learn about other Technologies that will become available for research once you have researched that card, i.e. the Technology cards it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Leads to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". The other side shows the benefits of researching the Technology: these may range from building a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "facility",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that will allow you to craft new ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to gaining unique ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "abilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " useful both in and outside of Battles. Technologies that you have already researched are added to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Technology deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". You gain access to all abilities provided by Tech-nologies in the Technology deck.Technologies that are available for research are added to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Projects deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". You gain no benefits from them but you can freely peek at them to see what you can gain by researching them. When you research a Technology card, immediately add all the Technol-ogy cards it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Leads to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to the Projects deck. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some Technology cards have more than one requirement, so even though they are in your Projects deck, you may research them only when you unlock all of their requirements.Technologies that are neither in the Technology deck nor the Pro-jects deck are considered to be in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reserves",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and should be kept in the game box. They may be added to the Projects deck when you research another Technology or as a result of some other event. We advise you not to look at the Technology cards in the Reserves so as to not spoil the fun!If you parse through some of the Technology cards, you’ll quickly notice they come in two sizes: Regular and Large. The Large cards are also illustrated! What does that mean? This doesn’t have any special effect on the game; both sizes work the same mechanical-ly, but it’s our way of assigning significance to certain Technolo-gies and highlighting the many memorable places on the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "! All Core Technologies are Large cards.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0018.b011",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Technology Types",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0018.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Technologies are divided into three types:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Core Technologies",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are non-researchable. They are gained automatically, usually at the start of the Cycle. These Technol-ogy cards are Large and some of them have Cycle-specific versions, so be sure to use the right card during your campaign!  \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Structural Technologies",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " include Utility Facilities that allow you to mitigate the hardships of the voyage, manage resourc-es, breed new Titans, scout the region and more. \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Battle Technologies ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "include Production Facilities, giving you access to new Gear cards and Argo Abilities, providing unique effects during Battle.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0018",
+    "block_refs": [
+      "p0018.b001",
+      "p0018.b002",
+      "p0018.b003",
+      "p0018.b004",
+      "p0018.b005",
+      "p0018.b006",
+      "p0018.b007",
+      "p0018.b008",
+      "p0018.b009",
+      "p0018.b010",
+      "p0018.b011",
+      "p0018.b012"
+    ]
+  },
+  "build_meta": null
+}

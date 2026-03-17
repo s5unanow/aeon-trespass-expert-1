@@ -1,0 +1,441 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0016",
+    "title": "3. Exploration Step",
+    "section_path": [],
+    "source_page_number": 16
+  },
+  "nav": {
+    "prev": "p0015",
+    "next": "p0017",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0016.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": " Resolve a Timeline Battle. Research a Structural Technology. Research a Battle Technology.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0016.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "3. Exploration Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0016.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the Exploration Step, you (1) resolve all active ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration symbols",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from your current tile, (2) perform an Exploration Draw from the Exploration deck, (3) move the Adversary if required and, occasionally, (4) perform an Acclimation.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0016.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1. Resolving Exploration Symbols",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0016.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Exploration symbols represent predictable elements present in the region, both beneficial and detrimental to your cause, things like wandering Titans, sympathetic allies and nefarious forces.  Exploration symbols are a type of Map symbol, and the most com-mon are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Progress",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". (see Exploration Symbols, p. 14) You can find additional Cycle-specific Exploration symbols in the corresponding Storybooks. Positive Exploration symbols, like ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Progress",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", are active only on ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unexplored tiles ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and as such are only resolved once per tile",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " per Cycle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". This means that if you revisit an Explored tile, you will not gain the associated bonuses again (Tiles become Ex-plored in the End Step, see p. 22). Negative Exploration symbols, like ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", are",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " always active",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", meaning that they are active both on Explored and Unexplored tiles. This means that if you revisit an Explored tile, you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "will always gain the associated penalty! Remember: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During the End Step, if you are on an Unexplored tile, it becomes Explored.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0016.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "2. Resolving an Exploration Draw",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0016.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Exploration deck, always specific to a given Cycle, represents the efforts of your crew, scouts and diplomats at acquiring re-sources, allies and intel. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Exploration Draw is the main source of Mortal resources",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see Resources box on p. 19).To perform an Exploration Draw, start drawing cards from the Ex-ploration Deck. Draw cards from the top of the deck and resolve them one by one until you draw a card that shows the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "stack end symbol",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "lower right corner",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Then, repeat the process, cre-ating a second stack of cards. Note: Cards that have the stack end symbol are usually resource cards. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "This means that each Explora-tion Draw will result in two stacks of Exploration cards, each of which will probably end with a resource card. l324",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration cards are always resolved in the following order:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\tMain Effect:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Main Effect",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of the card, from top to bottom. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\tAdversary activation:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If there is an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adversary symbol",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on the card, resolve the Adversary activation (see p. 16).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\tSpecial Disposal Effect: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If there is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Special Disposal Effect",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", resolve it:",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.marker_dark",
+          "alt": "Marker_dark"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0016.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "aside. It is shuffled back into the Exploration deck after you resolve a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Timeline Battle ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(see Encounter Step, p. 17).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0016.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Note: Conversely, this means that all other Exploration cards are left on the table until the end of the Exploration Draw and that they will be shuffled into the deck.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\tStack Symbol:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If there is a an “End stack” symbol in the lower right corner of the card, end the stack. Otherwise, if there is a “Draw another” symbol there, draw another Exploration card for that stack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End stack symbolDraw another symbol",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "After you end the first stack, draw the second stack (do not shuffle any cards back into the Exploration deck yet!). When you end the second stack, shuffle all drawn Exploration cards that have not been removed from the deck back into the deck.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Some Exploration Card effects can be ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "triggered",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " by your Diplomacy Scores, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " value or other statistics. Only resolve the effects that apply. Unless stated otherwise, Diplo-macy triggers always refer to the Local Faction (see Diplomacy, p. 23). Think of triggers as “intensifiers”. If an effect harms you, a nega-tive trigger will amplify that effect. If you’re gaining something from the Local Faction, a positive trigger will garner you a better reward. Some common Exploration Triggers include:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Argo Fate:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a high  value is usually a bad thing, so be careful!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diplomacy Score:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a Friendly Faction is more likely to help you than a Faction that Denounces you, not to mention being At War with someone!",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.marker_dark"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0016",
+    "block_refs": [
+      "p0016.b001",
+      "p0016.b002",
+      "p0016.b003",
+      "p0016.b004",
+      "p0016.b005",
+      "p0016.b006",
+      "p0016.b007",
+      "p0016.b008",
+      "p0016.b009",
+      "p0016.b010",
+      "p0016.b011"
+    ]
+  },
+  "build_meta": null
+}

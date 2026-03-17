@@ -1,0 +1,286 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0073",
+    "title": "Primordial Cores",
+    "section_path": [],
+    "source_page_number": 73
+  },
+  "nav": {
+    "prev": "p0072",
+    "next": "p0074",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0073.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Cores",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0073.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "You may be tempted to ascend your Guaranteed Loot immediately, but it may be a better idea to reforge it first. It is worth finding out (by checking the Production Technology cards from a correspond-ing Cycle) if the  card you just earned is used as a crafting com-ponent for a more powerful item. If it is, then the Mnestis Theatre gives you an alternate way of reforging these artifacts. Whenever you score a Critical Wound on a BP III card that under normal circumstances would give you a Primordial Core, you may instead immediately craft a  card that requires a Unique  card dropped by the Primordial you are fighting, without paying any ad-ditional crafting costs.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0073.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Gear",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0073.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The toughest Mnestis Battles will award you special Mnestis Gear! These are possibly the most powerful items in the game! Re-member, these are restricted to the Mnestis Theatre; you cannot use these in normal campaign Battles (they’d probably trivialize them...).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0073.b005",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Nymphs",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0073.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Mnestis Theatre is a very odd place. As already mentioned, it cannot simulate the unknowable nature of the Nymphs, making their Summoning during Mnestis Battles impossible. However, the Mnestis Theatre can ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "attract the attention ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "of the Nymphs, especial-ly those that may have never visited the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " before.Therefore, some Mnestis Battles will unlock new Nymph Summon-ings for your campaigns. These Nymphs may have been attainable during normal play, but they were missable. Now you have a chance to gain them again! And yes, you can use these Summonings during normal campaign play!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0073.b007",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnestis Battle Diagrams",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0073.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Generally, for Mnestis Battles you use the Primordial Battle Sce-narios from the Storybooks. For Adversaries and Boss Primordials use their regular Battle setup, not the final narrative Battle Scenar-io. Some Mnestis Traits may introduce alternate Battle Diagrams. You can find these on the next page.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0073.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Skyseer Titan Expansion",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0073.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "And finally, we come to the strangest Mnestis Theatre reward of them all. One that should not exist. And yet, it’s there, for all those who dared to reach out towards the sun and grasp at it during the funding campaign…When you win the appropriate Mnestis Battle, if you have the Sky-seer Expansion, read the following paragraph:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You enter the Mnestis Theatre and the machina does the rest, con-juring up scenes most fantastic. You inhabit your roles and the play starts. Everything goes the way it always does: you battle the dreamt-up Primordial, an impossible challenge but a marginal risk, a way to hone your skills and discover new tactics.As the monster falls to its imaginary death, something unexpected happens. The Mnestis lights dim and go out, and the scene dissi-pates before your very eyes. You’re back in the Theatre chamber, for you never truly left. It was all shadowplay.And yet, amongst you, a fifth Titan now stands, one you do not rec-ognize, but that clearly dons an Antikratos Helm. Their giant fleshy wings spread wide, like a shroud. Their coarse skin has endured much hardship, and is both sunburned and windswept.An inscription on the helm reads: child of the Icarcore, the seer not of time, but of place. But what does that mean?",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gain 1 Skyseer Titan and the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Skyreach",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Horizon’s Edge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards. All of these ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "can",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " be used ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "outside of the Mnestis Theatre",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as well.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0073.b011",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Skyseer Technology",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0073.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Skyseer Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " describes the way you can create more Skyseer class Titans. This Technology can be used during ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "any",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of your campaigns (meaning the Skyseer Titan is not restricted to the Mnestis Theatre). Below, you’ll find the rules for Skyseer Breeding.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Skyseer Breeding: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lose 2 Dreamwalker Titans to note the Skyseer Event on the Timeline, 20 days from now. When you resolve this event, gain a Skyseer Titan. You cannot use this ability again until you resolve this event.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Instant Drop:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Lose 1 Ascended Core and 1 Dreamwalker Titan to immediately gain a Skyseer Titan.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0073",
+    "block_refs": [
+      "p0073.b001",
+      "p0073.b002",
+      "p0073.b003",
+      "p0073.b004",
+      "p0073.b005",
+      "p0073.b006",
+      "p0073.b007",
+      "p0073.b008",
+      "p0073.b009",
+      "p0073.b010",
+      "p0073.b011",
+      "p0073.b012"
+    ]
+  },
+  "build_meta": null
+}

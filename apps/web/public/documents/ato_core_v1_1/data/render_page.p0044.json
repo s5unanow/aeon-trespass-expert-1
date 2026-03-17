@@ -1,0 +1,343 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0044",
+    "title": "Gaining Danger over ‘9’",
+    "section_path": [],
+    "source_page_number": 44
+  },
+  "nav": {
+    "prev": "p0043",
+    "next": "p0045",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0044.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Important: If you are ever forced to perform two or more Obol Draws at the same time, you die.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " A knocked down Solon is Trampled by the Labyrinthau-ros causing him to draw an Obol. However, suffering Crash makes him raise  over 9, also resulting in an Obol Draw. He would effectively have to draw an Obol from two sources at once, there-fore he dies instead.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0044.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gaining Danger over ‘9’",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0044.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Though the Triskelion only goes to 9, you can – and will – gain over this value. In such a case, raise  to 9, but for the purpose of the following Trauma Draw treat it as if it was increased to the actual value you would reach.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Note: Raising your  over 9 dur-ing the battle ALWAYS triggers a Trauma/Obol Draw, even if it wasn’t dealt during an Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Herodotus is at 8 . The Hekaton stops its move on Herodotus’s space, causing Crash and Unavoidable Knockback. The Crash does not trigger a Trauma Draw; the player simply raises their  to 9. However, the Unavoidable Knockback sends Herodotus flying into a Column, which causes a second Crash. This second Crash causes him to go over 9 . As the player can-not physically raise  on the Triskelion over 9, they leave it at 9. However, Herodotus must resolve a Trauma Draw and draw an Obol because this effect would cause him to raise his Danger to 10. If he survives this draw, he will again be treated as having a value of 9, since that is the maximum  value on the Triskelion.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0044.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Massive Danger",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0044.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "You thought drawing an Obol from two cards was dire. Think again. In Aeon Trespass: Odyssey, there’s always a deeper depth…In general, the Obol deck consists of two cards: one allows you to survive, while the other spells a gruesome death. However, if you gain so much  that you go way above your Obol threshold, you may be forced to add additional Obol cards into the deck, severely decreasing your chances of surviving an Obol Draw. If your Danger temporarily goes up to 14 or higher, remember to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "always",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " consult the Massive Danger Chart below.A card added to the Obol deck as a result of Massive Danger is add-ed to the deck immediately ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "before",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " resolving an Obol Draw and it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "remains there until the end of Battle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", effectively making it harder for all Titans to survive subsequent Obol Draws, even if only one of them suffered Massive Danger.14+ : Add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You died horribly ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "card to the Obol deck.18+ : Add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Your gruesome death becomes legend",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card to the Obol deck.21+ : Add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Your death transcends reality",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card to the Obol deck.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "These effects stack, i.e. if a Primordial Attack leaves you with a hypothetical 21  and no Obols have been added to the deck so far, add all of them.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Philoctera is at 8  when the Hekaton attacks, deal-ing a further +8 . She raises her  value to 9 and resolves an Obol Draw, temporarily treating her  as 16. This causes her to go over the first Massive Danger threshold and she must add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You died horribly",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Obol card to the Obol deck. She survives it and at a later point she is attacked again! She suffers +6 , causing her to treat her current  value as 15. She goes over the Massive Danger threshold again, but doesn’t add any more Obols to the deck, since the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You died horribly",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Obol card is already there. For her to add another Obol card to the deck, she’d have to go over the next Massive Danger threshold, and for that her  level would have to be raised from 9 to 18 in a single blow.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0044.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Window of Opportunity",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0044.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Most AI cards, as well as some BP cards and other game elements, give the players an opportunity to react to the situation, most often a Primordial Attack, outside of their normal turn. These “action spaces” are called ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Windows of Opportunity",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and are represented by the  symbol. On AI cards, the  symbol will be always placed on the left side of the card, next to the Attack effect.Whenever you encounter the  symbol preceding an AI instruction, you may ac-tivate ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reaction",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abilities immediately ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "before",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you resolve that instruction. Dur-ing a single window of opportunity each Titan may activate any number of abilities in any order, but no more than one ability with the same name per Titan (see Named Abilities, p. 61).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0044.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Chain Break",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0044.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some Trauma cards, abilities and other game elements may allow Titans to act during a Primordial or Titan Attack, slightly disrupting the natural flow of the game. If the disruption is big enough, it may trigger a Chain Break, immediately ending the original Attack and invalidating all of its lingering Attack effects, as well as After Attack effects.If a Titan Bonus Attack or additional Primordial Attack is triggered ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "during a Primordial Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (for example, by a Trauma card), it causes a Chain Break and the original Primordial Attack immedi-ately ends.If any game element instructs you to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Chain Break",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", the Attack cur-rently taking place (if any) immediately ends.In case of Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Zone Attacks",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", a Chain Break performed by one Titan ignores any lingering Attack effects and After Attack ef-fects ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "for this Titan only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Any other Target of the Attack must still resolve them.If, for any reason, a Titan moves out of its weapon’s effective range after it attacks the Primordial but before it performs the Power Roll, it causes a Chain Break and the Attack immediately ends.If a Chain Break happens during a Titan Attack, resolve the Clear the Kratos Pool and second ability window steps (see Combat Ac-tion, p. 48) before you proceed to resolving the effect that caused the Chain Break.Note: Titan Bonus Attacks triggered during a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are con-sidered to be Follow-up Attacks. They do not cause Chain Breaks and are instead resolved after you finish resolving the current At-tack, much like Primordial “Attack Responses.”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Window of Opportunity example",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0044",
+    "block_refs": [
+      "p0044.b001",
+      "p0044.b002",
+      "p0044.b003",
+      "p0044.b004",
+      "p0044.b005",
+      "p0044.b006",
+      "p0044.b007",
+      "p0044.b008",
+      "p0044.b009"
+    ]
+  },
+  "build_meta": null
+}

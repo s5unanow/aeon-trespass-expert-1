@@ -1,0 +1,547 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0019",
+    "title": "Technology Breakthroughs",
+    "section_path": [],
+    "source_page_number": 19
+  },
+  "nav": {
+    "prev": "p0018",
+    "next": "p0020",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0019.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Technology Breakthroughs",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "New Technology cards can only be researched on specific Timeline days called ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Technology Breakthroughs",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". These are marked by the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Structural Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " symbol and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the Battle Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "symbol.If there is a  or  symbol on your current day on the Timeline, you may research ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "one",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Technology of the appropriate type from the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Projects deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Structural and Battle Technology progress is com-pletely separate – the Technologies they lead to will always be of the same type.To research a new Technology card, you must fulfill ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "all",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of its re-quirements.Usually, the requirements for researching a Technology card are other Technology cards. However, some Technologies have other requirements. These can include: encountering a specific Primor-dial in Battle, encountering a specific Primordial of a given level in Battle, killing a specific Primordial, having a specific Diplomacy Score with a Faction and more.Once you choose a Technology you want to research, first search the Reserves for all Technology cards it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "leads to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and add them to the Projects deck. Then add the researched card to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Technology deck",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". From this point onward, you gain access to all the benefits and abilities provided by this Technology.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " In general, there is no additional cost to researching a new Technology (besides the time you have to wait to research another one!). If a Technology card has any additional costs or con-ditions, they will be clearly described on the card itself. Some Technologies may require you to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "encounter",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a specific Pri-mordial of a given level in Battle. This means that Technology is gated until the Technological Breakthrough following such Battle. As these are almost always tied to Regular Primordials encoun-tered in Timeline Battles, and the Evolution Tracks of Primordials are fixed, you can calculate when that Technology will become available to you.Some Technologies may require you to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "have a certain number of Map tiles Explored",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". As you can usually Explore one tile per day, you can calculate the earliest date that Technology will become available to you.Some Technologies may require only one of two conditions to be true. If two of the requirements are separated by a capital OR, it means that you must fulfill either of them (e.g. the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Specialized Trireme Weapons Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " requires either ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Teleresuscitation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "OR ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trireme Reach Weapons",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on top of all other requirements).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0019.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gaining Technology Cards and Project Cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0019.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "through Different Means",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sometimes you will gain a Technology card from a source other than a Technology Breakthrough. In that case, you simply add it to your Technology deck (remember to add any Technology cards it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Leads to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to your Projects deck).Sometimes you will be instructed to add a Technology card to the Projects as a result of something other than another Technology’s Leads to box. In that case, you simply add it to your Projects deck. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0019.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Technology Usage",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Technology cards provide access to various benefits and can be used in many different ways, both during and outside of Battle.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0019.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Structural Technologies",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Structural Technologies",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are primarily used outside of Battle. Some of them provide passive (permanent) bonuses or must be resolved the moment they are researched (immediate). Others grant ac-cess to active abilities. If an active ability of a Structural Technolo-gy does not specify when it can be used, it can be used during the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advancement Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Each active Technology ability can be used ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "once per day",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (so once per Campaign Round), with the exception of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Save",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abilities.Below, you’ll find a complete list of the various abilities and bonuses provided by Structural Technologies:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "es. They are",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " always active",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "minder. They",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " do not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " introduce any additional effects of their own. These are primarily Core Technologies designed to ease you into the game or update the status quo for a new Cycle.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "tive Technologies are researched.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": " symbol (except tiles with the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Last Visited City",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token, see p. 13).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "them. The only limit here is one use per ability per game effect (i.e. you cannot use one Save ability to try to mitigate the same -1  loss multiple times, but you can use it again if you suffer another -1  loss on the same day). To learn more, see Gain/Loss Mitigation, p. 24.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Step, unless their effect denotes a specific timing condition.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0019.b022",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle Technologies",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle Technologies",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are either ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Production Facilities ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Abil-ities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Production Facilities give you access to new Gear cards and are only used for crafting. Argo Abilities are used during Battles.For further details on Crafting Gear in Production Facilities, see Crafting Gear (p. 19).When you perform Battle Setup during the Battle Phase, you will decide which Argo Abilities you will prepare for that Battle. The number of Argo Abilities you may simultaneously prepare during a Battle depends on your current Propylon Technology (the basic ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Excursion Propylon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " allows for use of 2 Argo Abilities). For specific rules concerning Argo Ability usage in Battle, see p. 55.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0019.b024",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Trading",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0019.b025",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some game elements such as certain Exploration cards and Tech-nologies may allow you to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trade",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " resources. Each of these effects has a limited number of resource ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exchanges",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you can perform. A single exchange is a trade of one resource type for another re-source type, according to the ratio noted on the card. As a single exchange, you can trade as many units of a resource type as you like. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Traders have different exchange rates. You can usually find the best deals in cities and other highly populated areas.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0019",
+    "block_refs": [
+      "p0019.b001",
+      "p0019.b002",
+      "p0019.b003",
+      "p0019.b004",
+      "p0019.b005",
+      "p0019.b006",
+      "p0019.b007",
+      "p0019.b008",
+      "p0019.b009",
+      "p0019.b010",
+      "p0019.b011",
+      "p0019.b012",
+      "p0019.b013",
+      "p0019.b014",
+      "p0019.b015",
+      "p0019.b016",
+      "p0019.b017",
+      "p0019.b018",
+      "p0019.b019",
+      "p0019.b020",
+      "p0019.b021",
+      "p0019.b022",
+      "p0019.b023",
+      "p0019.b024",
+      "p0019.b025"
+    ]
+  },
+  "build_meta": null
+}

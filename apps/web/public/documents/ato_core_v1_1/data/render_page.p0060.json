@@ -1,0 +1,434 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0060",
+    "title": "Vantage Points",
+    "section_path": [],
+    "source_page_number": 60
+  },
+  "nav": {
+    "prev": "p0059",
+    "next": "p0061",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0060.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Generic token",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Instead, we cut down on the types of tokens included in the game, and created the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "generic tokens",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Whenever there’s an effect that doesn’t use any of the specific tokens, you will be in-structed to use a generic token to track it. You can also use generic tokens to mark exhausted abilities or cards to conserve table space and to mark stacking Modifier tokens (see Modifier Tokens).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0060.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Vantage Points",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Even though Titans are big, Primordials are much much bigger, lumbering monstrosities the size of temples! Some are so big, in fact, that you can climb them. And you will!Some Primordials may allow you to create ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Vantage Points (VPs) ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "– special spaces on top (or inside!) of them. Titans can then climb them to strike vital body parts, avoid Primordial attacks or enable other effects and abilities. Each Primordial’s VP effects are de-scribed on its Primordial Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0060.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Creating VPs",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Most VPs need to be created before they are climbable:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "ed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " before it can be used. In other words, until you “create a VP,” the VP is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "locked",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "remove the interchangeable part of the Primordial miniature and switch it with the Vantage Point part. Alter-natively, if you don’t want to switch the parts, you can use the VP space marked on the Primordial Sheet in-stead. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some hard-to-reach VPs are only represented on the Primordial Sheets.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "create VPs on it by any means. These Primordials simply can-not be climbed!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Interchangeable miniature parts",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0060.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Climbing and Falling from a VP",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If there is an unlocked VP on the Primordial during your turn, you may climb it!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Climbing a VP: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "A Titan adjacent to the Primordial may perform a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Climb test",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as a free action. Simply test the Skill specified on the Primordial Sheet (see Tests in Battle, p. 60). If you succeed, place your Titan on the VP space.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Falling down from a VP:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Primordials don’t stand still. At the end of the Primordial Round, most VPs force you to perform a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hold on ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "test to find out if you fall down. The particular effects of falling from a VP are explained on the Primordial Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0060.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Movement and VPs",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "A Titan may move from a Primordial VP space to a space adjacent to the Primordial using a  or any move-like ability, as if they were adjacent spaces.If a Titan suffers Knockdown or involuntary movement while on a VP space, they must first be displaced to a space adjacent to the Primordial.Only one Titan can occupy a single VP at a given time. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0060.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "VPs, Adjacency and Range",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titans on VPs are considered adjacent ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in range 1 to the Pri-mordial and all Titans adjacent to this Primordial. They measure range to other Titans and game elements from the space occupied by the Primordial that is closest to that Titan or game element.Other Titans adjacent to the Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "are not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " considered to be adjacent to Titans on VPs.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0060.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Awakenings",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Olympians are dead, killed during the first minutes of the Es-chaton. Their worshippers scattered, their temples abandoned, their power waned and left the world. But not completely. When the darkest hour comes and all hope seems lost, you may find it inside yourself: a glimmering ember of the old gods. If you have the audacity to reach for it, if you have the tenacity to contain it, if you have the will to wield it, that ember becomes a spark and that spark becomes a pyre in which you will burn away the darkness!Awakening will provide you with enhanced attributes and very powerful abilities that may break the normal game rules! ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Godform card",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.die_red",
+          "alt": "Die_red"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0060.b020",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unlocking the Awakening Mechanic",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0060.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Transcend your limits and for a brief moment achieve a Godform of one of the fallen Olympians and walk their hallowed ground. Such is the power of the Godform transformations, otherwise known as ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Awakenings",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".Once you gain access to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Forlorn Naos Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", you will un-lock a hidden potential, allowing Titans to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Awaken",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". At this time, you will also permanently add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Awakening",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Grave Trauma to the Trauma deck and switch the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You died",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Obol with its special variant. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When the Titan is on the VP, place its miniature here.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.die_red"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0060",
+    "block_refs": [
+      "p0060.b001",
+      "p0060.b002",
+      "p0060.b003",
+      "p0060.b004",
+      "p0060.b005",
+      "p0060.b006",
+      "p0060.b007",
+      "p0060.b008",
+      "p0060.b009",
+      "p0060.b010",
+      "p0060.b011",
+      "p0060.b012",
+      "p0060.b013",
+      "p0060.b014",
+      "p0060.b015",
+      "p0060.b016",
+      "p0060.b017",
+      "p0060.b018",
+      "p0060.b019",
+      "p0060.b020",
+      "p0060.b021"
+    ]
+  },
+  "build_meta": null
+}

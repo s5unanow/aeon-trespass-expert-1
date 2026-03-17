@@ -1,0 +1,618 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0081",
+    "title": "Last Page Summaries",
+    "section_path": [],
+    "source_page_number": 81
+  },
+  "nav": {
+    "prev": "p0080",
+    "next": "p0082",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0081.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "1. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Declare Attack and Active Weapon (p. 48)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Raise Rage  and check ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (p. 49)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Attack Roll (p. 49)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "First Ability Window (p. 49)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Draw BP card (p. 49)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Roll (p. 50)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.1.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Create the Power Pool",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.2.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Roll the Dice",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.3.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Power Re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.4.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Use  Potentials",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.5. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve the Power Roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Responses (p. 51)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "8.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Wounds and Escalation (p. 51)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "9. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Clear the Kratos Pool (p. 54)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "10.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Second Ability Window (p. 54)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0081.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Last Page Summaries",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0081.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Rage  increases each time you attack, giving you access to addi-tional abilities from the Kratos Table. Whenever your  becomes the highest of any Titan, gain the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token. A  of more than 9 means death.Use Fate  to get re-rolls for Attack Rolls, Evasion Rolls and Skill tests, as well as to pay for powerful abilities. High  may enable ad-ditional negative effects. A  of more than 9 means you must draw a Moiros card. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You cannot use   to re-roll Power dice.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You gain Danger  when you are attacked and from suffering other negative effects. A  of more than 9 usually causes an Obol Draw. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Opening token :",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each Opening token in the Kratos Pool adds +1 to each of your dice results during an Attack Roll.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Break token :",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each Break token in the Kratos Pool turns 1  into 1  during your Power Roll. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Movement Step (always):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Move the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " onto a new tile (p. 13).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Timeline Step (always): ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advance the Timeline (p. 14).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration Step (always):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.Resolve Exploration symbols (p. 15).2.Draw two stacks of cards from the Exploration deck (p. 15).3.Move the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adversary",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (p. 16)4.Perform an Acclimation (if applicable).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Expedition Step (conditional):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If on a tile with an adventure or R&R symbol, consult the Adventure Table and resolve an adventure (p. 16).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Encounter Step (conditional):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If there are any Timeline Battles or Battle Events on the Timeline, resolve them (p. 17).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advancement Step (optional):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Craft Gear, resolve Advancement Events, develop new Technologies and use existing ones (p. 17).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story Step (conditional):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If there are any Story Events on the Time-line, someone has an unresolved Mnemos Breakthrough or the Story progression has been triggered, resolve them (p. 20).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom Step (conditional):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If there are any Doom Events on the Time-line or the Doom progression has been triggered, resolve them (p. 21).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End Step (always):",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you are on an Unexplored tile, it becomes Explored (p. 22).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Battle Board: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Place the Battle Board in the middle of the table.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Decks and tokens:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Shuffle the Trauma decks, the Kratos deck and the Moiros deck. Place all decks in the designated spaces and place Kratos tokens, Attack dice and Power dice within reach of all  players.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argonauts:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each player places their Argonaut Portrait and Mnemos cards in front of them.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Triskelions: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Each player places their Triskelion near their other com-ponents. The Triskelion does not reset at the beginning of Battle; you start with the Triskelion stats you’ve accumulated over the course of the other Phases.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titans:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each player chooses the Titan they will control from the avail-able Titans. If at least four Titans are available, each Argonaut ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "control one Titan. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " It does not have to be the same Titan they controlled in the previous battle. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You cannot take more than one Titan of the same Argo-bred class into Battle.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear Loadouts:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each Titan has limited  card slots: two ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "weapon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "slots, two ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "support",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " slots and one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "armor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " slot. A symbol in the upper left corner of a  card denotes which slot it occupies. You cannot equip  cards that would exceed the available slots of your Titans. Each Titan can only have one copy of the same support  card.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Abilities: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Players choose the Argo Abilities they want to use during the upcoming Battle. You may use as many Argo Ability cards as your Argo Ability (AA) Limit allows. Place the Argo Abilities you have chosen next to the Battle Board, along with the indicated num-ber of Charge tokens.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Place the Primordial Sheet of the Primordial you are about to battle in the designated space near the Battle Board. Place its Routine and Signature cards in the corresponding spaces. Take all of this Primordial’s AI cards and divide them into three decks num-bered I, II and III (you’ll find the roman numeral on the back of the cards). Do the same for the Primordial’s BP cards. Then place the AI I and BP I decks on the appropriate spaces on the Battle Board. Place decks II and III directly below. These are Escalation decks. Find the Trait cards for any Traits that are not described on the Primordial Sheet and place them nearby as a reference.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Terrain and Titan Placement:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Find all the Terrain cards and Terrain tiles used in the Battle. Place the Terrain cards near the Battle Board and the Terrain tiles on the Battle Board, according to the Battle Dia-gram. Remember to place additional ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adventure Terrain",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", if noted (see p. 31). Place Titans on Titan Starting Positions as indicated by the diagram. Then proceed to Primordial positioning.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1. Draw AI: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Draw the top card from the AI deck (p. 37).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2. \u0007Targeting: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Decide who or what becomes the Target of the Attack (p. 37).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3. Movement: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Resolve any Primordial moves (p. 38).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4. Attack (p. 40):4.1. Evasion Roll:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Attempt to evade the Attack (p. 41).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.2. \u0007Attack Consequences:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve Attack effects and a Trauma Draw (p. 42).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5. After Attack:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve all After Attack effects (p. 44).14+ : Add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You died horribly",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card to the Obol deck.18+ : \u0007Add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Your gruesome death becomes legend ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "card to the Obol deck.21+ : \u0007Add the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Your death transcends reality",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card to the Obol deck.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0081",
+    "block_refs": [
+      "p0081.b001",
+      "p0081.b002",
+      "p0081.b003"
+    ]
+  },
+  "build_meta": null
+}

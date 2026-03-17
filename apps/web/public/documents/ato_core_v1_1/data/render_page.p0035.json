@@ -1,0 +1,426 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0035",
+    "title": "Kratos Tokens and the Kratos Pool",
+    "section_path": [],
+    "source_page_number": 35
+  },
+  "nav": {
+    "prev": "p0034",
+    "next": "p0036",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0035.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Tokens and the Kratos Pool",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0035.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos tokens are a special type of “cooperative” token used by the players to enhance other player’s attacks. These can help you hit and wound, escape Primordial Responses and more. The area you place Kratos tokens is called the Kratos Pool (see Kratos Tokens on p. 45 for more details).Tactical Battles against Primordial monsters are a key element of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". During your voyage you will face the following types of Primordials:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Regular Primordials:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " There are usually two regular Primordials in each Cycle, as noted on the Evolution Track on the Argo Sheet. You can expect to face these at regular intervals (through Time-line Battles). As the campaign progresses, they will evolve and become more powerful (see Evolution and Battle Tracks).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adversary:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Your deeds are sure to bring unwanted attention. Ad-versaries are powerful monsters, actively hunting the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on the Voyage map (see p. 16). You can (and sometimes should!) try to run away, but sooner or later you are bound to face them. These are going to pursue you for as long as they remain undefeated, even from one Cycle to another.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Boss Primordial:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The ultimate foe, the boss Primordial is an en-emy unlike any other. Boss Battles may be triggered from various Story and Doom adventures, so you should always stay on your toes. Each Cycle leads to a final showdown with the boss Primor-dial. Until then, you can merely hope to keep it at bay.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0035.b003",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battle Setup",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0035.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When you locate the correct Scenario, you will perform Battle Setup. There are standard elements to every Battle Setup (hence the name Standard Preparations), but most of the scenarios will introduce additional specific rules, including those found on the Primordial Sheet and Trait cards.   ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0035.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1. Standard Preparations",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0035.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Before each Battle, perform Standard Preparations. These include instructions ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "that are common",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " for every Battle in every Cycle. Whenever you are instructed to setup a Battle, perform the fol-lowing steps first:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\tBattle Board:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Place the Battle Board in the middle of the table.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\tDecks and tokens:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Shuffle the Trauma decks, the Kratos deck and the Moiros deck. Place all decks in the designated spac-es and place Kratos tokens, Attack dice and Power dice within reach of all players.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\tArgonauts:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each player places their Argonaut Portrait and Mnemos cards in front of them.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\tTriskelions:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each player places their Triskelion near their other components. The Triskelion does not reset at the beginning of Battle; you start with the Triskelion stats you’ve accumulated over the course of the other Phases.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5.\tTitans:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Each player chooses the Titan they will control from the available Titans and takes its Titan Sheet and miniature. If at least four Titans are available, each Argonaut ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " control one Titan. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " It does not have to be the same Titan they con-trolled in a previous Battle. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You cannot take more than one Titan of the same Argo-bred class into Battle.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.\tGear Loadouts:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Players as a group assign ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards from the Argo Armory to the Titans. Each Titan has limited card slots: two ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "weapon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " slots, two ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "support",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " slots and one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "armor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "slot. They can also have up to three ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Attachment",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards at-tached to their Titan Sheet and up to one  attached to each of their  cards. A symbol in the upper left corner of a  card de-notes which slot it occupies. You cannot equip  cards that would exceed the available slots of your Titan. Each Titan can only have one copy of the same ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Support",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7.\tArgo Abilities:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Players choose the Argo Abilities they want to use during the up-coming Battle. You may use as many Argo Ability cards as your Argo Ability (AA) Limit allows. Place the Argo Abilities you have chosen next to the Battle Board, along with the indicated number of Charge tokens. You can  learn more about Argo Abilities on p. 55.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "8.\tPrimordial: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Place the Primordial Sheet of the Primordial you are about to fight in the designated space near the Battle Board. Place its Routine and Signature cards in the corresponding spaces (be careful not to use the Mnestis Routine side, unless you are currently playing a Mnestis Theatre Battle). Take all of the Primordial’s AI cards and divide them into three decks num-bered I, II and III (you’ll find the roman numeral on the back of the cards). Do the same for the Primordial’s BP cards. Then place the AI and BP decks numbered “I” on the appropriate spaces at the bottom of the Battle Board. Place decks num-bered “II” and “III” directly below. These are Escalation decks. Find the Trait cards for any Traits that are not described on the Primordial Sheet and  place them nearby as a reference.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "9.\tTerrain and Titan Placement",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": Find all the Terrain cards and Terrain tiles used in the Battle. Place the Terrain cards near the Battle Board and the Terrain tiles on the Battle Board according to the Battle Diagram. Remember to place additional Adventure Terrain, if noted (see p. 31). Place Titans on Titan Starting Positions as indicated by the diagram. Then pro-ceed to Primordial positioning.If you have less than four Titans on the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", oh boy, you’re in for tough times! You must start the Battle with as many Titans as possible. Every Argonaut that is not assigned a Titan will not participate in Battle.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you are ever forced to do Battle without any Titans onboard, you immediately lose the campaign! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0035.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "2. Primordial Positioning",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0035.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battles handle Primordial positioning and orientation in different ways. The rules for your particular Primordial’s placement will be found in the scenario rules, at the end of the Storybook.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0035.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "3. Evolution and Battle Tracks",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0035.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Every Primordial in Aeon Trespass: Odyssey either evolves to match the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo’s",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " growing power or simply reveals more of the power it held back. This is represented by the Evolution and Battle Tracks.Regular Primordials use Evolution Tracks and, consequently, will evolve during the campaign, usually from Level 1 to Level 4.Adversaries and Cycle Bosses are almost always fought on Level 1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Charge tokenTitan Starting positionPrimordial Starting Position",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0035",
+    "block_refs": [
+      "p0035.b001",
+      "p0035.b002",
+      "p0035.b003",
+      "p0035.b004",
+      "p0035.b005",
+      "p0035.b006",
+      "p0035.b007",
+      "p0035.b008",
+      "p0035.b009",
+      "p0035.b010"
+    ]
+  },
+  "build_meta": null
+}

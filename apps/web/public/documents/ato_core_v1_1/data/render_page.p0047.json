@@ -1,0 +1,657 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0047",
+    "title": "Fists",
+    "section_path": [],
+    "source_page_number": 47
+  },
+  "nav": {
+    "prev": "p0046",
+    "next": "p0048",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0047.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "A basic Dreamwalker and most Argo-bred Titan classes have the same number of various ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " slots. Two ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "hand",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "  slots for weap-ons, one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "armor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " slot and two ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "support",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " slots.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Attachments",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "do not take up slots but they are also limited. You can have up to three  on your Titan Sheet and up to one  on each  card. Note that  can have their own additional limitations. Some Argo-bred Titan classes, as well as some other  will add new slots or modify existing slots, making Titan Loadouts even more flexible.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0047.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Even without a weapon, a Titan is armed: with its fists and teeth and grit! This is represented by the special ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card. For all intents and purposes, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are treated as any other Gear card, with the following ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exceptions",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ":",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": " or two handed .",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card. If, after performing Gear Loadout  (see  Standard Preparations on p. 34), a Ti-tan has one or more free hand slots, you may equip a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "card and use it as a  or weapon, respectively. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "a Titan loses their weapon  card(s), they may immediately equip a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card and use it as a  or weapon, respec-tively.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "tack, you may choose to discard one or more of your equipped weapon  cards (see Discarding on p. 62) to equip a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card (for example to resolve a Bonus Attack when your Titan is ad-jacent to the Primordial and equipped with a Ranged weapon).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "that uses up their hand slot(s) occupied by ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", you must set the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card aside. It is then no longer equipped on the Titan.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "card! If a Titan loses its ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fists",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card, then they are truly helpless!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0047.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Game Elements and Attachments",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If a game element is exhausted or lost, its ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "attachments",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " also share the same fate. In other words, an  of an exhausted game element is also exhausted, an  of a discarded game element is also discarded, and if, for whatever reason, the game element is lost and removed from the game permanently, the attached card shares its fate.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0047.b019",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gear Attributes",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "All ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards share a number of attributes that define them. They include offensive and defensive Gear stats.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0047.b021",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Offensive Gear Stats",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "These attributes are found primarily on weapons and influence your ability to attack. They are always situated on the left side of the  card and include:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007 \u0007Attack dice: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Number of Attack dice rolled during an Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007 \u0007Precision bonus:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " A value you add to the result of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of your Attack dice.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007 \u0007Weapon Power: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Number and tier (color) of Power dice provided by",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " each hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Once you hit the Primor-dial, for each successful ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you add this many dice to your Power Pool.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007 \u0007Bonus Power:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some powerful weapons have Bonus Power, i.e. a bonus Power die or even raw Power that is added to each Attack, providing the player scored ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "at leastone hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0047.b023",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Defensive Gear Stats",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b024",
+      "children": [
+        {
+          "kind": "text",
+          "text": "These attributes increase your survivability and are found primar-ily on ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "armor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", shield weapons and some ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "support",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards. They are always situated on the right side of the Gear card and include:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "\u0007 \u0007 \u0007Armor dice: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Number of Armor dice added to your Armor Roll dice pool.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "\u0007 \u0007 \u0007Evasion bonus:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " A value you add to the result of each of your Evasion dice.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "\u0007 \u0007 \u0007Evasion re-roll: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During an Evasion Roll, you may re-roll a number of dice up to this value without any additional cost. Note: These work like normal  re-rolls (see p. 8), but don’t carry an additional cost. Re-member you can only re-roll each die once, regard-less of how many re-roll sources you have!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0047.b025",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Gear Stats and Qualities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b026",
+      "children": [
+        {
+          "kind": "text",
+          "text": "These are various other commonplace stats and qualities found on many  cards.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Charges :",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some powerful effects are limited by the number of charges. At the start of Battle, place a number of  tokens on this card equal to the  value. When an ability instructs you to spend a charge, discard one token from this card. If there are no charges on a  card, you cannot use abilities that require you to discard a charge.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ability box:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " All effects described in this part of a   card are abili-ties. To learn more about them, see Ability Usage on p. 60.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear traits: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "These are additional descriptors of each   card. They have no inherent effect but other game elements may refer to spe-cific Gear traits. They are always active as long as the  card is equipped on a Titan.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0047.b027",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gated Abilities and Effects",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0047.b028",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", even Gear cards (and some other game elements) grow more powerful as the Battle goes on and their wielder inches closer to death. Consequently, most Gear cards have effects and abilities that are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "gated",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " by certain require-ments, usually a certain ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " level.These abilities are most often found at the bottom of a card, in a differently colored box. The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "gate requirement ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "can be found at the top of the box. If the gate requirement is met, the ability or effect is treated as if it was part of the ability box. If, for some reason, you stop meeting the gate requirement, the ability is again locked and unavailable. Note that some gated abilities are added on top of the normal abilities, while others replace the normal abilities of a card. ",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0047",
+    "block_refs": [
+      "p0047.b001",
+      "p0047.b002",
+      "p0047.b003",
+      "p0047.b004",
+      "p0047.b005",
+      "p0047.b006",
+      "p0047.b007",
+      "p0047.b008",
+      "p0047.b009",
+      "p0047.b010",
+      "p0047.b011",
+      "p0047.b012",
+      "p0047.b013",
+      "p0047.b014",
+      "p0047.b015",
+      "p0047.b016",
+      "p0047.b017",
+      "p0047.b018",
+      "p0047.b019",
+      "p0047.b020",
+      "p0047.b021",
+      "p0047.b022",
+      "p0047.b023",
+      "p0047.b024",
+      "p0047.b025",
+      "p0047.b026",
+      "p0047.b027",
+      "p0047.b028"
+    ]
+  },
+  "build_meta": null
+}

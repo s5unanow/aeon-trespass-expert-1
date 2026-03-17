@@ -1,0 +1,307 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0028",
+    "title": "R&R Adventures",
+    "section_path": [],
+    "source_page_number": 28
+  },
+  "nav": {
+    "prev": "p0027",
+    "next": "p0029",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0028.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If the box you marked was empty, instead roll a d10 again and con-sult the Hub’s Adventure Table to find the adventure you have to resolve. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mark a fated box ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(see Fated Boxes on p. 32) next to this adventure’s name, then find it in the Hub’s chapter and read it.Once you find the correct paragraph, remember to gain Mnemos nodes – see p. 29 for details. Finally read it and see where the ad-venture takes you.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0028.b002",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "R&R Adventures",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0028.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "R&R (rest and recuperation) adventures are shorter, mostly self-contained stories that revolve around the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and the lives of its crew. They are generally much more light-hearted, often co-medic, romantic, nostalgic or dramatic. These are the “slice of life” stories of the Argonauts and the less prominent members of the city-ship community. R&R adventures usually offer only bonuses, but they may also give you interesting choices!When you encounter an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "R&R adventure",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " symbol, during the Expedition Step go to the R&R adventure chapter of your current Storybook. Roll a d10 and consult the R&R Adventure Table to find the adventure you have to resolve. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mark a fated box",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see Fated Boxes on p. 32) next to this adventure’s name, then find it in the R&R Adventures chapter and read it.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0028.b004",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Inward Odyssey",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0028.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " sails across Hellas, visiting many strange lands and inter-acting with their native inhabitants. But what is constant over the span of all the Cycles is the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " itself and its crew. Inward Odyssey tells that part of the story.However, each Inward Odyssey adventure will also net you a valu-able unique reward: some increase basic statistics and resources, but most will introduce powerful new gameplay elements, includ-ing Technologies, Godforms, Summonings and Patterns!Each Cycle has its own Inward Odyssey Story card. That Story card is like a table of contents for Inward Odyssey adventures. There’s always 20 Inward Odyssey adventures per Cycle and only the most inquisitive players will experience them all.Inward Odyssey adventures are directly tied to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Knowl-edge ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " statistic. Each time you gain , you unlock the next ad-venture from the Inward Odyssey chapter of your current Story-book. You will resolve this adventure at the end of your current Step. This means that Inward Odyssey adventures have the poten-tial to trigger during any Step of the Round.If you ever gain more than 1  during a given Step, you will resolve all of the corresponding Inward Odyssey adventures, one by one.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Inward Odyssey card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Inward Odyssey adventures are your main source of Godforms, Summonings and Patterns. Do not sleep on these and gain as much",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Argo Knowledge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as you can. Once you clear your cur-rent Cycle and move to the next one, you will change Inward Od-yssey cards. Any Inward Odyssey stories you haven’t experienced by that point are lost forever (for that playthrough). Remember that you can place tokens on Inward Odyssey to gain addition-al . Every 2 tokens generate 1 .",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0028.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Inward Odyssey Adventure Requirements",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0028.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some rare Inward Odyssey adventures may have specific require-ments, like having a certain Technology or advancing past a certain point in the game. When you encounter a requirement you do not yet meet, stop resolving that adventure. Later, when you meet the requirements, resolve that adventure at the end of the current Step (you do not need to gain additional  for this).If you have an unresolved Inward Odyssey adventure and gain an-other +1 , move to the next adventure on the card. Note any Inward Odyssey adventures you had to omit on the Argo Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0028.b008",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Breakthroughs",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0028.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Breakthroughs are adventures initiat-ed from an Argonaut’s Mnemos (see Mnemoses, p. 29). They are called Breakthroughs, because they unlock a better understanding of your char-acter and their shrouded past. During the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", if all nodes to the left of a breakthrough symbol have been marked (see Mnemos nodes, p. 29), and the breakthrough symbol itself is un-marked, resolve the associated paragraph (not-ed above this breakthrough symbol), then mark the breakthrough symbol as resolved.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos  Breakthrough symbol",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When there are 2  tokens on this card, discard them and gain +1 .When you reach a given  level, during the Story Step, after all other story events, resolve the corresponding Inward Odyssey adventure: 1: Endless Decks 2: Phos Dance 3: Glitch in the Engine 4: A Distant Thunder 5: Mark of the Maker 6: Of Dreams and Memories 7: Blood of the Mother 8: See the Forest 9: Days of Meaninglessness 10: Memory of a Distant ShoreAfter you resolve the last adventure from this list, flip this card.INWARD ODYSSEY:  TRUTH OF THE LABYRINTH",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You know precious little about the grand vessel you call home. Who built it? For what purpose? How did you come to be onboard?There are vast spaces below deck, more than should be possible, even taking into account the massive size of the ship. Each day brings a new discovery, a new secret to be unraveled. Your Inward Odyssey has just begun.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1AAD0121",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0028",
+    "block_refs": [
+      "p0028.b001",
+      "p0028.b002",
+      "p0028.b003",
+      "p0028.b004",
+      "p0028.b005",
+      "p0028.b006",
+      "p0028.b007",
+      "p0028.b008",
+      "p0028.b009"
+    ]
+  },
+  "build_meta": null
+}

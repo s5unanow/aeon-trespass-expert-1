@@ -1,0 +1,483 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0043",
+    "title": "Out of Reach (OoR) Evade",
+    "section_path": [],
+    "source_page_number": 43
+  },
+  "nav": {
+    "prev": "p0042",
+    "next": "p0044",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0043.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "you simply trigger that effect. A Crit result can trigger multiple Crit Evade effects (but you cannot activate Crit Evade effects from two different weapons—only one active weapon at a time!).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0043.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Out of Reach (OoR) Evade",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0043.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If, for some reason, a Titan moves outside of the Attack’s effective range after becoming its Target but before resolving an Evasion Roll (for example, by using a  ability), the Attack cannot be per-formed and the Evasion Roll, as well as any Attack effects, are not resolved. Instead, the Primordial resolves its movement towards the Target, then proceeds straight to the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " After Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " actions and effects. This maneuver is colloquially called an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Out of Reach Evade",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The Hekaton targets Herodotus (who is 6 spaces away) with the Cold Open AI card. In the first window of opportunity, Herodotus uses his ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Iapetus Lifeguard  card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to move out of the Attack’s effective range. Consequently, the Hekaton moves up to its Speed value, stops 1 space short of adjacency and does not perform the Attack—the player goes straight to the After Attack and proceeds to resolve Pushback 3.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0043.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4.2 Attack Consequences",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0043.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If, after performing the Evasion Roll, any re-rolls and using Block, the Titan is left with at least one hit, you resolve Attack Conse-quences. The most common consequences are effects and Trauma Draws.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0043.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Attack Effects",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0043.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "at least one die is a hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", you must trigger ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "all effects",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of the AI card. Thankfully, most Attacks scale with the number of hits you receive, so even a partial evade will make the Attack weaker. Resolve all At-tack effects in the order they are written on the card, one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "sentence at a time",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". There are many possible Attack effects, but these are the most common ones:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Most AI cards ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "deal",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". When this happens, gain  equal to the value dealt, then resolve a Trauma Draw (see below).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Other statistics and tokens:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Attack effects may also deal ,   or tokens (for example, Ambrosia or Despair tokens). This is resolved the same way as being dealt  (gain a statistic or a number of to-kens equal to the value dealt) but ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "does not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cause a Trauma Draw unless  is dealt as well.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Conditions, other effects and abilities:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some Attacks also include effects that cause you to gain a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Condition",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or another game element, or suffer the effects of abilities (such as Pushback or Knockback).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0043.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Armor Roll",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0043.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When you are dealt  as a consequence of a Pri-mordial Attack, if you have any  cards with ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ar-mor dice",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", you must perform an Armor Roll. Roll a pool of Power dice equal to the total of all Armor dice on all of your equipped  cards (exception: remember that if you use a weapon to defend, you cannot use other equipped weapons during the same Attack. See Defensive weapons, p. 41). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During an Armor Roll, you count symbols, not . ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Subtract all  symbols rolled from the total value of  dealt. If it reduces your  gain to 0, do not resolve a Trauma Draw. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Like Power dice, Armor dice cannot be re-rolled using .",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0043.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Trauma Draw",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0043.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In Aeon Trespass: Odyssey, there are no hit points or health. When you are hit, your  Danger level simply rises. This leads to you draw-ing Trauma cards of rising severity (Minor, Major, Grave, Obol). These cards can take the form of injuries and negative Conditions, but they are equally as likely to present you with opportunities or allow you to perform heroic deeds. Getting hit in Aeon Trespass: Odyssey doesn’t make you weaker, it makes you stronger!When any is dealt to you, raise your  value on the Triskelion, then, before resolving any subsequent effects, immediately per-form a Trauma Draw.To perform a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma Draw",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", consult your Trauma Table (found on the Titan Sheet, see p. 44) and draw a Trauma card of a severity corresponding with your current  value.There are three normal severity levels of Trauma cards: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Minor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ma-jor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Grave",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", referring to the thresholds found in your Trauma Table. There is a fourth, special severity level, called the Obol (see below) but it follows a few different rules.Some Trauma cards are instantaneous, while others persist throughout the Battle or force you to gain a Condition card. After resolving the Trauma card effects, discard it (unless stated other-wise). Any Trauma card you discard should be put at the bottom of the corresponding deck.Some game effects may also specifically instruct you to resolve a Trauma Draw, in which case you should draw a Trauma card cor-responding to your current  level, without raising it (if your is 0, nothing happens). When instructed to draw a Trauma card of a specific severity or to draw an Obol card, simply resolve the Trauma Draw from the designated deck, regardless of your current  value.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "After you draw a Trauma card, remember to resolve any lingering Attack effects, then proceed to the After Attack effects.Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " A Trauma Draw is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "resolved only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " when you are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "dealt",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "from an Attack, not when you gain  from other sources (unless it goes over 9, as explained further). Perform a Trauma Draw ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "immedi-ately after ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "you finish resolving an Attack effect that dealt.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "    Minor Trauma            Major Trauma       Grave Trauma              Obol",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0043.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Obol (and Obol Draw)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0043.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If you have to draw an Obol (either as a result of a Trauma Draw or when another effect instructs you to), you’re in real peril. There is a 50:50 chance you will die on the spot!To draw an Obol, shuffle the Obol deck and draw the top card. There are only 2 Obol cards in the standard Obol deck: a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You live! ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "card and a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You died",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card. More cards may be added or changed through other game effects (for example, as a result ofMassive Danger, see p. 43). Some game effects may refer to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You died",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Obol cards. This term includes all Obol cards that result in the Titan dying.Resolved and discarded Obols are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "always shuffled back",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " into the Obol deck.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Drawing an Obol is often times called an Obol Draw, though technically it’s still a Trauma Draw.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Armor die symbol",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0043",
+    "block_refs": [
+      "p0043.b001",
+      "p0043.b002",
+      "p0043.b003",
+      "p0043.b004",
+      "p0043.b005",
+      "p0043.b006",
+      "p0043.b007",
+      "p0043.b008",
+      "p0043.b009",
+      "p0043.b010",
+      "p0043.b011",
+      "p0043.b012",
+      "p0043.b013"
+    ]
+  },
+  "build_meta": null
+}

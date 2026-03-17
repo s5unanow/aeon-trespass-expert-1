@@ -1,0 +1,74 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0040",
+    "title": "1",
+    "section_path": [],
+    "source_page_number": 40
+  },
+  "nav": {
+    "prev": "p0039",
+    "next": "p0041",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0040.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Hekaton moves towards the Titan. As it is not in a straight line from it, it will first “zigzag” towards it. In the example above the play-ers decided to first move horizontally (1), then vertically (2) and then continue to move horizontally (as at this point the Hekaton can move in a straight line).Note that the players could have also moved up first, and then continue to move in a straight line towards the Target.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "345623456123456",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "In this example, the Hekaton targets Herodotus. To move adjacent,  it will have to zigzag. Since players can choose the starting direction of the zigzag move (as long it brings the Hekaton closer to the Target), they may decide to move it in a way that is less harmful, i.e. not through Ulissea!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0040.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0040.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0040",
+    "block_refs": [
+      "p0040.b001",
+      "p0040.b002",
+      "p0040.b003"
+    ]
+  },
+  "build_meta": null
+}

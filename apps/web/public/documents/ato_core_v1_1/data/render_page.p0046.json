@@ -1,0 +1,560 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0046",
+    "title": "Main Attributes:",
+    "section_path": [],
+    "source_page_number": 46
+  },
+  "nav": {
+    "prev": "p0045",
+    "next": "p0047",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0046.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Titan is represented by a large Titan Sheet that includes all the basic information about a given Titan class. Besides the Titan class name and illustration, it shows the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Power diel",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Speed value2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "inherent abilities3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", as well as a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma Table4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos Table5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0046.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Main Attributes:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "  \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Power: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "A Power die you include in every Power Roll you perform. Some Titans also have inherent Keywords or even additional raw ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " denoted here as well.  \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Speed:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Maximum number of spaces the Titan can move with a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "movement action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".+RUSH=",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Inherent Ability box:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Abilities available to you while you are junctioned with this Titan.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0046.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Trauma Table",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Trauma Table represents the Titan’s ability to stay in the fight. It features various Trauma thresholds (Minor, Major, Grave and Obol) that correspond to your current Danger  level (see Triske-lion, p. 11). Whenever you are instructed to perform a Trauma Draw, check your current  and draw a Trauma or Obol card of the corresponding level, based on this Table. (see Trauma Draw, p. 42).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0046.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Table",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The more Rage  you have, the deadlier you become. This is re-flected by the Kratos Table. The table shows Rage levels and corre-sponding abilities and bonuses applied to every Attack you perform. Most Kratos Table effects are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "keyword abilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see p. 63) and they follow all rules of keyword abilities (stackable keywords from a Kra-tos Table may stack with keywords from other sources). You gain the benefits of your current Rage level,",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as well as all preceding lev-els",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". All symbols found in the Kratos Table are explained on the back of the corresponding Titan Sheet or Pattern card.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0046.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Triskelion",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Triskelion, shared between the Argonaut and the Titan, is the central element of the Aeon Trespass: Odyssey setting and the key component of the Inverted Combat Paradigm™, a main Battle mechanic. It’s important. That’s why we described it earlier, in the Campaign Basics section, on p. 11. Even if you’ve already read that, it’s worth checking out again! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0046.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Tokens",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " has been designed around the idea that a single person may be weak, but a group of them, working in uni-son, is unstoppable. Consequently, many mechanics require close cooperation between players.One of these mechanics are the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos tokens",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", a special kind of ability that allows you to leave helpful effects for others to use. You may leave Kratos tokens as a result of weapon abilities, Kratos Tables or through other game effects. All Kratos tokens are placed in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos Pool",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". They can be used during the following Titan Attack, after which they will be discarded (regardless of whether you used them). In other words, there’s no point in saving them up.The most common types of Kratos tokens are the Opening tokens and the Break tokens:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Break tokenOpening token",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Each ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Opening token",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in the Kratos Pool adds +1 to the result of each Attack die rolled during an Attack Roll (see p. 49).Each ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Break token",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in the Kratos Pool, can turn 1 potential  into 1 Power  (see Power Roll, p. 50).Most abilities allow you to place Kratos tokens in the Kratos Pool during the second ability window, at the very end of a Titan Attack (see Combat Action, p. 48). Some rare abilities, however, may allow you to place Kratos tokens during the first ability window, making your own Attack stronger. Make sure to always check the timing of new abilities and keywords.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0046.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gear cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards represent various types of equipment used by the Titans in their Battles against Primordials. Most Gear is crafted during the Advancement Step (see p. 17), while some is gained as rewards from adventures, Critical Wounds and other sources.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "l3245",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Each Gear card has a symbol that designates its ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "typel",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". It may also have ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "offensive stats2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "defensive stats3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "ability box 4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear traits5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".There are four types of  cards: ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "hands counts as a weapon (shields included!). Weapons can occupy one hand slot , two hand slots  or even three hand slots . All weapons have offensive capabilities, but some of them may grant you defensive ones as well. Usually, Titans have ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "two weapon slots",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "that covers the Titan’s body.  cards usually grant ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "armor dice ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion bonus",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or a combination of these defensive statistics. Usually, Titans have",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " one  slot",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": " cards don’t usually have defensive or offensive statistics. By default, Titans have ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "two  slots",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tip: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Do not delay getting  cards; in Aeon Trespass: Odyssey they’re vital for your sur-vival!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0046.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "element (such as other  cards or the Titan Sheet). They may modify the game element they are attached to, apply additional effects or give you access to completely new abilities. Normally, a Titan Sheet can have ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "up to three  and each other card can have up to one",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0046",
+    "block_refs": [
+      "p0046.b001",
+      "p0046.b002",
+      "p0046.b003",
+      "p0046.b004",
+      "p0046.b005",
+      "p0046.b006",
+      "p0046.b007",
+      "p0046.b008",
+      "p0046.b009",
+      "p0046.b010",
+      "p0046.b011",
+      "p0046.b012",
+      "p0046.b013",
+      "p0046.b014",
+      "p0046.b015",
+      "p0046.b016",
+      "p0046.b017",
+      "p0046.b018",
+      "p0046.b019",
+      "p0046.b020",
+      "p0046.b021"
+    ]
+  },
+  "build_meta": null
+}

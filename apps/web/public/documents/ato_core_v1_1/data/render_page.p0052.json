@@ -1,0 +1,486 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0052",
+    "title": "6.2 Rolling the Dice",
+    "section_path": [],
+    "source_page_number": 52
+  },
+  "nav": {
+    "prev": "p0051",
+    "next": "p0053",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0052.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6.2 Rolling the Dice",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0052.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "To perform a Power Roll, simply take all the dice in your Power Pool and roll them. Each  symbol gives you one Power. Then, add all the raw  you have, each of these is simply treated as another symbol. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0052.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6.3 Power Re-rolls",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0052.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Power dice cannot be re-rolled using . There are, however, other effects that may grant you Power Re-rolls. Remember that all re-roll restrictions apply to Power Re-rolls as well: each die can be re-rolled only once and you must declare all dice you wish to re-roll before re-rolling any of them.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0052.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6.4 Using Potentials",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0052.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each  result gives you one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "potential",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". These do not provide you with any benefits of themselves, but they can be turned into  using various effects. The most common of those effects are the Break tokens (see Kratos Tokens p. 45 and Keywords on p. 63).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0052.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6.5 Resolve The Power Roll",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0052.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "After using all re-rolls,  symbols and all other applicable abili-ties, sum up all those  . This is the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Total Power ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "of this Attack.Remember, to successfully wound the Primordial, your Total Power must be ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "equal to or higher",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " than the current BP card’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AT",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " value! If it is, you deal a Wound. If you gained a Crit Chance during the Attack Roll, you deal a Critical Wound instead! Then, if the total number of Wounds on the Wound Stack (including the Wound you just dealt) equals or exceeds the Primordial’s  value, the Primor-dial is slain. The Battle immediately ends with the Argonauts’ vic-tory and you should proceed to the Aftermath. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exception:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you won through dealing a Critical Wound, you still gain every tangible reward from that Critical (no additional Attacks though)!If your Total Power is less than the , you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fail",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to wound.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Some game elements have additional effects that trigger (or may activate) on a Wound or Fail. Remember to always resolve all ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "“Wound:” ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " “Fail:”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " effects.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0052.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "7. Primordial Responses",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0052.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordials are powerful monstrous beings and they do not take lightly to being attacked! Almost every Titan Attack will garner some form of response. Most responses are resolved immediately after the Power Roll, with the exception of the deadly Attack Re-sponses and devastating Follow-up Titan Attacks, both of which happen after the current Titan Attack is completely resolved.The exact nature of the response depends on the result of the Pow-er Roll. If you scored a Wound, you resolve the Wound Response.If you failed to wound the Primordial, you resolve the",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Fail Re-sponse",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you scored a Critical Wound, resolve the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Critical",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (and ignore all other Responses). Sometimes a Primordial will also have an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Instinct Response",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that you have to resolve regardless of the Power Roll result (and in addition to any other normal Response; the only exception to this is a Critical).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If a Titan fails to wound this BP card, it will suffer Pushback 2.  If it wounds, no Response will be resolved.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Once you know which Response should be resolved (if any), see if it involves a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Attack ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(AI card, Signature or Routine) or a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Follow-upTitan Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If it does, note what kind of Attack it will be, then finish up the current attack sequence. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The new Attack will happen immediately after this one is completely resolved and will not cause a Chain Break.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If the Response doesn’t involve any kind of new Attack, resolve it now. If there are no appropriate Responses (for example, you failed to wound, but the BP card doesn’t have a Fail Response), nothing happens. If multiple Responses apply, resolve them in the order of your choosing.Unless stated otherwise, Responses are resolved ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "by",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "against",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Titan (e.g. to resolve Wound: Pushback 4, the Primor-dial would push the Titan 4 spaces).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0052.b011",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Responses and Adjacency",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0052.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unless stated otherwise, a Response should be resolved regardless of the Titan’s positioning. This means that ranged Attack will still elicit a Primordial Response (e.g. even if the Titan is 6 spaces away from the Primordial, you will resolve Wound: Pushback 4 by mov-ing the Primordial 4 spaces towards the Titan).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockback",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " are the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exceptions",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If, for any reason (for example, if the Titan is using a ranged weapon or moved away during a Window of Opportunity), a Titan isn’t adjacent to the Pri-mordial when they should resolve a Knockback or Knockdown Re-sponse, that Response is ignored.  ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0052.b013",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "8. Wounds and Escalation",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0052.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordials get progressively harder as the Battle goes on because power begets power. Such is the effect of Escalation, a central Bat-tle mechanic to rival the Triskelion. Escalation will make the Pri-mordial tougher by adding higher level cards to the BP deck, and more deadly, by swapping AI cards in the AI deck.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If the Total Power of your Attack is",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " lower than",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the AT value of the targeted BP card, you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "failed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to wound the Primordial. Place the BP card you targeted on top of the BP discard pile and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "do not perform Escalation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Skip this step and continue to resolve the At-tack.If the Total Power of your Attack is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "equalto or higher",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " than the AT value of the targeted BP card, you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "wound",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the Primordial and perform ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Escalation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0052",
+    "block_refs": [
+      "p0052.b001",
+      "p0052.b002",
+      "p0052.b003",
+      "p0052.b004",
+      "p0052.b005",
+      "p0052.b006",
+      "p0052.b007",
+      "p0052.b008",
+      "p0052.b009",
+      "p0052.b010",
+      "p0052.b011",
+      "p0052.b012",
+      "p0052.b013",
+      "p0052.b014"
+    ]
+  },
+  "build_meta": null
+}

@@ -1,0 +1,395 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0068",
+    "title": "Terrain",
+    "section_path": [],
+    "source_page_number": 68
+  },
+  "nav": {
+    "prev": "p0067",
+    "next": "p0069",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0068.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "may use this ability to ignore it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rush:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Move with +1  and Melee/Reach Attack with Auto-break 1. You must move at least 3 spaces and reach your target via the shortest possible path. Possible subtypes:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "with Auto-break 1 and +1 Precision. You must move at least 3 spaces and reach your target via the shortest possible path.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Sacrifice:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the first ability window, you may gain +1  to place one Break token in the Kratos Pool (see Break X keyword).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Scale:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When you are about to perform a test to climb a Vantage Point, automatically succeed at that test instead.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Second Chance: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "After you draw a Trauma or Obol card, you may ignore its effect and discard it. Draw and resolve another card from the same deck (note: a discarded Obol is immediately shuffled back into the Obol deck). You cannot ignore the second draw in any way. This ability can be used even when knocked down or otherwise prohibited from using active abilities.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Solace: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Discard a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mind",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Condition card or a Despair token from yourself or an adjacent Titan.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Spotlight:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the first ability window, if you have the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Prior-ity Token",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token, gain +1  for this Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Stalwart:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When you are about to suffer Knockback, you may use this ability to ignore it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Suppress:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Shuffle the discard pile denoted by the subtype into the appropriate deck. Possible subtypes:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tireless:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When you are about to activate the Cumbersome keyword, you may ignore it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tumble:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When you are about to suffer Crash, roll a d10. On a 6+ ignore it.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Vault:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you’re adjacent to the Primordial, place your minia-ture on an empty space in a straight line from you, on the op-posite side of the Primordial, adjacent to it. A Titan may use this ability in either the first or second ability window. Possible sub-types:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "miniature on a space in a straight line from you, on the oppo-site side of the Primordial, adjacent to it. Treat as involuntary movement. If you would have to end this movement outside the Board Edge or on an Indestructible Obstacle Terrain tile, you die instead.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Vault example",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0068.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Battles don’t happen in a void. The places you face off with the Primordials matter a great deal. For the Argonauts, the more des-olate a battlefield, the better. A ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Siren Shell",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Terrain tile may provide a hiding place and a Column Terrain tile is an ideal trap to push the Primordial into. But the monsters are drawn to mortal settlements, like Cities, where they can do the most harm.Terrain is set up as part of every ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Battle Scenario",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see scenario di-agrams), but other game elements may also introduce additional Terrain tiles to the Battle Board. Hub adventures add ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adventure Terrain",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see Adventure Terrain, p. 31), while some other adven-tures and game effects may instruct you to place additional Terrain tiles at the start of the next Battle. If any effect instructs you to add Terrain to a Timeline Battle, note it on the Timeline.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Terrain card",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0068.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Basic Terrain Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain Tiles are made of spaces. Unless stated otherwise, you re-solve a tile effect when entering the first space of a tile. A tile does not block LoS to itself (just like a miniature). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0068.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Placing and Removing Terrain in Battle",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain tiles can also be placed or destroyed during Battle as a re-sult of various effects.When a Terrain tile is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "destroyed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", simply remove it from the Battle Board.When a Terrain tile is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "placed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", put it in on the indicated spaces on the Battle Board. If all the Terrain tiles of this type are already on the board, remove the tile furthest from the Primordial, then place it on the indicated spaces.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0068.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain Placement on Other Terrain",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When a Terrain tile is placed on a space occupied by another Ter-rain tile:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "anything on top of it. Ignore this new tile placement.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0068.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "place the new tile.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0068",
+    "block_refs": [
+      "p0068.b001",
+      "p0068.b002",
+      "p0068.b003",
+      "p0068.b004",
+      "p0068.b005",
+      "p0068.b006",
+      "p0068.b007",
+      "p0068.b008",
+      "p0068.b009",
+      "p0068.b010",
+      "p0068.b011",
+      "p0068.b012",
+      "p0068.b013",
+      "p0068.b014",
+      "p0068.b015",
+      "p0068.b016",
+      "p0068.b017",
+      "p0068.b018",
+      "p0068.b019",
+      "p0068.b020",
+      "p0068.b021"
+    ]
+  },
+  "build_meta": null
+}

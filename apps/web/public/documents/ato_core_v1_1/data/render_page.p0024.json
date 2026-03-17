@@ -1,0 +1,487 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0024",
+    "title": "Special Summonings and Bonus Summoning Charges",
+    "section_path": [],
+    "source_page_number": 24
+  },
+  "nav": {
+    "prev": "p0023",
+    "next": "p0025",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0024.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Every Summoning has its own ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "requirements",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and sometimes ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "costs",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Once you use a Summoning, you use up 1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Summon Charge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(see Summoning Limit below). Mark a box in the Summoning sec-tion of the Argo Sheet to denote the spent charge.In total, you cannot use more  than your current Summon Limit. You will find the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Summon Limit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on the Technology card that will allow you to perform Summonings. Whenever you research or gain a Technology card with a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Summon Limit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that is higher than your current limit, the higher value becomes your new Summon Limit (note it on the Argo Sheet in the box near the Summoning section).On top of that, once you use one of the Summonings, it ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exhausts",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": write its name in the Summonings section, next to the marked Summon Charge box to denote that it is exhausted. That particu-lar Summoning then remains unusable until the next Divine Surge (see Divine Surges on p. 23). ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0024.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Special Summonings and Bonus Summoning Charges",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Very rarely, you may gain access to a one-off Summoning, usually of a Nymph you don’t normally have access to. When this happens, you also gain a bonus . This Charge can be only used to summon ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "that particular Nymph",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and that Nymph can only be summoned ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "once",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Consequently, that bonus  does not get replenished dur-ing a Divine Surge (see below) and you have to return the Sum-moning card to the box as soon as you use it (unless you have al-ready unlocked it permanently). Note this Summoning’s name in the Summoning section of the Argo Sheet (even if you already used it) but ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "do not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " mark the box next to it to indicate that it is available and does not count towards your Summon Limit. If you gain a bo-nus  that is not tied to a specific Summoning, circle one of the  boxes to denote that it does not count towards the Summon Limit.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0024.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Summonings and the Adversary",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Nymphs are unknowable, but their power is quantifiable. It’s be-yond mortal limits. Such rapid manifestations are likely to draw unwanted eyes. And whose eyes are more unwanted than your Adversary’s?All Summoning cards have the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "symbol",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". This means, whenever you perform a Summoning, the Adversary immediately moves to-ward the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0024.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Divine Surges",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Awakenings, Summonings and some other powerful effects make use of divine power. However, the Olympians are dead and any lin-gering divine power they had is hard to come by. This is represent-ed by Divine Surges: only during specific moments of a Cycle do these powers replenish.A Divine Surge is a periodic game effect that allows you to replen-ish available Godforms (see Awakenings, p. 59), as well as Sum-monings and Summon Charges (p. 22). Divine Surges are mainly associated with major breakthroughs in the Story. Whenever you are instructed to perform a Divine Surge, simply erase all marks and names from the Godforms section and Summonings section of the Argo Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0024.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Diplomacy",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During your voyages you will meet many peoples. Some of these peoples will represent major Factions you can interact with. Each Cycle has a different set of Factions. Your standing with a given Faction (called a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diplomacy Score",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ") will influence everything from the resources you gain during the Exploration Step, and the avail-able choices during the many adventures, to Battles and various tests (like Skill tests or Saves).You should note your current standing with different Factions on the corresponding Diplomacy track. Whenever you gain or lose Diplomacy with a Faction, mark the appropriate space on the cor-responding track. Each track is divided into sections representing different Diplomacy Thresholds (like Friendly or Denounced). Diplomacy Tracks At War (-3)Denounced (-2)Unfriendly (-1)Neutral (+0)Friendly (+1)Allied (+2)Minoans -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10Labyrinthians -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10Hornsworn -10-9-8-7-6-5-4-3-2-10+1+2+3+4+5+6+7+8+9+10Various game elements will include ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diplomacy triggers",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that may modify their game effect or extend or restrict your options. Unless explicitly stated otherwise, these always refer to your Diplomacy Threshold (i.e. “Friendly or better”) or Score (i.e. “Diplomacy 5+”) with the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Local Faction",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (the Faction whose symbol is in the bot-tom right corner of the Map tile the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is currently on). As with other triggers, like  or , the following effects are resolved only if your standing with this Faction is within the specified range (e.g. if you encounter a game element with an effect preceded byå_____________________ß",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Friendly+",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "  or the words “Friendly or better,” it is resolved only if you are Friendly or Allied with the Local Faction).The Local Faction is the Faction whose symbol is in the bottom right corner of the Map tile the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is currently on. If there is more than one faction symbol on a tile, you can choose which of the Local Factions you want to take into considera-tion when applying modifiers and triggers.The numbers in parenthesis above the track sections denote the Diplomacy Bonus/Penalty you should apply if you are within a giv-en threshold. Whenever you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "test Diplomacy",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (for example when using Negotiation abilities), raise or lower your result by the value of that bonus or penalty.If you ever reach the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "At War",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " section of any Faction’s Diplomacy track, there is no going back: you can no longer gain or lose Diplo-macy with this Faction. Simply ignore all gains and losses of this Faction’s Diplomacy.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0024.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gain",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the game, you will gain a lot of different things! (And lose those things too…) You may gain or lose resources, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " cards, Mnemos cards, Technologies and other game elements from Bat-tles, adventures and other sources. Whenever you gain a card, sim-ply find it and add it to the appropriate place:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "if for whatever reason you gain a  card during a Battle, the Titan responsible for the gain can immediately ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "equip",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that card (discarding any other  if needed). For example, this may happen as a result of a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Critical Wound ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "or a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Search test",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Impor-tant: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If you gain a card with a Possession keyword, the Titan or Argonaut ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must immediately equip it",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story and Doom cards.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0024.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "naut who gained them. If it is impossible to distribute a gained ",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0024",
+    "block_refs": [
+      "p0024.b001",
+      "p0024.b002",
+      "p0024.b003",
+      "p0024.b004",
+      "p0024.b005",
+      "p0024.b006",
+      "p0024.b007",
+      "p0024.b008",
+      "p0024.b009",
+      "p0024.b010",
+      "p0024.b011",
+      "p0024.b012",
+      "p0024.b013",
+      "p0024.b014",
+      "p0024.b015",
+      "p0024.b016",
+      "p0024.b017",
+      "p0024.b018"
+    ]
+  },
+  "build_meta": null
+}

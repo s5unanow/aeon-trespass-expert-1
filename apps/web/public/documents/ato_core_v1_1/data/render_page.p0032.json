@@ -1,0 +1,370 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0032",
+    "title": "Adventure Tests and Rolls",
+    "section_path": [],
+    "source_page_number": 32
+  },
+  "nav": {
+    "prev": "p0031",
+    "next": "p0033",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0032.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "However, overcoming any mental hurdle makes you grow. This is reflected by the trauma growth abilities found on the backs (blue side) of Fated Mnemos cards. Each resolved Fated Mnemos gives you a positive ability that you should write down on your Argonaut Sheet, then return the card to the Fated Mnemos deck. There is no limit to the amount of trauma growth abilities a single Argonaut can have (you can even gain the same trauma growth ability more than once and their effects will stack).If you fully evade an attack, lose –1Ψ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adventure Tests and Rolls",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0032.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adventures in Aeon Trespass: Odyssey are based around your ab-solute and informed choices. However, sometimes we’re not fully in control, sometimes it’s up to chance and effort. When the outcome of a given choice is undetermined, you will be instructed to per-form a test, a roll or some other activity.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adventure Tests",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0032.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many adventures will instruct you to perform a test. To do it, sim-ply roll a single d10 and compare the result to the difficulty of the test (i.e. 6+). If the result is equal to or higher than the difficulty, it is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Success",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Otherwise it is a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fail",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Similarly to other d10 rolls, a natural ‘10’ is always a success, while a natural ‘1’ is always a failure.Some abilities and game effects (like a marked Matrix choice or a Diplomacy Score) may allow you to add a bonus to the test re-sult. Unless stated otherwise, all of these effects must be declared ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "before",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " you perform the test. Then, after you roll the die, increase the result by the bonus. Unless stated otherwise those effects can be used once per test.There are two types of tests in the Adventure Phase:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argonaut Tests: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tests performed by a specific Argonaut (or each Argonaut). These are generally associated with a specific Argonaut Skill (e.g. Cunning or Endurance). In this case, you must increase (and in certain situations decrease) the test result by your Skill val-ue. Argonaut tests can be re-rolled using  just like Attack and Evasion Rolls (see Fate Re-rolls on p. 8).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Tests: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Tests that are not resolved by a specific Argonaut are Argo tests. They are commonly found on Technology cards. These can be re-rolled by raising ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " instead of an Argonaut’s statistic. For all other purposes they are resolved like Argonaut tests.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Solo vs. Group Tests",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0032.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some tests will require only one Argonaut to make the test (usu-ally the party leader), while others will have each Argonaut make a separate test.A solo test is a make it or break it affair, the Argonaut will either succeed or fail. Usually, other Argonauts will get the chance to in-fluence the test slightly (i.e. gain  to add +1 to the result), but the pressure is on the single Argonaut.Group tests are different, in that an individual success or failure means less. Usually, a group test has success ranges. After every Argonaut makes their test, the Argonauts sum up their successes and consult the results. This means a group test usually has more than two possible outcomes: typically an outright failure (0-1 suc-cesses), a moderate success (2-3 successes) and a full success (4 successes).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fail: Effects",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0032.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Group tests also introduce “",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fail:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "” effects. A Fail effect is applied to the individual Argonaut who failed the test and not the whole group. It’s entirely possible to succeed at a group test as a group, but fail as an individual Argonaut.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Adventure Rolls",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0032.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "There are many types of rolls you may be required to make during an adventure. Not all rolls are tests. An effect may instruct you to sim-ply roll a d10 and resolve it according to the result (e.g. “roll a d10. On a 10 you Awaken.”) Such rolls are not tests (their description does not include the word ‘test’) and cannot be re-rolled using  .",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Peril",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0032.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some choices, tests and rolls are marked with the Peril keyword. The Peril keyword states that the party leader must make the de-cision, test or roll without consulting the other players. This means no talking, no discussing, no meaningful glance. It’s all on you.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adventure Terrain",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0032.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Adventure Hub has an associated Terrain tile that you add to the upcoming Timeline Battle if you go on an adventure from that hub. Once you establish which Adventure Hub you are about to resolve, consult the Adventure Terrain column in the same row. Note this Terrain’s placement instructions on the Timeline, on the day of the earliest upcoming Timeline Battle. This Terrain affects only a Timeline Battle, not a Battle triggered in any other way. If an Adventure Terrain is already noted for this day, ignore this in-struction.During the Battle Setup of a Timeline Battle with an Adventure Ter-rain, place the corresponding Terrain tile(s) on the Battle Board, after you place all Battle-specific Terrain tiles. This Terrain tile(s) cannot overlap with Titans, the Primordial, or other Terrain tiles. Adventure Terrain placement instructions include:Each Argonaut tests Endurance or Fury (8+). Gain +1  to add +1. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fail: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You are gravely wounded during the battle. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gain +2 . ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "0–2 successes: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You manage to hold your own, but your crew pays the ultimate price for your safety. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lose -1 . ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3–4 successes: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You quickly gain the upper hand and push the attackers back. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Subtract -1 . ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0032.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "See 0074.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0032",
+    "block_refs": [
+      "p0032.b001",
+      "p0032.b002",
+      "p0032.b003",
+      "p0032.b004",
+      "p0032.b005",
+      "p0032.b006",
+      "p0032.b007",
+      "p0032.b008",
+      "p0032.b009",
+      "p0032.b010",
+      "p0032.b011",
+      "p0032.b012",
+      "p0032.b013",
+      "p0032.b014",
+      "p0032.b015",
+      "p0032.b016"
+    ]
+  },
+  "build_meta": null
+}

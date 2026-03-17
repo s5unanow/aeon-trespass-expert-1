@@ -1,0 +1,38 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0076",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 76
+  },
+  "nav": {
+    "prev": "p0075",
+    "next": "p0077",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0076.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "IXVIIIIXVIIIIVVVIVIIVIIIIXIXIXIVVVIVIIIIXVIIXIXVIIIVIIIVIIVIIISecret deck 12, card 153Secret deck 12, card 161SUN__DESCENDANTSecret deck 12, card 166SUN__DESCENDANTGuaranteed LootSecret deck 12, card 149Secret deck 12, card 164Secret deck 12, card 151Secret deck 12, card 157Secret deck 12, card 152CYCLONUSGuaranteed LootTHE__NIETZSCHEANSecret deck 12, card 155THE__NIETZSCHEANSecret deck 12, card 168IXSecret deck 12, card 159Secret deck 12, card 156VIIITHE___BURDENGuaranteed LootTHE___BURDENSecret deck 12, card 158Secret deck 12, card 170Secret deck 12, card 169Secret deck 12, card 160HYPERTIME__ORACLESecret deck 12, card 172HYPERTIME__ORACLE-VII--III-VSecret deck 6, card 75VIISecret deck 6, card 78Guaranteed Loot-Guaranteed LootGuaranteed LootXPrimordial LevelMnestis Battle checkboxLabyrinthized Tear  (Cycle I Ascending Material)Excavated Tear  (Cycle II Ascending Material)Accursed Tear  (Cycle III Ascending Material)Labyrinthized  Ascended Core (Cycle I)Excavated Ascended Core (Cycle II)Accursed Ascended Core (Cycle III)",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0076",
+    "block_refs": [
+      "p0076.b001"
+    ]
+  },
+  "build_meta": null
+}

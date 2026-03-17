@@ -1,0 +1,1213 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0078",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 78
+  },
+  "nav": {
+    "prev": "p0077",
+    "next": "p0079",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0078.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Cover",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crash",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63; see also: Primordial Move-ment Through Titan Spaces (Crash) on p. 40",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cretan City",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crew",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Basic Argo Stats, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crippled Titans",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Crit Die, p. 49; see also: Primordi-al Responses, p. 51; Crit Evade, p. 41",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cumbersome",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cycle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see What is Aeon Trespass: Odys-sey?, p. 3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Triskelion, p. 11; Gaining Dan-ger over “9”, p. 43",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Daze",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Deadly",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Death",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Death in Battle, p. 56; see also: Argonaut Death, p. 10",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Death Blows",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 57; see also: Resources for Death Blows, p. 55",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Death by Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Death X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Defectors",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Despair",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Destructible",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diagonal Movement",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Story-book, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Dice",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Dice Re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diplomacy",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 23",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Discarding",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 62",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Displace",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Diversion",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Divine Surges",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 23",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Dodge",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Progress and Doom, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 21",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doomed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Double Wound",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Wound Stack, p. 52",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Dread",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Dreams of Pharos",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 28",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Echoes of Recollection",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Sto-rybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Effective Range",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 48",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Elation X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Elevated",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7; Cy-cle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Encounter Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 17",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Battle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Other Round Timing Rules, p. 56",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 22",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Erased from existence",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Sto-rybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Escalate X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Escalation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Performing Escalation, p. 52; Full Escalation Chart, p. 53",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Evasion Roll, p. 41; see also: Defensive Gear Stats, p. 46",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Events",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Story Events, p. 21; Special Events, p. 29",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evolution Track",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Evolution and Battle tracks, p. 34",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evolving",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exhaustable gear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 62",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exhausting",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 62",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Expedition Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 16",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Resolving an Explo-ration Draw, p. 15",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 15",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exposed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Facing",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Facing, p. 40",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Faction",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Diplomacy, p. 23",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fail Trick",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Trick in Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Triskelion, p. 11; see also Fate Ef-fect Triggers, p. 44",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fate Armor",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fate Re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fated Boxes",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 32",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fated Mnemoses",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 30",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fatigue",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 62",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle I Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fire X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "First ability window",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 49",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Flexible abilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Constant Abilities, p. 61",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Forced Vault",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Vault, p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fractured",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Free Action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 54",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Frenzy",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Front",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Facing, p. 40",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Frontlines",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Frozen Time",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 7 and 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Full hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Attack Roll, p. 49",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Full miss",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Attack Roll, p. 49",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gaia-born Titans",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Titan Breeding, p. 19",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gain",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 23; see also Gain/Loss Mitigation, p. 24; Voluntary Gain, p. 24; Gaining as a Group, p. 24",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Game elements",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Game Phases",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gated",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gated Abilities and Effects, p. 46",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear Ascendancy",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 8; Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 45; see also: Crafting Gear, p. 19",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear slots",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 46",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Gear trait categories",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Story-book, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Generic tokens",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 58",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Glaciate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Godforms",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Awakenings, p. 59",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Going Beyond",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Group",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Gaining as a Group, p. 24; Group Test p. 31",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hardened",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hatred",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Heal",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Heartseeker",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hide",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hope X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 8",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hub Adventures",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 26",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Hull",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Basic Argo Stats, p. 9",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ignore and Disable",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Immediate effects",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7; see also: Structur-al Technologies, p. 18",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Improved Rush",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Rush, p. 67",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Incinerated",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle III Storybook, p. 5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Indestructible",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Inhabited",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Inspire X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Instant Death Effects",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 57",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Instead",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 7",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Instinct",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 51",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Involuntary",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Involuntary Movement, p. 48",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Inward Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 27",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Judgement",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Primordial Attack Types, p. 41",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Jump",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Cycle II Storybook, p. 7; see also: Primordial Movement type in Cycle II Sto-rybook, p. 6",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Katharsis",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": see Resolved Mnemos and Katharsis, p. 30",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Keywords",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63; see also: Terrain Key-words List, p. 68",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockback X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 63; see also: Unavoidable Knockback, p. 36",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 64",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 58",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos Roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 58",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos Table",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ": p. 45; see also: Kratos Table Abilities, p. 61",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0078",
+    "block_refs": [
+      "p0078.b001"
+    ]
+  },
+  "build_meta": null
+}

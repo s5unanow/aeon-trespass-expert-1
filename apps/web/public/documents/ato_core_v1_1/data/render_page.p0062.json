@@ -1,0 +1,535 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0062",
+    "title": "Constant Abilities",
+    "section_path": [],
+    "source_page_number": 62
+  },
+  "nav": {
+    "prev": "p0061",
+    "next": "p0063",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0062.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "another rule overrides this timing (for example, by instructing you to resolve the ability ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "immediately",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " once something else occurs).Active abilities that do not have a specific timing condition can be used as a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "free action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see p. 54).You cannot activate an ability if you cannot pay its full cost (e.g. an ability requires you to raise  and your Fate is already at 9, or an ability requires you to discard a charge and there are none remaining).You can use each available active ability on a single game element ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "once per Round",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During his turn, Herodotus uses a Primordial Lure  card to place the top card from the BP deck at the bottom of the deck. The Titan still has another charge on it, but since it is an ac-tive ability, it remains unusable until the end of this Titan Round.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.die_red",
+          "alt": "Die_red"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0062.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Constant Abilities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0062.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Abilities that ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "do not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " require you to pay a cost are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "constant abilities",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".Most constant abilities continuously seek specific timing conditions and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must be resolved",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " anytime the specified condition is met, unless the ability text itself specifically says that “",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "you may",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "” resolve its effect.As a general rule, you must always resolve keywords that place Kratos tokens in the Kratos Pool (like Opening X or Break X), as well as keywords that hinder you in any way (like Cumbersome or Commit). You generally ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "may",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " use abilities that grant you move-like abilities (like Reposition X) or allow you to forcefully move the Pri-mordial (like Pushback X). See the Keywords List on p. 63 to learn more about using other keyword abilities.Constant abilities that have a specific timing condition (such as “during second ability window,” “when you are about to die,” etc.) always take effect in that window, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "therefore they can be used mul-tiple times during the same Round",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exception:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Some powerful constant abilities, called ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "flexible abili-ties",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (like Pushback X or Vault), have dual timing conditions, name-ly, they can be triggered during either the first or the second ability window of a Titan Attack. You may use such abilities in either of the windows, but not in both. (E.g. Titans may use Pushback X in either the first or  second ability window but not in both).Constant abilities that do not have a specific timing condition are called passives and provide a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "passive ongoing effect",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (such as “+1 Precision,” “Ranged 2–4”, etc.).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Labyrinthauros moves through a space occupied by Philoctera, triggering the Tumble ability on her ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Smelted Breast-plate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card. She passes the Tumble roll and does not suffer Crash! Later in the same Primordial Round, the monster moves through her space one more time! Since Tumble has no cost and is a passive ability, she will then attempt to avoid Crash again.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0062.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Table Abilities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0062.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Table abilities are a unique ability type, represented by icons in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos Tables",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". You can find an overview of the symbols used in each Kratos Table on the back of the corresponding Titan Sheet or Pattern card. Similarly to constant abilities, Kratos Table abili-ties do not have a cost, but they are resolved slightly differently.Most Kratos Table abilities modify your Attack, either by giving you access to additional keywords (like  or  or unique powerful effects, such as ).Kratos Table icons representing ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "keywords",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " should be treated as such (they can stack with keywords from other sources, see Stack-able Keywords, p. 63).Each Kratos Table ability is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "gated",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " by your current  level. As you gain , you unlock more powerful abilities and effects.You can apply bonuses from ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Kratos Table level ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "equal to or lower ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "than your current .Most Kratos Table levels give you a choice of two options. These are always ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "exclusive:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If you decide to apply one of these options, you cannot apply the other. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Some options may include more than one effect. Kratos Table symbols that are linked with a “+” symbol are both part of the same option.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "In this example, the player can choose to either use Break 1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Motivate 1 or to use Power Re-roll 1.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You must always make as much use of your Kratos Table as possi-ble. When you reach the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "second ability window",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of your Attack, you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " apply relevant effects from each level of the Kratos Table that is still available. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If an ability text says that “you may” do something, it is never forced. You can apply this ability, then decide not to resolve its effect.You do ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not have to",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " use any of your Kratos Table abilities ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "until you reach the second ability window",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", at which point you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "must",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "activate all applicable effects from your Kratos Table (1 option per level) that are still ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "available",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Herodotus has 5 , which means that the player has access to quite a few abilities and effects! They attack and hit the Primordial. In the first ability window, they decide to activate ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Pushback 1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from Kratos level 4.Then, they gather their Power Dice Pool, adding an additional red die from Kratos level 5. They perform a Power Roll and gain a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Re-roll 1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from Kratos Level 2. If they haven’t used the Pushback ability, they could have gained an additional Power Re-roll 1 from Kratos level 4, effectively making it Power Re-roll 2 (according to Stackable Keywords rule).However, the player decides that they are satisfied with their Pow-er Roll results and don’t re-roll anything: Power Re-roll X is not forced (its description says that “you may” re-roll your dice) so they can choose to activate it, then decide not to resolve its effect.Finally, they reach the second ability window and apply any re-maining available effects: they choose to resolve ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Opening 1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Break 1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "from Kratos levels 1 and 3 to place 1 Opening token and 1 Break token in the Kratos Pool.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.die_red",
+          "alt": "Die_red"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0062.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Named Abilities",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0062.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The text of some abilities is preceded by an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "ability name",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (e.g. Sacrifice, Reflex) and, optionally, a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "subtype",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", preceding their name (such as Advanced Reflex, Superior Jump, etc.).You ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "cannot",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " use multiple abilities with the same name at the same time (unless they are stackable keywords, see p. 63). For example, you cannot use a Reflex ability and an Advanced Reflex ability in the same window of opportunity (see Window of Opportunity, p. 43).You ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "can",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " use multiple ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "active abilities ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "with the same name during a single Round, provided that they come from different game el-ements (as each single active ability can only be used once per Round!).",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.die_red"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0062",
+    "block_refs": [
+      "p0062.b001",
+      "p0062.b002",
+      "p0062.b003",
+      "p0062.b004",
+      "p0062.b005",
+      "p0062.b006",
+      "p0062.b007"
+    ]
+  },
+  "build_meta": null
+}

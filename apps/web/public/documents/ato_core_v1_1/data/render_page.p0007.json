@@ -1,0 +1,573 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0007",
+    "title": "I",
+    "section_path": [],
+    "source_page_number": 7
+  },
+  "nav": {
+    "prev": "p0006",
+    "next": "p0008",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0007.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "AM0308You may immediately perform a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Bonus Attack!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If you have the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown (falling down)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Condition card, immediately stand up instead.INSULTED",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "MINOR TRAUMAMINOR TRAUMA",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "MINORTRAUMA",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "233 AI Cards199 BP Cards10 Trait Cards12 Primordial Sheets13 Argonaut Cards6 Kratos Cards8 Moiros Cards10 Single/Double  Wound Cards170 Secret Cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "T01T00",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "270 Map Tiles73 Trauma Cards27 Pattern Cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1-34-67-910+",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reflex (Move 1 space).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Trauma, StrainTrauma, Strain",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AW0284IAPETAN STRAINIAPETAN STRAINInward Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Do not leave anything to chance.15 Titan Sheets3 Storybooks",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "BODY PART",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "ITHE RUNTPushback 2.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You’ve destroyed a weak support arm riddled with sirenshell slivers. The monster is left wide open! ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "During the second ability window place 2 additional Opening or Break tokens  in the Kratos Pool.2AS0416BPHEKATON",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b006",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "I",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "You are paralyzed.  You cannot move voluntarily,  attack or use actions or abilities,  unless stated otherwise.When you are attacked, instead  of performing the Evasion Roll,  immediately die. Do not resolve  any other hit effects and  proceed to After Attack.EGOLOCK",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AN0372End of your turn:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You may test Courage (+).  ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Success:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Discard this card.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "“Someone - or something -  is trying to wrest control.”",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "CONDITION KRATOS (MIND)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "KRATOSGain this card and the Priority Targettoken (even if someone has the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Marked for Death",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Trauma card). While you have this card, you cannot lose this token.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Battle:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If your Titan is dead, resolve the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fate Worse Than Death",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Special Event.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "CONDITION MOIROS (FATE)AO0378",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "FATE WORSE  THAN DEATHMOIROS",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "It goes from zero to ten in a heartbeat and the punches keep on coming.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "COLD OPEN6+",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "ATTACK",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "I",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Target:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Closest Titan in front, in range ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Target:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Closest Titan in sightMove*&*Attack£",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3+:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " +1Each hit deals 1 .Pushback 3.4AR0398HEKATONHEKATON",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "TRAIT",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AX0517Despair tokens apply the following stacking penalties (on top of their regular effects):1+ token: You cannot use Mnemos cards.2+ tokens: You cannot use exhaustable .3+ tokens: You cannot perform .VISONG OF  HOPELESSNESSHEKATONALPHA TEMENOSHERODOTUSDREAMWALKER5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1-34-67-910+ TRAUMA KRATOS551166332244",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "å_____÷_____ß",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2+",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Move with +1  and Melee/Reach Attack  with Auto-break 1. You must move at least 3 spaces and reach your Target via the shortest possible path.AK0291",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b008",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "?",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "?",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b010",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "?",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "20 Divider Cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "single wound",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_g",
+          "alt": "Board_tile_g"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "SW",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When you gain Primordial resources during the Battle Aftermath, exchange this card for a random BP card of the lowest available level.double wound",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "DW",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When you gain Primordial resources during the Battle Aftermath, exchange this card for a random BP III card.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "H",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "DO NOT OPEN UNTIL TOLD TO DO SO.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0007.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "N",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0007.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "DO NOT OPEN UNTIL TOLD TO DO SO.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "8 Secret Envelopes",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_g",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0007",
+    "block_refs": [
+      "p0007.b001",
+      "p0007.b002",
+      "p0007.b003",
+      "p0007.b004",
+      "p0007.b005",
+      "p0007.b006",
+      "p0007.b007",
+      "p0007.b008",
+      "p0007.b009",
+      "p0007.b010",
+      "p0007.b011",
+      "p0007.b012",
+      "p0007.b013",
+      "p0007.b014",
+      "p0007.b015",
+      "p0007.b016",
+      "p0007.b017",
+      "p0007.b018",
+      "p0007.b019"
+    ]
+  },
+  "build_meta": null
+}

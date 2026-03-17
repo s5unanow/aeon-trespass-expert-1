@@ -1,0 +1,418 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0026",
+    "title": "Adventure Phase",
+    "section_path": [],
+    "source_page_number": 26
+  },
+  "nav": {
+    "prev": "p0025",
+    "next": "p0027",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0026.b001",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adventure Phase",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Adventure Phase is not as structured as the Battle and Voyage Phases. There is no strict round sequence to follow, but there are some important rules and ramifications nonetheless. There are at least 7 types of adventures in Aeon Trespass: Odyssey:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Continue reading to learn more about general Adventure rules, or proceed to the paragraph concerning a specific adventure type to learn how to resolve it. ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0026.b011",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "A Narrative Game of Choice",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Olympian Gods are dead, Hellas has been rocked by the cat-aclysmic Eschaton. Primordials ravage what is left of mortal civili-zation.The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " sails the Great Sea towards a destination unknown. It brings with it hope for a better future for all mortals. But those onboard have no such luxury of fallback: people look to them, but they can only look to each other, there is no greater authority here. The burden of responsibility is heavy indeed.You, the Argonauts, will have to make those choices… and live with the consequences.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a game about stories, more so than most adventure games. Though, on the outset, the narrative may look like a choose your own adventure, it’s much more than that. Your choices will not only inform where you end up at, but also who you truly are. Usually, there are no inherently good or evil choices. There are hard choices, difficult choices, moral choices, pragmat-ic choices. Weighty choices that will have major consequences for your games going forward.  ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0026.b013",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "What are Adventures?",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey will send you on myriad adventures: from swashbuckling clashes on high seas, through stealth infiltration missions, war stories and diplomatic negotiations, to introvertive pieces about your character or the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as a whole.So, what makes an adventure and when does the Adventure Phase start? The general rule is, everything that sends you to a Storybook paragraph is considered an adventure.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0026.b015",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Navigating Storybooks",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Storybooks contain all the story paragraphs and Battle Setups as-sociated with a given Cycle, as well as Cycle-specific rules. When playing a given Cycle, you will mostly be required to use the Story-book associated with that Cycle, although some, such as ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Mnemos Breakthroughs",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adversary Battles",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", are not strictly connected to a single Cycle and as such may require you to refer to other Storybooks.The first and most important rule of the Storybook is: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "never read story passages unless you are clearly instructed to!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " This will ensure you don’t spoil the story for yourself. On that note, read only the paragraphs you’ve been directed to and try not to look at those around them. When you begin resolving a story paragraph, it marks the beginning of the Adventure Phase.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0026.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Following the Paragraphs",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Many Storybook paragraphs include an outcome pointing you to another paragraph. When you are done resolving them along with all associated effects, simply proceed to the paragraph you were directed to. Alternatively, a story paragraph may end with the words “Return to the Voyage Phase” or simply conclude, with no further direction. This means that the adventure is over and you should return to the Campaign Round Step you were on when you were instructed to read the paragraph.Gain +1 , then ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "return to the Voyage Phase.Remember: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The adventure ends ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " if you are instructed to “Re-turn to the Voyage Phase” or there is no further paragraph men-tioned. You must always resolve all chained paragraphs before you can perform any other actions or resolve further Campaign Round Steps.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0026.b019",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story Choices",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some of the story paragraphs have choice-based outcomes. De-pending on your decision, they will point you to different para-graphs, and sometimes will list some of the gains and losses as-sociated with a given choice. We’ve ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "intentionally",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " designed these choices to give you insight into their outcomes, allowing you to make",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " informed, strategic and narrative decisions",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Read all of your choices and weigh your options. Some consequences of your choic-es are supposed to remain obscured and these have been moved to the next paragraph in the chain. Some choices are only available if you fulfill specific conditions. Even if you do, however, you are not forced to choose a given option, unless stated otherwise.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0026.b021",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Making Notes",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some story paragraphs will instruct you to note some information. If they specify where to note it, write it down in the appropriate section of your Argo Sheet or Argonaut Sheet. Otherwise, simply remember it for the duration of your current adventure.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0026.b023",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Choice Matrix",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0026.b024",
+      "children": [
+        {
+          "kind": "text",
+          "text": "In",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", the Choice Matrix is a system used to track important choices and refer to them during future events. Whenever the game instructs you to mark a Choice Matrix node (for example, “mark A1”), you should take your Argo Sheet and mark an appropriate space with an X. Later, the game may instruct you to check if a given box is marked. You cannot mark a box twice. If a box is already marked when the game instructs you to mark it, Fail: See 0006. Success: See 0005.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0026",
+    "block_refs": [
+      "p0026.b001",
+      "p0026.b002",
+      "p0026.b003",
+      "p0026.b004",
+      "p0026.b005",
+      "p0026.b006",
+      "p0026.b007",
+      "p0026.b008",
+      "p0026.b009",
+      "p0026.b010",
+      "p0026.b011",
+      "p0026.b012",
+      "p0026.b013",
+      "p0026.b014",
+      "p0026.b015",
+      "p0026.b016",
+      "p0026.b017",
+      "p0026.b018",
+      "p0026.b019",
+      "p0026.b020",
+      "p0026.b021",
+      "p0026.b022",
+      "p0026.b023",
+      "p0026.b024"
+    ]
+  },
+  "build_meta": null
+}

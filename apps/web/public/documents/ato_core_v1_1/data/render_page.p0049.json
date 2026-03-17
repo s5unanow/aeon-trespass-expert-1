@@ -1,0 +1,616 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0049",
+    "title": "Move-like Ability",
+    "section_path": [],
+    "source_page_number": 49
+  },
+  "nav": {
+    "prev": "p0048",
+    "next": "p0050",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0049.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Move-like Ability",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If an ability, Trauma, or any other effect allows you to move volun-tarily without performing a , it is considered a Move-like ability. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move-like abilities ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "are resolved in the same way as movement ac-tions (unless stated otherwise), but they are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " considered a for the purpose of other abilities and effects.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0049.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Voluntary Movement",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "All movement performed as part of a  and any move-like abili-ties are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "voluntary",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", meaning that you may perform as much of it as you require (i.e. if you have 5 , you may choose to move only 3 spaces; if you have the Reposition 2 keyword, you may still choose to Reposition 1 instead). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0049.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Involuntary Movement",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "All movement caused by an opposing force (i.e. Primordial actions causing Titan movement or Titan actions causing the Primordial to move) is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "involuntary",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and must be resolved up to its maximum value, unless another effect forces you to stop. The most common causes of involuntary movement are Knockbacks (see p. 63) and Pushbacks (see p. 65). Involuntary movement is resolved like vol-untary movement, with the following exceptions:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "other miniatures and Obstacle Terrain tiles. If a Titan is invol-untarily moved into a Board Edge, it continues to move along its edge, away from the source of the involuntary movement (if possible).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "another Titan, the other Titan is displaced (see ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Displace",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " key-word, p. 63).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain tile, it suffers Crash (p. 63). If the Terrain is Destructi-ble, it is then removed from the Battle Board. If it’s Indestructi-ble, it stays on the board.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain tile or they are pushed onto such a space during Push-back, they die. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "A knocked back Titan will die by falling into a Chasm only if it ends Knockback on it, otherwise it will be moved over it.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "when a Titan or Primordial move onto them involuntarily.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "A single effect can be a voluntary movement for one miniature and involuntary for another. For example, when a Titan performs Pushback against a Primordial, it is a voluntary move-ment for the Titan and an involuntary one for the Primordial.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0049.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Involuntary Movement Reduction",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan abilities, traits and other effects may reduce involuntary movement. Multiple effects reducing involuntary movement may be applied at the same time, e.g. if a Titan has two  cards that allow them to reduce suffered Pushbacks by 1 each, then deal a Critical Wound that reduces Primordial Pushbacks by 2, all of these effects can be combined to reduce Pushback suffered by this Titan by a total of 4.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0049.b019",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Uses of Movement Actions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "As mentioned at the start of this section, there may be some other uses for a , for example to unexhaust Gear (see Unexhausting on p. 62) and as part of a complicated action (see Complicated Actions on p. 54).  ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0049.b021",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Combat Action",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The combat action is generally used to attack the Primordial. This is how you deal Wounds and win the Battle!A  is the main way of performing Titan Attacks. To perform a Titan Attack, resolve these steps, called the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "attack sequence",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", in the following order:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Declare Attack and Active Weapon",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Raise ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rage",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and check ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target 3.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Attack Roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "First Ability Window",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "5.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Draw BP card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Power Roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Create the Power Pool",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.2",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Roll the Dice",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.3",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Power Re-rolls",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Use Potentials ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "6.5",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Resolve the Power Roll",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "7.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Primordial Responses",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "8.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Wounds and Escalation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "9.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Clear the Kratos Pool",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "10.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Second Ability Window",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0049.b023",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1. Declare Attack and Active Weapon",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0049.b024",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Declare you are about to Attack, then choose one of your ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "unex-hausted",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " weapon  cards as an active weapon for this Attack. You can only choose a weapon as active if the target of your Attack is in its ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "effective range",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (adjacent for melee, within range X–Y for ranged, etc.) and LoS (see Line of Sight on p. 38). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " If a weapon does not have a Ranged or Reach keyword, it is considered Melee.If you cannot choose a legal active weapon or don’t have LoS, you cannot perform an Attack. Do not resolve any further steps of the attack sequence. If an Attack ends in this step, it does not cause a Chain Break (see p. 43).Effective range is the distance, in spaces, from the Attacker to the Target. Just like movement, it is calculated",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in cardinal directions",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", never diagonally.An effective range of most weapons is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "adjacency",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", meaning you need to stand next to the Primordial to perform the Attack. These are called ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Melee",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " weapons.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reach",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " X weapons have an effective range of X, meaning you can attack a target up to X spaces away. Reach weapons can also be used when ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "adjacent",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ranged",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " X–Y weapons have an effective range of X–Y, meaning you can ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " attack a target at least X and up to Y spaces away. Most ranged weapons ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "cannot",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " be used while adjacent. ",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0049",
+    "block_refs": [
+      "p0049.b001",
+      "p0049.b002",
+      "p0049.b003",
+      "p0049.b004",
+      "p0049.b005",
+      "p0049.b006",
+      "p0049.b007",
+      "p0049.b008",
+      "p0049.b009",
+      "p0049.b010",
+      "p0049.b011",
+      "p0049.b012",
+      "p0049.b013",
+      "p0049.b014",
+      "p0049.b015",
+      "p0049.b016",
+      "p0049.b017",
+      "p0049.b018",
+      "p0049.b019",
+      "p0049.b020",
+      "p0049.b021",
+      "p0049.b022",
+      "p0049.b023",
+      "p0049.b024"
+    ]
+  },
+  "build_meta": null
+}

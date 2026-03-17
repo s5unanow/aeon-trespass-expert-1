@@ -1,0 +1,416 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0012",
+    "title": "Argonaut Skills",
+    "section_path": [],
+    "source_page_number": 12
+  },
+  "nav": {
+    "prev": "p0011",
+    "next": "p0013",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0012.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Argonaut Skills",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0012.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Argonaut has six Skills: Courage, Cunning, Endurance, Fury, Will and Wisdom. These will be used during various tests, both in Adventures and Battles. They start with a +0 modifier, meaning you neither add, nor subtract anything to/from your roll, but may go up or down as a result of other effects. The most common source of Skill bonuses are the Argonaut Portrait card and the Mnemos cards. The most common source of Skill penalties are the Fated Mnemos cards.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0012.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Triskelion",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0012.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Triskelion is the heart of Aeon Trespass: Odyssey and the key component of the Inverted Combat Paradigm™. It’s a triple dial that represents the union of Mortal (",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "), Divine (",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fate",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ") and Titan (",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rage",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ") elements that make the junction between Ar-gonauts and Titans possible. As such, these 3 statistics are shared between the Argonaut and the Titan they choose to take into Battle.Unlike typical stats, these three are always ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "in flux",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". They are mainly used in Battles (they will go up as a result of getting hit, attacking and using abilities), but you may also use, gain or lose these from various effects during Adventures and other parts of the Voyage Phase. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Triskelion stats always reset back to 0 after each Battle.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Triskelion",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Whenever you gain or lose ,  or , simply rotate the appro-priate dial by the corresponding amount.The Triskelion stats can go from 0 to 9. In general, you want them as high as possible because that means you’re using your potential to the fullest. However, the higher they are, the closer to despair, darkness and death you are! Being forced to raise any of them over 9 will always have dire consequences:  ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0012.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "(see p. 56). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0012.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Therefore, you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "cannot",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " voluntarily gain ,  or  if it would take you over 9.  ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Represents the rising threat of death. You gainwhen you are attacked and also through suffering other nega-tive effects. Note, however, that many abilities and Gear cards be-come more powerful when you reach a certain value (you may even ignite a spark of the Old Gods inside you!). In Battle, raisingover 9 usually causes an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Obol Draw",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (see p. 42).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Fate:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Represents the extent to which you oppose your destiny. You can gain  to re-roll your dice and to pay for powerful abilities. Be warned though, high  may enable additional negative effects from Primordial Attacks. If you would have to raise your over 9 in Battle, immediately draw a Moiros card (see p. 57).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rage:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Represents the fury of Titans. It increases each time you attack and makes you more powerful, giving you access to additional abilities from the Kratos Table. It also makes you more likely to become a Target—whenever your Rage becomes higher than that of all other Titans, you gain the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Priority Target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " token. If you would have to raise  to more than 9 during a Battle, your Titan is consumed by rage and you lose control over it. In game terms, the Titan ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "dies",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " as soon as you finish your current action.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.fate",
+          "alt": "Fate"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0012.b009",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Campaign Setup",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0012.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If this is your first campaign of",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", we rec-ommend starting with the Learn to Play book, which will introduce all necessary game elements as they become relevant. If you have already played through the Learn to Play story and wish to start a new Cycle, follow these steps:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Find and prepare the following elements from a Cycle you are about to play (the first Cycle is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Truth of the Labyrinth",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "):",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0012.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "for Cycle I, red for Cycle II and purple for Cycle III – or by the Faction symbols)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0012.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When there are 2  tokens on this card, discard them and gain +1 .When you reach a given  level, during the Story Step, after all other story events, resolve the corresponding Inward Odyssey adventure: 1: Endless Decks 2: Phos Dance 3: Glitch in the Engine 4: A Distant Thunder 5: Mark of the Maker 6: Of Dreams and Memories 7: Blood of the Mother 8: See the Forest 9: Days of Meaninglessness 10: Memory of a Distant ShoreAfter you resolve the last adventure from this list, flip this card.INWARD ODYSSEY:  TRUTH OF THE LABYRINTH",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You know precious little about the grand vessel you call home. Who built it? For what purpose? How did you come to be onboard?There are vast spaces below deck, more than should be possible, even taking into account the massive size of the ship. Each day brings a new discovery, a new secret to be unraveled. Your Inward Odyssey has just begun.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1AAD0121",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "T00T01",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Inward Odyssey Story cardMap tilesArgo miniatureFated Mnemos cardsClue cardsExploration cards",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "EXPLORATION",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Prepare the current Cycle ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo Sheet",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (these differ from Cycle to Cycle!), along with ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "a Choice Matrix",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (it persists from Cycle to Cycle) and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "4 Argonaut Sheets",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (you will find these at the back of the Storybook or on our website).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Continue campaign preparations according to your current Cycle’s Storybook.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.fate",
+    "concept.board_tile_c",
+    "concept.board_tile_n"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0012",
+    "block_refs": [
+      "p0012.b001",
+      "p0012.b002",
+      "p0012.b003",
+      "p0012.b004",
+      "p0012.b005",
+      "p0012.b006",
+      "p0012.b007",
+      "p0012.b008",
+      "p0012.b009",
+      "p0012.b010",
+      "p0012.b011",
+      "p0012.b012",
+      "p0012.b013",
+      "p0012.b014",
+      "p0012.b015",
+      "p0012.b016",
+      "p0012.b017",
+      "p0012.b018"
+    ]
+  },
+  "build_meta": null
+}

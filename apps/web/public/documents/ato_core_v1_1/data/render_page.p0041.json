@@ -1,0 +1,569 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0041",
+    "title": "1",
+    "section_path": [],
+    "source_page_number": 41
+  },
+  "nav": {
+    "prev": "p0040",
+    "next": "p0042",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0041.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "As a Primordial Response from a BP card, the Labyrinthauros tram-ples into the Board Edge. According to the rules, it continues to move along the edge, prioritizing movement that will initially lead it further away from the most Titans. Note that in the end this movement will still bring the Primordial closer to the Titan.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "1",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "234",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "5",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "6",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b006",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial movement through and onto Terrain spaces",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During movement, the Primordial ignores Terrain tiles, unless they have the Destructible keyword, in which case they are destroyed and removed from the Battle Board. Consequently, a Primordial can freely move through and onto spaces with most Terrain tiles (including Obstacles).",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial movement through Titan spaces (Crash)",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titans do not impede Primordial movement in any way, but a Titan on a space the Primordial moved through or onto suffers Crash. A Titan subjected to Crash gains +1  and suffers Knockdown (see Crash, p. 63 for more details).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Ending Primordial movement on a Titan space",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If the Primordial ends its movement on a space occupied by a Titan, that Titan suffers ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Crash",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unavoidable Knockback",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " equal to the Primordial’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "X",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " value.The Unavoidable Knockback happens in a straight line away from the Primordial and is subject to all normal Knockback rules (see Knockback on p. 63) with the following exception: it cannot be low-ered or ignored in any way other than effects that cause you to stop (such as colliding with an Obstacle) or effects that specifically refer to Unavoidable Knockback. If there are two or more equally pos-sible Unavoidable Knockback directions, the player chooses one.Some Primordials will target Titans outside of their effective Move and Attack range. In such cases, they will still perform the movement, trying to get as close to their Target as possible, and then simply skip the Attack step and go straight to the After Attack step.Smarter Primordials always target",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in range",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "!",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial movement types",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The rules above apply to most cases of movement. There are, however, some special movement types that reflect unique or un-expected ways of traversing the battlefield. They still adhere to standard Primordial Movement rules, but in case of a conflict, the rules below take precedence:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Perform movement by up to X spaces, instead of using the Primordial’s  value. For example, “Move 6”, “Move Unlimited”.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Move to X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Perform movement to the designated area or in the indicated direction. Treat the Primordial’s  as unlimited for the duration of this movement. For example, “Move to the center of the board”.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b014",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Facing",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Every Primordial miniature has a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "front ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", the direction it is facing. Identifying the front of some Primordials is easy, of oth-ers less so (these are eldritch monsters from some Other Place af-ter all). For game purposes, it’s just important to designate a side of the miniature you considered the front (marked with a white arrow on the diagrams found on the Primordial Sheets) and sticking with it.Some targeting instructions and other game elements may refer to the Primordial’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "front",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "rear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". To find out if a Titan or any other game element is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "in front",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of the Primordial, draw an imaginary line passing along the edges of the spaces occupied by the Primordial miniature’s front. All spaces beyond this line in the direction the Pri-mordial is facing are considered to be ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "in front ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(see diagram below).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Rear",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " designates ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "only",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " the spaces adjacent to the Primordial, direct-ly behind it (in relation to the front). These are also always marked on the diagram on the Primordial Sheet with the R Rear space symbol.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "White spaces are in front, while only the 2 orange spaces are considered Rear ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_ruins_ref",
+          "alt": "Art_ruins_ref"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b016",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "R  spaces",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordial Turning",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unless stated otherwise, the Primordial always bears down on its victim! Consequently, the Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "always",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " turns:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b021",
+      "children": [
+        {
+          "kind": "text",
+          "text": "gets a Zone).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b023",
+      "children": [
+        {
+          "kind": "text",
+          "text": "to turn it.The Primordial ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "doesn’t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " turn:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b025",
+      "children": [
+        {
+          "kind": "text",
+          "text": "pushed back by a Titan).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b027",
+      "children": [
+        {
+          "kind": "text",
+          "text": "(see p. 41). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0041.b029",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4. Primordial Attack",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0041.b030",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordials always move first, then attack. For an Attack to be re-solved, the Target must be within Attack Range, as dictated by the Attack type. Note that Primordial Attack types also introduce addi-",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.art_ruins_ref"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0041",
+    "block_refs": [
+      "p0041.b001",
+      "p0041.b002",
+      "p0041.b003",
+      "p0041.b004",
+      "p0041.b005",
+      "p0041.b006",
+      "p0041.b007",
+      "p0041.b008",
+      "p0041.b009",
+      "p0041.b010",
+      "p0041.b011",
+      "p0041.b012",
+      "p0041.b013",
+      "p0041.b014",
+      "p0041.b015",
+      "p0041.b016",
+      "p0041.b017",
+      "p0041.b018",
+      "p0041.b019",
+      "p0041.b020",
+      "p0041.b021",
+      "p0041.b022",
+      "p0041.b023",
+      "p0041.b024",
+      "p0041.b025",
+      "p0041.b026",
+      "p0041.b027",
+      "p0041.b028",
+      "p0041.b029",
+      "p0041.b030"
+    ]
+  },
+  "build_meta": null
+}

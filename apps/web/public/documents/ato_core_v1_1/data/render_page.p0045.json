@@ -1,0 +1,263 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0045",
+    "title": "Fate Effect Triggers",
+    "section_path": [],
+    "source_page_number": 45
+  },
+  "nav": {
+    "prev": "p0044",
+    "next": "p0046",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0045.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fate Effect Triggers",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0045.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Fate is a cruel mistress. It allows you to re-roll your Attack and Eva-sion dice and pay for abilities, but luck eventually runs out and you have to pay out.Some AI cards have additional or stronger effects depending on your  level. This is always indicated by a special banner, showing the  level needed for the effect to trigger, such as ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3+: +1",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". In this example, if your Fate was 3 or higher, you’d have to roll an additional Evasion die.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0045.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Effect Triggers",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0045.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "There may be other effect triggers out there, based not on , but other Triskelion statistics or even completely different game elements. These will be represented the same way but with corre-sponding symbols or descriptions. Stay vigilant! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0045.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "5. After Attack",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0045.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The After Attack section of an AI card has additional effects that happen after you resolve, or evade, the main part of the Primor-dial Attack. Note that these are completely separate from the At-tack, therefore they get resolved even if the actual Attack was fully evaded or if it wasn’t performed at all (because the Target was out of range). The only thing capable of canceling the After Attack ef-fects is a Chain Break (see p. 43) or the Mercy Rule (see p. 56).Unless stated otherwise, all After Attack effects targeting a single Titan affect the original Target of the Attack.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " An ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "After Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " instruction on an AI card that targets mul-tiple Titans is resolved against each of these Titans. However, if an Attack includes an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "After Final Attack",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " instruction, it only takes effect after resolving the Attack against ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the last",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of its Targets.Once you finish resolving the After Attack effect (if there is any), discard the AI card. If there are no more cards in the AI decks, shuf-fle the discard to form the new AI deck.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0045.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resolve Other Actions",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0045.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Primordials are unspeakable monsters and they have many tricks up their sleeves. Some may perform additional Attacks after the mandatory AI Draw, while others will trigger Trait effects and other effects.Any additional Attacks are resolved using the normal rules ex-plained above. Every Trait that triggers an additional effect will introduce its own rules.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0045.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "End of Primordial Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0045.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sometimes the Primordial will have some effect that triggers at the end of the Primordial Round. In that case, it’s resolved after all oth-er actions. If the Primordial has more than one end of Round effect, the players may resolve these effects in any order they choose. Also remember to unexhaust Argo Abilities (see Argo Abilities on p. 55 for details).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0045.b011",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0045.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "So, you survived the Primordial Round? Good for you! Now’s the time to fight back! This section covers everything that happens during the Titan Round, including Titan turns, using Argo Abilities, Awakenings and more.First, let’s start with the basics: the Titan Sheet and Titan equipment.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0045.b013",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan Sheet",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0045.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During Battles, you play as mortal Argonauts junctioning with mighty Titans using the Triskelion, therefore you use a combina-tion of an Argonaut Sheet (see p. 10), a Triskelion triple dial (see p. 11) and a Titan Sheet (see below). The Titan serves as a “vessel,” while the Argonaut is the “pilot,” providing their expertise (in the form of Skills and Mnemos Abilities, see p. 11 and 29).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "12345",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0045",
+    "block_refs": [
+      "p0045.b001",
+      "p0045.b002",
+      "p0045.b003",
+      "p0045.b004",
+      "p0045.b005",
+      "p0045.b006",
+      "p0045.b007",
+      "p0045.b008",
+      "p0045.b009",
+      "p0045.b010",
+      "p0045.b011",
+      "p0045.b012",
+      "p0045.b013",
+      "p0045.b014"
+    ]
+  },
+  "build_meta": null
+}

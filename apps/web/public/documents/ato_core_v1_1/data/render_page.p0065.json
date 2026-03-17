@@ -1,0 +1,203 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0065",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 65
+  },
+  "nav": {
+    "prev": "p0064",
+    "next": "p0066",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0065.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Knockdown:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Gain the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Condition card, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Falling down ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "side up, and place your miniature on the side. Follow the rules of the Condition card. If Knockdown is caused by an Attack, it affects the Target only if it is within the Primordial’s effective range (ad-jacent for Melee Attacks, in the designated zone for Zone Attacks, within X spaces for Ranged X Attacks, etc.). If it’s caused by a Re-sponse, it affects the Attacker only if they are within adjacency.Knockdown is a special Condition. When you get knocked down, you put your miniature on its side and take a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown (falling down)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " card. While you have the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown (falling down) ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "card, you cannot perform any actions, reactions or free actions, unless stated otherwise. At the end of your next turn, you flip the card to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown (standing up)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " side. All Titans with a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown(standing up) ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "card stand up at the start of their next turn. If for whatever reason this card is discarded, stand up too.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lifeline: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When you are about to die from falling into a Chasm space, displace instead. Alternatively, when you are about to die from falling from a Boundless Board Edge, stop adjacent to it. This ability can be used even if knocked down or otherwise prohibited from using active abilities.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Lumbering:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Cannot be involuntarily moved.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Motivate X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the second ability window, choose anoth-er Titan. That Titan may move up to X spaces. If this keyword stacks, you can use each stacking instance on a separate Titan (i.e. you may use Motivate 1 from two sources to move one Titan twice or to move two Titans, one space each).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Opening X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the second ability window, place X Open-ing tokens in the Kratos Pool. During the Attack Roll step, each Opening token in the Kratos Pool adds +1 to the result of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "each",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " die.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockback. The affected miniature must move  in a straight line, directly away from the source of Knockback.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockback to the left. Specific Knockback direction  overrides regular rules.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "When a Titan is knocked back into the Board Edge  it continues to move along the Edge, away from the source  of Knockback (if possible).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Knockback 4 to the left. When a Titan is knocked back  into another Titan, the other Titan is displaced (according  to involuntary movement rules).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Ulyssea suffers Knockback 3. When a Titan is knocked back into an Obstacle, it must stop on the Obstacle space (if Destructible) or adjacent to it (if Indestructible). Then it suffers Crash.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0065",
+    "block_refs": [
+      "p0065.b001"
+    ]
+  },
+  "build_meta": null
+}

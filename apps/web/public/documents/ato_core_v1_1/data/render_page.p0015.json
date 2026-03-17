@@ -1,0 +1,616 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0015",
+    "title": "Other Movement Symbols",
+    "section_path": [],
+    "source_page_number": 15
+  },
+  "nav": {
+    "prev": "p0014",
+    "next": "p0016",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0015.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is on a tile with two directional arrows point-ing in the same direction. The players choose to follow the top one and place a newly discovered tile adjacent to the current tile. They then move the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to the new tile, placing it in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "α",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " sector, since the top arrow aligns with that section of the new tile, and place the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " miniature on that sector. This means that they are now in sector ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "α",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and they can only travel further through another directional arrow with an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "α",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " symbol.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "The tile sector you are currently on ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "does not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " influence your access to Map symbols (see Map Symbols below). You resolve ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "all",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Map tile symbols from your tile, even if graphically they seem to be located in a different sector.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Other Movement Symbols",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0015.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Most waterways are accompanied by Movement Symbols that pro-vide ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "additional information ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "requirements",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " that may influence your movement. You already know of the sector symbols.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Faction symbols",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " inform you about the Local Faction you can en-counter on a Map tile your current tile connects to.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "MinoanLabyrinthian Hornsworn",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You may also encounter other, Cycle-specific movement sym-bols. These may be explained in the corresponding Storybook or on Technology cards. Note that movement symbols never block movement, unless they are accompanied by a  symbol.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007This restricted symbol",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " informs you that you require an addi-tional Technology to move through this waterway.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Map Symbols",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0015.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The list below includes the most common Map symbols you will encounter in each Cycle. This list is not comprehensive. If you encounter a Map symbol you are not familiar with, consult the Storybook as well as your current Story and Doom cards, and your Technology deck. If you don’t find the rules pertaining to a specific symbol there, don’t worry about it now, they will become relevant later.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration Symbols",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the Exploration Step, you will gain +1 . \u0007During the Exploration Step, if the tile is Unexplored, you will gain +1 . \u0007During the Exploration Step, if the tile is Unexplored, you will gain +1 Titan (Dreamwalker).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adventure Symbols",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " \u0007Denotes a hub adventure. During the Expedition Step, if the tile is Unexplored, you will resolve an adventure from one of your Cycle’s adventure hubs (see Hub Adventures on p. 26). \u0007Denotes an R&R adventure. During the Expedition Step, if the tile is Unexplored, you will resolve an adventure from the R&R section (see R&R Adventures, p. 27).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Other",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Represents cities and other large settlements. Has no inher-ent effect, but allows usage of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Negotiation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Technology abili-ties during the Advancement Step. Remember that ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Negotiation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "abilities cannot be used on tiles with the Last Visited City token (see p. 13). ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b006",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "2. Timeline Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0015.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the Timeline Step, simply mark the next empty box on the Timeline on your Argo Sheet. It designates ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the current day",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of your Odyssey. If there are no empty boxes to mark in the Timeline Step, your time has run out and your campaign is lost.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b008",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "T0",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b009",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "T1",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b010",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "T2",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b011",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "T3",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b012",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "T4",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b013",
+      "level": 3,
+      "children": [
+        {
+          "kind": "text",
+          "text": "T5",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0015.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "T6/00",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b016",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Voyage T",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b017",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "x",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b018",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "x",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b019",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "x",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b020",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "x",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b021",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Timeline Events",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0015.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If there are any symbols, events or other notes assigned to the current day, they must be resolved in the appropriate Campaign Round Step:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Acclimations: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Acclimations upgrade your Exploration deck with new cards and are resolved in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Exploration Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Battles:Timeline Battles",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and additional Battles noted on the Timeline are resolved in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Encounter Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Technology Breakthroughs:Structural Technolog",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "y  and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Battle Technology",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Breakthroughs are resolved in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advancement Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advancements:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " All events added to the Timeline by using Argo Fa-cilities are resolved in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Advancement Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story Events: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Any event leading directly to a story paragraph in the Storybook as well as any other events that are not Break-throughs, Advancements, Acclimations or Battles are Story Events and should be resolved in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Story Step",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0015.b023",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "SCOUTS [P. XX]",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0015",
+    "block_refs": [
+      "p0015.b001",
+      "p0015.b002",
+      "p0015.b003",
+      "p0015.b004",
+      "p0015.b005",
+      "p0015.b006",
+      "p0015.b007",
+      "p0015.b008",
+      "p0015.b009",
+      "p0015.b010",
+      "p0015.b011",
+      "p0015.b012",
+      "p0015.b013",
+      "p0015.b014",
+      "p0015.b016",
+      "p0015.b017",
+      "p0015.b018",
+      "p0015.b019",
+      "p0015.b020",
+      "p0015.b021",
+      "p0015.b022",
+      "p0015.b023"
+    ]
+  },
+  "build_meta": null
+}

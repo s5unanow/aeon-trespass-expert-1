@@ -1,0 +1,679 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0017",
+    "title": "Gaining Resources from Exploration cards",
+    "section_path": [],
+    "source_page_number": 17
+  },
+  "nav": {
+    "prev": "p0016",
+    "next": "p0018",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0017.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gaining Resources from Exploration cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Resolving most Exploration cards will provide you with useful Mortal resources, necessary for crafting Gear, as well an occasional Titan, Crew, Hull or other bonus. For more information about resources, see p. 19. For more information about gaining and losing, see p. 23.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Exploration Card Penalties",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Similarly, resolving Exploration cards can give you penalties and result in you losing stuff such as Titans, Crew, Hull. For more infor-mation about gaining and losing, see p. 23.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Trading",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some rare Exploration cards will allow you to trade resources. For more information about trading, see p. 18. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "3. Moving the Adversary",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The Argonauts actions are sure to draw the attention of vile forc-es, represented by Adversaries. These are special Primordials that actively hunt the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on the Map. They are not strictly tied to a specific Cycle – they will hunt you until they are permanently de-feated – or you are! The Storybooks will instruct you on when to introduce an Adversary into your campaign as well as how to de-feat it. When an Adversary is introduced into a campaign, write its name on the Adversary Track. Note: When you start a new Cycle, the Adversary is not placed on the map by default and it will not start chasing you until the Story-book says so. Ignore all ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adversary activations",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " until an event instructs you to introduce it.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adversary Activation",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Once the Adversary has been introduced, whenever you encounter an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adversary activation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " on an Exploration card:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "the Adversary one tile towards the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " along the shortest available path. Then, if the Adversary is on the same Map tile as the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "remove its miniature",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from the map and trigger an Ad-versary Battle (go to the corresponding Battle Scenario in the Storybook; Adversaries are not tied to a single Cycle and you may need to refer to other Cycles for Battle Setup). You must resolve the Adversary Battle at the end of your current Step!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "symbol encountered during this Exploration Step, nothing happens:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You’re much closer to the Adversary spawning.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "two  symbols during this Exploration Step, spawn the Ad-versary: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Place the small miniature of the current Adversary ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "four tiles away",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " from the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you can’t place it four tiles away, place it as far away as possible. If you spawned the Ad-versary during the Exploration Step, immediately end this Ad-versary Activation and ignore any other Adversary activations until the end of this Step.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important exception: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Whenever you encounter an Adversary sym-bol  on an any other game element, for example when you gain a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "unique Loot card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", or use a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Summoning",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Awaken",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", you must per-form an Adversary activation as normal, with the following excep-tion:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " it only takes one Adversary symbol to spawn the Adversary!",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.die_red",
+          "alt": "Die_red"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adversary Movement Rules",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "These are the specific rules governing the Adversary’s movements:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "symbol.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b022",
+      "children": [
+        {
+          "kind": "text",
+          "text": "revealed tiles.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b024",
+      "children": [
+        {
+          "kind": "text",
+          "text": "is not connected by a directional arrow. It ignores tile sectors and all Map symbols.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b026",
+      "children": [
+        {
+          "kind": "text",
+          "text": "prioritizes horizontal as long as it brings it closer to the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If there is more than one way for the Adversary to move,  it will always move horizontally.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b028",
+      "children": [
+        {
+          "kind": "text",
+          "text": "an activation, it does not move but you still trigger the Adver-sary Battle.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b030",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Awakening, Summoning or gaining Loot), you must resolve it as soon as the current Battle ends.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: We mentioned “any game element” because the Ad-versary, though primarily active in the Exploration Step, may move during different parts of the game, for example after an Awakening or from gaining a Primordial Loot card! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b031",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4. Performing Acclimations",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b032",
+      "children": [
+        {
+          "kind": "text",
+          "text": "As you journey across a region, get more accustomed to it and build a local network of informants and suppliers, your exploration efforts will bear more fruit. In Aeon Trespass: Odyssey, this is rep-resented by ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Acclimation",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " brackets.Each campaign has a fixed number of Acclimations, marked on your Timeline.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b033",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "17",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b034",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "18",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b035",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Acclimation 1:  4, 5, 6, 8, 19 −› 10, 11, 12, 14, 22",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b036",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "19",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b037",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Whenever your current day calls for an Acclimation, first resolve all other actions during the Exploration Step, except an Adversary Battle, then perform the Acclimation.To perform an Acclimation, search the Exploration deck for the cards with numbers corresponding to the list found on the left of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "acclimation arrow ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "and permanently remove them (return them to the game box, you won’t be using them anymore). Then, find the Exploration cards with numbers listed on the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "right",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " of the arrow, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "add",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " them to the Exploration deck and shuffle it thoroughly. ",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.die_red",
+          "alt": "Die_red"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b038",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4. Expedition Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b039",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the Expedition Step, if the Argo is on an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unexplored",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tile with an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Adventure",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "R&R",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " symbol, resolve an Adventure Phase (see p. 25). ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Remember:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " All newly revealed tiles are Unex-AB0079",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0017.b040",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "4",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0017.b041",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Adversary symbol",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.die_red"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0017",
+    "block_refs": [
+      "p0017.b001",
+      "p0017.b002",
+      "p0017.b003",
+      "p0017.b004",
+      "p0017.b005",
+      "p0017.b006",
+      "p0017.b007",
+      "p0017.b008",
+      "p0017.b009",
+      "p0017.b010",
+      "p0017.b011",
+      "p0017.b012",
+      "p0017.b013",
+      "p0017.b014",
+      "p0017.b015",
+      "p0017.b016",
+      "p0017.b017",
+      "p0017.b018",
+      "p0017.b019",
+      "p0017.b020",
+      "p0017.b021",
+      "p0017.b022",
+      "p0017.b023",
+      "p0017.b024",
+      "p0017.b025",
+      "p0017.b026",
+      "p0017.b027",
+      "p0017.b028",
+      "p0017.b029",
+      "p0017.b030",
+      "p0017.b031",
+      "p0017.b032",
+      "p0017.b033",
+      "p0017.b034",
+      "p0017.b035",
+      "p0017.b036",
+      "p0017.b037",
+      "p0017.b038",
+      "p0017.b039",
+      "p0017.b040",
+      "p0017.b041"
+    ]
+  },
+  "build_meta": null
+}

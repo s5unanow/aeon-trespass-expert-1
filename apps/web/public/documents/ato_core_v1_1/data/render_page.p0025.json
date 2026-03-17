@@ -1,0 +1,290 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0025",
+    "title": "Gaining Other Game Elements",
+    "section_path": [],
+    "source_page_number": 25
+  },
+  "nav": {
+    "prev": "p0024",
+    "next": "p0026",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0025.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos card to any Argonaut (it would exceed their limit of 2 Mnemos cards), it is instead added to the Mnemos Vault (see Mnemos Cards on p. 29).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Progress",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tokens will be usually placed on the Story card or Inward Odyssey. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tokens will be placed on Doom cards. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ambrosia",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Despair",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tokens gained outside of Battle will be held by the Argonaut who gained them.  ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0025.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gaining Other Game Elements",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some game elements are not represented by physical components. These include resources, statistics, Mnemos nodes, Titans, , , various Boons and Afflictions, permanent Skill bonuses and more. If you gain any element that is not represented by a component, note it down in the correct section of the Argo Sheet or, if it was gained by a specific Argonaut, on their Argonaut Sheet.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0025.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Loss",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Similarly, when you ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "lose",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " a physical component, simply put it back into the game box, unless instructed otherwise. When you lose a game element that is not represented by a physical component, erase it from the appropriate sheet (if it is singular) or lower its value by a specified number.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0025.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gain/Loss Mitigation",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some Technology abilities may allow you to perform a “",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "save test",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".” These abilities will always contain the word “Save.” A successful save test allows you to ignore gaining or losing a specific game el-ement (usually a negative resource). It can be re-rolled using Argo Fate just like any other Argo test (see p. 31). Each Save ability can only be used once per a single instance of gaining/loss. However:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "to perform a save test for the same effect, you can use as many of them as you like during one instance.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "day from different sources, you can use the same Save abili-ty for each of these gains/losses (because these are separate “instances”).",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "loss.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Most Save tests are influenced by your Diplomacy bonus/ penalty.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0025.b016",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Voluntary Gain/Loss",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b017",
+      "children": [
+        {
+          "kind": "text",
+          "text": "If the gain/loss is listed in the text of an active ability, story choice or any other non-forced effect, it is considered a voluntary gain/loss (a “payment”) and cannot be mitigated in any way. To resolve this effect, you must gain/lose all listed game elements. You can’t use ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Save",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " abilities or any other effects that would allow you to ig-nore any of these gains/losses. These types of voluntary gain or loss may sometimes use the word “pay.”",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0025.b018",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gaining/Losing as a Group",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0025.b019",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When you are instructed to “gain X as a group” or “lose X as a group,” distribute the specified statistic or element among all of the Argonauts. It does not have to be distributed evenly. You may assign this gain to one Argonaut or distribute it among some or all of them.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0025",
+    "block_refs": [
+      "p0025.b001",
+      "p0025.b002",
+      "p0025.b003",
+      "p0025.b004",
+      "p0025.b005",
+      "p0025.b006",
+      "p0025.b007",
+      "p0025.b008",
+      "p0025.b009",
+      "p0025.b010",
+      "p0025.b011",
+      "p0025.b012",
+      "p0025.b013",
+      "p0025.b014",
+      "p0025.b015",
+      "p0025.b016",
+      "p0025.b017",
+      "p0025.b018",
+      "p0025.b019"
+    ]
+  },
+  "build_meta": null
+}

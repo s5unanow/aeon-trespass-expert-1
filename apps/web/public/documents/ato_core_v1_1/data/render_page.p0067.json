@@ -1,0 +1,168 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0067",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 67
+  },
+  "nav": {
+    "prev": "p0066",
+    "next": "p0068",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0067.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "When a Titan is pushed back into a Column, it suffers Crash,  gaining 1  and suffering Knockdown. The Column is destroyed and the Hekaton continues pushing the knocked down Titan until the Pushback is fully resolvedUlyssea is pushed back into a red line, which is an Indestructible  Obstacle. There are no adjacent spaces she can be legally displaced onto that would allow the Hekaton to move onto her space and  continue the Pushback, so she dies instead, crushed by the Primordial.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ranged X–Y: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "To attack with this weapon, you must be at least X and up to Y spaces away from your target. This keyword is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " stack-able.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reach X: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "You may attack from up to X spaces away. This keyword is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " stackable.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reflex:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Move up to 1 space. Possible subtypes:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0067.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": " \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reposition X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " During the second ability window, you may move up to X spaces.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Restricted ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "(Trait)",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ":",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " You can equip only one  card with the follow-ing trait per Titan",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Reinforce X:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " When you are about to resolve an Armor Roll, add X red dice to your Armor dice pool. Possible subtypes:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0067.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Armor Roll, add X black dice to your Armor dice pool.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0067.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "mor Roll, add X white dice to your Armor dice pool.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0067",
+    "block_refs": [
+      "p0067.b001",
+      "p0067.b002",
+      "p0067.b003",
+      "p0067.b004",
+      "p0067.b005",
+      "p0067.b006",
+      "p0067.b007",
+      "p0067.b008"
+    ]
+  },
+  "build_meta": null
+}

@@ -1,0 +1,367 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0048",
+    "title": "Backs of Gear cards",
+    "section_path": [],
+    "source_page_number": 48
+  },
+  "nav": {
+    "prev": "p0047",
+    "next": "p0049",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0048.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gated ability example",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0048.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Backs of Gear cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Gear cards are double sided. The back includes additional infor-mation, like which Cycle the Gear card belongs to, the Technology card that allows you to craft the Gear, as well as some flavor text. Some rare, unique cards may also include additional rules there.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0048.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Pattern cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Pattern cards represent permanent enhancements and modifica-tions applied to the Titans themselves. These can take the form of specialized ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Training",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " or outright augmentations to the Titan’s biol-ogy, through the introduction of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Strains",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".Pattern cards can modify either the Trauma Table (Trauma Pat-terns) or Kratos Table (Kratos Patterns) of a Titan Sheet.Whenever a Pattern card is applied to a Titan, name that Titan (note it on one of the Argonaut Sheets) and note its Pattern. This connection is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "permanent",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". In other words, you cannot move the Pattern card to another Titan at a later time, you have to stick with what you’ve got.If a Titan with a Pattern dies, that Pattern is also lost—it’s not re-turned to the Argo Armory like  cards are. This means that Pat-terns are unique and hard to come by. If only there was a way to make the process of acquiring Patterns easier and more regular…",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0048.b006",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan Round Overview",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Unless an effect explicitly states otherwise, a Titan Round always comes after a Primordial Round. The Titan Round proceeds as fol-lows: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "1.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Start of Titan Round",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "2.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan turns",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "3.\t",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "End of Titan Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0048.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Start of Titan Round",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Sometimes a game effect will trigger at the start of the Titan Round. In that case, it’s resolved before any of the players take their turns. If there is more than one start of Round effect, the players may resolve these effects in any order they like.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0048.b010",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Titan Turns",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "During the Titan Round, you take turns activating your Titans, one at a time, until each Titan has acted. You may take your turns in any order you like to make best of the tactical situation at hand. Just remember, you cannot pause one Titan’s turn to take another Titan’s turn! In other words, you must completely resolve one Titan turn to start another.During their turn, a Titan gets one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "combat action ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " and one ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "movement action",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". You can perform these actions in any order, but you must finish one action before you perform another. Some effects and abilities may require you to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "spend",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " one or both of your actions. You can only spend an action if you haven’t performed it yet, and after it is spent it cannot be performed this turn.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Note: ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Unless stated otherwise, you are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "not forced",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to perform all of your actions, but any unused actions will be lost when the turn ends.A Titan’s turn ends ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "immediately",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " once it has performed all of its available actions and it cannot take their turn again until the next Titan Round. To track this, turn your Argonaut card 90 degrees to the right. Once all Titans have taken their turns, turn all Argonaut cards back to their normal positions and proceed to the Primordial Round. Note: This is not considered to be exhausting a card! ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0048.b012",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Movement action",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b013",
+      "children": [
+        {
+          "kind": "text",
+          "text": "The movement action is, generally, used to move the Titan around. You will use it to get close to the Primordial or take any other tacti-cally advantageous position.When you perform your , you can move a number of spaces up to your Titan’s ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Speed",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " value. First declare the space you want to reach, then move your Titan, one space at a time, resolving the effects of Terrain tiles you travel through as you move onto them.There are other general rules and restrictions that apply to move-ment actions:",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b015",
+      "children": [
+        {
+          "kind": "text",
+          "text": "move diagonally!",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0048.b020",
+      "children": [
+        {
+          "kind": "text",
+          "text": "space twice.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Movement Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Titans can only move in cardinal  directions, never diagonally. They cannot voluntarily move through other miniatures.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Titan Movement Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Titans cannot move through Obstacle  Terrain tiles and red lines. They may, however, freely move through other Terrain tiles, unless stated otherwise.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {},
+  "source_map": {
+    "page_id": "p0048",
+    "block_refs": [
+      "p0048.b001",
+      "p0048.b002",
+      "p0048.b003",
+      "p0048.b004",
+      "p0048.b005",
+      "p0048.b006",
+      "p0048.b007",
+      "p0048.b008",
+      "p0048.b009",
+      "p0048.b010",
+      "p0048.b011",
+      "p0048.b012",
+      "p0048.b013",
+      "p0048.b014",
+      "p0048.b015",
+      "p0048.b016",
+      "p0048.b017",
+      "p0048.b018",
+      "p0048.b019",
+      "p0048.b020"
+    ]
+  },
+  "build_meta": null
+}

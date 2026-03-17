@@ -1,0 +1,483 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0059",
+    "title": "Kratos Cards",
+    "section_path": [],
+    "source_page_number": 59
+  },
+  "nav": {
+    "prev": "p0058",
+    "next": "p0060",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0059.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos cards are drawn when you temporarily lose control over your Titan and their bottomless rage takes over. When a game ef-fect instructs you to draw a Kratos card, shuffle the Kratos deck and draw a random Kratos card. Keep this card until the end of Battle (even if its effects aren’t lasting).If you are ever forced to draw another Kratos card while you al-ready have one, you die instead! ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Kratos card",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_c",
+          "alt": "Board_tile_c"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b003",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Kratos Roll",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some effects will give you a chance to avoid drawing a Kratos card, or resolving its negative effects. This will usually be resolved through a Kratos Roll. When you are instructed to perform a Kra-tos Roll, roll a d10 and compare the result to your  value. If it is equal or higher, you succeed. If it is lower, you fail. Unless stat-ed otherwise, when you fail a Kratos Roll, you must draw a Kratos card. Note: Kratos Rolls cannot be re-rolled using .",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b005",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Ambrosia",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Ambrosia is a mysterious substance, the life-blood of the monstrous Primordials, used as a resource and fuel for the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Argo",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". In its raw state, however, it is extremely harmful. Various effects cause Titans to gain Ambrosia tokens. When you gain an Ambrosia token, place it on your Titan Sheet. While other effects may trigger based on the number of Ambrosia tokens you have, the tokens themselves don’t have any inherent effects… until you exceed your limit.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b007",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Ambrosia Limit",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b008",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each Titan has an ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ambrosia Limit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". Unless your Titan Sheet or  cards state otherwise, your ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ambrosia Limit is 4",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". If you have mul-tiple elements that modify your Ambrosia Limit, choose the one with the highest Ambrosia Limit, then apply bonuses and penalties to that limit (if any).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Abysswatcher Titan has an innate Ambrosia Limit of -1. On top of that, he equips an Ambramat Armor that grants him Ambrosia Limit 5. He applies the highest Ambrosia Limit X among his Gear (5), then applies all Ambrosia Limit modifiers (-1) for a total Ambrosia Limit of 4. This means it will die as soon as it gains its 5th Ambrosia token.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "If, at any point, the number of Ambrosia tokens on your Titan Sheet is ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "higher",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " than your Ambrosia Limit, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the Titan dies",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". You do not draw Trauma and you do not draw an Obol. You simply die. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b009",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Modifier Tokens",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b010",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Modifier tokens are used to mark temporary and permanent changes to Titans’ and the Primordials’ attributes. When a Titan or a Primordial gains a Modifier token, find a token with an icon corre-sponding to the attribute it modifies and place it on the appropriate sheet (Titan or Primordial). Modifier tokens are double-sided: each ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "negative",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (red) Modifier token changes the attribute by -1, whereas a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "positive",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " (blue) Modifier token changes it by +1.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Positive tokenNegative token",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b011",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Stacking Modifier Tokens",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b012",
+      "children": [
+        {
+          "kind": "text",
+          "text": "There may be times when you need more than one Modifier token of a given attribute, for example, you receive a Precision penalty of -5. In such a case, don’t look for five Precision Modifier tokens. Instead, take one Precision Modifier token and four ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "generic",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tokens (grey) and stack them, so that the -1 Precision modifier token is on top.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b013",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Temporary and Lasting Modifier Tokens",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b014",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Some Modifier tokens are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "temporary",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", meaning that they are dis-carded after they take effect (e.g. if you gain a temporary Evasion token, discard it after the next Evasion Roll). Place temporary Ti-tan Modifier tokens on their Triskelions as a reminder. Temporary Primordial tokens are always placed in the Kratos Pool and are re-moved in the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Clearthe Kratos Pool",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " step of a Titan Attack.Other Modifier tokens are lasting, meaning that they remain with the Titan or Primordial until the end of Battle. All modifier tokens are discarded at the end of Battle.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b015",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Types of Modifier Tokens",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b016",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Possible Modifier tokens include: \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Precision:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " The Titan has +/-1 Precision for each token. For each of these tokens on the Primordial, increase/lower the Evasion difficulty of each AI card by +/-1. \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion:Titans only.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " For each of these tokens, the Titan has +/-1 Evasion . \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AT:Primordials only.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " For each of these tokens, the Primordial has +/-1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "AT",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ". \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Speed:",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " For each of these tokens the Titan/Primordial has +/-1 Speed  . \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Evasion die:Primordials only.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " For each of these tokens, Ti-tans must roll +/-1 Evasion die when attacked by the Primor-dial (to a minimum of 1). \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Danger: Primordials only.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " For each of these tokens the Pri-mordial deals +/-1  with each Attack (sum  from all hits first, then add/subtract  for each  token), or, in some cas-es, for each hit (see Escalation Table on p. 53). \u0007",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "To Hit: Primordials only.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " For each of these tokens, the Pri-mordial has +/-1 ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "To Hit",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0059.b017",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Generic Tokens",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0059.b018",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Aeon Trespass: Odyssey",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " is a monster of a game. There are various effects, abilities and actions to track; if we wanted to create a spe-cial token for each of them... we’d have a lot of different tokens. Like, a lot. And you’d spend a lot of time looking through your game box for that single Engine Pressure marker.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Ambrosia token",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.board_tile_c"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0059",
+    "block_refs": [
+      "p0059.b001",
+      "p0059.b002",
+      "p0059.b003",
+      "p0059.b004",
+      "p0059.b005",
+      "p0059.b006",
+      "p0059.b007",
+      "p0059.b008",
+      "p0059.b009",
+      "p0059.b010",
+      "p0059.b011",
+      "p0059.b012",
+      "p0059.b013",
+      "p0059.b014",
+      "p0059.b015",
+      "p0059.b016",
+      "p0059.b017",
+      "p0059.b018"
+    ]
+  },
+  "build_meta": null
+}

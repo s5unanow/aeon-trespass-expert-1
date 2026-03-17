@@ -1,0 +1,302 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0022",
+    "title": "Clue Cards",
+    "section_path": [],
+    "source_page_number": 22
+  },
+  "nav": {
+    "prev": "p0021",
+    "next": "p0023",
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0022.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story card",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0022.b002",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Clue Cards",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0022.b003",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Each story is different, and it’s hard to include everything on stand-ardized game elements. That is why each Cycle has a number of Clue cards that influence the game, introducing new rules, me-chanics and hints. Clue cards might represent new rules referenc-es, story passages, maps, layouts, events and more.Clue cards have a distinct back, showing the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "number of the Cycle ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "they belong to and the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "number of the Story(or Doom)card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " they will be introduced with. ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Important: You should never look at any Clue cards if you were not specifically instructed to!",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Other game elements, like the aforementioned Story cards, will tell you how to use particular Clue cards.",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Clue card",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_texture_light_b",
+          "alt": "Art_texture_light_b"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0022.b004",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story Events",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0022.b005",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Story Events are story related. They happen on a certain day and start an adventure. They are like Battle Events and Advancement Events in that they are either already printed on your Timeline (this is a fixed Story Event) or you will add them there yourself (for ex-ample, one of the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Dreams of Pharos",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ").If there is a Story Event noted on your current day (i.e. an Event that is neither an Advancement nor a Battle), find the passage it leads to in the Storybook and read it. Note that Special Events (such as the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Cackle",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " Special Event) do not lead to specific para-graphs. To resolve them, find a passage with the designated name in the Special Events section of the Storybook.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0022.b006",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Breakthroughs",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0022.b007",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Mnemos Breakthroughs are pieces of your lost memories. Once you gain enough Mnemos nodes, you will trigger the next Mne-mos Breakthrough. For detailed rules on resolving Mnemos Break-throughs, see p. 27.",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.board_tile_n",
+          "alt": "Board_tile_n"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0022.b008",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Secret Codes",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0022.b009",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Rarely, you will find a secret 4-digit number on a game element. If you do, during the Story Step you may find the corresponding paragraph in the main story section of your current Storybook and resolve it. Unless stated otherwise, each secret code paragraph can only be resolved once.For detailed rules on resolving Storybook paragraphs, see the Ad-venture Phase section of the Rulebook (p. 25).",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.progress",
+          "alt": "Progress"
+        }
+      ]
+    },
+    {
+      "kind": "heading",
+      "id": "p0022.b010",
+      "level": 1,
+      "children": [
+        {
+          "kind": "text",
+          "text": "8. Doom Step",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0022.b011",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Doom",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ", represented by  tokens and Doom cards, is like an antithesis to  tokens, story progression and Story cards. If the Story cards lead you to victory, Doom cards lead you to defeat. Doom cards show the slowly unfolding plans of the villain (or vil-lains) of the Cycle and how they come to fruition. Doom progression is resolved only if you fulfill all the requirements noted on your current Doom cards. Usually, doom progression triggers when there are ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "a certain number of  tokens on thecur-rent Doom card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": ".When you meet the current Doom card’s requirements, you will resolve its doom progression during the Doom Step.Most of the time, resolving doom progression involves ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "flipping the Doom card",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " to the other side or ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "referring to a paragraph",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " in your current Storybook or on another game element. When you resolve the current doom progression,",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " discard exactly as many",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tokens collected on the current Doom card as the requirement and ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "move all excess",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " tokens to either the other side of the card (if pro-gressing from side A) or the next Doom card (if progressing from side B).If you’re on the B side of the last Doom card of the Cycle, be wary: if your Doom progresses one more time, you will lose the game!For detailed rules on resolving Storybook paragraphs, see the Ad-venture Phase section of the Rulebook (Story Adventures, p. 26).",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Doom card",
+          "marks": []
+        },
+        {
+          "kind": "icon",
+          "symbol_id": "sym.art_texture_light_b",
+          "alt": "Art_texture_light_b"
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [
+    "concept.art_texture_light_b",
+    "concept.board_tile_n",
+    "concept.progress"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0022",
+    "block_refs": [
+      "p0022.b001",
+      "p0022.b002",
+      "p0022.b003",
+      "p0022.b004",
+      "p0022.b005",
+      "p0022.b006",
+      "p0022.b007",
+      "p0022.b008",
+      "p0022.b009",
+      "p0022.b010",
+      "p0022.b011"
+    ]
+  },
+  "build_meta": null
+}
