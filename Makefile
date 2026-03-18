@@ -7,11 +7,12 @@ bootstrap: ## Install all deps (uv sync + pnpm install)
 	uv sync
 	pnpm install
 
-lint: ## Run ruff check + ruff format --check + mypy + import-linter + pnpm lint
+lint: ## Run ruff check + ruff format --check + mypy + import-linter + file-length + pnpm lint
 	uv run ruff check .
 	uv run ruff format --check .
 	uv run mypy apps/pipeline/src packages/schemas/python
 	uv run lint-imports
+	uv run python scripts/check_file_length.py
 	pnpm -r run lint
 
 format: ## Auto-fix formatting
