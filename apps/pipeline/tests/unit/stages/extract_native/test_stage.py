@@ -93,3 +93,12 @@ def test_extract_native_fallback_reads_manifest_from_store(tmp_path: Path) -> No
     data = ctx.artifact_store.get_json(result.artifact_ref)
     extract_result = ExtractNativeResult.model_validate(data)
     assert extract_result.page_count == 1
+
+
+def test_extract_native_raises_without_manifest(tmp_path: Path) -> None:
+    """ExtractNativeStage raises RuntimeError when no manifest available."""
+    ctx = _make_ctx(tmp_path)
+    # Don't run ingest — no manifest in store, no input_data
+    result = execute_stage(ExtractNativeStage(), ctx)
+    assert not result.success
+    assert "Run ingest first" in (result.error or "")

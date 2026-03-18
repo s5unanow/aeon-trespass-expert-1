@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
@@ -14,7 +16,7 @@ class ExtractNativeResult(BaseModel):
     """Summary of native extraction across all pages."""
 
     document_id: str
-    page_count: int = Field(ge=0)
+    page_count: int = Field(ge=1)
     page_ids: list[str]
 
 
@@ -80,12 +82,11 @@ class ExtractNativeStage:
             ctx.artifact_store.root / ctx.document_id / "ingest" / "document" / ctx.document_id
         )
         if manifest_dir.exists():
-            import json
-
             jsons = sorted(manifest_dir.glob("*.json"))
             if jsons:
                 data = json.loads(jsons[-1].read_text())
-                return int(data["page_count"])
+                manifest = SourceManifestV1.model_validate(data)
+                return manifest.page_count
 
         msg = (
             "Cannot determine page count: no SourceManifestV1 input and no "
