@@ -14,6 +14,7 @@ class DocumentConfig(BaseModel):
     source_pdf: str
     source_lang: str = "en"
     target_langs: list[str] = Field(default_factory=lambda: ["ru"])
+    structure_builder: str = "real"
 
 
 class PipelineConfig(BaseModel):

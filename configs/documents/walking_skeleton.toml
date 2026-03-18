@@ -5,6 +5,10 @@ id = "walking_skeleton"
 source_pdf = "packages/fixtures/sample_documents/walking_skeleton/source/sample_page_01.pdf"
 source_lang = "en"
 target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"
 
 [symbols]
 catalog = "packages/fixtures/sample_documents/walking_skeleton/catalogs/walking_skeleton.symbols.toml"

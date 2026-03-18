@@ -67,9 +67,6 @@ def run(
     from atr_pipeline.stages.translation.validator import validate_translation
     from atr_schemas.source_manifest_v1 import SourceManifestV1
 
-    # Determine page count and whether this is the walking skeleton
-    is_walking_skeleton = doc == "walking_skeleton"
-
     # Accumulated state
     manifest: SourceManifestV1 | None = None
     native_pages: dict[str, Any] = {}
@@ -192,7 +189,7 @@ def run(
             elif stage_name == "structure":
                 for pid, native in native_pages.items():
                     sym = symbol_matches_map.get(pid)
-                    if is_walking_skeleton:
+                    if config.document.structure_builder == "simple":
                         ir = build_page_ir_simple(native, sym)  # type: ignore[arg-type]
                     else:
                         ir = build_page_ir_real(native, sym)
@@ -219,17 +216,10 @@ def run(
                 if glossary_path.exists():
                     concept_reg = load_concept_registry(glossary_path)
 
-                # Use mock for walking skeleton, configured provider otherwise
-                if is_walking_skeleton:
-                    from atr_pipeline.config.models import TranslationConfig
-
-                    mock_cfg = TranslationConfig(provider="mock")
-                    translator = create_translator(mock_cfg)
-                else:
-                    translator = create_translator(
-                        config.translation,
-                        concept_registry=concept_reg,
-                    )
+                translator = create_translator(
+                    config.translation,
+                    concept_registry=concept_reg,
+                )
 
                 _translate_pages(
                     en_ir_map,
