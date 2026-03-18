@@ -30,11 +30,27 @@ def finish_run(
     run_id: str,
     status: str = "completed",
     qa_summary_ref: str | None = None,
+    run_manifest_ref: str | None = None,
 ) -> None:
     """Mark a run as finished."""
     conn.execute(
-        "UPDATE runs SET finished_at = ?, status = ?, qa_summary_ref = ? WHERE run_id = ?",
-        (_now_iso(), status, qa_summary_ref, run_id),
+        "UPDATE runs SET finished_at = ?, status = ?, qa_summary_ref = ?,"
+        " run_manifest_ref = ? WHERE run_id = ?",
+        (_now_iso(), status, qa_summary_ref, run_manifest_ref, run_id),
+    )
+    conn.commit()
+
+
+def set_run_manifest_ref(
+    conn: sqlite3.Connection,
+    *,
+    run_id: str,
+    ref: str,
+) -> None:
+    """Store the run manifest artifact ref on a finished run."""
+    conn.execute(
+        "UPDATE runs SET run_manifest_ref = ? WHERE run_id = ?",
+        (ref, run_id),
     )
     conn.commit()
 

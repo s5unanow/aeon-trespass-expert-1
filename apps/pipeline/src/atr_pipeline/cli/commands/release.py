@@ -12,13 +12,13 @@ from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import list_runs
 from atr_pipeline.stages.publish.bundle_builder import build_release_bundle
 from atr_schemas.qa_summary_v1 import QASummaryV1
+from atr_schemas.run_manifest_v1 import RunManifestV1
 
 
-def _load_qa_summary(artifact_root: Path, ref: str) -> QASummaryV1:
-    """Load a QASummaryV1 from an artifact ref path."""
+def _load_json_artifact(artifact_root: Path, ref: str) -> dict[str, object]:
+    """Load a JSON artifact by ref path."""
     path = artifact_root / ref
-    data = json.loads(path.read_text(encoding="utf-8"))
-    return QASummaryV1.model_validate(data)
+    return json.loads(path.read_text(encoding="utf-8"))  # type: ignore[no-any-return]
 
 
 def release(
@@ -31,7 +31,9 @@ def release(
     output_dir = Path(output) if output else artifact_root / doc / "release"
     web_dist = config.repo_root / "apps" / "web" / "dist"
 
-    _check_qa_gate(config.repo_root, artifact_root, doc)
+    run_data = _load_latest_run(config.repo_root, doc)
+    _check_qa_gate(artifact_root, run_data)
+    render_refs = _extract_render_refs(artifact_root, run_data)
 
     manifest = build_release_bundle(
         document_id=doc,
@@ -39,6 +41,7 @@ def release(
         web_dist=web_dist if web_dist.exists() else None,
         output_dir=output_dir,
         pipeline_version=config.pipeline.version,
+        render_page_refs=render_refs,
     )
 
     typer.echo(f"Release built: {output_dir}")
@@ -46,36 +49,75 @@ def release(
     typer.echo(f"  files: {len(manifest.files)}")
 
 
-def _check_qa_gate(repo_root: Path, artifact_root: Path, doc: str) -> None:
-    """Block release if the latest run has a blocking QA summary."""
+def _load_latest_run(repo_root: Path, doc: str) -> dict[str, str | None] | None:
+    """Load the latest run record for a document, or None."""
     registry_path = repo_root / "var" / "registry.db"
     if not registry_path.exists():
-        typer.echo("Warning: no registry found, skipping QA gate.", err=True)
-        return
+        typer.echo("Warning: no registry found, skipping run manifest.", err=True)
+        return None
 
     conn = open_registry(registry_path)
     try:
         runs = list_runs(conn, doc)
         if not runs:
-            typer.echo("Warning: no runs found for document, skipping QA gate.", err=True)
-            return
-
-        latest = runs[0]
-        qa_ref = latest["qa_summary_ref"]
-        if not qa_ref:
-            typer.echo("Warning: latest run has no QA summary, skipping QA gate.", err=True)
-            return
-
-        summary = _load_qa_summary(artifact_root, qa_ref)
-        if summary.blocking:
-            counts = summary.counts
-            typer.echo(
-                f"Release blocked: QA found blocking issues "
-                f"(error={counts.error}, critical={counts.critical})",
-                err=True,
-            )
-            raise typer.Exit(1)
-
-        typer.echo("QA gate passed.")
+            typer.echo("Warning: no runs found for document.", err=True)
+            return None
+        return {
+            "qa_summary_ref": runs[0]["qa_summary_ref"],
+            "run_manifest_ref": runs[0]["run_manifest_ref"],
+        }
     finally:
         conn.close()
+
+
+def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None] | None) -> None:
+    """Block release if the latest run has a blocking QA summary."""
+    if run_data is None:
+        typer.echo("Warning: no run data, skipping QA gate.", err=True)
+        return
+
+    qa_ref = run_data.get("qa_summary_ref")
+    if not qa_ref:
+        typer.echo("Warning: latest run has no QA summary, skipping QA gate.", err=True)
+        return
+
+    data = _load_json_artifact(artifact_root, qa_ref)
+    summary = QASummaryV1.model_validate(data)
+    if summary.blocking:
+        counts = summary.counts
+        typer.echo(
+            f"Release blocked: QA found blocking issues "
+            f"(error={counts.error}, critical={counts.critical})",
+            err=True,
+        )
+        raise typer.Exit(1)
+
+    typer.echo("QA gate passed.")
+
+
+def _extract_render_refs(
+    artifact_root: Path, run_data: dict[str, str | None] | None
+) -> dict[str, str] | None:
+    """Extract render page refs from the run manifest's render stage artifact."""
+    if run_data is None:
+        return None
+
+    manifest_ref = run_data.get("run_manifest_ref")
+    if not manifest_ref:
+        typer.echo("Warning: no run manifest, falling back to filesystem.", err=True)
+        return None
+
+    data = _load_json_artifact(artifact_root, manifest_ref)
+    manifest = RunManifestV1.model_validate(data)
+
+    render_stage = next((s for s in manifest.stages if s.stage_name == "render"), None)
+    if render_stage is None or not render_stage.artifact_ref:
+        return None
+
+    render_data = _load_json_artifact(artifact_root, render_stage.artifact_ref)
+    page_refs = render_data.get("page_refs")
+    if isinstance(page_refs, dict) and page_refs:
+        typer.echo(f"Using manifest refs for {len(page_refs)} render pages.")
+        return {str(k): str(v) for k, v in page_refs.items()}
+
+    return None

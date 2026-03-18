@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS runs (
     started_at TEXT NOT NULL,
     finished_at TEXT,
     status TEXT NOT NULL DEFAULT 'running',
-    qa_summary_ref TEXT
+    qa_summary_ref TEXT,
+    run_manifest_ref TEXT
 );
 
 CREATE TABLE IF NOT EXISTS stage_events (
@@ -46,4 +47,13 @@ def open_registry(path: Path) -> sqlite3.Connection:
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
     conn.executescript(_SCHEMA_SQL)
+    _migrate(conn)
     return conn
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    """Add columns that may be missing in older databases."""
+    existing = {row[1] for row in conn.execute("PRAGMA table_info(runs)").fetchall()}
+    if "run_manifest_ref" not in existing:
+        conn.execute("ALTER TABLE runs ADD COLUMN run_manifest_ref TEXT")
+        conn.commit()
