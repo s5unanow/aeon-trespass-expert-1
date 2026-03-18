@@ -1,32 +1,36 @@
-.PHONY: lint test codegen typecheck format clean install
+.PHONY: help bootstrap lint format typecheck test codegen clean
 
-install:
+help: ## Show this help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
+
+bootstrap: ## Install all deps (uv sync + pnpm install)
 	uv sync
 	pnpm install
 
-lint:
+lint: ## Run ruff check + ruff format --check + mypy + pnpm lint
 	uv run ruff check .
+	uv run ruff format --check .
 	uv run mypy apps/pipeline/src packages/schemas/python
 	pnpm -r run lint
 
-format:
+format: ## Auto-fix formatting
 	uv run ruff format .
 	uv run ruff check --fix .
 	pnpm -r run format
 
-test:
-	uv run pytest
-	pnpm -r run test
-
-codegen:
-	uv run python scripts/generate_jsonschema.py
-	node scripts/generate_ts_types.mjs
-
-typecheck:
+typecheck: ## Run mypy + tsc
 	uv run mypy apps/pipeline/src packages/schemas/python
 	pnpm -r run typecheck
 
-clean:
+test: ## Run all tests (pytest + pnpm test)
+	uv run pytest
+	pnpm -r run test
+
+codegen: ## Regenerate JSON Schema + TS types from Pydantic models
+	uv run python scripts/generate_jsonschema.py
+	node scripts/generate_ts_types.mjs
+
+clean: ## Remove caches and build artifacts
 	rm -rf artifacts/*
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name .pytest_cache -exec rm -rf {} + 2>/dev/null || true

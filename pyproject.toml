@@ -35,7 +35,15 @@ line-length = 100
 src = ["apps/pipeline/src", "packages/schemas/python"]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "C901", "PLR0912", "PLR0913", "PLR0915"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.pylint]
+max-args = 7
+max-branches = 12
+max-statements = 50
 
 [tool.ruff.lint.isort]
 known-first-party = ["atr_pipeline", "atr_schemas"]

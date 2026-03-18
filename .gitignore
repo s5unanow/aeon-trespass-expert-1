@@ -26,6 +26,10 @@ node_modules/
 # IDE
 .vscode/
 .idea/
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+!.claude/prompts/
 *.swp
 *.swo
 *~
@@ -52,3 +56,6 @@ var/*.db-wal
 # Secrets
 .env.local
 .env.*.local
+
+# review
+review/
