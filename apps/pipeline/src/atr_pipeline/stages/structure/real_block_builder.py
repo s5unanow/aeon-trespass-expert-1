@@ -24,6 +24,7 @@ from atr_schemas.page_ir_v1 import (
     FigureBlock,
     HeadingBlock,
     IconInline,
+    InlineNode,
     ListItemBlock,
     PageIRV1,
     ParagraphBlock,
@@ -186,7 +187,7 @@ def _split_long_paragraphs(
         # Strategy: walk through children accumulating text length; when we
         # exceed *max_chars* find the last sentence boundary in the
         # accumulated text and split there.
-        remaining_children: list[TextInline | IconInline] = list(block.children)
+        remaining_children: list[InlineNode] = list(block.children)
         base_id = block.block_id
         part = 0
 
@@ -224,13 +225,13 @@ def _split_long_paragraphs(
             # split_pos - 1 is the last char that goes into the first part
 
             # Build first-part children
-            first_children: list[TextInline | IconInline] = []
-            second_children: list[TextInline | IconInline] = []
+            first_children: list[InlineNode] = []
+            second_children: list[InlineNode] = []
 
             for ci, child in enumerate(remaining_children):
                 if ci < child_idx:
                     first_children.append(child)
-                elif ci == child_idx and hasattr(child, "text"):
+                elif ci == child_idx and isinstance(child, TextInline):
                     # Split this text child
                     cut = pos_in_child + 1
                     left_text = child.text[:cut]
@@ -433,10 +434,10 @@ def build_page_ir_real(
         asset_ids.append(asset_id)
 
     # Post-processing: split overly long paragraphs, then deduplicate.
-    blocks = _split_long_paragraphs(blocks)  # type: ignore[arg-type]
-    blocks = _deduplicate_blocks(blocks)  # type: ignore[arg-type]
+    blocks = _split_long_paragraphs(blocks)  # type: ignore[arg-type,assignment]
+    blocks = _deduplicate_blocks(blocks)  # type: ignore[arg-type,assignment]
 
-    reading_order = [b.block_id for b in blocks]  # type: ignore[union-attr]
+    reading_order = [b.block_id for b in blocks]
 
     return PageIRV1(
         document_id=native.document_id,
