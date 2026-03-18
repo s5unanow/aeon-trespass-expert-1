@@ -19,6 +19,7 @@ from atr_schemas.page_ir_v1 import (
     Block,
     CalloutBlock,
     CaptionBlock,
+    FigureBlock,
     HeadingBlock,
     ListBlock,
     ListItemBlock,
@@ -34,7 +35,16 @@ _BLOCK_TYPE_MAP: dict[str, type[BaseModel]] = {
     "list_item": ListItemBlock,
     "table": TableBlock,
     "callout": CalloutBlock,
+    "figure": FigureBlock,
     "caption": CaptionBlock,
+}
+
+# Structural metadata fields to copy from source block (beyond block_id + children).
+_STRUCTURAL_FIELDS: dict[str, list[str]] = {
+    "heading": ["level"],
+    "list": ["ordered"],
+    "callout": ["variant"],
+    "figure": ["asset_id"],
 }
 
 
@@ -126,6 +136,10 @@ class TranslationStage:
                 None,
             )
             if src_block is None:
+                ctx.logger.warning(
+                    "Segment %s has no matching source block, skipping",
+                    seg.segment_id,
+                )
                 continue
 
             block_cls = _BLOCK_TYPE_MAP.get(src_block.type, ParagraphBlock)
@@ -133,8 +147,8 @@ class TranslationStage:
                 "block_id": seg.segment_id,
                 "children": list(seg.target_inline),
             }
-            if block_cls is HeadingBlock:
-                kwargs["level"] = getattr(src_block, "level", 2)
+            for field in _STRUCTURAL_FIELDS.get(src_block.type, []):
+                kwargs[field] = getattr(src_block, field)
             ru_blocks.append(cast(Block, block_cls(**kwargs)))
 
         ru_ir = PageIRV1(
