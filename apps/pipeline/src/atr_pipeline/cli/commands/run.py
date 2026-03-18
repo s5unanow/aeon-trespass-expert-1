@@ -54,6 +54,7 @@ def run(
 
     typer.echo(f"Running stages: {' → '.join(stages)}")
     has_errors = False
+    qa_summary_ref: str | None = None
 
     for stage_name in stages:
         stage = registry[stage_name]
@@ -68,8 +69,11 @@ def run(
             has_errors = True
             break
 
+        if stage_name == "qa" and result.artifact_ref is not None:
+            qa_summary_ref = result.artifact_ref.relative_path
+
     status = "failed" if has_errors else "completed"
-    finish_run(conn, run_id=run_id, status=status)
+    finish_run(conn, run_id=run_id, status=status, qa_summary_ref=qa_summary_ref)
     conn.close()
 
     if has_errors:

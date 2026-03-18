@@ -12,13 +12,14 @@ from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.runner.stage_protocol import Stage
 from atr_pipeline.stages.extract_native.stage import ExtractNativeStage
 from atr_pipeline.stages.ingest.stage import IngestStage
-from atr_pipeline.stages.qa.stage import QAResult, QAStage
+from atr_pipeline.stages.qa.stage import QAStage
 from atr_pipeline.stages.render.stage import RenderStage
 from atr_pipeline.stages.structure.stage import StructureStage
 from atr_pipeline.stages.symbols.stage import SymbolsStage
 from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import StageScope
+from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 
@@ -79,8 +80,8 @@ def test_qa_implements_stage_protocol() -> None:
     assert stage.version == "1.0"
 
 
-def test_qa_passes_clean_pipeline(tmp_path: Path) -> None:
-    """QAStage passes when the full pipeline produces consistent artifacts."""
+def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:
+    """QAStage persists a QASummaryV1 with no blocking issues."""
     ctx = _make_ctx(tmp_path)
     _run_prerequisites(ctx)
 
@@ -89,10 +90,13 @@ def test_qa_passes_clean_pipeline(tmp_path: Path) -> None:
     assert result.artifact_ref is not None
 
     data = ctx.artifact_store.get_json(result.artifact_ref)
-    qa_result = QAResult.model_validate(data)
-    assert qa_result.document_id == "walking_skeleton"
-    assert qa_result.pages_checked == 1
-    assert qa_result.issues_found == 0
+    summary = QASummaryV1.model_validate(data)
+    assert summary.document_id == "walking_skeleton"
+    assert summary.run_id == "test_run"
+    assert summary.blocking is False
+    assert summary.counts.error == 0
+    assert summary.counts.critical == 0
+    assert summary.record_refs == []
 
 
 def test_qa_raises_without_en_ir(tmp_path: Path) -> None:

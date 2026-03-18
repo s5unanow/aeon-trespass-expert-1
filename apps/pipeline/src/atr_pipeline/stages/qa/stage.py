@@ -4,29 +4,23 @@ from __future__ import annotations
 
 import json
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
-from atr_schemas.enums import StageScope
+from atr_schemas.enums import Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
+from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.qa_summary_v1 import QASummaryV1, SeverityCounts
 from atr_schemas.render_page_v1 import RenderPageV1
-
-
-class QAResult(BaseModel):
-    """Summary of QA checks across all pages."""
-
-    document_id: str
-    pages_checked: int = Field(ge=0)
-    issues_found: int = Field(ge=0)
 
 
 class QAStage:
     """Run QA rules across all pages.
 
     Reads EN IR, RU IR, and render pages from the artifact store,
-    evaluates quality rules per page, and returns a summary.
-    Raises ``RuntimeError`` if any QA issues are found.
+    evaluates quality rules per page, persists individual QA records,
+    and returns a ``QASummaryV1`` with severity counts and blocking status.
     """
 
     @property
@@ -41,10 +35,9 @@ class QAStage:
     def version(self) -> str:
         return "1.0"
 
-    def run(self, ctx: StageContext, input_data: BaseModel | None) -> QAResult:
+    def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         page_ids = self._resolve_page_ids(ctx)
-        pages_checked = 0
-        issues_found = 0
+        all_records: list[QARecordV1] = []
 
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
@@ -58,20 +51,38 @@ class QAStage:
             records = evaluate_icon_count(en_ir, ru_ir, render)
             for r in records:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
-            issues_found += len(records)
-            pages_checked += 1
+            all_records.extend(records)
 
-        ctx.logger.info("QA checked %d pages, %d issues found", pages_checked, issues_found)
+        record_refs = self._persist_records(ctx, all_records)
+        counts = _tally_severities(all_records)
+        block_on = set(ctx.config.qa.block_publish_on)
+        blocking = any(r.severity.value in block_on for r in all_records)
+        total = counts.info + counts.warning + counts.error + counts.critical
 
-        if issues_found > 0:
-            msg = f"QA failed: {issues_found} issues found across {pages_checked} pages"
-            raise RuntimeError(msg)
+        ctx.logger.info("QA found %d issues, blocking=%s", total, blocking)
 
-        return QAResult(
+        return QASummaryV1(
             document_id=ctx.document_id,
-            pages_checked=pages_checked,
-            issues_found=issues_found,
+            run_id=ctx.run_id,
+            counts=counts,
+            blocking=blocking,
+            record_refs=record_refs,
         )
+
+    @staticmethod
+    def _persist_records(ctx: StageContext, records: list[QARecordV1]) -> list[str]:
+        """Persist individual QA records and return their artifact refs."""
+        refs: list[str] = []
+        for record in records:
+            ref = ctx.artifact_store.put_json(
+                document_id=ctx.document_id,
+                schema_family="qa_record.v1",
+                scope="page",
+                entity_id=record.page_id or ctx.document_id,
+                data=record,
+            )
+            refs.append(ref.relative_path)
+        return refs
 
     @staticmethod
     def _resolve_page_ids(ctx: StageContext) -> list[str]:
@@ -106,3 +117,18 @@ class QAStage:
             return None
         data = json.loads(jsons[-1].read_text())
         return RenderPageV1.model_validate(data)
+
+
+def _tally_severities(records: list[QARecordV1]) -> SeverityCounts:
+    """Count records by severity level."""
+    counts = SeverityCounts()
+    for r in records:
+        if r.severity == Severity.INFO:
+            counts.info += 1
+        elif r.severity == Severity.WARNING:
+            counts.warning += 1
+        elif r.severity == Severity.ERROR:
+            counts.error += 1
+        elif r.severity == Severity.CRITICAL:
+            counts.critical += 1
+    return counts
