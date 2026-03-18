@@ -57,6 +57,7 @@ class SymbolsStage:
         tcache = TemplateCache.from_catalog(catalog, repo_root=ctx.config.repo_root)
 
         page_ids = self._resolve_page_ids(ctx, input_data)
+        pages_matched = 0
         total_symbols = 0
 
         for page_id in page_ids:
@@ -83,12 +84,13 @@ class SymbolsStage:
                 entity_id=page_id,
                 data=matches,
             )
+            pages_matched += 1
             total_symbols += len(matches.matches)
 
-        ctx.logger.info("Matched %d symbols across %d pages", total_symbols, len(page_ids))
+        ctx.logger.info("Matched %d symbols across %d pages", total_symbols, pages_matched)
         return SymbolsResult(
             document_id=ctx.document_id,
-            pages_matched=len(page_ids),
+            pages_matched=pages_matched,
             total_symbols=total_symbols,
         )
 
@@ -124,5 +126,5 @@ class SymbolsStage:
         raster_dir = ctx.artifact_store.root / ctx.document_id / "raster" / "page" / page_id
         if not raster_dir.exists():
             return None
-        pngs = list(raster_dir.glob("*.png"))
+        pngs = sorted(raster_dir.glob("*.png"))
         return pngs[0] if pngs else None
