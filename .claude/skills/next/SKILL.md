@@ -16,7 +16,7 @@ mcp__plugin_linear_linear__list_issues(project="ATE1", state="Backlog")
 ## 2. Select the highest-priority issue
 
 Sort the results by:
-1. **Priority value** ascending (1=Urgent, 2=High, 3=Medium, 4=Low)
+1. **Priority value** ascending (1=Urgent, 2=High, 3=Medium, 4=Low; treat 0=No priority as 5, i.e. sort last)
 2. **Milestone target date** ascending (earliest milestone first)
 3. Pick the first result after sorting
 
