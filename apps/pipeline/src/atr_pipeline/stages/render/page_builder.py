@@ -68,9 +68,7 @@ def build_render_page(
 
         if block.type == "heading":
             if not title:
-                title = " ".join(
-                    c.text for c in children if isinstance(c, RenderTextInline)
-                )
+                title = " ".join(c.text for c in children if isinstance(c, RenderTextInline))
             render_blocks.append(
                 RenderHeadingBlock(
                     id=block.block_id,
@@ -79,13 +77,9 @@ def build_render_page(
                 )
             )
         elif block.type == "paragraph":
-            render_blocks.append(
-                RenderParagraphBlock(id=block.block_id, children=children)
-            )
+            render_blocks.append(RenderParagraphBlock(id=block.block_id, children=children))
         elif block.type == "list_item":
-            render_blocks.append(
-                RenderListItemBlock(id=block.block_id, children=children)
-            )
+            render_blocks.append(RenderListItemBlock(id=block.block_id, children=children))
 
     return RenderPageV1(
         page=RenderPageMeta(

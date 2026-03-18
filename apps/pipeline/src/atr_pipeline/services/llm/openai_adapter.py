@@ -57,7 +57,8 @@ class OpenAIAdapter:
         model = model_profile or self._model
 
         system_prompt = build_system_prompt(
-            batch, concept_registry=self._concept_registry,
+            batch,
+            concept_registry=self._concept_registry,
         )
         user_message = build_user_message(batch)
         response_schema = build_response_schema()
@@ -74,7 +75,8 @@ class OpenAIAdapter:
 
         log.info(
             "OpenAI translate_batch: model=%s segments=%d",
-            model, len(batch.segments),
+            model,
+            len(batch.segments),
         )
 
         response = self._client.chat.completions.create(  # type: ignore[call-overload,unused-ignore]

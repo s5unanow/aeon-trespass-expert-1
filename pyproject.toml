@@ -45,6 +45,14 @@ max-args = 7
 max-branches = 12
 max-statements = 50
 
+[tool.ruff.lint.per-file-ignores]
+# Tracked by S5U-142 (Epic 1: Refactor run.py)
+"apps/pipeline/src/atr_pipeline/cli/commands/run.py" = ["C901", "PLR0912", "PLR0913", "PLR0915"]
+# Tracked by S5U-144 (Epic 3: Config-driven structure recovery)
+"apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py" = ["C901", "PLR0912", "PLR0915"]
+# Tracked by S5U-143 (Epic 2: Expand QA — translation planner complexity)
+"apps/pipeline/src/atr_pipeline/stages/translation/planner.py" = ["C901", "PLR0912"]
+
 [tool.ruff.lint.isort]
 known-first-party = ["atr_pipeline", "atr_schemas"]
 

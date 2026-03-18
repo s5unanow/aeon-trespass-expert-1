@@ -149,14 +149,21 @@ def test_render_page_roundtrip() -> None:
     render = RenderPageV1(
         page=RenderPageMeta(id="p0042", title="Проверка атаки", source_page_number=42),
         blocks=[
-            RenderHeadingBlock(id="p0042.b001", level=2, children=[
-                RenderTextInline(text="Проверка атаки"),
-            ]),
-            RenderParagraphBlock(id="p0042.b002", children=[
-                RenderTextInline(text="Получите 1 "),
-                RenderIconInline(symbol_id="sym.progress", alt="Прогресс"),
-                RenderTextInline(text=" Прогресс."),
-            ]),
+            RenderHeadingBlock(
+                id="p0042.b001",
+                level=2,
+                children=[
+                    RenderTextInline(text="Проверка атаки"),
+                ],
+            ),
+            RenderParagraphBlock(
+                id="p0042.b002",
+                children=[
+                    RenderTextInline(text="Получите 1 "),
+                    RenderIconInline(symbol_id="sym.progress", alt="Прогресс"),
+                    RenderTextInline(text=" Прогресс."),
+                ],
+            ),
         ],
         glossary_mentions=["concept.progress"],
     )
@@ -318,9 +325,7 @@ def test_symbol_catalog_roundtrip() -> None:
     catalog = SymbolCatalogV1(
         catalog_id="test",
         version="1.0",
-        symbols=[
-            SymbolEntry(symbol_id="sym.progress", label="Progress", match_threshold=0.93)
-        ],
+        symbols=[SymbolEntry(symbol_id="sym.progress", label="Progress", match_threshold=0.93)],
     )
     _roundtrip(catalog)
 

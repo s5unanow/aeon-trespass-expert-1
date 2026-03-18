@@ -5,7 +5,30 @@ from __future__ import annotations
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1, ConceptV1
 from atr_schemas.page_ir_v1 import IconInline
 from atr_schemas.translation_batch_v1 import TranslationBatchV1
-from atr_schemas.translation_result_v1 import TranslationResultV1
+from atr_schemas.translation_result_v1 import TranslatedSegment, TranslationResultV1
+
+
+def _check_concept_realizations(
+    translated: TranslatedSegment,
+    concept_map: dict[str, ConceptV1],
+    errors: list[str],
+) -> None:
+    """Validate concept realization surface forms for a single segment."""
+    if not translated.concept_realizations:
+        return
+    for cr in translated.concept_realizations:
+        concept = concept_map.get(cr.concept_id)
+        if concept is None:
+            continue
+        allowed = concept.target.allowed_surface_forms
+        allowed_lower = {f.lower() for f in allowed}
+        if allowed and cr.surface_form.lower() not in allowed_lower:
+            policy = concept.validation_policy
+            severity = policy.non_preferred_allowed
+            errors.append(
+                f"[{severity}] Concept {cr.concept_id} surface form "
+                f"'{cr.surface_form}' not in allowed forms: {allowed}"
+            )
 
 
 def validate_translation(
@@ -43,12 +66,8 @@ def validate_translation(
                 f"source={len(source_icons)}, target={len(target_icons)}"
             )
 
-        source_ids = [
-            n.symbol_id for n in source_icons if isinstance(n, IconInline)
-        ]
-        target_ids = [
-            n.symbol_id for n in target_icons if isinstance(n, IconInline)
-        ]
+        source_ids = [n.symbol_id for n in source_icons if isinstance(n, IconInline)]
+        target_ids = [n.symbol_id for n in target_icons if isinstance(n, IconInline)]
         if source_ids != target_ids:
             errors.append(
                 f"Icon order mismatch in {translated.segment_id}: "
@@ -58,32 +77,14 @@ def validate_translation(
         # --- Forbidden target text ---
         if source.forbidden_targets:
             target_text = " ".join(
-                n.text
-                for n in translated.target_inline
-                if n.type == "text" and hasattr(n, "text")
+                n.text for n in translated.target_inline if n.type == "text" and hasattr(n, "text")
             )
             for forbidden in source.forbidden_targets:
                 if forbidden in target_text:
-                    errors.append(
-                        f"Forbidden term '{forbidden}' found in "
-                        f"{translated.segment_id}"
-                    )
+                    errors.append(f"Forbidden term '{forbidden}' found in {translated.segment_id}")
 
         # --- Concept realization surface forms ---
-        if concept_registry and translated.concept_realizations:
-            for cr in translated.concept_realizations:
-                concept = concept_map.get(cr.concept_id)
-                if concept is None:
-                    continue
-                allowed = concept.target.allowed_surface_forms
-                # Case-insensitive match (LLM may produce ALL-CAPS headings)
-                allowed_lower = {f.lower() for f in allowed}
-                if allowed and cr.surface_form.lower() not in allowed_lower:
-                    policy = concept.validation_policy
-                    severity = policy.non_preferred_allowed
-                    errors.append(
-                        f"[{severity}] Concept {cr.concept_id} surface form "
-                        f"'{cr.surface_form}' not in allowed forms: {allowed}"
-                    )
+        if concept_registry:
+            _check_concept_realizations(translated, concept_map, errors)
 
     return errors

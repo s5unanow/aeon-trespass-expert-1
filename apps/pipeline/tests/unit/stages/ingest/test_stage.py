@@ -21,8 +21,11 @@ def _make_ctx(tmp_path: Path) -> StageContext:
     store = ArtifactStore(tmp_path / "artifacts")
     conn = open_registry(tmp_path / "registry.db")
     start_run(
-        conn, run_id="test_run", document_id="walking_skeleton",
-        pipeline_version="0.1.0", config_hash="test",
+        conn,
+        run_id="test_run",
+        document_id="walking_skeleton",
+        pipeline_version="0.1.0",
+        config_hash="test",
     )
     return StageContext(
         run_id="test_run",

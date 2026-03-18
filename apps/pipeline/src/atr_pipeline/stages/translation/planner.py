@@ -68,9 +68,7 @@ def build_translation_batch(
             if isinstance(child, IconInline):
                 sid = child.symbol_id
                 segment.locked_nodes.append(sid)
-                segment.required_concepts.append(
-                    f"concept.{sid.removeprefix('sym.')}"
-                )
+                segment.required_concepts.append(f"concept.{sid.removeprefix('sym.')}")
                 # Add forbidden targets from icon-bound concepts
                 if sid in _icon_forbidden:
                     for ft in _icon_forbidden[sid]:
@@ -96,8 +94,7 @@ def build_translation_batch(
 
         if isinstance(block, HeadingBlock):
             heading_texts = [
-                c.text for c in block.children
-                if c.type == "text" and hasattr(c, "text")
+                c.text for c in block.children if c.type == "text" and hasattr(c, "text")
             ]
             prev_heading = " ".join(heading_texts)
 

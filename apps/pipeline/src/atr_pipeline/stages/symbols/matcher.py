@@ -113,9 +113,7 @@ class TemplateCache:
                     continue
                 if page_w and tw > page_w:
                     continue
-                scaled = cv2.resize(
-                    template_gray, (tw, th), interpolation=cv2.INTER_LINEAR
-                )
+                scaled = cv2.resize(template_gray, (tw, th), interpolation=cv2.INTER_LINEAR)
                 variants.append(_ScaledTemplate(scale=scale, gray=scaled, tw=tw, th=th))
 
             if variants:
@@ -175,6 +173,26 @@ def _nms_boxes(
 # ---------------------------------------------------------------------------
 
 
+def _compute_result_maps(
+    entry: _CachedEntry,
+    page_gray: np.ndarray,
+    page_h: int,
+    page_w: int,
+) -> list[tuple[_ScaledTemplate, np.ndarray]]:
+    """Pre-compute template-match result maps for every viable scale."""
+    result_maps: list[tuple[_ScaledTemplate, np.ndarray]] = []
+    for variant in entry.variants:
+        if variant.th > page_h or variant.tw > page_w:
+            continue
+        result = cv2.matchTemplate(page_gray, variant.gray, cv2.TM_CCOEFF_NORMED)
+        result_maps.append((variant, result))
+
+        _, max_val, _, _ = cv2.minMaxLoc(result)
+        if max_val >= _EARLY_EXIT_SCORE:
+            break  # near-perfect match found; skip remaining scales
+    return result_maps
+
+
 def _match_one_symbol(
     entry: _CachedEntry,
     page_gray: np.ndarray,
@@ -193,23 +211,7 @@ def _match_one_symbol(
     threshold = entry.symbol.match_threshold
 
     # 1. Pre-compute result maps for every viable scale
-    result_maps: list[tuple[_ScaledTemplate, np.ndarray]] = []
-    found_early_exit = False
-    for variant in entry.variants:
-        if variant.th > page_h or variant.tw > page_w:
-            continue
-        result = cv2.matchTemplate(
-            page_gray, variant.gray, cv2.TM_CCOEFF_NORMED
-        )
-        result_maps.append((variant, result))
-
-        if not found_early_exit:
-            _, max_val, _, _ = cv2.minMaxLoc(result)
-            if max_val >= _EARLY_EXIT_SCORE:
-                found_early_exit = True
-                # still keep this map, but skip remaining scales
-                break
-
+    result_maps = _compute_result_maps(entry, page_gray, page_h, page_w)
     if not result_maps:
         return []
 
@@ -296,7 +298,10 @@ def match_symbols(
     # Build or reuse template cache
     if template_cache is None:
         template_cache = TemplateCache.from_catalog(
-            catalog, repo_root=repo_root, page_h=page_h, page_w=page_w,
+            catalog,
+            repo_root=repo_root,
+            page_h=page_h,
+            page_w=page_w,
         )
 
     # Match all symbols concurrently

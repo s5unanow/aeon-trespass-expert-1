@@ -12,13 +12,7 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[6]
 
 
-FIXTURE_DIR = (
-    _repo_root()
-    / "packages"
-    / "fixtures"
-    / "sample_documents"
-    / "walking_skeleton"
-)
+FIXTURE_DIR = _repo_root() / "packages" / "fixtures" / "sample_documents" / "walking_skeleton"
 
 
 def test_match_finds_progress_icon(tmp_path: Path) -> None:
@@ -36,9 +30,7 @@ def test_match_finds_progress_icon(tmp_path: Path) -> None:
 
     # Load catalog and match
     catalog = load_symbol_catalog(catalog_path)
-    result = match_symbols(
-        native, raster_path, catalog, repo_root=_repo_root()
-    )
+    result = match_symbols(native, raster_path, catalog, repo_root=_repo_root())
 
     assert result.page_id == "p0001"
     assert len(result.matches) >= 1

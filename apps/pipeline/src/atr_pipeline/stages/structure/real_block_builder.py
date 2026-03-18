@@ -177,9 +177,7 @@ def _split_long_paragraphs(
             result.append(block)
             continue
 
-        total_text = "".join(
-            c.text for c in block.children if hasattr(c, "text")
-        )
+        total_text = "".join(c.text for c in block.children if hasattr(c, "text"))
         if len(total_text) <= max_chars:
             result.append(block)
             continue
@@ -193,14 +191,10 @@ def _split_long_paragraphs(
         part = 0
 
         while remaining_children:
-            remaining_text = "".join(
-                c.text for c in remaining_children if hasattr(c, "text")
-            )
+            remaining_text = "".join(c.text for c in remaining_children if hasattr(c, "text"))
             if len(remaining_text) <= max_chars:
                 part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(
-                    ParagraphBlock(block_id=part_id, children=remaining_children)
-                )
+                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
                 break
 
             # Build a mapping of character offset → (child_index, char_within_child)
@@ -222,9 +216,7 @@ def _split_long_paragraphs(
             if split_pos <= 0:
                 # No sentence boundary found before limit; keep block as-is
                 part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(
-                    ParagraphBlock(block_id=part_id, children=remaining_children)
-                )
+                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
                 break
 
             # Map split_pos back to child index and position
@@ -267,9 +259,7 @@ def _split_long_paragraphs(
 
             part_id = f"{base_id}.{part}" if part > 0 else base_id
             if first_children:
-                result.append(
-                    ParagraphBlock(block_id=part_id, children=first_children)
-                )
+                result.append(ParagraphBlock(block_id=part_id, children=first_children))
             part += 1
             remaining_children = second_children
 
@@ -306,8 +296,7 @@ def build_page_ir_real(
     # Filter out images that overlap heavily with text
     non_footer_spans = [s for s in native.spans if s.bbox.y0 < FOOTER_Y_THRESHOLD]
     figure_images = [
-        img for img in figure_images
-        if not _image_overlaps_text(img, non_footer_spans)
+        img for img in figure_images if not _image_overlaps_text(img, non_footer_spans)
     ]
 
     if not native.spans and not figure_images:
@@ -320,9 +309,7 @@ def build_page_ir_real(
         )
 
     # Classify all spans
-    classified: list[tuple[str, SpanEvidence]] = [
-        (_classify_span(s), s) for s in native.spans
-    ]
+    classified: list[tuple[str, SpanEvidence]] = [(_classify_span(s), s) for s in native.spans]
 
     # Group spans into logical lines
     lines: list[list[tuple[str, SpanEvidence]]] = []
@@ -342,8 +329,7 @@ def build_page_ir_real(
 
     # Build blocks from lines
     _Block = (
-        HeadingBlock | ParagraphBlock | ListItemBlock
-        | CalloutBlock | DividerBlock | FigureBlock
+        HeadingBlock | ParagraphBlock | ListItemBlock | CalloutBlock | DividerBlock | FigureBlock
     )
     blocks: list[_Block] = []
     block_idx = 0
@@ -417,11 +403,7 @@ def build_page_ir_real(
             # to the top of the new line.
             y_gap = first_new.bbox.y0 - last_span.bbox.y1
             font_size = first_new.font_size or last_span.font_size
-            threshold = (
-                font_size * PARAGRAPH_GAP_FACTOR
-                if font_size > 0
-                else PARAGRAPH_GAP_ABS
-            )
+            threshold = font_size * PARAGRAPH_GAP_FACTOR if font_size > 0 else PARAGRAPH_GAP_ABS
             if y_gap > threshold:
                 flush_paragraph()
 

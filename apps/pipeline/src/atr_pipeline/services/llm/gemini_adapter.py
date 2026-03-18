@@ -72,7 +72,8 @@ class GeminiAdapter:
         model = model_profile or self._model
 
         system_prompt = build_system_prompt(
-            batch, concept_registry=self._concept_registry,
+            batch,
+            concept_registry=self._concept_registry,
         )
         user_message = build_user_message(batch)
         response_schema = _strip_additional_properties(build_response_schema())
@@ -104,7 +105,8 @@ class GeminiAdapter:
 
         log.info(
             "Gemini translate_batch: model=%s segments=%d",
-            model, len(batch.segments),
+            model,
+            len(batch.segments),
         )
 
         response = self._client.models.generate_content(

@@ -56,10 +56,7 @@ def evaluate_icon_count(
                 code="ICON_COUNT_SRC_TGT_MISMATCH",
                 document_id=source_ir.document_id,
                 page_id=source_ir.page_id,
-                message=(
-                    f"Source IR has {source_count} icons but "
-                    f"target IR has {target_count}."
-                ),
+                message=(f"Source IR has {source_count} icons but target IR has {target_count}."),
                 expected={"count": source_count},
                 actual={"count": target_count},
             )
@@ -74,10 +71,7 @@ def evaluate_icon_count(
                 code="ICON_COUNT_TGT_RENDER_MISMATCH",
                 document_id=source_ir.document_id,
                 page_id=source_ir.page_id,
-                message=(
-                    f"Target IR has {target_count} icons but "
-                    f"render page has {render_count}."
-                ),
+                message=(f"Target IR has {target_count} icons but render page has {render_count}."),
                 expected={"count": target_count},
                 actual={"count": render_count},
             )

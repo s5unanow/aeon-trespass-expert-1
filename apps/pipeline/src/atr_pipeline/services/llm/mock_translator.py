@@ -21,7 +21,9 @@ class MockTranslator:
     """Deterministic mock translator for the walking skeleton."""
 
     def translate_batch(
-        self, batch: TranslationBatchV1, model_profile: str = "",
+        self,
+        batch: TranslationBatchV1,
+        model_profile: str = "",
     ) -> TranslationResultV1:
         """Translate segments using hard-coded fixture data."""
         translated: list[TranslatedSegment] = []
@@ -33,8 +35,7 @@ class MockTranslator:
             if segment.block_type == "heading":
                 # Translate heading text
                 source_text = " ".join(
-                    c.text for c in segment.source_inline
-                    if c.type == "text" and hasattr(c, "text")
+                    c.text for c in segment.source_inline if c.type == "text" and hasattr(c, "text")
                 )
                 target_inline = [
                     TextInline(text="Проверка атаки", lang=LanguageCode.RU)

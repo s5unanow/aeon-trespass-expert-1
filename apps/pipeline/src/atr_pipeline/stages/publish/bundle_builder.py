@@ -11,6 +11,25 @@ from atr_pipeline.utils.hashing import sha256_file
 from atr_schemas.build_manifest_v1 import BuildManifestV1, ReleaseFile
 
 
+def _copy_single_artifact(
+    src_dir: Path, dest_name: str, data_dir: Path, files: list[ReleaseFile]
+) -> None:
+    """Copy the first JSON file from *src_dir* into *data_dir*."""
+    if not src_dir.exists():
+        return
+    for json_file in src_dir.rglob("*.json"):
+        dest = data_dir / dest_name
+        shutil.copy2(json_file, dest)
+        files.append(
+            ReleaseFile(
+                path=f"data/{dest_name}",
+                sha256=sha256_file(dest),
+                size_bytes=dest.stat().st_size,
+            )
+        )
+        break
+
+
 def build_release_bundle(
     *,
     document_id: str,
@@ -39,51 +58,20 @@ def build_release_bundle(
                     dest_name = f"render_page.{page_dir.name}.json"
                     dest = data_dir / dest_name
                     shutil.copy2(json_file, dest)
-                    files.append(ReleaseFile(
-                        path=f"data/{dest_name}",
-                        sha256=sha256_file(dest),
-                        size_bytes=dest.stat().st_size,
-                    ))
+                    files.append(
+                        ReleaseFile(
+                            path=f"data/{dest_name}",
+                            sha256=sha256_file(dest),
+                            size_bytes=dest.stat().st_size,
+                        )
+                    )
                     break  # take latest only
 
-    # Copy glossary if it exists
-    glossary_src = artifact_root / document_id / "glossary_payload.v1"
-    if glossary_src.exists():
-        for json_file in glossary_src.rglob("*.json"):
-            dest = data_dir / "glossary.json"
-            shutil.copy2(json_file, dest)
-            files.append(ReleaseFile(
-                path="data/glossary.json",
-                sha256=sha256_file(dest),
-                size_bytes=dest.stat().st_size,
-            ))
-            break
-
-    # Copy search docs if they exist
-    search_src = artifact_root / document_id / "search_docs.v1"
-    if search_src.exists():
-        for json_file in search_src.rglob("*.json"):
-            dest = data_dir / "search_docs.json"
-            shutil.copy2(json_file, dest)
-            files.append(ReleaseFile(
-                path="data/search_docs.json",
-                sha256=sha256_file(dest),
-                size_bytes=dest.stat().st_size,
-            ))
-            break
-
-    # Copy nav if it exists
-    nav_src = artifact_root / document_id / "nav.v1"
-    if nav_src.exists():
-        for json_file in nav_src.rglob("*.json"):
-            dest = data_dir / "nav.json"
-            shutil.copy2(json_file, dest)
-            files.append(ReleaseFile(
-                path="data/nav.json",
-                sha256=sha256_file(dest),
-                size_bytes=dest.stat().st_size,
-            ))
-            break
+    # Copy singleton artifacts (glossary, search docs, nav)
+    doc_root = artifact_root / document_id
+    _copy_single_artifact(doc_root / "glossary_payload.v1", "glossary.json", data_dir, files)
+    _copy_single_artifact(doc_root / "search_docs.v1", "search_docs.json", data_dir, files)
+    _copy_single_artifact(doc_root / "nav.v1", "nav.json", data_dir, files)
 
     # Copy web app dist if available
     if web_dist and web_dist.exists():
