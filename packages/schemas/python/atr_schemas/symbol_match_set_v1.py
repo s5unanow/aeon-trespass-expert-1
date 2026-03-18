@@ -21,9 +21,7 @@ class SymbolMatch(BaseModel):
 class SymbolMatchSetV1(BaseModel):
     """All symbol detections for a single page."""
 
-    schema_version: str = Field(
-        default="symbol_match_set.v1", pattern=r"^symbol_match_set\.v\d+$"
-    )
+    schema_version: str = Field(default="symbol_match_set.v1", pattern=r"^symbol_match_set\.v\d+$")
     document_id: str
     page_id: str = Field(pattern=r"^p\d{4}$")
     matches: list[SymbolMatch] = Field(default_factory=list)

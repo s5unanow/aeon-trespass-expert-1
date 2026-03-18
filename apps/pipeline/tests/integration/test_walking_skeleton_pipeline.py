@@ -25,7 +25,7 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[4]
 
 
-def test_walking_skeleton_end_to_end(tmp_path: Path) -> None:
+def test_walking_skeleton_end_to_end(tmp_path: Path) -> None:  # noqa: PLR0915
     """Full pipeline from PDF to QA-passing render page."""
     repo = _repo_root()
     config = load_document_config("walking_skeleton", repo_root=repo)
@@ -82,9 +82,7 @@ def test_walking_skeleton_end_to_end(tmp_path: Path) -> None:
             from atr_schemas.page_ir_v1 import HeadingBlock
 
             ru_blocks.append(
-                HeadingBlock(
-                    block_id=seg.segment_id, level=2, children=list(seg.target_inline)
-                )
+                HeadingBlock(block_id=seg.segment_id, level=2, children=list(seg.target_inline))
             )
         else:
             from atr_schemas.page_ir_v1 import ParagraphBlock

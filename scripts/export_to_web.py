@@ -67,7 +67,10 @@ def extract_images() -> dict[str, list[dict]]:
         pid = f"p{pnum:04d}"
         try:
             images = extract_page_images(
-                PDF_PATH, page_number=pnum, min_width=100, min_height=100,
+                PDF_PATH,
+                page_number=pnum,
+                min_width=100,
+                min_height=100,
             )
         except Exception as e:
             print(f"  WARN: image extraction failed for {pid}: {e}")
@@ -80,13 +83,15 @@ def extract_images() -> dict[str, list[dict]]:
         for img in images:
             fname = f"{img.image_id}{img.extension}"
             (img_dir / fname).write_bytes(img.image_bytes)
-            page_images[pid].append({
-                "asset_id": img.image_id,
-                "src": f"/documents/{DOC_ID}/images/{fname}",
-                "alt": img.image_id,
-                "width": img.width_px,
-                "height": img.height_px,
-            })
+            page_images[pid].append(
+                {
+                    "asset_id": img.image_id,
+                    "src": f"/documents/{DOC_ID}/images/{fname}",
+                    "alt": img.image_id,
+                    "width": img.width_px,
+                    "height": img.height_px,
+                }
+            )
             total += 1
 
     print(f"  Extracted {total} images across {len(page_images)} pages")
@@ -94,11 +99,21 @@ def extract_images() -> dict[str, list[dict]]:
 
 
 DECORATIVE_PREFIXES = (
-    "sym.board_tile", "sym.art_", "sym.terrain_",
-    "sym.marker_", "sym.crown_", "sym.die_", "sym.titan_helmet",
+    "sym.board_tile",
+    "sym.art_",
+    "sym.terrain_",
+    "sym.marker_",
+    "sym.crown_",
+    "sym.die_",
+    "sym.titan_helmet",
 )
 
-_SENTENCE_RE = re.compile(r'(?<=\. )(?=[A-ZА-ЯЁ])')
+_SENTENCE_RE = re.compile(r"(?<=\. )(?=[A-ZА-ЯЁ])")  # noqa: RUF001
+
+
+def _text_content(block: dict) -> str:
+    """Extract concatenated text from a block's children."""
+    return "".join(c.get("text", "") for c in block.get("children", []) if c.get("kind") == "text")
 
 
 def _postprocess_blocks(blocks: list[dict]) -> list[dict]:
@@ -109,13 +124,17 @@ def _postprocess_blocks(blocks: list[dict]) -> list[dict]:
         # Strip decorative icons from children
         if "children" in block:
             block["children"] = [
-                c for c in block["children"]
-                if not (c.get("kind") == "icon" and c.get("symbol_id", "").startswith(DECORATIVE_PREFIXES))
+                c
+                for c in block["children"]
+                if not (
+                    c.get("kind") == "icon"
+                    and c.get("symbol_id", "").startswith(DECORATIVE_PREFIXES)
+                )
             ]
 
         # Split long paragraphs at sentence boundaries
         if block.get("kind") == "paragraph":
-            text = "".join(c.get("text", "") for c in block.get("children", []) if c.get("kind") == "text")
+            text = _text_content(block)
             if len(text) > 600:
                 parts = _split_paragraph(block)
                 # Deduplicate before adding
@@ -131,19 +150,8 @@ def _postprocess_blocks(blocks: list[dict]) -> list[dict]:
     return result
 
 
-def _split_paragraph(block: dict, max_chars: int = 600) -> list[dict]:
-    """Split a paragraph block at sentence boundaries."""
-    children = block.get("children", [])
-    text = "".join(c.get("text", "") for c in children if c.get("kind") == "text")
-    if len(text) <= max_chars:
-        return [block]
-
-    # Find sentence boundaries in the concatenated text
-    boundaries = [m.start() for m in _SENTENCE_RE.finditer(text)]
-    if not boundaries:
-        return [block]
-
-    # Find the best split point (last boundary before max_chars)
+def _find_split_point(boundaries: list[int], max_chars: int) -> int | None:
+    """Find the best sentence boundary to split at."""
     split_at = None
     for b in boundaries:
         if b <= max_chars:
@@ -151,51 +159,64 @@ def _split_paragraph(block: dict, max_chars: int = 600) -> list[dict]:
         else:
             break
     if split_at is None or split_at < 100:
-        # Try first boundary after 100 chars
         split_at = next((b for b in boundaries if b >= 100), None)
-    if split_at is None:
-        return [block]
+    return split_at
 
-    # Split children at the boundary
+
+def _locate_split_child(
+    children: list[dict],
+    split_at: int,
+) -> tuple[int | None, int | None]:
+    """Find the child index and offset where text position falls."""
     char_count = 0
-    split_idx = None
-    split_offset = None
     for i, child in enumerate(children):
         if child.get("kind") != "text":
             continue
         child_text = child.get("text", "")
         if char_count + len(child_text) >= split_at:
-            split_idx = i
-            split_offset = split_at - char_count
-            break
+            return i, split_at - char_count
         char_count += len(child_text)
+    return None, None
 
+
+def _split_paragraph(block: dict, max_chars: int = 600) -> list[dict]:
+    """Split a paragraph block at sentence boundaries."""
+    children = block.get("children", [])
+    text = _text_content(block)
+    if len(text) <= max_chars:
+        return [block]
+
+    boundaries = [m.start() for m in _SENTENCE_RE.finditer(text)]
+    if not boundaries:
+        return [block]
+
+    split_at = _find_split_point(boundaries, max_chars)
+    if split_at is None:
+        return [block]
+
+    split_idx, split_offset = _locate_split_child(children, split_at)
     if split_idx is None:
         return [block]
 
-    # Create two blocks
     first_children = children[:split_idx]
     remainder_children = children[split_idx:]
 
-    # Split the text node at the boundary
     split_child = remainder_children[0]
-    if split_child.get("kind") == "text" and split_offset > 0:
+    if split_child.get("kind") == "text" and split_offset:
         text1 = split_child["text"][:split_offset]
         text2 = split_child["text"][split_offset:]
         if text1.strip():
             first_children.append({**split_child, "text": text1})
         if text2.strip():
-            remainder_children = [{**split_child, "text": text2}] + remainder_children[1:]
+            remainder_children = [{**split_child, "text": text2}, *remainder_children[1:]]
         else:
             remainder_children = remainder_children[1:]
 
     block1 = {**block, "id": f"{block['id']}.0", "children": first_children}
     block2 = {**block, "id": f"{block['id']}.1", "children": remainder_children}
 
-    # Recursively split the remainder if still too long
     result = [block1]
-    remainder_text = "".join(c.get("text", "") for c in remainder_children if c.get("kind") == "text")
-    if len(remainder_text) > max_chars:
+    if len(_text_content(block2)) > max_chars:
         result.extend(_split_paragraph(block2, max_chars))
     else:
         result.append(block2)
@@ -204,16 +225,31 @@ def _split_paragraph(block: dict, max_chars: int = 600) -> list[dict]:
 
 def _is_duplicate(blocks: list[dict], block: dict) -> bool:
     """Check if block duplicates any recent block (within last 5)."""
-    this_text = "".join(c.get("text", "") for c in block.get("children", []) if c.get("kind") == "text")[:80]
+    this_text = _text_content(block)[:80]
     if not this_text or len(this_text) < 3:
         return False
     for prev in blocks[-5:]:
         if prev.get("kind") != block.get("kind"):
             continue
-        prev_text = "".join(c.get("text", "") for c in prev.get("children", []) if c.get("kind") == "text")[:80]
-        if prev_text == this_text:
+        if _text_content(prev)[:80] == this_text:
             return True
     return False
+
+
+def _count_block_stats(blocks: list[dict], stats: dict) -> None:
+    """Accumulate block kind counts into stats dict."""
+    kind_map = {
+        "list_item": "list_items",
+        "figure": "figures",
+        "heading": "headings",
+        "paragraph": "paragraphs",
+    }
+    for b in blocks:
+        key = kind_map.get(b.get("kind", ""))
+        if key:
+            stats[key] += 1
+        if b.get("kind") == "paragraph" and len(_text_content(b)) > 800:
+            stats["long_paras"] += 1
 
 
 def export_pages(page_images: dict[str, list[dict]]) -> None:
@@ -224,8 +260,11 @@ def export_pages(page_images: dict[str, list[dict]]) -> None:
     page_ids = sorted(d.name for d in RENDER_SRC.iterdir() if d.is_dir())
     pages_meta = []
     stats = {
-        "list_items": 0, "figures": 0, "headings": 0,
-        "paragraphs": 0, "long_paras": 0,
+        "list_items": 0,
+        "figures": 0,
+        "headings": 0,
+        "paragraphs": 0,
+        "long_paras": 0,
     }
 
     for i, pid in enumerate(page_ids):
@@ -256,18 +295,19 @@ def export_pages(page_images: dict[str, list[dict]]) -> None:
                     "src": img["src"],
                     "alt": img["alt"],
                 }
-                # Add figure block if not already present
                 has_fig = any(
                     b.get("kind") == "figure" and b.get("asset_id") == img["asset_id"]
                     for b in best.get("blocks", [])
                 )
                 if not has_fig:
-                    best.setdefault("blocks", []).append({
-                        "kind": "figure",
-                        "id": f"{pid}.fig.{img['asset_id']}",
-                        "asset_id": img["asset_id"],
-                        "children": [],
-                    })
+                    best.setdefault("blocks", []).append(
+                        {
+                            "kind": "figure",
+                            "id": f"{pid}.fig.{img['asset_id']}",
+                            "asset_id": img["asset_id"],
+                            "children": [],
+                        }
+                    )
             best["figures"] = figures
 
         # Navigation
@@ -277,38 +317,24 @@ def export_pages(page_images: dict[str, list[dict]]) -> None:
             "parent_section": "",
         }
 
-        # Stats
-        for b in best.get("blocks", []):
-            k = b.get("kind", "")
-            if k == "list_item":
-                stats["list_items"] += 1
-            elif k == "figure":
-                stats["figures"] += 1
-            elif k == "heading":
-                stats["headings"] += 1
-            elif k == "paragraph":
-                stats["paragraphs"] += 1
-                text_len = len("".join(
-                    c.get("text", "")
-                    for c in b.get("children", [])
-                    if c.get("kind") == "text"
-                ))
-                if text_len > 800:
-                    stats["long_paras"] += 1
+        _count_block_stats(best.get("blocks", []), stats)
 
         (data_dir / f"render_page.{pid}.json").write_text(
             json.dumps(best, ensure_ascii=False, indent=2)
         )
-        pages_meta.append({
-            "page_id": pid,
-            "title": best.get("page", {}).get("title", ""),
-        })
+        pages_meta.append(
+            {
+                "page_id": pid,
+                "title": best.get("page", {}).get("title", ""),
+            }
+        )
 
     # Manifest
     (WEB_PUBLIC / "manifest.json").write_text(
         json.dumps(
             {"document_id": DOC_ID, "pages": pages_meta},
-            ensure_ascii=False, indent=2,
+            ensure_ascii=False,
+            indent=2,
         )
     )
 

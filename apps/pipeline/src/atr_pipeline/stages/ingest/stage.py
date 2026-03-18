@@ -57,7 +57,10 @@ class IngestStage:
             for img in images:
                 ctx.logger.info(
                     "Extracted image %s (%dx%d) from %s",
-                    img.image_id, img.width_px, img.height_px, page_id,
+                    img.image_id,
+                    img.width_px,
+                    img.height_px,
+                    page_id,
                 )
                 ctx.artifact_store.put_bytes(
                     document_id=ctx.document_id,

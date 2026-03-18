@@ -43,9 +43,7 @@ def _sample_batch() -> TranslationBatchV1:
                 ],
                 locked_nodes=["sym.progress"],
                 required_concepts=["concept.progress"],
-                context=SegmentContext(
-                    page_id="p0001", prev_heading="Attack Test"
-                ),
+                context=SegmentContext(page_id="p0001", prev_heading="Attack Test"),
             ),
         ],
     )

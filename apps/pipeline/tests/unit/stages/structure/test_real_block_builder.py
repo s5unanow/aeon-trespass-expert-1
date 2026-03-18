@@ -29,9 +29,7 @@ def test_page_42_has_heading_and_paragraphs() -> None:
     # First block should be a heading
     headings = [b for b in ir.blocks if b.type == "heading"]
     assert len(headings) >= 1
-    first_heading_text = " ".join(
-        c.text for c in headings[0].children if hasattr(c, "text")
-    )
+    first_heading_text = " ".join(c.text for c in headings[0].children if hasattr(c, "text"))
     assert "Primordial Attack Types" in first_heading_text
 
 

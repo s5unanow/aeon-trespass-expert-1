@@ -63,9 +63,7 @@ def build_user_message(batch: TranslationBatchV1) -> str:
         seg_dict: dict[str, object] = {
             "segment_id": seg.segment_id,
             "block_type": seg.block_type,
-            "source_inline": [
-                node.model_dump(mode="json") for node in seg.source_inline
-            ],
+            "source_inline": [node.model_dump(mode="json") for node in seg.source_inline],
         }
         if seg.locked_nodes:
             seg_dict["locked_nodes"] = seg.locked_nodes
@@ -117,8 +115,10 @@ def build_few_shot_examples() -> list[dict[str, str]]:
                                 {"type": "text", "text": "Danger", "marks": ["bold"]},
                                 {"type": "text", "text": " "},
                                 {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i1"},
-                                {"type": "text", "text": " stat on their Triskelion. "
-                                 "When you gain "},
+                                {
+                                    "type": "text",
+                                    "text": " stat on their Triskelion. When you gain ",
+                                },
                                 {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i2"},
                                 {"type": "text", "text": ", rotate the dial clockwise."},
                             ],
@@ -148,8 +148,7 @@ def build_few_shot_examples() -> list[dict[str, str]]:
                                 {"type": "text", "text": "Опасность", "marks": ["bold"]},
                                 {"type": "text", "text": " "},
                                 {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i1"},
-                                {"type": "text", "text": " на Трискелионе. "
-                                 "Когда вы получаете "},
+                                {"type": "text", "text": " на Трискелионе. Когда вы получаете "},
                                 {"type": "icon", "symbol_id": "sym.danger", "instance_id": "i2"},
                                 {"type": "text", "text": ", поверните диск по часовой стрелке."},
                             ],
@@ -176,8 +175,10 @@ def build_few_shot_examples() -> list[dict[str, str]]:
                             "source_inline": [
                                 {"type": "text", "text": "You must gain 1 "},
                                 {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i1"},
-                                {"type": "text", "text": " for each die you decide to re-roll. "
-                                 "Using "},
+                                {
+                                    "type": "text",
+                                    "text": " for each die you decide to re-roll. Using ",
+                                },
                                 {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i2"},
                                 {"type": "text", "text": ", you can re-roll "},
                                 {"type": "text", "text": "Attack Rolls", "marks": ["bold"]},
@@ -202,8 +203,11 @@ def build_few_shot_examples() -> list[dict[str, str]]:
                             "target_inline": [
                                 {"type": "text", "text": "Вы должны получить 1 "},
                                 {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i1"},
-                                {"type": "text", "text": " за каждый кубик, который вы решите "
-                                 "перебросить. Используя "},
+                                {
+                                    "type": "text",
+                                    "text": " за каждый кубик, который вы решите "
+                                    "перебросить. Используя ",
+                                },
                                 {"type": "icon", "symbol_id": "sym.fate", "instance_id": "i2"},
                                 {"type": "text", "text": ", вы можете перебросить "},
                                 {"type": "text", "text": "Броски Атаки", "marks": ["bold"]},

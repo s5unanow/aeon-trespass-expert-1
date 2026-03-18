@@ -24,6 +24,7 @@ from atr_schemas.page_ir_v1 import (
     FigureBlock,
     HeadingBlock,
     IconInline,
+    InlineNode,
     ListItemBlock,
     PageIRV1,
     ParagraphBlock,
@@ -177,9 +178,7 @@ def _split_long_paragraphs(
             result.append(block)
             continue
 
-        total_text = "".join(
-            c.text for c in block.children if hasattr(c, "text")
-        )
+        total_text = "".join(c.text for c in block.children if hasattr(c, "text"))
         if len(total_text) <= max_chars:
             result.append(block)
             continue
@@ -188,19 +187,15 @@ def _split_long_paragraphs(
         # Strategy: walk through children accumulating text length; when we
         # exceed *max_chars* find the last sentence boundary in the
         # accumulated text and split there.
-        remaining_children: list[TextInline | IconInline] = list(block.children)
+        remaining_children: list[InlineNode] = list(block.children)
         base_id = block.block_id
         part = 0
 
         while remaining_children:
-            remaining_text = "".join(
-                c.text for c in remaining_children if hasattr(c, "text")
-            )
+            remaining_text = "".join(c.text for c in remaining_children if hasattr(c, "text"))
             if len(remaining_text) <= max_chars:
                 part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(
-                    ParagraphBlock(block_id=part_id, children=remaining_children)
-                )
+                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
                 break
 
             # Build a mapping of character offset → (child_index, char_within_child)
@@ -222,9 +217,7 @@ def _split_long_paragraphs(
             if split_pos <= 0:
                 # No sentence boundary found before limit; keep block as-is
                 part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(
-                    ParagraphBlock(block_id=part_id, children=remaining_children)
-                )
+                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
                 break
 
             # Map split_pos back to child index and position
@@ -232,13 +225,13 @@ def _split_long_paragraphs(
             # split_pos - 1 is the last char that goes into the first part
 
             # Build first-part children
-            first_children: list[TextInline | IconInline] = []
-            second_children: list[TextInline | IconInline] = []
+            first_children: list[InlineNode] = []
+            second_children: list[InlineNode] = []
 
             for ci, child in enumerate(remaining_children):
                 if ci < child_idx:
                     first_children.append(child)
-                elif ci == child_idx and hasattr(child, "text"):
+                elif ci == child_idx and isinstance(child, TextInline):
                     # Split this text child
                     cut = pos_in_child + 1
                     left_text = child.text[:cut]
@@ -267,9 +260,7 @@ def _split_long_paragraphs(
 
             part_id = f"{base_id}.{part}" if part > 0 else base_id
             if first_children:
-                result.append(
-                    ParagraphBlock(block_id=part_id, children=first_children)
-                )
+                result.append(ParagraphBlock(block_id=part_id, children=first_children))
             part += 1
             remaining_children = second_children
 
@@ -306,8 +297,7 @@ def build_page_ir_real(
     # Filter out images that overlap heavily with text
     non_footer_spans = [s for s in native.spans if s.bbox.y0 < FOOTER_Y_THRESHOLD]
     figure_images = [
-        img for img in figure_images
-        if not _image_overlaps_text(img, non_footer_spans)
+        img for img in figure_images if not _image_overlaps_text(img, non_footer_spans)
     ]
 
     if not native.spans and not figure_images:
@@ -320,9 +310,7 @@ def build_page_ir_real(
         )
 
     # Classify all spans
-    classified: list[tuple[str, SpanEvidence]] = [
-        (_classify_span(s), s) for s in native.spans
-    ]
+    classified: list[tuple[str, SpanEvidence]] = [(_classify_span(s), s) for s in native.spans]
 
     # Group spans into logical lines
     lines: list[list[tuple[str, SpanEvidence]]] = []
@@ -342,8 +330,7 @@ def build_page_ir_real(
 
     # Build blocks from lines
     _Block = (
-        HeadingBlock | ParagraphBlock | ListItemBlock
-        | CalloutBlock | DividerBlock | FigureBlock
+        HeadingBlock | ParagraphBlock | ListItemBlock | CalloutBlock | DividerBlock | FigureBlock
     )
     blocks: list[_Block] = []
     block_idx = 0
@@ -417,11 +404,7 @@ def build_page_ir_real(
             # to the top of the new line.
             y_gap = first_new.bbox.y0 - last_span.bbox.y1
             font_size = first_new.font_size or last_span.font_size
-            threshold = (
-                font_size * PARAGRAPH_GAP_FACTOR
-                if font_size > 0
-                else PARAGRAPH_GAP_ABS
-            )
+            threshold = font_size * PARAGRAPH_GAP_FACTOR if font_size > 0 else PARAGRAPH_GAP_ABS
             if y_gap > threshold:
                 flush_paragraph()
 
@@ -451,10 +434,10 @@ def build_page_ir_real(
         asset_ids.append(asset_id)
 
     # Post-processing: split overly long paragraphs, then deduplicate.
-    blocks = _split_long_paragraphs(blocks)  # type: ignore[arg-type]
-    blocks = _deduplicate_blocks(blocks)  # type: ignore[arg-type]
+    blocks = _split_long_paragraphs(blocks)  # type: ignore[arg-type,assignment]
+    blocks = _deduplicate_blocks(blocks)  # type: ignore[arg-type,assignment]
 
-    reading_order = [b.block_id for b in blocks]  # type: ignore[union-attr]
+    reading_order = [b.block_id for b in blocks]
 
     return PageIRV1(
         document_id=native.document_id,

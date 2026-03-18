@@ -42,8 +42,11 @@ def run(
 
     run_id = f"run_{uuid.uuid4().hex[:8]}"
     start_run(
-        conn, run_id=run_id, document_id=doc,
-        pipeline_version=config.pipeline.version, config_hash="",
+        conn,
+        run_id=run_id,
+        document_id=doc,
+        pipeline_version=config.pipeline.version,
+        config_hash="",
     )
 
     stages = resolve_stage_range(from_stage=from_stage, to_stage=to_stage)
@@ -87,9 +90,15 @@ def run(
     # Load existing artifacts if starting from a mid-pipeline stage
     if from_stage != "ingest":
         _load_existing_artifacts(
-            store, doc, total_page_count,
-            stages, native_pages, en_ir_map, ru_ir_map,
-            extract_native_page, config,
+            store,
+            doc,
+            total_page_count,
+            stages,
+            native_pages,
+            en_ir_map,
+            ru_ir_map,
+            extract_native_page,
+            config,
         )
 
     for stage_name in stages:
@@ -98,7 +107,8 @@ def run(
             if stage_name == "ingest":
                 sha256, page_count = fingerprint_pdf(config.source_pdf_path)
                 manifest = build_manifest(
-                    document_id=doc, source_pdf_sha256=sha256,
+                    document_id=doc,
+                    source_pdf_sha256=sha256,
                     page_count=page_count,
                 )
                 dpi = config.extraction.layout.dpi
@@ -106,16 +116,24 @@ def run(
                 for pnum in page_nums:
                     pid = f"p{pnum:04d}"
                     png_bytes = render_page_png(
-                        config.source_pdf_path, pnum, dpi=dpi,
+                        config.source_pdf_path,
+                        pnum,
+                        dpi=dpi,
                     )
                     store.put_bytes(
-                        document_id=doc, schema_family="raster",
-                        scope="page", entity_id=pid,
-                        data=png_bytes, extension=".png",
+                        document_id=doc,
+                        schema_family="raster",
+                        scope="page",
+                        entity_id=pid,
+                        data=png_bytes,
+                        extension=".png",
                     )
                 store.put_json(
-                    document_id=doc, schema_family="source_manifest",
-                    scope="document", entity_id=doc, data=manifest,
+                    document_id=doc,
+                    schema_family="source_manifest",
+                    scope="document",
+                    entity_id=doc,
+                    data=manifest,
                 )
                 typer.echo(f"    {len(page_nums)} pages ingested")
 
@@ -123,13 +141,17 @@ def run(
                 for pnum in page_nums:
                     pid = f"p{pnum:04d}"
                     native = extract_native_page(
-                        config.source_pdf_path, page_number=pnum,
+                        config.source_pdf_path,
+                        page_number=pnum,
                         document_id=doc,
                     )
                     native_pages[pid] = native
                     store.put_json(
-                        document_id=doc, schema_family="native_page.v1",
-                        scope="page", entity_id=pid, data=native,
+                        document_id=doc,
+                        schema_family="native_page.v1",
+                        scope="page",
+                        entity_id=pid,
+                        data=native,
                     )
                 typer.echo(f"    Extracted {len(native_pages)} pages")
 
@@ -138,14 +160,17 @@ def run(
                 if catalog_path and catalog_path.exists():
                     catalog = load_symbol_catalog(catalog_path)
                     tcache = TemplateCache.from_catalog(
-                        catalog, repo_root=config.repo_root,
+                        catalog,
+                        repo_root=config.repo_root,
                     )
                     for pid, native in native_pages.items():
                         raster_dir = store.root / doc / "raster" / "page" / pid
                         rasters = list(raster_dir.glob("*.png"))
                         if rasters:
                             matches = match_symbols(
-                                native, rasters[0], catalog,
+                                native,
+                                rasters[0],
+                                catalog,
                                 repo_root=config.repo_root,
                                 template_cache=tcache,
                             )
@@ -153,15 +178,13 @@ def run(
                             store.put_json(
                                 document_id=doc,
                                 schema_family="symbol_match_set.v1",
-                                scope="page", entity_id=pid, data=matches,
+                                scope="page",
+                                entity_id=pid,
+                                data=matches,
                             )
-                    matched = sum(
-                        len(m.matches)
-                        for m in symbol_matches_map.values()
-                    )
+                    matched = sum(len(m.matches) for m in symbol_matches_map.values())
                     typer.echo(
-                        f"    {matched} symbols matched across "
-                        f"{len(symbol_matches_map)} pages"
+                        f"    {matched} symbols matched across {len(symbol_matches_map)} pages"
                     )
                 else:
                     typer.echo("    No symbol catalog configured, skipping")
@@ -175,15 +198,14 @@ def run(
                         ir = build_page_ir_real(native, sym)
                     en_ir_map[pid] = ir
                     store.put_json(
-                        document_id=doc, schema_family="page_ir.v1.en",
-                        scope="page", entity_id=pid, data=ir,
+                        document_id=doc,
+                        schema_family="page_ir.v1.en",
+                        scope="page",
+                        entity_id=pid,
+                        data=ir,
                     )
-                total_blocks = sum(
-                    len(ir.blocks) for ir in en_ir_map.values()
-                )
-                typer.echo(
-                    f"    {total_blocks} blocks across {len(en_ir_map)} pages"
-                )
+                total_blocks = sum(len(ir.blocks) for ir in en_ir_map.values())
+                typer.echo(f"    {total_blocks} blocks across {len(en_ir_map)} pages")
 
             elif stage_name == "translate":
                 # Load concept registry if available
@@ -210,13 +232,19 @@ def run(
                     )
 
                 _translate_pages(
-                    en_ir_map, ru_ir_map, store, doc,
-                    translator, build_translation_batch,
-                    validate_translation, typer, concept_reg,
+                    en_ir_map,
+                    ru_ir_map,
+                    store,
+                    doc,
+                    translator,
+                    build_translation_batch,
+                    validate_translation,
+                    typer,
+                    concept_reg,
                 )
 
             elif stage_name == "render":
-                for pid in (ru_ir_map if ru_ir_map else en_ir_map):
+                for pid in ru_ir_map if ru_ir_map else en_ir_map:
                     render_ir = ru_ir_map.get(pid) or en_ir_map.get(pid)
                     if render_ir:
                         render = build_render_page(render_ir)
@@ -224,7 +252,9 @@ def run(
                         store.put_json(
                             document_id=doc,
                             schema_family="render_page.v1",
-                            scope="page", entity_id=pid, data=render,
+                            scope="page",
+                            entity_id=pid,
+                            data=render,
                         )
                 typer.echo(f"    {len(render_pages)} render pages built")
 
@@ -306,11 +336,14 @@ def _translate_pages(
 
     for pid, en_ir in en_ir_map.items():
         batch: TranslationBatchV1 = build_translation_batch(
-            en_ir, concept_registry=concept_registry,
+            en_ir,
+            concept_registry=concept_registry,
         )
         result = translator.translate_batch(batch)
         errors = validate_translation(
-            batch, result, concept_registry=concept_registry,
+            batch,
+            result,
+            concept_registry=concept_registry,
         )
         if errors:
             for e in errors:
@@ -335,7 +368,8 @@ def _translate_pages(
             ru_blocks.append(block_cls(**kwargs))
 
         ru_ir = PageIRV1(
-            document_id=doc, page_id=pid,
+            document_id=doc,
+            page_id=pid,
             page_number=en_ir.page_number,
             language=LanguageCode.RU,
             dimensions_pt=en_ir.dimensions_pt,
@@ -344,8 +378,11 @@ def _translate_pages(
         )
         ru_ir_map[pid] = ru_ir
         store.put_json(
-            document_id=doc, schema_family="page_ir.v1.ru",
-            scope="page", entity_id=pid, data=ru_ir,
+            document_id=doc,
+            schema_family="page_ir.v1.ru",
+            scope="page",
+            entity_id=pid,
+            data=ru_ir,
         )
     typer.echo(f"    Translated {len(ru_ir_map)} pages")
 
@@ -387,7 +424,8 @@ def _load_existing_artifacts(
                 pid = f"p{pnum:04d}"
                 native = extract_native_page(
                     config.source_pdf_path,
-                    page_number=pnum, document_id=doc,
+                    page_number=pnum,
+                    document_id=doc,
                 )
                 native_pages[pid] = native
 
