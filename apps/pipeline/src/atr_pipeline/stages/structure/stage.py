@@ -9,7 +9,6 @@ from pydantic import BaseModel, Field
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
-from atr_pipeline.stages.symbols.stage import SymbolsResult
 from atr_schemas.enums import StageScope
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
@@ -60,7 +59,11 @@ class StructureStage:
 
             ctx.logger.info("Building IR for %s (builder=%s)", page_id, builder)
             if builder == "simple":
-                ir = build_page_ir_simple(native, symbols)  # type: ignore[arg-type]
+                sym = symbols or SymbolMatchSetV1(
+                    document_id=ctx.document_id,
+                    page_id=page_id,
+                )
+                ir = build_page_ir_simple(native, sym)
             else:
                 ir = build_page_ir_real(native, symbols)
 
@@ -83,11 +86,7 @@ class StructureStage:
 
     @staticmethod
     def _resolve_page_ids(ctx: StageContext, input_data: BaseModel | None) -> list[str]:
-        """Get page IDs from input or artifact store."""
-        if isinstance(input_data, SymbolsResult) and input_data.pages_matched > 0:
-            # Scan native pages dir — symbols result doesn't carry page_ids
-            pass
-
+        """Get page IDs from the artifact store."""
         native_dir = ctx.artifact_store.root / ctx.document_id / "native_page.v1" / "page"
         if native_dir.exists():
             return sorted(d.name for d in native_dir.iterdir() if d.is_dir())
