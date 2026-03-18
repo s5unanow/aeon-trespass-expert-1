@@ -8,7 +8,13 @@ from atr_pipeline.registry.events import (
     record_stage_finish,
     record_stage_start,
 )
-from atr_pipeline.registry.runs import finish_run, get_run, list_runs, start_run
+from atr_pipeline.registry.runs import (
+    finish_run,
+    get_run,
+    list_runs,
+    set_run_manifest_ref,
+    start_run,
+)
 
 
 def test_migrations_bootstrap(tmp_path: Path) -> None:
@@ -83,4 +89,50 @@ def test_cache_miss_returns_none(tmp_path: Path) -> None:
     conn = open_registry(tmp_path / "registry.db")
     cached = find_cached_event(conn, cache_key="nonexistent")
     assert cached is None
+    conn.close()
+
+
+def test_migration_adds_run_manifest_ref(tmp_path: Path) -> None:
+    """Opening an old DB without run_manifest_ref adds the column."""
+    import sqlite3
+
+    db_path = tmp_path / "registry.db"
+    raw = sqlite3.connect(str(db_path))
+    raw.executescript("""
+        CREATE TABLE runs (
+            run_id TEXT PRIMARY KEY,
+            document_id TEXT NOT NULL,
+            pipeline_version TEXT NOT NULL,
+            config_hash TEXT NOT NULL,
+            started_at TEXT NOT NULL,
+            finished_at TEXT,
+            status TEXT NOT NULL DEFAULT 'running',
+            qa_summary_ref TEXT
+        );
+        CREATE TABLE stage_events (
+            event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            run_id TEXT NOT NULL,
+            stage_name TEXT NOT NULL,
+            scope TEXT NOT NULL,
+            entity_id TEXT NOT NULL,
+            cache_key TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'started',
+            started_at TEXT NOT NULL,
+            finished_at TEXT,
+            artifact_ref TEXT,
+            error_message TEXT,
+            duration_ms INTEGER
+        );
+    """)
+    raw.execute("INSERT INTO runs VALUES ('r1','doc1','0.1','h','2026-01-01',NULL,'running',NULL)")
+    raw.commit()
+    raw.close()
+
+    conn = open_registry(db_path)
+    start_run(conn, run_id="r2", document_id="doc1", pipeline_version="0.1", config_hash="x")
+    set_run_manifest_ref(conn, run_id="r2", ref="some/manifest.json")
+
+    run = get_run(conn, "r2")
+    assert run is not None
+    assert run["run_manifest_ref"] == "some/manifest.json"
     conn.close()

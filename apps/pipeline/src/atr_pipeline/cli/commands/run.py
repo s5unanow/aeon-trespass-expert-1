@@ -74,18 +74,20 @@ def run(
             qa_summary_ref = result.artifact_ref.relative_path
 
     status = "failed" if has_errors else "completed"
-    finish_run(conn, run_id=run_id, status=status, qa_summary_ref=qa_summary_ref)
+    try:
+        finish_run(conn, run_id=run_id, status=status, qa_summary_ref=qa_summary_ref)
 
-    manifest = build_run_manifest(conn, run_id=run_id)
-    manifest_ref = store.put_json(
-        document_id=doc,
-        schema_family="run_manifest.v1",
-        scope="run",
-        entity_id=run_id,
-        data=manifest,
-    )
-    set_run_manifest_ref(conn, run_id=run_id, ref=manifest_ref.relative_path)
-    conn.close()
+        manifest = build_run_manifest(conn, run_id=run_id)
+        manifest_ref = store.put_json(
+            document_id=doc,
+            schema_family="run_manifest.v1",
+            scope="run",
+            entity_id=run_id,
+            data=manifest,
+        )
+        set_run_manifest_ref(conn, run_id=run_id, ref=manifest_ref.relative_path)
+    finally:
+        conn.close()
 
     if has_errors:
         typer.echo(f"Run {run_id} finished with errors.")
