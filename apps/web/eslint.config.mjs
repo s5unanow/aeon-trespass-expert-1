@@ -1,4 +1,5 @@
 import globals from "globals";
+import importPlugin from "eslint-plugin-import";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -6,15 +7,24 @@ export default tseslint.config(
   {
     files: ["**/*.{ts,tsx}"],
     extends: [tseslint.configs.recommended],
+    plugins: {
+      import: importPlugin,
+    },
     languageOptions: {
       globals: globals.browser,
       ecmaVersion: 2022,
+    },
+    settings: {
+      "import/resolver": {
+        typescript: true,
+      },
     },
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "warn",
         { argsIgnorePattern: "^_" },
       ],
+      "import/no-cycle": "error",
     },
   },
 );

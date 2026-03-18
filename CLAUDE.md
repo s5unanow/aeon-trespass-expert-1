@@ -24,7 +24,7 @@ docs/                Architecture docs (read on demand, not memorized)
 
 ```bash
 make bootstrap        # Install all deps (uv sync + pnpm install)
-make lint             # ruff check + mypy + pnpm lint
+make lint             # ruff check + mypy + import-linter + pnpm lint
 make typecheck        # mypy + tsc
 make test             # All tests (pytest + pnpm test)
 make codegen          # Regenerate JSON Schema + TS types from Pydantic models
@@ -37,11 +37,12 @@ make clean            # Remove caches and build artifacts
 1. `ruff check` — no lint errors (includes McCabe complexity C901, max 12)
 2. `ruff format --check` — no format violations
 3. `mypy --strict` — no type errors
-4. `pytest` — all tests pass
-5. `eslint` — frontend lint
-6. `tsc --noEmit` — frontend type check
+4. `lint-imports` — Python import layer contracts (no cyclic dependencies)
+5. `pytest` — all tests pass
+6. `eslint` — frontend lint (includes `import/no-cycle`)
+7. `tsc --noEmit` — frontend type check
 
-CI runs gates 1-6 on every push. Pre-commit hook enforces them automatically.
+CI runs gates 1-7 on every push. Pre-commit hook enforces them automatically.
 
 ## Development workflow (MANDATORY)
 

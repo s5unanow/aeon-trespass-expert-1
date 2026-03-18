@@ -27,6 +27,7 @@ dev = [
   "pytest>=8.0",
   "pytest-cov>=6.0",
   "pre-commit>=4.0",
+  "import-linter>=2.11",
 ]
 
 [tool.ruff]
@@ -46,8 +47,6 @@ max-branches = 12
 max-statements = 50
 
 [tool.ruff.lint.per-file-ignores]
-# Tracked by S5U-142 (Epic 1: Refactor run.py)
-"apps/pipeline/src/atr_pipeline/cli/commands/run.py" = ["C901", "PLR0912", "PLR0913", "PLR0915"]
 # Tracked by S5U-144 (Epic 3: Config-driven structure recovery)
 "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py" = ["C901", "PLR0912", "PLR0915"]
 # Tracked by S5U-143 (Epic 2: Expand QA — translation planner complexity)
@@ -65,6 +64,32 @@ warn_unused_configs = true
 [[tool.mypy.overrides]]
 module = ["fitz.*", "docling.*", "cv2.*", "paddleocr.*"]
 ignore_missing_imports = true
+
+[tool.importlinter]
+root_packages = ["atr_pipeline"]
+
+[[tool.importlinter.contracts]]
+name = "Pipeline layer contract"
+type = "layers"
+layers = [
+    "atr_pipeline.cli",
+    "atr_pipeline.runner",
+    "atr_pipeline.stages",
+    "atr_pipeline.services | atr_pipeline.store | atr_pipeline.registry",
+    "atr_pipeline.config",
+    "atr_pipeline.utils",
+]
+# stages → runner.stage_context is intentional: stages need the runtime context
+# dataclass, but must not import orchestration logic (executor, registry, plan).
+ignore_imports = [
+    "atr_pipeline.stages.ingest.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.extract_native.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.symbols.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.structure.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.translation.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.render.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.qa.stage -> atr_pipeline.runner.stage_context",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["apps/pipeline/tests"]
