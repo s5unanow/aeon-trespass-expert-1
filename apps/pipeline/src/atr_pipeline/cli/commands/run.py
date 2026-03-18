@@ -9,8 +9,9 @@ import typer
 
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
-from atr_pipeline.registry.runs import finish_run, start_run
+from atr_pipeline.registry.runs import finish_run, set_run_manifest_ref, start_run
 from atr_pipeline.runner.executor import execute_stage
+from atr_pipeline.runner.manifest_builder import build_run_manifest
 from atr_pipeline.runner.plan import resolve_stage_range
 from atr_pipeline.runner.registry import build_stage_registry
 from atr_pipeline.runner.stage_context import StageContext
@@ -74,6 +75,16 @@ def run(
 
     status = "failed" if has_errors else "completed"
     finish_run(conn, run_id=run_id, status=status, qa_summary_ref=qa_summary_ref)
+
+    manifest = build_run_manifest(conn, run_id=run_id)
+    manifest_ref = store.put_json(
+        document_id=doc,
+        schema_family="run_manifest.v1",
+        scope="run",
+        entity_id=run_id,
+        data=manifest,
+    )
+    set_run_manifest_ref(conn, run_id=run_id, ref=manifest_ref.relative_path)
     conn.close()
 
     if has_errors:

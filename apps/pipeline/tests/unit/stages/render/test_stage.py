@@ -88,6 +88,8 @@ def test_render_builds_pages(tmp_path: Path) -> None:
     render_result = RenderResult.model_validate(data)
     assert render_result.document_id == "walking_skeleton"
     assert render_result.pages_rendered == 1
+    assert "p0001" in render_result.page_refs
+    assert render_result.page_refs["p0001"].endswith(".json")
 
     # Verify per-page render artifact was stored
     render_dir = tmp_path / "artifacts" / "walking_skeleton" / "render_page.v1" / "page" / "p0001"

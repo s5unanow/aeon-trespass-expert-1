@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS runs (
     started_at TEXT NOT NULL,
     finished_at TEXT,
     status TEXT NOT NULL DEFAULT 'running',
-    qa_summary_ref TEXT
+    qa_summary_ref TEXT,
+    run_manifest_ref TEXT
 );
 
 CREATE TABLE IF NOT EXISTS stage_events (

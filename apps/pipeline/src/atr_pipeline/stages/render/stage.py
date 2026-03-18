@@ -17,6 +17,7 @@ class RenderResult(BaseModel):
 
     document_id: str
     pages_rendered: int = Field(ge=0)
+    page_refs: dict[str, str] = Field(default_factory=dict)
 
 
 class RenderStage:
@@ -42,6 +43,7 @@ class RenderStage:
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> RenderResult:
         page_ids = self._resolve_page_ids(ctx)
         pages_rendered = 0
+        page_refs: dict[str, str] = {}
 
         for page_id in page_ids:
             ir = self._load_page_ir(ctx, page_id)
@@ -52,19 +54,21 @@ class RenderStage:
             ctx.logger.info("Building render page for %s", page_id)
             render = build_render_page(ir)
 
-            ctx.artifact_store.put_json(
+            ref = ctx.artifact_store.put_json(
                 document_id=ctx.document_id,
                 schema_family="render_page.v1",
                 scope="page",
                 entity_id=page_id,
                 data=render,
             )
+            page_refs[page_id] = ref.relative_path
             pages_rendered += 1
 
         ctx.logger.info("Rendered %d pages", pages_rendered)
         return RenderResult(
             document_id=ctx.document_id,
             pages_rendered=pages_rendered,
+            page_refs=page_refs,
         )
 
     @staticmethod
