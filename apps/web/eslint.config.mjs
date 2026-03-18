@@ -25,6 +25,7 @@ export default tseslint.config(
         { argsIgnorePattern: "^_" },
       ],
       "import/no-cycle": "error",
+      "max-lines": ["error", { max: 400, skipBlankLines: true, skipComments: true }],
     },
   },
 );
