@@ -20,6 +20,8 @@ def test_load_walking_skeleton_config() -> None:
     assert "ru" in cfg.document.target_langs
     assert cfg.pipeline.version == "0.1.0"
     assert cfg.symbols.match_threshold == 0.93
+    assert cfg.document.structure_builder == "simple"
+    assert cfg.translation.provider == "mock"
 
 
 def test_config_resolves_paths() -> None:

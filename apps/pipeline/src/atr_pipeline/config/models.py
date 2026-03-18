@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -14,6 +15,7 @@ class DocumentConfig(BaseModel):
     source_pdf: str
     source_lang: str = "en"
     target_langs: list[str] = Field(default_factory=lambda: ["ru"])
+    structure_builder: Literal["real", "simple"] = "real"
 
 
 class PipelineConfig(BaseModel):
