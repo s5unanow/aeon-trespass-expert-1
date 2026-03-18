@@ -77,8 +77,9 @@ def test_qa_gate_blocks_on_blocking_summary(tmp_path: Path) -> None:
     artifact_root = tmp_path / "artifacts"
     repo_root = tmp_path
 
-    with pytest.raises(ClickExit):
+    with pytest.raises(ClickExit) as exc_info:
         _check_qa_gate(repo_root, artifact_root, "doc1")
+    assert exc_info.value.exit_code == 1
 
 
 def test_qa_gate_passes_on_clean_summary(tmp_path: Path) -> None:
