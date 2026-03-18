@@ -19,9 +19,7 @@ class SymbolEntry(BaseModel):
 class SymbolCatalogV1(BaseModel):
     """Catalog of known symbols for matching."""
 
-    schema_version: str = Field(
-        default="symbol_catalog.v1", pattern=r"^symbol_catalog\.v\d+$"
-    )
+    schema_version: str = Field(default="symbol_catalog.v1", pattern=r"^symbol_catalog\.v\d+$")
     catalog_id: str = ""
     version: str = ""
     symbols: list[SymbolEntry] = Field(default_factory=list)

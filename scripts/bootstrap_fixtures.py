@@ -101,7 +101,7 @@ def main() -> None:
         "# Walking Skeleton Source Notes\n\n"
         "This is a **synthetic** single-page PDF created by `scripts/bootstrap_fixtures.py`.\n\n"
         "Content:\n"
-        "- Heading: \"Attack Test\"\n"
+        '- Heading: "Attack Test"\n'
         '- Paragraph: "Gain 1 [sym.progress icon] Progress."\n\n'
         "The inline icon is a 16x16 green circle PNG embedded as a PDF image object.\n"
         "This page is intentionally simple: single column, one heading, one paragraph,\n"

@@ -55,8 +55,6 @@ class ConceptV1(BaseModel):
 class ConceptRegistryV1(BaseModel):
     """Full concept registry for a document."""
 
-    schema_version: str = Field(
-        default="concept_registry.v1", pattern=r"^concept_registry\.v\d+$"
-    )
+    schema_version: str = Field(default="concept_registry.v1", pattern=r"^concept_registry\.v\d+$")
     version: str = ""
     concepts: list[ConceptV1] = Field(default_factory=list)

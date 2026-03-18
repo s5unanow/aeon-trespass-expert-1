@@ -19,8 +19,6 @@ class GlossaryEntryV1(BaseModel):
 class GlossaryPayloadV1(BaseModel):
     """Frontend glossary payload."""
 
-    schema_version: str = Field(
-        default="glossary_payload.v1", pattern=r"^glossary_payload\.v\d+$"
-    )
+    schema_version: str = Field(default="glossary_payload.v1", pattern=r"^glossary_payload\.v\d+$")
     document_id: str
     entries: list[GlossaryEntryV1] = Field(default_factory=list)

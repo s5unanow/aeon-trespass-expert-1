@@ -61,17 +61,19 @@ def extract_icon_candidates() -> list[dict[str, object]]:
                 rects = page.get_image_rects(xref)
                 rect = rects[0] if rects else None
 
-                candidates.append({
-                    "xref": xref,
-                    "width": w,
-                    "height": h,
-                    "hash": img_hash,
-                    "page_id": page_id,
-                    "page_number": pn + 1,
-                    "rect": [rect.x0, rect.y0, rect.x1, rect.y1] if rect else None,
-                    "image_bytes": raw,
-                    "ext": img_data.get("ext", "png"),
-                })
+                candidates.append(
+                    {
+                        "xref": xref,
+                        "width": w,
+                        "height": h,
+                        "hash": img_hash,
+                        "page_id": page_id,
+                        "page_number": pn + 1,
+                        "rect": [rect.x0, rect.y0, rect.x1, rect.y1] if rect else None,
+                        "image_bytes": raw,
+                        "ext": img_data.get("ext", "png"),
+                    }
+                )
             except Exception:
                 pass
 
@@ -96,13 +98,15 @@ def save_templates(candidates: list[dict[str, object]]) -> list[dict[str, str]]:
         img = cv2.imdecode(nparr, cv2.IMREAD_UNCHANGED)
         if img is not None:
             cv2.imwrite(str(path), img)
-            saved.append({
-                "filename": filename,
-                "width": str(c["width"]),
-                "height": str(c["height"]),
-                "hash": str(c["hash"]),
-                "first_page": str(c["page_id"]),
-            })
+            saved.append(
+                {
+                    "filename": filename,
+                    "width": str(c["width"]),
+                    "height": str(c["height"]),
+                    "hash": str(c["hash"]),
+                    "first_page": str(c["page_id"]),
+                }
+            )
 
     return saved
 
@@ -119,17 +123,19 @@ def write_catalog_skeleton(saved: list[dict[str, str]]) -> None:
     ]
 
     for s in saved:
-        lines.extend([
-            "[[symbols]]",
-            f'symbol_id = "sym.unknown_{s["hash"][:8]}"',
-            'label = ""  # TODO: label this icon',
-            'alt_label_ru = ""',
-            f'template_asset = "configs/symbols/templates/{s["filename"]}"',
-            "match_threshold = 0.85",
-            "inline = true",
-            f'# first seen: {s["first_page"]}, {s["width"]}x{s["height"]}px',
-            "",
-        ])
+        lines.extend(
+            [
+                "[[symbols]]",
+                f'symbol_id = "sym.unknown_{s["hash"][:8]}"',
+                'label = ""  # TODO: label this icon',
+                'alt_label_ru = ""',
+                f'template_asset = "configs/symbols/templates/{s["filename"]}"',
+                "match_threshold = 0.85",
+                "inline = true",
+                f"# first seen: {s['first_page']}, {s['width']}x{s['height']}px",
+                "",
+            ]
+        )
 
     CATALOG_PATH.write_text("\n".join(lines), encoding="utf-8")
 
