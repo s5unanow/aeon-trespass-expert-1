@@ -15,6 +15,7 @@ from atr_pipeline.runner.plan import resolve_stage_range
 from atr_pipeline.runner.registry import build_stage_registry
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.utils.hashing import content_hash
 
 logger = logging.getLogger("atr_pipeline")
 
@@ -30,12 +31,13 @@ def run(
     conn = open_registry(config.repo_root / "var" / "registry.db")
 
     run_id = f"run_{uuid.uuid4().hex[:8]}"
+    cfg_hash = content_hash(config.model_dump(mode="json"))
     start_run(
         conn,
         run_id=run_id,
         document_id=doc,
         pipeline_version=config.pipeline.version,
-        config_hash="",
+        config_hash=cfg_hash,
     )
 
     stages = resolve_stage_range(from_stage=from_stage, to_stage=to_stage)
