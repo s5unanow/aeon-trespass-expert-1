@@ -9,6 +9,7 @@ and writes everything to apps/web/public/documents/{doc_id}/.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -92,6 +93,129 @@ def extract_images() -> dict[str, list[dict]]:
     return page_images
 
 
+DECORATIVE_PREFIXES = (
+    "sym.board_tile", "sym.art_", "sym.terrain_",
+    "sym.marker_", "sym.crown_", "sym.die_", "sym.titan_helmet",
+)
+
+_SENTENCE_RE = re.compile(r'(?<=\. )(?=[A-ZА-ЯЁ])')
+
+
+def _postprocess_blocks(blocks: list[dict]) -> list[dict]:
+    """Post-process render blocks: strip decorative icons, split long paragraphs, deduplicate."""
+    result: list[dict] = []
+
+    for block in blocks:
+        # Strip decorative icons from children
+        if "children" in block:
+            block["children"] = [
+                c for c in block["children"]
+                if not (c.get("kind") == "icon" and c.get("symbol_id", "").startswith(DECORATIVE_PREFIXES))
+            ]
+
+        # Split long paragraphs at sentence boundaries
+        if block.get("kind") == "paragraph":
+            text = "".join(c.get("text", "") for c in block.get("children", []) if c.get("kind") == "text")
+            if len(text) > 600:
+                parts = _split_paragraph(block)
+                # Deduplicate before adding
+                for part in parts:
+                    if not _is_duplicate(result, part):
+                        result.append(part)
+                continue
+
+        # Deduplicate
+        if not _is_duplicate(result, block):
+            result.append(block)
+
+    return result
+
+
+def _split_paragraph(block: dict, max_chars: int = 600) -> list[dict]:
+    """Split a paragraph block at sentence boundaries."""
+    children = block.get("children", [])
+    text = "".join(c.get("text", "") for c in children if c.get("kind") == "text")
+    if len(text) <= max_chars:
+        return [block]
+
+    # Find sentence boundaries in the concatenated text
+    boundaries = [m.start() for m in _SENTENCE_RE.finditer(text)]
+    if not boundaries:
+        return [block]
+
+    # Find the best split point (last boundary before max_chars)
+    split_at = None
+    for b in boundaries:
+        if b <= max_chars:
+            split_at = b
+        else:
+            break
+    if split_at is None or split_at < 100:
+        # Try first boundary after 100 chars
+        split_at = next((b for b in boundaries if b >= 100), None)
+    if split_at is None:
+        return [block]
+
+    # Split children at the boundary
+    char_count = 0
+    split_idx = None
+    split_offset = None
+    for i, child in enumerate(children):
+        if child.get("kind") != "text":
+            continue
+        child_text = child.get("text", "")
+        if char_count + len(child_text) >= split_at:
+            split_idx = i
+            split_offset = split_at - char_count
+            break
+        char_count += len(child_text)
+
+    if split_idx is None:
+        return [block]
+
+    # Create two blocks
+    first_children = children[:split_idx]
+    remainder_children = children[split_idx:]
+
+    # Split the text node at the boundary
+    split_child = remainder_children[0]
+    if split_child.get("kind") == "text" and split_offset > 0:
+        text1 = split_child["text"][:split_offset]
+        text2 = split_child["text"][split_offset:]
+        if text1.strip():
+            first_children.append({**split_child, "text": text1})
+        if text2.strip():
+            remainder_children = [{**split_child, "text": text2}] + remainder_children[1:]
+        else:
+            remainder_children = remainder_children[1:]
+
+    block1 = {**block, "id": f"{block['id']}.0", "children": first_children}
+    block2 = {**block, "id": f"{block['id']}.1", "children": remainder_children}
+
+    # Recursively split the remainder if still too long
+    result = [block1]
+    remainder_text = "".join(c.get("text", "") for c in remainder_children if c.get("kind") == "text")
+    if len(remainder_text) > max_chars:
+        result.extend(_split_paragraph(block2, max_chars))
+    else:
+        result.append(block2)
+    return result
+
+
+def _is_duplicate(blocks: list[dict], block: dict) -> bool:
+    """Check if block duplicates any recent block (within last 5)."""
+    this_text = "".join(c.get("text", "") for c in block.get("children", []) if c.get("kind") == "text")[:80]
+    if not this_text or len(this_text) < 3:
+        return False
+    for prev in blocks[-5:]:
+        if prev.get("kind") != block.get("kind"):
+            continue
+        prev_text = "".join(c.get("text", "") for c in prev.get("children", []) if c.get("kind") == "text")[:80]
+        if prev_text == this_text:
+            return True
+    return False
+
+
 def export_pages(page_images: dict[str, list[dict]]) -> None:
     """Export render pages with navigation and image figures."""
     data_dir = WEB_PUBLIC / "data"
@@ -119,6 +243,9 @@ def export_pages(page_images: dict[str, list[dict]]) -> None:
             if s > best_score:
                 best = data
                 best_score = s
+
+        # Post-process blocks: strip decorative icons, split, deduplicate
+        best["blocks"] = _postprocess_blocks(best.get("blocks", []))
 
         # Inject image figures if we have them
         imgs = page_images.get(pid, [])

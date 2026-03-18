@@ -27,7 +27,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0023.b002",
+      "id": "p0023.b002.0",
       "children": [
         {
           "kind": "text",
@@ -55,13 +55,19 @@
         },
         {
           "kind": "text",
-          "text": ". Это означает, что если вы уже находитесь на Исследованной клетке, ничего не происходит. Во время первой игровой сессии легко понять, какие клетки Исследованы: это, по сути, все клетки, открытые на столе. Остальные клетки Карты Неисследованы. Однако, как только вы сыграете еще несколько игровых сессий, сохраняя игру между ними, отслеживать это станет немного сложнее. Вот почему важно помнить, как правильно сохранять Карту (см. «Сохранение Кампании» ниже). После завершения Завершающего Шага переходите к следующему Раунду Кампании.",
+          "text": ". Это означает, что если вы уже находитесь на Исследованной клетке, ничего не происходит. Во время первой игровой сессии легко понять, какие клетки Исследованы: это, по сути, все клетки, открытые на столе. Остальные клетки Карты Неисследованы. Однако, как только вы сыграете еще несколько игровых сессий, сохраняя игру между ними, отслеживать это станет немного сложнее. Вот почему важно помнить, как правильно сохранять Карту (см. «Сохранение Кампании» ниже). ",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b002.1",
+      "children": [
         {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_a",
-          "alt": "Board_tile_a"
+          "kind": "text",
+          "text": "После завершения Завершающего Шага переходите к следующему Раунду Кампании.",
+          "marks": []
         }
       ]
     },
@@ -85,11 +91,6 @@
           "kind": "text",
           "text": "Этот раздел охватывает все дополнительные правила, регулирующие Фазу Странствия, которые не привязаны к каким-либо Шагам Раунда Кампании.",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
         }
       ]
     },
@@ -107,7 +108,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0023.b006",
+      "id": "p0023.b006.0",
       "children": [
         {
           "kind": "text",
@@ -150,7 +151,18 @@
         },
         {
           "kind": "text",
-          "text": " и завершить текущую игровую сессию. Мы советуем сохраняться в конце Завершающего Шага, чтобы вы могли начать следующую игру в начале нового дня. Чтобы сохранить игру, возьмите Лист ",
+          "text": " и завершить текущую игровую сессию. Мы советуем сохраняться в конце Завершающего Шага, чтобы вы могли начать следующую игру в начале нового дня. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b006.1",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Чтобы сохранить игру, возьмите Лист ",
           "marks": []
         },
         {
@@ -222,46 +234,6 @@
           "kind": "text",
           "text": ").",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_a",
-          "alt": "Board_tile_a"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_i",
-          "alt": "Board_tile_i"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -348,7 +320,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0023.b016",
+      "id": "p0023.b016.0",
       "children": [
         {
           "kind": "text",
@@ -439,7 +411,18 @@
         },
         {
           "kind": "text",
-          "text": ". Храните вашу ",
+          "text": ". ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b016.1.0",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Храните вашу ",
           "marks": []
         },
         {
@@ -537,7 +520,13 @@
           "kind": "text",
           "text": " отдельно от других компонентов того же типа, чтобы легко получить к ним доступ, когда вы возобновите свою кампанию. Поместите все Исследованные клетки Карты в отсек для Исследованных Карт в органайзере игры. ",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0023.b016.1.1",
+      "children": [
         {
           "kind": "text",
           "text": "Важно:",
@@ -549,46 +538,6 @@
           "kind": "text",
           "text": " Всегда помните помещать все Исследованные клетки Карты в этот отсек! Во время следующей игровой сессии вы можете восстановить всю Карту в начале или восстановить только те части, которые актуальны для этой игровой сессии (Карта большая!).",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_a",
-          "alt": "Board_tile_a"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_i",
-          "alt": "Board_tile_i"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -638,36 +587,6 @@
           "marks": [
             "italic"
           ]
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_i",
-          "alt": "Board_tile_i"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },

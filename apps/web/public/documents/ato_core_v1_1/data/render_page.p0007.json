@@ -179,36 +179,6 @@
           "marks": [
             "italic"
           ]
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -222,21 +192,6 @@
           "marks": [
             "bold"
           ]
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -250,36 +205,6 @@
           "marks": [
             "italic"
           ]
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -363,21 +288,6 @@
           "kind": "text",
           "text": "AW0284ИАПЕТАНСКОЕ НАПРЯЖЕНИЕИАПЕТАНСКОЕ НАПРЯЖЕНИЕ",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -396,36 +306,6 @@
           "marks": [
             "italic"
           ]
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -522,36 +402,6 @@
           "kind": "text",
           "text": ", немедленно умрите. Не разрешайте никаких других эффектов попадания и переходите к После Атаки.ЭГОЛОК",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -589,21 +439,6 @@
           "marks": [
             "italic"
           ]
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -720,36 +555,6 @@
           "kind": "text",
           "text": "ХОЛОДНОЕ ОТКРЫТИЕ",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
@@ -1124,37 +929,6 @@
       ]
     },
     {
-      "kind": "paragraph",
-      "id": "p0007.b053",
-      "children": [
-        {
-          "kind": "text",
-          "text": "Когда вы получаете ресурсы ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Первозданных",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": " во время ",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": "Послесловия Битвы",
-          "marks": []
-        },
-        {
-          "kind": "text",
-          "text": ", обменяйте эту карту на случайную карту BP III.",
-          "marks": []
-        }
-      ]
-    },
-    {
       "kind": "heading",
       "id": "p0007.b054",
       "level": 2,
@@ -1185,17 +959,6 @@
         {
           "kind": "text",
           "text": "N",
-          "marks": []
-        }
-      ]
-    },
-    {
-      "kind": "paragraph",
-      "id": "p0007.b057",
-      "children": [
-        {
-          "kind": "text",
-          "text": "НЕ ОТКРЫВАТЬ, ПОКА НЕ БУДЕТ СКАЗАНО.",
           "marks": []
         }
       ]

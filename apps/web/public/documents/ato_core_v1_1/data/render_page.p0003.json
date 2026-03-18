@@ -26,7 +26,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0003.b002",
+      "id": "p0003.b002.0",
       "children": [
         {
           "kind": "text",
@@ -224,7 +224,18 @@
         },
         {
           "kind": "text",
-          "text": " Mikołaj Olejniczak, Rafał Skwarek, Stanisław Jakubaszek, Przemysław Mróz, Jarosław Łosiak, Łukasz Bacherycz, Rafał Godlewski, Kamil Mroczkowski, Oskar Bir, Wiktor Krogulec, Monika Wocial, Dominik Czuba, Kevin Ecker, Tony Nelson, Yuseph Maghsoudlou, Geoffrey Fuqua, Tyler Scott, David Titus, Łukasz Smurzyński, Antoni Polak-Warchałowski, Bartosz Odorowicz, Jaśmina Przybysz, Agata Różycka, Wojciech BaczyńskiInto the Unknown Sp z o.o.al. Grunwaldzka 103A 80-244 GdańskPoland",
+          "text": " Mikołaj Olejniczak, Rafał Skwarek, Stanisław Jakubaszek, Przemysław Mróz, Jarosław Łosiak, Łukasz Bacherycz, Rafał Godlewski, Kamil Mroczkowski, Oskar Bir, Wiktor Krogulec, Monika Wocial, Dominik Czuba, Kevin Ecker, Tony Nelson, Yuseph Maghsoudlou, Geoffrey Fuqua, Tyler Scott, David Titus, Łukasz Smurzyński, Antoni Polak-Warchałowski, Bartosz Odorowicz, Jaśmina Przybysz, Agata Różycka, Wojciech BaczyńskiInto the Unknown Sp z o.o.al. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0003.b002.1",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Grunwaldzka 103A 80-244 GdańskPoland",
           "marks": []
         }
       ]

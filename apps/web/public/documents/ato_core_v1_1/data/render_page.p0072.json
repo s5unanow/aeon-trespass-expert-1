@@ -50,7 +50,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0072.b004",
+      "id": "p0072.b004.0",
       "children": [
         {
           "kind": "text",
@@ -168,7 +168,18 @@
         },
         {
           "kind": "text",
-          "text": " с более низким номером. Также обратите внимание, что вы должны вознести карту до ",
+          "text": " с более низким номером. ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0072.b004.1.0",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Также обратите внимание, что вы должны вознести карту до ",
           "marks": []
         },
         {
@@ -198,7 +209,18 @@
         },
         {
           "kind": "text",
-          "text": ". Оно также даёт новый признак карте ",
+          "text": ". ",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0072.b004.1.1.0",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Оно также даёт новый признак карте ",
           "marks": []
         },
         {
@@ -480,7 +502,13 @@
           "kind": "text",
           "text": ". ",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0072.b004.1.1.1.0",
+      "children": [
         {
           "kind": "text",
           "text": "Карты Снаряжения из этих Производственных Технологий стоят два материала вознесения для вознесения: ",
@@ -648,7 +676,13 @@
           "kind": "text",
           "text": ". ",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0072.b004.1.1.1.1.0",
+      "children": [
         {
           "kind": "text",
           "text": "Карты Снаряжения из этих Производственных Технологий стоят три материала вознесения для вознесения: ",
@@ -816,7 +850,13 @@
           "kind": "text",
           "text": ". ",
           "marks": []
-        },
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0072.b004.1.1.1.1.1",
+      "children": [
         {
           "kind": "text",
           "text": "Карты Снаряжения из этих Производственных Технологий стоят четыре материала вознесения для вознесения: ",
@@ -1020,16 +1060,6 @@
           "kind": "text",
           "text": ". ",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_texture_light_a",
-          "alt": "Art_texture_light_a"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_texture_light_b",
-          "alt": "Art_texture_light_b"
         }
       ]
     },
@@ -1105,21 +1135,6 @@
           "kind": "text",
           "text": " II и так далее). Вознесённые Ядра являются гарантированными наградами за некоторые Битвы в Древе Знаний (см. стр. 74).",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_texture_light_a",
-          "alt": "Art_texture_light_a"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_texture_light_b",
-          "alt": "Art_texture_light_b"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_texture_light_b",
-          "alt": "Art_texture_light_b"
         }
       ]
     },

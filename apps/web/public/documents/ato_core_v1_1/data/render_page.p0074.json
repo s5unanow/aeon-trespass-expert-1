@@ -40,31 +40,6 @@
           "kind": "text",
           "text": "2x Город11x Колонна2x Лабиринт I2x Лабиринт L1x Лабиринт O2x Лабиринт Z",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_ruins_ref",
-          "alt": "Art_ruins_ref"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_ruins_ref",
-          "alt": "Art_ruins_ref"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_c",
-          "alt": "Board_tile_c"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.terrain_city_a",
-          "alt": "Terrain_city_a"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_e",
-          "alt": "Board_tile_e"
         }
       ]
     },
@@ -95,16 +70,6 @@
           "kind": "text",
           "text": "2x Укреплённый Город1x Спартанские Речные Сооружения Z5x Спартанские Речные Сооружения 1x15x Спартанские Речные Сооружения 1x43x Спартанские Речные Сооружения 1x5",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_ruins_dark",
-          "alt": "Art_ruins_dark"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_f",
-          "alt": "Board_tile_f"
         }
       ]
     },
@@ -135,36 +100,6 @@
           "kind": "text",
           "text": "3x Чёрный Ледник 1x52x Чёрное Озеро9x Колонна3x Большой Утёс O4x Малый Утёс I3x Малый Утёс L5x Малый Утёс Z",
           "marks": []
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.art_ruins_ref",
-          "alt": "Art_ruins_ref"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.terrain_glacier",
-          "alt": "Terrain_glacier"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.terrain_cliff",
-          "alt": "Terrain_cliff"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_g",
-          "alt": "Board_tile_g"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_h",
-          "alt": "Board_tile_h"
-        },
-        {
-          "kind": "icon",
-          "symbol_id": "sym.board_tile_n",
-          "alt": "Board_tile_n"
         }
       ]
     },
