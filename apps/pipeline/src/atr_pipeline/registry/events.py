@@ -59,5 +59,18 @@ def find_cached_event(
     return cast("sqlite3.Row | None", cursor.fetchone())
 
 
+def list_stage_events(
+    conn: sqlite3.Connection,
+    *,
+    run_id: str,
+) -> list[sqlite3.Row]:
+    """List all stage events for a run, ordered by event_id."""
+    cursor = conn.execute(
+        "SELECT * FROM stage_events WHERE run_id = ? ORDER BY event_id",
+        (run_id,),
+    )
+    return cursor.fetchall()
+
+
 def _now_iso() -> str:
     return datetime.now(UTC).isoformat()
