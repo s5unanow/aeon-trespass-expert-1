@@ -62,12 +62,6 @@ def test_extract_artifact_refs_from_manifest(tmp_path: Path) -> None:
     assert companion_refs["nav_ref"] == "doc1/nav.v1/document/doc1/nh.json"
 
 
-def test_extract_artifact_refs_exits_without_run_data(tmp_path: Path) -> None:
-    """Exits when run_data is None."""
-    with pytest.raises(Exit):
-        _extract_artifact_refs(tmp_path, None)
-
-
 def test_extract_artifact_refs_exits_without_manifest_ref(tmp_path: Path) -> None:
     """Exits when run has no manifest ref."""
     run_data = {"qa_summary_ref": None, "run_manifest_ref": None}

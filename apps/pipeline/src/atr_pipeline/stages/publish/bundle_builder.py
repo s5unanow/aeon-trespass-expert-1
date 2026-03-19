@@ -28,7 +28,8 @@ def _copy_ref_artifact(
     """Copy a specific artifact by ref path into *data_dir*."""
     src = artifact_root / ref
     if not src.exists():
-        return
+        msg = f"Artifact not found: {ref}"
+        raise FileNotFoundError(msg)
     dest = data_dir / dest_name
     shutil.copy2(src, dest)
     files.append(

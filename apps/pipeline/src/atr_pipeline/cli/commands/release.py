@@ -50,19 +50,19 @@ def release(
     typer.echo(f"  files: {len(manifest.files)}")
 
 
-def _load_latest_run(repo_root: Path, doc: str) -> dict[str, str | None] | None:
-    """Load the latest run record for a document, or None."""
+def _load_latest_run(repo_root: Path, doc: str) -> dict[str, str | None]:
+    """Load the latest run record for a document."""
     registry_path = repo_root / "var" / "registry.db"
     if not registry_path.exists():
-        typer.echo("Warning: no registry found, skipping run manifest.", err=True)
-        return None
+        typer.echo("Error: no registry found. Run the pipeline first.", err=True)
+        raise typer.Exit(1)
 
     conn = open_registry(registry_path)
     try:
         runs = list_runs(conn, doc)
         if not runs:
-            typer.echo("Warning: no runs found for document.", err=True)
-            return None
+            typer.echo("Error: no runs found for document.", err=True)
+            raise typer.Exit(1)
         return {
             "qa_summary_ref": runs[0]["qa_summary_ref"],
             "run_manifest_ref": runs[0]["run_manifest_ref"],
@@ -71,12 +71,8 @@ def _load_latest_run(repo_root: Path, doc: str) -> dict[str, str | None] | None:
         conn.close()
 
 
-def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None] | None) -> None:
+def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None]) -> None:
     """Block release if the latest run has a blocking QA summary."""
-    if run_data is None:
-        typer.echo("Warning: no run data, skipping QA gate.", err=True)
-        return
-
     qa_ref = run_data.get("qa_summary_ref")
     if not qa_ref:
         typer.echo("Warning: latest run has no QA summary, skipping QA gate.", err=True)
@@ -97,17 +93,13 @@ def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None] | None) 
 
 
 def _extract_artifact_refs(
-    artifact_root: Path, run_data: dict[str, str | None] | None
+    artifact_root: Path, run_data: dict[str, str | None]
 ) -> tuple[dict[str, str], dict[str, str]]:
     """Extract render page refs and companion refs from the run manifest.
 
     Returns (render_page_refs, companion_refs).
     Raises if no manifest or render stage is found.
     """
-    if run_data is None:
-        msg = "No run data available. Run the pipeline first."
-        raise typer.Exit(1) from RuntimeError(msg)
-
     manifest_ref = run_data.get("run_manifest_ref")
     if not manifest_ref:
         msg = "Latest run has no manifest. Re-run the pipeline."
