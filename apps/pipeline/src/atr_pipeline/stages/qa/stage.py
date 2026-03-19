@@ -7,10 +7,7 @@ import json
 from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
-from atr_pipeline.stages.qa.rules.decorative_icon_rule import evaluate_decorative_icons
-from atr_pipeline.stages.qa.rules.glued_text_rule import evaluate_glued_text
-from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
-from atr_pipeline.stages.qa.rules.leaked_identifier_rule import evaluate_leaked_identifiers
+from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_schemas.enums import Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
@@ -41,6 +38,7 @@ class QAStage:
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         page_ids = self._resolve_page_ids(ctx)
         all_records: list[QARecordV1] = []
+        rules = get_all_rules()
 
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
@@ -51,10 +49,10 @@ class QAStage:
                 ctx.logger.warning("Skipping QA for %s: missing artifacts", page_id)
                 continue
 
-            records = evaluate_icon_count(en_ir, ru_ir, render)
-            records.extend(evaluate_leaked_identifiers(render))
-            records.extend(evaluate_decorative_icons(render))
-            records.extend(evaluate_glued_text(render))
+            page_ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
+            records: list[QARecordV1] = []
+            for rule in rules:
+                records.extend(rule.evaluate(page_ctx))
             for r in records:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
