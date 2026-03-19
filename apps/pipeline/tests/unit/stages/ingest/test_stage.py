@@ -7,8 +7,10 @@ from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
 from atr_pipeline.runner.executor import execute_stage
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.runner.stage_protocol import Stage
 from atr_pipeline.stages.ingest.stage import IngestStage
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_schemas.enums import StageScope
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 
@@ -35,6 +37,15 @@ def _make_ctx(tmp_path: Path) -> StageContext:
         registry_conn=conn,
         repo_root=_repo_root(),
     )
+
+
+def test_ingest_implements_stage_protocol() -> None:
+    """IngestStage satisfies the Stage protocol."""
+    stage = IngestStage()
+    assert isinstance(stage, Stage)
+    assert stage.name == "ingest"
+    assert stage.scope == StageScope.DOCUMENT
+    assert stage.version == "1.0"
 
 
 def test_ingest_produces_manifest(tmp_path: Path) -> None:
