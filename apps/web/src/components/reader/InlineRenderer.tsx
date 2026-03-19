@@ -29,7 +29,10 @@ export function InlineRenderer({ node }: InlineRendererProps) {
           {node.label || 'Figure'}
         </a>
       );
-    default:
-      return null;
+    default: {
+      const _exhaustive: never = node;
+      console.error('Unsupported inline kind:', (_exhaustive as RenderInlineNode).kind);
+      return <span className="reader-unsupported-inline">[?]</span>;
+    }
   }
 }
