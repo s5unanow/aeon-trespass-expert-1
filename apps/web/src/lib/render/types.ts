@@ -1,76 +1,59 @@
 /**
- * Lightweight render types matching RenderPageV1 schema.
- * These are hand-written for clean component props — the generated
- * types from @atr/schemas serve as the contract reference.
+ * Schema-derived render types for the reader.
+ *
+ * All types are derived from the generated @atr/schemas package.
+ * This adapter narrows optional fields to required for component
+ * props while keeping the schema as the single source of truth.
+ *
+ * If the schema changes, these derivations fail at compile time.
  */
 
-// --- Inline nodes ---
+import type { renderPageV1 } from '@atr/schemas';
 
-export interface RenderTextInline {
-  kind: 'text';
-  text: string;
-  marks?: string[];
-}
+// ---------------------------------------------------------------------------
+// Utilities
+// ---------------------------------------------------------------------------
 
-export interface RenderIconInline {
-  kind: 'icon';
-  symbol_id: string;
-  alt?: string;
-}
+/** Make `kind` required for discriminated-union dispatch. */
+type NarrowKind<T extends { kind?: string }> = Omit<T, 'kind'> & {
+  kind: NonNullable<T['kind']>;
+};
 
-export interface RenderFigureRefInline {
-  kind: 'figure_ref';
-  asset_id: string;
-  label?: string;
-}
+/** Make `kind` required and replace `children` with narrowed inline nodes. */
+type NarrowBlock<T extends { kind?: string; children?: unknown }> = Omit<
+  T,
+  'kind' | 'children'
+> & {
+  kind: NonNullable<T['kind']>;
+  children: RenderInlineNode[];
+};
 
-export type RenderInlineNode = RenderTextInline | RenderIconInline | RenderFigureRefInline;
+// ---------------------------------------------------------------------------
+// Inline nodes
+// ---------------------------------------------------------------------------
 
-// --- Block nodes ---
+export type RenderTextInline = NarrowKind<renderPageV1.RenderTextInline>;
+export type RenderIconInline = NarrowKind<renderPageV1.RenderIconInline>;
+export type RenderFigureRefInline = NarrowKind<renderPageV1.RenderFigureRefInline>;
 
-export interface RenderHeadingBlock {
-  kind: 'heading';
-  id: string;
+export type RenderInlineNode =
+  | RenderTextInline
+  | RenderIconInline
+  | RenderFigureRefInline;
+
+// ---------------------------------------------------------------------------
+// Block nodes
+// ---------------------------------------------------------------------------
+
+export type RenderHeadingBlock = NarrowBlock<renderPageV1.RenderHeadingBlock> & {
   level: number;
-  children: RenderInlineNode[];
-}
-
-export interface RenderParagraphBlock {
-  kind: 'paragraph';
-  id: string;
-  children: RenderInlineNode[];
-}
-
-export interface RenderFigureBlock {
-  kind: 'figure';
-  id: string;
-  asset_id?: string;
-  children: RenderInlineNode[];
-}
-
-export interface RenderListItemBlock {
-  kind: 'list_item';
-  id: string;
-  children: RenderInlineNode[];
-}
-
-export interface RenderCalloutBlock {
-  kind: 'callout';
-  id: string;
-  variant?: string;
-  children: RenderInlineNode[];
-}
-
-export interface RenderTableBlock {
-  kind: 'table';
-  id: string;
-  children: RenderInlineNode[];
-}
-
-export interface RenderDividerBlock {
-  kind: 'divider';
-  id: string;
-}
+};
+export type RenderParagraphBlock = NarrowBlock<renderPageV1.RenderParagraphBlock>;
+export type RenderFigureBlock = NarrowBlock<renderPageV1.RenderFigureBlock>;
+export type RenderCalloutBlock = NarrowBlock<renderPageV1.RenderCalloutBlock>;
+export type RenderTableBlock = NarrowBlock<renderPageV1.RenderTableBlock>;
+export type RenderListItemBlock = NarrowBlock<renderPageV1.RenderListItemBlock>;
+export type RenderDividerBlock = NarrowKind<renderPageV1.RenderDividerBlock>;
 
 export type RenderBlock =
   | RenderHeadingBlock
@@ -81,35 +64,19 @@ export type RenderBlock =
   | RenderListItemBlock
   | RenderDividerBlock;
 
-// --- Page-level ---
+// ---------------------------------------------------------------------------
+// Page-level types
+// ---------------------------------------------------------------------------
 
-export interface RenderPageMeta {
-  id: string;
-  title: string;
-  section_path: string[];
-  source_page_number: number;
-}
+export type RenderPageMeta = Required<renderPageV1.RenderPageMeta>;
+export type RenderNav = Required<renderPageV1.RenderNav>;
+export type RenderFigure = renderPageV1.RenderFigure;
+export type RenderSourceMap = Required<renderPageV1.RenderSourceMap>;
 
-export interface RenderNav {
-  prev: string | null;
-  next: string | null;
-  parent_section: string;
-}
-
-export interface RenderFigure {
-  src: string;
-  alt?: string;
-  caption?: string;
-}
-
-export interface RenderSourceMap {
-  page_id: string;
-  block_refs: string[];
-}
-
+/** Frontend page payload — derived from RenderPageV1 with required fields. */
 export interface RenderPageData {
-  schema_version: string;
-  document_version: string;
+  schema_version: NonNullable<renderPageV1.RenderPageV1['schema_version']>;
+  document_version: NonNullable<renderPageV1.RenderPageV1['document_version']>;
   page: RenderPageMeta;
   nav: RenderNav;
   blocks: RenderBlock[];
