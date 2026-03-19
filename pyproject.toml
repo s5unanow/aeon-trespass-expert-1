@@ -89,6 +89,7 @@ ignore_imports = [
     "atr_pipeline.stages.translation.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.render.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.qa.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.publish.stage -> atr_pipeline.runner.stage_context",
 ]
 
 [tool.pytest.ini_options]

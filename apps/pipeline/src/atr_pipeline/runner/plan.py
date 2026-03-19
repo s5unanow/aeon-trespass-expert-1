@@ -11,6 +11,7 @@ WALKING_SKELETON_STAGES = [
     "translate",
     "render",
     "qa",
+    "publish",
 ]
 
 
