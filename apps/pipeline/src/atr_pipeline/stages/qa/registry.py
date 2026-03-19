@@ -10,6 +10,7 @@ from atr_pipeline.stages.qa.rules.glued_text_rule import evaluate_glued_text
 from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
 from atr_pipeline.stages.qa.rules.leaked_identifier_rule import evaluate_leaked_identifiers
 from atr_pipeline.stages.qa.rules.paragraph_length_rule import evaluate_paragraph_length
+from atr_pipeline.stages.qa.rules.untranslated_rule import evaluate_untranslated
 from atr_schemas.enums import QALayer
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
@@ -97,6 +98,21 @@ class ParagraphLengthRule:
         return evaluate_paragraph_length(ctx.render_page)
 
 
+class UntranslatedTextRule:
+    """Detect untranslated text in the target IR."""
+
+    @property
+    def name(self) -> str:
+        return "untranslated_text"
+
+    @property
+    def layer(self) -> QALayer:
+        return QALayer.TERMINOLOGY
+
+    def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
+        return evaluate_untranslated(ctx.target_ir)
+
+
 class LeakedIdentifierRule:
     """Detect technical identifiers leaking into rendered text."""
 
@@ -119,5 +135,6 @@ def get_all_rules() -> list[QARule]:
         DecorativeIconRule(),
         GluedTextRule(),
         ParagraphLengthRule(),
+        UntranslatedTextRule(),
         LeakedIdentifierRule(),
     ]
