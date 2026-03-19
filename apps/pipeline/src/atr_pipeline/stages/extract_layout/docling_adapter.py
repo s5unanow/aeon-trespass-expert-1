@@ -16,7 +16,7 @@ from atr_schemas.native_page_v1 import NativePageV1
 
 def extract_layout_stub(
     native_page: NativePageV1,
-    page_image_path: Path,
+    page_image_path: Path | None = None,
 ) -> LayoutPageV1:
     """Return a minimal layout result for simple single-column pages.
 
