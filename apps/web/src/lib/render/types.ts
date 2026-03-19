@@ -54,6 +54,19 @@ export interface RenderListItemBlock {
   children: RenderInlineNode[];
 }
 
+export interface RenderCalloutBlock {
+  kind: 'callout';
+  id: string;
+  variant?: string;
+  children: RenderInlineNode[];
+}
+
+export interface RenderTableBlock {
+  kind: 'table';
+  id: string;
+  children: RenderInlineNode[];
+}
+
 export interface RenderDividerBlock {
   kind: 'divider';
   id: string;
@@ -63,6 +76,8 @@ export type RenderBlock =
   | RenderHeadingBlock
   | RenderParagraphBlock
   | RenderFigureBlock
+  | RenderCalloutBlock
+  | RenderTableBlock
   | RenderListItemBlock
   | RenderDividerBlock;
 

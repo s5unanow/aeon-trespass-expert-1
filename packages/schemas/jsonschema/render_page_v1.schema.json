@@ -229,6 +229,42 @@
       "title": "RenderIconInline",
       "type": "object"
     },
+    "RenderListItemBlock": {
+      "properties": {
+        "kind": {
+          "const": "list_item",
+          "default": "list_item",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderListItemBlock",
+      "type": "object"
+    },
     "RenderNav": {
       "properties": {
         "prev": {
@@ -449,6 +485,9 @@
           },
           {
             "$ref": "#/$defs/RenderTableBlock"
+          },
+          {
+            "$ref": "#/$defs/RenderListItemBlock"
           },
           {
             "$ref": "#/$defs/RenderDividerBlock"
