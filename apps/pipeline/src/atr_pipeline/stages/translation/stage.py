@@ -79,7 +79,7 @@ class TranslationStage:
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
         translator = create_translator(ctx.config.translation, concept_registry=concept_reg)
-        page_ids = self._resolve_page_ids(ctx)
+        page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
 
         pages_translated = 0
         total_warnings = 0

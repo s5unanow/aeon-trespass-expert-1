@@ -36,7 +36,7 @@ class QAStage:
         return "1.0"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
-        page_ids = self._resolve_page_ids(ctx)
+        page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
         all_records: list[QARecordV1] = []
         rules = get_all_rules()
 

@@ -19,7 +19,7 @@ from atr_pipeline.runner.executor import execute_stage
 from atr_pipeline.runner.manifest_builder import build_run_manifest, git_head
 from atr_pipeline.runner.plan import resolve_stage_range
 from atr_pipeline.runner.registry import build_stage_registry
-from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.runner.stage_context import StageContext, parse_page_filter
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_pipeline.utils.hashing import content_hash
 from atr_schemas.source_manifest_v1 import SourceManifestV1
@@ -32,6 +32,7 @@ def run(
     from_stage: str = typer.Option("ingest", "--from", help="First stage to run"),
     to_stage: str = typer.Option("qa", "--to", help="Last stage to run"),
     edition: str = typer.Option("all", "--edition", help="Edition: 'en' (source-only) or 'all'"),
+    pages: str = typer.Option("", "--pages", help="Page filter: '15' or '15,18-20'"),
 ) -> None:
     """Run a range of pipeline stages for a document."""
     config = load_document_config(doc)
@@ -50,6 +51,8 @@ def run(
         edition=edition,
     )
 
+    page_filter = parse_page_filter(pages) if pages else None
+
     stages = resolve_stage_range(from_stage=from_stage, to_stage=to_stage, edition=edition)
     registry = build_stage_registry()
     ctx = StageContext(
@@ -61,8 +64,11 @@ def run(
         repo_root=config.repo_root,
         logger=logger,
         edition=edition,
+        page_filter=page_filter,
     )
 
+    if page_filter:
+        typer.echo(f"Page filter: {sorted(page_filter)}")
     typer.echo(f"Running stages: {' → '.join(stages)}")
     has_errors = False
     qa_summary_ref: str | None = None

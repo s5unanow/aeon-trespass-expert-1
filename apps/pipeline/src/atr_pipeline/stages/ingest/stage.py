@@ -39,8 +39,12 @@ class IngestStage:
 
         # Rasterize each page and extract embedded images
         dpi = ctx.config.extraction.layout.dpi
+        all_page_ids = [f"p{n:04d}" for n in range(1, page_count + 1)]
+        active_pages = set(ctx.filter_pages(all_page_ids))
         for page_num in range(1, page_count + 1):
             page_id = f"p{page_num:04d}"
+            if active_pages and page_id not in active_pages:
+                continue
             ctx.logger.info("Rasterizing %s at %d DPI", page_id, dpi)
             png_bytes = render_page_png(pdf_path, page_num, dpi=dpi)
             ctx.artifact_store.put_bytes(
