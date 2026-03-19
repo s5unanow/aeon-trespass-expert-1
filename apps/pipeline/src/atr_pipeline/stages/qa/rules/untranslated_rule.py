@@ -30,6 +30,8 @@ def evaluate_untranslated(
     for block in target_ir.blocks:
         if isinstance(block, (DividerBlock, UnknownBlock)):
             continue
+        if not block.translatable:
+            continue
         text = "".join(child.text for child in block.children if child.type == "text")
         if len(text) < min_chars:
             continue
