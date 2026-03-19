@@ -6,18 +6,22 @@ import { BlockRenderer } from '../components/reader/BlockRenderer';
 import { SourcePageBadge } from '../components/nav/SourcePageBadge';
 
 export function ReaderPage() {
-  const { documentId, pageId } = useParams<{ documentId: string; pageId: string }>();
+  const { documentId, edition, pageId } = useParams<{
+    documentId: string;
+    edition: string;
+    pageId: string;
+  }>();
   const [page, setPage] = useState<RenderPageData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!documentId || !pageId) return;
+    if (!documentId || !pageId || !edition) return;
     setPage(null);
     setError(null);
-    loadRenderPage(documentId, pageId)
+    loadRenderPage(documentId, pageId, edition)
       .then(setPage)
       .catch((e) => setError(e.message));
-  }, [documentId, pageId]);
+  }, [documentId, edition, pageId]);
 
   if (error) {
     return <div role="alert">Error: {error}</div>;
@@ -35,7 +39,7 @@ export function ReaderPage() {
         <nav style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <span>
             {prev ? (
-              <Link to={`/documents/${documentId}/${prev}`}>&larr; Prev</Link>
+              <Link to={`/documents/${documentId}/${edition}/${prev}`}>&larr; Prev</Link>
             ) : (
               <Link to="/">&larr; Index</Link>
             )}
@@ -43,7 +47,7 @@ export function ReaderPage() {
           <SourcePageBadge pageNumber={page.page.source_page_number} />
           <span>
             {next ? (
-              <Link to={`/documents/${documentId}/${next}`}>Next &rarr;</Link>
+              <Link to={`/documents/${documentId}/${edition}/${next}`}>Next &rarr;</Link>
             ) : (
               <span />
             )}

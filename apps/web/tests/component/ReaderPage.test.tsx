@@ -9,7 +9,7 @@ function renderPage(path: string) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Routes>
-        <Route path="/documents/:documentId/:pageId" element={<ReaderPage />} />
+        <Route path="/documents/:documentId/:edition/:pageId" element={<ReaderPage />} />
       </Routes>
     </MemoryRouter>,
   );
@@ -29,7 +29,7 @@ describe('ReaderPage', () => {
       json: () => Promise.resolve(sampleRenderPage),
     } as Response);
 
-    renderPage('/documents/walking_skeleton/p0001');
+    renderPage('/documents/walking_skeleton/ru/p0001');
 
     await waitFor(() => {
       expect(screen.getByText('Проверка атаки')).toBeDefined();
@@ -41,13 +41,13 @@ describe('ReaderPage', () => {
 
   it('shows loading state before data arrives', () => {
     fetchSpy.mockReturnValue(new Promise(() => {})); // never resolves
-    renderPage('/documents/walking_skeleton/p0001');
+    renderPage('/documents/walking_skeleton/ru/p0001');
     expect(screen.getByText('Loading...')).toBeDefined();
   });
 
   it('shows error when fetch fails', async () => {
     fetchSpy.mockRejectedValue(new Error('network down'));
-    renderPage('/documents/walking_skeleton/p0001');
+    renderPage('/documents/walking_skeleton/ru/p0001');
 
     await waitFor(() => {
       expect(screen.getByRole('alert')).toBeDefined();
@@ -65,15 +65,15 @@ describe('ReaderPage', () => {
       json: () => Promise.resolve(pageWithNav),
     } as Response);
 
-    renderPage('/documents/walking_skeleton/p0002');
+    renderPage('/documents/walking_skeleton/ru/p0002');
 
     await waitFor(() => {
       expect(screen.getByText(/Prev/)).toBeDefined();
     });
     const prev = screen.getByText(/Prev/).closest('a');
     const next = screen.getByText(/Next/).closest('a');
-    expect(prev?.getAttribute('href')).toBe('/documents/walking_skeleton/p0001');
-    expect(next?.getAttribute('href')).toBe('/documents/walking_skeleton/p0003');
+    expect(prev?.getAttribute('href')).toBe('/documents/walking_skeleton/ru/p0001');
+    expect(next?.getAttribute('href')).toBe('/documents/walking_skeleton/ru/p0003');
   });
 
   it('renders index link when no prev page', async () => {
@@ -86,7 +86,7 @@ describe('ReaderPage', () => {
       json: () => Promise.resolve(pageNoPrev),
     } as Response);
 
-    renderPage('/documents/walking_skeleton/p0001');
+    renderPage('/documents/walking_skeleton/ru/p0001');
 
     await waitFor(() => {
       expect(screen.getByText(/Index/)).toBeDefined();

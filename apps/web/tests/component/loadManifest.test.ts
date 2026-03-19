@@ -14,14 +14,14 @@ describe('loadManifest', () => {
 
     const result = await loadManifest('doc1');
     expect(result).toEqual(manifest);
-    expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/manifest.json');
+    expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/manifest.json');
   });
 
   it('throws on HTTP error', async () => {
     fetchSpy.mockResolvedValue({ ok: false, status: 404 } as Response);
 
     await expect(loadManifest('missing')).rejects.toThrow(
-      'Failed to load manifest: 404 /documents/missing/manifest.json',
+      'Failed to load manifest: 404 /documents/missing/ru/manifest.json',
     );
   });
 

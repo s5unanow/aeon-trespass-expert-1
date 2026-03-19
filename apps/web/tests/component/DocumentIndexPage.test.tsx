@@ -12,7 +12,12 @@ describe('DocumentIndexPage', () => {
 
   it('renders document sections from manifests', async () => {
     fetchSpy.mockImplementation((url) => {
-      const id = String(url).includes('ato_core') ? 'ato_core_v1_1' : 'walking_skeleton';
+      const urlStr = String(url);
+      // Only respond to ru edition manifests for this test
+      if (!urlStr.includes('/ru/')) {
+        return Promise.resolve({ ok: false, status: 404 } as Response);
+      }
+      const id = urlStr.includes('ato_core') ? 'ato_core_v1_1' : 'walking_skeleton';
       return Promise.resolve({
         ok: true,
         json: () =>
@@ -26,14 +31,15 @@ describe('DocumentIndexPage', () => {
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('walking_skeleton')).toBeDefined();
+      expect(screen.getByText('walking_skeleton (RU)')).toBeDefined();
     });
-    expect(screen.getByText('ato_core_v1_1')).toBeDefined();
+    expect(screen.getByText('ato_core_v1_1 (RU)')).toBeDefined();
   });
 
   it('filters out failed manifest fetches', async () => {
     fetchSpy.mockImplementation((url) => {
-      if (String(url).includes('walking_skeleton')) {
+      const urlStr = String(url);
+      if (urlStr.includes('walking_skeleton') && urlStr.includes('/ru/')) {
         return Promise.resolve({
           ok: true,
           json: () =>
@@ -49,7 +55,7 @@ describe('DocumentIndexPage', () => {
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('walking_skeleton')).toBeDefined();
+      expect(screen.getByText('walking_skeleton (RU)')).toBeDefined();
     });
     expect(screen.queryByText('ato_core_v1_1')).toBeNull();
   });

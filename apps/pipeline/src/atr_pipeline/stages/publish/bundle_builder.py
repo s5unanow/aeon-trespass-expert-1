@@ -28,6 +28,7 @@ class BundleRefs(BaseModel):
     images: dict[str, str] = Field(default_factory=dict)
     run_id: str = ""
     source_pdf_sha256: str = ""
+    edition: str = "ru"
 
 
 def _copy_ref_artifact(
@@ -36,6 +37,7 @@ def _copy_ref_artifact(
     dest_name: str,
     data_dir: Path,
     files: list[ReleaseFile],
+    path_prefix: str = "data",
 ) -> None:
     """Copy a specific artifact by ref path into *data_dir*."""
     src = artifact_root / ref
@@ -46,7 +48,7 @@ def _copy_ref_artifact(
     shutil.copy2(src, dest)
     files.append(
         ReleaseFile(
-            path=f"data/{dest_name}",
+            path=f"{path_prefix}/{dest_name}",
             sha256=sha256_file(dest),
             size_bytes=dest.stat().st_size,
         )
@@ -83,26 +85,33 @@ def build_release_bundle(
     All bundle inputs are selected by explicit artifact refs — no
     filesystem enumeration or first-file heuristics.
     """
+    edition = refs.edition or "ru"
     output_dir.mkdir(parents=True, exist_ok=True)
-    data_dir = output_dir / "data"
-    data_dir.mkdir(exist_ok=True)
+
+    # Edition-scoped data: {output_dir}/{edition}/data/
+    edition_dir = output_dir / edition
+    data_dir = edition_dir / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    data_prefix = f"{edition}/data"
 
     files: list[ReleaseFile] = []
 
     # Copy render pages by explicit ref
     for page_id in sorted(refs.render_pages):
         dest_name = f"render_page.{page_id}.json"
-        _copy_ref_artifact(artifact_root, refs.render_pages[page_id], dest_name, data_dir, files)
+        _copy_ref_artifact(
+            artifact_root, refs.render_pages[page_id], dest_name, data_dir, files, data_prefix
+        )
 
     # Copy companion artifacts by explicit ref
     for ref_key, dest_name in _COMPANION_NAMES.items():
         ref = refs.companions.get(ref_key, "")
         if ref:
-            _copy_ref_artifact(artifact_root, ref, dest_name, data_dir, files)
+            _copy_ref_artifact(artifact_root, ref, dest_name, data_dir, files, data_prefix)
 
-    # Copy image assets
+    # Copy image assets (shared across editions)
     if refs.images:
-        images_dir = data_dir / "images"
+        images_dir = output_dir / "images"
         images_dir.mkdir(exist_ok=True)
         for asset_id in sorted(refs.images):
             src = artifact_root / refs.images[asset_id]
@@ -114,7 +123,7 @@ def build_release_bundle(
             shutil.copy2(src, dest)
             files.append(
                 ReleaseFile(
-                    path=f"data/images/{img_filename}",
+                    path=f"images/{img_filename}",
                     sha256=sha256_file(dest),
                     size_bytes=dest.stat().st_size,
                 )
@@ -132,16 +141,17 @@ def build_release_bundle(
     manifest = BuildManifestV1(
         build_id=build_id,
         document_id=document_id,
+        edition=edition,
         run_id=refs.run_id,
         source_pdf_sha256=refs.source_pdf_sha256,
-        content_version=f"{document_id}.{build_id}",
+        content_version=f"{document_id}.{edition}.{build_id}",
         generated_at=datetime.now(UTC).isoformat(),
         pipeline_version=pipeline_version,
         files=files,
     )
 
-    # Write manifest
-    manifest_path = output_dir / "manifest.json"
+    # Write manifest into edition directory
+    manifest_path = edition_dir / "manifest.json"
     manifest_path.write_text(
         json.dumps(manifest.model_dump(), indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",

@@ -8,7 +8,7 @@ export const router = createBrowserRouter([
     element: <DocumentIndexPage />,
   },
   {
-    path: '/documents/:documentId/:pageId',
+    path: '/documents/:documentId/:edition/:pageId',
     element: <ReaderPage />,
   },
 ]);

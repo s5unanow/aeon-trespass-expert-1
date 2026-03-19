@@ -19,6 +19,7 @@ class BuildManifestV1(BaseModel):
     schema_version: str = Field(default="build_manifest.v1", pattern=r"^build_manifest\.v\d+$")
     build_id: str
     document_id: str
+    edition: str = "ru"
     run_id: str = ""
     source_pdf_sha256: str = ""
     content_version: str = ""

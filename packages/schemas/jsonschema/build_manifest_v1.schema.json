@@ -41,6 +41,11 @@
       "title": "Document Id",
       "type": "string"
     },
+    "edition": {
+      "default": "ru",
+      "title": "Edition",
+      "type": "string"
+    },
     "run_id": {
       "default": "",
       "title": "Run Id",

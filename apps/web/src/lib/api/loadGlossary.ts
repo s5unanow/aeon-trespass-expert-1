@@ -12,8 +12,11 @@ export interface GlossaryPayload {
   entries: GlossaryEntry[];
 }
 
-export async function loadGlossary(documentId: string): Promise<GlossaryPayload> {
-  const url = `/documents/${documentId}/data/glossary.json`;
+export async function loadGlossary(
+  documentId: string,
+  edition: string = 'ru',
+): Promise<GlossaryPayload> {
+  const url = `/documents/${documentId}/${edition}/data/glossary.json`;
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`Failed to load glossary: ${res.status} ${url}`);
