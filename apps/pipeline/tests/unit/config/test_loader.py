@@ -55,3 +55,23 @@ def test_deep_merge_preserves_base_defaults() -> None:
     assert cfg.extraction.native.engine == "pymupdf"
     # extraction.layout.dpi comes from base
     assert cfg.extraction.layout.dpi == 300
+
+
+def test_structure_config_loaded_from_base_toml() -> None:
+    """Structure section in base.toml populates StructureConfig."""
+    cfg = load_document_config("walking_skeleton", repo_root=_repo_root())
+    assert cfg.structure.footer_y_threshold == 790.0
+    assert cfg.structure.body_font == "Adonis-Regular"
+    assert cfg.structure.paragraph_gap_factor == 1.5
+    assert cfg.structure.figure_min_width_pt == 100.0
+    assert "GreenleafLightPro" in cfg.structure.heading_fonts
+
+
+def test_structure_config_document_override() -> None:
+    """Document config can override individual structure values."""
+    cfg = load_document_config("ato_core_v1_1", repo_root=_repo_root())
+    # Overridden in ato_core_v1_1.toml
+    assert cfg.structure.footer_y_threshold == 785.0
+    # Base defaults preserved for non-overridden fields
+    assert cfg.structure.body_font == "Adonis-Regular"
+    assert cfg.structure.paragraph_gap_factor == 1.5
