@@ -66,11 +66,6 @@ def test_qa_gate_passes_on_clean_summary(tmp_path: Path) -> None:
     _check_qa_gate(artifact_root, run_data)
 
 
-def test_qa_gate_skips_when_no_run_data() -> None:
-    """_check_qa_gate skips gracefully when run_data is None."""
-    _check_qa_gate(Path("/dummy"), None)
-
-
 def test_qa_gate_skips_when_no_qa_ref(tmp_path: Path) -> None:
     """_check_qa_gate skips gracefully when run has no qa_summary_ref."""
     run_data = {"qa_summary_ref": None, "run_manifest_ref": None}

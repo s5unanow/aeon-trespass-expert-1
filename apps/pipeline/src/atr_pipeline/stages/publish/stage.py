@@ -41,7 +41,18 @@ class PublishStage:
         return "1.0"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> PublishResult:
-        render_refs = self._load_render_refs(ctx)
+        render_data = self._load_render_result(ctx)
+        page_refs = render_data.get("page_refs", {})
+        if not isinstance(page_refs, dict) or not page_refs:
+            msg = "No render page refs found. Run the render stage first."
+            raise RuntimeError(msg)
+
+        companion_refs = {
+            k: str(render_data[k])
+            for k in ("glossary_ref", "search_docs_ref", "nav_ref")
+            if render_data.get(k)
+        }
+
         output_dir = ctx.artifact_store.root / ctx.document_id / "release"
 
         manifest = build_release_bundle(
@@ -49,7 +60,8 @@ class PublishStage:
             artifact_root=ctx.artifact_store.root,
             output_dir=output_dir,
             pipeline_version=ctx.config.pipeline.version,
-            render_page_refs=render_refs,
+            render_page_refs={str(k): str(v) for k, v in page_refs.items()},
+            companion_refs=companion_refs,
         )
 
         ctx.logger.info("Published %d files to %s", len(manifest.files), output_dir)
@@ -62,22 +74,18 @@ class PublishStage:
         )
 
     @staticmethod
-    def _load_render_refs(ctx: StageContext) -> dict[str, str] | None:
-        """Extract render page refs from the render stage's artifact."""
+    def _load_render_result(ctx: StageContext) -> dict[str, object]:
+        """Load the render stage result artifact."""
         render_dir = (
             ctx.artifact_store.root / ctx.document_id / "render" / "document" / ctx.document_id
         )
         if not render_dir.exists():
-            ctx.logger.warning("No render result found, using filesystem fallback")
-            return None
+            msg = "No render result found. Run the render stage first."
+            raise RuntimeError(msg)
 
         jsons = sorted(render_dir.glob("*.json"))
         if not jsons:
-            return None
+            msg = "No render result found. Run the render stage first."
+            raise RuntimeError(msg)
 
-        data = json.loads(jsons[-1].read_text())
-        page_refs = data.get("page_refs")
-        if isinstance(page_refs, dict) and page_refs:
-            return {str(k): str(v) for k, v in page_refs.items()}
-
-        return None
+        return json.loads(jsons[-1].read_text())  # type: ignore[no-any-return]
