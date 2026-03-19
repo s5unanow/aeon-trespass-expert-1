@@ -67,6 +67,38 @@ class TranslationConfig(BaseModel):
     prompt_profile: str = "translate_rules_ru.v1"
 
 
+class StructureConfig(BaseModel):
+    """Structure recovery constants — externalised from real_block_builder."""
+
+    # Font classification
+    heading_fonts: frozenset[str] = Field(
+        default_factory=lambda: frozenset({"GreenleafLightPro", "Goobascript"}),
+    )
+    decorative_fonts: frozenset[str] = Field(
+        default_factory=lambda: frozenset({"GreenleafBannersRegularL"}),
+    )
+    body_font: str = "Adonis-Regular"
+    bold_font: str = "Adonis-Bold"
+    italic_font: str = "Adonis-Italic"
+    bold_italic_font: str = "Adonis-BoldItalic"
+    dingbat_font: str = "ITCZapfDingbatsMedium"
+
+    # Layout thresholds
+    footer_y_threshold: float = 790.0
+    heading_min_size: float = 8.0
+    subheading_bold_min_size: float = 10.0
+    body_size_min: float = 7.5
+    body_size_max: float = 10.0
+
+    # Paragraph splitting
+    paragraph_gap_factor: float = 1.5
+    paragraph_gap_abs: float = 12.0
+
+    # Figure promotion
+    figure_min_width_pt: float = 100.0
+    figure_min_height_pt: float = 100.0
+
+
 class QAConfig(BaseModel):
     """QA gate configuration."""
 
@@ -80,6 +112,7 @@ class DocumentBuildConfig(BaseModel):
     pipeline: PipelineConfig = Field(default_factory=PipelineConfig)
     extraction: ExtractionConfig = Field(default_factory=ExtractionConfig)
     symbols: SymbolsConfig = Field(default_factory=SymbolsConfig)
+    structure: StructureConfig = Field(default_factory=StructureConfig)
     translation: TranslationConfig = Field(default_factory=TranslationConfig)
     qa: QAConfig = Field(default_factory=QAConfig)
 
