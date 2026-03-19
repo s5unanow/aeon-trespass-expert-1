@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class DocumentConfig(BaseModel):
@@ -67,6 +67,48 @@ class TranslationConfig(BaseModel):
     prompt_profile: str = "translate_rules_ru.v1"
 
 
+class StructureConfig(BaseModel):
+    """Structure recovery constants — externalised from real_block_builder."""
+
+    # Font classification
+    heading_fonts: frozenset[str] = Field(
+        default_factory=lambda: frozenset({"GreenleafLightPro", "Goobascript"}),
+    )
+    decorative_fonts: frozenset[str] = Field(
+        default_factory=lambda: frozenset({"GreenleafBannersRegularL"}),
+    )
+    body_font: str = "Adonis-Regular"
+    bold_font: str = "Adonis-Bold"
+    italic_font: str = "Adonis-Italic"
+    bold_italic_font: str = "Adonis-BoldItalic"
+    dingbat_font: str = "ITCZapfDingbatsMedium"
+
+    # Layout thresholds
+    footer_y_threshold: float = 790.0
+    heading_min_size: float = Field(default=8.0, ge=0.0)
+    subheading_bold_min_size: float = Field(default=10.0, ge=0.0)
+    body_size_min: float = Field(default=7.5, ge=0.0)
+    body_size_max: float = Field(default=10.0, ge=0.0)
+
+    # Paragraph splitting
+    paragraph_gap_factor: float = Field(default=1.5, gt=0.0)
+    paragraph_gap_abs: float = Field(default=12.0, gt=0.0)
+
+    # Figure promotion
+    figure_min_width_pt: float = Field(default=100.0, ge=0.0)
+    figure_min_height_pt: float = Field(default=100.0, ge=0.0)
+
+    @model_validator(mode="after")
+    def _check_body_size_range(self) -> StructureConfig:
+        if self.body_size_min > self.body_size_max:
+            msg = (
+                f"body_size_min ({self.body_size_min}) must be "
+                f"<= body_size_max ({self.body_size_max})"
+            )
+            raise ValueError(msg)
+        return self
+
+
 class QAConfig(BaseModel):
     """QA gate configuration."""
 
@@ -80,6 +122,7 @@ class DocumentBuildConfig(BaseModel):
     pipeline: PipelineConfig = Field(default_factory=PipelineConfig)
     extraction: ExtractionConfig = Field(default_factory=ExtractionConfig)
     symbols: SymbolsConfig = Field(default_factory=SymbolsConfig)
+    structure: StructureConfig = Field(default_factory=StructureConfig)
     translation: TranslationConfig = Field(default_factory=TranslationConfig)
     qa: QAConfig = Field(default_factory=QAConfig)
 
