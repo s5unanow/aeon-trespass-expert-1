@@ -7,6 +7,7 @@ from typing import Protocol
 
 from atr_pipeline.stages.qa.rules.dead_page_ref_rule import evaluate_dead_page_refs
 from atr_pipeline.stages.qa.rules.decorative_icon_rule import evaluate_decorative_icons
+from atr_pipeline.stages.qa.rules.duplicate_rule import evaluate_duplicate_content
 from atr_pipeline.stages.qa.rules.glued_text_rule import evaluate_glued_text
 from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
 from atr_pipeline.stages.qa.rules.leaked_identifier_rule import evaluate_leaked_identifiers
@@ -129,6 +130,21 @@ class DeadPageRefRule:
         return evaluate_dead_page_refs(ctx.render_page)
 
 
+class DuplicateContentRule:
+    """Detect duplicate consecutive blocks."""
+
+    @property
+    def name(self) -> str:
+        return "duplicate_content"
+
+    @property
+    def layer(self) -> QALayer:
+        return QALayer.STRUCTURE
+
+    def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
+        return evaluate_duplicate_content(ctx.render_page)
+
+
 class LeakedIdentifierRule:
     """Detect technical identifiers leaking into rendered text."""
 
@@ -153,5 +169,6 @@ def get_all_rules() -> list[QARule]:
         ParagraphLengthRule(),
         UntranslatedTextRule(),
         DeadPageRefRule(),
+        DuplicateContentRule(),
         LeakedIdentifierRule(),
     ]
