@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 from pydantic import BaseModel, Field
 
@@ -91,8 +92,6 @@ class ExtractLayoutStage:
         raster_path: str | None,
     ) -> LayoutPageV1:
         """Run primary extractor, fall back on failure."""
-        from pathlib import Path
-
         try:
             img = Path(raster_path) if raster_path else None
             return extract_layout_stub(native, img)
@@ -100,6 +99,7 @@ class ExtractLayoutStage:
             ctx.logger.warning(
                 "Primary layout extraction failed for %s, using fallback",
                 native.page_id,
+                exc_info=True,
             )
             return ocr_fallback_stub(native)
 

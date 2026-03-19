@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 from atr_pipeline.runner.stage_protocol import Stage
 from atr_pipeline.stages.extract_layout.stage import ExtractLayoutResult, ExtractLayoutStage
@@ -131,7 +133,23 @@ def test_stage_raises_without_native_pages(tmp_path: Path) -> None:
     ctx = _make_ctx(tmp_path)
     stage = ExtractLayoutStage()
 
-    import pytest
-
     with pytest.raises(RuntimeError, match="No native pages found"):
         stage.run(ctx, None)
+
+
+def test_stage_falls_back_on_primary_failure(tmp_path: Path) -> None:
+    """When primary extractor raises, the OCR fallback is used."""
+    ctx = _make_ctx(tmp_path)
+    _write_native_page(ctx.artifact_store, "test_doc", "p0001")
+
+    with patch(
+        "atr_pipeline.stages.extract_layout.stage.extract_layout_stub",
+        side_effect=RuntimeError("docling failed"),
+    ):
+        stage = ExtractLayoutStage()
+        result = stage.run(ctx, None)
+
+    assert result.pages_processed == 1
+    # Fallback produces no zones
+    assert result.total_zones == 0
+    ctx.logger.warning.assert_called()
