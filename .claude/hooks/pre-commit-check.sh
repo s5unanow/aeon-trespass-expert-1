@@ -76,7 +76,7 @@ fi
 
 # Gate 6: pytest (fail-fast, skip slow integration tests)
 echo "  [6/6] pytest (fast)..."
-if ! uv run pytest apps/pipeline/tests/ -x -q --timeout=60 -m "not slow" 2>&1; then
+if ! uv run pytest -x -q --timeout=60 -m "not slow" 2>&1; then
   echo ""
   echo "BLOCKED: Tests failed. Fix failing tests before committing."
   exit 1
