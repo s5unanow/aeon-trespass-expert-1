@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import re
 
+from atr_pipeline.config.models import StructureConfig
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
@@ -32,49 +33,24 @@ from atr_schemas.page_ir_v1 import (
 )
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 
-# Font classification constants
-HEADING_FONTS = {"GreenleafLightPro", "Goobascript"}
-DECORATIVE_FONTS = {"GreenleafBannersRegularL"}
-BODY_FONT = "Adonis-Regular"
-BOLD_FONT = "Adonis-Bold"
-ITALIC_FONT = "Adonis-Italic"
-BOLD_ITALIC_FONT = "Adonis-BoldItalic"
-DINGBAT_FONT = "ITCZapfDingbatsMedium"
 
-FOOTER_Y_THRESHOLD = 790.0
-HEADING_MIN_SIZE = 8.0
-SUBHEADING_BOLD_MIN_SIZE = 10.0
-BODY_SIZE_RANGE = (7.5, 10.0)
-
-# Vertical gap threshold multiplier for paragraph splitting.
-# A gap between consecutive lines larger than font_size * this factor
-# signals a new paragraph.
-PARAGRAPH_GAP_FACTOR = 1.5
-# Absolute fallback threshold (in PDF points) when font size is unavailable.
-PARAGRAPH_GAP_ABS = 12.0
-
-# Minimum image dimensions (in PDF points) to be promoted to a FigureBlock.
-FIGURE_MIN_WIDTH_PT = 100.0
-FIGURE_MIN_HEIGHT_PT = 100.0
-
-
-def _classify_span(span: SpanEvidence) -> str:
+def _classify_span(span: SpanEvidence, cfg: StructureConfig) -> str:
     """Classify a span into a structural role."""
-    if span.bbox.y0 >= FOOTER_Y_THRESHOLD:
+    if span.bbox.y0 >= cfg.footer_y_threshold:
         return "footer"
-    if span.font_name in HEADING_FONTS and span.font_size >= HEADING_MIN_SIZE:
+    if span.font_name in cfg.heading_fonts and span.font_size >= cfg.heading_min_size:
         return "heading"
-    if span.font_name in DECORATIVE_FONTS:
+    if span.font_name in cfg.decorative_fonts:
         return "decorative"
-    if span.font_name == BOLD_FONT and span.font_size >= SUBHEADING_BOLD_MIN_SIZE:
+    if span.font_name == cfg.bold_font and span.font_size >= cfg.subheading_bold_min_size:
         return "subheading"
-    if span.font_name == DINGBAT_FONT:
+    if span.font_name == cfg.dingbat_font:
         return "bullet"
-    if span.font_name == ITALIC_FONT:
+    if span.font_name == cfg.italic_font:
         return "italic"
-    if span.font_name == BOLD_FONT:
+    if span.font_name == cfg.bold_font:
         return "bold"
-    if span.font_name == BOLD_ITALIC_FONT:
+    if span.font_name == cfg.bold_italic_font:
         return "bold_italic"
     return "body"
 
@@ -86,6 +62,7 @@ def _same_line(a: SpanEvidence, b: SpanEvidence, tolerance: float = 3.0) -> bool
 
 def _spans_to_text_inline(
     spans: list[SpanEvidence],
+    cfg: StructureConfig,
 ) -> list[TextInline]:
     """Convert a group of spans into TextInline nodes, merging adjacent same-role spans."""
     if not spans:
@@ -93,7 +70,7 @@ def _spans_to_text_inline(
 
     inlines: list[TextInline] = []
     for span in spans:
-        role = _classify_span(span)
+        role = _classify_span(span, cfg)
         marks: list[str] = []
         if role == "bold" or role == "subheading":
             marks = ["bold"]
@@ -127,6 +104,7 @@ def _spans_to_text_inline(
 
 def _significant_image_blocks(
     native: NativePageV1,
+    cfg: StructureConfig,
 ) -> list[ImageBlockEvidence]:
     """Return image blocks large enough to warrant a FigureBlock.
 
@@ -137,9 +115,9 @@ def _significant_image_blocks(
     for img in native.image_blocks:
         w = img.bbox.x1 - img.bbox.x0
         h = img.bbox.y1 - img.bbox.y0
-        if w < FIGURE_MIN_WIDTH_PT or h < FIGURE_MIN_HEIGHT_PT:
+        if w < cfg.figure_min_width_pt or h < cfg.figure_min_height_pt:
             continue
-        if img.bbox.y0 >= FOOTER_Y_THRESHOLD:
+        if img.bbox.y0 >= cfg.footer_y_threshold:
             continue
         results.append(img)
     return results
@@ -290,12 +268,15 @@ def _deduplicate_blocks(blocks: list[object]) -> list[object]:
 def build_page_ir_real(
     native: NativePageV1,
     symbols: SymbolMatchSetV1 | None = None,
+    *,
+    config: StructureConfig | None = None,
 ) -> PageIRV1:
     """Build PageIRV1 from real page evidence using font-based heuristics."""
+    cfg = config or StructureConfig()
     # Collect significant images (even if there are no text spans)
-    figure_images = _significant_image_blocks(native)
+    figure_images = _significant_image_blocks(native, cfg)
     # Filter out images that overlap heavily with text
-    non_footer_spans = [s for s in native.spans if s.bbox.y0 < FOOTER_Y_THRESHOLD]
+    non_footer_spans = [s for s in native.spans if s.bbox.y0 < cfg.footer_y_threshold]
     figure_images = [
         img for img in figure_images if not _image_overlaps_text(img, non_footer_spans)
     ]
@@ -310,7 +291,7 @@ def build_page_ir_real(
         )
 
     # Classify all spans
-    classified: list[tuple[str, SpanEvidence]] = [(_classify_span(s), s) for s in native.spans]
+    classified: list[tuple[str, SpanEvidence]] = [(_classify_span(s, cfg), s) for s in native.spans]
 
     # Group spans into logical lines
     lines: list[list[tuple[str, SpanEvidence]]] = []
@@ -343,7 +324,7 @@ def build_page_ir_real(
         block_idx += 1
         block_id = f"{native.page_id}.b{block_idx:03d}"
 
-        text_inlines = _spans_to_text_inline(current_para_spans)
+        text_inlines = _spans_to_text_inline(current_para_spans, cfg)
         if not text_inlines:
             current_para_spans.clear()
             return
@@ -365,7 +346,7 @@ def build_page_ir_real(
             flush_paragraph()
             block_idx += 1
             block_id = f"{native.page_id}.b{block_idx:03d}"
-            text = "".join(s.text for _, s in line if _classify_span(s) != "decorative")
+            text = "".join(s.text for _, s in line if _classify_span(s, cfg) != "decorative")
             text = text.strip()
             if text:
                 # Determine heading level
@@ -390,7 +371,7 @@ def build_page_ir_real(
             block_idx += 1
             block_id = f"{native.page_id}.b{block_idx:03d}"
             non_bullet = [s for r, s in line if r != "bullet"]
-            inlines = _spans_to_text_inline(non_bullet)
+            inlines = _spans_to_text_inline(non_bullet, cfg)
             if inlines:
                 blocks.append(ListItemBlock(block_id=block_id, children=inlines))  # type: ignore[arg-type]
             continue
@@ -404,7 +385,9 @@ def build_page_ir_real(
             # to the top of the new line.
             y_gap = first_new.bbox.y0 - last_span.bbox.y1
             font_size = first_new.font_size or last_span.font_size
-            threshold = font_size * PARAGRAPH_GAP_FACTOR if font_size > 0 else PARAGRAPH_GAP_ABS
+            threshold = (
+                font_size * cfg.paragraph_gap_factor if font_size > 0 else cfg.paragraph_gap_abs
+            )
             if y_gap > threshold:
                 flush_paragraph()
 

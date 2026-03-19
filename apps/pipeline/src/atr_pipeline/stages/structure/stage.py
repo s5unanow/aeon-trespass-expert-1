@@ -65,7 +65,7 @@ class StructureStage:
                 )
                 ir = build_page_ir_simple(native, sym)
             else:
-                ir = build_page_ir_real(native, symbols)
+                ir = build_page_ir_real(native, symbols, config=ctx.config.structure)
 
             ctx.artifact_store.put_json(
                 document_id=ctx.document_id,
