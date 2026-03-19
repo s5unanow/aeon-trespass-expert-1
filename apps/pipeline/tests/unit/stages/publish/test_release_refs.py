@@ -54,7 +54,7 @@ def test_extract_artifact_refs_from_manifest(tmp_path: Path) -> None:
     _write_artifact(artifact_root, manifest_ref, manifest_data)
 
     run_data = {"qa_summary_ref": None, "run_manifest_ref": manifest_ref}
-    page_refs, companion_refs = _extract_artifact_refs(artifact_root, run_data)
+    page_refs, companion_refs, _image_refs = _extract_artifact_refs(artifact_root, run_data)
 
     assert page_refs["p1"] == "doc1/render_page.v1/page/p1/abc.json"
     assert page_refs["p2"] == "doc1/render_page.v1/page/p2/def.json"
@@ -127,7 +127,7 @@ def test_extract_companion_refs_partial(tmp_path: Path) -> None:
     _write_artifact(artifact_root, manifest_ref, manifest_data)
 
     run_data = {"qa_summary_ref": None, "run_manifest_ref": manifest_ref}
-    page_refs, companion_refs = _extract_artifact_refs(artifact_root, run_data)
+    page_refs, companion_refs, _image_refs = _extract_artifact_refs(artifact_root, run_data)
 
     assert "p1" in page_refs
     assert "glossary_ref" in companion_refs

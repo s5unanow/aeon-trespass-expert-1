@@ -10,7 +10,7 @@ from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.render.page_builder import build_render_page
 from atr_schemas.enums import StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
-from atr_schemas.render_page_v1 import RenderPageV1
+from atr_schemas.render_page_v1 import RenderNav, RenderPageV1
 
 
 class RenderResult(BaseModel):
@@ -19,6 +19,7 @@ class RenderResult(BaseModel):
     document_id: str
     pages_rendered: int = Field(ge=0)
     page_refs: dict[str, str] = Field(default_factory=dict)
+    image_refs: dict[str, str] = Field(default_factory=dict)
     glossary_ref: str = ""
     search_docs_ref: str = ""
     nav_ref: str = ""
@@ -46,37 +47,41 @@ class RenderStage:
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> RenderResult:
         page_ids = self._resolve_page_ids(ctx)
-        pages_rendered = 0
-        page_refs: dict[str, str] = {}
+        image_sources, image_refs = self._resolve_images(ctx)
         rendered_pages: list[RenderPageV1] = []
 
+        # First pass: build all render pages
         for page_id in page_ids:
             ir = self._load_page_ir(ctx, page_id)
             if ir is None:
                 ctx.logger.warning("Skipping %s: missing page IR", page_id)
                 continue
-
             ctx.logger.info("Building render page for %s", page_id)
-            render = build_render_page(ir)
+            rendered_pages.append(build_render_page(ir, image_sources=image_sources))
 
+        # Inject prev/next nav into each page
+        self._inject_nav(rendered_pages)
+
+        # Store pages with nav populated
+        page_refs: dict[str, str] = {}
+        for render in rendered_pages:
             ref = ctx.artifact_store.put_json(
                 document_id=ctx.document_id,
                 schema_family="render_page.v1",
                 scope="page",
-                entity_id=page_id,
+                entity_id=render.page.id,
                 data=render,
             )
-            page_refs[page_id] = ref.relative_path
-            rendered_pages.append(render)
-            pages_rendered += 1
+            page_refs[render.page.id] = ref.relative_path
 
-        ctx.logger.info("Rendered %d pages", pages_rendered)
+        ctx.logger.info("Rendered %d pages", len(rendered_pages))
 
         companion_refs = self._emit_companion_artifacts(ctx, rendered_pages)
         return RenderResult(
             document_id=ctx.document_id,
-            pages_rendered=pages_rendered,
+            pages_rendered=len(rendered_pages),
             page_refs=page_refs,
+            image_refs=image_refs,
             **companion_refs,
         )
 
@@ -127,6 +132,42 @@ class RenderStage:
 
         ctx.logger.info("Emitted glossary, search_docs, nav artifacts")
         return refs
+
+    @staticmethod
+    def _inject_nav(pages: list[RenderPageV1]) -> None:
+        """Populate prev/next nav on each render page."""
+        for i, page in enumerate(pages):
+            page.nav = RenderNav(
+                prev=pages[i - 1].page.id if i > 0 else None,
+                next=pages[i + 1].page.id if i < len(pages) - 1 else None,
+            )
+
+    @staticmethod
+    def _resolve_images(ctx: StageContext) -> tuple[dict[str, str], dict[str, str]]:
+        """Find image assets in the artifact store.
+
+        Returns:
+            A tuple of (image_sources, image_refs) where:
+            - image_sources maps asset_id → bundle-relative src for render pages
+            - image_refs maps asset_id → artifact-store-relative path for the bundle
+        """
+        image_dir = ctx.artifact_store.root / ctx.document_id / "image" / "page"
+        sources: dict[str, str] = {}
+        refs: dict[str, str] = {}
+        if not image_dir.exists():
+            return sources, refs
+        image_exts = {".png", ".jpeg", ".jpg", ".webp", ".gif", ".svg"}
+        for asset_dir in sorted(image_dir.iterdir()):
+            if not asset_dir.is_dir():
+                continue
+            files = sorted(f for f in asset_dir.iterdir() if f.suffix in image_exts)
+            if not files:
+                continue
+            img_file = files[-1]
+            asset_id = asset_dir.name
+            sources[asset_id] = f"data/images/{asset_id}{img_file.suffix}"
+            refs[asset_id] = str(img_file.relative_to(ctx.artifact_store.root))
+        return sources, refs
 
     @staticmethod
     def _resolve_page_ids(ctx: StageContext) -> list[str]:

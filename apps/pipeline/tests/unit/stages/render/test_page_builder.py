@@ -216,3 +216,95 @@ def test_render_page_builder_figure_no_base_path() -> None:
 
     assert "img0001" in render.figures
     assert render.figures["img0001"].src == "img0001"
+
+
+def test_render_page_builder_figure_image_sources() -> None:
+    """image_sources overrides image_base_path for figure src."""
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0005",
+        page_number=5,
+        language=LanguageCode.EN,
+        blocks=[
+            FigureBlock(
+                block_id="p0005.b001",
+                asset_id="img0001",
+                translatable=False,
+            ),
+        ],
+        assets=["img0001"],
+        reading_order=["p0005.b001"],
+    )
+    sources = {"img0001": "data/images/img0001.png"}
+    render = build_render_page(ir, image_base_path="/fallback", image_sources=sources)
+
+    assert render.figures["img0001"].src == "data/images/img0001.png"
+
+
+def test_inject_nav_populates_prev_next() -> None:
+    """RenderStage._inject_nav sets prev/next on each page."""
+    from atr_pipeline.stages.render.stage import RenderStage
+
+    pages = [
+        build_render_page(_make_ir(page_id="p0001", page_number=1)),
+        build_render_page(_make_ir(page_id="p0002", page_number=2)),
+        build_render_page(_make_ir(page_id="p0003", page_number=3)),
+    ]
+    RenderStage._inject_nav(pages)
+
+    assert pages[0].nav.prev is None
+    assert pages[0].nav.next == "p0002"
+    assert pages[1].nav.prev == "p0001"
+    assert pages[1].nav.next == "p0003"
+    assert pages[2].nav.prev == "p0002"
+    assert pages[2].nav.next is None
+
+
+def test_resolve_images_finds_image_files(tmp_path: Path) -> None:
+    """_resolve_images returns sources and refs from the image artifact dir."""
+    from unittest.mock import MagicMock
+
+    from atr_pipeline.stages.render.stage import RenderStage
+    from atr_pipeline.store.artifact_store import ArtifactStore
+
+    store = ArtifactStore(tmp_path / "artifacts")
+
+    # Create image files in the expected structure
+    img_dir = store.root / "doc1" / "image" / "page" / "p0001.img0000"
+    img_dir.mkdir(parents=True)
+    (img_dir / "abc123.png").write_bytes(b"fake png")
+
+    img_dir2 = store.root / "doc1" / "image" / "page" / "p0001.img0001"
+    img_dir2.mkdir(parents=True)
+    (img_dir2 / "def456.jpeg").write_bytes(b"fake jpeg")
+
+    # Create a non-image file that should be ignored
+    (img_dir / ".DS_Store").write_bytes(b"junk")
+
+    ctx = MagicMock()
+    ctx.artifact_store = store
+    ctx.document_id = "doc1"
+
+    sources, refs = RenderStage._resolve_images(ctx)
+
+    assert sources["p0001.img0000"] == "data/images/p0001.img0000.png"
+    assert sources["p0001.img0001"] == "data/images/p0001.img0001.jpeg"
+    assert refs["p0001.img0000"].endswith("abc123.png")
+    assert refs["p0001.img0001"].endswith("def456.jpeg")
+
+
+def _make_ir(*, page_id: str, page_number: int) -> PageIRV1:
+    return PageIRV1(
+        document_id="test_doc",
+        page_id=page_id,
+        page_number=page_number,
+        language=LanguageCode.EN,
+        blocks=[
+            HeadingBlock(
+                block_id=f"{page_id}.b001",
+                level=1,
+                children=[TextInline(text=f"Page {page_number}", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=[f"{page_id}.b001"],
+    )
