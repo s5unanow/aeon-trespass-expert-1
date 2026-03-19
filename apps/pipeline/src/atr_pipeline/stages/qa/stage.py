@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
+from atr_pipeline.stages.qa.rules.leaked_identifier_rule import evaluate_leaked_identifiers
 from atr_schemas.enums import Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
@@ -49,6 +50,7 @@ class QAStage:
                 continue
 
             records = evaluate_icon_count(en_ir, ru_ir, render)
+            records.extend(evaluate_leaked_identifiers(render))
             for r in records:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
