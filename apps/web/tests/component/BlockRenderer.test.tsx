@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { BlockRenderer } from '../../src/components/reader/BlockRenderer';
-import type { RenderBlock } from '../../src/lib/render/types';
+import { InlineRenderer } from '../../src/components/reader/InlineRenderer';
+import type { RenderBlock, RenderInlineNode } from '../../src/lib/render/types';
 
 describe('BlockRenderer', () => {
   it('renders a heading block', () => {
@@ -56,5 +57,63 @@ describe('BlockRenderer', () => {
     expect(li?.id).toBe('p0001.b004');
     expect(li?.className).toBe('reader-list-item');
     expect(screen.getByText('Первый пункт')).toBeDefined();
+  });
+
+  it('renders a callout block', () => {
+    const block: RenderBlock = {
+      kind: 'callout',
+      id: 'p0001.b005',
+      variant: 'warning',
+      children: [{ kind: 'text', text: 'Внимание!', marks: [] }],
+    };
+
+    const { container } = render(<BlockRenderer block={block} />);
+    const aside = container.querySelector('aside');
+    expect(aside).toBeDefined();
+    expect(aside?.id).toBe('p0001.b005');
+    expect(aside?.className).toBe('reader-callout');
+    expect(aside?.dataset.variant).toBe('warning');
+    expect(screen.getByText('Внимание!')).toBeDefined();
+  });
+
+  it('renders a table block', () => {
+    const block: RenderBlock = {
+      kind: 'table',
+      id: 'p0001.b006',
+      children: [{ kind: 'text', text: 'Ячейка', marks: [] }],
+    };
+
+    const { container } = render(<BlockRenderer block={block} />);
+    const table = container.querySelector('[role="table"]');
+    expect(table).toBeDefined();
+    expect(table?.id).toBe('p0001.b006');
+    expect(table?.className).toBe('reader-table');
+    expect(screen.getByText('Ячейка')).toBeDefined();
+  });
+
+  it('renders unsupported block kind with visible error', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const block = { kind: 'unknown_kind', id: 'p0001.b007' } as unknown as RenderBlock;
+
+    const { container } = render(<BlockRenderer block={block} />);
+    const errorDiv = container.querySelector('.reader-unsupported-block');
+    expect(errorDiv).toBeDefined();
+    expect(errorDiv?.textContent).toContain('[Unsupported block]');
+    expect(spy).toHaveBeenCalledWith('Unsupported block kind:', 'unknown_kind');
+    spy.mockRestore();
+  });
+});
+
+describe('InlineRenderer', () => {
+  it('renders unsupported inline kind with visible error', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const node = { kind: 'unknown_inline' } as unknown as RenderInlineNode;
+
+    const { container } = render(<InlineRenderer node={node} />);
+    const errorSpan = container.querySelector('.reader-unsupported-inline');
+    expect(errorSpan).toBeDefined();
+    expect(errorSpan?.textContent).toContain('[?]');
+    expect(spy).toHaveBeenCalledWith('Unsupported inline kind:', 'unknown_inline');
+    spy.mockRestore();
   });
 });
