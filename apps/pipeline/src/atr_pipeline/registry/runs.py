@@ -14,12 +14,14 @@ def start_run(
     document_id: str,
     pipeline_version: str,
     config_hash: str,
+    git_commit: str = "",
 ) -> None:
     """Record a new run start."""
     conn.execute(
-        "INSERT INTO runs (run_id, document_id, pipeline_version, config_hash, started_at, status)"
-        " VALUES (?, ?, ?, ?, ?, ?)",
-        (run_id, document_id, pipeline_version, config_hash, _now_iso(), "running"),
+        "INSERT INTO runs"
+        " (run_id, document_id, pipeline_version, config_hash, started_at, status, git_commit)"
+        " VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (run_id, document_id, pipeline_version, config_hash, _now_iso(), "running", git_commit),
     )
     conn.commit()
 
@@ -51,6 +53,20 @@ def set_run_manifest_ref(
     conn.execute(
         "UPDATE runs SET run_manifest_ref = ? WHERE run_id = ?",
         (ref, run_id),
+    )
+    conn.commit()
+
+
+def update_run_provenance(
+    conn: sqlite3.Connection,
+    *,
+    run_id: str,
+    source_pdf_sha256: str,
+) -> None:
+    """Store the source PDF fingerprint after the ingest stage completes."""
+    conn.execute(
+        "UPDATE runs SET source_pdf_sha256 = ? WHERE run_id = ?",
+        (source_pdf_sha256, run_id),
     )
     conn.commit()
 

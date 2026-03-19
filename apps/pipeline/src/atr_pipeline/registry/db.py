@@ -56,4 +56,8 @@ def _migrate(conn: sqlite3.Connection) -> None:
     existing = {row[1] for row in conn.execute("PRAGMA table_info(runs)").fetchall()}
     if "run_manifest_ref" not in existing:
         conn.execute("ALTER TABLE runs ADD COLUMN run_manifest_ref TEXT")
-        conn.commit()
+    if "git_commit" not in existing:
+        conn.execute("ALTER TABLE runs ADD COLUMN git_commit TEXT DEFAULT ''")
+    if "source_pdf_sha256" not in existing:
+        conn.execute("ALTER TABLE runs ADD COLUMN source_pdf_sha256 TEXT DEFAULT ''")
+    conn.commit()

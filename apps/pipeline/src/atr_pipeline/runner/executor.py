@@ -50,6 +50,24 @@ def execute_stage(
     if cached_event is not None:
         cached_ref_str = cached_event["artifact_ref"]
         ctx.logger.info("Cache hit for %s (key=%s)", stage.name, cache_key)
+
+        # Record a cache-hit event so manifests capture all invocations
+        event_id = record_stage_start(
+            ctx.registry_conn,
+            run_id=ctx.run_id,
+            stage_name=stage.name,
+            scope=stage.scope.value,
+            entity_id=ctx.document_id,
+            cache_key=cache_key,
+        )
+        record_stage_finish(
+            ctx.registry_conn,
+            event_id=event_id,
+            status="cached",
+            artifact_ref=cached_ref_str,
+            duration_ms=0,
+        )
+
         return StageResult(
             stage_name=stage.name,
             cache_key=cache_key,

@@ -7,7 +7,7 @@ from pathlib import Path
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.events import list_stage_events
-from atr_pipeline.registry.runs import get_run, start_run
+from atr_pipeline.registry.runs import get_run, start_run, update_run_provenance
 from atr_pipeline.runner.executor import execute_stage
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.extract_native.stage import ExtractNativeStage
@@ -44,6 +44,39 @@ def _make_ctx(tmp_path: Path, *, config_hash: str = "") -> tuple[StageContext, s
         repo_root=_repo_root(),
     )
     return ctx, cfg_hash
+
+
+def test_run_record_stores_git_commit(tmp_path: Path) -> None:
+    """Run record stores the git_commit passed at start_run time."""
+    conn = open_registry(tmp_path / "registry.db")
+    fake_sha = "b" * 40
+    start_run(
+        conn,
+        run_id="git_test",
+        document_id="walking_skeleton",
+        pipeline_version="0.1.0",
+        config_hash="hash",
+        git_commit=fake_sha,
+    )
+    run = get_run(conn, "git_test")
+    assert run is not None
+    assert run["git_commit"] == fake_sha
+
+
+def test_update_run_provenance_stores_source_sha(tmp_path: Path) -> None:
+    """update_run_provenance stores source_pdf_sha256 on the run record."""
+    conn = open_registry(tmp_path / "registry.db")
+    start_run(
+        conn,
+        run_id="sha_test",
+        document_id="walking_skeleton",
+        pipeline_version="0.1.0",
+        config_hash="hash",
+    )
+    update_run_provenance(conn, run_id="sha_test", source_pdf_sha256="abc123")
+    run = get_run(conn, "sha_test")
+    assert run is not None
+    assert run["source_pdf_sha256"] == "abc123"
 
 
 def test_run_record_has_real_config_hash(tmp_path: Path) -> None:
@@ -125,8 +158,8 @@ def test_failed_stage_event_records_error(tmp_path: Path) -> None:
     assert "Run extract_native first" in events[0]["error_message"]
 
 
-def test_cached_stage_skips_event(tmp_path: Path) -> None:
-    """A cache hit does not create a new stage event."""
+def test_cached_stage_records_cache_hit_event(tmp_path: Path) -> None:
+    """A cache hit records a 'cached' event for provenance completeness."""
     ctx, _ = _make_ctx(tmp_path)
 
     r1 = execute_stage(IngestStage(), ctx)
@@ -137,6 +170,12 @@ def test_cached_stage_skips_event(tmp_path: Path) -> None:
     assert r2.success
     assert r2.cached
 
-    # Only one event — the cache hit did not write a new one
     events = list_stage_events(ctx.registry_conn, run_id="test_provenance_run")
-    assert len(events) == 1
+    assert len(events) == 2
+
+    # First event is the real execution
+    assert events[0]["status"] == "completed"
+    # Second event records the cache hit
+    assert events[1]["status"] == "cached"
+    assert events[1]["artifact_ref"] == events[0]["artifact_ref"]
+    assert events[1]["duration_ms"] == 0

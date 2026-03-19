@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 from click.exceptions import Exit
 
-from atr_pipeline.cli.commands.release import _extract_artifact_refs
+from atr_pipeline.cli.commands.release import _extract_bundle_refs
 
 
 def _write_artifact(artifact_root: Path, ref: str, data: dict[str, object]) -> None:
@@ -18,7 +18,7 @@ def _write_artifact(artifact_root: Path, ref: str, data: dict[str, object]) -> N
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
-def test_extract_artifact_refs_from_manifest(tmp_path: Path) -> None:
+def test_extract_bundle_refs_from_manifest(tmp_path: Path) -> None:
     """Render page refs and companion refs are extracted from the manifest."""
     artifact_root = tmp_path / "artifacts"
 
@@ -39,6 +39,7 @@ def test_extract_artifact_refs_from_manifest(tmp_path: Path) -> None:
     manifest_data = {
         "schema_version": "run_manifest.v1",
         "run_id": "run_1",
+        "source_pdf_sha256": "deadbeef",
         "stages": [
             {
                 "stage_name": "render",
@@ -53,23 +54,29 @@ def test_extract_artifact_refs_from_manifest(tmp_path: Path) -> None:
     manifest_ref = "doc1/run_manifest.v1/run/run_1/manifest_hash.json"
     _write_artifact(artifact_root, manifest_ref, manifest_data)
 
-    run_data = {"qa_summary_ref": None, "run_manifest_ref": manifest_ref}
-    page_refs, companion_refs, _image_refs = _extract_artifact_refs(artifact_root, run_data)
+    run_data = {"run_id": "run_1", "qa_summary_ref": None, "run_manifest_ref": manifest_ref}
+    refs = _extract_bundle_refs(artifact_root, run_data)
 
-    assert page_refs["p1"] == "doc1/render_page.v1/page/p1/abc.json"
-    assert page_refs["p2"] == "doc1/render_page.v1/page/p2/def.json"
-    assert companion_refs["glossary_ref"] == "doc1/glossary_payload.v1/document/doc1/gh.json"
-    assert companion_refs["nav_ref"] == "doc1/nav.v1/document/doc1/nh.json"
+    assert refs.render_pages["p1"] == "doc1/render_page.v1/page/p1/abc.json"
+    assert refs.render_pages["p2"] == "doc1/render_page.v1/page/p2/def.json"
+    assert refs.companions["glossary_ref"] == "doc1/glossary_payload.v1/document/doc1/gh.json"
+    assert refs.companions["nav_ref"] == "doc1/nav.v1/document/doc1/nh.json"
+    assert refs.run_id == "run_1"
+    assert refs.source_pdf_sha256 == "deadbeef"
 
 
-def test_extract_artifact_refs_exits_without_manifest_ref(tmp_path: Path) -> None:
+def test_extract_bundle_refs_exits_without_manifest_ref(tmp_path: Path) -> None:
     """Exits when run has no manifest ref."""
-    run_data = {"qa_summary_ref": None, "run_manifest_ref": None}
+    run_data: dict[str, str | None] = {
+        "run_id": "r1",
+        "qa_summary_ref": None,
+        "run_manifest_ref": None,
+    }
     with pytest.raises(Exit):
-        _extract_artifact_refs(tmp_path, run_data)
+        _extract_bundle_refs(tmp_path, run_data)
 
 
-def test_extract_artifact_refs_exits_without_render_stage(tmp_path: Path) -> None:
+def test_extract_bundle_refs_exits_without_render_stage(tmp_path: Path) -> None:
     """Exits when manifest has no render stage."""
     artifact_root = tmp_path / "artifacts"
 
@@ -90,9 +97,9 @@ def test_extract_artifact_refs_exits_without_render_stage(tmp_path: Path) -> Non
     manifest_ref = "doc1/run_manifest.v1/run/run_1/mh.json"
     _write_artifact(artifact_root, manifest_ref, manifest_data)
 
-    run_data = {"qa_summary_ref": None, "run_manifest_ref": manifest_ref}
+    run_data = {"run_id": "r1", "qa_summary_ref": None, "run_manifest_ref": manifest_ref}
     with pytest.raises(Exit):
-        _extract_artifact_refs(artifact_root, run_data)
+        _extract_bundle_refs(artifact_root, run_data)
 
 
 def test_extract_companion_refs_partial(tmp_path: Path) -> None:
@@ -126,10 +133,10 @@ def test_extract_companion_refs_partial(tmp_path: Path) -> None:
     manifest_ref = "doc1/run_manifest.v1/run/run_1/mh.json"
     _write_artifact(artifact_root, manifest_ref, manifest_data)
 
-    run_data = {"qa_summary_ref": None, "run_manifest_ref": manifest_ref}
-    page_refs, companion_refs, _image_refs = _extract_artifact_refs(artifact_root, run_data)
+    run_data = {"run_id": "r1", "qa_summary_ref": None, "run_manifest_ref": manifest_ref}
+    refs = _extract_bundle_refs(artifact_root, run_data)
 
-    assert "p1" in page_refs
-    assert "glossary_ref" in companion_refs
-    assert "search_docs_ref" not in companion_refs
-    assert "nav_ref" not in companion_refs
+    assert "p1" in refs.render_pages
+    assert "glossary_ref" in refs.companions
+    assert "search_docs_ref" not in refs.companions
+    assert "nav_ref" not in refs.companions
