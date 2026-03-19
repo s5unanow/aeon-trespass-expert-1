@@ -20,7 +20,9 @@ describe('loadRenderPage', () => {
   it('throws on HTTP error', async () => {
     fetchSpy.mockResolvedValue({ ok: false, status: 500 } as Response);
 
-    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow('Failed to load render page: 500');
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      'Failed to load render page: 500 /documents/doc1/data/render_page.p0001.json',
+    );
   });
 
   it('throws on missing schema_version', async () => {

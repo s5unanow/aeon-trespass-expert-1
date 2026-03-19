@@ -6,7 +6,9 @@ echoing. All heavy dependencies (config, stages, artifact store) are mocked.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 from typer.testing import CliRunner
@@ -18,6 +20,15 @@ from atr_pipeline.store.artifact_ref import ArtifactRef
 runner = CliRunner()
 
 _MOD = "atr_pipeline.cli.commands.run"
+
+
+@dataclass(frozen=True)
+class CLIRunResult:
+    """Wrapper around CliRunner result with captured mock references."""
+
+    exit_code: int
+    stdout: str
+    finish_mock: Any
 
 
 def _ok(name: str, *, cached: bool = False) -> StageResult:
@@ -48,7 +59,7 @@ def _run_with(
     stage_names: list[str],
     results: list[StageResult],
     tmp_path: Path,
-) -> object:
+) -> CLIRunResult:
     """Invoke ``atr run`` with mocked stages returning *results*."""
     cfg = _mock_config(tmp_path)
     registry = {n: MagicMock(name=n) for n in stage_names}
@@ -70,18 +81,21 @@ def _run_with(
         ),
     ):
         cli_result = runner.invoke(app, ["run", "--doc", "test"])
-        cli_result.finish_mock = finish_mock  # type: ignore[attr-defined]
 
-    return cli_result
+    return CLIRunResult(
+        exit_code=cli_result.exit_code,
+        stdout=cli_result.stdout,
+        finish_mock=finish_mock,
+    )
 
 
 def test_run_resolves_stages_from_registry(tmp_path: Path) -> None:
     """Run command echoes each resolved stage name."""
     names = ["ingest", "structure"]
     result = _run_with(names, [_ok(n) for n in names], tmp_path)
-    assert result.exit_code == 0  # type: ignore[union-attr]
-    assert "[ingest]" in result.stdout  # type: ignore[union-attr]
-    assert "[structure]" in result.stdout  # type: ignore[union-attr]
+    assert result.exit_code == 0
+    assert "[ingest]" in result.stdout
+    assert "[structure]" in result.stdout
 
 
 def test_run_stops_on_stage_failure(tmp_path: Path) -> None:
@@ -91,9 +105,9 @@ def test_run_stops_on_stage_failure(tmp_path: Path) -> None:
         [_ok("ingest"), _fail("structure")],
         tmp_path,
     )
-    assert result.exit_code == 1  # type: ignore[union-attr]
-    assert "[render]" not in result.stdout  # type: ignore[union-attr]
-    assert "finished with errors" in result.stdout  # type: ignore[union-attr]
+    assert result.exit_code == 1
+    assert "[render]" not in result.stdout
+    assert "finished with errors" in result.stdout
 
 
 def test_run_echoes_cached_stages(tmp_path: Path) -> None:
@@ -103,22 +117,20 @@ def test_run_echoes_cached_stages(tmp_path: Path) -> None:
         [_ok("ingest", cached=True), _ok("structure")],
         tmp_path,
     )
-    assert result.exit_code == 0  # type: ignore[union-attr]
-    assert "(cached)" in result.stdout  # type: ignore[union-attr]
-    assert "completed successfully" in result.stdout  # type: ignore[union-attr]
+    assert result.exit_code == 0
+    assert "(cached)" in result.stdout
+    assert "completed successfully" in result.stdout
 
 
 def test_run_records_completed_status(tmp_path: Path) -> None:
     """Successful run calls finish_run with 'completed'."""
     result = _run_with(["ingest"], [_ok("ingest")], tmp_path)
-    fm = result.finish_mock  # type: ignore[union-attr]
-    fm.assert_called_once()
-    assert fm.call_args.kwargs["status"] == "completed"
+    result.finish_mock.assert_called_once()
+    assert result.finish_mock.call_args.kwargs["status"] == "completed"
 
 
 def test_run_records_failed_status_on_error(tmp_path: Path) -> None:
     """Failed run calls finish_run with 'failed'."""
     result = _run_with(["ingest"], [_fail("ingest")], tmp_path)
-    fm = result.finish_mock  # type: ignore[union-attr]
-    fm.assert_called_once()
-    assert fm.call_args.kwargs["status"] == "failed"
+    result.finish_mock.assert_called_once()
+    assert result.finish_mock.call_args.kwargs["status"] == "failed"

@@ -20,7 +20,9 @@ describe('loadManifest', () => {
   it('throws on HTTP error', async () => {
     fetchSpy.mockResolvedValue({ ok: false, status: 404 } as Response);
 
-    await expect(loadManifest('missing')).rejects.toThrow('Failed to load manifest: 404');
+    await expect(loadManifest('missing')).rejects.toThrow(
+      'Failed to load manifest: 404 /documents/missing/manifest.json',
+    );
   });
 
   it('throws on network failure', async () => {
