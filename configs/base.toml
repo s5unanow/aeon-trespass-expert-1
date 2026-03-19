@@ -28,5 +28,23 @@ temperature = 0.0
 batch_size = 24
 prompt_profile = "translate_rules_ru.v1"
 
+[structure]
+heading_fonts = ["GreenleafLightPro", "Goobascript"]
+decorative_fonts = ["GreenleafBannersRegularL"]
+body_font = "Adonis-Regular"
+bold_font = "Adonis-Bold"
+italic_font = "Adonis-Italic"
+bold_italic_font = "Adonis-BoldItalic"
+dingbat_font = "ITCZapfDingbatsMedium"
+footer_y_threshold = 790.0
+heading_min_size = 8.0
+subheading_bold_min_size = 10.0
+body_size_min = 7.5
+body_size_max = 10.0
+paragraph_gap_factor = 1.5
+paragraph_gap_abs = 12.0
+figure_min_width_pt = 100.0
+figure_min_height_pt = 100.0
+
 [qa]
 block_publish_on = ["error", "critical"]
