@@ -7,7 +7,7 @@ import json
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
-from atr_pipeline.stages.publish.bundle_builder import build_release_bundle
+from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
 from atr_schemas.enums import StageScope
 
 
@@ -53,6 +53,13 @@ class PublishStage:
             if render_data.get(k)
         }
 
+        raw_image_refs = render_data.get("image_refs", {})
+        image_refs = (
+            {str(k): str(v) for k, v in raw_image_refs.items()}
+            if isinstance(raw_image_refs, dict)
+            else {}
+        )
+
         output_dir = ctx.artifact_store.root / ctx.document_id / "release"
 
         manifest = build_release_bundle(
@@ -60,8 +67,11 @@ class PublishStage:
             artifact_root=ctx.artifact_store.root,
             output_dir=output_dir,
             pipeline_version=ctx.config.pipeline.version,
-            render_page_refs={str(k): str(v) for k, v in page_refs.items()},
-            companion_refs=companion_refs,
+            refs=BundleRefs(
+                render_pages={str(k): str(v) for k, v in page_refs.items()},
+                companions=companion_refs,
+                images=image_refs,
+            ),
         )
 
         ctx.logger.info("Published %d files to %s", len(manifest.files), output_dir)

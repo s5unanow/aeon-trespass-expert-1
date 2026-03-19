@@ -10,7 +10,7 @@ import typer
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import list_runs
-from atr_pipeline.stages.publish.bundle_builder import build_release_bundle
+from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 
@@ -33,7 +33,7 @@ def release(
 
     run_data = _load_latest_run(config.repo_root, doc)
     _check_qa_gate(artifact_root, run_data)
-    render_refs, companion_refs = _extract_artifact_refs(artifact_root, run_data)
+    render_refs, companion_refs, image_refs = _extract_artifact_refs(artifact_root, run_data)
 
     manifest = build_release_bundle(
         document_id=doc,
@@ -41,8 +41,11 @@ def release(
         web_dist=web_dist if web_dist.exists() else None,
         output_dir=output_dir,
         pipeline_version=config.pipeline.version,
-        render_page_refs=render_refs,
-        companion_refs=companion_refs,
+        refs=BundleRefs(
+            render_pages=render_refs,
+            companions=companion_refs,
+            images=image_refs,
+        ),
     )
 
     typer.echo(f"Release built: {output_dir}")
@@ -94,10 +97,10 @@ def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None]) -> None
 
 def _extract_artifact_refs(
     artifact_root: Path, run_data: dict[str, str | None]
-) -> tuple[dict[str, str], dict[str, str]]:
-    """Extract render page refs and companion refs from the run manifest.
+) -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
+    """Extract render page, companion, and image refs from the run manifest.
 
-    Returns (render_page_refs, companion_refs).
+    Returns (render_page_refs, companion_refs, image_refs).
     Raises if no manifest or render stage is found.
     """
     manifest_ref = run_data.get("run_manifest_ref")
@@ -130,4 +133,11 @@ def _extract_artifact_refs(
         if render_data.get(k)
     }
 
-    return render_page_refs, companion_refs
+    raw_image_refs = render_data.get("image_refs", {})
+    image_refs = (
+        {str(k): str(v) for k, v in raw_image_refs.items()}
+        if isinstance(raw_image_refs, dict)
+        else {}
+    )
+
+    return render_page_refs, companion_refs, image_refs

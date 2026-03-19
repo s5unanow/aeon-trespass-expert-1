@@ -31,6 +31,7 @@ def build_render_page(
     page_ir: PageIRV1,
     *,
     image_base_path: str = "",
+    image_sources: dict[str, str] | None = None,
 ) -> RenderPageV1:
     """Map a translated PageIRV1 to a RenderPageV1 payload.
 
@@ -38,6 +39,8 @@ def build_render_page(
         page_ir: The page IR to convert.
         image_base_path: URL prefix for figure image ``src`` values.
             When empty, asset_id is used as-is.
+        image_sources: Per-asset src overrides (asset_id → src URL).
+            Takes precedence over *image_base_path*.
     """
     render_blocks: list[RenderBlock] = []
     block_refs: list[str] = []
@@ -60,7 +63,12 @@ def build_render_page(
                 )
             )
             # Populate the figures lookup so the frontend can resolve src
-            src = f"{image_base_path}/{asset_id}" if image_base_path else asset_id
+            if image_sources and asset_id in image_sources:
+                src = image_sources[asset_id]
+            elif image_base_path:
+                src = f"{image_base_path}/{asset_id}"
+            else:
+                src = asset_id
             figures[asset_id] = RenderFigure(src=src, alt=asset_id)
             continue
 
