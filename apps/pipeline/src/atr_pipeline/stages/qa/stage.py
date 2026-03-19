@@ -38,6 +38,7 @@ class QAStage:
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         page_ids = self._resolve_page_ids(ctx)
         all_records: list[QARecordV1] = []
+        rules = get_all_rules()
 
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
@@ -50,7 +51,7 @@ class QAStage:
 
             page_ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
             records: list[QARecordV1] = []
-            for rule in get_all_rules():
+            for rule in rules:
                 records.extend(rule.evaluate(page_ctx))
             for r in records:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
