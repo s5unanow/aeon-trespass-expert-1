@@ -9,14 +9,20 @@ import typer
 
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
-from atr_pipeline.registry.runs import finish_run, set_run_manifest_ref, start_run
+from atr_pipeline.registry.runs import (
+    finish_run,
+    set_run_manifest_ref,
+    start_run,
+    update_run_provenance,
+)
 from atr_pipeline.runner.executor import execute_stage
-from atr_pipeline.runner.manifest_builder import build_run_manifest
+from atr_pipeline.runner.manifest_builder import build_run_manifest, git_head
 from atr_pipeline.runner.plan import resolve_stage_range
 from atr_pipeline.runner.registry import build_stage_registry
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_pipeline.utils.hashing import content_hash
+from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 logger = logging.getLogger("atr_pipeline")
 
@@ -39,6 +45,7 @@ def run(
         document_id=doc,
         pipeline_version=config.pipeline.version,
         config_hash=cfg_hash,
+        git_commit=git_head(),
     )
 
     stages = resolve_stage_range(from_stage=from_stage, to_stage=to_stage)
@@ -69,6 +76,14 @@ def run(
             typer.echo(f"    FAILED: {result.error}", err=True)
             has_errors = True
             break
+
+        # Capture source PDF fingerprint after ingest for run provenance
+        if stage_name == "ingest" and result.artifact_ref is not None:
+            ingest_data = store.get_json(result.artifact_ref)
+            manifest_v1 = SourceManifestV1.model_validate(ingest_data)
+            update_run_provenance(
+                conn, run_id=run_id, source_pdf_sha256=manifest_v1.source_pdf_sha256
+            )
 
         if stage_name == "qa" and result.artifact_ref is not None:
             qa_summary_ref = result.artifact_ref.relative_path

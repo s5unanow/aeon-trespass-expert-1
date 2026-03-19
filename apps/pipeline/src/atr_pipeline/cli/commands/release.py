@@ -9,7 +9,7 @@ import typer
 
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
-from atr_pipeline.registry.runs import list_runs
+from atr_pipeline.registry.runs import get_run, list_runs
 from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
@@ -24,6 +24,7 @@ def _load_json_artifact(artifact_root: Path, ref: str) -> dict[str, object]:
 def release(
     doc: str = typer.Option(..., "--doc", help="Document id"),
     output: str = typer.Option("", "--output", help="Output directory"),
+    run_id: str = typer.Option("", "--run-id", help="Specific run to release (default: latest)"),
 ) -> None:
     """Build a local release bundle with render payloads and manifest."""
     config = load_document_config(doc)
@@ -31,9 +32,12 @@ def release(
     output_dir = Path(output) if output else artifact_root / doc / "release"
     web_dist = config.repo_root / "apps" / "web" / "dist"
 
-    run_data = _load_latest_run(config.repo_root, doc)
+    run_data = _load_run(config.repo_root, doc, run_id=run_id or None)
     _check_qa_gate(artifact_root, run_data)
     render_refs, companion_refs, image_refs = _extract_artifact_refs(artifact_root, run_data)
+
+    selected_run_id = run_data.get("run_id") or ""
+    source_sha = _extract_source_sha(artifact_root, run_data)
 
     manifest = build_release_bundle(
         document_id=doc,
@@ -45,16 +49,19 @@ def release(
             render_pages=render_refs,
             companions=companion_refs,
             images=image_refs,
+            run_id=selected_run_id,
+            source_pdf_sha256=source_sha,
         ),
     )
 
     typer.echo(f"Release built: {output_dir}")
     typer.echo(f"  build_id: {manifest.build_id}")
+    typer.echo(f"  run_id: {manifest.run_id}")
     typer.echo(f"  files: {len(manifest.files)}")
 
 
-def _load_latest_run(repo_root: Path, doc: str) -> dict[str, str | None]:
-    """Load the latest run record for a document."""
+def _load_run(repo_root: Path, doc: str, *, run_id: str | None = None) -> dict[str, str | None]:
+    """Load a run record by explicit id or fall back to the latest."""
     registry_path = repo_root / "var" / "registry.db"
     if not registry_path.exists():
         typer.echo("Error: no registry found. Run the pipeline first.", err=True)
@@ -62,13 +69,23 @@ def _load_latest_run(repo_root: Path, doc: str) -> dict[str, str | None]:
 
     conn = open_registry(registry_path)
     try:
-        runs = list_runs(conn, doc)
-        if not runs:
-            typer.echo("Error: no runs found for document.", err=True)
-            raise typer.Exit(1)
+        if run_id:
+            row = get_run(conn, run_id)
+            if row is None:
+                typer.echo(f"Error: run {run_id} not found.", err=True)
+                raise typer.Exit(1)
+            typer.echo(f"Using explicit run: {run_id}")
+        else:
+            runs = list_runs(conn, doc)
+            if not runs:
+                typer.echo("Error: no runs found for document.", err=True)
+                raise typer.Exit(1)
+            row = runs[0]
+            typer.echo(f"Using latest run: {row['run_id']}")
         return {
-            "qa_summary_ref": runs[0]["qa_summary_ref"],
-            "run_manifest_ref": runs[0]["run_manifest_ref"],
+            "run_id": row["run_id"],
+            "qa_summary_ref": row["qa_summary_ref"],
+            "run_manifest_ref": row["run_manifest_ref"],
         }
     finally:
         conn.close()
@@ -93,6 +110,16 @@ def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None]) -> None
         raise typer.Exit(1)
 
     typer.echo("QA gate passed.")
+
+
+def _extract_source_sha(artifact_root: Path, run_data: dict[str, str | None]) -> str:
+    """Extract source_pdf_sha256 from the run manifest's source_pdf_sha256 field."""
+    manifest_ref = run_data.get("run_manifest_ref")
+    if not manifest_ref:
+        return ""
+    data = _load_json_artifact(artifact_root, manifest_ref)
+    manifest = RunManifestV1.model_validate(data)
+    return manifest.source_pdf_sha256
 
 
 def _extract_artifact_refs(

@@ -71,6 +71,8 @@ def _run_with(
         patch(f"{_MOD}.ArtifactStore"),
         patch(f"{_MOD}.start_run"),
         patch(f"{_MOD}.finish_run") as finish_mock,
+        patch(f"{_MOD}.update_run_provenance"),
+        patch(f"{_MOD}.git_head", return_value="abc123"),
         patch(f"{_MOD}.build_run_manifest", return_value={}),
         patch(f"{_MOD}.set_run_manifest_ref"),
         patch(f"{_MOD}.build_stage_registry", return_value=registry),
@@ -79,6 +81,7 @@ def _run_with(
             f"{_MOD}.execute_stage",
             side_effect=lambda *a, **kw: next(result_iter),
         ),
+        patch(f"{_MOD}.SourceManifestV1"),
     ):
         cli_result = runner.invoke(app, ["run", "--doc", "test"])
 

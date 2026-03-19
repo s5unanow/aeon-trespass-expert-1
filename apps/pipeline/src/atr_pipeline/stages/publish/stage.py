@@ -6,6 +6,7 @@ import json
 
 from pydantic import BaseModel, Field
 
+from atr_pipeline.registry.events import list_stage_events
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
 from atr_schemas.enums import StageScope
@@ -23,9 +24,8 @@ class PublishResult(BaseModel):
 class PublishStage:
     """Build a release bundle from the current run's artifacts.
 
-    Reads render page refs and companion artifact refs from the
-    render stage output, builds a self-contained release directory
-    with a manifest.
+    Uses explicit artifact refs from the run's stage events — no
+    directory enumeration.
     """
 
     @property
@@ -41,7 +41,7 @@ class PublishStage:
         return "1.0"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> PublishResult:
-        render_data = self._load_render_result(ctx)
+        render_data = _load_render_result_from_registry(ctx)
         page_refs = render_data.get("page_refs", {})
         if not isinstance(page_refs, dict) or not page_refs:
             msg = "No render page refs found. Run the render stage first."
@@ -71,6 +71,7 @@ class PublishStage:
                 render_pages={str(k): str(v) for k, v in page_refs.items()},
                 companions=companion_refs,
                 images=image_refs,
+                run_id=ctx.run_id,
             ),
         )
 
@@ -83,19 +84,21 @@ class PublishStage:
             output_dir=str(output_dir),
         )
 
-    @staticmethod
-    def _load_render_result(ctx: StageContext) -> dict[str, object]:
-        """Load the render stage result artifact."""
-        render_dir = (
-            ctx.artifact_store.root / ctx.document_id / "render" / "document" / ctx.document_id
-        )
-        if not render_dir.exists():
-            msg = "No render result found. Run the render stage first."
-            raise RuntimeError(msg)
 
-        jsons = sorted(render_dir.glob("*.json"))
-        if not jsons:
-            msg = "No render result found. Run the render stage first."
-            raise RuntimeError(msg)
+def _load_render_result_from_registry(ctx: StageContext) -> dict[str, object]:
+    """Load the render stage artifact using the current run's stage events."""
+    events = list_stage_events(ctx.registry_conn, run_id=ctx.run_id)
+    render_event = next(
+        (
+            ev
+            for ev in events
+            if ev["stage_name"] == "render" and ev["status"] in ("completed", "cached")
+        ),
+        None,
+    )
+    if render_event is None or not render_event["artifact_ref"]:
+        msg = "No render result found. Run the render stage first."
+        raise RuntimeError(msg)
 
-        return json.loads(jsons[-1].read_text())  # type: ignore[no-any-return]
+    artifact_path = ctx.artifact_store.root / render_event["artifact_ref"]
+    return json.loads(artifact_path.read_text())  # type: ignore[no-any-return]

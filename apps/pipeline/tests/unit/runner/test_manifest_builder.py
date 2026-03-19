@@ -22,7 +22,7 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[5]
 
 
-def _make_ctx(tmp_path: Path) -> StageContext:
+def _make_ctx(tmp_path: Path, *, git_commit: str = "") -> StageContext:
     config = load_document_config("walking_skeleton", repo_root=_repo_root())
     cfg_hash = content_hash(config.model_dump(mode="json"))
     store = ArtifactStore(tmp_path / "artifacts")
@@ -33,6 +33,7 @@ def _make_ctx(tmp_path: Path) -> StageContext:
         document_id="walking_skeleton",
         pipeline_version="0.1.0",
         config_hash=cfg_hash,
+        git_commit=git_commit,
     )
     return StageContext(
         run_id="test_manifest_run",
@@ -82,15 +83,14 @@ def test_manifest_has_config_hash(tmp_path: Path) -> None:
 
 
 def test_manifest_has_git_commit(tmp_path: Path) -> None:
-    """Manifest captures a non-empty git commit SHA (when in a repo)."""
-    ctx = _make_ctx(tmp_path)
+    """Manifest captures the git commit stored in the run record."""
+    fake_sha = "a" * 40
+    ctx = _make_ctx(tmp_path, git_commit=fake_sha)
     execute_stage(IngestStage(), ctx)
     finish_run(ctx.registry_conn, run_id="test_manifest_run", status="completed")
 
     manifest = build_run_manifest(ctx.registry_conn, run_id="test_manifest_run")
-    # We're running inside a git repo, so this should be non-empty
-    assert manifest.git_commit != ""
-    assert len(manifest.git_commit) == 40
+    assert manifest.git_commit == fake_sha
 
 
 def test_manifest_persisted_as_artifact(tmp_path: Path) -> None:

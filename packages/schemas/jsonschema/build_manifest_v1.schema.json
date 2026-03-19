@@ -41,6 +41,16 @@
       "title": "Document Id",
       "type": "string"
     },
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "source_pdf_sha256": {
+      "default": "",
+      "title": "Source Pdf Sha256",
+      "type": "string"
+    },
     "content_version": {
       "default": "",
       "title": "Content Version",

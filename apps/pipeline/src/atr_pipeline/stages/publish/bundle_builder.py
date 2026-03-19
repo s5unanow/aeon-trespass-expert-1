@@ -21,11 +21,13 @@ _COMPANION_NAMES: dict[str, str] = {
 
 
 class BundleRefs(BaseModel):
-    """All artifact refs that go into a release bundle."""
+    """All artifact refs and provenance that go into a release bundle."""
 
     render_pages: dict[str, str] = Field(default_factory=dict)
     companions: dict[str, str] = Field(default_factory=dict)
     images: dict[str, str] = Field(default_factory=dict)
+    run_id: str = ""
+    source_pdf_sha256: str = ""
 
 
 def _copy_ref_artifact(
@@ -130,6 +132,8 @@ def build_release_bundle(
     manifest = BuildManifestV1(
         build_id=build_id,
         document_id=document_id,
+        run_id=refs.run_id,
+        source_pdf_sha256=refs.source_pdf_sha256,
         content_version=f"{document_id}.{build_id}",
         generated_at=datetime.now(UTC).isoformat(),
         pipeline_version=pipeline_version,

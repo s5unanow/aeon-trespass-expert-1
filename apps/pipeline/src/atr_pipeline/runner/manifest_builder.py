@@ -31,11 +31,16 @@ def build_run_manifest(conn: sqlite3.Connection, *, run_id: str) -> RunManifestV
         for ev in events
     ]
 
+    # Use git_commit from the run record (stored at start_run time)
+    # rather than re-computing on-the-fly
+    git_commit = run["git_commit"] or ""
+
     return RunManifestV1(
         run_id=run_id,
         pipeline_version=run["pipeline_version"],
-        git_commit=_git_head(),
+        git_commit=git_commit,
         config_hash=run["config_hash"],
+        source_pdf_sha256=run["source_pdf_sha256"] or "",
         started_at=run["started_at"],
         finished_at=run["finished_at"] or "",
         stages=stages,
@@ -43,7 +48,7 @@ def build_run_manifest(conn: sqlite3.Connection, *, run_id: str) -> RunManifestV
     )
 
 
-def _git_head() -> str:
+def git_head() -> str:
     """Return the current HEAD commit SHA, or empty string on failure."""
     try:
         result = subprocess.run(
