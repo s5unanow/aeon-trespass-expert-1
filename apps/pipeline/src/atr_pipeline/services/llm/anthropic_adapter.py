@@ -33,7 +33,7 @@ class AnthropicAdapter:
         concept_registry: ConceptRegistryV1 | None = None,
     ) -> None:
         try:
-            from anthropic import Anthropic  # type: ignore[import-not-found,unused-ignore]
+            from anthropic import Anthropic
         except ImportError as exc:
             msg = (
                 "anthropic package is required for the Anthropic adapter. "

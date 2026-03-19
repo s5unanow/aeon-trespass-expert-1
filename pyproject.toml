@@ -67,7 +67,7 @@ module = [
     "fitz.*", "docling.*", "cv2.*", "paddleocr.*",
     "openai", "openai.*",
     "anthropic", "anthropic.*",
-    "google", "google.*",
+    "google", "google.genai", "google.genai.*",
 ]
 ignore_missing_imports = true
 

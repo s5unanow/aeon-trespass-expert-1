@@ -36,7 +36,7 @@ echo "Running pre-commit quality gates..."
 
 # Gate 1: ruff check
 echo "  [1/8] ruff check..."
-if ! uv run ruff check apps/pipeline/src/ apps/pipeline/tests/ packages/schemas/python/ 2>&1; then
+if ! uv run ruff check . 2>&1; then
   echo ""
   echo "BLOCKED: ruff check failed. Fix lint errors before committing."
   exit 1
@@ -44,7 +44,7 @@ fi
 
 # Gate 2: ruff format
 echo "  [2/8] ruff format --check..."
-if ! uv run ruff format --check apps/pipeline/src/ apps/pipeline/tests/ packages/schemas/python/ 2>&1; then
+if ! uv run ruff format --check . 2>&1; then
   echo ""
   echo "BLOCKED: ruff format failed. Run 'ruff format' to fix."
   exit 1
