@@ -77,6 +77,7 @@ class PublishStage:
                 images=image_refs,
                 run_id=ctx.run_id,
                 source_pdf_sha256=source_sha or "",
+                edition="en" if ctx.edition == "en" else "ru",
             ),
         )
 

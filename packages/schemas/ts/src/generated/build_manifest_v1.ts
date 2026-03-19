@@ -3,6 +3,7 @@
 export type SchemaVersion = string;
 export type BuildId = string;
 export type DocumentId = string;
+export type Edition = string;
 export type RunId = string;
 export type SourcePdfSha256 = string;
 export type ContentVersion = string;
@@ -20,6 +21,7 @@ export interface BuildManifestV1 {
   schema_version?: SchemaVersion;
   build_id: BuildId;
   document_id: DocumentId;
+  edition?: Edition;
   run_id?: RunId;
   source_pdf_sha256?: SourcePdfSha256;
   content_version?: ContentVersion;

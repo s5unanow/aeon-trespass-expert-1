@@ -14,14 +14,14 @@ describe('loadRenderPage', () => {
 
     const result = await loadRenderPage('doc1', 'p0001');
     expect(result).toEqual(data);
-    expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/data/render_page.p0001.json');
+    expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/data/render_page.p0001.json');
   });
 
   it('throws on HTTP error', async () => {
     fetchSpy.mockResolvedValue({ ok: false, status: 500 } as Response);
 
     await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
-      'Failed to load render page: 500 /documents/doc1/data/render_page.p0001.json',
+      'Failed to load render page: 500 /documents/doc1/ru/data/render_page.p0001.json',
     );
   });
 

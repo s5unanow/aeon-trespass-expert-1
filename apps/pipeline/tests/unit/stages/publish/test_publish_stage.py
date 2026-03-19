@@ -98,8 +98,10 @@ def test_publish_builds_release_bundle(tmp_path: Path) -> None:
     assert publish_result.build_id != ""
     assert publish_result.files_published >= 1
 
-    # Verify release directory was created
+    # Verify release directory with edition subdirectory was created
     release_dir = tmp_path / "artifacts" / "walking_skeleton" / "release"
     assert release_dir.exists()
-    assert (release_dir / "manifest.json").exists()
-    assert (release_dir / "data").exists()
+    # Default edition is "ru" for full pipeline (translation included)
+    edition_dir = release_dir / "ru"
+    assert (edition_dir / "manifest.json").exists()
+    assert (edition_dir / "data").exists()

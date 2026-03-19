@@ -40,9 +40,9 @@ def test_bundle_uses_explicit_render_refs(tmp_path: Path) -> None:
     )
 
     data_files = [f.path for f in manifest.files]
-    assert "data/render_page.p1.json" in data_files
-    assert "data/render_page.p2.json" in data_files
-    assert "data/render_page.p3.json" not in data_files
+    assert "ru/data/render_page.p1.json" in data_files
+    assert "ru/data/render_page.p2.json" in data_files
+    assert "ru/data/render_page.p3.json" not in data_files
 
 
 def test_bundle_copies_exact_content(tmp_path: Path) -> None:
@@ -58,7 +58,7 @@ def test_bundle_copies_exact_content(tmp_path: Path) -> None:
         refs=BundleRefs(render_pages={"p1": ref}),
     )
 
-    dest = output_dir / "data" / "render_page.p1.json"
+    dest = output_dir / "ru" / "data" / "render_page.p1.json"
     assert dest.exists()
     data = json.loads(dest.read_text())
     assert data["page_id"] == "p1"
@@ -137,9 +137,9 @@ def test_companion_refs_copied_by_ref(tmp_path: Path) -> None:
     )
 
     data_files = [f.path for f in manifest.files]
-    assert "data/glossary.json" in data_files
-    assert "data/nav.json" in data_files
-    assert "data/search_docs.json" not in data_files
+    assert "ru/data/glossary.json" in data_files
+    assert "ru/data/nav.json" in data_files
+    assert "ru/data/search_docs.json" not in data_files
 
 
 def test_image_refs_copied_to_bundle(tmp_path: Path) -> None:
@@ -171,12 +171,12 @@ def test_image_refs_copied_to_bundle(tmp_path: Path) -> None:
     )
 
     data_files = [f.path for f in manifest.files]
-    assert "data/images/img0000.png" in data_files
-    assert "data/images/img0001.jpeg" in data_files
+    assert "images/img0000.png" in data_files
+    assert "images/img0001.jpeg" in data_files
 
-    # Verify files actually exist in the bundle
-    assert (output_dir / "data" / "images" / "img0000.png").exists()
-    assert (output_dir / "data" / "images" / "img0001.jpeg").exists()
+    # Verify files actually exist in the bundle (images are shared, not edition-scoped)
+    assert (output_dir / "images" / "img0000.png").exists()
+    assert (output_dir / "images" / "img0001.jpeg").exists()
 
 
 def test_companion_refs_affect_build_id(tmp_path: Path) -> None:
