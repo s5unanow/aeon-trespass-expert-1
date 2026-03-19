@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class DocumentConfig(BaseModel):
@@ -85,18 +85,28 @@ class StructureConfig(BaseModel):
 
     # Layout thresholds
     footer_y_threshold: float = 790.0
-    heading_min_size: float = 8.0
-    subheading_bold_min_size: float = 10.0
-    body_size_min: float = 7.5
-    body_size_max: float = 10.0
+    heading_min_size: float = Field(default=8.0, ge=0.0)
+    subheading_bold_min_size: float = Field(default=10.0, ge=0.0)
+    body_size_min: float = Field(default=7.5, ge=0.0)
+    body_size_max: float = Field(default=10.0, ge=0.0)
 
     # Paragraph splitting
-    paragraph_gap_factor: float = 1.5
-    paragraph_gap_abs: float = 12.0
+    paragraph_gap_factor: float = Field(default=1.5, gt=0.0)
+    paragraph_gap_abs: float = Field(default=12.0, gt=0.0)
 
     # Figure promotion
-    figure_min_width_pt: float = 100.0
-    figure_min_height_pt: float = 100.0
+    figure_min_width_pt: float = Field(default=100.0, ge=0.0)
+    figure_min_height_pt: float = Field(default=100.0, ge=0.0)
+
+    @model_validator(mode="after")
+    def _check_body_size_range(self) -> StructureConfig:
+        if self.body_size_min > self.body_size_max:
+            msg = (
+                f"body_size_min ({self.body_size_min}) must be "
+                f"<= body_size_max ({self.body_size_max})"
+            )
+            raise ValueError(msg)
+        return self
 
 
 class QAConfig(BaseModel):

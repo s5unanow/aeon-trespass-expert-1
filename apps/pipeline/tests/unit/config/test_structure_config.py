@@ -1,5 +1,8 @@
 """Tests for StructureConfig model defaults and validation."""
 
+import pytest
+from pydantic import ValidationError
+
 from atr_pipeline.config.models import DocumentBuildConfig, DocumentConfig, StructureConfig
 
 
@@ -52,3 +55,23 @@ def test_structure_config_in_document_build_config() -> None:
     build_cfg = DocumentBuildConfig(document=doc_cfg)
     assert isinstance(build_cfg.structure, StructureConfig)
     assert build_cfg.structure.footer_y_threshold == 790.0
+
+
+def test_structure_config_rejects_negative_sizes() -> None:
+    """Physical dimension fields must be non-negative."""
+    with pytest.raises(ValidationError):
+        StructureConfig(heading_min_size=-1.0)
+    with pytest.raises(ValidationError):
+        StructureConfig(figure_min_width_pt=-10.0)
+
+
+def test_structure_config_rejects_inverted_body_size_range() -> None:
+    """body_size_min must be <= body_size_max."""
+    with pytest.raises(ValidationError, match="body_size_min"):
+        StructureConfig(body_size_min=12.0, body_size_max=8.0)
+
+
+def test_structure_config_rejects_zero_gap_factor() -> None:
+    """Gap factor must be strictly positive."""
+    with pytest.raises(ValidationError):
+        StructureConfig(paragraph_gap_factor=0.0)
