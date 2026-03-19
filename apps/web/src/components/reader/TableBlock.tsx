@@ -6,6 +6,7 @@ interface TableBlockProps {
 }
 
 export function TableBlock({ block }: TableBlockProps) {
+  // TODO: flat children — restructure when schema adds row/cell types
   return (
     <div id={block.id} className="reader-table" role="table">
       {block.children.map((child, i) => (

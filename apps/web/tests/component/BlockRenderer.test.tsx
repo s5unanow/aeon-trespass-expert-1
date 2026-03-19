@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { BlockRenderer } from '../../src/components/reader/BlockRenderer';
-import type { RenderBlock } from '../../src/lib/render/types';
+import { InlineRenderer } from '../../src/components/reader/InlineRenderer';
+import type { RenderBlock, RenderInlineNode } from '../../src/lib/render/types';
 
 describe('BlockRenderer', () => {
   it('renders a heading block', () => {
@@ -99,6 +100,20 @@ describe('BlockRenderer', () => {
     expect(errorDiv).toBeDefined();
     expect(errorDiv?.textContent).toContain('[Unsupported block]');
     expect(spy).toHaveBeenCalledWith('Unsupported block kind:', 'unknown_kind');
+    spy.mockRestore();
+  });
+});
+
+describe('InlineRenderer', () => {
+  it('renders unsupported inline kind with visible error', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const node = { kind: 'unknown_inline' } as unknown as RenderInlineNode;
+
+    const { container } = render(<InlineRenderer node={node} />);
+    const errorSpan = container.querySelector('.reader-unsupported-inline');
+    expect(errorSpan).toBeDefined();
+    expect(errorSpan?.textContent).toContain('[?]');
+    expect(spy).toHaveBeenCalledWith('Unsupported inline kind:', 'unknown_inline');
     spy.mockRestore();
   });
 });
