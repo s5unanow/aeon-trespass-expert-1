@@ -15,13 +15,24 @@ def start_run(
     pipeline_version: str,
     config_hash: str,
     git_commit: str = "",
+    edition: str = "all",
 ) -> None:
     """Record a new run start."""
     conn.execute(
         "INSERT INTO runs"
-        " (run_id, document_id, pipeline_version, config_hash, started_at, status, git_commit)"
-        " VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (run_id, document_id, pipeline_version, config_hash, _now_iso(), "running", git_commit),
+        " (run_id, document_id, pipeline_version, config_hash,"
+        "  started_at, status, git_commit, edition)"
+        " VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (
+            run_id,
+            document_id,
+            pipeline_version,
+            config_hash,
+            _now_iso(),
+            "running",
+            git_commit,
+            edition,
+        ),
     )
     conn.commit()
 

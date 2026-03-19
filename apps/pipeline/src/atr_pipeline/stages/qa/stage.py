@@ -40,9 +40,13 @@ class QAStage:
         all_records: list[QARecordV1] = []
         rules = get_all_rules()
 
+        source_only = ctx.edition == "en"
+        if source_only:
+            ctx.logger.info("QA running in source-only mode (edition=en)")
+
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
-            ru_ir = self._load_ir(ctx, "page_ir.v1.ru", page_id)
+            ru_ir = self._load_ir(ctx, "page_ir.v1.ru", page_id) if not source_only else en_ir
             render = self._load_render(ctx, page_id)
 
             if en_ir is None or ru_ir is None or render is None:

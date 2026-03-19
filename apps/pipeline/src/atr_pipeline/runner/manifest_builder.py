@@ -41,6 +41,7 @@ def build_run_manifest(conn: sqlite3.Connection, *, run_id: str) -> RunManifestV
         git_commit=git_commit,
         config_hash=run["config_hash"],
         source_pdf_sha256=run["source_pdf_sha256"] or "",
+        edition=run["edition"] or "all",
         started_at=run["started_at"],
         finished_at=run["finished_at"] or "",
         stages=stages,

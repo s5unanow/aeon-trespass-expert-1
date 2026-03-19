@@ -31,6 +31,7 @@ def run(
     doc: str = typer.Option(..., "--doc", help="Document id"),
     from_stage: str = typer.Option("ingest", "--from", help="First stage to run"),
     to_stage: str = typer.Option("qa", "--to", help="Last stage to run"),
+    edition: str = typer.Option("all", "--edition", help="Edition: 'en' (source-only) or 'all'"),
 ) -> None:
     """Run a range of pipeline stages for a document."""
     config = load_document_config(doc)
@@ -46,9 +47,10 @@ def run(
         pipeline_version=config.pipeline.version,
         config_hash=cfg_hash,
         git_commit=git_head(),
+        edition=edition,
     )
 
-    stages = resolve_stage_range(from_stage=from_stage, to_stage=to_stage)
+    stages = resolve_stage_range(from_stage=from_stage, to_stage=to_stage, edition=edition)
     registry = build_stage_registry()
     ctx = StageContext(
         run_id=run_id,
@@ -58,6 +60,7 @@ def run(
         registry_conn=conn,
         repo_root=config.repo_root,
         logger=logger,
+        edition=edition,
     )
 
     typer.echo(f"Running stages: {' → '.join(stages)}")

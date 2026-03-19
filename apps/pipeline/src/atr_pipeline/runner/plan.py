@@ -15,15 +15,37 @@ WALKING_SKELETON_STAGES = [
     "publish",
 ]
 
+# Source-only: skip translation for EN-only extraction review
+SOURCE_ONLY_STAGES = [
+    "ingest",
+    "extract_native",
+    "extract_layout",
+    "symbols",
+    "structure",
+    "render",
+    "qa",
+    "publish",
+]
+
 
 def resolve_stage_range(
     *,
     from_stage: str | None = None,
     to_stage: str | None = None,
     all_stages: list[str] | None = None,
+    edition: str = "all",
 ) -> list[str]:
-    """Return the ordered list of stages between from_stage and to_stage (inclusive)."""
-    stages = all_stages or WALKING_SKELETON_STAGES
+    """Return the ordered list of stages between from_stage and to_stage (inclusive).
+
+    When *edition* is ``"en"``, the translate stage is excluded from the
+    default pipeline plan.
+    """
+    if all_stages is not None:
+        stages = all_stages
+    elif edition == "en":
+        stages = SOURCE_ONLY_STAGES
+    else:
+        stages = WALKING_SKELETON_STAGES
 
     start = 0
     if from_stage:

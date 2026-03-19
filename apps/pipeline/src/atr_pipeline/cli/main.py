@@ -54,22 +54,24 @@ def run_cmd(
     doc: str = typer.Option(..., "--doc", help="Document id"),
     from_stage: str = typer.Option("ingest", "--from", help="First stage"),
     to_stage: str = typer.Option("qa", "--to", help="Last stage"),
+    edition: str = typer.Option("all", "--edition", help="'en' (source-only) or 'all'"),
 ) -> None:
     """Run pipeline stages for a document."""
     from atr_pipeline.cli.commands.run import run as _run
 
-    _run(doc=doc, from_stage=from_stage, to_stage=to_stage)
+    _run(doc=doc, from_stage=from_stage, to_stage=to_stage, edition=edition)
 
 
 @app.command(name="release")
 def release_cmd(
     doc: str = typer.Option(..., "--doc", help="Document id"),
     output: str = typer.Option("", "--output", help="Output directory"),
+    run_id: str = typer.Option("", "--run-id", help="Specific run to release"),
 ) -> None:
     """Build a local release bundle."""
     from atr_pipeline.cli.commands.release import release as _release
 
-    _release(doc=doc, output=output)
+    _release(doc=doc, output=output, run_id=run_id)
 
 
 @app.command(name="qa")
