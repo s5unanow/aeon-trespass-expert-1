@@ -7,6 +7,7 @@ import json
 from pydantic import BaseModel, Field
 
 from atr_pipeline.registry.events import list_stage_events
+from atr_pipeline.registry.runs import get_run
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
 from atr_schemas.enums import StageScope
@@ -62,6 +63,9 @@ class PublishStage:
 
         output_dir = ctx.artifact_store.root / ctx.document_id / "release"
 
+        run_row = get_run(ctx.registry_conn, ctx.run_id)
+        source_sha = run_row["source_pdf_sha256"] if run_row else ""
+
         manifest = build_release_bundle(
             document_id=ctx.document_id,
             artifact_root=ctx.artifact_store.root,
@@ -72,6 +76,7 @@ class PublishStage:
                 companions=companion_refs,
                 images=image_refs,
                 run_id=ctx.run_id,
+                source_pdf_sha256=source_sha or "",
             ),
         )
 

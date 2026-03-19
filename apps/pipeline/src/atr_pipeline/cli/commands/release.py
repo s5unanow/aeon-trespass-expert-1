@@ -34,10 +34,7 @@ def release(
 
     run_data = _load_run(config.repo_root, doc, run_id=run_id or None)
     _check_qa_gate(artifact_root, run_data)
-    render_refs, companion_refs, image_refs = _extract_artifact_refs(artifact_root, run_data)
-
-    selected_run_id = run_data.get("run_id") or ""
-    source_sha = _extract_source_sha(artifact_root, run_data)
+    refs = _extract_bundle_refs(artifact_root, run_data)
 
     manifest = build_release_bundle(
         document_id=doc,
@@ -45,13 +42,7 @@ def release(
         web_dist=web_dist if web_dist.exists() else None,
         output_dir=output_dir,
         pipeline_version=config.pipeline.version,
-        refs=BundleRefs(
-            render_pages=render_refs,
-            companions=companion_refs,
-            images=image_refs,
-            run_id=selected_run_id,
-            source_pdf_sha256=source_sha,
-        ),
+        refs=refs,
     )
 
     typer.echo(f"Release built: {output_dir}")
@@ -73,6 +64,12 @@ def _load_run(repo_root: Path, doc: str, *, run_id: str | None = None) -> dict[s
             row = get_run(conn, run_id)
             if row is None:
                 typer.echo(f"Error: run {run_id} not found.", err=True)
+                raise typer.Exit(1)
+            if row["document_id"] != doc:
+                typer.echo(
+                    f"Error: run {run_id} belongs to document '{row['document_id']}', not '{doc}'.",
+                    err=True,
+                )
                 raise typer.Exit(1)
             typer.echo(f"Using explicit run: {run_id}")
         else:
@@ -112,28 +109,11 @@ def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None]) -> None
     typer.echo("QA gate passed.")
 
 
-def _extract_source_sha(artifact_root: Path, run_data: dict[str, str | None]) -> str:
-    """Extract source_pdf_sha256 from the run manifest's source_pdf_sha256 field."""
+def _extract_bundle_refs(artifact_root: Path, run_data: dict[str, str | None]) -> BundleRefs:
+    """Build a BundleRefs from the run manifest in a single parse."""
     manifest_ref = run_data.get("run_manifest_ref")
     if not manifest_ref:
-        return ""
-    data = _load_json_artifact(artifact_root, manifest_ref)
-    manifest = RunManifestV1.model_validate(data)
-    return manifest.source_pdf_sha256
-
-
-def _extract_artifact_refs(
-    artifact_root: Path, run_data: dict[str, str | None]
-) -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
-    """Extract render page, companion, and image refs from the run manifest.
-
-    Returns (render_page_refs, companion_refs, image_refs).
-    Raises if no manifest or render stage is found.
-    """
-    manifest_ref = run_data.get("run_manifest_ref")
-    if not manifest_ref:
-        msg = "Latest run has no manifest. Re-run the pipeline."
-        typer.echo(f"Error: {msg}", err=True)
+        typer.echo("Error: run has no manifest. Re-run the pipeline.", err=True)
         raise typer.Exit(1)
 
     data = _load_json_artifact(artifact_root, manifest_ref)
@@ -152,19 +132,21 @@ def _extract_artifact_refs(
         raise typer.Exit(1)
 
     typer.echo(f"Using manifest refs for {len(page_refs)} render pages.")
-    render_page_refs = {str(k): str(v) for k, v in page_refs.items()}
-
-    companion_refs = {
-        k: str(render_data[k])
-        for k in ("glossary_ref", "search_docs_ref", "nav_ref")
-        if render_data.get(k)
-    }
 
     raw_image_refs = render_data.get("image_refs", {})
-    image_refs = (
-        {str(k): str(v) for k, v in raw_image_refs.items()}
-        if isinstance(raw_image_refs, dict)
-        else {}
-    )
 
-    return render_page_refs, companion_refs, image_refs
+    return BundleRefs(
+        render_pages={str(k): str(v) for k, v in page_refs.items()},
+        companions={
+            k: str(render_data[k])
+            for k in ("glossary_ref", "search_docs_ref", "nav_ref")
+            if render_data.get(k)
+        },
+        images=(
+            {str(k): str(v) for k, v in raw_image_refs.items()}
+            if isinstance(raw_image_refs, dict)
+            else {}
+        ),
+        run_id=run_data.get("run_id") or "",
+        source_pdf_sha256=manifest.source_pdf_sha256,
+    )
