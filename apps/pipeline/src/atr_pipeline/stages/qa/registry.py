@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
+from atr_pipeline.stages.qa.rules.dead_page_ref_rule import evaluate_dead_page_refs
 from atr_pipeline.stages.qa.rules.decorative_icon_rule import evaluate_decorative_icons
 from atr_pipeline.stages.qa.rules.glued_text_rule import evaluate_glued_text
 from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
@@ -113,6 +114,21 @@ class UntranslatedTextRule:
         return evaluate_untranslated(ctx.target_ir)
 
 
+class DeadPageRefRule:
+    """Detect dead PDF page references in rendered text."""
+
+    @property
+    def name(self) -> str:
+        return "dead_page_ref"
+
+    @property
+    def layer(self) -> QALayer:
+        return QALayer.RENDER
+
+    def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
+        return evaluate_dead_page_refs(ctx.render_page)
+
+
 class LeakedIdentifierRule:
     """Detect technical identifiers leaking into rendered text."""
 
@@ -136,5 +152,6 @@ def get_all_rules() -> list[QARule]:
         GluedTextRule(),
         ParagraphLengthRule(),
         UntranslatedTextRule(),
+        DeadPageRefRule(),
         LeakedIdentifierRule(),
     ]
