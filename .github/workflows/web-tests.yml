@@ -22,6 +22,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Lint
+        run: pnpm -r run lint
+
       - name: Typecheck
         run: pnpm -r run typecheck
 

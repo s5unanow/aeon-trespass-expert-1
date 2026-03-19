@@ -29,6 +29,12 @@ jobs:
       - name: Type check
         run: uv run mypy apps/pipeline/src packages/schemas/python
 
+      - name: Import layer contracts
+        run: uv run lint-imports
+
+      - name: File length check
+        run: uv run python scripts/check_file_length.py
+
       - name: Install Node (for TS codegen check)
         uses: actions/setup-node@v4
         with:

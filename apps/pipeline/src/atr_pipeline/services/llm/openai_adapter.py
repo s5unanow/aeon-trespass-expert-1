@@ -35,7 +35,7 @@ class OpenAIAdapter:
         concept_registry: ConceptRegistryV1 | None = None,
     ) -> None:
         try:
-            from openai import OpenAI  # type: ignore[import-not-found,unused-ignore]
+            from openai import OpenAI
         except ImportError as exc:
             msg = (
                 "openai package is required for the OpenAI adapter. "

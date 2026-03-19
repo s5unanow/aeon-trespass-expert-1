@@ -35,47 +35,63 @@ fi
 echo "Running pre-commit quality gates..."
 
 # Gate 1: ruff check
-echo "  [1/6] ruff check..."
-if ! uv run ruff check apps/pipeline/src/ apps/pipeline/tests/ packages/schemas/python/ 2>&1; then
+echo "  [1/8] ruff check..."
+if ! uv run ruff check . 2>&1; then
   echo ""
   echo "BLOCKED: ruff check failed. Fix lint errors before committing."
   exit 1
 fi
 
 # Gate 2: ruff format
-echo "  [2/6] ruff format --check..."
-if ! uv run ruff format --check apps/pipeline/src/ apps/pipeline/tests/ packages/schemas/python/ 2>&1; then
+echo "  [2/8] ruff format --check..."
+if ! uv run ruff format --check . 2>&1; then
   echo ""
   echo "BLOCKED: ruff format failed. Run 'ruff format' to fix."
   exit 1
 fi
 
-# Gate 3: eslint (frontend)
-echo "  [3/6] eslint..."
+# Gate 3: mypy
+echo "  [3/8] mypy..."
+if ! uv run mypy apps/pipeline/src/ packages/schemas/python/ 2>&1; then
+  echo ""
+  echo "BLOCKED: mypy failed. Fix type errors before committing."
+  exit 1
+fi
+
+# Gate 4: import layer contracts
+echo "  [4/8] lint-imports..."
+if ! uv run lint-imports 2>&1; then
+  echo ""
+  echo "BLOCKED: Import layer contracts violated. Fix imports before committing."
+  exit 1
+fi
+
+# Gate 5: file length check
+echo "  [5/8] check file length..."
+if ! uv run python scripts/check_file_length.py 2>&1; then
+  echo ""
+  echo "BLOCKED: File length limit exceeded. Split long files before committing."
+  exit 1
+fi
+
+# Gate 6: eslint (frontend)
+echo "  [6/8] eslint..."
 if ! (cd apps/web && pnpm lint 2>&1); then
   echo ""
   echo "BLOCKED: ESLint failed. Fix frontend lint errors before committing."
   exit 1
 fi
 
-# Gate 4: mypy
-echo "  [4/6] mypy..."
-if ! uv run mypy --strict apps/pipeline/src/ packages/schemas/python/ 2>&1; then
-  echo ""
-  echo "BLOCKED: mypy failed. Fix type errors before committing."
-  exit 1
-fi
-
-# Gate 5: tsc
-echo "  [5/6] tsc..."
+# Gate 7: tsc
+echo "  [7/8] tsc..."
 if ! (cd apps/web && pnpm typecheck 2>&1); then
   echo ""
   echo "BLOCKED: tsc failed. Fix TypeScript errors before committing."
   exit 1
 fi
 
-# Gate 6: pytest (fail-fast, skip slow integration tests)
-echo "  [6/6] pytest (fast)..."
+# Gate 8: pytest (fail-fast, skip slow integration tests)
+echo "  [8/8] pytest (fast)..."
 if ! uv run pytest -x -q --timeout=60 -m "not slow" 2>&1; then
   echo ""
   echo "BLOCKED: Tests failed. Fix failing tests before committing."
