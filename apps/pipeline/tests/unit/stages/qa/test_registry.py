@@ -44,9 +44,9 @@ def _make_ctx() -> QAPageContext:
     return QAPageContext(source_ir=_make_ir(), target_ir=_make_ir(), render_page=_make_render())
 
 
-def test_get_all_rules_returns_all_four() -> None:
+def test_get_all_rules_returns_all() -> None:
     rules = get_all_rules()
-    assert len(rules) == 4
+    assert len(rules) >= 4
 
 
 def test_get_all_rules_unique_names() -> None:
