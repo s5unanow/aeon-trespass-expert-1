@@ -41,6 +41,7 @@ node_modules/
 htmlcov/
 .mypy_cache/
 coverage/
+test-results/
 
 # Build outputs
 apps/web/dist/
