@@ -33,7 +33,7 @@ def release(
 
     run_data = _load_latest_run(config.repo_root, doc)
     _check_qa_gate(artifact_root, run_data)
-    render_refs = _extract_render_refs(artifact_root, run_data)
+    render_refs, companion_refs = _extract_artifact_refs(artifact_root, run_data)
 
     manifest = build_release_bundle(
         document_id=doc,
@@ -42,6 +42,7 @@ def release(
         output_dir=output_dir,
         pipeline_version=config.pipeline.version,
         render_page_refs=render_refs,
+        companion_refs=companion_refs,
     )
 
     typer.echo(f"Release built: {output_dir}")
@@ -95,29 +96,46 @@ def _check_qa_gate(artifact_root: Path, run_data: dict[str, str | None] | None) 
     typer.echo("QA gate passed.")
 
 
-def _extract_render_refs(
+def _extract_artifact_refs(
     artifact_root: Path, run_data: dict[str, str | None] | None
-) -> dict[str, str] | None:
-    """Extract render page refs from the run manifest's render stage artifact."""
+) -> tuple[dict[str, str], dict[str, str]]:
+    """Extract render page refs and companion refs from the run manifest.
+
+    Returns (render_page_refs, companion_refs).
+    Raises if no manifest or render stage is found.
+    """
     if run_data is None:
-        return None
+        msg = "No run data available. Run the pipeline first."
+        raise typer.Exit(1) from RuntimeError(msg)
 
     manifest_ref = run_data.get("run_manifest_ref")
     if not manifest_ref:
-        typer.echo("Warning: no run manifest, falling back to filesystem.", err=True)
-        return None
+        msg = "Latest run has no manifest. Re-run the pipeline."
+        typer.echo(f"Error: {msg}", err=True)
+        raise typer.Exit(1)
 
     data = _load_json_artifact(artifact_root, manifest_ref)
     manifest = RunManifestV1.model_validate(data)
 
     render_stage = next((s for s in manifest.stages if s.stage_name == "render"), None)
     if render_stage is None or not render_stage.artifact_ref:
-        return None
+        typer.echo("Error: no render stage in run manifest.", err=True)
+        raise typer.Exit(1)
 
     render_data = _load_json_artifact(artifact_root, render_stage.artifact_ref)
-    page_refs = render_data.get("page_refs")
-    if isinstance(page_refs, dict) and page_refs:
-        typer.echo(f"Using manifest refs for {len(page_refs)} render pages.")
-        return {str(k): str(v) for k, v in page_refs.items()}
 
-    return None
+    page_refs = render_data.get("page_refs")
+    if not isinstance(page_refs, dict) or not page_refs:
+        typer.echo("Error: render result has no page refs.", err=True)
+        raise typer.Exit(1)
+
+    typer.echo(f"Using manifest refs for {len(page_refs)} render pages.")
+    render_page_refs = {str(k): str(v) for k, v in page_refs.items()}
+
+    companion_refs = {
+        k: str(render_data[k])
+        for k in ("glossary_ref", "search_docs_ref", "nav_ref")
+        if render_data.get(k)
+    }
+
+    return render_page_refs, companion_refs
