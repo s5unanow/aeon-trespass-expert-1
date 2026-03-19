@@ -1,14 +1,8 @@
 """Real block builder — structure recovery for actual ATO rulebook pages.
 
-Uses font-based heuristics derived from the full document analysis:
-- GreenleafLightPro @ >=8pt → section/sub-section headings
-- GreenleafBannersRegularL → decorative heading elements (often icon-like text)
-- Adonis-Bold @ >=10pt → numbered sub-headings
-- Adonis-Regular @ ~9pt → body paragraphs
-- Adonis-Bold @ ~9pt → inline bold emphasis
-- Adonis-Italic → inline italic / examples / captions
-- ITCZapfDingbatsMedium → list bullets / checkboxes
-- Footer (y > 790) → stripped as furniture
+All font names, size thresholds, and layout constants are supplied via
+``StructureConfig`` (see ``atr_pipeline.config.models``).  Default values
+match the ATO Core Rulebook v1.1 analysis.
 """
 
 from __future__ import annotations

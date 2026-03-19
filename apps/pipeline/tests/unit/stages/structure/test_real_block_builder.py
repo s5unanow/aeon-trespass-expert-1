@@ -3,10 +3,11 @@
 from pathlib import Path
 
 from atr_pipeline.stages.extract_native.pymupdf_extractor import extract_native_page
+from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.enums import LanguageCode
-from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1
+from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
 
 PDF_PATH = Path(__file__).resolve().parents[6] / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
@@ -159,3 +160,32 @@ def test_footer_image_is_ignored() -> None:
     ir = build_page_ir_real(native)
     figure_blocks = [b for b in ir.blocks if b.type == "figure"]
     assert len(figure_blocks) == 0
+
+
+def test_custom_config_changes_footer_threshold() -> None:
+    """Passing a custom StructureConfig should change classification behavior."""
+    span_in_default_footer = SpanEvidence(
+        span_id="s001",
+        text="Footer text",
+        font_name="Adonis-Regular",
+        font_size=9.0,
+        bbox=Rect(x0=50, y0=795, x1=200, y1=805),
+    )
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=[span_in_default_footer],
+        image_blocks=[],
+    )
+    # Default config (footer_y_threshold=790): span is footer → no blocks
+    ir_default = build_page_ir_real(native)
+    assert len(ir_default.blocks) == 0
+
+    # Custom config with raised threshold: span is now body → produces a block
+    cfg = StructureConfig(footer_y_threshold=900.0)
+    ir_custom = build_page_ir_real(native, config=cfg)
+    assert len(ir_custom.blocks) == 1
+    assert ir_custom.blocks[0].type == "paragraph"
