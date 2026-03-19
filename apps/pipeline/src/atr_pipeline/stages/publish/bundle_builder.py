@@ -61,6 +61,8 @@ def _compute_build_id(refs: BundleRefs) -> str:
         parts.append(f"page:{page_id}={refs.render_pages[page_id]}")
     for key in sorted(refs.companions):
         parts.append(f"companion:{key}={refs.companions[key]}")
+    for asset_id in sorted(refs.images):
+        parts.append(f"image:{asset_id}={refs.images[asset_id]}")
     digest = sha256_str("\n".join(parts))[:12]
     return f"build_{digest}"
 
@@ -103,13 +105,14 @@ def build_release_bundle(
         for asset_id in sorted(refs.images):
             src = artifact_root / refs.images[asset_id]
             if not src.exists():
-                continue
-            dest_name_img = f"{asset_id}{src.suffix}"
-            dest = images_dir / dest_name_img
+                msg = f"Image artifact not found: {refs.images[asset_id]}"
+                raise FileNotFoundError(msg)
+            img_filename = f"{asset_id}{src.suffix}"
+            dest = images_dir / img_filename
             shutil.copy2(src, dest)
             files.append(
                 ReleaseFile(
-                    path=f"data/images/{dest_name_img}",
+                    path=f"data/images/{img_filename}",
                     sha256=sha256_file(dest),
                     size_bytes=dest.stat().st_size,
                 )

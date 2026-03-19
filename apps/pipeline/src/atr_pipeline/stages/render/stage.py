@@ -156,10 +156,11 @@ class RenderStage:
         refs: dict[str, str] = {}
         if not image_dir.exists():
             return sources, refs
+        image_exts = {".png", ".jpeg", ".jpg", ".webp", ".gif", ".svg"}
         for asset_dir in sorted(image_dir.iterdir()):
             if not asset_dir.is_dir():
                 continue
-            files = sorted(asset_dir.iterdir())
+            files = sorted(f for f in asset_dir.iterdir() if f.suffix in image_exts)
             if not files:
                 continue
             img_file = files[-1]
