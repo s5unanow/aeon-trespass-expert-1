@@ -47,6 +47,8 @@ def _make_ctx(tmp_path: Path, doc_id: str = "test_doc") -> MagicMock:
     ctx.artifact_store = store
     ctx.document_id = doc_id
     ctx.logger = MagicMock()
+    ctx.page_filter = None
+    ctx.filter_pages = lambda ids: ids
     return ctx
 
 

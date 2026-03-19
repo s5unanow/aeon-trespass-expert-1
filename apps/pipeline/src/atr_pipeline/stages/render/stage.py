@@ -46,7 +46,7 @@ class RenderStage:
         return "1.0"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> RenderResult:
-        page_ids = self._resolve_page_ids(ctx)
+        page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
         image_sources, image_refs = self._resolve_images(ctx)
         rendered_pages: list[RenderPageV1] = []
 

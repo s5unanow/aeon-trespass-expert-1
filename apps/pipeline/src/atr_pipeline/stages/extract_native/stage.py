@@ -42,10 +42,14 @@ class ExtractNativeStage:
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> ExtractNativeResult:
         page_count = self._resolve_page_count(ctx, input_data)
+        all_ids = [f"p{n:04d}" for n in range(1, page_count + 1)]
+        target_ids = ctx.filter_pages(all_ids)
         page_ids: list[str] = []
 
         for page_num in range(1, page_count + 1):
             page_id = f"p{page_num:04d}"
+            if page_id not in target_ids:
+                continue
             ctx.logger.info("Extracting native evidence for %s", page_id)
 
             native = extract_native_page(

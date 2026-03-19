@@ -56,7 +56,7 @@ class SymbolsStage:
         catalog = load_symbol_catalog(catalog_path)
         tcache = TemplateCache.from_catalog(catalog, repo_root=ctx.config.repo_root)
 
-        page_ids = self._resolve_page_ids(ctx, input_data)
+        page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))
         pages_matched = 0
         total_symbols = 0
 

@@ -44,7 +44,7 @@ class StructureStage:
         return "1.0"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> StructureResult:
-        page_ids = self._resolve_page_ids(ctx, input_data)
+        page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))
         builder = ctx.config.document.structure_builder
         pages_built = 0
         total_blocks = 0
