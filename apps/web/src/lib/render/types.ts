@@ -46,7 +46,7 @@ export type RenderInlineNode =
 // ---------------------------------------------------------------------------
 
 export type RenderHeadingBlock = NarrowBlock<renderPageV1.RenderHeadingBlock> & {
-  level: number;
+  level: number; // schema has level?: number — narrow to required
 };
 export type RenderParagraphBlock = NarrowBlock<renderPageV1.RenderParagraphBlock>;
 export type RenderFigureBlock = NarrowBlock<renderPageV1.RenderFigureBlock>;
