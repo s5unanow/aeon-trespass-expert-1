@@ -11,6 +11,7 @@ from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
 
 _DIMS = PageDimensions(width=612, height=792)
+_SPAN_COUNTER = 0
 
 
 def _span(
@@ -23,7 +24,9 @@ def _span(
     span_id: str = "",
 ) -> SpanEvidence:
     """Build a SpanEvidence with sensible defaults."""
-    sid = span_id or f"s{hash(text) % 10000:04d}"
+    global _SPAN_COUNTER
+    _SPAN_COUNTER += 1
+    sid = span_id or f"s{_SPAN_COUNTER:04d}"
     return SpanEvidence(
         span_id=sid,
         text=text,
@@ -179,7 +182,13 @@ def test_non_consecutive_duplicates_are_kept() -> None:
 
 
 def test_dedup_uses_first_80_chars() -> None:
-    """Two blocks identical in the first 80 chars but different after should dedup."""
+    """Two blocks identical in the first 80 chars but different after should dedup.
+
+    This is a deliberate trade-off: PDF double-extraction often produces
+    near-identical blocks where only trailing punctuation or whitespace
+    differs.  The lossy 80-char comparison handles these artifacts at the
+    cost of discarding genuinely different blocks that share a long prefix.
+    """
     prefix = "A" * 80
     spans = [
         _span(prefix + " first ending.", y0=100, span_id="s0001"),
