@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from atr_pipeline.runner.stage_protocol import Stage
+from atr_pipeline.stages.extract_layout.stage import ExtractLayoutStage
 from atr_pipeline.stages.extract_native.stage import ExtractNativeStage
 from atr_pipeline.stages.ingest.stage import IngestStage
 from atr_pipeline.stages.publish.stage import PublishStage
@@ -18,6 +19,7 @@ def build_stage_registry() -> dict[str, Stage]:
     return {
         "ingest": IngestStage(),
         "extract_native": ExtractNativeStage(),
+        "extract_layout": ExtractLayoutStage(),
         "symbols": SymbolsStage(),
         "structure": StructureStage(),
         "translate": TranslationStage(),

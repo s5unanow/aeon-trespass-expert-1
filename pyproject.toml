@@ -84,6 +84,7 @@ layers = [
 ignore_imports = [
     "atr_pipeline.stages.ingest.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.extract_native.stage -> atr_pipeline.runner.stage_context",
+    "atr_pipeline.stages.extract_layout.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.symbols.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.structure.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.translation.stage -> atr_pipeline.runner.stage_context",

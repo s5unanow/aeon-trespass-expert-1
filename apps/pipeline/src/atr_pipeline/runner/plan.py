@@ -6,6 +6,7 @@ from __future__ import annotations
 WALKING_SKELETON_STAGES = [
     "ingest",
     "extract_native",
+    "extract_layout",
     "symbols",
     "structure",
     "translate",
