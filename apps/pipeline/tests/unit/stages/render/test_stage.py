@@ -97,6 +97,17 @@ def test_render_builds_pages(tmp_path: Path) -> None:
     jsons = list(render_dir.glob("*.json"))
     assert len(jsons) == 1
 
+    # Verify companion artifacts have refs
+    assert render_result.glossary_ref != ""
+    assert render_result.search_docs_ref != ""
+    assert render_result.nav_ref != ""
+
+    # Verify companion artifacts exist on disk
+    arts = tmp_path / "artifacts" / "walking_skeleton"
+    assert (arts / "glossary_payload.v1").exists()
+    assert (arts / "search_docs.v1").exists()
+    assert (arts / "nav.v1").exists()
+
 
 def test_render_raises_without_ir(tmp_path: Path) -> None:
     """RenderStage fails when no IR pages available."""
