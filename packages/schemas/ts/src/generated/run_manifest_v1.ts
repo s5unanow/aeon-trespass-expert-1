@@ -6,6 +6,7 @@ export type PipelineVersion = string;
 export type GitCommit = string;
 export type ConfigHash = string;
 export type SourcePdfSha256 = string;
+export type Edition = string;
 export type StartedAt = string;
 export type FinishedAt = string;
 export type StageName = string;
@@ -29,6 +30,7 @@ export interface RunManifestV1 {
   git_commit?: GitCommit;
   config_hash?: ConfigHash;
   source_pdf_sha256?: SourcePdfSha256;
+  edition?: Edition;
   started_at?: StartedAt;
   finished_at?: FinishedAt;
   stages?: Stages;

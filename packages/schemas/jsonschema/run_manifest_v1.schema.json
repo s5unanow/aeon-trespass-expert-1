@@ -77,6 +77,11 @@
       "title": "Source Pdf Sha256",
       "type": "string"
     },
+    "edition": {
+      "default": "all",
+      "title": "Edition",
+      "type": "string"
+    },
     "started_at": {
       "default": "",
       "title": "Started At",

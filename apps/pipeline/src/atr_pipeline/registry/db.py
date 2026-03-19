@@ -60,4 +60,6 @@ def _migrate(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE runs ADD COLUMN git_commit TEXT DEFAULT ''")
     if "source_pdf_sha256" not in existing:
         conn.execute("ALTER TABLE runs ADD COLUMN source_pdf_sha256 TEXT DEFAULT ''")
+    if "edition" not in existing:
+        conn.execute("ALTER TABLE runs ADD COLUMN edition TEXT DEFAULT 'all'")
     conn.commit()

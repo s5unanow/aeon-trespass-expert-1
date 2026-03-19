@@ -26,6 +26,7 @@ class RunManifestV1(BaseModel):
     git_commit: str = ""
     config_hash: str = ""
     source_pdf_sha256: str = ""
+    edition: str = "all"
     started_at: str = ""
     finished_at: str = ""
     stages: list[StageInvocationRef] = Field(default_factory=list)

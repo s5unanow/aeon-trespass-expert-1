@@ -22,3 +22,4 @@ class StageContext:
     registry_conn: sqlite3.Connection
     repo_root: Path = field(default_factory=lambda: Path("."))
     logger: logging.Logger = field(default_factory=lambda: logging.getLogger("atr_pipeline"))
+    edition: str = "all"
