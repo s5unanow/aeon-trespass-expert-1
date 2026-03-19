@@ -29,5 +29,16 @@ jobs:
       - name: Type check
         run: uv run mypy apps/pipeline/src packages/schemas/python
 
+      - name: Install Node (for TS codegen check)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        run: npm install -g pnpm && pnpm install
+
+      - name: Check codegen freshness
+        run: bash scripts/check_codegen_fresh.sh
+
       - name: Test
         run: uv run pytest --tb=short

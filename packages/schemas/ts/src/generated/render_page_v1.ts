@@ -36,14 +36,18 @@ export type Children3 = (RenderTextInline | RenderIconInline | RenderFigureRefIn
 export type Kind7 = 'table';
 export type Id5 = string;
 export type Children4 = (RenderTextInline | RenderIconInline | RenderFigureRefInline)[];
-export type Kind8 = 'divider';
+export type Kind8 = 'list_item';
 export type Id6 = string;
+export type Children5 = (RenderTextInline | RenderIconInline | RenderFigureRefInline)[];
+export type Kind9 = 'divider';
+export type Id7 = string;
 export type Blocks = (
   | RenderHeadingBlock
   | RenderParagraphBlock
   | RenderFigureBlock
   | RenderCalloutBlock
   | RenderTableBlock
+  | RenderListItemBlock
   | RenderDividerBlock
 )[];
 export type Src = string;
@@ -124,9 +128,14 @@ export interface RenderTableBlock {
   id: Id5;
   children?: Children4;
 }
-export interface RenderDividerBlock {
+export interface RenderListItemBlock {
   kind?: Kind8;
   id: Id6;
+  children?: Children5;
+}
+export interface RenderDividerBlock {
+  kind?: Kind9;
+  id: Id7;
 }
 export interface Figures {
   [k: string]: RenderFigure;
