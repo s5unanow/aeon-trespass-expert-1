@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-from atr_pipeline.stages.extract_native.pymupdf_extractor import extract_native_page
 from atr_pipeline.config.models import StructureConfig
+from atr_pipeline.stages.extract_native.pymupdf_extractor import extract_native_page
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.enums import LanguageCode
