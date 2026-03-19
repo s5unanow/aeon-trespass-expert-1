@@ -28,9 +28,12 @@ def _para(block_id: str, text: str) -> RenderParagraphBlock:
 
 
 # Build test strings from Unicode escapes to avoid RUF001/RUF003
-_CASE_GLUE = "".join(chr(c) for c in [0x44D, 0x442, 0x43E, 0x433, 0x43E, 0x2E, 0x41E, 0x421, 0x41A])
+# Case transition: lowercase directly touching 2+ uppercase (no punctuation between)
+_CASE_GLUE = "".join(chr(c) for c in [0x442, 0x435, 0x43A, 0x441, 0x442, 0x41E, 0x421, 0x41A])
 _REPEAT = "".join(chr(c) for c in [0x422, 0x420, 0x410, 0x412, 0x41C, 0x410]) * 2
 _WORD_NUM = "".join(chr(c) for c in [0x41C, 0x43E, 0x439, 0x440, 0x43E, 0x441]) + "10"
+# Punctuation glue: period directly before uppercase Cyrillic
+_PUNCT_GLUE = "".join(chr(c) for c in [0x44D, 0x442, 0x43E, 0x433, 0x43E, 0x2E, 0x41E, 0x421, 0x41A])
 _CLEAN = "".join(chr(c) for c in [0x41F, 0x43E, 0x43B, 0x443, 0x447, 0x438, 0x442, 0x435]) + " 1."
 _END_OK = (
     "".join(chr(c) for c in [0x41A, 0x43E, 0x43D, 0x435, 0x446])
@@ -45,7 +48,7 @@ def test_detects_case_transition_glue() -> None:
     records = evaluate_glued_text(page)
 
     assert len(records) == 1
-    assert records[0].code == "GLUED_TEXT"
+    assert "Case transition" in records[0].message
 
 
 def test_detects_repeated_phrase() -> None:
@@ -68,11 +71,11 @@ def test_detects_word_number_glue() -> None:
 
 def test_detects_punctuation_glue() -> None:
     """Period directly followed by uppercase Cyrillic is flagged."""
-    page = _page([_para("b1", _CASE_GLUE)])
+    page = _page([_para("b1", _PUNCT_GLUE)])
     records = evaluate_glued_text(page)
 
-    assert len(records) >= 1
-    assert records[0].code == "GLUED_TEXT"
+    assert len(records) == 1
+    assert "Punctuation glue" in records[0].message
 
 
 def test_ignores_clean_text() -> None:
