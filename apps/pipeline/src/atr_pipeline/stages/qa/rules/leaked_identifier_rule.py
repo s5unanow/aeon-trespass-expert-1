@@ -21,8 +21,9 @@ _CYRILLIC_RE = re.compile(r"[\u0400-\u04FF]")
 
 def _check_text(text: str) -> str | None:
     """Return a reason string if *text* contains a leaked identifier."""
-    if _DOC_ID_RE.search(text):
-        return f"Document-ID pattern: {_DOC_ID_RE.search(text).group()}"  # type: ignore[union-attr]
+    m = _DOC_ID_RE.search(text)
+    if m:
+        return f"Document-ID pattern: {m.group()}"
     if _UNKNOWN_RE.search(text):
         return "Placeholder 'UNKNOWN' in rendered text"
     m = _SNAKE_3_RE.search(text)
