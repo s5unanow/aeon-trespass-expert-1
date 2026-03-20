@@ -25,9 +25,19 @@ export function DocumentIndexPage() {
           .catch(() => null),
       ),
     );
-    Promise.all(fetches).then((results) =>
-      setManifests(results.filter((m): m is ManifestWithEdition => m !== null)),
-    );
+    Promise.all(fetches).then((results) => {
+      const loaded = results.filter((m): m is ManifestWithEdition => m !== null);
+      // Deduplicate: when both edition paths fall back to the same root
+      // manifest, keep only the first (avoids identical duplicate sections)
+      const seen = new Set<string>();
+      const unique = loaded.filter((m) => {
+        const key = `${m.document_id}:${m.pages.length}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      setManifests(unique);
+    });
   }, []);
 
   return (
