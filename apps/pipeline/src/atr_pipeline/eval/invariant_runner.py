@@ -71,7 +71,11 @@ def run_verification(
         VerificationReport with per-page results and severity counts.
     """
     all_pages = _discover_pages(store, document_id)
-    pages_to_check = [p for p in all_pages if p in set(page_filter)] if page_filter else all_pages
+    if page_filter:
+        filter_set = set(page_filter)
+        pages_to_check = [p for p in all_pages if p in filter_set]
+    else:
+        pages_to_check = all_pages
 
     page_results: list[PageVerificationResult] = []
     severity_totals: dict[str, int] = {}

@@ -166,7 +166,7 @@ def test_dangling_evidence_ref() -> None:
     records = run_invariant_checks(resolved, evidence)
     assert any(r.code == DANGLING_EVIDENCE_REF for r in records)
     dangling = [r for r in records if r.code == DANGLING_EVIDENCE_REF]
-    assert dangling[0].entity_ref == "p0001.b001"
+    assert dangling[0].entity_ref == "p0001.b001:e.char.999"
 
 
 def test_dangling_evidence_ref_on_region() -> None:
@@ -183,7 +183,7 @@ def test_dangling_evidence_ref_on_region() -> None:
     records = run_invariant_checks(resolved, evidence)
     dangling = [r for r in records if r.code == DANGLING_EVIDENCE_REF]
     assert len(dangling) == 1
-    assert dangling[0].entity_ref == "r001"
+    assert dangling[0].entity_ref == "r001:e.char.999"
 
 
 def test_bbox_out_of_page() -> None:

@@ -125,7 +125,7 @@ def check_dangling_evidence_ref(
                         document_id=resolved.document_id,
                         code=DANGLING_EVIDENCE_REF,
                         severity=Severity.ERROR,
-                        entity_ref=block.block_id,
+                        entity_ref=f"{block.block_id}:{eid}",
                         message=f"Block {block.block_id} references evidence "
                         f"{eid} which does not exist.",
                     )
@@ -139,7 +139,7 @@ def check_dangling_evidence_ref(
                         document_id=resolved.document_id,
                         code=DANGLING_EVIDENCE_REF,
                         severity=Severity.ERROR,
-                        entity_ref=region.region_id,
+                        entity_ref=f"{region.region_id}:{eid}",
                         message=f"Region {region.region_id} references evidence "
                         f"{eid} which does not exist.",
                     )
