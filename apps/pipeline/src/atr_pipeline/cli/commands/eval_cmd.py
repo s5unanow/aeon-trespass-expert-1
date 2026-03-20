@@ -128,19 +128,17 @@ def _generate_overlays(
 ) -> None:
     """Generate overlay PNGs for evaluated pages."""
     from atr_pipeline.eval.overlay import draw_ir_overlay
+    from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
+
+    provider = PageRasterProvider(store=store, document_id=document_id)
 
     for page_result in report.pages:
         page_id = page_result.page_id
-        raster_dir = store.root / document_id / "raster" / "page" / page_id
-        if not raster_dir.exists():
+        raster_path = provider.get_raster(page_id)
+        if raster_path is None:
             typer.echo(f"  SKIP overlay {page_id}: no raster", err=True)
             continue
 
-        rasters = sorted(raster_dir.glob("*.png"))
-        if not rasters:
-            continue
-
-        raster_path = rasters[-1]
         page_ir = load_page_ir(store, document_id, page_id)
         if page_ir is None:
             continue

@@ -65,15 +65,27 @@ def test_ingest_produces_manifest(tmp_path: Path) -> None:
 
 
 def test_ingest_produces_raster(tmp_path: Path) -> None:
-    """Ingest stage produces a page raster PNG."""
+    """Ingest stage produces page rasters for each pyramid DPI level."""
     ctx = _make_ctx(tmp_path)
     execute_stage(IngestStage(), ctx)
 
-    # Check raster exists in artifact store
-    raster_dir = tmp_path / "artifacts" / "walking_skeleton" / "raster" / "page" / "p0001"
-    rasters = list(raster_dir.glob("*.png"))
-    assert len(rasters) == 1
-    assert rasters[0].stat().st_size > 100  # Not empty
+    # Check raster pyramid levels exist in artifact store (default: 150, 300 DPI)
+    raster_base = tmp_path / "artifacts" / "walking_skeleton" / "raster" / "page"
+    pyramid_dirs = sorted(d.name for d in raster_base.iterdir() if d.is_dir())
+    assert "p0001__150dpi" in pyramid_dirs
+    assert "p0001__300dpi" in pyramid_dirs
+
+    # Each level has a PNG
+    for dpi_dir in pyramid_dirs:
+        rasters = list((raster_base / dpi_dir).glob("*.png"))
+        assert len(rasters) == 1
+        assert rasters[0].stat().st_size > 100  # Not empty
+
+    # Check raster metadata JSON was stored
+    meta_dir = tmp_path / "artifacts" / "walking_skeleton" / "raster_meta.v1" / "page" / "p0001"
+    assert meta_dir.exists()
+    jsons = list(meta_dir.glob("*.json"))
+    assert len(jsons) == 1
 
 
 def test_ingest_cache_hit(tmp_path: Path) -> None:
