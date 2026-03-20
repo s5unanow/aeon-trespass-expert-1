@@ -31,7 +31,20 @@ def print_summary(report: EvalReport) -> None:
     if report.aggregate:
         typer.echo("Aggregate:")
         for key, val in sorted(report.aggregate.items()):
-            typer.echo(f"  {key}: {val:.2f}")
+            typer.echo(f"  {key}: {val:.4f}")
+
+    if report.threshold_results:
+        typer.echo("")
+        typer.echo(f"{'THRESHOLD':<45} {'VALUE':>8} {'MIN':>8} {'BLOCK':>6} {'PASS':>6}")
+        typer.echo("-" * 75)
+        for t in report.threshold_results:
+            val_str = f"{t.value:.4f}" if t.value is not None else "N/A"
+            block_str = "YES" if t.blocking else "no"
+            status = "OK" if t.passed else "FAIL"
+            typer.echo(
+                f"{t.name:<45} {val_str:>8} {t.threshold_min:>8.4f} {block_str:>6} {status:>6}"
+            )
+        typer.echo("-" * 75)
 
     status = "PASSED" if report.passed else "FAILED"
     typer.echo(f"\nResult: {status}")

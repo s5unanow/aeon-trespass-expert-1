@@ -17,6 +17,7 @@ from atr_pipeline.eval.models import (
     MetricResult,
     PageEvalResult,
 )
+from atr_pipeline.eval.thresholds import ThresholdConfig, ThresholdResult, check_thresholds
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.page_ir_v1 import PageIRV1
 
@@ -30,6 +31,7 @@ def run_evaluation(
     store: ArtifactStore,
     repo_root: Path | None = None,
     page_filter: list[str] | None = None,
+    threshold_config: ThresholdConfig | None = None,
 ) -> EvalReport:
     """Run the full evaluation pipeline.
 
@@ -93,7 +95,17 @@ def run_evaluation(
         )
 
     aggregate = _compute_aggregate(page_results)
-    all_passed = all(p.passed for p in page_results)
+
+    threshold_results: list[ThresholdResult] = []
+    if threshold_config is not None:
+        threshold_results = check_thresholds(aggregate, threshold_config)
+
+    all_pages_passed = all(p.passed for p in page_results)
+    if threshold_config is not None:
+        blocking_failed = any(not t.passed and t.blocking for t in threshold_results)
+        all_passed = all_pages_passed and not blocking_failed
+    else:
+        all_passed = all_pages_passed
 
     return EvalReport(
         golden_set_name=golden.name,
@@ -101,6 +113,7 @@ def run_evaluation(
         timestamp=datetime.now(tz=UTC).isoformat(),
         pages=page_results,
         aggregate=aggregate,
+        threshold_results=threshold_results,
         passed=all_passed,
     )
 
@@ -145,19 +158,31 @@ def _build_expected_block_types(spec: GoldenPageSpec) -> dict[str, str]:
 
 
 def _compute_aggregate(page_results: list[PageEvalResult]) -> dict[str, float]:
-    """Compute aggregate metrics across all pages."""
+    """Compute aggregate metrics across all pages.
+
+    Emits two keys per metric:
+      {metric_name}_pass_rate — fraction of pages that pass
+      {metric_name}_mean     — mean of the metric value across pages
+    Plus overall_pass_rate across all metric checks.
+    """
     if not page_results:
         return {}
-    all_metrics: dict[str, list[float]] = {}
+    pass_lists: dict[str, list[float]] = {}
+    value_lists: dict[str, list[float]] = {}
     for page in page_results:
         for m in page.metrics:
-            if m.metric_name not in all_metrics:
-                all_metrics[m.metric_name] = []
-            all_metrics[m.metric_name].append(1.0 if m.passed else 0.0)
+            if m.metric_name not in pass_lists:
+                pass_lists[m.metric_name] = []
+                value_lists[m.metric_name] = []
+            pass_lists[m.metric_name].append(1.0 if m.passed else 0.0)
+            value_lists[m.metric_name].append(m.value)
 
     aggregate: dict[str, float] = {}
-    for name, values in sorted(all_metrics.items()):
-        aggregate[f"{name}_pass_rate"] = sum(values) / len(values)
+    for name in sorted(pass_lists):
+        passes = pass_lists[name]
+        values = value_lists[name]
+        aggregate[f"{name}_pass_rate"] = sum(passes) / len(passes)
+        aggregate[f"{name}_mean"] = sum(values) / len(values)
 
     total_metrics = sum(len(p.metrics) for p in page_results)
     total_passed = sum(1 for p in page_results for m in p.metrics if m.passed)

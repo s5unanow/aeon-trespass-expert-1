@@ -92,3 +92,64 @@ def test_eval_with_output_json(tmp_path: Path) -> None:
     assert output_json.exists()
     report_data = json.loads(output_json.read_text())
     assert report_data["passed"] is True
+
+
+def test_eval_fail_on_threshold_passing(tmp_path: Path) -> None:
+    """eval --fail-on-threshold exits 0 when all thresholds pass."""
+    artifacts = tmp_path / "artifacts"
+    _write_golden_ir(artifacts, "walking_skeleton", "p0001")
+
+    real_config = load_document_config("walking_skeleton", repo_root=_repo_root())
+    patched_config = real_config.model_copy(update={"artifact_root": artifacts})
+
+    with patch(
+        "atr_pipeline.cli.commands.eval_cmd.load_document_config",
+        return_value=patched_config,
+    ):
+        result = runner.invoke(
+            app,
+            [
+                "eval",
+                "--golden-set",
+                "core",
+                "--doc",
+                "walking_skeleton",
+                "--fail-on-threshold",
+            ],
+        )
+
+    assert result.exit_code == 0, result.output
+    assert "THRESHOLD" in _strip_ansi(result.output)
+
+
+def test_eval_fail_on_threshold_reports_values(tmp_path: Path) -> None:
+    """eval --fail-on-threshold includes threshold table in output."""
+    artifacts = tmp_path / "artifacts"
+    _write_golden_ir(artifacts, "walking_skeleton", "p0001")
+
+    real_config = load_document_config("walking_skeleton", repo_root=_repo_root())
+    patched_config = real_config.model_copy(update={"artifact_root": artifacts})
+
+    with patch(
+        "atr_pipeline.cli.commands.eval_cmd.load_document_config",
+        return_value=patched_config,
+    ):
+        output_json = tmp_path / "report.json"
+        result = runner.invoke(
+            app,
+            [
+                "eval",
+                "--golden-set",
+                "core",
+                "--doc",
+                "walking_skeleton",
+                "--fail-on-threshold",
+                "--output-json",
+                str(output_json),
+            ],
+        )
+
+    assert result.exit_code == 0, result.output
+    report_data = json.loads(output_json.read_text())
+    assert "threshold_results" in report_data
+    assert len(report_data["threshold_results"]) > 0

@@ -12,6 +12,7 @@ from atr_pipeline.eval.config_loader import discover_golden_sets, load_golden_se
 from atr_pipeline.eval.models import EvalReport
 from atr_pipeline.eval.report import print_summary, write_report_json
 from atr_pipeline.eval.runner import load_page_ir, run_evaluation
+from atr_pipeline.eval.thresholds import ThresholdConfig, load_thresholds
 from atr_pipeline.store.artifact_store import ArtifactStore
 
 
@@ -21,10 +22,13 @@ def eval_command(
     pages: str = typer.Option("", "--pages", help="Page filter: 'p0001' or 'p0001,p0002'"),
     output_json: str = typer.Option("", "--output-json", help="Path to write JSON report"),
     overlays: bool = typer.Option(False, "--overlays", help="Generate visual overlay PNGs"),
+    fail_on_threshold: bool = typer.Option(
+        False, "--fail-on-threshold", help="Fail if blocking thresholds are not met"
+    ),
 ) -> None:
     """Run extraction evaluation against a golden set."""
     if golden_set == "all":
-        _run_all_golden_sets(output_json=output_json)
+        _run_all_golden_sets(output_json=output_json, fail_on_threshold=fail_on_threshold)
         return
 
     gs_config = load_golden_set(golden_set)
@@ -33,6 +37,7 @@ def eval_command(
     store = ArtifactStore(config.artifact_root)
     repo_root = config.repo_root
     page_filter = _parse_pages(pages) if pages else None
+    threshold_config = _load_threshold_config(repo_root) if fail_on_threshold else None
 
     report = run_evaluation(
         golden_set_name=golden_set,
@@ -40,6 +45,7 @@ def eval_command(
         store=store,
         repo_root=repo_root,
         page_filter=page_filter,
+        threshold_config=threshold_config,
     )
 
     print_summary(report)
@@ -54,7 +60,7 @@ def eval_command(
         raise typer.Exit(1)
 
 
-def _run_all_golden_sets(*, output_json: str) -> None:
+def _run_all_golden_sets(*, output_json: str, fail_on_threshold: bool) -> None:
     """Discover and run all golden sets, fail if any fail."""
     names = discover_golden_sets()
     if not names:
@@ -64,6 +70,7 @@ def _run_all_golden_sets(*, output_json: str) -> None:
     typer.echo(f"Running {len(names)} golden set(s): {', '.join(names)}")
     all_reports: list[EvalReport] = []
     any_failed = False
+    threshold_config: ThresholdConfig | None = None
 
     for name in names:
         gs_config = load_golden_set(name)
@@ -74,12 +81,16 @@ def _run_all_golden_sets(*, output_json: str) -> None:
             typer.echo(f"  SKIP {name}: document config not found for {document_id}", err=True)
             continue
 
+        if fail_on_threshold and threshold_config is None:
+            threshold_config = _load_threshold_config(config.repo_root)
+
         store = ArtifactStore(config.artifact_root)
         report = run_evaluation(
             golden_set_name=name,
             document_id=document_id,
             store=store,
             repo_root=config.repo_root,
+            threshold_config=threshold_config,
         )
         all_reports.append(report)
         status = "PASS" if report.passed else "FAIL"
@@ -94,6 +105,15 @@ def _run_all_golden_sets(*, output_json: str) -> None:
 
     if any_failed:
         raise typer.Exit(1)
+
+
+def _load_threshold_config(repo_root: Path) -> ThresholdConfig | None:
+    """Load threshold config, returning None if not found."""
+    try:
+        return load_thresholds(repo_root=repo_root)
+    except FileNotFoundError:
+        typer.echo("Warning: threshold config not found, skipping threshold checks", err=True)
+        return None
 
 
 def _parse_pages(pages_str: str) -> list[str]:

@@ -1,0 +1,56 @@
+# Extraction metric thresholds — versioned configuration.
+#
+# Each threshold references an aggregate metric key from the eval report.
+# Aggregate keys follow these patterns:
+#   {metric_name}_pass_rate  — fraction of pages that pass the metric
+#   {metric_name}_mean       — mean metric value across pages
+#   overall_pass_rate        — fraction of all metric checks that pass
+#
+# Governance rules (see docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §4):
+#   - Loosening a threshold requires justification in the PR description
+#   - Tightening a threshold is always allowed
+#   - Threshold changes must be in config, never hardcoded
+
+version = 1
+
+[[metric_thresholds]]
+name = "reading_order_accuracy_pass_rate"
+min = 0.98
+blocking = true
+description = ">=98% of pages must pass reading-order accuracy"
+
+[[metric_thresholds]]
+name = "reading_order_accuracy_mean"
+min = 0.98
+blocking = true
+description = "Mean reading-order accuracy across all pages >= 98%"
+
+[[metric_thresholds]]
+name = "symbol_count_pass_rate"
+min = 0.98
+blocking = true
+description = ">=98% of pages must match expected symbol count"
+
+[[metric_thresholds]]
+name = "block_count_delta_pass_rate"
+min = 1.0
+blocking = true
+description = "All pages must match expected block count"
+
+[[metric_thresholds]]
+name = "block_type_coverage_pass_rate"
+min = 1.0
+blocking = true
+description = "All pages must have all expected block types"
+
+[[metric_thresholds]]
+name = "block_type_coverage_mean"
+min = 1.0
+blocking = true
+description = "Mean block-type coverage = 100%"
+
+[[metric_thresholds]]
+name = "overall_pass_rate"
+min = 0.95
+blocking = true
+description = ">=95% of all metric checks must pass"

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from atr_pipeline.eval.runner import run_evaluation
+from atr_pipeline.eval.thresholds import MetricThreshold, ThresholdConfig
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.page_ir_v1 import HeadingBlock, IconInline, PageIRV1, ParagraphBlock
 
@@ -121,3 +122,106 @@ def test_run_evaluation_report_json_roundtrip(tmp_path: Path) -> None:
     roundtripped = EvalReport.model_validate_json(report.model_dump_json())
     assert roundtripped.passed == report.passed
     assert len(roundtripped.pages) == len(report.pages)
+
+
+def test_run_evaluation_aggregate_has_mean(tmp_path: Path) -> None:
+    """Aggregate includes _mean keys alongside _pass_rate."""
+    store = ArtifactStore(tmp_path / "artifacts")
+    _write_golden_ir(store, "walking_skeleton", "p0001")
+
+    report = run_evaluation(
+        golden_set_name="core",
+        document_id="walking_skeleton",
+        store=store,
+        repo_root=_repo_root(),
+    )
+
+    assert "reading_order_accuracy_mean" in report.aggregate
+    assert "block_count_delta_mean" in report.aggregate
+    assert "symbol_count_mean" in report.aggregate
+    assert "block_type_coverage_mean" in report.aggregate
+
+
+def test_run_evaluation_with_thresholds_pass(tmp_path: Path) -> None:
+    """Evaluation with passing thresholds reports passed=True."""
+    store = ArtifactStore(tmp_path / "artifacts")
+    _write_golden_ir(store, "walking_skeleton", "p0001")
+
+    config = ThresholdConfig(
+        metric_thresholds=[
+            MetricThreshold(name="overall_pass_rate", min=0.95, blocking=True),
+        ]
+    )
+
+    report = run_evaluation(
+        golden_set_name="core",
+        document_id="walking_skeleton",
+        store=store,
+        repo_root=_repo_root(),
+        threshold_config=config,
+    )
+
+    assert report.passed
+    assert len(report.threshold_results) == 1
+    assert report.threshold_results[0].passed
+
+
+def test_run_evaluation_with_thresholds_fail(tmp_path: Path) -> None:
+    """Evaluation with impossible threshold reports passed=False."""
+    store = ArtifactStore(tmp_path / "artifacts")
+    # Write IR that DOES NOT match golden -> some metrics will fail
+    ir = PageIRV1(
+        document_id="walking_skeleton",
+        page_id="p0001",
+        page_number=1,
+        language="en",
+        blocks=[HeadingBlock(block_id="p0001.b001")],
+        reading_order=["p0001.b001"],
+    )
+    ir_dir = store.root / "walking_skeleton" / "page_ir.v1.en" / "page" / "p0001"
+    ir_dir.mkdir(parents=True, exist_ok=True)
+    (ir_dir / "test.json").write_text(json.dumps(json.loads(ir.model_dump_json()), indent=2))
+
+    config = ThresholdConfig(
+        metric_thresholds=[
+            MetricThreshold(name="overall_pass_rate", min=1.0, blocking=True),
+        ]
+    )
+
+    report = run_evaluation(
+        golden_set_name="core",
+        document_id="walking_skeleton",
+        store=store,
+        repo_root=_repo_root(),
+        threshold_config=config,
+    )
+
+    # Some metrics fail (block_count, symbol_count) -> overall_pass_rate < 1.0
+    assert not report.passed
+    assert len(report.threshold_results) == 1
+    assert not report.threshold_results[0].passed
+
+
+def test_run_evaluation_non_blocking_threshold_does_not_fail(tmp_path: Path) -> None:
+    """Non-blocking threshold failure does not set report.passed=False."""
+    store = ArtifactStore(tmp_path / "artifacts")
+    _write_golden_ir(store, "walking_skeleton", "p0001")
+
+    config = ThresholdConfig(
+        metric_thresholds=[
+            MetricThreshold(name="nonexistent_metric", min=1.0, blocking=False),
+        ]
+    )
+
+    report = run_evaluation(
+        golden_set_name="core",
+        document_id="walking_skeleton",
+        store=store,
+        repo_root=_repo_root(),
+        threshold_config=config,
+    )
+
+    # Non-blocking failure -> report still passes
+    assert report.passed
+    assert len(report.threshold_results) == 1
+    assert not report.threshold_results[0].passed

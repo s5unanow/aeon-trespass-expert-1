@@ -118,12 +118,20 @@ def eval_cmd(
     pages: str = typer.Option("", "--pages", help="Page filter: 'p0001' or 'p0001,p0002'"),
     output_json: str = typer.Option("", "--output-json", help="Path to write JSON report"),
     overlays: bool = typer.Option(False, "--overlays", help="Generate visual overlay PNGs"),
+    fail_on_threshold: bool = typer.Option(
+        False, "--fail-on-threshold", help="Fail if blocking thresholds are not met"
+    ),
 ) -> None:
     """Run extraction evaluation against a golden set."""
     from atr_pipeline.cli.commands.eval_cmd import eval_command
 
     eval_command(
-        golden_set=golden_set, doc=doc, pages=pages, output_json=output_json, overlays=overlays
+        golden_set=golden_set,
+        doc=doc,
+        pages=pages,
+        output_json=output_json,
+        overlays=overlays,
+        fail_on_threshold=fail_on_threshold,
     )
 
 
