@@ -7,6 +7,7 @@ import json
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.stages.extract_native.evidence_extractor import extract_page_evidence
 from atr_pipeline.stages.extract_native.pymupdf_extractor import extract_native_page
 from atr_schemas.enums import StageScope
 from atr_schemas.source_manifest_v1 import SourceManifestV1
@@ -18,6 +19,7 @@ class ExtractNativeResult(BaseModel):
     document_id: str
     page_count: int = Field(ge=1)
     page_ids: list[str]
+    evidence_page_ids: list[str] = Field(default_factory=list)
 
 
 class ExtractNativeStage:
@@ -45,6 +47,7 @@ class ExtractNativeStage:
         all_ids = [f"p{n:04d}" for n in range(1, page_count + 1)]
         target_ids = ctx.filter_pages(all_ids)
         page_ids: list[str] = []
+        evidence_page_ids: list[str] = []
 
         for page_num in range(1, page_count + 1):
             page_id = f"p{page_num:04d}"
@@ -67,11 +70,34 @@ class ExtractNativeStage:
             )
             page_ids.append(page_id)
 
-        ctx.logger.info("Extracted %d pages", len(page_ids))
+            # Evidence extraction — produce PageEvidenceV1 alongside NativePageV1
+            try:
+                evidence = extract_page_evidence(
+                    ctx.config.source_pdf_path,
+                    page_number=page_num,
+                    document_id=ctx.document_id,
+                )
+                ctx.artifact_store.put_json(
+                    document_id=ctx.document_id,
+                    schema_family="page_evidence.v1",
+                    scope="page",
+                    entity_id=page_id,
+                    data=evidence,
+                )
+                evidence_page_ids.append(page_id)
+            except Exception:
+                ctx.logger.warning(
+                    "Evidence extraction failed for %s, continuing", page_id, exc_info=True
+                )
+
+        ctx.logger.info(
+            "Extracted %d pages (%d with evidence)", len(page_ids), len(evidence_page_ids)
+        )
         return ExtractNativeResult(
             document_id=ctx.document_id,
             page_count=len(page_ids),
             page_ids=page_ids,
+            evidence_page_ids=evidence_page_ids,
         )
 
     @staticmethod
