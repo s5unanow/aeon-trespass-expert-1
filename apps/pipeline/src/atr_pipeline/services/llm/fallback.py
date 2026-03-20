@@ -106,6 +106,7 @@ class FallbackTranslator:
                     attempt,
                     attempts,
                     exc,
+                    exc_info=True,
                 )
                 if attempt < attempts:
                     time.sleep(self._retry_delay)

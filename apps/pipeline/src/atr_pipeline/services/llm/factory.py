@@ -82,12 +82,16 @@ def create_translator(
 
     from atr_pipeline.services.llm.fallback import FallbackTranslator
 
-    fallback = _create_single_adapter(
-        config.fallback_provider,
-        config.fallback_model,
-        config.temperature,
-        concept_registry,
-    )
+    try:
+        fallback = _create_single_adapter(
+            config.fallback_provider,
+            config.fallback_model,
+            config.temperature,
+            concept_registry,
+        )
+    except ValueError as exc:
+        msg = f"Failed to create fallback provider: {exc}"
+        raise ValueError(msg) from exc
     return FallbackTranslator(
         primary,
         fallback,
