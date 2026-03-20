@@ -155,11 +155,15 @@ def test_openai_valid_response_returns_result() -> None:
 
         adapter = OpenAIAdapter(model="gpt-4o")
         choice = SimpleNamespace(message=SimpleNamespace(content=_valid_result_json()))
-        mock_client.chat.completions.create.return_value = SimpleNamespace(choices=[choice])
+        mock_client.chat.completions.create.return_value = SimpleNamespace(
+            choices=[choice],
+            usage=None,
+        )
 
-        result = adapter.translate_batch(_sample_batch())
-        assert result.batch_id == "tr.p0001.01"
-        assert len(result.segments) == 1
+        resp = adapter.translate_batch(_sample_batch())
+        assert resp.result.batch_id == "tr.p0001.01"
+        assert len(resp.result.segments) == 1
+        assert resp.meta.provider == "openai"
 
 
 def test_openai_model_profile_override() -> None:
@@ -173,7 +177,10 @@ def test_openai_model_profile_override() -> None:
 
         adapter = OpenAIAdapter(model="gpt-4o")
         choice = SimpleNamespace(message=SimpleNamespace(content=_valid_result_json()))
-        mock_client.chat.completions.create.return_value = SimpleNamespace(choices=[choice])
+        mock_client.chat.completions.create.return_value = SimpleNamespace(
+            choices=[choice],
+            usage=None,
+        )
 
         adapter.translate_batch(_sample_batch(), model_profile="gpt-4o-mini")
         call_kwargs = mock_client.chat.completions.create.call_args
@@ -215,11 +222,17 @@ def test_anthropic_valid_tool_use_returns_result() -> None:
             name="submit_translation",
             input=json.loads(_valid_result_json()),
         )
-        mock_client.messages.create.return_value = SimpleNamespace(content=[tool_block])
+        usage = SimpleNamespace(input_tokens=100, output_tokens=50)
+        mock_client.messages.create.return_value = SimpleNamespace(
+            content=[tool_block],
+            usage=usage,
+        )
 
-        result = adapter.translate_batch(_sample_batch())
-        assert result.batch_id == "tr.p0001.01"
-        assert len(result.segments) == 1
+        resp = adapter.translate_batch(_sample_batch())
+        assert resp.result.batch_id == "tr.p0001.01"
+        assert len(resp.result.segments) == 1
+        assert resp.meta.provider == "anthropic"
+        assert resp.meta.input_tokens == 100
 
 
 # --- Gemini response handling ---
@@ -253,11 +266,13 @@ def test_gemini_valid_response_returns_result() -> None:
         adapter = GeminiAdapter(model="gemini-2.5-flash")
         mock_client.models.generate_content.return_value = SimpleNamespace(
             text=_valid_result_json(),
+            usage_metadata=None,
         )
 
-        result = adapter.translate_batch(_sample_batch())
-        assert result.batch_id == "tr.p0001.01"
-        assert len(result.segments) == 1
+        resp = adapter.translate_batch(_sample_batch())
+        assert resp.result.batch_id == "tr.p0001.01"
+        assert len(resp.result.segments) == 1
+        assert resp.meta.provider == "gemini"
 
 
 # --- Gemini schema stripping ---

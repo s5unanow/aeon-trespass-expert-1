@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from atr_pipeline.services.llm.base import TranslationResponse, TranslationResponseMeta
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import IconInline, InlineNode, TextInline
 from atr_schemas.translation_batch_v1 import TranslationBatchV1
@@ -24,7 +25,7 @@ class MockTranslator:
         self,
         batch: TranslationBatchV1,
         model_profile: str = "",
-    ) -> TranslationResultV1:
+    ) -> TranslationResponse:
         """Translate segments using hard-coded fixture data."""
         translated: list[TranslatedSegment] = []
 
@@ -70,7 +71,13 @@ class MockTranslator:
                 )
             )
 
-        return TranslationResultV1(
+        result = TranslationResultV1(
             batch_id=batch.batch_id,
             segments=translated,
         )
+        meta = TranslationResponseMeta(
+            provider="mock",
+            model="mock-v1",
+            raw_response=result.model_dump_json(),
+        )
+        return TranslationResponse(result=result, meta=meta)

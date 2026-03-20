@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import logging
 
+from atr_pipeline.services.llm.base import TranslationResponse, TranslationResponseMeta
 from atr_pipeline.services.llm.prompt_builder import (
     build_few_shot_examples,
     build_response_schema,
@@ -50,7 +52,7 @@ class AnthropicAdapter:
         self,
         batch: TranslationBatchV1,
         model_profile: str = "",
-    ) -> TranslationResultV1:
+    ) -> TranslationResponse:
         """Translate a batch of segments via Anthropic tool use."""
         model = model_profile or self._model
 
@@ -107,9 +109,18 @@ class AnthropicAdapter:
             raise RuntimeError(msg)
 
         result = TranslationResultV1.model_validate(tool_input)
+        raw_json = json.dumps(tool_input, ensure_ascii=False, separators=(",", ":"))
+
+        meta = TranslationResponseMeta(
+            provider="anthropic",
+            model=model,
+            raw_response=raw_json,
+            input_tokens=getattr(response.usage, "input_tokens", 0),
+            output_tokens=getattr(response.usage, "output_tokens", 0),
+        )
 
         log.info(
             "Anthropic translate_batch complete: segments=%d",
             len(result.segments),
         )
-        return result
+        return TranslationResponse(result=result, meta=meta)

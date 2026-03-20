@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import re
 
+from atr_pipeline.utils.hashing import sha256_str
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.page_ir_v1 import (
     DividerBlock,
@@ -19,10 +21,22 @@ from atr_schemas.translation_batch_v1 import (
 )
 
 
+def _inline_checksum(nodes: list[object]) -> str:
+    """Compute a short hash of serialized inline nodes for cache invalidation."""
+    canonical = json.dumps(
+        [n.model_dump(mode="json") if hasattr(n, "model_dump") else n for n in nodes],
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return sha256_str(canonical)[:12]
+
+
 def build_translation_batch(
     page_ir: PageIRV1,
     *,
     concept_registry: ConceptRegistryV1 | None = None,
+    prompt_profile: str = "",
 ) -> TranslationBatchV1:
     """Build a translation batch from an English PageIRV1.
 
@@ -57,6 +71,7 @@ def build_translation_batch(
             segment_id=block.block_id,
             block_type=block.type,
             source_inline=list(block.children),
+            source_checksum=_inline_checksum(list(block.children)),
             context=SegmentContext(
                 page_id=page_ir.page_id,
                 prev_heading=prev_heading,
@@ -102,5 +117,6 @@ def build_translation_batch(
         batch_id=f"tr.{page_ir.page_id}.01",
         source_lang=page_ir.language.value,
         target_lang="ru",
+        prompt_profile=prompt_profile,
         segments=segments,
     )

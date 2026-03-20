@@ -67,8 +67,10 @@ def test_walking_skeleton_end_to_end(tmp_path: Path) -> None:  # noqa: PLR0915
 
     # 5. Mock translate
     translator = MockTranslator()
-    result = translator.translate_batch(batch)
+    response = translator.translate_batch(batch)
+    result = response.result
     assert len(result.segments) == 2
+    assert response.meta.provider == "mock"
 
     # 6. Validate translation
     errors = validate_translation(batch, result)

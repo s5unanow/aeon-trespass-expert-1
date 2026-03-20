@@ -122,8 +122,33 @@ class TranslationStage:
         """Translate a single page and store the RU IR. Returns warning count."""
         ctx.logger.info("Translating %s", page_id)
 
-        batch = build_translation_batch(en_ir, concept_registry=concept_reg)
-        result = translator.translate_batch(batch)
+        batch = build_translation_batch(
+            en_ir,
+            concept_registry=concept_reg,
+            prompt_profile=ctx.config.translation.prompt_profile,
+        )
+        response = translator.translate_batch(batch)
+        result = response.result
+
+        # Persist translation metadata for auditability
+        meta_data = {
+            "batch_id": batch.batch_id,
+            "page_id": page_id,
+            "prompt_profile": batch.prompt_profile,
+            "provider": response.meta.provider,
+            "model": response.meta.model,
+            "input_tokens": response.meta.input_tokens,
+            "output_tokens": response.meta.output_tokens,
+            "raw_response": response.meta.raw_response,
+            "source_checksums": {s.segment_id: s.source_checksum for s in batch.segments},
+        }
+        ctx.artifact_store.put_json(
+            document_id=ctx.document_id,
+            schema_family="translation_meta.v1",
+            scope="page",
+            entity_id=page_id,
+            data=meta_data,
+        )
 
         errors = validate_translation(batch, result, concept_registry=concept_reg)
         for e in errors:

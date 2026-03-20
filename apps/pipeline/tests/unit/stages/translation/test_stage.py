@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from atr_pipeline.config import load_document_config
@@ -91,6 +92,34 @@ def test_translation_translates_pages(tmp_path: Path) -> None:
     assert ru_dir.exists()
     jsons = list(ru_dir.glob("*.json"))
     assert len(jsons) == 1
+
+
+def test_translation_persists_metadata(tmp_path: Path) -> None:
+    """TranslationStage stores translation_meta.v1 with provenance fields."""
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+
+    result = execute_stage(TranslationStage(), ctx)
+    assert result.success
+
+    # Verify translation metadata artifact was stored
+    meta_dir = (
+        tmp_path / "artifacts" / "walking_skeleton" / "translation_meta.v1" / "page" / "p0001"
+    )
+    assert meta_dir.exists()
+    jsons = list(meta_dir.glob("*.json"))
+    assert len(jsons) == 1
+
+    meta = json.loads(jsons[0].read_text())
+    assert meta["provider"] == "mock"
+    assert meta["model"] == "mock-v1"
+    assert meta["prompt_profile"] == "translate_rules_ru.v1"
+    assert meta["page_id"] == "p0001"
+    assert "source_checksums" in meta
+    assert len(meta["source_checksums"]) > 0
+    # Each checksum should be a 12-char hex string
+    for checksum in meta["source_checksums"].values():
+        assert len(checksum) == 12
 
 
 def test_translation_raises_without_en_ir(tmp_path: Path) -> None:
