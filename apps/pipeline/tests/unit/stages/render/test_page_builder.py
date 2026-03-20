@@ -92,14 +92,12 @@ def test_nav_builder() -> None:
     """Build nav payload from render pages."""
     ir = _make_ru_ir()
     render = build_render_page(ir)
-    render_data = render.model_dump()
 
-    nav = build_nav_payload("walking_skeleton", [render_data])
+    nav = build_nav_payload("walking_skeleton", [render])
 
-    assert nav["document_id"] == "walking_skeleton"
-    pages = nav["pages"]
-    assert len(pages) == 1  # type: ignore[arg-type]
-    assert pages[0]["page_id"] == "p0001"  # type: ignore[index]
+    assert nav.document_id == "walking_skeleton"
+    assert len(nav.pages) == 1
+    assert nav.pages[0].page_id == "p0001"
 
 
 def test_concept_registry_loader() -> None:

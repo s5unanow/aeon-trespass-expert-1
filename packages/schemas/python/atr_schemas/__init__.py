@@ -28,6 +28,7 @@ from atr_schemas.native_page_v1 import (
     SpanEvidence,
     WordEvidence,
 )
+from atr_schemas.nav_payload_v1 import NavEntryV1, NavPayloadV1
 from atr_schemas.page_ir_v1 import (
     Block,
     CalloutBlock,
@@ -107,6 +108,8 @@ __all__ = [
     "ListBlock",
     "ListItemBlock",
     "NativePageV1",
+    "NavEntryV1",
+    "NavPayloadV1",
     "PageDimensions",
     "PageEntry",
     "PageIRV1",

@@ -1,0 +1,77 @@
+{
+  "$defs": {
+    "NavEntryV1": {
+      "description": "A single page entry in the navigation payload.",
+      "properties": {
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "source_page_number": {
+          "default": 0,
+          "title": "Source Page Number",
+          "type": "integer"
+        },
+        "prev": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prev"
+        },
+        "next": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next"
+        }
+      },
+      "required": [
+        "page_id"
+      ],
+      "title": "NavEntryV1",
+      "type": "object"
+    }
+  },
+  "description": "Frontend navigation payload — ordered page list with prev/next links.",
+  "properties": {
+    "schema_version": {
+      "default": "nav_payload.v1",
+      "pattern": "^nav_payload\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "pages": {
+      "items": {
+        "$ref": "#/$defs/NavEntryV1"
+      },
+      "title": "Pages",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "NavPayloadV1",
+  "type": "object"
+}

@@ -14,6 +14,7 @@ from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.glossary_payload_v1 import GlossaryPayloadV1
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
+from atr_schemas.nav_payload_v1 import NavPayloadV1
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.patch_set_v1 import PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
@@ -36,6 +37,7 @@ MODELS = {
     "glossary_payload_v1": GlossaryPayloadV1,
     "layout_page_v1": LayoutPageV1,
     "native_page_v1": NativePageV1,
+    "nav_payload_v1": NavPayloadV1,
     "page_ir_v1": PageIRV1,
     "patch_set_v1": PatchSetV1,
     "qa_record_v1": QARecordV1,

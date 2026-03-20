@@ -120,7 +120,7 @@ class RenderStage:
         )
         refs["search_docs_ref"] = r.relative_path
 
-        nav = build_nav_payload(doc, [p.model_dump() for p in pages])
+        nav = build_nav_payload(doc, pages)
         r = store.put_json(
             document_id=doc,
             schema_family="nav.v1",
