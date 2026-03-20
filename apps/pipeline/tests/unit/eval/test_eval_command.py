@@ -40,11 +40,18 @@ def _write_golden_ir(artifacts_root: Path, document_id: str, page_id: str) -> No
     (ir_dir / "test.json").write_text(json.dumps(json.loads(ir.model_dump_json()), indent=2))
 
 
+def _strip_ansi(text: str) -> str:
+    """Remove ANSI escape sequences from text."""
+    import re
+
+    return re.sub(r"\x1b\[[0-9;]*m", "", text)
+
+
 def test_eval_help() -> None:
     """eval --help works."""
     result = runner.invoke(app, ["eval", "--help"])
     assert result.exit_code == 0
-    assert "golden-set" in result.output
+    assert "golden-set" in _strip_ansi(result.output)
 
 
 def test_eval_missing_golden_set() -> None:
