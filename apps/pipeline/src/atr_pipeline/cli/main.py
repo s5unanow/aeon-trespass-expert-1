@@ -99,5 +99,21 @@ def qa_cmd(
     _qa(doc=doc)
 
 
+@app.command(name="eval")
+def eval_cmd(
+    golden_set: str = typer.Option(..., "--golden-set", help="Golden set name (e.g. 'core')"),
+    doc: str = typer.Option(..., "--doc", help="Document id to evaluate"),
+    pages: str = typer.Option("", "--pages", help="Page filter: 'p0001' or 'p0001,p0002'"),
+    output_json: str = typer.Option("", "--output-json", help="Path to write JSON report"),
+    overlays: bool = typer.Option(False, "--overlays", help="Generate visual overlay PNGs"),
+) -> None:
+    """Run extraction evaluation against a golden set."""
+    from atr_pipeline.cli.commands.eval_cmd import eval_command
+
+    eval_command(
+        golden_set=golden_set, doc=doc, pages=pages, output_json=output_json, overlays=overlays
+    )
+
+
 if __name__ == "__main__":
     app()
