@@ -66,6 +66,7 @@ warn_unused_configs = true
 [[tool.mypy.overrides]]
 module = [
     "fitz.*", "docling.*", "cv2.*", "paddleocr.*",
+    "PIL", "PIL.*",
     "openai", "openai.*",
     "anthropic", "anthropic.*",
     "google", "google.genai", "google.genai.*",
@@ -81,7 +82,7 @@ type = "layers"
 layers = [
     "atr_pipeline.cli",
     "atr_pipeline.runner",
-    "atr_pipeline.stages",
+    "atr_pipeline.stages | atr_pipeline.eval",
     "atr_pipeline.services | atr_pipeline.store | atr_pipeline.registry",
     "atr_pipeline.config",
     "atr_pipeline.utils",

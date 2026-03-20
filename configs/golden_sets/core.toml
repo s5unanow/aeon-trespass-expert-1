@@ -1,0 +1,9 @@
+name = "core"
+document_id = "walking_skeleton"
+
+[[pages]]
+page_id = "p0001"
+block_count = 2
+block_types = ["heading", "paragraph"]
+symbol_count = 1
+reading_order = ["p0001.b001", "p0001.b002"]
