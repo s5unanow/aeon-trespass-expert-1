@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test codegen clean
+.PHONY: help bootstrap lint format typecheck test codegen export clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -27,6 +27,9 @@ typecheck: ## Run mypy + tsc
 test: ## Run all tests (pytest + pnpm test)
 	uv run pytest
 	pnpm -r run test
+
+export: ## Export pipeline artifacts to web public (re-generates apps/web/public/documents/)
+	uv run python scripts/export_to_web.py
 
 codegen: ## Regenerate JSON Schema + TS types from Pydantic models
 	uv run python scripts/generate_jsonschema.py
