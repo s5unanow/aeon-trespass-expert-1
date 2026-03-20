@@ -20,8 +20,6 @@ from atr_schemas.enums import QALayer, Severity
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.page_ir_v1 import (
-    FigureBlock,
-    FigureRefInline,
     IconInline,
     PageIRV1,
     TextInline,
@@ -180,20 +178,6 @@ def check_symbols_to_ir(
         )
 
     return records
-
-
-def _collect_ir_figure_asset_ids(ir: PageIRV1) -> set[str]:
-    """Collect asset_ids from FigureBlock and FigureRefInline in IR."""
-    ids: set[str] = set()
-    for block in ir.blocks:
-        if isinstance(block, FigureBlock) and block.asset_id:
-            ids.add(block.asset_id)
-        if not hasattr(block, "children"):
-            continue
-        for inline in block.children:
-            if isinstance(inline, FigureRefInline) and inline.asset_id:
-                ids.add(inline.asset_id)
-    return ids
 
 
 def check_ir_to_render(

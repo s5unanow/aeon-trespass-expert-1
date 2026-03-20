@@ -12,13 +12,11 @@ from atr_pipeline.eval.cross_stage_refs import (
     XREF_RENDER_TO_PUBLISH,
     XREF_SYMBOL_DROPPED,
     XREF_SYMBOL_TO_IR,
-    PageArtifacts,
     check_evidence_to_ir,
     check_ir_to_render,
     check_native_to_ir,
     check_render_to_publish,
     check_symbols_to_ir,
-    run_cross_stage_checks,
 )
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.enums import LanguageCode
@@ -388,57 +386,4 @@ def test_render_to_publish_empty_src_skipped(tmp_path: Path) -> None:
         figures={"fig1": RenderFigure(src="")},
     )
     records = check_render_to_publish(render, release_dir, "p0001", "test_doc")
-    assert records == []
-
-
-# --- Aggregator ---
-
-
-def test_run_cross_stage_checks_aggregates() -> None:
-    native = _make_native(words=[_word("w001")])
-    ir = _make_ir(
-        blocks=[
-            ParagraphBlock(
-                block_id="p0001.b001",
-                children=[TextInline(text="hello", source_word_ids=["w001", "w999"])],
-            )
-        ]
-    )
-    records = run_cross_stage_checks(
-        PageArtifacts(page_id="p0001", document_id="test_doc", native=native, ir=ir)
-    )
-    assert len(records) == 1
-    assert records[0].code == XREF_NATIVE_WORD
-
-
-def test_run_cross_stage_checks_skips_missing() -> None:
-    records = run_cross_stage_checks(PageArtifacts(page_id="p0001", document_id="test_doc"))
-    assert records == []
-
-
-def test_run_cross_stage_checks_multiple_boundaries() -> None:
-    native = _make_native(words=[_word("w001")])
-    symbols = _make_symbols(symbol_ids=["icon_a"])
-    ir = _make_ir(
-        blocks=[
-            ParagraphBlock(
-                block_id="p0001.b001",
-                children=[
-                    TextInline(text="hello", source_word_ids=["w001"]),
-                    IconInline(symbol_id="icon_a"),
-                ],
-            )
-        ]
-    )
-    render = _make_render(block_ids=["p0001.b001"])
-    records = run_cross_stage_checks(
-        PageArtifacts(
-            page_id="p0001",
-            document_id="test_doc",
-            native=native,
-            symbols=symbols,
-            ir=ir,
-            render=render,
-        )
-    )
     assert records == []

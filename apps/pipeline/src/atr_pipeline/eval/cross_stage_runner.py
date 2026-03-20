@@ -7,7 +7,6 @@ checks, and builds a verification report.
 from __future__ import annotations
 
 import json
-import logging
 from datetime import UTC, datetime
 
 from atr_pipeline.eval.cross_stage_refs import PageArtifacts, run_cross_stage_checks
@@ -19,8 +18,6 @@ from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.render_page_v1 import RenderPageV1
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
-
-logger = logging.getLogger(__name__)
 
 
 def _load_latest_json(store: ArtifactStore, doc_id: str, family: str, page_id: str) -> str | None:
