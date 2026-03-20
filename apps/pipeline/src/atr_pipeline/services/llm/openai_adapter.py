@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 
+from atr_pipeline.services.llm.base import TranslationResponse, TranslationResponseMeta
 from atr_pipeline.services.llm.prompt_builder import (
     build_few_shot_examples,
     build_response_schema,
@@ -52,7 +53,7 @@ class OpenAIAdapter:
         self,
         batch: TranslationBatchV1,
         model_profile: str = "",
-    ) -> TranslationResultV1:
+    ) -> TranslationResponse:
         """Translate a batch of segments via OpenAI structured outputs."""
         model = model_profile or self._model
 
@@ -101,8 +102,17 @@ class OpenAIAdapter:
         data = json.loads(raw)
         result = TranslationResultV1.model_validate(data)
 
+        usage = response.usage
+        meta = TranslationResponseMeta(
+            provider="openai",
+            model=model,
+            raw_response=raw,
+            input_tokens=getattr(usage, "prompt_tokens", 0) if usage else 0,
+            output_tokens=getattr(usage, "completion_tokens", 0) if usage else 0,
+        )
+
         log.info(
             "OpenAI translate_batch complete: segments=%d",
             len(result.segments),
         )
-        return result
+        return TranslationResponse(result=result, meta=meta)

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 
+from atr_pipeline.services.llm.base import TranslationResponse, TranslationResponseMeta
 from atr_pipeline.services.llm.prompt_builder import (
     build_few_shot_examples,
     build_response_schema,
@@ -65,7 +66,7 @@ class GeminiAdapter:
         self,
         batch: TranslationBatchV1,
         model_profile: str = "",
-    ) -> TranslationResultV1:
+    ) -> TranslationResponse:
         """Translate a batch of segments via Gemini structured outputs."""
         from google.genai import types
 
@@ -128,8 +129,17 @@ class GeminiAdapter:
         data = json.loads(raw)
         result = TranslationResultV1.model_validate(data)
 
+        usage = getattr(response, "usage_metadata", None)
+        meta = TranslationResponseMeta(
+            provider="gemini",
+            model=model,
+            raw_response=raw,
+            input_tokens=getattr(usage, "prompt_token_count", 0) if usage else 0,
+            output_tokens=getattr(usage, "candidates_token_count", 0) if usage else 0,
+        )
+
         log.info(
             "Gemini translate_batch complete: segments=%d",
             len(result.segments),
         )
-        return result
+        return TranslationResponse(result=result, meta=meta)
