@@ -5,10 +5,16 @@ export async function loadRenderPage(
   pageId: string,
   edition: string = 'ru',
 ): Promise<RenderPageData> {
-  const url = `/documents/${documentId}/${edition}/data/render_page.${pageId}.json`;
-  const res = await fetch(url);
+  // Try edition-specific path first, fall back to root path
+  const editionUrl = `/documents/${documentId}/${edition}/data/render_page.${pageId}.json`;
+  const rootUrl = `/documents/${documentId}/data/render_page.${pageId}.json`;
+
+  let res = await fetch(editionUrl);
   if (!res.ok) {
-    throw new Error(`Failed to load render page: ${res.status} ${url}`);
+    res = await fetch(rootUrl);
+  }
+  if (!res.ok) {
+    throw new Error(`Failed to load render page: ${res.status} ${rootUrl}`);
   }
   const data: RenderPageData = await res.json();
   if (!data.schema_version || !data.page) {

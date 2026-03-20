@@ -7,10 +7,15 @@ export async function loadManifest(
   documentId: string,
   edition: string = 'ru',
 ): Promise<DocumentManifest> {
-  const url = `/documents/${documentId}/${edition}/manifest.json`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to load manifest: ${res.status} ${url}`);
-  }
-  return res.json();
+  // Try edition-specific path first, fall back to root path
+  const editionUrl = `/documents/${documentId}/${edition}/manifest.json`;
+  const rootUrl = `/documents/${documentId}/manifest.json`;
+
+  const editionRes = await fetch(editionUrl);
+  if (editionRes.ok) return editionRes.json();
+
+  const rootRes = await fetch(rootUrl);
+  if (rootRes.ok) return rootRes.json();
+
+  throw new Error(`Failed to load manifest: ${rootRes.status} ${rootUrl}`);
 }

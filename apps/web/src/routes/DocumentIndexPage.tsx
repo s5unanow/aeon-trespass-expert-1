@@ -1,33 +1,32 @@
 import { useEffect, useState } from 'react';
+import { loadManifest, type DocumentManifest } from '../lib/api/loadManifest';
 
-interface PageEntry {
-  page_id: string;
-  title: string;
-}
-
-interface Manifest {
-  document_id: string;
+interface ManifestWithEdition extends DocumentManifest {
   edition: string;
-  pages: PageEntry[];
 }
 
 const DOCUMENTS = ['ato_core_v1_1', 'walking_skeleton'];
 const EDITIONS = ['ru', 'en'];
 
+/** Extract a human-readable page number from a page ID like "p0049" → "49". */
+function formatPageNumber(pageId: string): string {
+  const num = parseInt(pageId.replace(/^p/, ''), 10);
+  return Number.isNaN(num) ? pageId : String(num);
+}
+
 export function DocumentIndexPage() {
-  const [manifests, setManifests] = useState<Manifest[]>([]);
+  const [manifests, setManifests] = useState<ManifestWithEdition[]>([]);
 
   useEffect(() => {
     const fetches = DOCUMENTS.flatMap((docId) =>
       EDITIONS.map((edition) =>
-        fetch(`/documents/${docId}/${edition}/manifest.json`)
-          .then((r) => (r.ok ? r.json() : null))
-          .then((data) => (data ? { ...data, edition } : null))
+        loadManifest(docId, edition)
+          .then((data): ManifestWithEdition => ({ ...data, edition }))
           .catch(() => null),
       ),
     );
     Promise.all(fetches).then((results) =>
-      setManifests(results.filter((m): m is Manifest => m !== null)),
+      setManifests(results.filter((m): m is ManifestWithEdition => m !== null)),
     );
   }, []);
 
@@ -49,7 +48,7 @@ export function DocumentIndexPage() {
                   <a
                     href={`/documents/${manifest.document_id}/${manifest.edition}/${p.page_id}`}
                   >
-                    {p.page_id.replace('p0', 'p').replace('p0', '')}
+                    {formatPageNumber(p.page_id)}
                     {p.title ? ` — ${p.title}` : ''}
                   </a>
                 </li>

@@ -8,7 +8,7 @@ describe('loadRenderPage', () => {
     fetchSpy.mockReset();
   });
 
-  it('returns page data on success', async () => {
+  it('returns page data from edition path', async () => {
     const data = { schema_version: 'render_page.v1', page: { id: 'p0001' }, blocks: [] };
     fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
 
@@ -17,11 +17,23 @@ describe('loadRenderPage', () => {
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/data/render_page.p0001.json');
   });
 
-  it('throws on HTTP error', async () => {
+  it('falls back to root path when edition path 404s', async () => {
+    const data = { schema_version: 'render_page.v1', page: { id: 'p0001' }, blocks: [] };
+    fetchSpy
+      .mockResolvedValueOnce({ ok: false, status: 404 } as Response)
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(data) } as Response);
+
+    const result = await loadRenderPage('doc1', 'p0001');
+    expect(result).toEqual(data);
+    expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/data/render_page.p0001.json');
+    expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/data/render_page.p0001.json');
+  });
+
+  it('throws when both paths fail', async () => {
     fetchSpy.mockResolvedValue({ ok: false, status: 500 } as Response);
 
     await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
-      'Failed to load render page: 500 /documents/doc1/ru/data/render_page.p0001.json',
+      'Failed to load render page: 500 /documents/doc1/data/render_page.p0001.json',
     );
   });
 
