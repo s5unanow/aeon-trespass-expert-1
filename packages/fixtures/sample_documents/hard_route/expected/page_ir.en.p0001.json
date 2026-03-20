@@ -1,0 +1,97 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "hard_route",
+  "page_id": "p0001",
+  "page_number": 1,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0001.b001",
+      "bbox": null,
+      "level": 2,
+      "children": [
+        {"type": "text", "text": "Advanced Combat", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b002",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Flanking grants advantage. Roll extra dice when attacking from behind.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b003",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Defensive stance reduces incoming damage by half rounded down.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b004",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Spend 1 ", "marks": [], "lang": "en", "source_word_ids": []},
+        {"type": "icon", "symbol_id": "sym.progress", "instance_id": "syminst.p0001.01", "bbox": null, "display_hint": {}, "source_asset_id": ""},
+        {"type": "text", "text": " to activate.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "callout",
+      "block_id": "p0001.b005",
+      "bbox": null,
+      "variant": "warning",
+      "children": [
+        {"type": "text", "text": "Warning: Flanking provokes opportunity attacks from adjacent enemies.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "source_ref": null
+    },
+    {
+      "type": "figure",
+      "block_id": "p0001.b006",
+      "bbox": null,
+      "asset_id": "asset.fig.p0001.01",
+      "children": [],
+      "translatable": true,
+      "source_ref": null
+    }
+  ],
+  "assets": ["asset.fig.p0001.01"],
+  "reading_order": [
+    "p0001.b001",
+    "p0001.b002",
+    "p0001.b003",
+    "p0001.b004",
+    "p0001.b005",
+    "p0001.b006"
+  ],
+  "confidence": null,
+  "qa_state": null,
+  "provenance": null
+}

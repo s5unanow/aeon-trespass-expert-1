@@ -1,0 +1,11 @@
+# Furniture repetition golden fixture — 3-page PDF with consistent headers/footers.
+
+[document]
+id = "furniture_repetition"
+source_pdf = "packages/fixtures/sample_documents/furniture_repetition/source/furniture_repetition.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"

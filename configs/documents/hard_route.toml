@@ -1,0 +1,14 @@
+# Hard-route golden fixture — complex mixed-layout page.
+
+[document]
+id = "hard_route"
+source_pdf = "packages/fixtures/sample_documents/hard_route/source/hard_route.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"
+
+[symbols]
+catalog = "packages/fixtures/sample_documents/hard_route/catalogs/hard_route.symbols.toml"

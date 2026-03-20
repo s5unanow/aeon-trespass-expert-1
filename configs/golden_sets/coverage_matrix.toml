@@ -1,0 +1,56 @@
+# Coverage matrix — maps fixture classes to failure modes and eval dimensions.
+#
+# Each entry specifies which layout failure modes and eval dimensions a fixture
+# exercises. This matrix drives coverage analysis and ensures every targeted
+# failure mode has at least one fixture.
+#
+# Eval dimensions: reading_order, symbols, tables, callouts, figures_captions,
+#                  furniture_template, hard_route_fallback, confidence_calibration
+
+[walking_skeleton]
+document_id = "walking_skeleton"
+description = "Minimal single-column page with heading, paragraph, and one icon"
+failure_modes = ["basic_block_classification", "simple_symbol_matching"]
+eval_dimensions = ["reading_order", "symbols"]
+
+[multi_column]
+document_id = "multi_column"
+description = "Two-column body page with full-width heading"
+failure_modes = ["multi_column_interleaving", "column_reading_order"]
+eval_dimensions = ["reading_order"]
+
+[icon_dense]
+document_id = "icon_dense"
+description = "Page with 6 inline icons across 3 paragraphs"
+failure_modes = ["icon_position_accuracy", "symbol_count_recovery", "inline_icon_ordering"]
+eval_dimensions = ["symbols", "reading_order"]
+
+[table_callout]
+document_id = "table_callout"
+description = "Page with table and callout block"
+failure_modes = ["table_detection", "callout_container_detection", "table_cell_boundary"]
+eval_dimensions = ["tables", "callouts", "reading_order"]
+
+[figure_caption]
+document_id = "figure_caption"
+description = "Page with figure and caption"
+failure_modes = ["figure_detection", "caption_linking", "figure_caption_ordering"]
+eval_dimensions = ["figures_captions", "reading_order"]
+
+[hard_route]
+document_id = "hard_route"
+description = "Complex mixed layout — columns, icon, callout, figure"
+failure_modes = [
+    "multi_column_interleaving",
+    "inline_icon_ordering",
+    "callout_container_detection",
+    "figure_detection",
+    "mixed_layout_reading_order",
+]
+eval_dimensions = ["reading_order", "symbols", "callouts", "figures_captions", "hard_route_fallback"]
+
+[furniture_repetition]
+document_id = "furniture_repetition"
+description = "3-page PDF with identical header/footer furniture"
+failure_modes = ["furniture_leakage", "header_footer_consistency", "cross_page_template_drift"]
+eval_dimensions = ["furniture_template", "reading_order"]

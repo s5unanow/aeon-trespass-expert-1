@@ -1,0 +1,11 @@
+# Table + callout golden fixture.
+
+[document]
+id = "table_callout"
+source_pdf = "packages/fixtures/sample_documents/table_callout/source/table_callout.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"

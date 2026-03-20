@@ -1,0 +1,12 @@
+# Hard-route fixture symbol catalog — single symbol.
+
+catalog_id = "hard_route"
+version = "1.0"
+
+[[symbols]]
+symbol_id = "sym.progress"
+label = "Progress"
+alt_label_ru = "Прогресс"
+template_asset = "packages/fixtures/sample_documents/hard_route/source/symbol_progress.png"
+match_threshold = 0.70
+inline = true

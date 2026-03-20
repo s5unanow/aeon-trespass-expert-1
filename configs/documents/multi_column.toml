@@ -1,0 +1,11 @@
+# Multi-column golden fixture — two-column body page.
+
+[document]
+id = "multi_column"
+source_pdf = "packages/fixtures/sample_documents/multi_column/source/multi_column.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"

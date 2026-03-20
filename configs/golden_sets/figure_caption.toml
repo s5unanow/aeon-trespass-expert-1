@@ -1,0 +1,9 @@
+name = "figure_caption"
+document_id = "figure_caption"
+
+[[pages]]
+page_id = "p0001"
+block_count = 4
+block_types = ["heading", "paragraph", "figure", "caption"]
+symbol_count = 0
+reading_order = ["p0001.b001", "p0001.b002", "p0001.b003", "p0001.b004"]
