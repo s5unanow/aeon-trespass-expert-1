@@ -99,6 +99,18 @@ def qa_cmd(
     _qa(doc=doc)
 
 
+@app.command(name="verify-extraction")
+def verify_extraction_cmd(
+    doc: str = typer.Option(..., "--doc", help="Document id to verify"),
+    pages: str = typer.Option("", "--pages", help="Page filter: 'p0001' or 'p0001,p0002'"),
+    output_json: str = typer.Option("", "--output-json", help="Path to write JSON report"),
+) -> None:
+    """Run invariant checks on extraction artifacts."""
+    from atr_pipeline.cli.commands.verify_extraction_cmd import verify_extraction_command
+
+    verify_extraction_command(doc=doc, pages=pages, output_json=output_json)
+
+
 @app.command(name="eval")
 def eval_cmd(
     golden_set: str = typer.Option(..., "--golden-set", help="Golden set name (e.g. 'core')"),
