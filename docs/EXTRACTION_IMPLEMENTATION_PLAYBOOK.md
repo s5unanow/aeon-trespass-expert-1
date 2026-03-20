@@ -2,44 +2,48 @@
 
 This document defines the execution discipline for all extraction-related work
 under epic S5U-191 (Evidence Fusion and Hard-Page Routing) and evaluation
-umbrella S5U-274. It is the authoritative source for sequencing, fixture
-requirements, evaluation gates, golden-refresh governance, and PR acceptance
-criteria for extraction tickets.
+umbrella S5U-274. It covers fixture requirements, evaluation gates,
+golden-refresh governance, and PR acceptance criteria for extraction tickets.
+
+**Linear is the source of truth for blocker relations.** The phase tables below
+are a high-level guide to intended sequencing. Before starting any issue, always
+check `mcp__linear__get_issue(id="S5U-XXX", includeRelations=true)` and verify
+all `blockedBy` relations are in Done state.
 
 Every agent and human implementer working on extraction must follow these rules.
 
 ## 1. Sequencing and Dependency Tree
 
-Extraction work follows a strict dependency order derived from the Refined V3
-Adoption Memo. Do not start an issue until all its blockers are Done.
+Extraction work follows a dependency order derived from the Refined V3
+Adoption Memo. Do not start an issue until all its Linear blockers are Done.
 
 ### Phase 1: Evidence Contracts and Primitive Capture
 
-| Issue | Title | Blockers |
-|-------|-------|----------|
-| S5U-266 | Evidence-vs-resolved extraction contract split | S5U-294 (this playbook) |
+| Issue | Title | Linear blockedBy |
+|-------|-------|------------------|
+| S5U-266 | Evidence-vs-resolved extraction contract split | S5U-294 |
 | S5U-267 | Expand primitive extraction (chars, texttrace, vectors, image occurrences, tables) | S5U-266 |
 | S5U-268 | Raster provider and per-page render pyramid with provenance | S5U-266 |
 
-### Phase 2: Region Graph and Reading Order
+### Phase 2: Region Graph, Reading Order, and Asset Registry
 
-| Issue | Title | Blockers |
-|-------|-------|----------|
-| S5U-269 | Region graph segmentation (banding, gutters, visual containers) | S5U-267, S5U-268 |
+S5U-269 and S5U-271 can start in parallel once their Phase 1 blockers are
+Done. S5U-271 does not depend on region/order work.
+
+| Issue | Title | Linear blockedBy |
+|-------|-------|------------------|
+| S5U-269 | Region graph segmentation (banding, gutters, visual containers) | S5U-266, S5U-267, S5U-268 |
 | S5U-270 | ReadingOrderGraph and anchored-aside relationships | S5U-269 |
+| S5U-271 | Asset class and occurrence registry | S5U-266, S5U-267, S5U-268 |
 
-### Phase 3: Asset Registry and Symbol Resolution
+### Phase 3: Symbol Resolution and Non-Text Semantics
 
-| Issue | Title | Blockers |
-|-------|-------|----------|
-| S5U-271 | Asset class and occurrence registry | S5U-270 |
-| S5U-272 | Visual symbol resolver with inline, prefix, and cell-local anchoring | S5U-271 |
+S5U-272 and S5U-273 share the same blockers and can run in parallel.
 
-### Phase 4: Non-Text Semantic Resolution
-
-| Issue | Title | Blockers |
-|-------|-------|----------|
-| S5U-273 | Region-aware figure, caption, callout, and table resolution | S5U-272 |
+| Issue | Title | Linear blockedBy |
+|-------|-------|------------------|
+| S5U-272 | Visual symbol resolver with inline, prefix, and cell-local anchoring | S5U-269, S5U-270, S5U-271 |
+| S5U-273 | Region-aware figure, caption, callout, and table resolution | S5U-269, S5U-270, S5U-271 |
 
 ### Evaluation Track (runs in parallel once Phase 1 begins)
 
@@ -61,15 +65,16 @@ Adoption Memo. Do not start an issue until all its blockers are Done.
 
 ### Sequencing Rules
 
-1. **Never skip a phase.** Phase N+1 issues must not be started before Phase N
-   blockers are Done.
-2. **Evaluation track runs in parallel** with the main extraction track, but
+1. **Linear blockers are authoritative.** Always check the issue's `blockedBy`
+   relations in Linear before starting. The phase tables above are a guide; if
+   they disagree with Linear, Linear wins.
+2. **Parallelism within phases is allowed.** S5U-269 and S5U-271 can run
+   concurrently. S5U-272 and S5U-273 can run concurrently. Exploit this when
+   capacity allows.
+3. **Evaluation track runs in parallel** with the main extraction track, but
    evaluation issues that depend on S5U-266 must wait for the contract split.
-3. **S5U-287, S5U-292, S5U-293 have no hard blockers** and can start at any
+4. **S5U-287, S5U-292, S5U-293 have no hard blockers** and can start at any
    time during or before Phase 1.
-4. **Check Linear before starting.** Run
-   `mcp__linear__get_issue(id="S5U-XXX", includeRelations=true)` and verify
-   all `blockedBy` relations are in Done state.
 
 ## 2. Required Fixtures and Golden Pages
 
@@ -145,7 +150,7 @@ included, reviewer discretion. `--` = not applicable.
   one error-path test.
 - **Contract tests**: Schema roundtrip (serialize -> deserialize -> compare),
   JSON Schema validation, TS codegen compatibility. Run via `make codegen` +
-  `pytest tests/contract/`.
+  `pytest apps/pipeline/tests/contract/`.
 - **Invariant checker**: Once S5U-283 lands, `atr verify-extraction` must pass.
   Until then, manually verify: no dangling refs, no duplicate IDs, bboxes
   within page bounds.
