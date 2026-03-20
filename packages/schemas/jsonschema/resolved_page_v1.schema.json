@@ -254,6 +254,8 @@
       "description": "A semantic region/zone on the resolved page.",
       "properties": {
         "region_id": {
+          "description": "Region id like r001",
+          "pattern": "^r\\d{3}$",
           "title": "Region Id",
           "type": "string"
         },

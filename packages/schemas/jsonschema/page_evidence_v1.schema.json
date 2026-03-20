@@ -10,6 +10,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },
@@ -63,6 +65,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },
@@ -116,6 +120,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },
@@ -161,6 +167,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },
@@ -205,6 +213,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },
@@ -257,6 +267,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },
@@ -361,6 +373,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },
@@ -401,6 +415,8 @@
           "type": "string"
         },
         "evidence_id": {
+          "description": "Evidence id like e.char.001",
+          "pattern": "^e\\.\\w+\\.\\d{3,}$",
           "title": "Evidence Id",
           "type": "string"
         },

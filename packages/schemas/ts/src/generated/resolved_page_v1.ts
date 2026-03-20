@@ -5,6 +5,9 @@ export type DocumentId = string;
 export type PageId = string;
 export type PageNumber = number;
 export type SourceEvidenceHash = string;
+/**
+ * Region id like r001
+ */
 export type RegionId = string;
 /**
  * Semantic region classification.

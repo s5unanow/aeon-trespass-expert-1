@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from atr_schemas.common import NormRect, ProvenanceRef, Rect
+from atr_schemas.common import NormRect, ProvenanceRef, Rect, RegionId
 from atr_schemas.enums import AnchorEdgeKind, BlockType, RegionKind, SymbolAnchorKind
 
 
 class ResolvedRegion(BaseModel):
     """A semantic region/zone on the resolved page."""
 
-    region_id: str
+    region_id: RegionId
     kind: RegionKind
     bbox: Rect
     norm_bbox: NormRect

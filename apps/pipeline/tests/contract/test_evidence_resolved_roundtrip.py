@@ -316,3 +316,41 @@ def test_resolved_page_rejects_bad_schema_version() -> None:
 def test_confidence_rejects_out_of_range() -> None:
     with pytest.raises(ValidationError):
         SemanticConfidence(overall=1.5)
+
+
+def test_evidence_id_pattern_validation() -> None:
+    """Valid evidence IDs are accepted, invalid ones rejected."""
+    char = EvidenceChar(
+        evidence_id="e.char.001",
+        text="A",
+        bbox=_RECT,
+        norm_bbox=_NORM,
+    )
+    assert char.evidence_id == "e.char.001"
+
+    with pytest.raises(ValidationError):
+        EvidenceChar(
+            evidence_id="bad_id",
+            text="A",
+            bbox=_RECT,
+            norm_bbox=_NORM,
+        )
+
+
+def test_region_id_pattern_validation() -> None:
+    """Valid region IDs are accepted, invalid ones rejected."""
+    region = ResolvedRegion(
+        region_id="r001",
+        kind=RegionKind.BODY,
+        bbox=_RECT,
+        norm_bbox=_NORM,
+    )
+    assert region.region_id == "r001"
+
+    with pytest.raises(ValidationError):
+        ResolvedRegion(
+            region_id="bad",
+            kind=RegionKind.BODY,
+            bbox=_RECT,
+            norm_bbox=_NORM,
+        )

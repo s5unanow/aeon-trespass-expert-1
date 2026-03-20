@@ -11,7 +11,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Discriminator, Field, Tag
 
-from atr_schemas.common import NormRect, Rect
+from atr_schemas.common import EvidenceId, NormRect, Rect
 from atr_schemas.enums import RegionKind
 
 # --- Individual evidence entity models ---
@@ -21,7 +21,7 @@ class EvidenceChar(BaseModel):
     """A single character glyph extracted from the PDF."""
 
     kind: Literal["char"] = "char"
-    evidence_id: str
+    evidence_id: EvidenceId
     text: str
     bbox: Rect
     norm_bbox: NormRect
@@ -35,7 +35,7 @@ class EvidenceLine(BaseModel):
     """A line of text (sequence of characters)."""
 
     kind: Literal["line"] = "line"
-    evidence_id: str
+    evidence_id: EvidenceId
     text: str
     bbox: Rect
     norm_bbox: NormRect
@@ -47,7 +47,7 @@ class EvidenceTextSpan(BaseModel):
     """A formatting-consistent text span."""
 
     kind: Literal["text_span"] = "text_span"
-    evidence_id: str
+    evidence_id: EvidenceId
     text: str
     bbox: Rect
     norm_bbox: NormRect
@@ -62,7 +62,7 @@ class EvidenceImageOccurrence(BaseModel):
     """An image placed on the page."""
 
     kind: Literal["image_occurrence"] = "image_occurrence"
-    evidence_id: str
+    evidence_id: EvidenceId
     bbox: Rect
     norm_bbox: NormRect
     width_px: int = 0
@@ -76,7 +76,7 @@ class EvidenceVectorPath(BaseModel):
     """A single vector drawing path."""
 
     kind: Literal["vector_path"] = "vector_path"
-    evidence_id: str
+    evidence_id: EvidenceId
     bbox: Rect
     norm_bbox: NormRect
     path_ops: list[str] = Field(default_factory=list)
@@ -89,7 +89,7 @@ class EvidenceVectorCluster(BaseModel):
     """A cluster of related vector paths."""
 
     kind: Literal["vector_cluster"] = "vector_cluster"
-    evidence_id: str
+    evidence_id: EvidenceId
     bbox: Rect
     norm_bbox: NormRect
     path_ids: list[str] = Field(default_factory=list)
@@ -100,7 +100,7 @@ class EvidenceTableCandidate(BaseModel):
     """A detected table-like structure."""
 
     kind: Literal["table_candidate"] = "table_candidate"
-    evidence_id: str
+    evidence_id: EvidenceId
     bbox: Rect
     norm_bbox: NormRect
     row_count: int = 0
@@ -113,7 +113,7 @@ class EvidenceRegionCandidate(BaseModel):
     """A spatial region detected from layout analysis."""
 
     kind: Literal["region_candidate"] = "region_candidate"
-    evidence_id: str
+    evidence_id: EvidenceId
     bbox: Rect
     norm_bbox: NormRect
     region_kind: RegionKind = RegionKind.UNKNOWN

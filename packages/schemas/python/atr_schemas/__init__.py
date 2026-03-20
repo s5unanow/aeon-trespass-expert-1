@@ -5,11 +5,13 @@ from atr_schemas.build_manifest_v1 import BuildManifestV1, ReleaseFile
 from atr_schemas.common import (
     ArtifactRef,
     ConfidenceMetrics,
+    EvidenceId,
     NormRect,
     PageDimensions,
     ProvenanceRef,
     QAState,
     Rect,
+    RegionId,
 )
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1, ConceptV1
 from atr_schemas.enums import (
@@ -121,6 +123,7 @@ __all__ = [
     "DividerBlock",
     "EvidenceChar",
     "EvidenceEntity",
+    "EvidenceId",
     "EvidenceImageOccurrence",
     "EvidenceLine",
     "EvidenceRegionCandidate",
@@ -161,6 +164,7 @@ __all__ = [
     "QAState",
     "QASummaryV1",
     "Rect",
+    "RegionId",
     "RegionKind",
     "ReleaseFile",
     "RenderBlock",

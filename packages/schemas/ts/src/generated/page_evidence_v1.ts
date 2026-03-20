@@ -16,6 +16,9 @@ export type CoordinateSpace = string;
 export type Width = number;
 export type Height = number;
 export type Kind = 'char';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId = string;
 export type Text = string;
 export type X0 = number;
@@ -31,11 +34,17 @@ export type FontSize = number;
 export type Flags = number;
 export type Color = number;
 export type Kind1 = 'line';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId1 = string;
 export type Text1 = string;
 export type CharIds = string[];
 export type WritingDirection = string;
 export type Kind2 = 'text_span';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId2 = string;
 export type Text2 = string;
 export type FontName1 = string;
@@ -44,6 +53,9 @@ export type Flags1 = number;
 export type Color1 = number;
 export type CharIds1 = string[];
 export type Kind3 = 'image_occurrence';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId3 = string;
 export type WidthPx = number;
 export type HeightPx = number;
@@ -51,22 +63,34 @@ export type Colorspace = string;
 export type Xref = number;
 export type ImageHash = string;
 export type Kind4 = 'vector_path';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId4 = string;
 export type PathOps = string[];
 export type StrokeColor = number | null;
 export type FillColor = number | null;
 export type LineWidth = number;
 export type Kind5 = 'vector_cluster';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId5 = string;
 export type PathIds = string[];
 export type ClusterHash = string;
 export type Kind6 = 'table_candidate';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId6 = string;
 export type RowCount = number;
 export type ColCount = number;
 export type CellEvidenceIds = string[];
 export type Confidence = number;
 export type Kind7 = 'region_candidate';
+/**
+ * Evidence id like e.char.001
+ */
 export type EvidenceId7 = string;
 /**
  * Semantic region classification.
