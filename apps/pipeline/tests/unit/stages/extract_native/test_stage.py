@@ -102,3 +102,23 @@ def test_extract_native_raises_without_manifest(tmp_path: Path) -> None:
     result = execute_stage(ExtractNativeStage(), ctx)
     assert not result.success
     assert "Run ingest first" in (result.error or "")
+
+
+def test_extract_native_produces_evidence_artifacts(tmp_path: Path) -> None:
+    """ExtractNativeStage produces PageEvidenceV1 alongside NativePageV1."""
+    ctx = _make_ctx(tmp_path)
+    manifest = _ingest_first(ctx)
+
+    result = execute_stage(ExtractNativeStage(), ctx, input_data=manifest)
+    assert result.success
+
+    data = ctx.artifact_store.get_json(result.artifact_ref)
+    extract_result = ExtractNativeResult.model_validate(data)
+    assert extract_result.evidence_page_ids == ["p0001"]
+
+    # Verify evidence artifact was stored
+    evidence_dir = (
+        tmp_path / "artifacts" / "walking_skeleton" / "page_evidence.v1" / "page" / "p0001"
+    )
+    evidence_files = list(evidence_dir.glob("*.json"))
+    assert len(evidence_files) == 1
