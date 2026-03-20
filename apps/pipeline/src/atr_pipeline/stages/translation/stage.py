@@ -131,7 +131,7 @@ class TranslationStage:
         result = response.result
 
         # Persist translation metadata for auditability
-        meta_data = {
+        meta_data: dict[str, object] = {
             "batch_id": batch.batch_id,
             "page_id": page_id,
             "prompt_profile": batch.prompt_profile,
@@ -141,6 +141,8 @@ class TranslationStage:
             "output_tokens": response.meta.output_tokens,
             "raw_response": response.meta.raw_response,
             "source_checksums": {s.segment_id: s.source_checksum for s in batch.segments},
+            "fallback_used": response.meta.extra.get("fallback_used", False),
+            "attempts": response.meta.extra.get("attempts", 1),
         }
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,

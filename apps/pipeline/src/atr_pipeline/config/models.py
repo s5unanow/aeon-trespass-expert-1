@@ -65,6 +65,8 @@ class TranslationConfig(BaseModel):
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     batch_size: int = Field(default=24, ge=1)
     prompt_profile: str = "translate_rules_ru.v1"
+    max_retries: int = Field(default=2, ge=0)
+    retry_delay_seconds: float = Field(default=1.0, ge=0.0)
 
 
 class StructureConfig(BaseModel):
