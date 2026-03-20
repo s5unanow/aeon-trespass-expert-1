@@ -10,10 +10,13 @@ from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
 from atr_pipeline.stages.structure.furniture import FurnitureMap, detect_furniture
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
+from atr_pipeline.stages.structure.region_graph import segment_regions
 from atr_schemas.common import ConfidenceMetrics, ProvenanceRef
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
+from atr_schemas.page_evidence_v1 import PageEvidenceV1
+from atr_schemas.resolved_page_v1 import ResolvedPageV1, ResolvedRegion
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 
 
@@ -114,6 +117,9 @@ class StructureStage:
                     furniture=furniture_map,
                 )
 
+            # Region graph segmentation (when evidence is available)
+            self._run_region_segmentation(ctx, native, page_id)
+
             # Record evidence path and confidence from layout scoring
             ir.provenance = ProvenanceRef(
                 extractor="structure",
@@ -149,6 +155,25 @@ class StructureStage:
             total_blocks=total_blocks,
             hard_pages=hard_pages,
         )
+
+    def _run_region_segmentation(
+        self,
+        ctx: StageContext,
+        native: NativePageV1,
+        page_id: str,
+    ) -> None:
+        """Run region graph segmentation if evidence is available."""
+        evidence = self._load_evidence(ctx, page_id)
+        if evidence is None:
+            return
+        ir_regions = segment_regions(evidence, ctx.config.structure)
+        if ir_regions:
+            ctx.logger.info(
+                "Segmented %d regions for %s",
+                len(ir_regions),
+                page_id,
+            )
+            self._store_regions(ctx, native, ir_regions)
 
     @staticmethod
     def _resolve_page_ids(
@@ -194,6 +219,42 @@ class StructureStage:
             return None
         data = json.loads(jsons[-1].read_text())
         return SymbolMatchSetV1.model_validate(data)
+
+    @staticmethod
+    def _load_evidence(
+        ctx: StageContext,
+        page_id: str,
+    ) -> PageEvidenceV1 | None:
+        """Load page evidence from the artifact store, if available."""
+        page_dir = ctx.artifact_store.root / ctx.document_id / "page_evidence.v1" / "page" / page_id
+        if not page_dir.exists():
+            return None
+        jsons = sorted(page_dir.glob("*.json"))
+        if not jsons:
+            return None
+        data = json.loads(jsons[-1].read_text())
+        return PageEvidenceV1.model_validate(data)
+
+    @staticmethod
+    def _store_regions(
+        ctx: StageContext,
+        native: NativePageV1,
+        regions: list[ResolvedRegion],
+    ) -> None:
+        """Store region graph as a ResolvedPageV1 artifact."""
+        resolved = ResolvedPageV1(
+            document_id=native.document_id,
+            page_id=native.page_id,
+            page_number=native.page_number,
+            regions=[r for r in regions if isinstance(r, ResolvedRegion)],
+        )
+        ctx.artifact_store.put_json(
+            document_id=ctx.document_id,
+            schema_family="resolved_page.v1",
+            scope="page",
+            entity_id=native.page_id,
+            data=resolved,
+        )
 
     @staticmethod
     def _load_layout_page(

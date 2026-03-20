@@ -75,3 +75,32 @@ def test_structure_config_rejects_zero_gap_factor() -> None:
     """Gap factor must be strictly positive."""
     with pytest.raises(ValidationError):
         StructureConfig(paragraph_gap_factor=0.0)
+
+
+def test_structure_config_region_segmentation_defaults() -> None:
+    """Region segmentation fields have correct defaults."""
+    cfg = StructureConfig()
+    assert cfg.gutter_min_width_pt == 10.0
+    assert cfg.full_width_fraction == 0.85
+    assert cfg.band_gap_min_pt == 15.0
+    assert cfg.furniture_top_max_y == 60.0
+    assert cfg.furniture_bottom_min_y == 750.0
+    assert cfg.region_merge_tolerance_pt == 5.0
+
+
+def test_structure_config_region_segmentation_overrides() -> None:
+    """Region segmentation fields can be overridden."""
+    cfg = StructureConfig(
+        gutter_min_width_pt=20.0,
+        full_width_fraction=0.9,
+    )
+    assert cfg.gutter_min_width_pt == 20.0
+    assert cfg.full_width_fraction == 0.9
+
+
+def test_structure_config_rejects_invalid_full_width_fraction() -> None:
+    """full_width_fraction must be in (0, 1]."""
+    with pytest.raises(ValidationError):
+        StructureConfig(full_width_fraction=0.0)
+    with pytest.raises(ValidationError):
+        StructureConfig(full_width_fraction=1.5)

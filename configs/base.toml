@@ -48,6 +48,12 @@ paragraph_gap_factor = 1.5
 paragraph_gap_abs = 12.0
 figure_min_width_pt = 100.0
 figure_min_height_pt = 100.0
+gutter_min_width_pt = 10.0
+full_width_fraction = 0.85
+band_gap_min_pt = 15.0
+furniture_top_max_y = 60.0
+furniture_bottom_min_y = 750.0
+region_merge_tolerance_pt = 5.0
 
 [qa]
 block_publish_on = ["error", "critical"]
