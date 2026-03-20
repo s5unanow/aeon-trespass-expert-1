@@ -99,6 +99,16 @@ If a merged PR breaks something:
 4. Reopen the Linear issue and set back to **In Progress**
 - **Never** use `git reset --hard` or `git push --force` on main
 
+## Extraction work
+
+All extraction issues (S5U-191 epic and S5U-274 evaluation track) follow additional rules defined in `docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md`. **Read it before starting any extraction ticket.** Key points:
+
+- Strict sequencing — do not start an issue until all its blockers are Done
+- Fixtures mandatory for every extraction change
+- Golden refreshes must be in separate commits with before/after metric diffs
+- Threshold loosening requires justification
+- Use `docs/EXTRACTION_TICKET_TEMPLATE.md` as checklist for new extraction issues
+
 ## Conventions
 
 - **Commit prefixes**: `S5U-XXX:` referencing the Linear issue
