@@ -16,9 +16,8 @@ from atr_pipeline.eval.models import (
     GoldenSetConfig,
     MetricResult,
     PageEvalResult,
-    ThresholdResultEntry,
 )
-from atr_pipeline.eval.thresholds import ThresholdConfig, check_thresholds
+from atr_pipeline.eval.thresholds import ThresholdConfig, ThresholdResult, check_thresholds
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.page_ir_v1 import PageIRV1
 
@@ -97,25 +96,14 @@ def run_evaluation(
 
     aggregate = _compute_aggregate(page_results)
 
-    threshold_results: list[ThresholdResultEntry] = []
+    threshold_results: list[ThresholdResult] = []
     if threshold_config is not None:
-        raw_results = check_thresholds(aggregate, threshold_config)
-        threshold_results = [
-            ThresholdResultEntry(
-                name=r.name,
-                value=r.value,
-                threshold_min=r.threshold_min,
-                passed=r.passed,
-                blocking=r.blocking,
-                description=r.description,
-            )
-            for r in raw_results
-        ]
+        threshold_results = check_thresholds(aggregate, threshold_config)
 
     all_pages_passed = all(p.passed for p in page_results)
     if threshold_config is not None:
         blocking_failed = any(not t.passed and t.blocking for t in threshold_results)
-        all_passed = not blocking_failed
+        all_passed = all_pages_passed and not blocking_failed
     else:
         all_passed = all_pages_passed
 

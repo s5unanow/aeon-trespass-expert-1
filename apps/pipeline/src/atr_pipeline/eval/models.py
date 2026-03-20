@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+from atr_pipeline.eval.thresholds import ThresholdResult
+
 
 class GoldenPageSpec(BaseModel):
     """Expected properties for a single page in a golden set."""
@@ -42,17 +44,6 @@ class PageEvalResult(BaseModel):
     passed: bool = True
 
 
-class ThresholdResultEntry(BaseModel):
-    """Result of checking one metric against its threshold."""
-
-    name: str
-    value: float | None
-    threshold_min: float
-    passed: bool
-    blocking: bool
-    description: str = ""
-
-
 class EvalReport(BaseModel):
     """Full evaluation report across all pages."""
 
@@ -61,5 +52,5 @@ class EvalReport(BaseModel):
     timestamp: str
     pages: list[PageEvalResult] = Field(default_factory=list)
     aggregate: dict[str, float] = Field(default_factory=dict)
-    threshold_results: list[ThresholdResultEntry] = Field(default_factory=list)
+    threshold_results: list[ThresholdResult] = Field(default_factory=list)
     passed: bool = True
