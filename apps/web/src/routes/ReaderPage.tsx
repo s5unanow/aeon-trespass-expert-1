@@ -46,11 +46,7 @@ export function ReaderPage() {
             )}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <EditionSwitcher
-              documentId={documentId!}
-              pageId={pageId!}
-              currentEdition={edition!}
-            />
+            <EditionSwitcher documentId={documentId!} pageId={pageId!} currentEdition={edition!} />
             <SourcePageBadge pageNumber={page.page.source_page_number} />
           </span>
           <span>

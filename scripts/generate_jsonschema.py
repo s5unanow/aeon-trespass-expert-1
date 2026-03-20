@@ -15,11 +15,13 @@ from atr_schemas.glossary_payload_v1 import GlossaryPayloadV1
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.nav_payload_v1 import NavPayloadV1
+from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.patch_set_v1 import PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.render_page_v1 import RenderPageV1
+from atr_schemas.resolved_page_v1 import ResolvedPageV1
 from atr_schemas.review_pack_v1 import ReviewPackV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.search_docs_v1 import SearchDocsV1
@@ -38,11 +40,13 @@ MODELS = {
     "layout_page_v1": LayoutPageV1,
     "native_page_v1": NativePageV1,
     "nav_payload_v1": NavPayloadV1,
+    "page_evidence_v1": PageEvidenceV1,
     "page_ir_v1": PageIRV1,
     "patch_set_v1": PatchSetV1,
     "qa_record_v1": QARecordV1,
     "qa_summary_v1": QASummaryV1,
     "render_page_v1": RenderPageV1,
+    "resolved_page_v1": ResolvedPageV1,
     "review_pack_v1": ReviewPackV1,
     "run_manifest_v1": RunManifestV1,
     "search_docs_v1": SearchDocsV1,

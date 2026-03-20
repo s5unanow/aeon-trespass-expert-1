@@ -29,9 +29,7 @@ export function BlockRenderer({ block, figures }: BlockRendererProps) {
       return <hr id={block.id} className="reader-divider" />;
     default: {
       const _exhaustive: never = block;
-      throw new Error(
-        `Unsupported block kind: ${(_exhaustive as RenderBlock).kind}`,
-      );
+      throw new Error(`Unsupported block kind: ${(_exhaustive as RenderBlock).kind}`);
     }
   }
 }

@@ -22,9 +22,7 @@ function flattenInlines(nodes: RenderInlineNode[]): string {
 }
 
 /** Parse TOC entries from concatenated text. Returns null if not a TOC. */
-export function parseTocEntries(
-  children: RenderInlineNode[],
-): TocEntry[] | null {
+export function parseTocEntries(children: RenderInlineNode[]): TocEntry[] | null {
   const raw = flattenInlines(children);
   if (raw.length === 0) return null;
 

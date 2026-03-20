@@ -1,0 +1,627 @@
+{
+  "$defs": {
+    "EvidenceChar": {
+      "description": "A single character glyph extracted from the PDF.",
+      "properties": {
+        "kind": {
+          "const": "char",
+          "default": "char",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "font_name": {
+          "default": "",
+          "title": "Font Name",
+          "type": "string"
+        },
+        "font_size": {
+          "default": 0.0,
+          "title": "Font Size",
+          "type": "number"
+        },
+        "flags": {
+          "default": 0,
+          "title": "Flags",
+          "type": "integer"
+        },
+        "color": {
+          "default": 0,
+          "title": "Color",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "text",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceChar",
+      "type": "object"
+    },
+    "EvidenceImageOccurrence": {
+      "description": "An image placed on the page.",
+      "properties": {
+        "kind": {
+          "const": "image_occurrence",
+          "default": "image_occurrence",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "width_px": {
+          "default": 0,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "default": 0,
+          "title": "Height Px",
+          "type": "integer"
+        },
+        "colorspace": {
+          "default": "",
+          "title": "Colorspace",
+          "type": "string"
+        },
+        "xref": {
+          "default": 0,
+          "title": "Xref",
+          "type": "integer"
+        },
+        "image_hash": {
+          "default": "",
+          "title": "Image Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceImageOccurrence",
+      "type": "object"
+    },
+    "EvidenceLine": {
+      "description": "A line of text (sequence of characters).",
+      "properties": {
+        "kind": {
+          "const": "line",
+          "default": "line",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "char_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Char Ids",
+          "type": "array"
+        },
+        "writing_direction": {
+          "default": "ltr",
+          "title": "Writing Direction",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "text",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceLine",
+      "type": "object"
+    },
+    "EvidenceRegionCandidate": {
+      "description": "A spatial region detected from layout analysis.",
+      "properties": {
+        "kind": {
+          "const": "region_candidate",
+          "default": "region_candidate",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "region_kind": {
+          "$ref": "#/$defs/RegionKind",
+          "default": "unknown"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "source_zone_id": {
+          "default": "",
+          "title": "Source Zone Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceRegionCandidate",
+      "type": "object"
+    },
+    "EvidenceTableCandidate": {
+      "description": "A detected table-like structure.",
+      "properties": {
+        "kind": {
+          "const": "table_candidate",
+          "default": "table_candidate",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "row_count": {
+          "default": 0,
+          "title": "Row Count",
+          "type": "integer"
+        },
+        "col_count": {
+          "default": 0,
+          "title": "Col Count",
+          "type": "integer"
+        },
+        "cell_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cell Evidence Ids",
+          "type": "array"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceTableCandidate",
+      "type": "object"
+    },
+    "EvidenceTextSpan": {
+      "description": "A formatting-consistent text span.",
+      "properties": {
+        "kind": {
+          "const": "text_span",
+          "default": "text_span",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "font_name": {
+          "default": "",
+          "title": "Font Name",
+          "type": "string"
+        },
+        "font_size": {
+          "default": 0.0,
+          "title": "Font Size",
+          "type": "number"
+        },
+        "flags": {
+          "default": 0,
+          "title": "Flags",
+          "type": "integer"
+        },
+        "color": {
+          "default": 0,
+          "title": "Color",
+          "type": "integer"
+        },
+        "char_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Char Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "text",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceTextSpan",
+      "type": "object"
+    },
+    "EvidenceTransformMeta": {
+      "description": "Provenance and transform metadata for the evidence layer.",
+      "properties": {
+        "source_native_hash": {
+          "default": "",
+          "title": "Source Native Hash",
+          "type": "string"
+        },
+        "source_layout_hash": {
+          "default": "",
+          "title": "Source Layout Hash",
+          "type": "string"
+        },
+        "extractor": {
+          "default": "",
+          "title": "Extractor",
+          "type": "string"
+        },
+        "extractor_version": {
+          "default": "",
+          "title": "Extractor Version",
+          "type": "string"
+        },
+        "extraction_timestamp": {
+          "default": "",
+          "title": "Extraction Timestamp",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "default": "pdf_points",
+          "description": "Base coordinate system",
+          "title": "Coordinate Space",
+          "type": "string"
+        },
+        "page_dimensions_pt": {
+          "$ref": "#/$defs/PageDimensions"
+        }
+      },
+      "required": [
+        "page_dimensions_pt"
+      ],
+      "title": "EvidenceTransformMeta",
+      "type": "object"
+    },
+    "EvidenceVectorCluster": {
+      "description": "A cluster of related vector paths.",
+      "properties": {
+        "kind": {
+          "const": "vector_cluster",
+          "default": "vector_cluster",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "path_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Path Ids",
+          "type": "array"
+        },
+        "cluster_hash": {
+          "default": "",
+          "title": "Cluster Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceVectorCluster",
+      "type": "object"
+    },
+    "EvidenceVectorPath": {
+      "description": "A single vector drawing path.",
+      "properties": {
+        "kind": {
+          "const": "vector_path",
+          "default": "vector_path",
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "path_ops": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Path Ops",
+          "type": "array"
+        },
+        "stroke_color": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stroke Color"
+        },
+        "fill_color": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fill Color"
+        },
+        "line_width": {
+          "default": 0.0,
+          "title": "Line Width",
+          "type": "number"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "EvidenceVectorPath",
+      "type": "object"
+    },
+    "NormRect": {
+      "description": "Bounding box in normalized [0,1] page coordinate space.",
+      "properties": {
+        "x0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "NormRect",
+      "type": "object"
+    },
+    "PageDimensions": {
+      "description": "Source page dimensions in PDF points.",
+      "properties": {
+        "width": {
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "PageDimensions",
+      "type": "object"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    },
+    "RegionKind": {
+      "description": "Semantic region classification.",
+      "enum": [
+        "body",
+        "sidebar",
+        "header",
+        "footer",
+        "figure_area",
+        "table_area",
+        "callout_area",
+        "margin_note",
+        "full_width",
+        "unknown"
+      ],
+      "title": "RegionKind",
+      "type": "string"
+    }
+  },
+  "description": "Raw page evidence — all observed entities without semantic interpretation.",
+  "properties": {
+    "schema_version": {
+      "default": "page_evidence.v1",
+      "pattern": "^page_evidence\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "page_number": {
+      "minimum": 1,
+      "title": "Page Number",
+      "type": "integer"
+    },
+    "transform": {
+      "$ref": "#/$defs/EvidenceTransformMeta"
+    },
+    "entities": {
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/EvidenceChar"
+          },
+          {
+            "$ref": "#/$defs/EvidenceLine"
+          },
+          {
+            "$ref": "#/$defs/EvidenceTextSpan"
+          },
+          {
+            "$ref": "#/$defs/EvidenceImageOccurrence"
+          },
+          {
+            "$ref": "#/$defs/EvidenceVectorPath"
+          },
+          {
+            "$ref": "#/$defs/EvidenceVectorCluster"
+          },
+          {
+            "$ref": "#/$defs/EvidenceTableCandidate"
+          },
+          {
+            "$ref": "#/$defs/EvidenceRegionCandidate"
+          }
+        ]
+      },
+      "title": "Entities",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id",
+    "page_number",
+    "transform"
+  ],
+  "title": "PageEvidenceV1",
+  "type": "object"
+}
