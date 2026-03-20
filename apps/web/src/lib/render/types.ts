@@ -20,10 +20,7 @@ type NarrowKind<T extends { kind?: string }> = Omit<T, 'kind'> & {
 };
 
 /** Make `kind` required and replace `children` with narrowed inline nodes. */
-type NarrowBlock<T extends { kind?: string; children?: unknown }> = Omit<
-  T,
-  'kind' | 'children'
-> & {
+type NarrowBlock<T extends { kind?: string; children?: unknown }> = Omit<T, 'kind' | 'children'> & {
   kind: NonNullable<T['kind']>;
   children: RenderInlineNode[];
 };
@@ -36,10 +33,7 @@ export type RenderTextInline = NarrowKind<renderPageV1.RenderTextInline>;
 export type RenderIconInline = NarrowKind<renderPageV1.RenderIconInline>;
 export type RenderFigureRefInline = NarrowKind<renderPageV1.RenderFigureRefInline>;
 
-export type RenderInlineNode =
-  | RenderTextInline
-  | RenderIconInline
-  | RenderFigureRefInline;
+export type RenderInlineNode = RenderTextInline | RenderIconInline | RenderFigureRefInline;
 
 // ---------------------------------------------------------------------------
 // Block nodes

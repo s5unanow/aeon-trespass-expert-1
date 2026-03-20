@@ -5,20 +5,37 @@ from atr_schemas.build_manifest_v1 import BuildManifestV1, ReleaseFile
 from atr_schemas.common import (
     ArtifactRef,
     ConfidenceMetrics,
+    EvidenceId,
+    NormRect,
     PageDimensions,
     ProvenanceRef,
     QAState,
     Rect,
+    RegionId,
 )
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1, ConceptV1
 from atr_schemas.enums import (
+    AnchorEdgeKind,
     AssetKind,
     BlockType,
     InlineType,
     LanguageCode,
     QALayer,
+    RegionKind,
     Severity,
     StageScope,
+    SymbolAnchorKind,
+)
+from atr_schemas.evidence_primitives_v1 import (
+    EvidenceChar,
+    EvidenceEntity,
+    EvidenceImageOccurrence,
+    EvidenceLine,
+    EvidenceRegionCandidate,
+    EvidenceTableCandidate,
+    EvidenceTextSpan,
+    EvidenceVectorCluster,
+    EvidenceVectorPath,
 )
 from atr_schemas.glossary_payload_v1 import GlossaryEntryV1, GlossaryPayloadV1
 from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
@@ -29,6 +46,7 @@ from atr_schemas.native_page_v1 import (
     WordEvidence,
 )
 from atr_schemas.nav_payload_v1 import NavEntryV1, NavPayloadV1
+from atr_schemas.page_evidence_v1 import EvidenceTransformMeta, PageEvidenceV1
 from atr_schemas.page_ir_v1 import (
     Block,
     CalloutBlock,
@@ -67,6 +85,15 @@ from atr_schemas.render_page_v1 import (
     RenderTableBlock,
     RenderTextInline,
 )
+from atr_schemas.resolved_page_v1 import (
+    AnchorEdge,
+    FallbackProvenance,
+    ResolvedBlock,
+    ResolvedPageV1,
+    ResolvedRegion,
+    ResolvedSymbolRef,
+    SemanticConfidence,
+)
 from atr_schemas.review_pack_v1 import ReviewFinding, ReviewPackV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.search_docs_v1 import SearchDocEntry, SearchDocsV1
@@ -78,6 +105,8 @@ from atr_schemas.translation_result_v1 import TranslatedSegment, TranslationResu
 from atr_schemas.waiver_v1 import WaiverSetV1, WaiverV1
 
 __all__ = [
+    "AnchorEdge",
+    "AnchorEdgeKind",
     "ArtifactRef",
     "AssetKind",
     "AssetV1",
@@ -92,6 +121,18 @@ __all__ = [
     "ConfidenceMetrics",
     "DifficultyScoreV1",
     "DividerBlock",
+    "EvidenceChar",
+    "EvidenceEntity",
+    "EvidenceId",
+    "EvidenceImageOccurrence",
+    "EvidenceLine",
+    "EvidenceRegionCandidate",
+    "EvidenceTableCandidate",
+    "EvidenceTextSpan",
+    "EvidenceTransformMeta",
+    "EvidenceVectorCluster",
+    "EvidenceVectorPath",
+    "FallbackProvenance",
     "FigureBlock",
     "FigureRefInline",
     "GlossaryEntryV1",
@@ -110,8 +151,10 @@ __all__ = [
     "NativePageV1",
     "NavEntryV1",
     "NavPayloadV1",
+    "NormRect",
     "PageDimensions",
     "PageEntry",
+    "PageEvidenceV1",
     "PageIRV1",
     "ParagraphBlock",
     "PatchSetV1",
@@ -121,6 +164,8 @@ __all__ = [
     "QAState",
     "QASummaryV1",
     "Rect",
+    "RegionId",
+    "RegionKind",
     "ReleaseFile",
     "RenderBlock",
     "RenderCalloutBlock",
@@ -134,15 +179,21 @@ __all__ = [
     "RenderParagraphBlock",
     "RenderTableBlock",
     "RenderTextInline",
+    "ResolvedBlock",
+    "ResolvedPageV1",
+    "ResolvedRegion",
+    "ResolvedSymbolRef",
     "ReviewFinding",
     "ReviewPackV1",
     "RunManifestV1",
     "SearchDocEntry",
     "SearchDocsV1",
+    "SemanticConfidence",
     "Severity",
     "SourceManifestV1",
     "SpanEvidence",
     "StageScope",
+    "SymbolAnchorKind",
     "SymbolCatalogV1",
     "SymbolEntry",
     "SymbolMatch",

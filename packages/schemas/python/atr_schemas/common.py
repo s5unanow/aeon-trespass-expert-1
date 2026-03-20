@@ -67,8 +67,21 @@ class QAState(BaseModel):
     warnings: int = 0
 
 
+class NormRect(BaseModel):
+    """Bounding box in normalized [0,1] page coordinate space."""
+
+    x0: float = Field(ge=0.0, le=1.0)
+    y0: float = Field(ge=0.0, le=1.0)
+    x1: float = Field(ge=0.0, le=1.0)
+    y1: float = Field(ge=0.0, le=1.0)
+
+
 # Commonly used annotated types
 PageId = Annotated[str, Field(pattern=r"^p\d{4}$", description="Page id like p0001")]
 BlockId = Annotated[str, Field(pattern=r"^p\d{4}\.b\d{3}$", description="Block id like p0001.b001")]
 DocumentId = Annotated[str, Field(min_length=1, description="Stable document edition id")]
 Timestamp = Annotated[datetime, Field(description="ISO 8601 timestamp")]
+EvidenceId = Annotated[
+    str, Field(pattern=r"^e\.\w+\.\d{3,}$", description="Evidence id like e.char.001")
+]
+RegionId = Annotated[str, Field(pattern=r"^r\d{3}$", description="Region id like r001")]

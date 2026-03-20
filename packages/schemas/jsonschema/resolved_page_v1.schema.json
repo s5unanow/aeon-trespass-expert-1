@@ -1,0 +1,491 @@
+{
+  "$defs": {
+    "AnchorEdge": {
+      "description": "Directed relationship between two resolved entities.",
+      "properties": {
+        "edge_kind": {
+          "$ref": "#/$defs/AnchorEdgeKind"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "edge_kind",
+        "source_id",
+        "target_id"
+      ],
+      "title": "AnchorEdge",
+      "type": "object"
+    },
+    "AnchorEdgeKind": {
+      "description": "Type of anchor/parent relationship between resolved entities.",
+      "enum": [
+        "caption_to_figure",
+        "block_to_callout",
+        "symbol_to_block",
+        "block_to_region",
+        "aside_to_main"
+      ],
+      "title": "AnchorEdgeKind",
+      "type": "string"
+    },
+    "BlockType": {
+      "enum": [
+        "heading",
+        "paragraph",
+        "list",
+        "list_item",
+        "table",
+        "table_row",
+        "callout",
+        "figure",
+        "caption",
+        "rule_quote",
+        "divider",
+        "unknown"
+      ],
+      "title": "BlockType",
+      "type": "string"
+    },
+    "FallbackProvenance": {
+      "description": "When a resolved entity used fallback/alternative extraction.",
+      "properties": {
+        "strategy": {
+          "title": "Strategy",
+          "type": "string"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "original_confidence": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Original Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "strategy"
+      ],
+      "title": "FallbackProvenance",
+      "type": "object"
+    },
+    "NormRect": {
+      "description": "Bounding box in normalized [0,1] page coordinate space.",
+      "properties": {
+        "x0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "NormRect",
+      "type": "object"
+    },
+    "ProvenanceRef": {
+      "description": "Reference to upstream evidence or extraction source.",
+      "properties": {
+        "extractor": {
+          "title": "Extractor",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "extractor",
+        "version"
+      ],
+      "title": "ProvenanceRef",
+      "type": "object"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    },
+    "RegionKind": {
+      "description": "Semantic region classification.",
+      "enum": [
+        "body",
+        "sidebar",
+        "header",
+        "footer",
+        "figure_area",
+        "table_area",
+        "callout_area",
+        "margin_note",
+        "full_width",
+        "unknown"
+      ],
+      "title": "RegionKind",
+      "type": "string"
+    },
+    "ResolvedBlock": {
+      "description": "A semantic block with evidence traceability.",
+      "properties": {
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "block_type": {
+          "$ref": "#/$defs/BlockType"
+        },
+        "region_id": {
+          "default": "",
+          "title": "Region Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "symbol_refs": {
+          "items": {
+            "$ref": "#/$defs/ResolvedSymbolRef"
+          },
+          "title": "Symbol Refs",
+          "type": "array"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "fallback": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FallbackProvenance"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id",
+        "block_type"
+      ],
+      "title": "ResolvedBlock",
+      "type": "object"
+    },
+    "ResolvedRegion": {
+      "description": "A semantic region/zone on the resolved page.",
+      "properties": {
+        "region_id": {
+          "description": "Region id like r001",
+          "pattern": "^r\\d{3}$",
+          "title": "Region Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/RegionKind"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "region_id",
+        "kind",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "ResolvedRegion",
+      "type": "object"
+    },
+    "ResolvedSymbolRef": {
+      "description": "A symbol occurrence resolved from evidence.",
+      "properties": {
+        "symbol_id": {
+          "title": "Symbol Id",
+          "type": "string"
+        },
+        "instance_id": {
+          "default": "",
+          "title": "Instance Id",
+          "type": "string"
+        },
+        "anchor_kind": {
+          "$ref": "#/$defs/SymbolAnchorKind"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "symbol_id",
+        "anchor_kind"
+      ],
+      "title": "ResolvedSymbolRef",
+      "type": "object"
+    },
+    "SemanticConfidence": {
+      "description": "Per-aspect confidence scores for the resolution process.",
+      "properties": {
+        "overall": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Overall",
+          "type": "number"
+        },
+        "region_segmentation": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Region Segmentation",
+          "type": "number"
+        },
+        "reading_order": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Reading Order",
+          "type": "number"
+        },
+        "block_classification": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Block Classification",
+          "type": "number"
+        },
+        "symbol_resolution": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Symbol Resolution",
+          "type": "number"
+        }
+      },
+      "title": "SemanticConfidence",
+      "type": "object"
+    },
+    "SymbolAnchorKind": {
+      "description": "How a symbol attaches to its context.",
+      "enum": [
+        "inline",
+        "prefix",
+        "cell_local",
+        "block_attached",
+        "region_annotation"
+      ],
+      "title": "SymbolAnchorKind",
+      "type": "string"
+    }
+  },
+  "description": "Semantic resolution of a page, referencing evidence entities.",
+  "properties": {
+    "schema_version": {
+      "default": "resolved_page.v1",
+      "pattern": "^resolved_page\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "page_number": {
+      "minimum": 1,
+      "title": "Page Number",
+      "type": "integer"
+    },
+    "source_evidence_hash": {
+      "default": "",
+      "title": "Source Evidence Hash",
+      "type": "string"
+    },
+    "regions": {
+      "items": {
+        "$ref": "#/$defs/ResolvedRegion"
+      },
+      "title": "Regions",
+      "type": "array"
+    },
+    "blocks": {
+      "items": {
+        "$ref": "#/$defs/ResolvedBlock"
+      },
+      "title": "Blocks",
+      "type": "array"
+    },
+    "main_flow_order": {
+      "description": "Block IDs in reading order",
+      "items": {
+        "type": "string"
+      },
+      "title": "Main Flow Order",
+      "type": "array"
+    },
+    "anchor_edges": {
+      "items": {
+        "$ref": "#/$defs/AnchorEdge"
+      },
+      "title": "Anchor Edges",
+      "type": "array"
+    },
+    "symbol_refs": {
+      "items": {
+        "$ref": "#/$defs/ResolvedSymbolRef"
+      },
+      "title": "Symbol Refs",
+      "type": "array"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SemanticConfidence"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProvenanceRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id",
+    "page_number"
+  ],
+  "title": "ResolvedPageV1",
+  "type": "object"
+}

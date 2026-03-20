@@ -31,9 +31,7 @@ export function InlineRenderer({ node }: InlineRendererProps) {
       );
     default: {
       const _exhaustive: never = node;
-      throw new Error(
-        `Unsupported inline kind: ${(_exhaustive as RenderInlineNode).kind}`,
-      );
+      throw new Error(`Unsupported inline kind: ${(_exhaustive as RenderInlineNode).kind}`);
     }
   }
 }

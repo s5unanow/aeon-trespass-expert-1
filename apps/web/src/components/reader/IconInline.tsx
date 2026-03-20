@@ -21,15 +21,28 @@ const ICON_MAP: Record<string, string> = {
 
 // Decorative/structural icons that should not be rendered inline
 const HIDDEN_ICONS = new Set([
-  'sym.board_tile_a', 'sym.board_tile_c', 'sym.board_tile_e',
-  'sym.board_tile_f', 'sym.board_tile_g', 'sym.board_tile_h',
-  'sym.board_tile_i', 'sym.board_tile_n',
-  'sym.art_ruins_ref', 'sym.art_ruins_dark',
-  'sym.art_ruins_small_b', 'sym.art_ruins_small_c',
-  'sym.art_texture_light_a', 'sym.art_texture_light_b',
-  'sym.marker_dark', 'sym.crown_laurel_a', 'sym.crown_laurel_b',
-  'sym.terrain_city_a', 'sym.terrain_glacier', 'sym.terrain_cliff',
-  'sym.titan_helmet', 'sym.die_red',
+  'sym.board_tile_a',
+  'sym.board_tile_c',
+  'sym.board_tile_e',
+  'sym.board_tile_f',
+  'sym.board_tile_g',
+  'sym.board_tile_h',
+  'sym.board_tile_i',
+  'sym.board_tile_n',
+  'sym.art_ruins_ref',
+  'sym.art_ruins_dark',
+  'sym.art_ruins_small_b',
+  'sym.art_ruins_small_c',
+  'sym.art_texture_light_a',
+  'sym.art_texture_light_b',
+  'sym.marker_dark',
+  'sym.crown_laurel_a',
+  'sym.crown_laurel_b',
+  'sym.terrain_city_a',
+  'sym.terrain_glacier',
+  'sym.terrain_cliff',
+  'sym.titan_helmet',
+  'sym.die_red',
 ]);
 
 export function IconInline({ symbolId, alt }: IconInlineProps) {

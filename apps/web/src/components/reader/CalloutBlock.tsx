@@ -7,11 +7,7 @@ interface CalloutBlockProps {
 
 export function CalloutBlock({ block }: CalloutBlockProps) {
   return (
-    <aside
-      id={block.id}
-      className="reader-callout"
-      data-variant={block.variant ?? undefined}
-    >
+    <aside id={block.id} className="reader-callout" data-variant={block.variant ?? undefined}>
       {block.children.map((child, i) => (
         <InlineRenderer key={i} node={child} />
       ))}

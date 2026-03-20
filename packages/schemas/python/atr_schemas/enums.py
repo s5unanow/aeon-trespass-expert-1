@@ -62,3 +62,38 @@ class StageScope(StrEnum):
     PAGE = "page"
     ASSET = "asset"
     BATCH = "batch"
+
+
+class RegionKind(StrEnum):
+    """Semantic region classification."""
+
+    BODY = "body"
+    SIDEBAR = "sidebar"
+    HEADER = "header"
+    FOOTER = "footer"
+    FIGURE_AREA = "figure_area"
+    TABLE_AREA = "table_area"
+    CALLOUT_AREA = "callout_area"
+    MARGIN_NOTE = "margin_note"
+    FULL_WIDTH = "full_width"
+    UNKNOWN = "unknown"
+
+
+class SymbolAnchorKind(StrEnum):
+    """How a symbol attaches to its context."""
+
+    INLINE = "inline"
+    PREFIX = "prefix"
+    CELL_LOCAL = "cell_local"
+    BLOCK_ATTACHED = "block_attached"
+    REGION_ANNOTATION = "region_annotation"
+
+
+class AnchorEdgeKind(StrEnum):
+    """Type of anchor/parent relationship between resolved entities."""
+
+    CAPTION_TO_FIGURE = "caption_to_figure"
+    BLOCK_TO_CALLOUT = "block_to_callout"
+    SYMBOL_TO_BLOCK = "symbol_to_block"
+    BLOCK_TO_REGION = "block_to_region"
+    ASIDE_TO_MAIN = "aside_to_main"

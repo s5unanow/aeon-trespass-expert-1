@@ -55,9 +55,7 @@ export function DocumentIndexPage() {
             <ul style={{ columns: 3, listStyle: 'none', padding: 0 }}>
               {manifest.pages.map((p) => (
                 <li key={p.page_id} style={{ marginBottom: '0.25rem' }}>
-                  <a
-                    href={`/documents/${manifest.document_id}/${manifest.edition}/${p.page_id}`}
-                  >
+                  <a href={`/documents/${manifest.document_id}/${manifest.edition}/${p.page_id}`}>
                     {formatPageNumber(p.page_id)}
                     {p.title ? ` — ${p.title}` : ''}
                   </a>
