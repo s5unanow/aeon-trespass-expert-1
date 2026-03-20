@@ -2,9 +2,6 @@
 
 import json
 
-import pytest
-from pydantic import ValidationError
-
 from atr_schemas.common import NormRect, PageDimensions, ProvenanceRef, Rect
 from atr_schemas.enums import (
     AnchorEdgeKind,
@@ -281,45 +278,11 @@ def test_resolved_page_from_dicts() -> None:
     assert page.blocks[0].block_type == BlockType.HEADING
 
 
-# --- Validation tests (negative) ---
+# --- Positive-path pattern validation ---
+# Negative/rejection tests are in test_evidence_resolved_negative.py
 
 
-def test_norm_rect_rejects_out_of_range() -> None:
-    with pytest.raises(ValidationError):
-        NormRect(x0=-0.1, y0=0.0, x1=0.5, y1=0.5)
-    with pytest.raises(ValidationError):
-        NormRect(x0=0.0, y0=0.0, x1=1.1, y1=0.5)
-
-
-def test_page_evidence_rejects_bad_page_id() -> None:
-    with pytest.raises(ValidationError):
-        PageEvidenceV1(
-            document_id="test",
-            page_id="bad",
-            page_number=1,
-            transform=EvidenceTransformMeta(page_dimensions_pt=_DIMS),
-        )
-
-
-def test_resolved_page_rejects_bad_schema_version() -> None:
-    with pytest.raises(ValidationError):
-        ResolvedPageV1.model_validate(
-            {
-                "schema_version": "wrong.v1",
-                "document_id": "test",
-                "page_id": "p0001",
-                "page_number": 1,
-            }
-        )
-
-
-def test_confidence_rejects_out_of_range() -> None:
-    with pytest.raises(ValidationError):
-        SemanticConfidence(overall=1.5)
-
-
-def test_evidence_id_pattern_validation() -> None:
-    """Valid evidence IDs are accepted, invalid ones rejected."""
+def test_evidence_id_pattern_accepts_valid() -> None:
     char = EvidenceChar(
         evidence_id="e.char.001",
         text="A",
@@ -328,17 +291,8 @@ def test_evidence_id_pattern_validation() -> None:
     )
     assert char.evidence_id == "e.char.001"
 
-    with pytest.raises(ValidationError):
-        EvidenceChar(
-            evidence_id="bad_id",
-            text="A",
-            bbox=_RECT,
-            norm_bbox=_NORM,
-        )
 
-
-def test_region_id_pattern_validation() -> None:
-    """Valid region IDs are accepted, invalid ones rejected."""
+def test_region_id_pattern_accepts_valid() -> None:
     region = ResolvedRegion(
         region_id="r001",
         kind=RegionKind.BODY,
@@ -346,11 +300,3 @@ def test_region_id_pattern_validation() -> None:
         norm_bbox=_NORM,
     )
     assert region.region_id == "r001"
-
-    with pytest.raises(ValidationError):
-        ResolvedRegion(
-            region_id="bad",
-            kind=RegionKind.BODY,
-            bbox=_RECT,
-            norm_bbox=_NORM,
-        )
