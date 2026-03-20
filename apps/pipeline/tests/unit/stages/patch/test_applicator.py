@@ -140,6 +140,15 @@ def test_invalid_path_missing_parent() -> None:
         )
 
 
+def test_non_integer_array_index() -> None:
+    """Non-numeric key on a list target should raise PatchError."""
+    with pytest.raises(PatchError):
+        apply_patches(
+            {"items": ["a", "b"]},
+            _patch_set([{"op": "replace", "path": "/items/foo", "value": "x"}]),
+        )
+
+
 def test_unsupported_op() -> None:
     with pytest.raises(PatchError, match="Unsupported"):
         apply_patches({"a": 1}, _patch_set([{"op": "move", "path": "/a", "value": None}]))

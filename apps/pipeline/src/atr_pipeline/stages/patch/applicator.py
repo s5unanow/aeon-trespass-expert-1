@@ -8,12 +8,9 @@ not mutated.
 from __future__ import annotations
 
 import copy
-import logging
 from typing import Any
 
 from atr_schemas.patch_set_v1 import PatchOperation, PatchSetV1
-
-logger = logging.getLogger(__name__)
 
 
 class PatchError(Exception):
@@ -34,7 +31,7 @@ def apply_patches(
     for idx, op in enumerate(patch_set.operations):
         try:
             _apply_one(result, op)
-        except (KeyError, IndexError, TypeError) as exc:
+        except (KeyError, IndexError, TypeError, ValueError) as exc:
             msg = f"Patch {patch_set.patch_id} operation {idx} ({op.op} {op.path}) failed: {exc}"
             raise PatchError(msg) from exc
 
