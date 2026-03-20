@@ -44,7 +44,7 @@ def extract_image_evidence(
                 if img_data and img_data.get("image"):
                     image_hash = sha256_bytes(img_data["image"])[:12]
             except Exception:
-                pass
+                logger.debug("Could not extract image data for xref=%d", xref)
 
             results.append(
                 EvidenceImageOccurrence(
@@ -128,16 +128,21 @@ def _color_to_int(color: object) -> int | None:
     if color is None:
         return None
     if isinstance(color, (int, float)):
-        v = int(float(color) * 255)
+        v = _clamp_channel(float(color))
         return (v << 16) | (v << 8) | v
     if isinstance(color, (list, tuple)):
         if len(color) == 3:
-            r, g, b = (int(float(c) * 255) for c in color)
+            r, g, b = (_clamp_channel(float(c)) for c in color)
             return (r << 16) | (g << 8) | b
         if len(color) == 1:
-            v = int(float(color[0]) * 255)
+            v = _clamp_channel(float(color[0]))
             return (v << 16) | (v << 8) | v
     return None
+
+
+def _clamp_channel(value: float) -> int:
+    """Clamp a [0,1] colour channel to an 8-bit int."""
+    return max(0, min(255, int(value * 255)))
 
 
 def _cluster_paths(
