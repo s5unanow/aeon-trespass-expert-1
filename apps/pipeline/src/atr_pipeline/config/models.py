@@ -115,6 +115,13 @@ class StructureConfig(BaseModel):
     figure_min_width_pt: float = Field(default=100.0, ge=0.0)
     figure_min_height_pt: float = Field(default=100.0, ge=0.0)
 
+    # Region segmentation
+    gutter_min_width_pt: float = Field(default=10.0, gt=0.0)
+    full_width_fraction: float = Field(default=0.85, gt=0.0, le=1.0)
+    band_gap_min_pt: float = Field(default=15.0, gt=0.0)
+    furniture_top_max_y: float = Field(default=60.0, ge=0.0)
+    furniture_bottom_min_y: float = Field(default=750.0, ge=0.0)
+
     @model_validator(mode="after")
     def _check_body_size_range(self) -> StructureConfig:
         if self.body_size_min > self.body_size_max:
