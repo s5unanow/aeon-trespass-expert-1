@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 
 from atr_pipeline.config.models import StructureConfig
+from atr_pipeline.stages.structure.furniture import FurnitureMap
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
@@ -264,9 +265,11 @@ def build_page_ir_real(
     symbols: SymbolMatchSetV1 | None = None,
     *,
     config: StructureConfig | None = None,
+    furniture: FurnitureMap | None = None,
 ) -> PageIRV1:
     """Build PageIRV1 from real page evidence using font-based heuristics."""
     cfg = config or StructureConfig()
+    furniture_map = furniture or FurnitureMap()
     # Collect significant images (even if there are no text spans)
     figure_images = _significant_image_blocks(native, cfg)
     # Filter out images that overlap heavily with text
@@ -293,7 +296,9 @@ def build_page_ir_real(
 
     for role, span in classified:
         if role == "footer":
-            continue  # Strip furniture
+            continue  # Strip footer zone
+        if furniture_map.is_furniture_span(span.span_id):
+            continue  # Strip detected furniture
 
         if current_line and not _same_line(current_line[-1][1], span):
             lines.append(current_line)

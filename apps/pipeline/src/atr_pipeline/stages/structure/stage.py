@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
+from atr_pipeline.stages.structure.furniture import FurnitureMap, detect_furniture
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import ConfidenceMetrics, ProvenanceRef
 from atr_schemas.enums import StageScope
@@ -53,8 +54,24 @@ class StructureStage:
         total_blocks = 0
         hard_pages = 0
 
+        # Pre-load all native pages for furniture detection (reused below)
+        furniture_map = FurnitureMap()
+        native_cache: dict[str, NativePageV1] = {}
+        if builder == "real":
+            for pid in page_ids:
+                page = self._load_native_page(ctx, pid)
+                if page is not None:
+                    native_cache[pid] = page
+            furniture_map = detect_furniture(list(native_cache.values()))
+            if furniture_map.has_furniture:
+                ctx.logger.info(
+                    "Detected %d furniture regions (%d spans)",
+                    len(furniture_map.repeated_regions),
+                    len(furniture_map.stripped_span_ids),
+                )
+
         for page_id in page_ids:
-            native = self._load_native_page(ctx, page_id)
+            native = native_cache.get(page_id) or self._load_native_page(ctx, page_id)
             if native is None:
                 ctx.logger.warning("Skipping %s: missing native page", page_id)
                 continue
@@ -90,7 +107,12 @@ class StructureStage:
                 )
                 ir = build_page_ir_simple(native, sym)
             else:
-                ir = build_page_ir_real(native, symbols, config=ctx.config.structure)
+                ir = build_page_ir_real(
+                    native,
+                    symbols,
+                    config=ctx.config.structure,
+                    furniture=furniture_map,
+                )
 
             # Record evidence path and confidence from layout scoring
             ir.provenance = ProvenanceRef(
