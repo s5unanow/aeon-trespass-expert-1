@@ -121,7 +121,6 @@ class StructureConfig(BaseModel):
     band_gap_min_pt: float = Field(default=15.0, gt=0.0)
     furniture_top_max_y: float = Field(default=60.0, ge=0.0)
     furniture_bottom_min_y: float = Field(default=750.0, ge=0.0)
-    region_merge_tolerance_pt: float = Field(default=5.0, ge=0.0)
 
     @model_validator(mode="after")
     def _check_body_size_range(self) -> StructureConfig:

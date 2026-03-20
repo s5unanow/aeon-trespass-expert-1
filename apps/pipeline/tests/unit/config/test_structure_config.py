@@ -85,7 +85,6 @@ def test_structure_config_region_segmentation_defaults() -> None:
     assert cfg.band_gap_min_pt == 15.0
     assert cfg.furniture_top_max_y == 60.0
     assert cfg.furniture_bottom_min_y == 750.0
-    assert cfg.region_merge_tolerance_pt == 5.0
 
 
 def test_structure_config_region_segmentation_overrides() -> None:

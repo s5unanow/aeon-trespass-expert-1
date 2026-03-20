@@ -181,9 +181,9 @@ def _split_into_bands(
 
     # Build bands from consecutive boundary pairs
     bands: list[_Band] = []
-    for i in range(0, len(boundaries) - 1, 2):
+    for i in range(len(boundaries) - 1):
         y0 = boundaries[i]
-        y1 = boundaries[i + 1] if i + 1 < len(boundaries) else dims.height
+        y1 = boundaries[i + 1]
         band = _Band(y0=y0, y1=y1)
         for it in items:
             if _item_in_band(it, y0, y1):

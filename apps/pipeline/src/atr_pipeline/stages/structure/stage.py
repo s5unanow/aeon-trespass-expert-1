@@ -246,7 +246,7 @@ class StructureStage:
             document_id=native.document_id,
             page_id=native.page_id,
             page_number=native.page_number,
-            regions=[r for r in regions if isinstance(r, ResolvedRegion)],
+            regions=regions,
         )
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,
