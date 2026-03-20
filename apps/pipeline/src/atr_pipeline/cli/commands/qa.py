@@ -12,7 +12,6 @@ from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_pipeline.store.artifact_store import ArtifactStore
-from atr_schemas.enums import Severity
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.render_page_v1 import RenderPageV1
@@ -59,13 +58,12 @@ def qa(
 
     _print_summary(all_records)
 
+    block_on = set(config.qa.block_publish_on)
+
     if review_pack:
-        block_on = set(config.qa.block_publish_on)
         _write_review_pack(store, doc, all_records, block_on)
 
-    has_blocking = any(
-        r.severity in (Severity.ERROR, Severity.CRITICAL) and not r.waived for r in all_records
-    )
+    has_blocking = any(r.severity.value in block_on and not r.waived for r in all_records)
     if has_blocking:
         raise typer.Exit(1)
 
