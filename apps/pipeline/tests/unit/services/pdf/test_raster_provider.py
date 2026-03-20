@@ -36,6 +36,10 @@ class TestPngDimensions:
         data = _make_fake_png(4096, 3072)
         assert _png_dimensions(data) == (4096, 3072)
 
+    def test_rejects_invalid_data(self) -> None:
+        with pytest.raises(ValueError, match="Invalid PNG"):
+            _png_dimensions(b"not a png")
+
 
 class TestPageRasterProvider:
     @pytest.fixture()

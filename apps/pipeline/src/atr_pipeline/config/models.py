@@ -43,7 +43,15 @@ class ExtractLayoutConfig(BaseModel):
 class RasterConfig(BaseModel):
     """Raster rendering configuration — controls the per-page render pyramid."""
 
-    pyramid_dpi: list[int] = Field(default_factory=lambda: [150, 300])
+    pyramid_dpi: list[int] = Field(default_factory=lambda: [150, 300], min_length=1)
+
+    @model_validator(mode="after")
+    def _check_dpi_values(self) -> RasterConfig:
+        for dpi in self.pyramid_dpi:
+            if dpi < 72:
+                msg = f"pyramid_dpi values must be >= 72, got {dpi}"
+                raise ValueError(msg)
+        return self
 
 
 class ExtractionConfig(BaseModel):

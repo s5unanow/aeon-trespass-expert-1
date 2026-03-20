@@ -142,8 +142,14 @@ class PageRasterProvider:
         return pngs[-1] if pngs else None
 
 
+_PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+
+
 def _png_dimensions(data: bytes) -> tuple[int, int]:
     """Extract width and height from a PNG's IHDR chunk."""
+    if len(data) < 24 or data[:8] != _PNG_SIGNATURE:
+        msg = f"Invalid PNG data ({len(data)} bytes)"
+        raise ValueError(msg)
     # PNG: 8-byte signature, then IHDR chunk (4B length + 4B type + 4B width + 4B height)
     width: int = struct.unpack(">I", data[16:20])[0]
     height: int = struct.unpack(">I", data[20:24])[0]
