@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router';
 import { loadRenderPage } from '../lib/api/loadRenderPage';
 import type { RenderPageData } from '../lib/render/types';
 import { BlockRenderer } from '../components/reader/BlockRenderer';
+import { EditionSwitcher } from '../components/nav/EditionSwitcher';
 import { SourcePageBadge } from '../components/nav/SourcePageBadge';
 
 export function ReaderPage() {
@@ -44,7 +45,14 @@ export function ReaderPage() {
               <Link to="/">&larr; Index</Link>
             )}
           </span>
-          <SourcePageBadge pageNumber={page.page.source_page_number} />
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <EditionSwitcher
+              documentId={documentId!}
+              pageId={pageId!}
+              currentEdition={edition!}
+            />
+            <SourcePageBadge pageNumber={page.page.source_page_number} />
+          </span>
           <span>
             {next ? (
               <Link to={`/documents/${documentId}/${edition}/${next}`}>Next &rarr;</Link>

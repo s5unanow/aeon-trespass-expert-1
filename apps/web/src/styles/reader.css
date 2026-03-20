@@ -116,3 +116,19 @@ h2.reader-heading {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
+/* --- Edition Switcher --- */
+
+.edition-switcher {
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.edition-switcher a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.edition-switcher a:hover {
+  text-decoration: underline;
+}
