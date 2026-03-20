@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 import typer
@@ -45,8 +44,3 @@ def write_report_json(report: EvalReport, output_path: Path) -> None:
         f.write(report.model_dump_json(indent=2))
         f.write("\n")
     typer.echo(f"Report written: {output_path}")
-
-
-def report_to_dict(report: EvalReport) -> dict[str, object]:
-    """Convert report to a plain dict for artifact storage."""
-    return json.loads(report.model_dump_json())  # type: ignore[no-any-return]

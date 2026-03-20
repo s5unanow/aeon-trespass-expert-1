@@ -9,9 +9,8 @@ import typer
 from atr_pipeline.config import load_document_config
 from atr_pipeline.eval.models import EvalReport
 from atr_pipeline.eval.report import print_summary, write_report_json
-from atr_pipeline.eval.runner import run_evaluation
+from atr_pipeline.eval.runner import load_page_ir, run_evaluation
 from atr_pipeline.store.artifact_store import ArtifactStore
-from atr_schemas.page_ir_v1 import PageIRV1
 
 
 def eval_command(
@@ -42,7 +41,7 @@ def eval_command(
         write_report_json(report, Path(output_json))
 
     if overlays:
-        _generate_overlays(store, doc, report, repo_root)
+        _generate_overlays(store, doc, report)
 
     if not report.passed:
         raise typer.Exit(1)
@@ -57,7 +56,6 @@ def _generate_overlays(
     store: ArtifactStore,
     document_id: str,
     report: EvalReport,
-    repo_root: Path,
 ) -> None:
     """Generate overlay PNGs for evaluated pages."""
     from atr_pipeline.eval.overlay import draw_ir_overlay
@@ -74,7 +72,7 @@ def _generate_overlays(
             continue
 
         raster_path = rasters[-1]
-        page_ir = _load_ir_for_overlay(store, document_id, page_id)
+        page_ir = load_page_ir(store, document_id, page_id)
         if page_ir is None:
             continue
 
@@ -84,20 +82,3 @@ def _generate_overlays(
         out_path = out_dir / "overlay.png"
         out_path.write_bytes(png_bytes)
         typer.echo(f"  Overlay: {out_path}")
-
-
-def _load_ir_for_overlay(
-    store: ArtifactStore,
-    document_id: str,
-    page_id: str,
-) -> PageIRV1 | None:
-    """Load page IR for overlay generation."""
-    import json
-
-    page_dir = store.root / document_id / "page_ir.v1.en" / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return PageIRV1.model_validate(json.loads(jsons[-1].read_text()))

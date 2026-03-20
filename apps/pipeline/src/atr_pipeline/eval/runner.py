@@ -50,7 +50,7 @@ def run_evaluation(
     page_results: list[PageEvalResult] = []
 
     for spec in pages_to_eval:
-        page_ir = _load_page_ir(store, document_id, spec.page_id)
+        page_ir = load_page_ir(store, document_id, spec.page_id)
         if page_ir is None:
             logger.warning("page IR missing: page_id=%s doc=%s", spec.page_id, document_id)
             page_results.append(
@@ -116,7 +116,7 @@ def _filter_pages(
     return [p for p in golden.pages if p.page_id in filter_set]
 
 
-def _load_page_ir(store: ArtifactStore, document_id: str, page_id: str) -> PageIRV1 | None:
+def load_page_ir(store: ArtifactStore, document_id: str, page_id: str) -> PageIRV1 | None:
     """Load the latest EN page IR from the artifact store."""
     page_dir = store.root / document_id / "page_ir.v1.en" / "page" / page_id
     if not page_dir.exists():
@@ -134,6 +134,13 @@ def _build_expected_block_types(spec: GoldenPageSpec) -> dict[str, str]:
     """
     if not spec.reading_order or not spec.block_types:
         return {}
+    if len(spec.reading_order) != len(spec.block_types):
+        logger.warning(
+            "golden spec length mismatch: reading_order=%d block_types=%d for %s",
+            len(spec.reading_order),
+            len(spec.block_types),
+            spec.page_id,
+        )
     return dict(zip(spec.reading_order, spec.block_types, strict=False))
 
 
