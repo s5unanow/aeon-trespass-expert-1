@@ -54,11 +54,15 @@ class StructureStage:
         total_blocks = 0
         hard_pages = 0
 
-        # Pre-load all native pages for furniture detection
+        # Pre-load all native pages for furniture detection (reused below)
         furniture_map = FurnitureMap()
+        native_cache: dict[str, NativePageV1] = {}
         if builder == "real":
-            all_natives = self._load_all_native_pages(ctx, page_ids)
-            furniture_map = detect_furniture(all_natives)
+            for pid in page_ids:
+                page = self._load_native_page(ctx, pid)
+                if page is not None:
+                    native_cache[pid] = page
+            furniture_map = detect_furniture(list(native_cache.values()))
             if furniture_map.has_furniture:
                 ctx.logger.info(
                     "Detected %d furniture regions (%d spans)",
@@ -67,7 +71,7 @@ class StructureStage:
                 )
 
         for page_id in page_ids:
-            native = self._load_native_page(ctx, page_id)
+            native = native_cache.get(page_id) or self._load_native_page(ctx, page_id)
             if native is None:
                 ctx.logger.warning("Skipping %s: missing native page", page_id)
                 continue
@@ -158,19 +162,6 @@ class StructureStage:
 
         msg = "No native pages found. Run extract_native first."
         raise RuntimeError(msg)
-
-    @staticmethod
-    def _load_all_native_pages(
-        ctx: StageContext,
-        page_ids: list[str],
-    ) -> list[NativePageV1]:
-        """Load all native pages for furniture detection."""
-        pages: list[NativePageV1] = []
-        for page_id in page_ids:
-            page = StructureStage._load_native_page(ctx, page_id)
-            if page is not None:
-                pages.append(page)
-        return pages
 
     @staticmethod
     def _load_native_page(

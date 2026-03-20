@@ -37,6 +37,15 @@ class FurnitureMap:
 
     stripped_span_ids: list[str] = field(default_factory=list)
     repeated_regions: list[FurnitureRegion] = field(default_factory=list)
+    _span_id_set: set[str] = field(default_factory=set, repr=False)
+
+    def __post_init__(self) -> None:
+        if self.stripped_span_ids and not self._span_id_set:
+            self._span_id_set = set(self.stripped_span_ids)
+
+    def finalize(self) -> None:
+        """Build lookup set from span IDs. Call after populating stripped_span_ids."""
+        self._span_id_set = set(self.stripped_span_ids)
 
     @property
     def has_furniture(self) -> bool:
@@ -45,12 +54,6 @@ class FurnitureMap:
     def is_furniture_span(self, span_id: str) -> bool:
         """Check if a span ID was detected as furniture."""
         return span_id in self._span_id_set
-
-    @property
-    def _span_id_set(self) -> set[str]:
-        if not hasattr(self, "_cached_span_ids"):
-            self._cached_span_ids: set[str] = set(self.stripped_span_ids)
-        return self._cached_span_ids
 
 
 def _normalize_text(text: str) -> str:
@@ -98,7 +101,7 @@ def detect_furniture(pages: list[NativePageV1]) -> FurnitureMap:
     Algorithm:
     1. Collect text in top and bottom zones of each page
     2. Normalize text (strip whitespace, lowercase, ignore page numbers)
-    3. Find text appearing on >50% of pages
+    3. Find text appearing on >=50% of pages
     4. Mark all matching span IDs as furniture
     """
     result = FurnitureMap()
@@ -120,4 +123,5 @@ def detect_furniture(pages: list[NativePageV1]) -> FurnitureMap:
                 for _, span_id in occurrences:
                     result.stripped_span_ids.append(span_id)
 
+    result.finalize()
     return result

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from atr_pipeline.stages.structure.furniture import (
     FurnitureMap,
-    FurnitureRegion,
     detect_furniture,
 )
 from atr_schemas.common import PageDimensions, Rect
