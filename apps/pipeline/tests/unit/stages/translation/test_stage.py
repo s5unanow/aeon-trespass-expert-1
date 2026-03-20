@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from atr_pipeline.config import load_document_config
@@ -108,8 +109,6 @@ def test_translation_persists_metadata(tmp_path: Path) -> None:
     assert meta_dir.exists()
     jsons = list(meta_dir.glob("*.json"))
     assert len(jsons) == 1
-
-    import json
 
     meta = json.loads(jsons[0].read_text())
     assert meta["provider"] == "mock"
