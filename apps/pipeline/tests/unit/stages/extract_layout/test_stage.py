@@ -111,7 +111,9 @@ def test_stage_populates_difficulty(tmp_path: Path) -> None:
     data = json.loads(sorted(layout_dir.glob("*.json"))[-1].read_text())
     assert data["difficulty"] is not None
     assert data["difficulty"]["page_id"] == "p0001"
-    assert data["difficulty"]["recommended_route"] == "R1"
+    # Test page has no words, so difficulty scorer flags it as hard
+    assert data["difficulty"]["hard_page"] is True
+    assert data["difficulty"]["native_text_coverage"] == 0.0
 
 
 def test_stage_skips_missing_pages(tmp_path: Path) -> None:
