@@ -26,6 +26,7 @@ const PRIMARY_TYPES = {
   glossary_payload_v1: 'GlossaryPayloadV1',
   layout_page_v1: 'LayoutPageV1',
   native_page_v1: 'NativePageV1',
+  nav_payload_v1: 'NavPayloadV1',
   page_ir_v1: 'PageIRV1',
   patch_set_v1: 'PatchSetV1',
   qa_record_v1: 'QARecordV1',

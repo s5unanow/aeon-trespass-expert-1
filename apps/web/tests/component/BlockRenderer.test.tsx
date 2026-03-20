@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { BlockRenderer } from '../../src/components/reader/BlockRenderer';
 import { InlineRenderer } from '../../src/components/reader/InlineRenderer';
 import type { RenderBlock, RenderInlineNode } from '../../src/lib/render/types';
@@ -91,29 +91,21 @@ describe('BlockRenderer', () => {
     expect(screen.getByText('Ячейка')).toBeDefined();
   });
 
-  it('renders unsupported block kind with visible error', () => {
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  it('throws on unsupported block kind', () => {
     const block = { kind: 'unknown_kind', id: 'p0001.b007' } as unknown as RenderBlock;
 
-    const { container } = render(<BlockRenderer block={block} />);
-    const errorDiv = container.querySelector('.reader-unsupported-block');
-    expect(errorDiv).toBeDefined();
-    expect(errorDiv?.textContent).toContain('[Unsupported block]');
-    expect(spy).toHaveBeenCalledWith('Unsupported block kind:', 'unknown_kind');
-    spy.mockRestore();
+    expect(() => render(<BlockRenderer block={block} />)).toThrow(
+      'Unsupported block kind: unknown_kind',
+    );
   });
 });
 
 describe('InlineRenderer', () => {
-  it('renders unsupported inline kind with visible error', () => {
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  it('throws on unsupported inline kind', () => {
     const node = { kind: 'unknown_inline' } as unknown as RenderInlineNode;
 
-    const { container } = render(<InlineRenderer node={node} />);
-    const errorSpan = container.querySelector('.reader-unsupported-inline');
-    expect(errorSpan).toBeDefined();
-    expect(errorSpan?.textContent).toContain('[?]');
-    expect(spy).toHaveBeenCalledWith('Unsupported inline kind:', 'unknown_inline');
-    spy.mockRestore();
+    expect(() => render(<InlineRenderer node={node} />)).toThrow(
+      'Unsupported inline kind: unknown_inline',
+    );
   });
 });

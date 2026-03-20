@@ -31,8 +31,9 @@ export function InlineRenderer({ node }: InlineRendererProps) {
       );
     default: {
       const _exhaustive: never = node;
-      console.error('Unsupported inline kind:', (_exhaustive as RenderInlineNode).kind);
-      return <span className="reader-unsupported-inline">[?]</span>;
+      throw new Error(
+        `Unsupported inline kind: ${(_exhaustive as RenderInlineNode).kind}`,
+      );
     }
   }
 }

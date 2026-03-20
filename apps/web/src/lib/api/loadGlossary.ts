@@ -1,21 +1,9 @@
-export interface GlossaryEntry {
-  concept_id: string;
-  preferred_term: string;
-  source_term: string;
-  aliases: string[];
-  icon_binding: string | null;
-  notes: string;
-}
-
-export interface GlossaryPayload {
-  document_id: string;
-  entries: GlossaryEntry[];
-}
+import type { GlossaryPayloadV1 } from '@atr/schemas';
 
 export async function loadGlossary(
   documentId: string,
   edition: string = 'ru',
-): Promise<GlossaryPayload> {
+): Promise<GlossaryPayloadV1> {
   const url = `/documents/${documentId}/${edition}/data/glossary.json`;
   const res = await fetch(url);
   if (!res.ok) {
