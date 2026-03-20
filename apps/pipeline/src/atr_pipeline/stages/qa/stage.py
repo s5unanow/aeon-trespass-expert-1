@@ -8,6 +8,8 @@ from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
+from atr_pipeline.stages.qa.review_pack import build_review_pack
+from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_schemas.enums import Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
@@ -61,20 +63,52 @@ class QAStage:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
 
+        waivers_dir = ctx.config.repo_root / ctx.config.qa.waivers_dir
+        waivers = load_waivers(waivers_dir, ctx.document_id)
+        if waivers:
+            ctx.logger.info("Loaded %d waivers for %s", len(waivers), ctx.document_id)
+        all_records = apply_waivers(all_records, waivers)
+
         record_refs = self._persist_records(ctx, all_records)
-        counts = _tally_severities(all_records)
+        counts = _tally_severities([r for r in all_records if not r.waived])
+        waived_counts = _tally_severities([r for r in all_records if r.waived])
         block_on = set(ctx.config.qa.block_publish_on)
-        blocking = any(r.severity.value in block_on for r in all_records)
+        blocking = any(r.severity.value in block_on and not r.waived for r in all_records)
         total = counts.info + counts.warning + counts.error + counts.critical
 
-        ctx.logger.info("QA found %d issues, blocking=%s", total, blocking)
+        review_pack_ref = ""
+        if blocking:
+            pack = build_review_pack(
+                document_id=ctx.document_id,
+                run_id=ctx.run_id,
+                records=all_records,
+                block_on=block_on,
+            )
+            ref = ctx.artifact_store.put_json(
+                document_id=ctx.document_id,
+                schema_family="review_pack.v1",
+                scope="document",
+                entity_id=ctx.document_id,
+                data=pack,
+            )
+            review_pack_ref = ref.relative_path
+            ctx.logger.info("Review pack written: %s", review_pack_ref)
+
+        ctx.logger.info(
+            "QA found %d issues (%d waived), blocking=%s",
+            total,
+            waived_counts.error + waived_counts.critical,
+            blocking,
+        )
 
         return QASummaryV1(
             document_id=ctx.document_id,
             run_id=ctx.run_id,
             counts=counts,
+            waived_counts=waived_counts,
             blocking=blocking,
             record_refs=record_refs,
+            review_pack_ref=review_pack_ref,
         )
 
     @staticmethod

@@ -66,6 +66,7 @@ from atr_schemas.render_page_v1 import (
     RenderTableBlock,
     RenderTextInline,
 )
+from atr_schemas.review_pack_v1 import ReviewFinding, ReviewPackV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.search_docs_v1 import SearchDocEntry, SearchDocsV1
 from atr_schemas.source_manifest_v1 import PageEntry, SourceManifestV1
@@ -73,6 +74,7 @@ from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1, SymbolEntry
 from atr_schemas.symbol_match_set_v1 import SymbolMatch, SymbolMatchSetV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
 from atr_schemas.translation_result_v1 import TranslatedSegment, TranslationResultV1
+from atr_schemas.waiver_v1 import WaiverSetV1, WaiverV1
 
 __all__ = [
     "ArtifactRef",
@@ -129,6 +131,8 @@ __all__ = [
     "RenderParagraphBlock",
     "RenderTableBlock",
     "RenderTextInline",
+    "ReviewFinding",
+    "ReviewPackV1",
     "RunManifestV1",
     "SearchDocEntry",
     "SearchDocsV1",
@@ -148,6 +152,8 @@ __all__ = [
     "TranslationResultV1",
     "TranslationSegment",
     "UnknownBlock",
+    "WaiverSetV1",
+    "WaiverV1",
     "WordEvidence",
     "XrefInline",
 ]

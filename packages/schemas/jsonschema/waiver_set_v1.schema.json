@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "WaiverV1": {
+      "description": "A single approved QA waiver.\n\nMatches findings by rule code and optionally by page.",
+      "properties": {
+        "waiver_id": {
+          "title": "Waiver Id",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "approved_by": {
+          "title": "Approved By",
+          "type": "string"
+        },
+        "approved_at": {
+          "default": "",
+          "title": "Approved At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "waiver_id",
+        "code",
+        "reason",
+        "approved_by"
+      ],
+      "title": "WaiverV1",
+      "type": "object"
+    }
+  },
+  "description": "Collection of waivers for a document.",
+  "properties": {
+    "schema_version": {
+      "default": "waiver_set.v1",
+      "pattern": "^waiver_set\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "waivers": {
+      "items": {
+        "$ref": "#/$defs/WaiverV1"
+      },
+      "title": "Waivers",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "WaiverSetV1",
+  "type": "object"
+}

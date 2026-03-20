@@ -12,6 +12,7 @@ export * as patchSetV1 from './generated/patch_set_v1';
 export * as qaRecordV1 from './generated/qa_record_v1';
 export * as qaSummaryV1 from './generated/qa_summary_v1';
 export * as renderPageV1 from './generated/render_page_v1';
+export * as reviewPackV1 from './generated/review_pack_v1';
 export * as runManifestV1 from './generated/run_manifest_v1';
 export * as searchDocsV1 from './generated/search_docs_v1';
 export * as sourceManifestV1 from './generated/source_manifest_v1';
@@ -19,6 +20,7 @@ export * as symbolCatalogV1 from './generated/symbol_catalog_v1';
 export * as symbolMatchSetV1 from './generated/symbol_match_set_v1';
 export * as translationBatchV1 from './generated/translation_batch_v1';
 export * as translationResultV1 from './generated/translation_result_v1';
+export * as waiverSetV1 from './generated/waiver_set_v1';
 
 // Direct top-level type exports
 export type { AssetV1 } from './generated/asset_v1';

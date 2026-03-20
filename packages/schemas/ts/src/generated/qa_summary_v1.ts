@@ -9,6 +9,7 @@ export type Error = number;
 export type Critical = number;
 export type Blocking = boolean;
 export type RecordRefs = string[];
+export type ReviewPackRef = string;
 
 /**
  * Aggregated QA summary for a document.
@@ -18,8 +19,10 @@ export interface QASummaryV1 {
   document_id: DocumentId;
   run_id?: RunId;
   counts?: SeverityCounts;
+  waived_counts?: SeverityCounts;
   blocking?: Blocking;
   record_refs?: RecordRefs;
+  review_pack_ref?: ReviewPackRef;
 }
 /**
  * Counts by severity level.

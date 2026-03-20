@@ -1,0 +1,263 @@
+{
+  "$defs": {
+    "AutoFix": {
+      "description": "Available auto-fix for a QA issue.",
+      "properties": {
+        "available": {
+          "default": false,
+          "title": "Available",
+          "type": "boolean"
+        },
+        "fixer": {
+          "default": "",
+          "title": "Fixer",
+          "type": "string"
+        }
+      },
+      "title": "AutoFix",
+      "type": "object"
+    },
+    "QALayer": {
+      "enum": [
+        "extraction",
+        "structure",
+        "terminology",
+        "icon_symbol",
+        "asset_link",
+        "render",
+        "visual",
+        "accessibility"
+      ],
+      "title": "QALayer",
+      "type": "string"
+    },
+    "QARecordV1": {
+      "description": "A single QA finding.",
+      "properties": {
+        "schema_version": {
+          "default": "qa_record.v1",
+          "pattern": "^qa_record\\.v\\d+$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "qa_id": {
+          "title": "Qa Id",
+          "type": "string"
+        },
+        "layer": {
+          "$ref": "#/$defs/QALayer"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "document_id": {
+          "default": "",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "message": {
+          "default": "",
+          "title": "Message",
+          "type": "string"
+        },
+        "expected": {
+          "default": null,
+          "title": "Expected"
+        },
+        "actual": {
+          "default": null,
+          "title": "Actual"
+        },
+        "auto_fix": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AutoFix"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "waived": {
+          "default": false,
+          "title": "Waived",
+          "type": "boolean"
+        },
+        "waiver_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Waiver Ref"
+        }
+      },
+      "required": [
+        "qa_id",
+        "layer",
+        "severity",
+        "code"
+      ],
+      "title": "QARecordV1",
+      "type": "object"
+    },
+    "ReviewFinding": {
+      "description": "A single finding with its waiver template.",
+      "properties": {
+        "record": {
+          "$ref": "#/$defs/QARecordV1"
+        },
+        "waiver_template": {
+          "$ref": "#/$defs/WaiverV1"
+        }
+      },
+      "required": [
+        "record",
+        "waiver_template"
+      ],
+      "title": "ReviewFinding",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "WaiverV1": {
+      "description": "A single approved QA waiver.\n\nMatches findings by rule code and optionally by page.",
+      "properties": {
+        "waiver_id": {
+          "title": "Waiver Id",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "approved_by": {
+          "title": "Approved By",
+          "type": "string"
+        },
+        "approved_at": {
+          "default": "",
+          "title": "Approved At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "waiver_id",
+        "code",
+        "reason",
+        "approved_by"
+      ],
+      "title": "WaiverV1",
+      "type": "object"
+    }
+  },
+  "description": "Human-reviewable bundle of blocking/ambiguous QA findings.\n\nContains all unwaived blocking findings grouped by page,\nplus pre-filled waiver templates that a reviewer can approve.",
+  "properties": {
+    "schema_version": {
+      "default": "review_pack.v1",
+      "pattern": "^review_pack\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "total_findings": {
+      "default": 0,
+      "title": "Total Findings",
+      "type": "integer"
+    },
+    "blocking_findings": {
+      "default": 0,
+      "title": "Blocking Findings",
+      "type": "integer"
+    },
+    "waived_findings": {
+      "default": 0,
+      "title": "Waived Findings",
+      "type": "integer"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/ReviewFinding"
+      },
+      "title": "Findings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "ReviewPackV1",
+  "type": "object"
+}

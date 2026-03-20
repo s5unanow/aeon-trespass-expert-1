@@ -19,6 +19,7 @@ from atr_schemas.patch_set_v1 import PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.render_page_v1 import RenderPageV1
+from atr_schemas.review_pack_v1 import ReviewPackV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.search_docs_v1 import SearchDocsV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
@@ -26,6 +27,7 @@ from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1
 from atr_schemas.translation_result_v1 import TranslationResultV1
+from atr_schemas.waiver_v1 import WaiverSetV1
 
 MODELS = {
     "asset_v1": AssetV1,
@@ -39,6 +41,7 @@ MODELS = {
     "qa_record_v1": QARecordV1,
     "qa_summary_v1": QASummaryV1,
     "render_page_v1": RenderPageV1,
+    "review_pack_v1": ReviewPackV1,
     "run_manifest_v1": RunManifestV1,
     "search_docs_v1": SearchDocsV1,
     "source_manifest_v1": SourceManifestV1,
@@ -46,6 +49,7 @@ MODELS = {
     "symbol_match_set_v1": SymbolMatchSetV1,
     "translation_batch_v1": TranslationBatchV1,
     "translation_result_v1": TranslationResultV1,
+    "waiver_set_v1": WaiverSetV1,
 }
 
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "packages" / "schemas" / "jsonschema"
