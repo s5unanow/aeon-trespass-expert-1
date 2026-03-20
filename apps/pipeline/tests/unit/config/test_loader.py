@@ -4,12 +4,37 @@ from pathlib import Path
 
 import pytest
 
-from atr_pipeline.config.loader import load_document_config
+from atr_pipeline.config.loader import _find_repo_root, load_document_config
 
 
 def _repo_root() -> Path:
     """Return the repo root for tests."""
     return Path(__file__).resolve().parents[5]
+
+
+def test_find_repo_root_from_monorepo_root() -> None:
+    """_find_repo_root returns monorepo root when started there."""
+    root = _repo_root()
+    assert _find_repo_root(root) == root
+
+
+def test_find_repo_root_from_nested_subproject() -> None:
+    """_find_repo_root skips apps/pipeline/pyproject.toml and finds monorepo root."""
+    root = _repo_root()
+    nested = root / "apps" / "pipeline"
+    assert nested.exists(), f"Expected {nested} to exist"
+    resolved = _find_repo_root(nested)
+    assert resolved == root, (
+        f"Expected monorepo root {root}, got {resolved} (likely stopped at nested pyproject.toml)"
+    )
+
+
+def test_find_repo_root_from_deep_subdir() -> None:
+    """_find_repo_root works from a deeply nested directory."""
+    root = _repo_root()
+    deep = root / "apps" / "pipeline" / "src" / "atr_pipeline"
+    assert deep.exists()
+    assert _find_repo_root(deep) == root
 
 
 def test_load_walking_skeleton_config() -> None:

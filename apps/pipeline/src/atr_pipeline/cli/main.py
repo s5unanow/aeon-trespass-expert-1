@@ -114,7 +114,7 @@ def verify_extraction_cmd(
 @app.command(name="eval")
 def eval_cmd(
     golden_set: str = typer.Option(..., "--golden-set", help="Golden set name (e.g. 'core')"),
-    doc: str = typer.Option(..., "--doc", help="Document id to evaluate"),
+    doc: str = typer.Option("", "--doc", help="Document id (inferred from golden set if omitted)"),
     pages: str = typer.Option("", "--pages", help="Page filter: 'p0001' or 'p0001,p0002'"),
     output_json: str = typer.Option("", "--output-json", help="Path to write JSON report"),
     overlays: bool = typer.Option(False, "--overlays", help="Generate visual overlay PNGs"),
