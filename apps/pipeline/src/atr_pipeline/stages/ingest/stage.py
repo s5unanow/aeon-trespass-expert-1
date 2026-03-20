@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.pdf.image_extractor import extract_page_images
-from atr_pipeline.services.pdf.rasterizer import render_page_png
+from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
 from atr_pipeline.stages.ingest.manifest_builder import build_manifest
 from atr_pipeline.stages.ingest.pdf_fingerprint import fingerprint_pdf
 from atr_schemas.enums import StageScope
@@ -37,23 +37,26 @@ class IngestStage:
         ctx.logger.info("Fingerprinting %s", pdf_path.name)
         sha256, page_count = fingerprint_pdf(pdf_path)
 
-        # Rasterize each page and extract embedded images
-        dpi = ctx.config.extraction.layout.dpi
+        # Build raster provider for multi-DPI pyramid rendering
+        raster_provider = PageRasterProvider(
+            store=ctx.artifact_store,
+            document_id=ctx.document_id,
+            pyramid_dpi=ctx.config.extraction.raster.pyramid_dpi,
+        )
+
         all_page_ids = [f"p{n:04d}" for n in range(1, page_count + 1)]
         active_pages = set(ctx.filter_pages(all_page_ids))
         for page_num in range(1, page_count + 1):
             page_id = f"p{page_num:04d}"
             if active_pages and page_id not in active_pages:
                 continue
-            ctx.logger.info("Rasterizing %s at %d DPI", page_id, dpi)
-            png_bytes = render_page_png(pdf_path, page_num, dpi=dpi)
-            ctx.artifact_store.put_bytes(
-                document_id=ctx.document_id,
-                schema_family="raster",
-                scope="page",
-                entity_id=page_id,
-                data=png_bytes,
-                extension=".png",
+            dpis = raster_provider.pyramid_dpi
+            ctx.logger.info("Rasterizing %s at %s DPI", page_id, dpis)
+            raster_provider.render_page(
+                pdf_path,
+                page_num,
+                page_id,
+                source_pdf_sha256=sha256,
             )
 
             # Extract embedded images from the page

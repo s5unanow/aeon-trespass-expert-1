@@ -89,7 +89,10 @@ layers = [
 ]
 # stages → runner.stage_context is intentional: stages need the runtime context
 # dataclass, but must not import orchestration logic (executor, registry, plan).
+# services.pdf.raster_provider → store.artifact_store is intentional: the raster
+# provider bridges rendering (service) and content-addressed storage (store).
 ignore_imports = [
+    "atr_pipeline.services.pdf.raster_provider -> atr_pipeline.store.artifact_store",
     "atr_pipeline.stages.ingest.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.extract_native.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.extract_layout.stage -> atr_pipeline.runner.stage_context",

@@ -1,0 +1,94 @@
+{
+  "$defs": {
+    "RasterLevel": {
+      "description": "Metadata for a single raster resolution level.",
+      "properties": {
+        "dpi": {
+          "minimum": 72,
+          "title": "Dpi",
+          "type": "integer"
+        },
+        "width_px": {
+          "minimum": 1,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "minimum": 1,
+          "title": "Height Px",
+          "type": "integer"
+        },
+        "content_hash": {
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "relative_path": {
+          "description": "Path relative to artifact root",
+          "title": "Relative Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dpi",
+        "width_px",
+        "height_px",
+        "content_hash",
+        "relative_path"
+      ],
+      "title": "RasterLevel",
+      "type": "object"
+    }
+  },
+  "description": "Provenance metadata for all rendered raster levels of a page.",
+  "properties": {
+    "schema_version": {
+      "default": "raster_meta.v1",
+      "pattern": "^raster_meta\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "page_number": {
+      "minimum": 1,
+      "title": "Page Number",
+      "type": "integer"
+    },
+    "source_pdf_sha256": {
+      "title": "Source Pdf Sha256",
+      "type": "string"
+    },
+    "render_engine": {
+      "default": "pymupdf",
+      "title": "Render Engine",
+      "type": "string"
+    },
+    "render_engine_version": {
+      "default": "",
+      "title": "Render Engine Version",
+      "type": "string"
+    },
+    "levels": {
+      "items": {
+        "$ref": "#/$defs/RasterLevel"
+      },
+      "title": "Levels",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id",
+    "page_number",
+    "source_pdf_sha256"
+  ],
+  "title": "RasterMetaV1",
+  "type": "object"
+}

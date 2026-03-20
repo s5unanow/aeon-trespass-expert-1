@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
 from atr_pipeline.stages.extract_native.stage import ExtractNativeResult
 from atr_pipeline.stages.symbols.catalog_loader import load_symbol_catalog
 from atr_pipeline.stages.symbols.matcher import TemplateCache, match_symbols
@@ -56,13 +56,19 @@ class SymbolsStage:
         catalog = load_symbol_catalog(catalog_path)
         tcache = TemplateCache.from_catalog(catalog, repo_root=ctx.config.repo_root)
 
+        raster_provider = PageRasterProvider(
+            store=ctx.artifact_store,
+            document_id=ctx.document_id,
+            pyramid_dpi=ctx.config.extraction.raster.pyramid_dpi,
+        )
+
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))
         pages_matched = 0
         total_symbols = 0
 
         for page_id in page_ids:
             native = self._load_native_page(ctx, page_id)
-            raster_path = self._find_raster(ctx, page_id)
+            raster_path = raster_provider.get_raster(page_id)
 
             if native is None or raster_path is None:
                 ctx.logger.warning("Skipping %s: missing native or raster", page_id)
@@ -119,12 +125,3 @@ class SymbolsStage:
             return None
         data = json.loads(jsons[-1].read_text())
         return NativePageV1.model_validate(data)
-
-    @staticmethod
-    def _find_raster(ctx: StageContext, page_id: str) -> Path | None:
-        """Find the raster PNG for a page."""
-        raster_dir = ctx.artifact_store.root / ctx.document_id / "raster" / "page" / page_id
-        if not raster_dir.exists():
-            return None
-        pngs = sorted(raster_dir.glob("*.png"))
-        return pngs[0] if pngs else None

@@ -20,6 +20,7 @@ from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.patch_set_v1 import PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
+from atr_schemas.raster_meta_v1 import RasterMetaV1
 from atr_schemas.render_page_v1 import RenderPageV1
 from atr_schemas.resolved_page_v1 import ResolvedPageV1
 from atr_schemas.review_pack_v1 import ReviewPackV1
@@ -45,6 +46,7 @@ MODELS = {
     "patch_set_v1": PatchSetV1,
     "qa_record_v1": QARecordV1,
     "qa_summary_v1": QASummaryV1,
+    "raster_meta_v1": RasterMetaV1,
     "render_page_v1": RenderPageV1,
     "resolved_page_v1": ResolvedPageV1,
     "review_pack_v1": ReviewPackV1,

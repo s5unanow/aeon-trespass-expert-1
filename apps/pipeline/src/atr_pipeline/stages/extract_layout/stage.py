@@ -8,6 +8,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
 from atr_pipeline.stages.extract_layout.docling_adapter import extract_layout_stub
 from atr_pipeline.stages.extract_layout.fallback_stub import ocr_fallback_stub
 from atr_schemas.enums import StageScope
@@ -44,6 +45,12 @@ class ExtractLayoutStage:
         return "1.0"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> ExtractLayoutResult:
+        raster_provider = PageRasterProvider(
+            store=ctx.artifact_store,
+            document_id=ctx.document_id,
+            pyramid_dpi=ctx.config.extraction.raster.pyramid_dpi,
+        )
+
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
         pages_processed = 0
         hard_pages = 0
@@ -55,7 +62,8 @@ class ExtractLayoutStage:
                 ctx.logger.warning("Skipping %s: missing native page", page_id)
                 continue
 
-            raster_path = self._find_raster(ctx, page_id)
+            raster = raster_provider.get_raster(page_id)
+            raster_path = str(raster) if raster else None
             layout = self._extract(ctx, native, raster_path)
 
             ctx.artifact_store.put_json(
@@ -126,12 +134,3 @@ class ExtractLayoutStage:
             return None
         data = json.loads(jsons[-1].read_text())
         return NativePageV1.model_validate(data)
-
-    @staticmethod
-    def _find_raster(ctx: StageContext, page_id: str) -> str | None:
-        """Find the raster PNG path for a page, if it exists."""
-        raster_dir = ctx.artifact_store.root / ctx.document_id / "raster" / "page" / page_id
-        if not raster_dir.exists():
-            return None
-        pngs = sorted(raster_dir.glob("*.png"))
-        return str(pngs[-1]) if pngs else None

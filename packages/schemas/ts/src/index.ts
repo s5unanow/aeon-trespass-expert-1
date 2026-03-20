@@ -13,6 +13,7 @@ export * as pageIrV1 from './generated/page_ir_v1';
 export * as patchSetV1 from './generated/patch_set_v1';
 export * as qaRecordV1 from './generated/qa_record_v1';
 export * as qaSummaryV1 from './generated/qa_summary_v1';
+export * as rasterMetaV1 from './generated/raster_meta_v1';
 export * as renderPageV1 from './generated/render_page_v1';
 export * as resolvedPageV1 from './generated/resolved_page_v1';
 export * as reviewPackV1 from './generated/review_pack_v1';

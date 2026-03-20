@@ -49,6 +49,7 @@ def _make_ctx(tmp_path: Path, doc_id: str = "test_doc") -> MagicMock:
     ctx.logger = MagicMock()
     ctx.page_filter = None
     ctx.filter_pages = lambda ids: ids
+    ctx.config.extraction.raster.pyramid_dpi = [300]
     return ctx
 
 

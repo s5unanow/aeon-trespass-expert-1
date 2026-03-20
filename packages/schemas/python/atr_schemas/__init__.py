@@ -71,6 +71,7 @@ from atr_schemas.page_ir_v1 import (
 from atr_schemas.patch_set_v1 import PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
+from atr_schemas.raster_meta_v1 import RasterLevel, RasterMetaV1
 from atr_schemas.render_page_v1 import (
     RenderBlock,
     RenderCalloutBlock,
@@ -163,6 +164,8 @@ __all__ = [
     "QARecordV1",
     "QAState",
     "QASummaryV1",
+    "RasterLevel",
+    "RasterMetaV1",
     "Rect",
     "RegionId",
     "RegionKind",
