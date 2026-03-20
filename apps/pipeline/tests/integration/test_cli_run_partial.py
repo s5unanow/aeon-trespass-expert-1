@@ -7,6 +7,7 @@ executes, plus the error path for invalid stage names.
 
 from __future__ import annotations
 
+import shutil
 import sqlite3
 from dataclasses import dataclass
 from pathlib import Path
@@ -86,6 +87,13 @@ def _completed_stages(registry_path: Path) -> set[str]:
     return {e["stage_name"] for e in events}
 
 
+def _copy_tree(src: Path, dst: Path) -> None:
+    """Recursively copy a directory tree."""
+    if dst.exists():
+        shutil.rmtree(dst)
+    shutil.copytree(src, dst)
+
+
 # ── Full prerequisite run (cached for the partial-from tests) ─────────
 
 
@@ -109,15 +117,6 @@ def structure_to_render(
     # Copy artifacts from full run so the partial run can read them
     _copy_tree(full_run.artifact_root, tmp / "artifacts")
     return _invoke_run(tmp, ["--from", "structure", "--to", "render", "--edition", "en"])
-
-
-def _copy_tree(src: Path, dst: Path) -> None:
-    """Recursively copy a directory tree."""
-    import shutil
-
-    if dst.exists():
-        shutil.rmtree(dst)
-    shutil.copytree(src, dst)
 
 
 def test_structure_to_render_exits_zero(structure_to_render: RunResult) -> None:
@@ -176,7 +175,6 @@ def test_invalid_from_stage_fails(tmp_path: Path) -> None:
     """--from with an invalid stage name should exit non-zero."""
     result = _invoke_run(tmp_path, ["--from", "nonexistent"])
     assert result.exit_code != 0
-    assert "Unknown stage" in result.stdout or result.exit_code != 0
 
 
 def test_invalid_to_stage_fails(tmp_path: Path) -> None:
