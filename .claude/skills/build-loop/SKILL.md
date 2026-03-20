@@ -1,7 +1,6 @@
 ---
 name: build-loop
-description: Autonomous development loop — pick up issues, implement, and ship them one by one.
-disable-model-invocation: true
+description: Autonomous development loop — pick up issues, implement, and ship them one by one. Use when user says "build loop", "work autonomously", or "go through the backlog".
 ---
 
 # Autonomous build loop
