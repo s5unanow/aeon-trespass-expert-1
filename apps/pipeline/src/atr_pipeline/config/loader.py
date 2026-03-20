@@ -9,8 +9,17 @@ from atr_pipeline.config.models import DocumentBuildConfig
 
 
 def _find_repo_root(start: Path | None = None) -> Path:
-    """Walk up from start to find the repo root (contains pyproject.toml)."""
+    """Walk up from start to find the monorepo root.
+
+    The monorepo root is identified by containing both a ``configs/``
+    directory and a ``.git`` directory, which distinguishes it from
+    nested sub-project directories that also have ``pyproject.toml``.
+    """
     current = (start or Path.cwd()).resolve()
+    for parent in [current, *current.parents]:
+        if (parent / "configs").is_dir() and (parent / ".git").exists():
+            return parent
+    # Fallback: first pyproject.toml (legacy behaviour)
     for parent in [current, *current.parents]:
         if (parent / "pyproject.toml").exists():
             return parent

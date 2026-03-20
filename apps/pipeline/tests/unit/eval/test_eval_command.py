@@ -54,6 +54,44 @@ def test_eval_help() -> None:
     assert "golden-set" in _strip_ansi(result.output)
 
 
+def test_eval_doc_is_optional() -> None:
+    """eval accepts --golden-set without --doc (doc inferred from golden set)."""
+    result = runner.invoke(app, ["eval", "--help"])
+    # --doc should not be marked as required in help output
+    help_text = _strip_ansi(result.output)
+    assert "--doc" in help_text
+    # Verify we can invoke with just --golden-set (will fail on golden set lookup, not arg parse)
+    result = runner.invoke(app, ["eval", "--golden-set", "nonexistent"])
+    # Should fail because golden set doesn't exist, NOT because --doc is missing
+    assert result.exit_code != 0
+    assert "Missing option" not in _strip_ansi(result.output)
+
+
+def test_eval_golden_set_all_accepted_without_doc(tmp_path: Path) -> None:
+    """eval --golden-set all runs without --doc."""
+    artifacts = tmp_path / "artifacts"
+    _write_golden_ir(artifacts, "walking_skeleton", "p0001")
+
+    real_config = load_document_config("walking_skeleton", repo_root=_repo_root())
+    patched_config = real_config.model_copy(update={"artifact_root": artifacts})
+
+    with (
+        patch(
+            "atr_pipeline.cli.commands.eval_cmd.load_document_config",
+            return_value=patched_config,
+        ),
+        patch(
+            "atr_pipeline.cli.commands.eval_cmd.discover_golden_sets",
+            return_value=["core"],
+        ),
+    ):
+        result = runner.invoke(app, ["eval", "--golden-set", "all"])
+
+    output = _strip_ansi(result.output)
+    assert "Missing option" not in output
+    assert "Running 1 golden set(s)" in output
+
+
 def test_eval_missing_golden_set() -> None:
     """eval with non-existent golden set fails."""
     result = runner.invoke(
