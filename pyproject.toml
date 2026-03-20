@@ -29,6 +29,7 @@ dev = [
   "pytest-timeout>=2.3",
   "pre-commit>=4.0",
   "import-linter>=2.11",
+  "jsonschema>=4.23",
 ]
 
 [tool.ruff]
