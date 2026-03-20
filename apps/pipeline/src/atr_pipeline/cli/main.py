@@ -75,6 +75,20 @@ def release_cmd(
     _release(doc=doc, output=output, run_id=run_id)
 
 
+@app.command(name="patch")
+def patch_cmd(
+    doc: str = typer.Option(..., "--doc", help="Document id"),
+    patch_file: str = typer.Option(..., "--patch-file", help="Path to PatchSetV1 JSON"),
+    cascade: bool = typer.Option(False, "--cascade", help="Re-run render+qa after patching"),
+) -> None:
+    """Apply a patch set to a target artifact."""
+    from pathlib import Path
+
+    from atr_pipeline.cli.commands.patch import patch as _patch
+
+    _patch(doc=doc, patch_file=Path(patch_file), cascade=cascade)
+
+
 @app.command(name="qa")
 def qa_cmd(
     doc: str = typer.Option(..., "--doc", help="Document id"),
