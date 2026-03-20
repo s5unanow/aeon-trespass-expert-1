@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import typer
@@ -23,7 +24,7 @@ def eval_command(
 ) -> None:
     """Run extraction evaluation against a golden set."""
     if golden_set == "all":
-        _run_all_golden_sets(output_json=output_json, overlays=overlays)
+        _run_all_golden_sets(output_json=output_json)
         return
 
     gs_config = load_golden_set(golden_set)
@@ -53,7 +54,7 @@ def eval_command(
         raise typer.Exit(1)
 
 
-def _run_all_golden_sets(*, output_json: str, overlays: bool) -> None:
+def _run_all_golden_sets(*, output_json: str) -> None:
     """Discover and run all golden sets, fail if any fail."""
     names = discover_golden_sets()
     if not names:
@@ -85,12 +86,10 @@ def _run_all_golden_sets(*, output_json: str, overlays: bool) -> None:
         typer.echo(f"  {status} {name} ({document_id})")
         if not report.passed:
             any_failed = True
+            print_summary(report)
 
     if output_json and all_reports:
-        # Write combined report as JSON array
-        import json
-
-        combined = [json.loads(r.model_dump_json()) for r in all_reports]
+        combined = [r.model_dump(mode="json") for r in all_reports]
         Path(output_json).write_text(json.dumps(combined, indent=2))
 
     if any_failed:
