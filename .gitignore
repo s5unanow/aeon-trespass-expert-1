@@ -50,6 +50,11 @@ apps/web/storybook-static/
 # Artifacts (pipeline outputs — not checked in)
 artifacts/
 
+# Generated document corpus (re-export from artifacts via `make export`)
+# walking_skeleton fixture is kept tracked for tests
+apps/web/public/documents/*
+!apps/web/public/documents/walking_skeleton/
+
 # Runtime state
 var/*.db
 var/*.db-journal
