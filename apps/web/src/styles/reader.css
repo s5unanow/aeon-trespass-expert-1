@@ -78,3 +78,41 @@ h2.reader-heading {
   border: none;
   border-top: 1px solid #ddd;
 }
+
+/* --- Table of Contents --- */
+
+.reader-toc {
+  margin-bottom: 1rem;
+}
+
+.reader-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reader-toc-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.6;
+}
+
+.reader-toc-title {
+  flex-shrink: 0;
+}
+
+.reader-toc-dots {
+  flex: 1 1 0;
+  min-width: 1rem;
+  overflow: hidden;
+  border-bottom: 1px dotted #999;
+  margin-bottom: 0.25em;
+}
+
+.reader-toc-page {
+  flex-shrink: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
