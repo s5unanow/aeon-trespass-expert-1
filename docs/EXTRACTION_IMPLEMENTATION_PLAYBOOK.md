@@ -115,7 +115,8 @@ packages/fixtures/sample_documents/<document_id>/
   patches/         # source/target patches
 ```
 
-New layout classes get their own subdirectory under `packages/fixtures/sample_pages/`.
+New layout-class fixtures go under `packages/fixtures/sample_documents/` in a
+dedicated subdirectory per document or page class.
 
 ## 3. Required Checks by Change Type
 
@@ -279,8 +280,11 @@ A calibration review is required when any of the following change:
 
 ## 8. CI/Helper-Script Enforcement Design
 
-This section specifies a concrete enforcement approach that can be implemented
-in CI or helper scripts in a follow-up issue.
+This section is a **design spec** for enforcement scripts to be implemented in
+a follow-up issue. Some file paths referenced below (e.g., `configs/qa/`,
+`scripts/check_extraction_scope.py`) do not exist yet and will be created by
+the implementing issue. Once the scripts exist, the scripts themselves are the
+source of truth; this section serves as the design intent.
 
 ### 8.1 Extraction Change Detector
 

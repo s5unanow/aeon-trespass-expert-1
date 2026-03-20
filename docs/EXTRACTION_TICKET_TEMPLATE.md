@@ -44,7 +44,7 @@ _List all issues that must be Done before this can start._
 
 - [ ] Pydantic model created/updated in `packages/schemas/python/atr_schemas/`
 - [ ] `make codegen` run and generated files committed
-- [ ] Roundtrip contract test added in `tests/contract/`
+- [ ] Roundtrip contract test added in `apps/pipeline/tests/contract/`
 - [ ] At least 1 negative fixture (invalid input that must fail)
 
 ### Fixtures
