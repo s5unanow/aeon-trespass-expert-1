@@ -8,7 +8,6 @@ from atr_schemas.native_page_v1 import NativePageV1
 # Thresholds for hard-page classification
 _LOW_TEXT_COVERAGE = 0.30
 _LOW_AGREEMENT = 0.90
-_MULTI_COLUMN_GAP_RATIO = 0.15  # Fraction of page width that gaps must span
 
 
 def compute_difficulty(
@@ -79,7 +78,7 @@ def _detect_columns(native: NativePageV1) -> int:
     counts = [0] * n_bins
     for w in native.words:
         cx = (w.bbox.x0 + w.bbox.x1) / 2
-        idx = min(int(cx / bin_width), n_bins - 1)
+        idx = max(0, min(int(cx / bin_width), n_bins - 1))
         counts[idx] += 1
 
     total = sum(counts)
