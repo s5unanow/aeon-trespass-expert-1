@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
+from click.testing import Result
 from typer.testing import CliRunner
 
 from atr_pipeline.cli.main import app
@@ -55,7 +56,7 @@ def _invoke_patch(
     artifact_root: Path,
     patch_file: Path,
     extra_args: list[str] | None = None,
-) -> object:
+) -> Result:
     """Invoke `atr patch` with patched config."""
     repo = _repo_root()
     real_config = load_document_config("walking_skeleton", repo_root=repo)

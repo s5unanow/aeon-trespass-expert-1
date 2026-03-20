@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import logging
 from pathlib import Path
 
 import typer
@@ -13,8 +12,6 @@ from atr_pipeline.stages.patch.applicator import PatchError, apply_patches
 from atr_pipeline.store.artifact_ref import ArtifactRef
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.patch_set_v1 import PatchSetV1
-
-logger = logging.getLogger("atr_pipeline")
 
 
 def _parse_ref(ref_str: str) -> ArtifactRef:
