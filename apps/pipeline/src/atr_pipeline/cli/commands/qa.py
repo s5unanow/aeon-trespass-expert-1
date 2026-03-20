@@ -9,8 +9,9 @@ import typer
 
 from atr_pipeline.config import load_document_config
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
+from atr_pipeline.stages.qa.review_pack import build_review_pack
+from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_pipeline.store.artifact_store import ArtifactStore
-from atr_schemas.enums import Severity
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.render_page_v1 import RenderPageV1
@@ -18,6 +19,11 @@ from atr_schemas.render_page_v1 import RenderPageV1
 
 def qa(
     doc: str = typer.Option(..., "--doc", help="Document id"),
+    review_pack: bool = typer.Option(
+        False,
+        "--review-pack",
+        help="Generate review pack JSON for blocking findings",
+    ),
 ) -> None:
     """Run QA checks on existing artifacts for a document."""
     config = load_document_config(doc)
@@ -44,11 +50,45 @@ def qa(
         for rule in rules:
             all_records.extend(rule.evaluate(ctx))
 
+    waivers_dir = config.repo_root / config.qa.waivers_dir
+    waivers = load_waivers(waivers_dir, doc)
+    if waivers:
+        typer.echo(f"Loaded {len(waivers)} waiver(s) for {doc}")
+    all_records = apply_waivers(all_records, waivers)
+
     _print_summary(all_records)
 
-    has_blocking = any(r.severity in (Severity.ERROR, Severity.CRITICAL) for r in all_records)
+    block_on = set(config.qa.block_publish_on)
+
+    if review_pack:
+        _write_review_pack(store, doc, all_records, block_on)
+
+    has_blocking = any(r.severity.value in block_on and not r.waived for r in all_records)
     if has_blocking:
         raise typer.Exit(1)
+
+
+def _write_review_pack(
+    store: ArtifactStore,
+    doc: str,
+    records: list[QARecordV1],
+    block_on: set[str],
+) -> None:
+    """Generate and persist a review pack."""
+    pack = build_review_pack(
+        document_id=doc,
+        run_id="cli",
+        records=records,
+        block_on=block_on,
+    )
+    ref = store.put_json(
+        document_id=doc,
+        schema_family="review_pack.v1",
+        scope="document",
+        entity_id=doc,
+        data=pack,
+    )
+    typer.echo(f"\nReview pack written: {ref.relative_path}")
 
 
 def _resolve_page_ids(store: ArtifactStore, doc: str) -> list[str]:
@@ -58,7 +98,12 @@ def _resolve_page_ids(store: ArtifactStore, doc: str) -> list[str]:
     return []
 
 
-def _load_ir(store: ArtifactStore, doc: str, family: str, page_id: str) -> PageIRV1 | None:
+def _load_ir(
+    store: ArtifactStore,
+    doc: str,
+    family: str,
+    page_id: str,
+) -> PageIRV1 | None:
     page_dir = store.root / doc / family / "page" / page_id
     if not page_dir.exists():
         return None
@@ -68,7 +113,11 @@ def _load_ir(store: ArtifactStore, doc: str, family: str, page_id: str) -> PageI
     return PageIRV1.model_validate(json.loads(jsons[-1].read_text()))
 
 
-def _load_render(store: ArtifactStore, doc: str, page_id: str) -> RenderPageV1 | None:
+def _load_render(
+    store: ArtifactStore,
+    doc: str,
+    page_id: str,
+) -> RenderPageV1 | None:
     page_dir = store.root / doc / "render_page.v1" / "page" / page_id
     if not page_dir.exists():
         return None
@@ -79,21 +128,32 @@ def _load_render(store: ArtifactStore, doc: str, page_id: str) -> RenderPageV1 |
 
 
 def _print_summary(records: list[QARecordV1]) -> None:
-    if not records:
+    active = [r for r in records if not r.waived]
+    waived = [r for r in records if r.waived]
+
+    if not active and not waived:
         typer.echo("QA passed: all checks clean.")
         return
 
-    code_counts: Counter[str] = Counter()
-    severity_map: dict[str, str] = {}
-    for r in records:
-        code_counts[r.code] += 1
-        severity_map[r.code] = r.severity.value
+    if active:
+        code_counts: Counter[str] = Counter()
+        severity_map: dict[str, str] = {}
+        for r in active:
+            code_counts[r.code] += 1
+            severity_map[r.code] = r.severity.value
 
-    typer.echo(f"\n{'CODE':<30} {'SEVERITY':<12} {'COUNT':>5}")
-    typer.echo("-" * 49)
-    for code, count in code_counts.most_common():
-        typer.echo(f"{code:<30} {severity_map[code]:<12} {count:>5}")
-    typer.echo("-" * 49)
+        typer.echo(f"\n{'CODE':<30} {'SEVERITY':<12} {'COUNT':>5}")
+        typer.echo("-" * 49)
+        for code, count in code_counts.most_common():
+            typer.echo(f"{code:<30} {severity_map[code]:<12} {count:>5}")
+        typer.echo("-" * 49)
+        total = sum(code_counts.values())
+        typer.echo(f"{'TOTAL':<30} {'':12} {total:>5}")
 
-    total = sum(code_counts.values())
-    typer.echo(f"{'TOTAL':<30} {'':12} {total:>5}")
+    if waived:
+        typer.echo(f"\nWaived: {len(waived)} finding(s)")
+        waived_codes: Counter[str] = Counter()
+        for r in waived:
+            waived_codes[r.code] += 1
+        for code, count in waived_codes.most_common():
+            typer.echo(f"  {code}: {count}")

@@ -21,5 +21,7 @@ class QASummaryV1(BaseModel):
     document_id: str
     run_id: str = ""
     counts: SeverityCounts = Field(default_factory=SeverityCounts)
+    waived_counts: SeverityCounts = Field(default_factory=SeverityCounts)
     blocking: bool = False
     record_refs: list[str] = Field(default_factory=list)
+    review_pack_ref: str = ""

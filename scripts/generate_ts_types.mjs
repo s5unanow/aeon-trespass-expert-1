@@ -31,6 +31,7 @@ const PRIMARY_TYPES = {
   qa_record_v1: 'QARecordV1',
   qa_summary_v1: 'QASummaryV1',
   render_page_v1: 'RenderPageV1',
+  review_pack_v1: 'ReviewPackV1',
   run_manifest_v1: 'RunManifestV1',
   search_docs_v1: 'SearchDocsV1',
   source_manifest_v1: 'SourceManifestV1',
@@ -38,6 +39,7 @@ const PRIMARY_TYPES = {
   symbol_match_set_v1: 'SymbolMatchSetV1',
   translation_batch_v1: 'TranslationBatchV1',
   translation_result_v1: 'TranslationResultV1',
+  waiver_set_v1: 'WaiverSetV1',
 };
 
 async function main() {

@@ -115,6 +115,7 @@ class QAConfig(BaseModel):
     """QA gate configuration."""
 
     block_publish_on: list[str] = Field(default_factory=lambda: ["error", "critical"])
+    waivers_dir: str = "waivers"
 
 
 class DocumentBuildConfig(BaseModel):
