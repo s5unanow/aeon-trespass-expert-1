@@ -1,0 +1,68 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "figure_caption",
+  "page_id": "p0001",
+  "page_number": 1,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0001.b001",
+      "bbox": null,
+      "level": 2,
+      "children": [
+        {"type": "text", "text": "Titan Anatomy", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b002",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "The diagram below shows vulnerable regions.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "figure",
+      "block_id": "p0001.b003",
+      "bbox": null,
+      "asset_id": "asset.fig.p0001.01",
+      "children": [],
+      "translatable": true,
+      "source_ref": null
+    },
+    {
+      "type": "caption",
+      "block_id": "p0001.b004",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Figure 1: Titan weak points and armor zones.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "source_ref": null
+    }
+  ],
+  "assets": ["asset.fig.p0001.01"],
+  "reading_order": [
+    "p0001.b001",
+    "p0001.b002",
+    "p0001.b003",
+    "p0001.b004"
+  ],
+  "confidence": null,
+  "qa_state": null,
+  "provenance": null
+}

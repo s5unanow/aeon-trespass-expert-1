@@ -1,0 +1,14 @@
+# Icon-dense golden fixture — page with many inline icons.
+
+[document]
+id = "icon_dense"
+source_pdf = "packages/fixtures/sample_documents/icon_dense/source/icon_dense.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"
+
+[symbols]
+catalog = "packages/fixtures/sample_documents/icon_dense/catalogs/icon_dense.symbols.toml"

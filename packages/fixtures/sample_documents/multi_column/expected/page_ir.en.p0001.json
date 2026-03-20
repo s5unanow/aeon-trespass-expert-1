@@ -1,0 +1,116 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "multi_column",
+  "page_id": "p0001",
+  "page_number": 1,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0001.b001",
+      "bbox": null,
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "text": "Combat Rules",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b002",
+      "bbox": null,
+      "children": [
+        {
+          "type": "text",
+          "text": "When a Titan attacks, roll the combat dice and compare the result.",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b003",
+      "bbox": null,
+      "children": [
+        {
+          "type": "text",
+          "text": "Critical hits deal double damage and ignore armor values.",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b004",
+      "bbox": null,
+      "children": [
+        {
+          "type": "text",
+          "text": "Defense is calculated from base armor plus any active shield.",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b005",
+      "bbox": null,
+      "children": [
+        {
+          "type": "text",
+          "text": "If damage exceeds threshold the target enters wounded state.",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    }
+  ],
+  "assets": [],
+  "reading_order": [
+    "p0001.b001",
+    "p0001.b002",
+    "p0001.b003",
+    "p0001.b004",
+    "p0001.b005"
+  ],
+  "confidence": null,
+  "qa_state": null,
+  "provenance": null
+}

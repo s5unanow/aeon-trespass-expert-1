@@ -8,6 +8,9 @@ from pathlib import Path, PurePosixPath
 from atr_pipeline.config.loader import _find_repo_root
 from atr_pipeline.eval.models import GoldenSetConfig
 
+# Files in configs/golden_sets/ that are not golden set definitions.
+_NON_GOLDEN_FILES = frozenset({"coverage_matrix.toml"})
+
 
 def load_golden_set(name: str, *, repo_root: Path | None = None) -> GoldenSetConfig:
     """Load a golden set config by name from configs/golden_sets/{name}.toml."""
@@ -23,3 +26,12 @@ def load_golden_set(name: str, *, repo_root: Path | None = None) -> GoldenSetCon
     with open(path, "rb") as f:
         data = tomllib.load(f)
     return GoldenSetConfig.model_validate(data)
+
+
+def discover_golden_sets(*, repo_root: Path | None = None) -> list[str]:
+    """Return sorted names of all golden set configs in configs/golden_sets/."""
+    root = repo_root or _find_repo_root()
+    gs_dir = root / "configs" / "golden_sets"
+    if not gs_dir.is_dir():
+        return []
+    return sorted(p.stem for p in gs_dir.glob("*.toml") if p.name not in _NON_GOLDEN_FILES)

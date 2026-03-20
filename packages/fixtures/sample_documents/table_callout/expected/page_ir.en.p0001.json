@@ -1,0 +1,70 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "table_callout",
+  "page_id": "p0001",
+  "page_number": 1,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0001.b001",
+      "bbox": null,
+      "level": 2,
+      "children": [
+        {"type": "text", "text": "Equipment Table", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "table",
+      "block_id": "p0001.b002",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Item | Weight | Effect\nIron Sword | 3 | +2 Attack\nShield | 5 | +3 Defense", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "source_ref": null
+    },
+    {
+      "type": "callout",
+      "block_id": "p0001.b003",
+      "bbox": null,
+      "variant": "warning",
+      "children": [
+        {"type": "text", "text": "Important! Cursed items cannot be unequipped once worn.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "source_ref": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b004",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "See appendix for full item catalog.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    }
+  ],
+  "assets": [],
+  "reading_order": [
+    "p0001.b001",
+    "p0001.b002",
+    "p0001.b003",
+    "p0001.b004"
+  ],
+  "confidence": null,
+  "qa_state": null,
+  "provenance": null
+}

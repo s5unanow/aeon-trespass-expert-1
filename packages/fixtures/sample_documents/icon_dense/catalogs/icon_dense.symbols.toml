@@ -1,0 +1,12 @@
+# Icon-dense fixture symbol catalog — single symbol used 6 times.
+
+catalog_id = "icon_dense"
+version = "1.0"
+
+[[symbols]]
+symbol_id = "sym.progress"
+label = "Progress"
+alt_label_ru = "Прогресс"
+template_asset = "packages/fixtures/sample_documents/icon_dense/source/symbol_progress.png"
+match_threshold = 0.70
+inline = true

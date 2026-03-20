@@ -1,0 +1,91 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "icon_dense",
+  "page_id": "p0001",
+  "page_number": 1,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0001.b001",
+      "bbox": null,
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "text": "Action Costs",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b002",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Gain 2 ", "marks": [], "lang": "en", "source_word_ids": []},
+        {"type": "icon", "symbol_id": "sym.progress", "instance_id": "syminst.p0001.01", "bbox": null, "display_hint": {}, "source_asset_id": ""},
+        {"type": "text", "text": " and 1 ", "marks": [], "lang": "en", "source_word_ids": []},
+        {"type": "icon", "symbol_id": "sym.progress", "instance_id": "syminst.p0001.02", "bbox": null, "display_hint": {}, "source_asset_id": ""},
+        {"type": "text", "text": " per round.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b003",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Spend 3 ", "marks": [], "lang": "en", "source_word_ids": []},
+        {"type": "icon", "symbol_id": "sym.progress", "instance_id": "syminst.p0001.03", "bbox": null, "display_hint": {}, "source_asset_id": ""},
+        {"type": "text", "text": " to activate ", "marks": [], "lang": "en", "source_word_ids": []},
+        {"type": "icon", "symbol_id": "sym.progress", "instance_id": "syminst.p0001.04", "bbox": null, "display_hint": {}, "source_asset_id": ""},
+        {"type": "text", "text": " ability.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b004",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Lose 1 ", "marks": [], "lang": "en", "source_word_ids": []},
+        {"type": "icon", "symbol_id": "sym.progress", "instance_id": "syminst.p0001.05", "bbox": null, "display_hint": {}, "source_asset_id": ""},
+        {"type": "text", "text": " but recover 2 ", "marks": [], "lang": "en", "source_word_ids": []},
+        {"type": "icon", "symbol_id": "sym.progress", "instance_id": "syminst.p0001.06", "bbox": null, "display_hint": {}, "source_asset_id": ""},
+        {"type": "text", "text": " at dawn.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    }
+  ],
+  "assets": [],
+  "reading_order": [
+    "p0001.b001",
+    "p0001.b002",
+    "p0001.b003",
+    "p0001.b004"
+  ],
+  "confidence": null,
+  "qa_state": null,
+  "provenance": null
+}

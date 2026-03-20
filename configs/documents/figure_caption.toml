@@ -1,0 +1,11 @@
+# Figure + caption golden fixture.
+
+[document]
+id = "figure_caption"
+source_pdf = "packages/fixtures/sample_documents/figure_caption/source/figure_caption.pdf"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"
