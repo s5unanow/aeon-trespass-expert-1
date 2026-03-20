@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
+from atr_pipeline.stages.structure.furniture import FurnitureMap, detect_furniture
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import ConfidenceMetrics, ProvenanceRef
 from atr_schemas.enums import StageScope
@@ -53,6 +54,18 @@ class StructureStage:
         total_blocks = 0
         hard_pages = 0
 
+        # Pre-load all native pages for furniture detection
+        furniture_map = FurnitureMap()
+        if builder == "real":
+            all_natives = self._load_all_native_pages(ctx, page_ids)
+            furniture_map = detect_furniture(all_natives)
+            if furniture_map.has_furniture:
+                ctx.logger.info(
+                    "Detected %d furniture regions (%d spans)",
+                    len(furniture_map.repeated_regions),
+                    len(furniture_map.stripped_span_ids),
+                )
+
         for page_id in page_ids:
             native = self._load_native_page(ctx, page_id)
             if native is None:
@@ -90,7 +103,12 @@ class StructureStage:
                 )
                 ir = build_page_ir_simple(native, sym)
             else:
-                ir = build_page_ir_real(native, symbols, config=ctx.config.structure)
+                ir = build_page_ir_real(
+                    native,
+                    symbols,
+                    config=ctx.config.structure,
+                    furniture=furniture_map,
+                )
 
             # Record evidence path and confidence from layout scoring
             ir.provenance = ProvenanceRef(
@@ -140,6 +158,19 @@ class StructureStage:
 
         msg = "No native pages found. Run extract_native first."
         raise RuntimeError(msg)
+
+    @staticmethod
+    def _load_all_native_pages(
+        ctx: StageContext,
+        page_ids: list[str],
+    ) -> list[NativePageV1]:
+        """Load all native pages for furniture detection."""
+        pages: list[NativePageV1] = []
+        for page_id in page_ids:
+            page = StructureStage._load_native_page(ctx, page_id)
+            if page is not None:
+                pages.append(page)
+        return pages
 
     @staticmethod
     def _load_native_page(
