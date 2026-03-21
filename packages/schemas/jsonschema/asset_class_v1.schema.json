@@ -1,0 +1,87 @@
+{
+  "$defs": {
+    "AssetIdentity": {
+      "description": "Identity fingerprints for exact and fuzzy matching.",
+      "properties": {
+        "exact_hash": {
+          "default": "",
+          "description": "Content hash for exact identity (SHA-256 prefix for rasters, cluster hash for vectors).",
+          "title": "Exact Hash",
+          "type": "string"
+        },
+        "fuzzy_hash": {
+          "default": "",
+          "description": "Perceptual hash for near-duplicate matching.",
+          "title": "Fuzzy Hash",
+          "type": "string"
+        },
+        "vector_signature": {
+          "default": "",
+          "description": "Canonical descriptor for vector-origin assets.",
+          "title": "Vector Signature",
+          "type": "string"
+        }
+      },
+      "title": "AssetIdentity",
+      "type": "object"
+    },
+    "AssetSourceKind": {
+      "description": "How the asset was originally captured.",
+      "enum": [
+        "embedded_raster",
+        "vector_cluster",
+        "rendered_crop"
+      ],
+      "title": "AssetSourceKind",
+      "type": "string"
+    }
+  },
+  "description": "A unique visual entity that may appear one or more times across pages.\n\nAsset classes are deduplicated by identity: two occurrences with the same\n``exact_hash`` collapse to one class.  Fuzzy identity enables\nnear-duplicate grouping without requiring bit-exact matches.",
+  "properties": {
+    "schema_version": {
+      "default": "asset_class.v1",
+      "pattern": "^asset_class\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "class_id": {
+      "description": "Stable identifier, e.g. ac.raster.deadbeef1234",
+      "title": "Class Id",
+      "type": "string"
+    },
+    "source_kind": {
+      "$ref": "#/$defs/AssetSourceKind"
+    },
+    "identity": {
+      "$ref": "#/$defs/AssetIdentity"
+    },
+    "width_px": {
+      "default": 0,
+      "title": "Width Px",
+      "type": "integer"
+    },
+    "height_px": {
+      "default": 0,
+      "title": "Height Px",
+      "type": "integer"
+    },
+    "label": {
+      "default": "",
+      "description": "Human-readable label (e.g. symbol name from catalog).",
+      "title": "Label",
+      "type": "string"
+    },
+    "canonical_evidence_id": {
+      "default": "",
+      "description": "Evidence ID of the first occurrence that introduced this class.",
+      "title": "Canonical Evidence Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "class_id",
+    "source_kind"
+  ],
+  "title": "AssetClassV1",
+  "type": "object"
+}

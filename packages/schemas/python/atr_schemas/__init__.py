@@ -1,5 +1,8 @@
 """Shared Pydantic v2 schemas for the ATR document compiler pipeline."""
 
+from atr_schemas.asset_class_v1 import AssetClassV1, AssetIdentity
+from atr_schemas.asset_occurrence_v1 import AssetOccurrenceV1
+from atr_schemas.asset_registry_v1 import AssetRegistryV1
 from atr_schemas.asset_v1 import AssetV1, AssetVariant
 from atr_schemas.build_manifest_v1 import BuildManifestV1, ReleaseFile
 from atr_schemas.common import (
@@ -17,9 +20,11 @@ from atr_schemas.concept_registry_v1 import ConceptRegistryV1, ConceptV1
 from atr_schemas.enums import (
     AnchorEdgeKind,
     AssetKind,
+    AssetSourceKind,
     BlockType,
     InlineType,
     LanguageCode,
+    OccurrenceContext,
     QALayer,
     RegionKind,
     Severity,
@@ -109,7 +114,12 @@ __all__ = [
     "AnchorEdge",
     "AnchorEdgeKind",
     "ArtifactRef",
+    "AssetClassV1",
+    "AssetIdentity",
     "AssetKind",
+    "AssetOccurrenceV1",
+    "AssetRegistryV1",
+    "AssetSourceKind",
     "AssetV1",
     "AssetVariant",
     "Block",
@@ -153,6 +163,7 @@ __all__ = [
     "NavEntryV1",
     "NavPayloadV1",
     "NormRect",
+    "OccurrenceContext",
     "PageDimensions",
     "PageEntry",
     "PageEvidenceV1",

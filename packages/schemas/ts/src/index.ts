@@ -1,6 +1,9 @@
 // Auto-generated barrel — do not edit
 
 // Namespace re-exports (all types per schema)
+export * as assetClassV1 from './generated/asset_class_v1';
+export * as assetOccurrenceV1 from './generated/asset_occurrence_v1';
+export * as assetRegistryV1 from './generated/asset_registry_v1';
 export * as assetV1 from './generated/asset_v1';
 export * as buildManifestV1 from './generated/build_manifest_v1';
 export * as conceptRegistryV1 from './generated/concept_registry_v1';

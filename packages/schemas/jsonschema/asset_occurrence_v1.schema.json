@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "NormRect": {
+      "description": "Bounding box in normalized [0,1] page coordinate space.",
+      "properties": {
+        "x0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "NormRect",
+      "type": "object"
+    },
+    "OccurrenceContext": {
+      "description": "Where an asset occurrence sits relative to its surrounding content.",
+      "enum": [
+        "inline",
+        "line_prefix",
+        "cell_local",
+        "block_attached",
+        "decoration",
+        "region_float"
+      ],
+      "title": "OccurrenceContext",
+      "type": "string"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    }
+  },
+  "description": "A single placement of an asset on a page.\n\nEach occurrence references its parent :class:`AssetClassV1` via\n``class_id`` and the underlying evidence entities via ``evidence_ids``.",
+  "properties": {
+    "occurrence_id": {
+      "description": "Unique per occurrence, e.g. ao.p0042.001",
+      "title": "Occurrence Id",
+      "type": "string"
+    },
+    "class_id": {
+      "description": "References the parent AssetClassV1.class_id.",
+      "title": "Class Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "bbox": {
+      "$ref": "#/$defs/Rect"
+    },
+    "norm_bbox": {
+      "$ref": "#/$defs/NormRect"
+    },
+    "context": {
+      "$ref": "#/$defs/OccurrenceContext",
+      "default": "inline"
+    },
+    "evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "confidence": {
+      "default": 1.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    }
+  },
+  "required": [
+    "occurrence_id",
+    "class_id",
+    "page_id",
+    "bbox",
+    "norm_bbox"
+  ],
+  "title": "AssetOccurrenceV1",
+  "type": "object"
+}

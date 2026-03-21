@@ -8,6 +8,9 @@ These are generated files — do not edit by hand.
 import json
 from pathlib import Path
 
+from atr_schemas.asset_class_v1 import AssetClassV1
+from atr_schemas.asset_occurrence_v1 import AssetOccurrenceV1
+from atr_schemas.asset_registry_v1 import AssetRegistryV1
 from atr_schemas.asset_v1 import AssetV1
 from atr_schemas.build_manifest_v1 import BuildManifestV1
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
@@ -34,6 +37,9 @@ from atr_schemas.translation_result_v1 import TranslationResultV1
 from atr_schemas.waiver_v1 import WaiverSetV1
 
 MODELS = {
+    "asset_class_v1": AssetClassV1,
+    "asset_occurrence_v1": AssetOccurrenceV1,
+    "asset_registry_v1": AssetRegistryV1,
     "asset_v1": AssetV1,
     "build_manifest_v1": BuildManifestV1,
     "concept_registry_v1": ConceptRegistryV1,
