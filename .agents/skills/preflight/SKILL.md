@@ -5,7 +5,7 @@ description: Run all quality gates before committing. Use when you're about to c
 
 # Preflight quality check
 
-Run all 6 quality gates from the repo root. Collect ALL results before reporting — do not stop at the first failure.
+Run all 8 quality gates from the repo root. Collect ALL results before reporting — do not stop at the first failure.
 
 ## Gates to run
 
@@ -21,24 +21,34 @@ uv run ruff check apps/pipeline/src apps/pipeline/tests packages/schemas/python
 uv run ruff format --check apps/pipeline/src apps/pipeline/tests packages/schemas/python
 ```
 
-### 3. ESLint (frontend)
-```bash
-cd apps/web && pnpm lint
-```
-
-### 4. Mypy (strict)
+### 3. Mypy (strict)
 ```bash
 uv run mypy apps/pipeline/src packages/schemas/python
 ```
 
-### 5. TypeScript (frontend)
+### 4. lint-imports
 ```bash
-cd apps/web && pnpm typecheck
+uv run lint-imports
+```
+
+### 5. File length check
+```bash
+uv run python scripts/check_file_length.py
 ```
 
 ### 6. Pytest (fast)
 ```bash
 uv run pytest -x -q --timeout=60 -m "not slow"
+```
+
+### 7. ESLint (frontend)
+```bash
+cd apps/web && pnpm lint
+```
+
+### 8. TypeScript (frontend)
+```bash
+cd apps/web && pnpm typecheck
 ```
 
 ## Reporting
@@ -50,10 +60,12 @@ Gate            Status   Notes
 ─────────────── ──────── ──────────────
 Ruff lint       PASS/FAIL  (error count)
 Ruff format     PASS/FAIL  (file count)
-ESLint          PASS/FAIL  (error count)
 Mypy            PASS/FAIL  (error count)
-TypeScript      PASS/FAIL  (error count)
+lint-imports    PASS/FAIL  (error count)
+File length     PASS/FAIL  (file count)
 Pytest          PASS/FAIL  (passed/failed)
+ESLint          PASS/FAIL  (error count)
+TypeScript      PASS/FAIL  (error count)
 ```
 
 For each failed gate, include the actual error output so you can fix the issues.

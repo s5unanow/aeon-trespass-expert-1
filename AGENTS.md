@@ -37,11 +37,13 @@ make clean            # Remove caches and build artifacts
 1. `ruff check` — no lint errors (includes McCabe complexity C901, max 12)
 2. `ruff format --check` — no format violations
 3. `mypy --strict` — no type errors
-4. `pytest` — all tests pass
-5. `eslint` — frontend lint
-6. `tsc --noEmit` — frontend type check
+4. `lint-imports` — Python import layer contracts (no cyclic dependencies)
+5. `check_file_length.py` — max 400 lines per source file
+6. `pytest` — all tests pass
+7. `eslint` — frontend lint (includes `import/no-cycle`, `max-lines: 400`)
+8. `tsc --noEmit` — frontend type check
 
-CI runs gates 1-6 on every push. Pre-commit hook enforces them automatically.
+CI runs gates 1-8 on every push. Pre-commit hook enforces them automatically.
 
 ## Development workflow (MANDATORY)
 
@@ -60,7 +62,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 
 ### 3. Work on the branch
 - Commit early and often with prefix `S5U-XXX: description`
-- Quality gates (ruff, mypy, eslint, tsc, pytest) run automatically before each commit via hook
+- Quality gates (ruff, mypy, lint-imports, file-length, eslint, tsc, pytest) run automatically before each commit via hook
 
 ### 4. Definition of done (all must be true before PR)
 - [ ] Code changes directly address the Linear issue description
