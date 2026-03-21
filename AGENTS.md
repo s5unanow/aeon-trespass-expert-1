@@ -24,10 +24,11 @@ docs/                Architecture docs (read on demand, not memorized)
 
 ```bash
 make bootstrap        # Install all deps (uv sync + pnpm install)
-make lint             # ruff check + mypy + pnpm lint
+make lint             # ruff check + mypy + import-linter + file-length + pnpm lint
 make typecheck        # mypy + tsc
 make test             # All tests (pytest + pnpm test)
 make codegen          # Regenerate JSON Schema + TS types from Pydantic models
+make export           # Export pipeline artifacts to web public (re-generates documents/)
 make format           # Auto-fix formatting (ruff format + ruff check --fix + pnpm format)
 make clean            # Remove caches and build artifacts
 ```

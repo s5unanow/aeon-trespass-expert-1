@@ -63,7 +63,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 
 ### 3. Work on the branch
 - Commit early and often with prefix `S5U-XXX: description`
-- Quality gates (ruff, mypy, eslint, tsc, pytest) run automatically before each commit via hook
+- Quality gates (ruff, mypy, lint-imports, file-length, eslint, tsc, pytest) run automatically before each commit via hook
 
 ### 4. Definition of done (all must be true before PR)
 - [ ] Code changes directly address the Linear issue description
