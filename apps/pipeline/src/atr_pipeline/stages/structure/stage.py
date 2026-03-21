@@ -21,6 +21,7 @@ from atr_pipeline.stages.structure.reading_order import (
 )
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_pipeline.stages.structure.region_graph import segment_regions
+from atr_pipeline.stages.structure.semantic_resolver import SemanticResolution, resolve_semantics
 from atr_schemas.common import ConfidenceMetrics, ProvenanceRef
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
@@ -28,6 +29,8 @@ from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.resolved_page_v1 import (
+    AnchorEdge,
+    ResolvedBlock,
     ResolvedPageV1,
     ResolvedRegion,
     ResolvedSymbolRef,
@@ -48,8 +51,6 @@ class StructureResult(BaseModel):
 class StructureStage:
     """Build page IR from native evidence and symbol matches.
 
-    Uses ``structure_builder`` config to select the builder function
-    (``"simple"`` for walking skeleton, ``"real"`` for full documents).
     Reads native pages and symbol matches from the artifact store.
     Stores one ``PageIRV1`` (EN) artifact per page.
     """
@@ -174,7 +175,7 @@ class StructureStage:
         furniture: FurnitureMap,
     ) -> PageIRV1:
         """Build page IR, run region segmentation, and resolve symbols."""
-        regions, order = self._run_region_segmentation(ctx, native, page_id)
+        regions, order, evidence = self._run_region_segmentation(ctx, native, page_id)
 
         if builder == "simple":
             sym = symbols or SymbolMatchSetV1(
@@ -197,9 +198,27 @@ class StructureStage:
                 furniture=furniture,
                 placements=sym_placements,
             )
-            if regions and sym_placements:
-                sym_refs = build_symbol_refs(sym_placements)
-                self._store_regions(ctx, native, regions, order, symbol_refs=sym_refs)
+
+            # Semantic resolver: enrich blocks using region context
+            if regions:
+                sem = resolve_semantics(
+                    ir.blocks,
+                    regions,
+                    evidence,
+                    ctx.config.structure,
+                )
+                ir.blocks = sem.blocks
+                ir.reading_order = [b.block_id for b in sem.blocks]
+
+                sym_refs = build_symbol_refs(sym_placements) if sym_placements else None
+                self._store_regions(
+                    ctx,
+                    native,
+                    regions,
+                    order,
+                    symbol_refs=sym_refs,
+                    semantics=sem,
+                )
                 return ir
 
         if regions:
@@ -211,14 +230,14 @@ class StructureStage:
         ctx: StageContext,
         native: NativePageV1,
         page_id: str,
-    ) -> tuple[list[ResolvedRegion], ReadingOrderResult | None]:
+    ) -> tuple[list[ResolvedRegion], ReadingOrderResult | None, PageEvidenceV1 | None]:
         """Run region graph segmentation and reading order if evidence is available."""
         evidence = self._load_evidence(ctx, page_id)
         if evidence is None:
-            return [], None
+            return [], None, None
         ir_regions = segment_regions(evidence, ctx.config.structure)
         if not ir_regions:
-            return [], None
+            return [], None, evidence
         ctx.logger.info(
             "Segmented %d regions for %s",
             len(ir_regions),
@@ -232,7 +251,7 @@ class StructureStage:
             len(order.anchor_edges),
             order.confidence,
         )
-        return ir_regions, order
+        return ir_regions, order, evidence
 
     @staticmethod
     def _resolve_symbols(
@@ -328,20 +347,31 @@ class StructureStage:
         order: ReadingOrderResult | None = None,
         *,
         symbol_refs: list[ResolvedSymbolRef] | None = None,
+        semantics: SemanticResolution | None = None,
     ) -> None:
         """Store region graph and reading order as a ResolvedPageV1 artifact."""
         refs = symbol_refs or []
         avg_conf = sum(r.confidence for r in refs) / len(refs) if refs else 1.0
+        # Combine reading-order edges with semantic edges
+        all_edges: list[AnchorEdge] = list(order.anchor_edges) if order else []
+        sem_blocks: list[ResolvedBlock] = []
+        block_conf = 1.0
+        if semantics is not None:
+            all_edges.extend(semantics.anchor_edges)
+            sem_blocks = semantics.resolved_blocks
+            block_conf = semantics.block_classification_confidence
         resolved = ResolvedPageV1(
             document_id=native.document_id,
             page_id=native.page_id,
             page_number=native.page_number,
             regions=regions,
+            blocks=sem_blocks,
             main_flow_order=order.main_flow_order if order else [],
-            anchor_edges=order.anchor_edges if order else [],
+            anchor_edges=all_edges,
             symbol_refs=refs,
             confidence=SemanticConfidence(
                 reading_order=order.confidence if order else 1.0,
+                block_classification=block_conf,
                 symbol_resolution=avg_conf,
             ),
         )

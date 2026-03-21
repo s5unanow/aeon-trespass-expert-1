@@ -70,6 +70,7 @@ export type Children4 = (TextInline | IconInline | FigureRefInline | XrefInline 
 export type Translatable4 = boolean;
 export type Type11 = 'callout';
 export type BlockId5 = string;
+export type RegionId = string;
 export type Variant = string;
 export type Children5 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
 export type Translatable5 = boolean;
@@ -80,6 +81,7 @@ export type Children6 = (TextInline | IconInline | FigureRefInline | XrefInline 
 export type Translatable6 = boolean;
 export type Type13 = 'caption';
 export type BlockId7 = string;
+export type FigureBlockId = string;
 export type Children7 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
 export type Translatable7 = boolean;
 export type Type14 = 'divider';
@@ -304,6 +306,7 @@ export interface CalloutBlock {
   type?: Type11;
   block_id: BlockId5;
   bbox?: Rect | null;
+  region_id?: RegionId;
   variant?: Variant;
   children?: Children5;
   translatable?: Translatable5;
@@ -328,6 +331,7 @@ export interface CaptionBlock {
   type?: Type13;
   block_id: BlockId7;
   bbox?: Rect | null;
+  figure_block_id?: FigureBlockId;
   children?: Children7;
   translatable?: Translatable7;
   source_ref?: SourceRef | null;

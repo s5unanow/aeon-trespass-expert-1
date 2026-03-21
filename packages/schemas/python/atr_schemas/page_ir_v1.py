@@ -184,6 +184,7 @@ class CalloutBlock(BaseModel):
     type: Literal["callout"] = "callout"
     block_id: str
     bbox: Rect | None = None
+    region_id: str = ""
     variant: str = ""
     children: list[InlineNode] = Field(default_factory=list)
     translatable: bool = True
@@ -208,6 +209,7 @@ class CaptionBlock(BaseModel):
     type: Literal["caption"] = "caption"
     block_id: str
     bbox: Rect | None = None
+    figure_block_id: str = ""
     children: list[InlineNode] = Field(default_factory=list)
     translatable: bool = True
     source_ref: SourceRef | None = None
