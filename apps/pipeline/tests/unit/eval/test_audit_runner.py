@@ -72,7 +72,7 @@ def test_audit_empty_store(tmp_path: Path) -> None:
     """Audit on empty store returns report with zero pages."""
     store = ArtifactStore(tmp_path)
     report = run_audit(document_id="no_doc", store=store)
-    assert report.page_count == 0
+    assert report.pages_in_scope == 0
     assert report.pages_audited == 0
     assert report.passed is True
     assert report.blocking is False
@@ -90,7 +90,7 @@ def test_audit_single_page(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     report = run_audit(document_id=doc, store=store)
 
-    assert report.page_count == 1
+    assert report.pages_in_scope == 1
     assert report.pages_audited == 1
     assert len(report.pages) == 1
 
@@ -112,7 +112,7 @@ def test_audit_multiple_pages(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     report = run_audit(document_id=doc, store=store)
 
-    assert report.page_count == 3
+    assert report.pages_in_scope == 3
     assert report.pages_audited == 3
 
 
@@ -127,7 +127,7 @@ def test_audit_page_filter(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     report = run_audit(document_id=doc, store=store, page_filter=["p0001", "p0003"])
 
-    assert report.page_count == 2
+    assert report.pages_in_scope == 2
     assert report.pages_audited == 2
     assert {p.page_id for p in report.pages} == {"p0001", "p0003"}
 
@@ -143,7 +143,7 @@ def test_audit_missing_resolved_counted(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     report = run_audit(document_id=doc, store=store)
 
-    assert report.page_count == 1
+    assert report.pages_in_scope == 1
     assert report.pages_audited == 0
     assert report.pages_missing_ir == 1
 
@@ -196,7 +196,7 @@ def test_audit_baseline_delta(tmp_path: Path) -> None:
     baseline = {
         "document_id": doc,
         "timestamp": "2026-01-01T00:00:00+00:00",
-        "page_count": 1,
+        "pages_in_scope": 1,
         "pages_audited": 1,
         "pages_missing_ir": 0,
         "pages": [],

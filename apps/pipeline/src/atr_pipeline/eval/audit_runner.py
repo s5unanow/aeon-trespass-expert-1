@@ -18,6 +18,9 @@ from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.resolved_page_v1 import ResolvedPageV1
 
+# Below this threshold a symbol ref is counted as "unresolved".
+_UNRESOLVED_CONFIDENCE = 0.5
+
 logger = logging.getLogger(__name__)
 
 
@@ -78,8 +81,13 @@ def _audit_page(
     # Block and symbol counts
     block_count = len(resolved.blocks)
     symbol_count = len(resolved.symbol_refs) + sum(len(b.symbol_refs) for b in resolved.blocks)
-    unresolved_symbol_count = sum(1 for ref in resolved.symbol_refs if ref.confidence < 0.5) + sum(
-        1 for b in resolved.blocks for ref in b.symbol_refs if ref.confidence < 0.5
+    unresolved_symbol_count = sum(
+        1 for ref in resolved.symbol_refs if ref.confidence < _UNRESOLVED_CONFIDENCE
+    ) + sum(
+        1
+        for b in resolved.blocks
+        for ref in b.symbol_refs
+        if ref.confidence < _UNRESOLVED_CONFIDENCE
     )
 
     # Fallback usage
@@ -119,8 +127,8 @@ def _load_baseline(baseline_path: Path) -> AuditReport | None:
         return None
     try:
         return AuditReport.model_validate(json.loads(baseline_path.read_text()))
-    except Exception:
-        logger.warning("failed to load baseline: %s", baseline_path)
+    except (json.JSONDecodeError, ValueError, OSError):
+        logger.warning("failed to load baseline: %s", baseline_path, exc_info=True)
         return None
 
 
@@ -206,7 +214,7 @@ def run_audit(
     return AuditReport(
         document_id=document_id,
         timestamp=datetime.now(tz=UTC).isoformat(),
-        page_count=len(pages_to_audit),
+        pages_in_scope=len(pages_to_audit),
         pages_audited=len(page_results),
         pages_missing_ir=pages_missing,
         pages=page_results,

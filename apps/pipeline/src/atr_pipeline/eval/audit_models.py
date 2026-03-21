@@ -28,7 +28,7 @@ class AuditReport(BaseModel):
 
     document_id: str
     timestamp: str
-    page_count: int = 0
+    pages_in_scope: int = 0
     pages_audited: int = 0
     pages_missing_ir: int = 0
     pages: list[PageAuditResult] = Field(default_factory=list)

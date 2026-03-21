@@ -13,7 +13,7 @@ def print_audit_summary(report: AuditReport) -> None:
     """Print a human-readable summary of the audit report."""
     typer.echo(f"\nAudit: {report.document_id}")
     typer.echo(f"Timestamp:       {report.timestamp}")
-    typer.echo(f"Pages (total):   {report.page_count}")
+    typer.echo(f"Pages (scope):   {report.pages_in_scope}")
     typer.echo(f"Pages (audited): {report.pages_audited}")
     typer.echo(f"Pages (missing): {report.pages_missing_ir}")
     typer.echo("")
