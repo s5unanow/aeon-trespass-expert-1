@@ -21,7 +21,7 @@ from atr_pipeline.stages.structure.reading_order import (
 )
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_pipeline.stages.structure.region_graph import segment_regions
-from atr_pipeline.stages.structure.semantic_resolver import resolve_semantics
+from atr_pipeline.stages.structure.semantic_resolver import SemanticResolution, resolve_semantics
 from atr_schemas.common import ConfidenceMetrics, ProvenanceRef
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
@@ -217,9 +217,7 @@ class StructureStage:
                     regions,
                     order,
                     symbol_refs=sym_refs,
-                    semantic_edges=sem.anchor_edges,
-                    resolved_blocks=sem.resolved_blocks,
-                    block_classification_confidence=sem.block_classification_confidence,
+                    semantics=sem,
                 )
                 return ir
 
@@ -349,29 +347,31 @@ class StructureStage:
         order: ReadingOrderResult | None = None,
         *,
         symbol_refs: list[ResolvedSymbolRef] | None = None,
-        semantic_edges: list[AnchorEdge] | None = None,
-        resolved_blocks: list[ResolvedBlock] | None = None,
-        block_classification_confidence: float = 1.0,
+        semantics: SemanticResolution | None = None,
     ) -> None:
         """Store region graph and reading order as a ResolvedPageV1 artifact."""
         refs = symbol_refs or []
         avg_conf = sum(r.confidence for r in refs) / len(refs) if refs else 1.0
         # Combine reading-order edges with semantic edges
         all_edges: list[AnchorEdge] = list(order.anchor_edges) if order else []
-        if semantic_edges:
-            all_edges.extend(semantic_edges)
+        sem_blocks: list[ResolvedBlock] = []
+        block_conf = 1.0
+        if semantics is not None:
+            all_edges.extend(semantics.anchor_edges)
+            sem_blocks = semantics.resolved_blocks
+            block_conf = semantics.block_classification_confidence
         resolved = ResolvedPageV1(
             document_id=native.document_id,
             page_id=native.page_id,
             page_number=native.page_number,
             regions=regions,
-            blocks=resolved_blocks or [],
+            blocks=sem_blocks,
             main_flow_order=order.main_flow_order if order else [],
             anchor_edges=all_edges,
             symbol_refs=refs,
             confidence=SemanticConfidence(
                 reading_order=order.confidence if order else 1.0,
-                block_classification=block_classification_confidence,
+                block_classification=block_conf,
                 symbol_resolution=avg_conf,
             ),
         )

@@ -8,12 +8,12 @@ match the ATO Core Rulebook v1.1 analysis.
 from __future__ import annotations
 
 from atr_pipeline.config.models import StructureConfig
+from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
+from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
 from atr_pipeline.stages.structure.block_postprocess import (
     deduplicate_blocks,
     split_long_paragraphs,
 )
-from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
-from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
 from atr_pipeline.stages.structure.furniture import FurnitureMap
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
@@ -245,7 +245,8 @@ def build_page_ir_real(
         elif symbols:
             inlines = _insert_icons_line_aware(current_para_spans, symbols, native.page_id, cfg)
 
-        blocks.append(ParagraphBlock(block_id=block_id, bbox=_bbox_from_spans(current_para_spans), children=inlines))  # type: ignore[arg-type]
+        para_bbox = _bbox_from_spans(current_para_spans)
+        blocks.append(ParagraphBlock(block_id=block_id, bbox=para_bbox, children=inlines))  # type: ignore[arg-type]
         current_para_spans.clear()
 
     for line in lines:
@@ -285,7 +286,8 @@ def build_page_ir_real(
             non_bullet = [s for r, s in line if r != "bullet"]
             inlines = _spans_to_text_inline(non_bullet, cfg)
             if inlines:
-                blocks.append(ListItemBlock(block_id=block_id, bbox=_bbox_from_spans(non_bullet), children=inlines))  # type: ignore[arg-type]
+                item_bbox = _bbox_from_spans(non_bullet)
+                blocks.append(ListItemBlock(block_id=block_id, bbox=item_bbox, children=inlines))  # type: ignore[arg-type]
             continue
 
         # Regular body/bold/italic spans → accumulate into paragraph.

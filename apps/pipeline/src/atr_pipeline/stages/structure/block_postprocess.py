@@ -14,6 +14,54 @@ from atr_schemas.page_ir_v1 import InlineNode, ParagraphBlock, TextInline
 SENTENCE_BOUNDARY_RE = re.compile(r"\. (?=[A-ZА-ЯЁ])")  # noqa: RUF001
 
 
+def _split_children_at(
+    children: list[InlineNode],
+    split_pos: int,
+    offset_map: list[tuple[int, int]],
+) -> tuple[list[InlineNode], list[InlineNode]]:
+    """Split a children list at the given character offset."""
+    child_idx, pos_in_child = offset_map[split_pos - 1]
+    first: list[InlineNode] = []
+    second: list[InlineNode] = []
+
+    for ci, child in enumerate(children):
+        if ci < child_idx:
+            first.append(child)
+        elif ci == child_idx and isinstance(child, TextInline):
+            cut = pos_in_child + 1
+            left_text = child.text[:cut]
+            right_text = child.text[cut:]
+            if left_text:
+                first.append(TextInline(text=left_text, marks=child.marks, lang=child.lang))
+            if right_text:
+                second.append(TextInline(text=right_text, marks=child.marks, lang=child.lang))
+        elif ci == child_idx:
+            second.append(child)
+        else:
+            second.append(child)
+
+    return first, second
+
+
+def _build_offset_map(children: list[InlineNode]) -> list[tuple[int, int]]:
+    """Build a mapping of character offset -> (child_index, char_within_child)."""
+    offset_map: list[tuple[int, int]] = []
+    for ci, child in enumerate(children):
+        if hasattr(child, "text"):
+            for pos in range(len(child.text)):
+                offset_map.append((ci, pos))
+    return offset_map
+
+
+def _find_sentence_split(text: str, max_chars: int) -> int:
+    """Find the last sentence boundary before max_chars. Returns -1 if none."""
+    accumulated = text[:max_chars]
+    split_pos = -1
+    for m in SENTENCE_BOUNDARY_RE.finditer(accumulated):
+        split_pos = m.start() + 2
+    return split_pos
+
+
 def split_long_paragraphs(
     blocks: list[object],
     max_chars: int = 600,
@@ -41,56 +89,19 @@ def split_long_paragraphs(
                 result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
                 break
 
-            # Build a mapping of character offset → (child_index, char_within_child)
-            offset_map: list[tuple[int, int]] = []
-            for ci, child in enumerate(remaining_children):
-                if hasattr(child, "text"):
-                    for pos in range(len(child.text)):
-                        offset_map.append((ci, pos))
-
-            # Find the last sentence boundary before max_chars
-            accumulated = remaining_text[:max_chars]
-            split_pos = -1
-            for m in SENTENCE_BOUNDARY_RE.finditer(accumulated):
-                split_pos = m.start() + 2
+            offset_map = _build_offset_map(remaining_children)
+            split_pos = _find_sentence_split(remaining_text, max_chars)
 
             if split_pos <= 0:
                 part_id = f"{base_id}.{part}" if part > 0 else base_id
                 result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
                 break
 
-            child_idx, pos_in_child = offset_map[split_pos - 1]
-
-            first_children: list[InlineNode] = []
-            second_children: list[InlineNode] = []
-
-            for ci, child in enumerate(remaining_children):
-                if ci < child_idx:
-                    first_children.append(child)
-                elif ci == child_idx and isinstance(child, TextInline):
-                    cut = pos_in_child + 1
-                    left_text = child.text[:cut]
-                    right_text = child.text[cut:]
-                    if left_text:
-                        first_children.append(
-                            TextInline(
-                                text=left_text,
-                                marks=child.marks,
-                                lang=child.lang,
-                            )
-                        )
-                    if right_text:
-                        second_children.append(
-                            TextInline(
-                                text=right_text,
-                                marks=child.marks,
-                                lang=child.lang,
-                            )
-                        )
-                elif ci == child_idx:
-                    second_children.append(child)
-                else:
-                    second_children.append(child)
+            first_children, second_children = _split_children_at(
+                remaining_children,
+                split_pos,
+                offset_map,
+            )
 
             part_id = f"{base_id}.{part}" if part > 0 else base_id
             if first_children:

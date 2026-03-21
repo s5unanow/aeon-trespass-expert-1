@@ -19,6 +19,7 @@ from atr_schemas.page_ir_v1 import (
     CalloutBlock,
     CaptionBlock,
     FigureBlock,
+    InlineNode,
     ParagraphBlock,
     TableBlock,
 )
@@ -134,13 +135,13 @@ def _detect_captions(
         if len(text) > cfg.caption_max_text_length:
             continue
 
-        assert para.bbox is not None  # noqa: S101
+        assert para.bbox is not None
         para_top = para.bbox.y0
         best_figure: FigureBlock | None = None
         best_gap = float("inf")
 
         for fig in figures:
-            assert fig.bbox is not None  # noqa: S101
+            assert fig.bbox is not None
             fig_bottom = fig.bbox.y1
             gap = para_top - fig_bottom
             if 0 <= gap <= cfg.caption_proximity_pt and gap < best_gap:
@@ -158,7 +159,7 @@ def _detect_captions(
     for block in blocks:
         if block.block_id in caption_map:
             fig_id = caption_map[block.block_id]
-            assert isinstance(block, ParagraphBlock)  # noqa: S101
+            assert isinstance(block, ParagraphBlock)
             caption = CaptionBlock(
                 block_id=block.block_id,
                 bbox=block.bbox,
@@ -212,13 +213,13 @@ def _promote_callouts(
 
         callout_idx += 1
         # Merge children from all blocks into a single CalloutBlock
-        all_children = []
+        all_children: list[InlineNode] = []
         for b in group:
-            children = getattr(b, "children", [])
+            children: list[InlineNode] = getattr(b, "children", [])
             all_children.extend(children)
 
         # Compute union bbox
-        bboxes = [b.bbox for b in group if getattr(b, "bbox", None) is not None]
+        bboxes: list[Rect] = [b.bbox for b in group if getattr(b, "bbox", None) is not None]  # type: ignore[misc]
         callout_bbox = _union_bboxes(bboxes) if bboxes else None
 
         callout_id = f"{group[0].block_id}.callout"
@@ -278,9 +279,7 @@ def _resolve_tables(
     if evidence is None:
         return blocks, []
 
-    table_candidates = [
-        e for e in evidence.entities if isinstance(e, EvidenceTableCandidate)
-    ]
+    table_candidates = [e for e in evidence.entities if isinstance(e, EvidenceTableCandidate)]
     if not table_candidates:
         return blocks, []
 

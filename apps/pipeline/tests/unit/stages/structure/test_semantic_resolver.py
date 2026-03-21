@@ -19,8 +19,8 @@ from atr_schemas.enums import AnchorEdgeKind, BlockType, RegionKind
 from atr_schemas.evidence_primitives_v1 import EvidenceTableCandidate
 from atr_schemas.page_evidence_v1 import EvidenceTransformMeta, PageEvidenceV1
 from atr_schemas.page_ir_v1 import (
-    CaptionBlock,
     CalloutBlock,
+    CaptionBlock,
     FigureBlock,
     HeadingBlock,
     ParagraphBlock,
@@ -62,7 +62,14 @@ def _region(
     )
 
 
-def _para(bid: str, x0: float, y0: float, x1: float, y1: float, text: str = "Sample text") -> ParagraphBlock:
+def _para(
+    bid: str,
+    x0: float,
+    y0: float,
+    x1: float,
+    y1: float,
+    text: str = "Sample text",
+) -> ParagraphBlock:
     return ParagraphBlock(
         block_id=bid,
         bbox=_rect(x0, y0, x1, y1),
@@ -181,7 +188,7 @@ class TestDetectCaptions:
         fig2 = _figure("b2", 50, 250, 400, 300)
         para = _para("b3", 50, 310, 400, 325, text="Caption text")
         cfg = StructureConfig(caption_proximity_pt=25.0)
-        blocks, edges = _detect_captions([fig1, fig2, para], {}, cfg)
+        blocks, _edges = _detect_captions([fig1, fig2, para], {}, cfg)
 
         captions = [b for b in blocks if isinstance(b, CaptionBlock)]
         assert len(captions) == 1
@@ -192,8 +199,7 @@ class TestDetectCaptions:
         long_text = "A" * 250
         para = _para("b2", 50, 310, 400, 325, text=long_text)
         cfg = StructureConfig(caption_proximity_pt=25.0, caption_max_text_length=200)
-        blocks, edges = _detect_captions([fig, para], {}, cfg)
-
+        blocks, _edges = _detect_captions([fig, para], {}, cfg)
         captions = [b for b in blocks if isinstance(b, CaptionBlock)]
         assert len(captions) == 0
 
@@ -208,7 +214,7 @@ class TestDetectCaptions:
         para = _para("b1", 50, 80, 400, 95, text="Above figure")
         fig = _figure("b2", 50, 100, 400, 300)
         cfg = StructureConfig(caption_proximity_pt=25.0)
-        blocks, edges = _detect_captions([para, fig], {}, cfg)
+        blocks, _edges = _detect_captions([para, fig], {}, cfg)
 
         captions = [b for b in blocks if isinstance(b, CaptionBlock)]
         assert len(captions) == 0
@@ -243,7 +249,7 @@ class TestPromoteCallouts:
         regions = [_region("r001", RegionKind.CALLOUT_AREA, 40, 90, 210, 150)]
         region_map = {"b1": "r001", "b2": "r001"}
 
-        blocks, edges = _promote_callouts([p1, p2], region_map, regions)
+        blocks, _edges = _promote_callouts([p1, p2], region_map, regions)
         callouts = [b for b in blocks if isinstance(b, CalloutBlock)]
         assert len(callouts) == 1
         # Should have children from both paragraphs
@@ -283,7 +289,7 @@ class TestResolveTables:
         ev = _evidence([tc])
         cfg = StructureConfig(table_min_confidence=0.6)
 
-        blocks, edges = _resolve_tables([para], {}, ev, cfg)
+        blocks, _edges = _resolve_tables([para], {}, ev, cfg)
         tables = [b for b in blocks if isinstance(b, TableBlock)]
         assert len(tables) == 0
 
@@ -293,7 +299,7 @@ class TestResolveTables:
         ev = _evidence([tc])
         cfg = StructureConfig(table_min_confidence=0.6)
 
-        blocks, edges = _resolve_tables([para], {}, ev, cfg)
+        blocks, _edges = _resolve_tables([para], {}, ev, cfg)
         assert all(isinstance(b, ParagraphBlock) for b in blocks)
 
 
