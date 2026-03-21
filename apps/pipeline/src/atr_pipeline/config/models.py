@@ -125,6 +125,11 @@ class StructureConfig(BaseModel):
     margin_note_edge_margin_pt: float = Field(default=40.0, ge=0.0)
     callout_max_width_fraction: float = Field(default=0.55, gt=0.0, le=1.0)
 
+    # Semantic resolver
+    caption_proximity_pt: float = Field(default=25.0, ge=0.0)
+    caption_max_text_length: int = Field(default=200, ge=1)
+    table_min_confidence: float = Field(default=0.6, ge=0.0, le=1.0)
+
     @model_validator(mode="after")
     def _check_body_size_range(self) -> StructureConfig:
         if self.body_size_min > self.body_size_max:

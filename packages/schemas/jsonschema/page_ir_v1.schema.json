@@ -43,6 +43,11 @@
           ],
           "default": null
         },
+        "region_id": {
+          "default": "",
+          "title": "Region Id",
+          "type": "string"
+        },
         "variant": {
           "default": "",
           "title": "Variant",
@@ -120,6 +125,11 @@
             }
           ],
           "default": null
+        },
+        "figure_block_id": {
+          "default": "",
+          "title": "Figure Block Id",
+          "type": "string"
         },
         "children": {
           "items": {
