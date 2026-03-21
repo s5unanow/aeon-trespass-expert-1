@@ -175,6 +175,18 @@ class TestAnnotationChecksums:
         errors = validate_annotation_checksums("test_fix", meta, repo_root=tmp_path)
         assert any("missing" in e for e in errors)
 
+    def test_detects_untracked_file(self, tmp_path: Path) -> None:
+        fixtures_dir = tmp_path / "packages" / "fixtures" / "sample_documents"
+        expected_dir = fixtures_dir / "test_fix" / "expected"
+        expected_dir.mkdir(parents=True)
+        (expected_dir / "tracked.json").write_text("{}", encoding="utf-8")
+        (expected_dir / "untracked.json").write_text("{}", encoding="utf-8")
+        tracked_hash = sha256_file(expected_dir / "tracked.json")
+        meta = AnnotationMeta(checksums={"tracked.json": tracked_hash})
+        errors = validate_annotation_checksums("test_fix", meta, repo_root=tmp_path)
+        assert len(errors) == 1
+        assert "untracked" in errors[0]
+
 
 # ── Utility tests ──────────────────────────────────────────────────
 

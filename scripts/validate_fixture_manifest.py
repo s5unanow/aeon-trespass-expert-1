@@ -8,6 +8,7 @@ Checks:
 """
 
 import sys
+import tomllib
 from pathlib import Path
 
 from atr_pipeline.eval.fixture_manifest import (
@@ -50,7 +51,7 @@ def main() -> int:
         except FileNotFoundError:
             errors.append(f"Fixture '{fid}': missing _annotation_meta.toml")
             continue
-        except Exception as e:
+        except (ValueError, KeyError, tomllib.TOMLDecodeError) as e:
             errors.append(f"Fixture '{fid}': invalid _annotation_meta.toml — {e}")
             continue
 

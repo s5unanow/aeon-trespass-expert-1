@@ -115,7 +115,7 @@ def validate_manifest_completeness(
 def validate_source_checksums(
     manifest: FixtureManifest, *, repo_root: Path | None = None
 ) -> list[str]:
-    """Verify source_checksum in each manifest entry matches the actual file."""
+    """Verify source_checksum in each manifest entry matches the primary PDF."""
     root = repo_root or _find_repo_root()
     errors: list[str] = []
     for entry in manifest.fixtures:
@@ -138,7 +138,11 @@ def validate_source_checksums(
 def validate_annotation_checksums(
     fixture_id: str, meta: AnnotationMeta, *, repo_root: Path | None = None
 ) -> list[str]:
-    """Verify checksums in annotation metadata match actual expected/ files."""
+    """Verify checksums in annotation metadata match actual expected/ files.
+
+    Checks both directions: meta entries must match disk, and JSON files on
+    disk must have a corresponding meta entry.
+    """
     root = repo_root or _find_repo_root()
     expected_dir = root / FIXTURES_DIR / fixture_id / "expected"
     errors: list[str] = []
@@ -153,4 +157,10 @@ def validate_annotation_checksums(
                 f"Fixture '{fixture_id}/{filename}': checksum mismatch "
                 f"(meta={expected_hash[:12]}… actual={actual[:12]}…)"
             )
+    # Reverse check: JSON files on disk not tracked in annotation meta
+    if expected_dir.is_dir():
+        tracked = set(meta.checksums)
+        for path in sorted(expected_dir.glob("*.json")):
+            if path.name not in tracked:
+                errors.append(f"Fixture '{fixture_id}': untracked expected file: {path.name}")
     return errors
