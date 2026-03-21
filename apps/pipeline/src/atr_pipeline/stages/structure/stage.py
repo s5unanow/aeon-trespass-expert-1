@@ -9,6 +9,10 @@ from pydantic import BaseModel, Field
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
 from atr_pipeline.stages.structure.furniture import FurnitureMap, detect_furniture
+from atr_pipeline.stages.structure.reading_order import (
+    ReadingOrderResult,
+    compute_reading_order,
+)
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_pipeline.stages.structure.region_graph import segment_regions
 from atr_schemas.common import ConfidenceMetrics, ProvenanceRef
@@ -16,7 +20,11 @@ from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
-from atr_schemas.resolved_page_v1 import ResolvedPageV1, ResolvedRegion
+from atr_schemas.resolved_page_v1 import (
+    ResolvedPageV1,
+    ResolvedRegion,
+    SemanticConfidence,
+)
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 
 
@@ -162,7 +170,7 @@ class StructureStage:
         native: NativePageV1,
         page_id: str,
     ) -> None:
-        """Run region graph segmentation if evidence is available."""
+        """Run region graph segmentation and reading order if evidence is available."""
         evidence = self._load_evidence(ctx, page_id)
         if evidence is None:
             return
@@ -173,7 +181,15 @@ class StructureStage:
                 len(ir_regions),
                 page_id,
             )
-            self._store_regions(ctx, native, ir_regions)
+            order = compute_reading_order(ir_regions)
+            ctx.logger.info(
+                "Reading order for %s: %d main-flow, %d aside edges (conf=%.2f)",
+                page_id,
+                len(order.main_flow_order),
+                len(order.anchor_edges),
+                order.confidence,
+            )
+            self._store_regions(ctx, native, ir_regions, order)
 
     @staticmethod
     def _resolve_page_ids(
@@ -240,13 +256,19 @@ class StructureStage:
         ctx: StageContext,
         native: NativePageV1,
         regions: list[ResolvedRegion],
+        order: ReadingOrderResult | None = None,
     ) -> None:
-        """Store region graph as a ResolvedPageV1 artifact."""
+        """Store region graph and reading order as a ResolvedPageV1 artifact."""
         resolved = ResolvedPageV1(
             document_id=native.document_id,
             page_id=native.page_id,
             page_number=native.page_number,
             regions=regions,
+            main_flow_order=order.main_flow_order if order else [],
+            anchor_edges=order.anchor_edges if order else [],
+            confidence=SemanticConfidence(
+                reading_order=order.confidence if order else 1.0,
+            ),
         )
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,
