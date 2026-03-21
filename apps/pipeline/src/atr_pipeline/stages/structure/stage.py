@@ -123,7 +123,11 @@ class StructureStage:
 
             # Resolve symbols into typed placements
             sym_placements = self._resolve_symbols(
-                ctx, native, page_id, symbols, regions,
+                ctx,
+                native,
+                page_id,
+                symbols,
+                regions,
             )
 
             if builder == "simple":

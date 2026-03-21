@@ -46,15 +46,13 @@ def _match(
 def _placement(
     symbol_id: str,
     anchor: SymbolAnchorKind,
-    x0: float,
-    y0: float,
-    x1: float,
-    y1: float,
+    bbox: Rect,
+    *,
     insertion_x: float | None = None,
     score: float = 0.9,
 ) -> ResolvedSymbolPlacement:
     return ResolvedSymbolPlacement(
-        match=_match(symbol_id, x0, y0, x1, y1, score=score),
+        match=_match(symbol_id, bbox.x0, bbox.y0, bbox.x1, bbox.y1, score=score),
         anchor_kind=anchor,
         insertion_x=insertion_x,
         confidence=score,
@@ -70,10 +68,7 @@ class TestPlaceIconsInInlines:
             _placement(
                 "sym.icon",
                 SymbolAnchorKind.INLINE,
-                140,
-                100,
-                152,
-                112,
+                Rect(x0=140, y0=100, x1=152, y1=112),
                 insertion_x=140.0,
             ),
         ]
@@ -91,7 +86,7 @@ class TestPlaceIconsInInlines:
         spans = [_span("s1", "Item text", 100, 100, 190, 112)]
         text_inlines = [TextInline(text="Item text", lang=LanguageCode.EN)]
         placements = [
-            _placement("sym.bullet", SymbolAnchorKind.PREFIX, 70, 100, 82, 112),
+            _placement("sym.bullet", SymbolAnchorKind.PREFIX, Rect(x0=70, y0=100, x1=82, y1=112)),
         ]
 
         result = place_icons_in_inlines(text_inlines, placements, spans)
@@ -110,19 +105,13 @@ class TestPlaceIconsInInlines:
             _placement(
                 "sym.second",
                 SymbolAnchorKind.INLINE,
-                200,
-                100,
-                212,
-                112,
+                Rect(x0=200, y0=100, x1=212, y1=112),
                 insertion_x=200.0,
             ),
             _placement(
                 "sym.first",
                 SymbolAnchorKind.INLINE,
-                130,
-                100,
-                142,
-                112,
+                Rect(x0=130, y0=100, x1=142, y1=112),
                 insertion_x=130.0,
             ),
         ]
@@ -151,7 +140,11 @@ class TestPlaceIconsInInlines:
         spans = [_span("s1", "Text", 100, 100, 150, 112)]
         text_inlines = [TextInline(text="Text", lang=LanguageCode.EN)]
         placements = [
-            _placement("sym.attached", SymbolAnchorKind.BLOCK_ATTACHED, 200, 100, 212, 112),
+            _placement(
+                "sym.attached",
+                SymbolAnchorKind.BLOCK_ATTACHED,
+                Rect(x0=200, y0=100, x1=212, y1=112),
+            ),
         ]
 
         result = place_icons_in_inlines(text_inlines, placements, spans)
@@ -167,10 +160,7 @@ class TestPlaceIconsInInlines:
             _placement(
                 "sym.icon",
                 SymbolAnchorKind.INLINE,
-                120,
-                100,
-                132,
-                112,
+                Rect(x0=120, y0=100, x1=132, y1=112),
                 insertion_x=120.0,
                 score=0.87,
             ),
@@ -191,10 +181,7 @@ class TestPlaceIconsInInlines:
             _placement(
                 "sym.far",
                 SymbolAnchorKind.INLINE,
-                120,
-                300,  # y far below
-                132,
-                312,
+                Rect(x0=120, y0=300, x1=132, y1=312),  # y far below
                 insertion_x=120.0,
             ),
         ]
