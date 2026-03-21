@@ -21,22 +21,32 @@ def place_icons_in_inlines(
 
     Filters placements to INLINE and PREFIX for the given block's span range,
     then inserts ``IconInline`` nodes at the appropriate positions.
-
-    - PREFIX: prepend at index 0
-    - INLINE: walk text inlines accumulating x from span bboxes, insert at
-      the position closest to ``insertion_x``
     """
-    if not placements:
+    if not placements or not line_spans:
         return list(text_inlines)
 
-    # Compute block y-range from spans to filter relevant placements
-    if line_spans:
-        block_y_min = min(s.bbox.y0 for s in line_spans) - 5
-        block_y_max = max(s.bbox.y1 for s in line_spans) + 5
-    else:
+    prefix_icons, inline_placements = _filter_block_placements(placements, line_spans)
+
+    if not prefix_icons and not inline_placements:
         return list(text_inlines)
 
-    # Filter to INLINE and PREFIX placements within this block's y-range
+    result = _interleave_inline_icons(text_inlines, inline_placements, line_spans)
+
+    # Prepend PREFIX icons
+    for icon in reversed(prefix_icons):
+        result.insert(0, icon)
+
+    return result
+
+
+def _filter_block_placements(
+    placements: list[ResolvedSymbolPlacement],
+    line_spans: list[SpanEvidence],
+) -> tuple[list[IconInline], list[ResolvedSymbolPlacement]]:
+    """Filter and split placements into prefix icons and inline placements."""
+    block_y_min = min(s.bbox.y0 for s in line_spans) - 5
+    block_y_max = max(s.bbox.y1 for s in line_spans) + 5
+
     prefix_icons: list[IconInline] = []
     inline_placements: list[ResolvedSymbolPlacement] = []
 
@@ -48,45 +58,41 @@ def place_icons_in_inlines(
         elif p.anchor_kind == SymbolAnchorKind.INLINE:
             inline_placements.append(p)
 
-    if not prefix_icons and not inline_placements:
+    inline_placements.sort(key=lambda p: p.insertion_x or 0.0)
+    return prefix_icons, inline_placements
+
+
+def _interleave_inline_icons(
+    text_inlines: list[TextInline],
+    inline_placements: list[ResolvedSymbolPlacement],
+    line_spans: list[SpanEvidence],
+) -> list[TextInline | IconInline]:
+    """Walk text inlines and insert INLINE icons at correct x-positions."""
+    if not inline_placements:
         return list(text_inlines)
 
-    # Sort inline placements by insertion_x
-    inline_placements.sort(key=lambda p: p.insertion_x or 0.0)
+    span_starts = sorted(s.bbox.x0 for s in line_spans)
+    char_width = _avg_char_width(line_spans)
 
-    # Build x-position map from spans for text inlines
-    span_x_positions = _build_span_x_map(line_spans)
-
-    # Insert INLINE icons at correct positions
     result: list[TextInline | IconInline] = []
-    placement_idx = 0
-    cumulative_x = span_x_positions[0] if span_x_positions else 0.0
+    pidx = 0
+    cum_x = span_starts[0] if span_starts else 0.0
 
     for ti in text_inlines:
-        # Insert any inline icons whose insertion_x comes before this text
-        while placement_idx < len(inline_placements):
-            p = inline_placements[placement_idx]
-            ix = p.insertion_x or 0.0
-            if ix <= cumulative_x:
-                result.append(_make_icon(p))
-                placement_idx += 1
+        # Insert icons whose insertion_x comes before this text position
+        while pidx < len(inline_placements):
+            ix = inline_placements[pidx].insertion_x or 0.0
+            if ix <= cum_x:
+                result.append(_make_icon(inline_placements[pidx]))
+                pidx += 1
             else:
                 break
-
         result.append(ti)
-        # Advance cumulative x based on text length proportional to span width
-        text_len = len(ti.text)
-        if span_x_positions and text_len > 0:
-            cumulative_x += text_len * _avg_char_width(line_spans)
+        cum_x += len(ti.text) * char_width
 
     # Append remaining inline icons
-    while placement_idx < len(inline_placements):
-        result.append(_make_icon(inline_placements[placement_idx]))
-        placement_idx += 1
-
-    # Prepend PREFIX icons
-    for icon in reversed(prefix_icons):
-        result.insert(0, icon)
+    for p in inline_placements[pidx:]:
+        result.append(_make_icon(p))
 
     return result
 
@@ -100,11 +106,6 @@ def _make_icon(p: ResolvedSymbolPlacement) -> IconInline:
         anchor_kind=p.anchor_kind,
         confidence=p.confidence,
     )
-
-
-def _build_span_x_map(spans: list[SpanEvidence]) -> list[float]:
-    """Return sorted list of span start x-positions."""
-    return sorted(s.bbox.x0 for s in spans)
 
 
 def _avg_char_width(spans: list[SpanEvidence]) -> float:

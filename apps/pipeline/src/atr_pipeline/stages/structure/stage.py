@@ -7,6 +7,12 @@ import json
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.services.assets.resolver import (
+    ResolvedSymbolPlacement,
+    SymbolResolverInput,
+    build_symbol_refs,
+    resolve_symbols,
+)
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
 from atr_pipeline.stages.structure.furniture import FurnitureMap, detect_furniture
 from atr_pipeline.stages.structure.reading_order import (
@@ -23,6 +29,7 @@ from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.resolved_page_v1 import (
     ResolvedPageV1,
     ResolvedRegion,
+    ResolvedSymbolRef,
     SemanticConfidence,
 )
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
@@ -111,6 +118,14 @@ class StructureStage:
                 builder,
                 route,
             )
+            # Region graph segmentation (when evidence is available)
+            regions, order = self._run_region_segmentation(ctx, native, page_id)
+
+            # Resolve symbols into typed placements
+            sym_placements = self._resolve_symbols(
+                ctx, native, page_id, symbols, regions,
+            )
+
             if builder == "simple":
                 sym = symbols or SymbolMatchSetV1(
                     document_id=ctx.document_id,
@@ -123,10 +138,13 @@ class StructureStage:
                     symbols,
                     config=ctx.config.structure,
                     furniture=furniture_map,
+                    placements=sym_placements,
                 )
 
-            # Region graph segmentation (when evidence is available)
-            self._run_region_segmentation(ctx, native, page_id)
+            # Store regions with resolved symbol refs
+            if regions:
+                symbol_refs = build_symbol_refs(sym_placements) if sym_placements else []
+                self._store_regions(ctx, native, regions, order, symbol_refs=symbol_refs)
 
             # Record evidence path and confidence from layout scoring
             ir.provenance = ProvenanceRef(
@@ -169,27 +187,55 @@ class StructureStage:
         ctx: StageContext,
         native: NativePageV1,
         page_id: str,
-    ) -> None:
+    ) -> tuple[list[ResolvedRegion], ReadingOrderResult | None]:
         """Run region graph segmentation and reading order if evidence is available."""
         evidence = self._load_evidence(ctx, page_id)
         if evidence is None:
-            return
+            return [], None
         ir_regions = segment_regions(evidence, ctx.config.structure)
-        if ir_regions:
+        if not ir_regions:
+            return [], None
+        ctx.logger.info(
+            "Segmented %d regions for %s",
+            len(ir_regions),
+            page_id,
+        )
+        order = compute_reading_order(ir_regions)
+        ctx.logger.info(
+            "Reading order for %s: %d main-flow, %d aside edges (conf=%.2f)",
+            page_id,
+            len(order.main_flow_order),
+            len(order.anchor_edges),
+            order.confidence,
+        )
+        return ir_regions, order
+
+    @staticmethod
+    def _resolve_symbols(
+        ctx: StageContext,
+        native: NativePageV1,
+        page_id: str,
+        symbols: SymbolMatchSetV1 | None,
+        regions: list[ResolvedRegion],
+    ) -> list[ResolvedSymbolPlacement] | None:
+        """Resolve symbol matches into typed placements."""
+        if symbols is None or not symbols.matches:
+            return None
+        inp = SymbolResolverInput(
+            matches=symbols.matches,
+            spans=native.spans,
+            regions=regions,
+            page_id=page_id,
+            page_dimensions=native.dimensions_pt,
+        )
+        placements = resolve_symbols(inp)
+        if placements:
             ctx.logger.info(
-                "Segmented %d regions for %s",
-                len(ir_regions),
+                "Resolved %d symbols for %s",
+                len(placements),
                 page_id,
             )
-            order = compute_reading_order(ir_regions)
-            ctx.logger.info(
-                "Reading order for %s: %d main-flow, %d aside edges (conf=%.2f)",
-                page_id,
-                len(order.main_flow_order),
-                len(order.anchor_edges),
-                order.confidence,
-            )
-            self._store_regions(ctx, native, ir_regions, order)
+        return placements
 
     @staticmethod
     def _resolve_page_ids(
@@ -257,8 +303,12 @@ class StructureStage:
         native: NativePageV1,
         regions: list[ResolvedRegion],
         order: ReadingOrderResult | None = None,
+        *,
+        symbol_refs: list[ResolvedSymbolRef] | None = None,
     ) -> None:
         """Store region graph and reading order as a ResolvedPageV1 artifact."""
+        refs = symbol_refs or []
+        avg_conf = sum(r.confidence for r in refs) / len(refs) if refs else 1.0
         resolved = ResolvedPageV1(
             document_id=native.document_id,
             page_id=native.page_id,
@@ -266,8 +316,10 @@ class StructureStage:
             regions=regions,
             main_flow_order=order.main_flow_order if order else [],
             anchor_edges=order.anchor_edges if order else [],
+            symbol_refs=refs,
             confidence=SemanticConfidence(
                 reading_order=order.confidence if order else 1.0,
+                symbol_resolution=avg_conf,
             ),
         )
         ctx.artifact_store.put_json(
