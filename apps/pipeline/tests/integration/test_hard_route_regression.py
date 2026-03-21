@@ -20,6 +20,7 @@ from atr_pipeline.stages.structure.stage import StructureStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence, WordEvidence
+from atr_schemas.page_ir_v1 import PageIRV1
 
 
 def _make_config(doc_id: str) -> DocumentBuildConfig:
@@ -311,8 +312,6 @@ def test_route_provenance_roundtrip(tmp_path: Path) -> None:
 
     ExtractLayoutStage().run(ctx, None)
     StructureStage().run(ctx, None)
-
-    from atr_schemas.page_ir_v1 import PageIRV1
 
     ir_data = _read_page_ir(ctx.artifact_store, doc_id, "p0001")
     ir = PageIRV1.model_validate(ir_data)
