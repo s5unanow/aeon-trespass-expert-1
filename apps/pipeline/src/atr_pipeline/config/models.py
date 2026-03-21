@@ -121,6 +121,9 @@ class StructureConfig(BaseModel):
     band_gap_min_pt: float = Field(default=15.0, gt=0.0)
     furniture_top_max_y: float = Field(default=60.0, ge=0.0)
     furniture_bottom_min_y: float = Field(default=750.0, ge=0.0)
+    margin_note_max_width_fraction: float = Field(default=0.20, gt=0.0, le=1.0)
+    margin_note_edge_margin_pt: float = Field(default=40.0, ge=0.0)
+    callout_max_width_fraction: float = Field(default=0.55, gt=0.0, le=1.0)
 
     @model_validator(mode="after")
     def _check_body_size_range(self) -> StructureConfig:
