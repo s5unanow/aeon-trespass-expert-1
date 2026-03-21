@@ -444,28 +444,69 @@ def _insert_icons(
     symbols: SymbolMatchSetV1,
     page_id: str,
 ) -> list[TextInline | IconInline]:
-    """Insert icon nodes into the inline sequence based on symbol match positions."""
-    if not symbols.matches:
-        return inlines  # type: ignore[return-value]
+    """Insert icon nodes into the inline sequence at correct x-positions.
 
-    # For now, append icons that overlap the span region at the end
-    # A more sophisticated approach would split text at the exact position
-    result: list[TextInline | IconInline] = list(inlines)
+    Filters symbol matches to those overlapping the vertical span region,
+    sorts them by horizontal position, then interleaves them among the text
+    inlines using average character width to track cumulative x-offsets.
+    """
+    if not symbols.matches or not spans:
+        return list(inlines)
 
-    if spans:
-        region_y_min = min(s.bbox.y0 for s in spans)
-        region_y_max = max(s.bbox.y1 for s in spans)
+    region_y_min = min(s.bbox.y0 for s in spans) - 5
+    region_y_max = max(s.bbox.y1 for s in spans) + 5
 
-        for match in symbols.matches:
-            if not match.inline:
-                continue
-            if match.bbox.y0 >= region_y_min - 5 and match.bbox.y1 <= region_y_max + 5:
-                result.append(
-                    IconInline(
-                        symbol_id=match.symbol_id,
-                        instance_id=match.instance_id,
-                        bbox=match.bbox,
-                    )
+    block_matches = [
+        m
+        for m in symbols.matches
+        if m.inline and m.bbox.y0 >= region_y_min and m.bbox.y1 <= region_y_max
+    ]
+    if not block_matches:
+        return list(inlines)
+
+    block_matches.sort(key=lambda m: m.bbox.x0)
+
+    char_width = _avg_char_width_spans(spans)
+    cum_x = min(s.bbox.x0 for s in spans)
+
+    result: list[TextInline | IconInline] = []
+    midx = 0
+
+    for ti in inlines:
+        while midx < len(block_matches) and block_matches[midx].bbox.x0 <= cum_x:
+            m = block_matches[midx]
+            result.append(
+                IconInline(
+                    symbol_id=m.symbol_id,
+                    instance_id=m.instance_id,
+                    bbox=m.bbox,
+                    source_asset_id=m.source_asset_id,
                 )
+            )
+            midx += 1
+        result.append(ti)
+        cum_x += len(ti.text) * char_width
+
+    for m in block_matches[midx:]:
+        result.append(
+            IconInline(
+                symbol_id=m.symbol_id,
+                instance_id=m.instance_id,
+                bbox=m.bbox,
+                source_asset_id=m.source_asset_id,
+            )
+        )
 
     return result
+
+
+def _avg_char_width_spans(spans: list[SpanEvidence]) -> float:
+    """Compute average character width across spans."""
+    total_chars = 0
+    total_width = 0.0
+    for s in spans:
+        n = len(s.text)
+        if n > 0:
+            total_chars += n
+            total_width += s.bbox.width
+    return total_width / total_chars if total_chars > 0 else 10.0
