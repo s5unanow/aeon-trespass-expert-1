@@ -21,26 +21,26 @@ from atr_pipeline.registry.events import record_stage_finish, record_stage_start
 from atr_pipeline.registry.runs import start_run
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.publish.stage import PublishStage
+from atr_pipeline.stages.qa.registry import QAPageContext
 from atr_pipeline.stages.qa.stage import QAStage
-from atr_pipeline.stages.render.stage import RenderStage
+from atr_pipeline.stages.render.stage import RenderResult, RenderStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import QALayer, Severity
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
-from atr_schemas.render_page_v1 import RenderIconInline, RenderPageV1
+from atr_schemas.qa_summary_v1 import QASummaryV1
+from atr_schemas.render_page_v1 import (
+    RenderFigureBlock,
+    RenderIconInline,
+    RenderPageV1,
+)
 from atr_schemas.waiver_v1 import WaiverSetV1, WaiverV1
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 FIXTURES = REPO_ROOT / "packages" / "fixtures" / "sample_documents"
 
 # Curated fixtures — at least 3 required by acceptance criteria.
-CURATED_FIXTURES = [
-    "multi_column",
-    "icon_dense",
-    "table_callout",
-    "figure_caption",
-    "hard_route",
-]
+CURATED_FIXTURES = ["multi_column", "icon_dense", "table_callout", "figure_caption", "hard_route"]
 
 # Only heading, paragraph, list_item, figure types produce render blocks;
 # table, callout, caption fall through the page builder without rendering.
@@ -52,13 +52,6 @@ _RENDERABLE = {"heading", "paragraph", "list_item", "figure"}
 # ---------------------------------------------------------------------------
 
 
-def _make_config(doc_id: str) -> DocumentBuildConfig:
-    return DocumentBuildConfig(
-        document=DocumentConfig(id=doc_id, source_pdf="dummy.pdf", structure_builder="simple"),
-        repo_root=REPO_ROOT,
-    )
-
-
 def _make_ctx(
     tmp_path: Path,
     doc_id: str,
@@ -66,7 +59,10 @@ def _make_ctx(
     edition: str = "en",
     qa_config: QAConfig | None = None,
 ) -> StageContext:
-    config = _make_config(doc_id)
+    config = DocumentBuildConfig(
+        document=DocumentConfig(id=doc_id, source_pdf="dummy.pdf", structure_builder="simple"),
+        repo_root=REPO_ROOT,
+    )
     updates: dict[str, object] = {"artifact_root": tmp_path / "artifacts"}
     if qa_config is not None:
         updates["qa"] = qa_config
@@ -91,11 +87,9 @@ def _make_ctx(
     )
 
 
-def _seed_golden_irs(store: ArtifactStore, doc_id: str) -> list[str]:
-    """Write golden EN page IRs into the artifact store. Returns page IDs."""
-    expected_dir = FIXTURES / doc_id / "expected"
-    page_ids: list[str] = []
-    for ir_file in sorted(expected_dir.glob("page_ir.en.*.json")):
+def _seed_golden_irs(store: ArtifactStore, doc_id: str) -> None:
+    """Write golden EN page IRs into the artifact store."""
+    for ir_file in sorted((FIXTURES / doc_id / "expected").glob("page_ir.en.*.json")):
         page_id = ir_file.stem.removeprefix("page_ir.en.")
         ir = PageIRV1.model_validate(json.loads(ir_file.read_text()))
         store.put_json(
@@ -105,15 +99,10 @@ def _seed_golden_irs(store: ArtifactStore, doc_id: str) -> list[str]:
             entity_id=page_id,
             data=ir,
         )
-        page_ids.append(page_id)
-    return page_ids
 
 
-def _register_render_event(ctx: StageContext, render_result: object) -> None:
-    """Register a fake render stage event so publish can find render output."""
-    from atr_pipeline.stages.render.stage import RenderResult
-
-    assert isinstance(render_result, RenderResult)
+def _register_render_event(ctx: StageContext, render_result: RenderResult) -> None:
+    """Register a render stage event so publish can find render output."""
     ref = ctx.artifact_store.put_json(
         document_id=ctx.document_id,
         schema_family="stage_result.render",
@@ -130,10 +119,7 @@ def _register_render_event(ctx: StageContext, render_result: object) -> None:
         cache_key="e2e_render",
     )
     record_stage_finish(
-        ctx.registry_conn,
-        event_id=event_id,
-        status="completed",
-        artifact_ref=ref.relative_path,
+        ctx.registry_conn, event_id=event_id, status="completed", artifact_ref=ref.relative_path
     )
 
 
@@ -147,32 +133,16 @@ def _read_render_page(store: ArtifactStore, doc_id: str, page_id: str) -> Render
 def _count_icons(render_page: RenderPageV1) -> int:
     total = 0
     for block in render_page.blocks:
+        if not hasattr(block, "children"):
+            continue
         for child in block.children:
             if isinstance(child, RenderIconInline):
                 total += 1
     return total
 
 
-# ---------------------------------------------------------------------------
-# Parametrized E2E fixture — runs render + QA per golden document
-# ---------------------------------------------------------------------------
-
-
-@dataclass(frozen=True)
-class E2EResult:
-    doc_id: str
-    render_result: object
-    qa_summary: object
-    ctx: StageContext
-
-
 def _write_source_only_waivers(tmp_path: Path, doc_id: str) -> Path:
-    """Create a waiver file that covers UNTRANSLATED_TEXT in source-only mode.
-
-    In source-only runs the target IR equals the source IR (English), so the
-    untranslated-text rule fires on every translatable block. This mirrors
-    real-world usage where EN-only runs would carry this waiver.
-    """
+    """Create UNTRANSLATED_TEXT waiver for source-only mode (EN target = EN source)."""
     waivers_dir = tmp_path / "waivers"
     waivers_dir.mkdir(exist_ok=True)
     ws = WaiverSetV1(
@@ -190,6 +160,19 @@ def _write_source_only_waivers(tmp_path: Path, doc_id: str) -> Path:
     return waivers_dir
 
 
+# ---------------------------------------------------------------------------
+# Parametrized E2E fixture — runs render + QA per golden document
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class E2EResult:
+    doc_id: str
+    render_result: RenderResult
+    qa_summary: QASummaryV1
+    ctx: StageContext
+
+
 @pytest.fixture(params=CURATED_FIXTURES)
 def e2e_run(request: pytest.FixtureRequest, tmp_path: Path) -> E2EResult:
     """Run source-edition render + QA for one golden fixture document."""
@@ -201,7 +184,6 @@ def e2e_run(request: pytest.FixtureRequest, tmp_path: Path) -> E2EResult:
     render_result = RenderStage().run(ctx, None)
     _register_render_event(ctx, render_result)
     qa_summary = QAStage().run(ctx, None)
-
     return E2EResult(doc_id=doc_id, render_result=render_result, qa_summary=qa_summary, ctx=ctx)
 
 
@@ -229,11 +211,9 @@ def test_render_block_kinds(e2e_run: E2EResult) -> None:
     gs = load_golden_set(e2e_run.doc_id, repo_root=REPO_ROOT)
     for spec in gs.pages:
         rp = _read_render_page(e2e_run.ctx.artifact_store, e2e_run.doc_id, spec.page_id)
-        expected_kinds = [t for t in spec.block_types if t in _RENDERABLE]
-        actual_kinds = [b.kind for b in rp.blocks]
-        assert actual_kinds == expected_kinds, (
-            f"{e2e_run.doc_id}/{spec.page_id}: expected {expected_kinds}, got {actual_kinds}"
-        )
+        expected = [t for t in spec.block_types if t in _RENDERABLE]
+        actual = [b.kind for b in rp.blocks]
+        assert actual == expected, f"{e2e_run.doc_id}/{spec.page_id}: {expected=}, {actual=}"
 
 
 def test_render_icon_count(e2e_run: E2EResult) -> None:
@@ -253,9 +233,7 @@ def test_source_map_block_refs(e2e_run: E2EResult) -> None:
     for spec in gs.pages:
         rp = _read_render_page(e2e_run.ctx.artifact_store, e2e_run.doc_id, spec.page_id)
         assert rp.source_map is not None
-        assert rp.source_map.block_refs == spec.reading_order, (
-            f"{e2e_run.doc_id}/{spec.page_id}: source_map.block_refs mismatch"
-        )
+        assert rp.source_map.block_refs == spec.reading_order
 
 
 def test_render_page_id_matches(e2e_run: E2EResult) -> None:
@@ -272,7 +250,7 @@ def test_figure_assets_in_render(e2e_run: E2EResult) -> None:
     for spec in gs.pages:
         rp = _read_render_page(e2e_run.ctx.artifact_store, e2e_run.doc_id, spec.page_id)
         for block in rp.blocks:
-            if block.kind == "figure":
+            if isinstance(block, RenderFigureBlock):
                 assert block.asset_id in rp.figures, (
                     f"{e2e_run.doc_id}/{spec.page_id}: "
                     f"figure asset {block.asset_id} not in render.figures"
@@ -285,21 +263,13 @@ def test_figure_assets_in_render(e2e_run: E2EResult) -> None:
 
 
 def test_qa_non_blocking(e2e_run: E2EResult) -> None:
-    """QA summary is not blocking for curated pages in source-only mode.
-
-    UNTRANSLATED_TEXT findings are waived (expected when target=source),
-    so no unwaived errors should remain.
-    """
-    from atr_schemas.qa_summary_v1 import QASummaryV1
-
-    qa = e2e_run.qa_summary
-    assert isinstance(qa, QASummaryV1)
-    assert not qa.blocking, (
+    """QA is not blocking for curated pages (UNTRANSLATED_TEXT waived)."""
+    assert not e2e_run.qa_summary.blocking, (
         f"{e2e_run.doc_id}: QA is blocking — "
-        f"errors={qa.counts.error}, critical={qa.counts.critical}"
+        f"errors={e2e_run.qa_summary.counts.error}, "
+        f"critical={e2e_run.qa_summary.counts.critical}"
     )
-    # Untranslated findings should be waived, not absent
-    assert qa.counts.error == 0, f"{e2e_run.doc_id}: unwaived errors remain"
+    assert e2e_run.qa_summary.counts.error == 0, f"{e2e_run.doc_id}: unwaived errors remain"
 
 
 # ---------------------------------------------------------------------------
@@ -315,7 +285,6 @@ def test_publish_creates_bundle(e2e_run: E2EResult) -> None:
     release_dir = e2e_run.ctx.artifact_store.root / e2e_run.doc_id / "release"
     manifest_path = release_dir / "en" / "manifest.json"
     assert manifest_path.exists(), "Missing manifest in release bundle"
-
     manifest = json.loads(manifest_path.read_text())
     assert manifest["edition"] == "en"
 
@@ -341,7 +310,7 @@ class _BlockingRule:
     def layer(self) -> QALayer:
         return QALayer.EXTRACTION
 
-    def evaluate(self, ctx: object) -> list[QARecordV1]:
+    def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
         return [
             QARecordV1(
                 qa_id="qa.p0001.e2e_blocking",
@@ -361,10 +330,7 @@ def test_blocking_qa_produces_review_pack(tmp_path: Path) -> None:
     _seed_golden_irs(ctx.artifact_store, doc_id)
     RenderStage().run(ctx, None)
 
-    with patch(
-        "atr_pipeline.stages.qa.stage.get_all_rules",
-        return_value=[_BlockingRule()],
-    ):
+    with patch("atr_pipeline.stages.qa.stage.get_all_rules", return_value=[_BlockingRule()]):
         qa = QAStage().run(ctx, None)
 
     assert qa.blocking, "QA should be blocking when ERROR findings exist"
@@ -382,8 +348,7 @@ def test_waiver_removes_blocking(tmp_path: Path) -> None:
     doc_id = "multi_column"
     waiver_dir = tmp_path / "waivers"
     waiver_dir.mkdir()
-
-    waiver_set = WaiverSetV1(
+    ws = WaiverSetV1(
         document_id=doc_id,
         waivers=[
             WaiverV1(
@@ -394,20 +359,12 @@ def test_waiver_removes_blocking(tmp_path: Path) -> None:
             )
         ],
     )
-    (waiver_dir / f"{doc_id}.json").write_text(waiver_set.model_dump_json())
-
-    ctx = _make_ctx(
-        tmp_path,
-        doc_id,
-        qa_config=QAConfig(waivers_dir=str(waiver_dir)),
-    )
+    (waiver_dir / f"{doc_id}.json").write_text(ws.model_dump_json())
+    ctx = _make_ctx(tmp_path, doc_id, qa_config=QAConfig(waivers_dir=str(waiver_dir)))
     _seed_golden_irs(ctx.artifact_store, doc_id)
     RenderStage().run(ctx, None)
 
-    with patch(
-        "atr_pipeline.stages.qa.stage.get_all_rules",
-        return_value=[_BlockingRule()],
-    ):
+    with patch("atr_pipeline.stages.qa.stage.get_all_rules", return_value=[_BlockingRule()]):
         qa = QAStage().run(ctx, None)
 
     assert not qa.blocking, "Waived ERROR should not block"
