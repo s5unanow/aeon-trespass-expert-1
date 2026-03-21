@@ -54,7 +54,7 @@ def eval_command(
         write_report_json(report, Path(output_json))
 
     if overlays:
-        _generate_overlays(store, document_id, report)
+        _generate_overlays(store, document_id, report, config.extraction.raster.pyramid_dpi)
 
     if not report.passed:
         raise typer.Exit(1)
@@ -125,12 +125,13 @@ def _generate_overlays(
     store: ArtifactStore,
     document_id: str,
     report: EvalReport,
+    pyramid_dpi: list[int] | None = None,
 ) -> None:
     """Generate overlay PNGs for evaluated pages."""
     from atr_pipeline.eval.overlay import draw_ir_overlay
     from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
 
-    provider = PageRasterProvider(store=store, document_id=document_id)
+    provider = PageRasterProvider(store=store, document_id=document_id, pyramid_dpi=pyramid_dpi)
 
     for page_result in report.pages:
         page_id = page_result.page_id
