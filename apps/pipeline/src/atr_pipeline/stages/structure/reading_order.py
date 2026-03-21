@@ -103,7 +103,10 @@ def _partition_regions(
             continue
         if r.kind in _ASIDE_KINDS:
             aside.append(r)
+        elif r.kind in _MAIN_FLOW_KINDS:
+            main.append(r)
         else:
+            # Unknown future kinds default to main flow
             main.append(r)
     return main, aside
 
