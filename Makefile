@@ -31,6 +31,9 @@ test: ## Run all tests (pytest + pnpm test)
 export: ## Export pipeline artifacts to web public (re-generates apps/web/public/documents/)
 	uv run python scripts/export_to_web.py
 
+export-en: ## Export EN-only extraction artifacts for review
+	uv run python scripts/export_to_web.py --edition en
+
 codegen: ## Regenerate JSON Schema + TS types from Pydantic models
 	uv run python scripts/generate_jsonschema.py
 	node scripts/generate_ts_types.mjs

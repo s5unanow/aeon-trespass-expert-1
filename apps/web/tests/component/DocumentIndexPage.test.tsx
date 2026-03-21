@@ -84,6 +84,42 @@ describe('DocumentIndexPage', () => {
     expect(screen.queryByRole('list')).toBeNull();
   });
 
+  it('shows both editions when manifests are edition-specific', async () => {
+    fetchSpy.mockImplementation((url) => {
+      const urlStr = String(url);
+      // Edition-specific manifests for ato_core
+      if (urlStr.includes('ato_core') && urlStr.includes('/ru/')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              document_id: 'ato_core_v1_1',
+              pages: [{ page_id: 'p0001', title: 'RU Page' }],
+            }),
+        } as Response);
+      }
+      if (urlStr.includes('ato_core') && urlStr.includes('/en/')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              document_id: 'ato_core_v1_1',
+              pages: [{ page_id: 'p0001', title: 'EN Page' }],
+            }),
+        } as Response);
+      }
+      return Promise.resolve({ ok: false, status: 404 } as Response);
+    });
+
+    render(<DocumentIndexPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('ato_core_v1_1 (RU)')).toBeDefined();
+    });
+    // Both editions should be visible since they resolved to edition-specific paths
+    expect(screen.getByText('ato_core_v1_1 (EN)')).toBeDefined();
+  });
+
   it('formats page numbers without leading zeros', async () => {
     fetchSpy.mockImplementation((url) => {
       const urlStr = String(url);

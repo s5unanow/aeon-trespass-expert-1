@@ -6,6 +6,7 @@ interface ManifestWithEdition extends DocumentManifest {
 }
 
 const DOCUMENTS = ['ato_core_v1_1', 'walking_skeleton'];
+// Order matters: first edition wins dedup when both fall back to the same root manifest
 const EDITIONS = ['ru', 'en'];
 
 /** Extract a human-readable page number from a page ID like "p0049" → "49". */
@@ -28,10 +29,11 @@ export function DocumentIndexPage() {
     Promise.all(fetches).then((results) => {
       const loaded = results.filter((m): m is ManifestWithEdition => m !== null);
       // Deduplicate: when both edition paths fall back to the same root
-      // manifest, keep only the first (avoids identical duplicate sections)
+      // manifest, keep only the first. Edition-specific manifests are always kept.
       const seen = new Set<string>();
       const unique = loaded.filter((m) => {
-        const key = `${m.document_id}:${m.pages.length}`;
+        if (m.edition_specific) return true;
+        const key = `${m.document_id}:fallback`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
