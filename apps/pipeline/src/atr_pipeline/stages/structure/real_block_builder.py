@@ -10,6 +10,8 @@ from __future__ import annotations
 import re
 
 from atr_pipeline.config.models import StructureConfig
+from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
+from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
 from atr_pipeline.stages.structure.furniture import FurnitureMap
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
@@ -266,6 +268,7 @@ def build_page_ir_real(
     *,
     config: StructureConfig | None = None,
     furniture: FurnitureMap | None = None,
+    placements: list[ResolvedSymbolPlacement] | None = None,
 ) -> PageIRV1:
     """Build PageIRV1 from real page evidence using font-based heuristics."""
     cfg = config or StructureConfig()
@@ -330,7 +333,9 @@ def build_page_ir_real(
 
         # Insert icon nodes at matching positions
         inlines: list[TextInline | IconInline] = list(text_inlines)
-        if symbols:
+        if placements is not None:
+            inlines = place_icons_in_inlines(text_inlines, placements, current_para_spans)
+        elif symbols:
             inlines = _insert_icons(text_inlines, current_para_spans, symbols, native.page_id)
 
         blocks.append(ParagraphBlock(block_id=block_id, children=inlines))  # type: ignore[arg-type]

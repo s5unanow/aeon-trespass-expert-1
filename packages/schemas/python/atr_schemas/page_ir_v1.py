@@ -7,7 +7,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, Discriminator, Field, Tag
 
 from atr_schemas.common import ConfidenceMetrics, PageDimensions, ProvenanceRef, QAState, Rect
-from atr_schemas.enums import LanguageCode
+from atr_schemas.enums import LanguageCode, SymbolAnchorKind
 
 # --- Inline nodes (discriminated union on "type") ---
 
@@ -31,6 +31,8 @@ class IconInline(BaseModel):
     bbox: Rect | None = None
     display_hint: dict[str, float | bool] = Field(default_factory=dict)
     source_asset_id: str = ""
+    anchor_kind: SymbolAnchorKind | None = None
+    confidence: float = Field(ge=0.0, le=1.0, default=1.0)
 
 
 class FigureRefInline(BaseModel):
