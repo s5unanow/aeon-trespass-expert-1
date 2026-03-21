@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from atr_schemas.common import PageDimensions, Rect
+from atr_schemas.common import Rect
 from atr_schemas.enums import RegionKind, SymbolAnchorKind
 from atr_schemas.native_page_v1 import SpanEvidence
 from atr_schemas.resolved_page_v1 import ResolvedRegion, ResolvedSymbolRef
@@ -32,7 +32,6 @@ class SymbolResolverInput:
     spans: list[SpanEvidence]
     regions: list[ResolvedRegion]
     page_id: str
-    page_dimensions: PageDimensions | None = None
 
 
 @dataclass
@@ -182,14 +181,13 @@ def _classify_anchor(
         return SymbolAnchorKind.REGION_ANNOTATION
 
     # Symbol is on a text line — check if PREFIX or INLINE
-    first_char_x = min(s.bbox.x0 for s in line_spans)
+    line_x0 = min(s.bbox.x0 for s in line_spans)
     symbol_cx = (bbox.x0 + bbox.x1) / 2
 
-    if symbol_cx < first_char_x:
+    if symbol_cx < line_x0:
         return SymbolAnchorKind.PREFIX
 
     # Check if symbol overlaps the text line horizontally
-    line_x0 = min(s.bbox.x0 for s in line_spans)
     line_x1 = max(s.bbox.x1 for s in line_spans)
 
     if bbox.x0 <= line_x1 and bbox.x1 >= line_x0:

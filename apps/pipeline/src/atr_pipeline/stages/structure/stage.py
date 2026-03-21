@@ -26,6 +26,7 @@ from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
+from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.resolved_page_v1 import (
     ResolvedPageV1,
     ResolvedRegion,
@@ -118,37 +119,14 @@ class StructureStage:
                 builder,
                 route,
             )
-            # Region graph segmentation (when evidence is available)
-            regions, order = self._run_region_segmentation(ctx, native, page_id)
-
-            # Resolve symbols into typed placements
-            sym_placements = self._resolve_symbols(
+            ir = self._build_page_ir(
                 ctx,
                 native,
                 page_id,
+                builder,
                 symbols,
-                regions,
+                furniture_map,
             )
-
-            if builder == "simple":
-                sym = symbols or SymbolMatchSetV1(
-                    document_id=ctx.document_id,
-                    page_id=page_id,
-                )
-                ir = build_page_ir_simple(native, sym)
-            else:
-                ir = build_page_ir_real(
-                    native,
-                    symbols,
-                    config=ctx.config.structure,
-                    furniture=furniture_map,
-                    placements=sym_placements,
-                )
-
-            # Store regions with resolved symbol refs
-            if regions:
-                symbol_refs = build_symbol_refs(sym_placements) if sym_placements else []
-                self._store_regions(ctx, native, regions, order, symbol_refs=symbol_refs)
 
             # Record evidence path and confidence from layout scoring
             ir.provenance = ProvenanceRef(
@@ -185,6 +163,48 @@ class StructureStage:
             total_blocks=total_blocks,
             hard_pages=hard_pages,
         )
+
+    def _build_page_ir(
+        self,
+        ctx: StageContext,
+        native: NativePageV1,
+        page_id: str,
+        builder: str,
+        symbols: SymbolMatchSetV1 | None,
+        furniture: FurnitureMap,
+    ) -> PageIRV1:
+        """Build page IR, run region segmentation, and resolve symbols."""
+        regions, order = self._run_region_segmentation(ctx, native, page_id)
+
+        if builder == "simple":
+            sym = symbols or SymbolMatchSetV1(
+                document_id=ctx.document_id,
+                page_id=page_id,
+            )
+            ir = build_page_ir_simple(native, sym)
+        else:
+            sym_placements = self._resolve_symbols(
+                ctx,
+                native,
+                page_id,
+                symbols,
+                regions,
+            )
+            ir = build_page_ir_real(
+                native,
+                symbols,
+                config=ctx.config.structure,
+                furniture=furniture,
+                placements=sym_placements,
+            )
+            if regions and sym_placements:
+                sym_refs = build_symbol_refs(sym_placements)
+                self._store_regions(ctx, native, regions, order, symbol_refs=sym_refs)
+                return ir
+
+        if regions:
+            self._store_regions(ctx, native, regions, order)
+        return ir
 
     def _run_region_segmentation(
         self,
@@ -230,7 +250,6 @@ class StructureStage:
             spans=native.spans,
             regions=regions,
             page_id=page_id,
-            page_dimensions=native.dimensions_pt,
         )
         placements = resolve_symbols(inp)
         if placements:
