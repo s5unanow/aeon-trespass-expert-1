@@ -116,6 +116,17 @@ All extraction issues (S5U-191 epic and S5U-274 evaluation track) follow additio
 - **Config format**: TOML for all pipeline/document configuration
 - **JSON IO**: Use orjson with atomic writes (temp + rename) where applicable
 
+## Compact Instructions
+
+When compressing conversation context, always preserve:
+
+- The **Linear issue ID** (`S5U-XXX`) currently being worked on
+- The **current branch name** and its relationship to the issue
+- Which **quality gates** have passed or failed in this session
+- **Architectural decisions** made during the session and their rationale
+- The **definition-of-done checklist** state (which items are checked/unchecked)
+- Any **blocking issues** or unresolved problems encountered
+
 ## Current state
 
 All work is tracked in Linear (project ATE1). Check `mcp__linear__list_issues(project="ATE1")` for current status.
