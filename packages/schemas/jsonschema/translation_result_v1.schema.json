@@ -91,6 +91,24 @@
           "default": "",
           "title": "Source Asset Id",
           "type": "string"
+        },
+        "anchor_kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SymbolAnchorKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
         }
       },
       "required": [
@@ -148,6 +166,18 @@
       ],
       "title": "Rect",
       "type": "object"
+    },
+    "SymbolAnchorKind": {
+      "description": "How a symbol attaches to its context.",
+      "enum": [
+        "inline",
+        "prefix",
+        "cell_local",
+        "block_attached",
+        "region_annotation"
+      ],
+      "title": "SymbolAnchorKind",
+      "type": "string"
     },
     "TermMarkInline": {
       "description": "Glossary term marker.",

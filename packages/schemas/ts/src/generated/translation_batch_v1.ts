@@ -20,6 +20,11 @@ export type Y0 = number;
 export type X1 = number;
 export type Y1 = number;
 export type SourceAssetId = string;
+/**
+ * How a symbol attaches to its context.
+ */
+export type SymbolAnchorKind = 'inline' | 'prefix' | 'cell_local' | 'block_attached' | 'region_annotation';
+export type Confidence = number;
 export type Type2 = 'figure_ref';
 export type AssetId = string;
 export type Label = string;
@@ -92,6 +97,8 @@ export interface IconInline {
   bbox?: Rect | null;
   display_hint?: DisplayHint;
   source_asset_id?: SourceAssetId;
+  anchor_kind?: SymbolAnchorKind | null;
+  confidence?: Confidence;
 }
 /**
  * Bounding box in PDF points: [x0, y0, x1, y1].
