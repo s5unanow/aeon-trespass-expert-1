@@ -1,0 +1,18 @@
+schema_version = "annotation_meta.v1"
+annotation_format_version = 1
+last_refresh_timestamp = "2026-03-21T00:00:00Z"
+last_refresh_issue = "S5U-292"
+last_refresh_commit = ""
+reviewer = "s5unanow"
+
+[checksums]
+"glossary_payload.json" = "219144457e9583454ed5adaabe3c3ed413fa47374c3a85ab80effd37c4f5b8b9"
+"native_page.p0001.json" = "7ffe9cbf3e858ed16014e662d611884b72eda0c5836aeffe9ec29cf6f0146c3f"
+"page_ir.en.p0001.json" = "1f9a40651ab7ad6d8ad172966dbe094393835e83cc5613139af252e16fde0ed1"
+"page_ir.ru.p0001.json" = "5072b97083f47d81f2bee3fa3de96be5a348e41af2cb2f1e1abf29b0984db336"
+"qa_summary.json" = "8b2c9a6b1d49130b623c778b5f647e43f23ed50f6d9bb9a1c30890c97bc23e02"
+"render_page.p0001.json" = "14f5234c1dbea69e65c754b241710283bc999454d71913cc9f7c1377a3888986"
+"source_manifest.json" = "a73656b94d0820e88d5e6322e7b98c94413921372042740cbd907255311ba01a"
+"symbol_matches.p0001.json" = "24ae04878ed393c4c127791b15e68fe1bc1762fb980a68bcf3907fdc12e04727"
+"translation_batch.p0001.json" = "56d0617e0ea686a436a275035e53e68dc9508d27926a7aeabc7b06219b571def"
+"translation_result.p0001.json" = "d0078c9da92c644521a20d67d98cb0e97976fe6ac3eb95a62683ee14577b227a"
