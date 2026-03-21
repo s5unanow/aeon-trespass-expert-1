@@ -32,6 +32,20 @@ from atr_schemas.page_ir_v1 import (
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 
 
+def _bbox_from_spans(spans: list[SpanEvidence]) -> Rect | None:
+    """Compute bounding box union from constituent spans."""
+    if not spans:
+        return None
+    first = spans[0].bbox
+    x0, y0, x1, y1 = first.x0, first.y0, first.x1, first.y1
+    for s in spans[1:]:
+        x0 = min(x0, s.bbox.x0)
+        y0 = min(y0, s.bbox.y0)
+        x1 = max(x1, s.bbox.x1)
+        y1 = max(y1, s.bbox.y1)
+    return Rect(x0=x0, y0=y0, x1=x1, y1=y1)
+
+
 def _classify_span(span: SpanEvidence, cfg: StructureConfig) -> str:
     """Classify a span into a structural role."""
     if span.bbox.y0 >= cfg.footer_y_threshold:
@@ -231,7 +245,7 @@ def build_page_ir_real(
         elif symbols:
             inlines = _insert_icons_line_aware(current_para_spans, symbols, native.page_id, cfg)
 
-        blocks.append(ParagraphBlock(block_id=block_id, children=inlines))  # type: ignore[arg-type]
+        blocks.append(ParagraphBlock(block_id=block_id, bbox=_bbox_from_spans(current_para_spans), children=inlines))  # type: ignore[arg-type]
         current_para_spans.clear()
 
     for line in lines:
@@ -252,6 +266,7 @@ def build_page_ir_real(
                 blocks.append(
                     HeadingBlock(
                         block_id=block_id,
+                        bbox=_bbox_from_spans(spans_in_line),
                         level=level,
                         children=[TextInline(text=text, lang=LanguageCode.EN)],
                     )
@@ -270,7 +285,7 @@ def build_page_ir_real(
             non_bullet = [s for r, s in line if r != "bullet"]
             inlines = _spans_to_text_inline(non_bullet, cfg)
             if inlines:
-                blocks.append(ListItemBlock(block_id=block_id, children=inlines))  # type: ignore[arg-type]
+                blocks.append(ListItemBlock(block_id=block_id, bbox=_bbox_from_spans(non_bullet), children=inlines))  # type: ignore[arg-type]
             continue
 
         # Regular body/bold/italic spans → accumulate into paragraph.
