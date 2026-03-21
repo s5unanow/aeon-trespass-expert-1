@@ -73,7 +73,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 
 ### 5. Sub-agent code review (MANDATORY before PR)
 - **You MUST spawn a review agent before creating a PR.** This is not optional.
-- Read `.Codex/prompts/review.md` and use it as the Agent prompt
+- Read `.claude/prompts/review.md` and use it as the Agent prompt
 - If the review agent says **BLOCK**, fix the issues before proceeding
 - If only warnings/nits, use judgement — fix warnings, nits are optional
 

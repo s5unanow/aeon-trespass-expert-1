@@ -19,10 +19,10 @@ If you're on `main` or a branch without a valid issue ID, stop and tell the user
 
 ## 1. Code review (MANDATORY)
 
-Read `.Codex/prompts/review.md` and use it as the prompt for a review sub-agent:
+Read `.claude/prompts/review.md` and use it as the prompt for a review sub-agent:
 
 ```
-Agent(subagent_type="general-purpose", prompt=<contents of .Codex/prompts/review.md>)
+Agent(subagent_type="general-purpose", prompt=<contents of .claude/prompts/review.md>)
 ```
 
 Based on the review verdict:
@@ -49,7 +49,7 @@ PR body must include:
 - `## Test plan` — checklist of how to verify
 - Linear issue link: `Resolves [S5U-XXX](https://linear.app/s5una/issue/S5U-XXX/...)`
 - Review verdict summary
-- Footer: `Generated with [Codex](https://Codex.com/Codex)`
+- Footer: `Generated with [Claude Code](https://claude.com/claude-code)`
 
 Title must be under 70 characters.
 
