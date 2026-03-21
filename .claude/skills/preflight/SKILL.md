@@ -7,6 +7,14 @@ description: Run all quality gates before committing. Use when you're about to c
 
 Run all 8 quality gates from the repo root. Collect ALL results before reporting — do not stop at the first failure.
 
+## Output management
+
+For each gate, minimize context usage:
+- On **success**: report only `✓ <gate> passed` — do not include full command output
+- On **failure**: show only the first 30 lines of output, then note how many lines were truncated (e.g., `... (42 more lines truncated)`)
+
+This keeps context lean across multi-commit sessions.
+
 ## Gates to run
 
 Run each gate and record pass/fail:
@@ -68,7 +76,7 @@ ESLint          PASS/FAIL  (error count)
 TypeScript      PASS/FAIL  (error count)
 ```
 
-For each failed gate, include the actual error output so you can fix the issues.
+For each failed gate, include the truncated error output (≤30 lines) so you can fix the issues.
 
 ## Auto-fix hints
 
