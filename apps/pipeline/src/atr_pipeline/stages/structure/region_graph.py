@@ -105,7 +105,7 @@ def segment_regions(
         columns = _detect_columns_in_band(band, dims, cfg)
         for col_items in columns:
             region_idx += 1
-            kind = _classify_column(col_items, dims)
+            kind = _classify_column(col_items, dims, cfg)
             bbox = _union_items(col_items)
             eids = [it.evidence_id for it in col_items]
             confidence = _column_confidence(col_items)
@@ -263,13 +263,18 @@ def _classify_full_width(item: _SpatialItem) -> RegionKind:
     return RegionKind.FULL_WIDTH
 
 
-def _classify_column(items: list[_SpatialItem], dims: PageDimensions) -> RegionKind:
+def _classify_column(
+    items: list[_SpatialItem],
+    dims: PageDimensions,
+    cfg: StructureConfig,
+) -> RegionKind:
     """Classify a column region by its content composition."""
     if not items:
         return RegionKind.UNKNOWN
     text_count = sum(1 for it in items if it.category == "text")
     image_count = sum(1 for it in items if it.category == "image")
     table_count = sum(1 for it in items if it.category == "table")
+    vector_count = sum(1 for it in items if it.category == "vector")
     total = len(items)
 
     if table_count > 0 and table_count >= total * 0.5:
@@ -277,10 +282,27 @@ def _classify_column(items: list[_SpatialItem], dims: PageDimensions) -> RegionK
     if image_count > 0 and image_count >= total * 0.5 and text_count < 3:
         return RegionKind.FIGURE_AREA
 
-    # Sidebar: narrow column (< 35% page width)
     bbox = _union_items(items)
     col_width = bbox.x1 - bbox.x0
-    if dims.width > 0 and col_width / dims.width < 0.35 and text_count >= 1:
+    width_fraction = col_width / dims.width if dims.width > 0 else 0.0
+
+    # Margin note: very narrow text-only column at page edge
+    at_left_edge = bbox.x0 <= cfg.margin_note_edge_margin_pt
+    at_right_edge = (dims.width - bbox.x1) <= cfg.margin_note_edge_margin_pt
+    if (
+        width_fraction < cfg.margin_note_max_width_fraction
+        and text_count >= 1
+        and (at_left_edge or at_right_edge)
+    ):
+        return RegionKind.MARGIN_NOTE
+
+    # Callout: narrow-ish column with mixed content (text + visual elements)
+    visual_count = image_count + vector_count
+    if width_fraction < cfg.callout_max_width_fraction and text_count >= 1 and visual_count >= 1:
+        return RegionKind.CALLOUT_AREA
+
+    # Sidebar: narrow column (< 35% page width)
+    if width_fraction < 0.35 and text_count >= 1:
         return RegionKind.SIDEBAR
 
     if text_count > 0:
