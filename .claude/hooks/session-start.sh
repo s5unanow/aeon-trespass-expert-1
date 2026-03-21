@@ -2,7 +2,7 @@
 # Claude Code SessionStart hook: inject repo context at session start
 set -euo pipefail
 
-cd /Users/s5una/projects/aeon-trespass-expert-1
+cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /Users/s5una/projects/aeon-trespass-expert-1)"
 
 # Current branch
 BRANCH=$(git branch --show-current 2>/dev/null || echo "detached")
