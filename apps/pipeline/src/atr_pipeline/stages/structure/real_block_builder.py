@@ -7,9 +7,11 @@ match the ATO Core Rulebook v1.1 analysis.
 
 from __future__ import annotations
 
-import re
-
 from atr_pipeline.config.models import StructureConfig
+from atr_pipeline.stages.structure.block_postprocess import (
+    deduplicate_blocks,
+    split_long_paragraphs,
+)
 from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
 from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
 from atr_pipeline.stages.structure.furniture import FurnitureMap
@@ -22,7 +24,6 @@ from atr_schemas.page_ir_v1 import (
     FigureBlock,
     HeadingBlock,
     IconInline,
-    InlineNode,
     ListItemBlock,
     PageIRV1,
     ParagraphBlock,
@@ -152,130 +153,6 @@ def _image_overlaps_text(
         ):
             return True
     return False
-
-
-# Sentence boundary: ". " followed by uppercase Latin or Cyrillic letter.
-_SENTENCE_BOUNDARY_RE = re.compile(r"\. (?=[A-ZА-ЯЁ])")  # noqa: RUF001
-
-
-def _split_long_paragraphs(
-    blocks: list[object],
-    max_chars: int = 600,
-) -> list[object]:
-    """Split paragraph blocks whose text exceeds *max_chars* at sentence boundaries."""
-    result: list[object] = []
-    for block in blocks:
-        if not isinstance(block, ParagraphBlock):
-            result.append(block)
-            continue
-
-        total_text = "".join(c.text for c in block.children if hasattr(c, "text"))
-        if len(total_text) <= max_chars:
-            result.append(block)
-            continue
-
-        # We need to split children list at a sentence boundary.
-        # Strategy: walk through children accumulating text length; when we
-        # exceed *max_chars* find the last sentence boundary in the
-        # accumulated text and split there.
-        remaining_children: list[InlineNode] = list(block.children)
-        base_id = block.block_id
-        part = 0
-
-        while remaining_children:
-            remaining_text = "".join(c.text for c in remaining_children if hasattr(c, "text"))
-            if len(remaining_text) <= max_chars:
-                part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
-                break
-
-            # Build a mapping of character offset → (child_index, char_within_child)
-            char_offset = 0
-            offset_map: list[tuple[int, int]] = []  # (child_idx, pos_in_child)
-            for ci, child in enumerate(remaining_children):
-                if hasattr(child, "text"):
-                    for pos in range(len(child.text)):
-                        offset_map.append((ci, pos))
-                    char_offset += len(child.text)
-
-            # Find the last sentence boundary before max_chars
-            accumulated = remaining_text[:max_chars]
-            split_pos = -1
-            for m in _SENTENCE_BOUNDARY_RE.finditer(accumulated):
-                # Split after the period+space → keep ". " with the first part
-                split_pos = m.start() + 2  # position right after ". "
-
-            if split_pos <= 0:
-                # No sentence boundary found before limit; keep block as-is
-                part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
-                break
-
-            # Map split_pos back to child index and position
-            child_idx, pos_in_child = offset_map[split_pos - 1]
-            # split_pos - 1 is the last char that goes into the first part
-
-            # Build first-part children
-            first_children: list[InlineNode] = []
-            second_children: list[InlineNode] = []
-
-            for ci, child in enumerate(remaining_children):
-                if ci < child_idx:
-                    first_children.append(child)
-                elif ci == child_idx and isinstance(child, TextInline):
-                    # Split this text child
-                    cut = pos_in_child + 1
-                    left_text = child.text[:cut]
-                    right_text = child.text[cut:]
-                    if left_text:
-                        first_children.append(
-                            TextInline(
-                                text=left_text,
-                                marks=child.marks,
-                                lang=child.lang,
-                            )
-                        )
-                    if right_text:
-                        second_children.append(
-                            TextInline(
-                                text=right_text,
-                                marks=child.marks,
-                                lang=child.lang,
-                            )
-                        )
-                elif ci == child_idx:
-                    # Non-text child (icon) at the split boundary → put in second
-                    second_children.append(child)
-                else:
-                    second_children.append(child)
-
-            part_id = f"{base_id}.{part}" if part > 0 else base_id
-            if first_children:
-                result.append(ParagraphBlock(block_id=part_id, children=first_children))
-            part += 1
-            remaining_children = second_children
-
-    return result
-
-
-def _deduplicate_blocks(blocks: list[object]) -> list[object]:
-    """Remove consecutive blocks with identical text content (first 80 chars)."""
-    if not blocks:
-        return blocks
-
-    def _block_text_key(block: object) -> str:
-        children = getattr(block, "children", [])
-        text = "".join(c.text for c in children if hasattr(c, "text"))
-        return text[:80]
-
-    result: list[object] = [blocks[0]]
-    for block in blocks[1:]:
-        prev_key = _block_text_key(result[-1])
-        curr_key = _block_text_key(block)
-        if prev_key and prev_key == curr_key:
-            continue
-        result.append(block)
-    return result
 
 
 def build_page_ir_real(
@@ -437,8 +314,8 @@ def build_page_ir_real(
         asset_ids.append(asset_id)
 
     # Post-processing: split overly long paragraphs, then deduplicate.
-    blocks = _split_long_paragraphs(blocks)  # type: ignore[arg-type,assignment]
-    blocks = _deduplicate_blocks(blocks)  # type: ignore[arg-type,assignment]
+    blocks = split_long_paragraphs(blocks)  # type: ignore[arg-type,assignment]
+    blocks = deduplicate_blocks(blocks)  # type: ignore[arg-type,assignment]
 
     reading_order = [b.block_id for b in blocks]
 
