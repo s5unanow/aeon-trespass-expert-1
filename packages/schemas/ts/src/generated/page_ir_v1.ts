@@ -24,6 +24,11 @@ export type Type2 = 'icon';
 export type SymbolId = string;
 export type InstanceId = string;
 export type SourceAssetId = string;
+/**
+ * How a symbol attaches to its context.
+ */
+export type SymbolAnchorKind = 'inline' | 'prefix' | 'cell_local' | 'block_attached' | 'region_annotation';
+export type Confidence = number;
 export type Type3 = 'figure_ref';
 export type AssetId = string;
 export type Label = string;
@@ -184,6 +189,8 @@ export interface IconInline {
   bbox?: Rect | null;
   display_hint?: DisplayHint;
   source_asset_id?: SourceAssetId;
+  anchor_kind?: SymbolAnchorKind | null;
+  confidence?: Confidence;
 }
 export interface DisplayHint {
   [k: string]: number | boolean;
