@@ -20,6 +20,7 @@ from atr_schemas.enums import QALayer, Severity
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.page_ir_v1 import (
+    FigureBlock,
     IconInline,
     PageIRV1,
     TextInline,
@@ -40,6 +41,7 @@ XREF_SYMBOL_TO_IR = "XREF_SYMBOL_TO_IR"
 XREF_SYMBOL_DROPPED = "XREF_SYMBOL_DROPPED"
 XREF_IR_TO_RENDER = "XREF_IR_TO_RENDER"
 XREF_RENDER_ASSET = "XREF_RENDER_ASSET"
+XREF_IR_FIGURE_REMAP = "XREF_IR_FIGURE_REMAP"
 XREF_RENDER_TO_PUBLISH = "XREF_RENDER_TO_PUBLISH"
 
 
@@ -180,6 +182,68 @@ def check_symbols_to_ir(
     return records
 
 
+def _check_figure_asset_remap(
+    ir: PageIRV1,
+    render: RenderPageV1,
+) -> list[QARecordV1]:
+    """Verify IR figure asset_ids are preserved in corresponding render blocks."""
+    render_figure_blocks: dict[str, str] = {}
+    for rb in render.blocks:
+        if isinstance(rb, RenderFigureBlock) and rb.asset_id:
+            render_figure_blocks[rb.id] = rb.asset_id
+
+    records: list[QARecordV1] = []
+    for block in ir.blocks:
+        if not isinstance(block, FigureBlock) or not block.asset_id:
+            continue
+        render_asset = render_figure_blocks.get(block.block_id)
+        if render_asset is None:
+            continue  # block absence is caught by the block_id check
+        if render_asset != block.asset_id:
+            records.append(
+                _make_record(
+                    page_id=ir.page_id,
+                    document_id=ir.document_id,
+                    code=XREF_IR_FIGURE_REMAP,
+                    severity=Severity.ERROR,
+                    entity_ref=block.block_id,
+                    message=f"IR figure {block.block_id} has asset_id "
+                    f"'{block.asset_id}' but render has '{render_asset}'.",
+                )
+            )
+    return records
+
+
+def _check_render_figure_consistency(
+    ir: PageIRV1,
+    render: RenderPageV1,
+) -> list[QARecordV1]:
+    """Render-internal: referenced figure asset_ids must exist in figures dict."""
+    render_figure_ids = set(render.figures.keys())
+    render_inline_asset_ids: set[str] = set()
+    for rb in render.blocks:
+        if isinstance(rb, RenderFigureBlock) and rb.asset_id:
+            render_inline_asset_ids.add(rb.asset_id)
+        if hasattr(rb, "children"):
+            for ri in rb.children:
+                if isinstance(ri, RenderFigureRefInline) and ri.asset_id:
+                    render_inline_asset_ids.add(ri.asset_id)
+
+    records: list[QARecordV1] = []
+    for aid in render_inline_asset_ids - render_figure_ids:
+        records.append(
+            _make_record(
+                page_id=ir.page_id,
+                document_id=ir.document_id,
+                code=XREF_RENDER_ASSET,
+                severity=Severity.ERROR,
+                entity_ref=aid,
+                message=f"Render references figure asset {aid} not present in figures dict.",
+            )
+        )
+    return records
+
+
 def check_ir_to_render(
     ir: PageIRV1,
     render: RenderPageV1,
@@ -203,28 +267,8 @@ def check_ir_to_render(
                 )
             )
 
-    render_figure_ids = set(render.figures.keys())
-    render_inline_asset_ids: set[str] = set()
-    for rb in render.blocks:
-        if isinstance(rb, RenderFigureBlock) and rb.asset_id:
-            render_inline_asset_ids.add(rb.asset_id)
-        if hasattr(rb, "children"):
-            for ri in rb.children:
-                if isinstance(ri, RenderFigureRefInline) and ri.asset_id:
-                    render_inline_asset_ids.add(ri.asset_id)
-
-    for aid in render_inline_asset_ids - render_figure_ids:
-        records.append(
-            _make_record(
-                page_id=ir.page_id,
-                document_id=ir.document_id,
-                code=XREF_RENDER_ASSET,
-                severity=Severity.ERROR,
-                entity_ref=aid,
-                message=f"Render references figure asset {aid} not present in figures dict.",
-            )
-        )
-
+    records.extend(_check_figure_asset_remap(ir, render))
+    records.extend(_check_render_figure_consistency(ir, render))
     return records
 
 

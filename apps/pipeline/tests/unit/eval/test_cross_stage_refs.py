@@ -6,6 +6,7 @@ from pathlib import Path
 
 from atr_pipeline.eval.cross_stage_refs import (
     XREF_EVIDENCE_TO_IR,
+    XREF_IR_FIGURE_REMAP,
     XREF_IR_TO_RENDER,
     XREF_NATIVE_WORD,
     XREF_RENDER_ASSET,
@@ -330,6 +331,63 @@ def test_ir_to_render_figure_asset_present() -> None:
     )
     records = check_ir_to_render(ir, render)
     assert all(r.code != XREF_RENDER_ASSET for r in records)
+
+
+def test_ir_to_render_figure_asset_remap_detected() -> None:
+    """IR figure asset_id differs from render — should produce XREF_IR_FIGURE_REMAP error."""
+    ir = _make_ir(
+        blocks=[
+            FigureBlock(block_id="p0001.b002", asset_id="img_expected"),
+        ]
+    )
+    render = _make_render(
+        block_ids=[],
+        figures={"img_actual": RenderFigure(src="images/img_actual.png")},
+        figure_blocks=[
+            RenderFigureBlock(id="p0001.b002", asset_id="img_actual"),
+        ],
+    )
+    records = check_ir_to_render(ir, render)
+    remap_errors = [r for r in records if r.code == XREF_IR_FIGURE_REMAP]
+    assert len(remap_errors) == 1
+    assert remap_errors[0].entity_ref == "p0001.b002"
+    assert "img_expected" in remap_errors[0].message
+    assert "img_actual" in remap_errors[0].message
+
+
+def test_ir_to_render_figure_asset_preserved_ok() -> None:
+    """IR and render agree on asset_id — no XREF_IR_FIGURE_REMAP."""
+    ir = _make_ir(
+        blocks=[
+            FigureBlock(block_id="p0001.b002", asset_id="img_001"),
+        ]
+    )
+    render = _make_render(
+        block_ids=[],
+        figures={"img_001": RenderFigure(src="images/img_001.png")},
+        figure_blocks=[
+            RenderFigureBlock(id="p0001.b002", asset_id="img_001"),
+        ],
+    )
+    records = check_ir_to_render(ir, render)
+    assert all(r.code != XREF_IR_FIGURE_REMAP for r in records)
+
+
+def test_ir_to_render_figure_empty_asset_skipped() -> None:
+    """IR figure with empty asset_id should not trigger remap check."""
+    ir = _make_ir(
+        blocks=[
+            FigureBlock(block_id="p0001.b002", asset_id=""),
+        ]
+    )
+    render = _make_render(
+        block_ids=[],
+        figure_blocks=[
+            RenderFigureBlock(id="p0001.b002", asset_id="some_id"),
+        ],
+    )
+    records = check_ir_to_render(ir, render)
+    assert all(r.code != XREF_IR_FIGURE_REMAP for r in records)
 
 
 # --- Boundary 5: RenderPageV1 → Published Bundle ---
