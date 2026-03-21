@@ -1,0 +1,112 @@
+schema_version = "fixture_manifest.v1"
+
+[[fixtures]]
+fixture_id = "walking_skeleton"
+source_document = "Synthetic walking skeleton"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "fee391a8c53c662f33f91b72f842abfbda213bb8f9132e422ce0fd087f232cd8"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["basic_block_classification", "simple_symbol_matching"]
+eval_dimensions = ["reading_order", "symbols"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "permanent — baseline smoke test fixture"
+notes = "Minimal single-column page with heading, paragraph, and one icon"
+
+[[fixtures]]
+fixture_id = "multi_column"
+source_document = "Synthetic multi-column"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "388a5c8b9570b4735c5e89a2c094a411c9aa4ceecc522d3f6611058a002a1ccb"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["multi_column_interleaving", "column_reading_order"]
+eval_dimensions = ["reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "Two-column body page with full-width heading"
+
+[[fixtures]]
+fixture_id = "icon_dense"
+source_document = "Synthetic icon-dense"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "4243f24f002be93a4dd69256440cbe1ae0a9b4194cca149ca23d790aafc1ee2e"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["icon_position_accuracy", "symbol_count_recovery", "inline_icon_ordering"]
+eval_dimensions = ["symbols", "reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "Page with 6 inline icons across 3 paragraphs"
+
+[[fixtures]]
+fixture_id = "table_callout"
+source_document = "Synthetic table-callout"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "eca6bb2ab79479c1bd2df4cf7f8db5b5b82990e2b109c8fc3fbd41f59c374518"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["table_detection", "callout_container_detection", "table_cell_boundary"]
+eval_dimensions = ["tables", "callouts", "reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "Page with table and callout block"
+
+[[fixtures]]
+fixture_id = "figure_caption"
+source_document = "Synthetic figure-caption"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "6b23aaab850a5914b49e999b3d3e5459669d3d1e5fa81094032db61cd9712b44"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["figure_detection", "caption_linking", "figure_caption_ordering"]
+eval_dimensions = ["figures_captions", "reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "Page with figure and caption"
+
+[[fixtures]]
+fixture_id = "hard_route"
+source_document = "Synthetic hard-route"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "0fb17b9f37c239c8e33503536b29e72b55929636f8dd563a510e774484a15bf4"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = [
+    "multi_column_interleaving",
+    "inline_icon_ordering",
+    "callout_container_detection",
+    "figure_detection",
+    "mixed_layout_reading_order",
+]
+eval_dimensions = ["reading_order", "symbols", "callouts", "figures_captions", "hard_route_fallback"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "Complex mixed layout — columns, icon, callout, figure"
+
+[[fixtures]]
+fixture_id = "furniture_repetition"
+source_document = "Synthetic furniture-repetition"
+source_edition = "synthetic_v1"
+source_pages = [1, 2, 3]
+source_checksum = "e2f380e3d886b479f8f7f3dad84de478012b67733fb10f2c7aa8ac9485854cda"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["furniture_leakage", "header_footer_consistency", "cross_page_template_drift"]
+eval_dimensions = ["furniture_template", "reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "3-page PDF with identical header/footer furniture"

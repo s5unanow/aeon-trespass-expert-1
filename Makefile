@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test codegen export clean
+.PHONY: help bootstrap lint format typecheck test codegen export clean validate-fixtures
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -7,12 +7,13 @@ bootstrap: ## Install all deps (uv sync + pnpm install)
 	uv sync
 	pnpm install
 
-lint: ## Run ruff check + ruff format --check + mypy + import-linter + file-length + pnpm lint
+lint: ## Run ruff check + ruff format --check + mypy + import-linter + file-length + fixtures + pnpm lint
 	uv run ruff check .
 	uv run ruff format --check .
 	uv run mypy apps/pipeline/src packages/schemas/python
 	uv run lint-imports
 	uv run python scripts/check_file_length.py
+	uv run python scripts/validate_fixture_manifest.py
 	pnpm -r run lint
 
 format: ## Auto-fix formatting
@@ -37,6 +38,9 @@ export-en: ## Export EN-only extraction artifacts for review
 codegen: ## Regenerate JSON Schema + TS types from Pydantic models
 	uv run python scripts/generate_jsonschema.py
 	node scripts/generate_ts_types.mjs
+
+validate-fixtures: ## Validate fixture manifest and annotation metadata
+	uv run python scripts/validate_fixture_manifest.py
 
 clean: ## Remove caches and build artifacts
 	rm -rf artifacts/*

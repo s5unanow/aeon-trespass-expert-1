@@ -1,0 +1,9 @@
+schema_version = "annotation_meta.v1"
+annotation_format_version = 1
+last_refresh_timestamp = "2026-03-21T00:00:00Z"
+last_refresh_issue = "S5U-292"
+last_refresh_commit = ""
+reviewer = "s5unanow"
+
+[checksums]
+"page_ir.en.p0001.json" = "aceab266ed1bd77ae93c4329af4d9ea6ac630dd2ff0b2b9b2c1baa971be2c675"
