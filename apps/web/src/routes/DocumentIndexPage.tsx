@@ -6,6 +6,7 @@ interface ManifestWithEdition extends DocumentManifest {
 }
 
 const DOCUMENTS = ['ato_core_v1_1', 'walking_skeleton'];
+// Order matters: first edition wins dedup when both fall back to the same root manifest
 const EDITIONS = ['ru', 'en'];
 
 /** Extract a human-readable page number from a page ID like "p0049" → "49". */

@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 from types import ModuleType
 
@@ -15,15 +16,16 @@ SCRIPT_PATH = REPO / "scripts" / "export_to_web.py"
 
 
 @pytest.fixture()
-def export_module() -> ModuleType:
-    """Import export_to_web.py as a module."""
+def export_module() -> Iterator[ModuleType]:
+    """Import export_to_web.py as a module, cleaning up sys.modules after."""
     spec = importlib.util.spec_from_file_location("export_to_web", SCRIPT_PATH)
     assert spec is not None
     assert spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
     sys.modules["export_to_web"] = mod
     spec.loader.exec_module(mod)
-    return mod
+    yield mod
+    sys.modules.pop("export_to_web", None)
 
 
 def _make_render_page(
