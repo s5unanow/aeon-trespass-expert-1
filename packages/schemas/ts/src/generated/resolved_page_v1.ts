@@ -65,7 +65,7 @@ export type Reason = string;
 export type OriginalConfidence = number;
 export type Blocks = ResolvedBlock[];
 /**
- * Block IDs in reading order
+ * Region or block IDs in main-flow reading order
  */
 export type MainFlowOrder = string[];
 /**

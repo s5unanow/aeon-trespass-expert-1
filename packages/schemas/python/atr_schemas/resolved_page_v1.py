@@ -83,7 +83,8 @@ class ResolvedPageV1(BaseModel):
     regions: list[ResolvedRegion] = Field(default_factory=list)
     blocks: list[ResolvedBlock] = Field(default_factory=list)
     main_flow_order: list[str] = Field(
-        default_factory=list, description="Block IDs in reading order"
+        default_factory=list,
+        description="Region or block IDs in main-flow reading order",
     )
     anchor_edges: list[AnchorEdge] = Field(default_factory=list)
     symbol_refs: list[ResolvedSymbolRef] = Field(default_factory=list)
