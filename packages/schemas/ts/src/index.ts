@@ -30,6 +30,9 @@ export * as translationResultV1 from './generated/translation_result_v1';
 export * as waiverSetV1 from './generated/waiver_set_v1';
 
 // Direct top-level type exports
+export type { AssetClassV1 } from './generated/asset_class_v1';
+export type { AssetOccurrenceV1 } from './generated/asset_occurrence_v1';
+export type { AssetRegistryV1 } from './generated/asset_registry_v1';
 export type { AssetV1 } from './generated/asset_v1';
 export type { BuildManifestV1 } from './generated/build_manifest_v1';
 export type { ConceptRegistryV1 } from './generated/concept_registry_v1';

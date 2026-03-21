@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 
 from atr_pipeline.services.assets.identity import asset_class_id, occurrence_id
@@ -17,8 +16,6 @@ from atr_schemas.evidence_primitives_v1 import (
 
 if TYPE_CHECKING:
     from atr_schemas.page_evidence_v1 import PageEvidenceV1
-
-logger = logging.getLogger(__name__)
 
 
 class AssetRegistryBuilder:
