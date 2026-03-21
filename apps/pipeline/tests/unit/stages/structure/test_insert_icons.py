@@ -1,6 +1,10 @@
 """Tests for position-aware icon insertion in the real block builder."""
 
-from atr_pipeline.stages.structure.real_block_builder import _insert_icons
+from atr_pipeline.config.models import StructureConfig
+from atr_pipeline.stages.structure.real_block_builder import (
+    _insert_icons,
+    _insert_icons_line_aware,
+)
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.native_page_v1 import SpanEvidence
@@ -188,3 +192,142 @@ class TestInsertIconsPositioning:
         icons = [n for n in result if isinstance(n, IconInline)]
         assert len(icons) == 1
         assert icons[0].source_asset_id == "asset_123"
+
+
+class TestInsertIconsLineAware:
+    """Line-aware icon insertion places icons relative to their visual line."""
+
+    def test_icon_before_second_line_placed_between_lines(self) -> None:
+        """Icon to the left of line 2 text is placed between line 1 and line 2."""
+        # Line 1: x=100..190, y=100..112
+        # Line 2: x=100..210, y=130..142
+        # Icon just before line 2 at x=85
+        spans = [
+            _span("s1", "First line text", 100, 100, 190, 112),
+            _span("s2", "Second line words", 100, 130, 210, 142),
+        ]
+        symbols = _symbols("p0001", [_match("sym.icon", 85, 130, 97, 142)])
+        cfg = StructureConfig()
+
+        result = _insert_icons_line_aware(spans, symbols, "p0001", cfg)
+
+        icons = [n for n in result if isinstance(n, IconInline)]
+        assert len(icons) == 1
+        assert icons[0].symbol_id == "sym.icon"
+        # Icon should sit between line 1 text and line 2 text
+        first_idx = next(
+            i for i, n in enumerate(result) if isinstance(n, TextInline) and "First" in n.text
+        )
+        icon_idx = next(i for i, n in enumerate(result) if isinstance(n, IconInline))
+        second_idx = next(
+            i for i, n in enumerate(result) if isinstance(n, TextInline) and "Second" in n.text
+        )
+        assert first_idx < icon_idx < second_idx
+
+    def test_icon_not_misplaced_between_first_line_inlines(self) -> None:
+        """Icon belonging to line 2 must not leak into line 1's inline gap."""
+        # Line 1: italic "Alpha" (x=100..150) + body "Beta" (x=150..200)
+        #   → two TextInlines because marks differ
+        # Line 2: body "Gamma" (x=100..150)
+        # Icon on line 2 at x=120 — without line-awareness, cum_x after
+        # "Alpha" (~153) would exceed 120, wrongly inserting the icon
+        # between "Alpha" and "Beta".
+        spans = [
+            SpanEvidence(
+                span_id="s1",
+                text="Alpha",
+                bbox=Rect(x0=100, y0=100, x1=150, y1=112),
+                font_name="Adonis-Italic",
+                font_size=10.0,
+            ),
+            SpanEvidence(
+                span_id="s2",
+                text="Beta",
+                bbox=Rect(x0=150, y0=100, x1=200, y1=112),
+                font_name="body",
+                font_size=10.0,
+            ),
+            SpanEvidence(
+                span_id="s3",
+                text="Gamma",
+                bbox=Rect(x0=100, y0=130, x1=150, y1=142),
+                font_name="body",
+                font_size=10.0,
+            ),
+        ]
+        symbols = _symbols("p0001", [_match("sym.icon", 120, 130, 132, 142)])
+        cfg = StructureConfig()
+
+        result = _insert_icons_line_aware(spans, symbols, "p0001", cfg)
+
+        icons = [n for n in result if isinstance(n, IconInline)]
+        assert len(icons) == 1
+        # Icon must come after all of line 1's text
+        beta_idx = next(
+            i for i, n in enumerate(result) if isinstance(n, TextInline) and "Beta" in n.text
+        )
+        icon_idx = next(i for i, n in enumerate(result) if isinstance(n, IconInline))
+        assert icon_idx > beta_idx
+
+    def test_single_line_passthrough(self) -> None:
+        """Single-line paragraph works the same as the flat function."""
+        spans = [_span("s1", "Hello world", 100, 100, 210, 112)]
+        symbols = _symbols("p0001", [_match("sym.arrow", 80, 100, 92, 112)])
+        cfg = StructureConfig()
+
+        result = _insert_icons_line_aware(spans, symbols, "p0001", cfg)
+
+        assert len(result) == 2
+        assert isinstance(result[0], IconInline)
+        assert isinstance(result[1], TextInline)
+
+    def test_no_icons_returns_text_only(self) -> None:
+        """Multi-line paragraph with no icons returns just text inlines."""
+        spans = [
+            _span("s1", "Line one", 100, 100, 180, 112),
+            _span("s2", "Line two", 100, 130, 180, 142),
+        ]
+        symbols = _symbols("p0001", [])
+        cfg = StructureConfig()
+
+        result = _insert_icons_line_aware(spans, symbols, "p0001", cfg)
+
+        assert all(isinstance(n, TextInline) for n in result)
+        full_text = "".join(n.text for n in result)
+        assert "Line one" in full_text
+        assert "Line two" in full_text
+
+    def test_icons_on_both_lines(self) -> None:
+        """Icons on different lines are placed relative to their own line."""
+        spans = [
+            _span("s1", "Alpha text", 100, 100, 200, 112),
+            _span("s2", "Beta text", 100, 130, 190, 142),
+        ]
+        symbols = _symbols(
+            "p0001",
+            [
+                _match("sym.a", 80, 100, 92, 112),  # before line 1
+                _match("sym.b", 80, 130, 92, 142),  # before line 2
+            ],
+        )
+        cfg = StructureConfig()
+
+        result = _insert_icons_line_aware(spans, symbols, "p0001", cfg)
+
+        icons = [n for n in result if isinstance(n, IconInline)]
+        assert len(icons) == 2
+        assert icons[0].symbol_id == "sym.a"
+        assert icons[1].symbol_id == "sym.b"
+        # Each icon should precede its respective line's text
+        for icon_id, text_fragment in [("sym.a", "Alpha"), ("sym.b", "Beta")]:
+            icon_pos = next(
+                i
+                for i, n in enumerate(result)
+                if isinstance(n, IconInline) and n.symbol_id == icon_id
+            )
+            text_pos = next(
+                i
+                for i, n in enumerate(result)
+                if isinstance(n, TextInline) and text_fragment in n.text
+            )
+            assert icon_pos < text_pos

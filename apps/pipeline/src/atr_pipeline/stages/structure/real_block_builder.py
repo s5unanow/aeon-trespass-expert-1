@@ -57,6 +57,22 @@ def _same_line(a: SpanEvidence, b: SpanEvidence, tolerance: float = 3.0) -> bool
     return abs(a.bbox.y0 - b.bbox.y0) < tolerance
 
 
+def _group_spans_by_line(
+    spans: list[SpanEvidence],
+    tolerance: float = 3.0,
+) -> list[list[SpanEvidence]]:
+    """Group consecutive spans into visual lines by y-position proximity."""
+    if not spans:
+        return []
+    lines: list[list[SpanEvidence]] = [[spans[0]]]
+    for s in spans[1:]:
+        if _same_line(lines[-1][-1], s, tolerance):
+            lines[-1].append(s)
+        else:
+            lines.append([s])
+    return lines
+
+
 def _spans_to_text_inline(
     spans: list[SpanEvidence],
     cfg: StructureConfig,
@@ -336,7 +352,7 @@ def build_page_ir_real(
         if placements is not None:
             inlines = place_icons_in_inlines(text_inlines, placements, current_para_spans)
         elif symbols:
-            inlines = _insert_icons(text_inlines, current_para_spans, symbols, native.page_id)
+            inlines = _insert_icons_line_aware(current_para_spans, symbols, native.page_id, cfg)
 
         blocks.append(ParagraphBlock(block_id=block_id, children=inlines))  # type: ignore[arg-type]
         current_para_spans.clear()
@@ -497,6 +513,37 @@ def _insert_icons(
             )
         )
 
+    return result
+
+
+def _insert_icons_line_aware(
+    spans: list[SpanEvidence],
+    symbols: SymbolMatchSetV1,
+    page_id: str,
+    cfg: StructureConfig,
+) -> list[TextInline | IconInline]:
+    """Insert icons with per-line x-tracking for multi-line paragraphs.
+
+    Groups paragraph spans into visual lines and calls ``_insert_icons`` per
+    line so the cumulative x-cursor resets at each line break.
+    """
+    result: list[TextInline | IconInline] = []
+    for line_spans in _group_spans_by_line(spans):
+        line_inlines = _spans_to_text_inline(line_spans, cfg)
+        if not line_inlines:
+            continue
+        # Ensure whitespace between consecutive visual lines
+        if result and isinstance(result[-1], TextInline):
+            prev_text = result[-1].text
+            first = line_inlines[0]
+            needs_space = not prev_text[-1].isspace() and not first.text[0].isspace()
+            if prev_text and first.text and needs_space:
+                line_inlines[0] = TextInline(
+                    text=" " + first.text,
+                    marks=first.marks,
+                    lang=first.lang,
+                )
+        result.extend(_insert_icons(line_inlines, line_spans, symbols, page_id))
     return result
 
 
