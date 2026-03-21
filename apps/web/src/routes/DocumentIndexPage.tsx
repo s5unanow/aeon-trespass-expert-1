@@ -28,10 +28,11 @@ export function DocumentIndexPage() {
     Promise.all(fetches).then((results) => {
       const loaded = results.filter((m): m is ManifestWithEdition => m !== null);
       // Deduplicate: when both edition paths fall back to the same root
-      // manifest, keep only the first (avoids identical duplicate sections)
+      // manifest, keep only the first. Edition-specific manifests are always kept.
       const seen = new Set<string>();
       const unique = loaded.filter((m) => {
-        const key = `${m.document_id}:${m.pages.length}`;
+        if (m.edition_specific) return true;
+        const key = `${m.document_id}:fallback`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;

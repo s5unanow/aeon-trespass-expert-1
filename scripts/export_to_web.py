@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 """Export pipeline artifacts to the web viewer public directory.
 
-Picks the best render version per page (Russian + marks + list items preferred),
+Picks the best render version per page (edition-aware scoring),
 populates prev/next navigation, extracts embedded images from the source PDF,
-and writes everything to apps/web/public/documents/{doc_id}/.
+and writes everything to apps/web/public/documents/{doc_id}/{edition}/.
+
+Usage:
+    python scripts/export_to_web.py                     # Export all editions
+    python scripts/export_to_web.py --edition en        # Export EN only
+    python scripts/export_to_web.py --edition ru        # Export RU only
+    python scripts/export_to_web.py --doc walking_skeleton --edition en
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -16,15 +23,15 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "apps" / "pipeline" / "src"))
 
-DOC_ID = "ato_core_v1_1"
 ARTIFACT_ROOT = REPO / "artifacts"
-WEB_PUBLIC = REPO / "apps" / "web" / "public" / "documents" / DOC_ID
-RENDER_SRC = ARTIFACT_ROOT / DOC_ID / "render_page.v1" / "page"
 PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
 
-def score_render(data: dict) -> int:
-    """Score a render artifact — higher = better quality."""
+def score_render(data: dict, edition: str = "ru") -> int:
+    """Score a render artifact — higher = better quality.
+
+    For RU edition, prefers Cyrillic text. For EN, prefers Latin-only.
+    """
     blocks = data.get("blocks", [])
     texts = [
         c.get("text", "")
@@ -41,15 +48,11 @@ def score_render(data: dict) -> int:
         for c in b.get("children", [])
         if c.get("kind") == "text" and c.get("marks")
     )
-    return (
-        (100 if has_cyrillic else 0)
-        + (10 if has_lists else 0)
-        + (5 if has_marks else 0)
-        + len(blocks)
-    )
+    lang_score = (0 if has_cyrillic else 100) if edition == "en" else (100 if has_cyrillic else 0)
+    return lang_score + (10 if has_lists else 0) + (5 if has_marks else 0) + len(blocks)
 
 
-def extract_images() -> dict[str, list[dict]]:
+def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
     """Extract significant images from the PDF, save to web public, return per-page map."""
     if not PDF_PATH.exists():
         print(f"  PDF not found at {PDF_PATH}, skipping image extraction")
@@ -57,7 +60,7 @@ def extract_images() -> dict[str, list[dict]]:
 
     from atr_pipeline.services.pdf.image_extractor import extract_page_images
 
-    img_dir = WEB_PUBLIC / "images"
+    img_dir = doc_public / "images"
     img_dir.mkdir(parents=True, exist_ok=True)
 
     page_images: dict[str, list[dict]] = {}
@@ -86,7 +89,7 @@ def extract_images() -> dict[str, list[dict]]:
             page_images[pid].append(
                 {
                     "asset_id": img.image_id,
-                    "src": f"/documents/{DOC_ID}/images/{fname}",
+                    "src": f"/documents/{doc_id}/images/{fname}",
                     "alt": img.image_id,
                     "width": img.width_px,
                     "height": img.height_px,
@@ -252,12 +255,19 @@ def _count_block_stats(blocks: list[dict], stats: dict) -> None:
             stats["long_paras"] += 1
 
 
-def export_pages(page_images: dict[str, list[dict]]) -> None:
+def export_pages(
+    doc_id: str,
+    edition: str,
+    render_src: Path,
+    doc_public: Path,
+    page_images: dict[str, list[dict]],
+) -> None:
     """Export render pages with navigation and image figures."""
-    data_dir = WEB_PUBLIC / "data"
+    edition_dir = doc_public / edition
+    data_dir = edition_dir / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    page_ids = sorted(d.name for d in RENDER_SRC.iterdir() if d.is_dir())
+    page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
     pages_meta = []
     stats = {
         "list_items": 0,
@@ -268,17 +278,17 @@ def export_pages(page_images: dict[str, list[dict]]) -> None:
     }
 
     for i, pid in enumerate(page_ids):
-        page_dir = RENDER_SRC / pid
+        page_dir = render_src / pid
         jsons = list(page_dir.glob("*.json"))
         if not jsons:
             continue
 
-        # Pick best render version
+        # Pick best render version (edition-aware scoring)
         best = None
         best_score = -1
         for j in jsons:
             data = json.loads(j.read_text())
-            s = score_render(data)
+            s = score_render(data, edition)
             if s > best_score:
                 best = data
                 best_score = s
@@ -329,26 +339,52 @@ def export_pages(page_images: dict[str, list[dict]]) -> None:
             }
         )
 
-    # Manifest
-    (WEB_PUBLIC / "manifest.json").write_text(
+    # Edition-scoped manifest
+    (edition_dir / "manifest.json").write_text(
         json.dumps(
-            {"document_id": DOC_ID, "pages": pages_meta},
+            {"document_id": doc_id, "pages": pages_meta},
             ensure_ascii=False,
             indent=2,
         )
     )
 
     total = stats["headings"] + stats["paragraphs"] + stats["list_items"] + stats["figures"]
-    print(f"  Exported {len(pages_meta)} pages, {total} blocks:")
+    print(f"  [{edition.upper()}] Exported {len(pages_meta)} pages, {total} blocks:")
     for k, v in stats.items():
         print(f"    {k}: {v}")
 
 
-def main() -> None:
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Export pipeline artifacts to web viewer")
+    parser.add_argument("--doc", default="ato_core_v1_1", help="Document ID to export")
+    parser.add_argument(
+        "--edition",
+        choices=["en", "ru", "all"],
+        default="all",
+        help="Edition to export (default: all)",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = _parse_args(argv)
+    doc_id: str = args.doc
+    editions = ["en", "ru"] if args.edition == "all" else [args.edition]
+
+    render_src = ARTIFACT_ROOT / doc_id / "render_page.v1" / "page"
+    doc_public = REPO / "apps" / "web" / "public" / "documents" / doc_id
+
+    if not render_src.exists():
+        print(f"No render artifacts found at {render_src}")
+        sys.exit(1)
+
     print("Extracting images from PDF...")
-    page_images = extract_images()
-    print("Exporting render pages...")
-    export_pages(page_images)
+    page_images = extract_images(doc_id, doc_public)
+
+    for edition in editions:
+        print(f"Exporting {edition.upper()} render pages...")
+        export_pages(doc_id, edition, render_src, doc_public, page_images)
+
     print("Done.")
 
 

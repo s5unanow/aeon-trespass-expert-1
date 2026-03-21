@@ -13,7 +13,7 @@ describe('loadManifest', () => {
     fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(manifest) } as Response);
 
     const result = await loadManifest('doc1');
-    expect(result).toEqual(manifest);
+    expect(result).toEqual({ ...manifest, edition_specific: true });
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/manifest.json');
   });
 
@@ -24,7 +24,7 @@ describe('loadManifest', () => {
       .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(manifest) } as Response);
 
     const result = await loadManifest('doc1');
-    expect(result).toEqual(manifest);
+    expect(result).toEqual({ ...manifest, edition_specific: false });
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/manifest.json');
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/manifest.json');
   });
