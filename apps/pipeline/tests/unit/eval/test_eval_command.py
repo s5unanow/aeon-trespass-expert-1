@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from typer.testing import CliRunner
 
@@ -191,3 +191,34 @@ def test_eval_fail_on_threshold_reports_values(tmp_path: Path) -> None:
     report_data = json.loads(output_json.read_text())
     assert "threshold_results" in report_data
     assert len(report_data["threshold_results"]) > 0
+
+
+def test_generate_overlays_passes_pyramid_dpi() -> None:
+    """_generate_overlays propagates pyramid_dpi to PageRasterProvider."""
+    from atr_pipeline.cli.commands.eval_cmd import _generate_overlays
+    from atr_pipeline.eval.models import EvalReport
+
+    report = MagicMock(spec=EvalReport)
+    report.pages = []
+    store = MagicMock()
+    custom_dpi = [150]
+
+    with patch("atr_pipeline.services.pdf.raster_provider.PageRasterProvider") as mock_provider_cls:
+        _generate_overlays(store, "doc1", report, pyramid_dpi=custom_dpi)
+
+    mock_provider_cls.assert_called_once_with(store=store, document_id="doc1", pyramid_dpi=[150])
+
+
+def test_generate_overlays_default_dpi_is_none() -> None:
+    """_generate_overlays without pyramid_dpi passes None (provider uses its default)."""
+    from atr_pipeline.cli.commands.eval_cmd import _generate_overlays
+    from atr_pipeline.eval.models import EvalReport
+
+    report = MagicMock(spec=EvalReport)
+    report.pages = []
+    store = MagicMock()
+
+    with patch("atr_pipeline.services.pdf.raster_provider.PageRasterProvider") as mock_provider_cls:
+        _generate_overlays(store, "doc1", report)
+
+    mock_provider_cls.assert_called_once_with(store=store, document_id="doc1", pyramid_dpi=None)
