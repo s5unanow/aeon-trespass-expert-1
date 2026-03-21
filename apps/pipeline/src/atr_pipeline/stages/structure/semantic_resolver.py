@@ -58,7 +58,7 @@ def resolve_semantics(
     edges.extend(callout_edges)
 
     # 3. Resolve tables from evidence
-    blocks, table_edges = _resolve_tables(blocks, region_map, evidence, cfg)
+    blocks, table_edges = _resolve_tables(blocks, evidence, cfg)
     edges.extend(table_edges)
 
     # 4. Build BLOCK_TO_REGION edges
@@ -195,7 +195,6 @@ def _promote_callouts(
     new_blocks: list[Block] = []
     # Group consecutive blocks in the same callout region
     i = 0
-    callout_idx = 0
     while i < len(blocks):
         block = blocks[i]
         rid = region_map.get(block.block_id, "")
@@ -211,7 +210,6 @@ def _promote_callouts(
             group.append(blocks[j])
             j += 1
 
-        callout_idx += 1
         # Merge children from all blocks into a single CalloutBlock
         all_children: list[InlineNode] = []
         for b in group:
@@ -271,11 +269,10 @@ def _bbox_overlap(a: Rect, b: Rect) -> float:
 
 def _resolve_tables(
     blocks: list[Block],
-    region_map: dict[str, str],
     evidence: PageEvidenceV1 | None,
     cfg: StructureConfig,
 ) -> tuple[list[Block], list[AnchorEdge]]:
-    """Promote blocks in TABLE_AREA regions with matching evidence to TableBlocks."""
+    """Promote ParagraphBlocks with matching table evidence to TableBlocks."""
     if evidence is None:
         return blocks, []
 
@@ -287,7 +284,11 @@ def _resolve_tables(
     new_blocks: list[Block] = []
 
     for block in blocks:
-        bbox = getattr(block, "bbox", None)
+        # Only promote paragraph and list-item blocks — never figures, headings, etc.
+        if not isinstance(block, (ParagraphBlock,)):
+            new_blocks.append(block)
+            continue
+        bbox = block.bbox
         if bbox is None:
             new_blocks.append(block)
             continue
@@ -351,6 +352,14 @@ def _block_type_from_block(block: Block) -> BlockType:
         return BlockType.UNKNOWN
 
 
+def _resolve_region_id(block: Block, region_map: dict[str, str]) -> str:
+    """Get region_id for a block, checking block-level region_id for callouts."""
+    # CalloutBlocks carry their region_id directly (set during promotion)
+    if isinstance(block, CalloutBlock) and block.region_id:
+        return block.region_id
+    return region_map.get(block.block_id, "")
+
+
 def _build_resolved_blocks(
     blocks: list[Block],
     region_map: dict[str, str],
@@ -360,7 +369,7 @@ def _build_resolved_blocks(
         ResolvedBlock(
             block_id=block.block_id,
             block_type=_block_type_from_block(block),
-            region_id=region_map.get(block.block_id, ""),
+            region_id=_resolve_region_id(block, region_map),
         )
         for block in blocks
     ]
