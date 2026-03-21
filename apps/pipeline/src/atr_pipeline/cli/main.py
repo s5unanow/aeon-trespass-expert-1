@@ -147,5 +147,20 @@ def eval_cmd(
     )
 
 
+@app.command(name="audit")
+def audit_cmd(
+    doc: str = typer.Option(..., "--doc", help="Document id to audit"),
+    pages: str = typer.Option("", "--pages", help="Page filter: 'p0001' or 'p0001,p0002'"),
+    output_json: str = typer.Option("", "--output-json", help="Path to write JSON report"),
+    baseline: str = typer.Option(
+        "", "--baseline", help="Path to a previous audit report for delta comparison"
+    ),
+) -> None:
+    """Run full-document extraction audit (non-blocking diagnostic)."""
+    from atr_pipeline.cli.commands.audit_cmd import audit_command
+
+    audit_command(doc=doc, pages=pages, output_json=output_json, baseline=baseline)
+
+
 if __name__ == "__main__":
     app()
