@@ -97,3 +97,22 @@ class AnchorEdgeKind(StrEnum):
     SYMBOL_TO_BLOCK = "symbol_to_block"
     BLOCK_TO_REGION = "block_to_region"
     ASIDE_TO_MAIN = "aside_to_main"
+
+
+class AssetSourceKind(StrEnum):
+    """How the asset was originally captured."""
+
+    EMBEDDED_RASTER = "embedded_raster"
+    VECTOR_CLUSTER = "vector_cluster"
+    RENDERED_CROP = "rendered_crop"
+
+
+class OccurrenceContext(StrEnum):
+    """Where an asset occurrence sits relative to its surrounding content."""
+
+    INLINE = "inline"
+    LINE_PREFIX = "line_prefix"
+    CELL_LOCAL = "cell_local"
+    BLOCK_ATTACHED = "block_attached"
+    DECORATION = "decoration"
+    REGION_FLOAT = "region_float"

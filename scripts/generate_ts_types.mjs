@@ -20,6 +20,9 @@ const OUTPUT_DIR = join(ROOT, 'packages', 'schemas', 'ts', 'src', 'generated');
 
 // Map from schema file stem to the primary exported type name
 const PRIMARY_TYPES = {
+  asset_class_v1: 'AssetClassV1',
+  asset_occurrence_v1: 'AssetOccurrenceV1',
+  asset_registry_v1: 'AssetRegistryV1',
   asset_v1: 'AssetV1',
   build_manifest_v1: 'BuildManifestV1',
   concept_registry_v1: 'ConceptRegistryV1',

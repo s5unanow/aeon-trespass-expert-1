@@ -1,0 +1,253 @@
+{
+  "$defs": {
+    "AssetClassV1": {
+      "description": "A unique visual entity that may appear one or more times across pages.\n\nAsset classes are deduplicated by identity: two occurrences with the same\n``exact_hash`` collapse to one class.  Fuzzy identity enables\nnear-duplicate grouping without requiring bit-exact matches.",
+      "properties": {
+        "schema_version": {
+          "default": "asset_class.v1",
+          "pattern": "^asset_class\\.v\\d+$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "class_id": {
+          "description": "Stable identifier, e.g. ac.raster.deadbeef1234",
+          "title": "Class Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "$ref": "#/$defs/AssetSourceKind"
+        },
+        "identity": {
+          "$ref": "#/$defs/AssetIdentity"
+        },
+        "width_px": {
+          "default": 0,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "default": 0,
+          "title": "Height Px",
+          "type": "integer"
+        },
+        "label": {
+          "default": "",
+          "description": "Human-readable label (e.g. symbol name from catalog).",
+          "title": "Label",
+          "type": "string"
+        },
+        "canonical_evidence_id": {
+          "default": "",
+          "description": "Evidence ID of the first occurrence that introduced this class.",
+          "title": "Canonical Evidence Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class_id",
+        "source_kind"
+      ],
+      "title": "AssetClassV1",
+      "type": "object"
+    },
+    "AssetIdentity": {
+      "description": "Identity fingerprints for exact and fuzzy matching.",
+      "properties": {
+        "exact_hash": {
+          "default": "",
+          "description": "Content hash for exact identity (SHA-256 prefix for rasters, cluster hash for vectors).",
+          "title": "Exact Hash",
+          "type": "string"
+        },
+        "fuzzy_hash": {
+          "default": "",
+          "description": "Perceptual hash for near-duplicate matching.",
+          "title": "Fuzzy Hash",
+          "type": "string"
+        },
+        "vector_signature": {
+          "default": "",
+          "description": "Canonical descriptor for vector-origin assets.",
+          "title": "Vector Signature",
+          "type": "string"
+        }
+      },
+      "title": "AssetIdentity",
+      "type": "object"
+    },
+    "AssetOccurrenceV1": {
+      "description": "A single placement of an asset on a page.\n\nEach occurrence references its parent :class:`AssetClassV1` via\n``class_id`` and the underlying evidence entities via ``evidence_ids``.",
+      "properties": {
+        "occurrence_id": {
+          "description": "Unique per occurrence, e.g. ao.p0042.001",
+          "title": "Occurrence Id",
+          "type": "string"
+        },
+        "class_id": {
+          "description": "References the parent AssetClassV1.class_id.",
+          "title": "Class Id",
+          "type": "string"
+        },
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "norm_bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "context": {
+          "$ref": "#/$defs/OccurrenceContext",
+          "default": "inline"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "occurrence_id",
+        "class_id",
+        "page_id",
+        "bbox",
+        "norm_bbox"
+      ],
+      "title": "AssetOccurrenceV1",
+      "type": "object"
+    },
+    "AssetSourceKind": {
+      "description": "How the asset was originally captured.",
+      "enum": [
+        "embedded_raster",
+        "vector_cluster",
+        "rendered_crop"
+      ],
+      "title": "AssetSourceKind",
+      "type": "string"
+    },
+    "NormRect": {
+      "description": "Bounding box in normalized [0,1] page coordinate space.",
+      "properties": {
+        "x0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "NormRect",
+      "type": "object"
+    },
+    "OccurrenceContext": {
+      "description": "Where an asset occurrence sits relative to its surrounding content.",
+      "enum": [
+        "inline",
+        "line_prefix",
+        "cell_local",
+        "block_attached",
+        "decoration",
+        "region_float"
+      ],
+      "title": "OccurrenceContext",
+      "type": "string"
+    },
+    "Rect": {
+      "description": "Bounding box in PDF points: [x0, y0, x1, y1].",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "Rect",
+      "type": "object"
+    }
+  },
+  "description": "Document-wide registry mapping asset classes to their page occurrences.\n\nConsumers (symbol resolver, figure resolver) query this registry instead\nof reaching into ad-hoc page-local data.",
+  "properties": {
+    "schema_version": {
+      "default": "asset_registry.v1",
+      "pattern": "^asset_registry\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "classes": {
+      "items": {
+        "$ref": "#/$defs/AssetClassV1"
+      },
+      "title": "Classes",
+      "type": "array"
+    },
+    "occurrences": {
+      "items": {
+        "$ref": "#/$defs/AssetOccurrenceV1"
+      },
+      "title": "Occurrences",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "AssetRegistryV1",
+  "type": "object"
+}
