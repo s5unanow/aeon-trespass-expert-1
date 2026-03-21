@@ -535,9 +535,14 @@ def _insert_icons_line_aware(
         # Ensure whitespace between consecutive visual lines
         if result and isinstance(result[-1], TextInline):
             prev_text = result[-1].text
-            first = line_inlines[0]
-            needs_space = not prev_text[-1].isspace() and not first.text[0].isspace()
-            if prev_text and first.text and needs_space:
+            first_text = line_inlines[0].text
+            if (
+                prev_text
+                and first_text
+                and not prev_text[-1].isspace()
+                and not first_text[0].isspace()
+            ):
+                first = line_inlines[0]
                 line_inlines[0] = TextInline(
                     text=" " + first.text,
                     marks=first.marks,
