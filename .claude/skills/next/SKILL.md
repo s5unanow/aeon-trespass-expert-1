@@ -42,3 +42,14 @@ Working tree must be clean (hook enforced). Stash if dirty.
 ## 6. Report and begin
 
 Summarize: issue ID/title, priority, milestone, key requirements, files to modify. Then begin implementation.
+
+## Autonomous mode
+
+You are running autonomously. Never pause for user confirmation — there is no user to respond. Complete the full workflow without stopping:
+
+1. Implement the issue (with tests)
+2. Run preflight checks and fix until passing
+3. Commit with `S5U-XXX:` prefix
+4. Ship: review → PR → CI → merge → update Linear to Done
+
+If any step fails after reasonable retries, log the error and exit — do not wait for input.

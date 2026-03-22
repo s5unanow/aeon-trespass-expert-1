@@ -8,6 +8,11 @@
 # Each `claude -p` invocation is a clean agent — no context bleed between
 # issues. Output is logged per-run to artifacts/ (gitignored).
 #
+# Post-issue verification: after each agent exits, the runner checks if
+# the agent returned to main. If not, it retries shipping once via `/ship`.
+# If the retry also fails, it logs the failure, returns to main, and
+# continues to the next issue.
+#
 # Usage:
 #   ./scripts/run-issues.sh          # process up to 10 issues (default)
 #   ./scripts/run-issues.sh 5        # process up to 5 issues
@@ -57,6 +62,12 @@ log() {
 }
 
 # ---------------------------------------------------------------------------
+# Tracking arrays (shipped / failed branch names)
+# ---------------------------------------------------------------------------
+shipped=()
+failed=()
+
+# ---------------------------------------------------------------------------
 # Main loop
 # ---------------------------------------------------------------------------
 log "=== Autonomous issue runner started ==="
@@ -104,13 +115,62 @@ while [ "$count" -lt "$MAX_ISSUES" ]; do
   count=$((count + 1))
 
   if [ "$exit_code" -ne 0 ]; then
-    log "!!! Claude exited with code $exit_code on issue #$issue_num — stopping"
-    break
+    log "!!! Claude exited with code $exit_code on issue #$issue_num"
   fi
 
-  log "--- Completed issue #$issue_num ---"
+  # -----------------------------------------------------------------------
+  # Post-issue verification: did the agent ship?
+  #
+  # If we're back on main, the full workflow completed (branch was deleted
+  # after merge). If we're still on a feature branch, something stalled.
+  # -----------------------------------------------------------------------
+  current_branch="$(git branch --show-current)"
+
+  if [ "$current_branch" = "main" ]; then
+    log "Issue #$issue_num shipped (back on main)"
+    shipped+=("issue-$issue_num")
+  else
+    log "[WARN] Still on $current_branch — attempting /ship retry"
+
+    set +o pipefail
+    claude -p "/ship" \
+      --dangerously-skip-permissions \
+      --max-turns 20 2>&1 | tee -a "$LOG_FILE"
+    retry_exit=${PIPESTATUS[0]}
+    set -o pipefail
+
+    current_branch="$(git branch --show-current)"
+
+    if [ "$current_branch" = "main" ]; then
+      log "Issue #$issue_num shipped after retry"
+      shipped+=("issue-$issue_num")
+    else
+      log "[ERROR] Issue #$issue_num did not ship after retry (branch: $current_branch, exit: $retry_exit)"
+      failed+=("$current_branch")
+
+      # Return to main so the next issue can start clean
+      if ! git diff --quiet HEAD 2>/dev/null || [ -n "$(git status --porcelain)" ]; then
+        git stash push -m "run-issues: auto-stash failed issue on $current_branch" --quiet
+      fi
+      git checkout main --quiet
+      git pull --quiet
+    fi
+  fi
+
+  log "--- Finished issue #$issue_num ---"
   log ""
 done
 
-log "=== Run complete: $count issue(s) processed ==="
+# ---------------------------------------------------------------------------
+# Run summary
+# ---------------------------------------------------------------------------
+log ""
+log "=== Run summary ==="
+log "Shipped: ${#shipped[@]}/${count}"
+if [ ${#shipped[@]} -gt 0 ]; then
+  log "  OK:     ${shipped[*]}"
+fi
+if [ ${#failed[@]} -gt 0 ]; then
+  log "  Failed: ${failed[*]}"
+fi
 log "Full log: $LOG_FILE"
