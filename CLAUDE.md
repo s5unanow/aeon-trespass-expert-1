@@ -116,6 +116,17 @@ When compressing conversation context, always preserve:
 - The **definition-of-done checklist** state (which items are checked/unchecked)
 - Any **blocking issues** or unresolved problems encountered
 
+## Session handoff
+
+Before ending a long session (context limit approaching, user break, or switching issues), write `HANDOFF.md` in the repo root with:
+
+- What was tried and what worked
+- What failed and why
+- Current state (which gates pass, what's left on the checklist)
+- What should happen next
+
+The next session starts by reading this file. `HANDOFF.md` is ephemeral and gitignored — it is not committed.
+
 ## Current state
 
 All work is tracked in Linear (project ATE1). Check `mcp__linear__list_issues(project="ATE1")` for current status.
