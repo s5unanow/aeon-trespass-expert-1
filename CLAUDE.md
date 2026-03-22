@@ -33,18 +33,38 @@ make format           # Auto-fix formatting (ruff format + ruff check --fix + pn
 make clean            # Remove caches and build artifacts
 ```
 
-## Quality gates (must pass before commit)
+## Quality gates
 
-1. `ruff check` — no lint errors (includes McCabe complexity C901, max 12)
-2. `ruff format --check` — no format violations
-3. `mypy --strict` — no type errors
-4. `lint-imports` — Python import layer contracts (no cyclic dependencies)
+Two tiers of checks run at different stages. Both must pass.
+
+### Local (pre-commit hook, 8 gates)
+
+Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`. Fast — targets < 60 s.
+
+1. `ruff check` — lint (includes McCabe complexity C901, max 12)
+2. `ruff format --check` — format violations
+3. `mypy --strict` — type errors
+4. `lint-imports` — import layer contracts (no cyclic dependencies)
 5. `check_file_length.py` — max 400 lines per source file
-6. `pytest` — all tests pass
-7. `eslint` — frontend lint (includes `import/no-cycle`, `max-lines: 400`)
-8. `tsc --noEmit` — frontend type check
+6. `eslint` — frontend lint (`import/no-cycle`, `max-lines: 400`)
+7. `tsc --noEmit` — frontend type check
+8. `pytest -x -q --timeout=60 -m "not slow"` — fast test subset only
 
-CI runs gates 1-8 on every push. Pre-commit hook enforces them automatically.
+### CI (GitHub Actions, 8 + 4 extra)
+
+Runs on every push to `main` and on every PR. Includes all 8 local gates plus:
+
+9. `check_codegen_fresh.sh` — verifies generated JSON Schema + TS types match Pydantic sources. *CI-only because it needs `pnpm install` and a clean checkout to be reliable.*
+10. `validate_fixture_manifest.py` — fixture integrity checks. *CI-only because it can be slow with large fixture sets.*
+11. `check_extraction_scope.py` — detects extraction-related changes in PRs. *CI-only because it compares against the PR base branch.*
+12. `check_golden_refresh.py` — validates golden file updates when extraction scope is detected. *CI-only because it requires base-branch comparison and only triggers conditionally.*
+
+CI also runs `pytest --tb=short` (full suite — includes slow tests, no timeout), unlike the pre-commit fast subset.
+
+### What "passing" means
+
+- **Local green** = safe to commit and push, but not sufficient for merge.
+- **CI green** = all 12 gates pass — required for merge. "Definition of Done" means CI green.
 
 ## Development workflow (MANDATORY)
 
@@ -69,7 +89,8 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] Code changes directly address the Linear issue description
 - [ ] New/changed code has tests (unless pure config/docs change)
 - [ ] No new `except Exception` without structured logging
-- [ ] Full checks pass: `make lint && make typecheck && make test`
+- [ ] Local gates pass: `make lint && make typecheck && make test`
+- [ ] CI green after push (all 12 gates — local green alone is not sufficient)
 
 ### 5. Sub-agent code review (MANDATORY before PR)
 - **You MUST spawn a review agent before creating a PR.** This is not optional.
