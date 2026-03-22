@@ -112,6 +112,27 @@ class TestBuildDocumentIndex:
             {"document_id": "bbb", "editions": ["en"]},
         ]
 
+    def test_root_level_manifest_indexed_as_default(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Root-level-only manifest gets synthetic 'default' edition."""
+        docs_root = tmp_path / "documents"
+        (docs_root / "doc1").mkdir(parents=True)
+        (docs_root / "doc1" / "manifest.json").write_text("{}")
+        result = export_module._build_document_index(docs_root)
+        assert result == [{"document_id": "doc1", "editions": ["default"]}]
+
+    def test_edition_manifest_takes_precedence_over_root(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """When both root and edition manifests exist, only editions are listed."""
+        docs_root = tmp_path / "documents"
+        (docs_root / "doc1" / "en").mkdir(parents=True)
+        (docs_root / "doc1" / "en" / "manifest.json").write_text("{}")
+        (docs_root / "doc1" / "manifest.json").write_text("{}")
+        result = export_module._build_document_index(docs_root)
+        assert result == [{"document_id": "doc1", "editions": ["en"]}]
+
     def test_skips_dirs_without_manifest(self, tmp_path: Path, export_module: ModuleType) -> None:
         docs_root = tmp_path / "documents"
         (docs_root / "doc1" / "en").mkdir(parents=True)
