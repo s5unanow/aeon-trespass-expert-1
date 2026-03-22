@@ -5,34 +5,41 @@ from __future__ import annotations
 import re
 
 from atr_schemas.enums import QALayer, Severity
-from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.qa_record_v1 import AutoFix, QARecordV1
 from atr_schemas.render_page_v1 import RenderDividerBlock, RenderPageV1
 
 # Raw asset tokens: two uppercase letters followed by four digits
-_ASSET_TOKEN_RE = re.compile(r"\b[A-Z]{2}\d{4}\b")
+ASSET_TOKEN_RE = re.compile(r"\b[A-Z]{2}\d{4}\b")
 
 # Stage-internal codes: T##T## pattern
-_STAGE_CODE_RE = re.compile(r"\bT\d{2}T\d{2}\b")
+STAGE_CODE_RE = re.compile(r"\bT\d{2}T\d{2}\b")
 
 # Isolated placeholder chars: lone dot or alpha surrounded by spaces
-_PLACEHOLDER_RE = re.compile(r"(?:^|\s)[.\u03B1](?:\s|$)")
+PLACEHOLDER_RE = re.compile(r"(?:^|\s)[.\u03B1](?:\s|$)")
 
 # Unicode range for GreenleafBanners-style private-use / decorative glyphs
-_PRIVATE_USE_RE = re.compile(r"[\uE000-\uF8FF]")
+PRIVATE_USE_RE = re.compile(r"[\uE000-\uF8FF]")
+
+DECORATIVE_PATTERNS: list[re.Pattern[str]] = [
+    ASSET_TOKEN_RE,
+    STAGE_CODE_RE,
+    PRIVATE_USE_RE,
+    PLACEHOLDER_RE,
+]
 
 
 def _check_text(text: str) -> str | None:
     """Return a reason string if *text* contains leaked icon content."""
-    m = _ASSET_TOKEN_RE.search(text)
+    m = ASSET_TOKEN_RE.search(text)
     if m:
         return f"Raw asset token: {m.group()}"
-    m = _STAGE_CODE_RE.search(text)
+    m = STAGE_CODE_RE.search(text)
     if m:
         return f"Stage-internal code: {m.group()}"
-    m = _PRIVATE_USE_RE.search(text)
+    m = PRIVATE_USE_RE.search(text)
     if m:
         return f"Private-use glyph: U+{ord(m.group()):04X}"
-    if _PLACEHOLDER_RE.search(text):
+    if PLACEHOLDER_RE.search(text):
         return "Isolated placeholder character (likely missing icon)"
     return None
 
@@ -64,6 +71,7 @@ def evaluate_decorative_icons(render_page: RenderPageV1) -> list[QARecordV1]:
                         page_id=page_id,
                         entity_ref=block.id,
                         message=reason,
+                        auto_fix=AutoFix(available=True, fixer="remove_decorative"),
                     )
                 )
                 break  # one record per block
