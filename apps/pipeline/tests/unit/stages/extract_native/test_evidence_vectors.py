@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock
 
-from atr_schemas.common import PageDimensions
-
 from atr_pipeline.stages.extract_native.evidence_vectors import extract_vector_evidence
+from atr_schemas.common import PageDimensions
 
 
 def _make_page(drawings: list[dict[str, object]]) -> MagicMock:
