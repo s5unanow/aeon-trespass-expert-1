@@ -10,7 +10,7 @@ input=$(cat)
 if command -v jq &>/dev/null; then
   FILE_PATH=$(echo "$input" | jq -r '.tool_input.file_path // empty')
 else
-  FILE_PATH=$(echo "$input" | grep -o '"file_path"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*: *"//;s/"$//')
+  FILE_PATH=$(echo "$input" | grep -o '"file_path"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*: *"//;s/"$//') || true
 fi
 
 if [ -z "$FILE_PATH" ] || [ ! -f "$FILE_PATH" ]; then
