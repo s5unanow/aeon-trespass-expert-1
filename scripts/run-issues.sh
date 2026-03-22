@@ -71,7 +71,7 @@ while [ "$count" -lt "$MAX_ISSUES" ]; do
   log "--- Picking issue #$issue_num of $MAX_ISSUES ---"
 
   if [ "$DRY_RUN" = true ]; then
-    log "[dry-run] Would run: claude -p \"/next\" --dangerously-skip-permissions --max-turns 60"
+    log "[dry-run] Would run: claude -p \"/next\" --dangerously-skip-permissions --max-turns 80"
     count=$((count + 1))
     log "[dry-run] Issue #$issue_num done (simulated)"
     log ""
@@ -97,7 +97,7 @@ while [ "$count" -lt "$MAX_ISSUES" ]; do
   set +o pipefail
   claude -p "/next" \
     --dangerously-skip-permissions \
-    --max-turns 60 2>&1 | tee -a "$LOG_FILE"
+    --max-turns 80 2>&1 | tee -a "$LOG_FILE"
   exit_code=${PIPESTATUS[0]}
   set -o pipefail
 
