@@ -356,6 +356,10 @@ def _build_document_index(documents_root: Path) -> list[dict]:
         )
         if editions:
             entries.append({"document_id": doc_dir.name, "editions": editions})
+        elif (doc_dir / "manifest.json").exists():
+            # Root-level-only manifest — synthetic "default" edition so the
+            # web reader's loadManifest() can fall back to the root path.
+            entries.append({"document_id": doc_dir.name, "editions": ["default"]})
     return entries
 
 
