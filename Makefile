@@ -42,6 +42,9 @@ codegen: ## Regenerate JSON Schema + TS types from Pydantic models
 validate-fixtures: ## Validate fixture manifest and annotation metadata
 	uv run python scripts/validate_fixture_manifest.py
 
+config-health: ## Check config drift across CLAUDE.md, hooks, skills, and CI
+	uv run python scripts/check_config_health.py
+
 clean: ## Remove caches and build artifacts
 	rm -rf artifacts/*
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
