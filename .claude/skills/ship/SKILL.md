@@ -1,34 +1,27 @@
 ---
 name: ship
-description: Ship current work — review, PR, CI, merge, update Linear. Use when implementation is done and code is committed, or the user says "ship it", "create PR", "we're done", "merge it".
+description: Ship current work — review, PR, CI, merge, update Linear. Use when implementation is done and committed, or user says "ship it", "create PR", "merge it".
 ---
 
 # Ship current work
 
-Follow these steps in order. Stop immediately if any step fails.
+Stop immediately if any step fails.
 
 ## 0. Extract issue context
 
-Get the Linear issue ID from the current branch name:
 ```bash
 git branch --show-current
 ```
-Branch pattern is `s5unanow/s5u-<NUMBER>-<description>`. Extract the `S5U-<NUMBER>` issue ID.
 
-If you're on `main` or a branch without a valid issue ID, stop and tell the user.
+Extract `S5U-<NUMBER>` from branch pattern `s5unanow/s5u-<NUMBER>-<description>`. Stop if on `main` or no valid issue ID.
 
 ## 1. Code review (MANDATORY)
 
-Read `.claude/prompts/review.md` and use it as the prompt for a review sub-agent:
+Read `.claude/prompts/review.md` and use it as the Agent prompt.
 
-```
-Agent(subagent_type="general-purpose", prompt=<contents of .claude/prompts/review.md>)
-```
-
-Based on the review verdict:
-- **BLOCK** — Stop. Report the critical issues. Do NOT proceed to PR. Fix the issues first.
-- **PASS WITH WARNINGS** — Proceed. Include warnings in the PR body.
-- **PASS** — Proceed.
+- **BLOCK** — stop, report issues, fix before proceeding
+- **PASS WITH WARNINGS** — proceed, include warnings in PR body
+- **PASS** — proceed
 
 ## 2. Push
 
@@ -44,14 +37,7 @@ Never use `--force` or `-f`.
 gh pr create --title "S5U-XXX: <short title>" --body "<body>"
 ```
 
-PR body must include:
-- `## Summary` — 1-3 bullet points describing what changed
-- `## Test plan` — checklist of how to verify
-- Linear issue link: `Resolves [S5U-XXX](https://linear.app/s5una/issue/S5U-XXX/...)`
-- Review verdict summary
-- Footer: `Generated with [Claude Code](https://claude.com/claude-code)`
-
-Title must be under 70 characters.
+PR body: `## Summary` (1-3 bullets), `## Test plan` (checklist), Linear issue link (`Resolves [S5U-XXX](...)`), review verdict, footer (`Generated with [Claude Code](...)`). Title under 70 chars.
 
 ## 4. Wait for CI
 
@@ -59,28 +45,18 @@ Title must be under 70 characters.
 gh pr checks <pr-number> --watch
 ```
 
-- If CI passes — proceed to merge
-- If CI fails — report the failures, do NOT merge. Fix and push again.
-- If no CI checks are reported (e.g. config-only change) — proceed to merge
+CI passes → merge. CI fails → fix and push. No checks → merge.
 
-## 5. Merge
+## 5. Merge and sync
 
 ```bash
-gh pr merge <pr-number> --squash --delete-branch
+gh pr merge <pr-number> --squash --delete-branch && git checkout main && git pull
 ```
 
-## 6. Sync local
-
-```bash
-git checkout main && git pull
-```
-
-## 7. Update Linear
+## 6. Update Linear
 
 ```
 mcp__plugin_linear_linear__save_issue(id="S5U-XXX", state="Done")
 ```
 
-## 8. Report
-
-Tell the user: "S5U-XXX shipped and merged. Issue marked Done."
+Report: "S5U-XXX shipped and merged. Issue marked Done."
