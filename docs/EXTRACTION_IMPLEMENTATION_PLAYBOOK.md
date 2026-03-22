@@ -1,80 +1,20 @@
 # Extraction Implementation Playbook
 
-This document defines the execution discipline for all extraction-related work
-under epic S5U-191 (Evidence Fusion and Hard-Page Routing) and evaluation
-umbrella S5U-274. It covers fixture requirements, evaluation gates,
-golden-refresh governance, and PR acceptance criteria for extraction tickets.
-
-**Linear is the source of truth for blocker relations.** The phase tables below
-are a high-level guide to intended sequencing. Before starting any issue, always
-check `mcp__linear__get_issue(id="S5U-XXX", includeRelations=true)` and verify
-all `blockedBy` relations are in Done state.
+This document defines the execution discipline for all extraction-related work.
+It covers fixture requirements, evaluation gates, golden-refresh governance,
+and PR acceptance criteria for extraction tickets.
 
 Every agent and human implementer working on extraction must follow these rules.
 
-## 1. Sequencing and Dependency Tree
+## 1. Background
 
-Extraction work follows a dependency order derived from the Refined V3
-Adoption Memo. Do not start an issue until all its Linear blockers are Done.
+The extraction subsystem was redesigned under epic S5U-191 (Evidence Fusion and
+Hard-Page Routing) with evaluation infrastructure built under S5U-274. That
+redesign is complete. The governance rules in this document now apply to all
+ongoing extraction maintenance and enhancements.
 
-### Phase 1: Evidence Contracts and Primitive Capture
-
-| Issue | Title | Linear blockedBy |
-|-------|-------|------------------|
-| S5U-266 | Evidence-vs-resolved extraction contract split | S5U-294 |
-| S5U-267 | Expand primitive extraction (chars, texttrace, vectors, image occurrences, tables) | S5U-266 |
-| S5U-268 | Raster provider and per-page render pyramid with provenance | S5U-266 |
-
-### Phase 2: Region Graph, Reading Order, and Asset Registry
-
-S5U-269 and S5U-271 can start in parallel once their Phase 1 blockers are
-Done. S5U-271 does not depend on region/order work.
-
-| Issue | Title | Linear blockedBy |
-|-------|-------|------------------|
-| S5U-269 | Region graph segmentation (banding, gutters, visual containers) | S5U-266, S5U-267, S5U-268 |
-| S5U-270 | ReadingOrderGraph and anchored-aside relationships | S5U-269 |
-| S5U-271 | Asset class and occurrence registry | S5U-266, S5U-267, S5U-268 |
-
-### Phase 3: Symbol Resolution and Non-Text Semantics
-
-S5U-272 and S5U-273 share the same blockers and can run in parallel.
-
-| Issue | Title | Linear blockedBy |
-|-------|-------|------------------|
-| S5U-272 | Visual symbol resolver with inline, prefix, and cell-local anchoring | S5U-269, S5U-270, S5U-271 |
-| S5U-273 | Region-aware figure, caption, callout, and table resolution | S5U-269, S5U-270, S5U-271 |
-
-### Evaluation Track (runs in parallel once Phase 1 begins)
-
-| Issue | Title | Blockers |
-|-------|-------|----------|
-| S5U-274 | Evaluation harness with golden pages and visual overlays | S5U-294 |
-| S5U-275 | Page confidence scoring and richer patch targets | S5U-274 |
-| S5U-281 | Extraction metric thresholds and CI failure policy | S5U-274, S5U-284 |
-| S5U-282 | Contract/negative-fixture validation for evidence schemas | S5U-266 |
-| S5U-283 | Extraction artifact invariant checker | S5U-266, S5U-274 |
-| S5U-284 | Real-page golden fixtures for hard-layout classes | S5U-274 |
-| S5U-285 | Hard-route and fallback regression tests | S5U-274 |
-| S5U-286 | Source-edition E2E extraction verification | S5U-274 |
-| S5U-287 | Non-blocking full-document audit and confidence calibration | (none) |
-| S5U-288 | Cross-stage reference-integrity verification | S5U-283, S5U-266 |
-| S5U-289 | Browser-level EN extraction review regression | S5U-274, S5U-286 |
-| S5U-292 | Fixture registry and guarded golden-refresh tooling | (none) |
-| S5U-293 | Confidence-threshold governance and route/block policy | (none) |
-
-### Sequencing Rules
-
-1. **Linear blockers are authoritative.** Always check the issue's `blockedBy`
-   relations in Linear before starting. The phase tables above are a guide; if
-   they disagree with Linear, Linear wins.
-2. **Parallelism within phases is allowed.** S5U-269 and S5U-271 can run
-   concurrently. S5U-272 and S5U-273 can run concurrently. Exploit this when
-   capacity allows.
-3. **Evaluation track runs in parallel** with the main extraction track, but
-   evaluation issues that depend on S5U-266 must wait for the contract split.
-4. **S5U-287, S5U-292, S5U-293 have no hard blockers** and can start at any
-   time during or before Phase 1.
+For new extraction issues, check any `blockedBy` relations in Linear before
+starting.
 
 ## 2. Required Fixtures and Golden Pages
 
@@ -94,7 +34,7 @@ change works correctly.
 
 ### Golden Page Classes
 
-The curated golden set must eventually cover these layout classes (per S5U-284):
+The curated golden set should cover these layout classes:
 
 - Standard two-column body page
 - Sidebar and callout page
@@ -105,8 +45,8 @@ The curated golden set must eventually cover these layout classes (per S5U-284):
 - Icon-dense rule text page
 - Low-confidence / hard-page candidate
 
-Until S5U-284 lands the full set, use the walking skeleton fixture as the
-minimum baseline and add class-specific fixtures as each phase introduces them.
+Use the walking skeleton fixture as the minimum baseline and add
+class-specific fixtures as needed for new layout classes.
 
 ### Fixture Location
 
@@ -151,17 +91,15 @@ included, reviewer discretion. `--` = not applicable.
 - **Contract tests**: Schema roundtrip (serialize -> deserialize -> compare),
   JSON Schema validation, TS codegen compatibility. Run via `make codegen` +
   `pytest apps/pipeline/tests/contract/`.
-- **Invariant checker**: Once S5U-283 lands, `atr verify-extraction` must pass.
-  Until then, manually verify: no dangling refs, no duplicate IDs, bboxes
-  within page bounds.
-- **Golden eval**: Once S5U-281 lands, `atr eval --golden-set core` must pass.
-  Until then, compare fixture expectations manually and include diff in PR
-  description.
-- **Browser E2E**: Once S5U-289 lands, Playwright checks run in CI. Until
-  then, manual browser smoke test for render-affecting changes.
-- **Audit report**: Once S5U-287 lands, full-document audit runs as non-blocking
-  CI step. Until then, run extraction on at least 5 representative pages and
-  report any regressions in the PR description.
+- **Invariant checker**: `atr verify-extraction` must pass — validates no
+  dangling refs, no duplicate IDs, bboxes within page bounds.
+- **Golden eval**: `atr eval --golden-set core` must pass — compares output
+  against expected fixtures.
+- **Browser E2E**: Manual browser smoke test for render-affecting changes.
+  Playwright CI integration is planned.
+- **Audit report**: Run extraction on at least 5 representative pages and
+  report any regressions in the PR description. Full-document audit
+  (`atr audit`) provides confidence scores and non-blocking diagnostics.
 
 ## 4. Golden Refresh and Threshold Change Rules
 
@@ -174,8 +112,8 @@ are prohibited.
    separate commit with prefix `S5U-XXX: refresh goldens` and a justification
    in the commit message.
 2. **Include before/after metric diff.** The PR description must show the
-   metric delta for every affected golden page. Once S5U-292 lands, use the
-   guarded refresh tool (`atr golden-refresh --diff`).
+   metric delta for every affected golden page. Use the guarded refresh tool
+   (`scripts/golden_refresh.py --apply`) when available.
 3. **Golden refresh commits must not be mixed** with implementation commits.
    Keep them separate so reviewers can distinguish algorithmic changes from
    expectation updates.
@@ -184,15 +122,15 @@ are prohibited.
 ### Threshold Change Rules
 
 1. **Thresholds live in config, not code.** All metric thresholds are in
-   `configs/qa/thresholds.toml` (once S5U-281 creates it). Do not hardcode
-   thresholds in test files or scripts.
+   `configs/qa/thresholds.toml`. Do not hardcode thresholds in test files or
+   scripts.
 2. **Loosening a threshold requires justification.** The PR description must
    explain why the previous threshold is no longer appropriate and link to the
    calibration data that supports the new value.
 3. **Tightening a threshold is always allowed** without special governance, as
    long as CI passes.
-4. **Threshold changes require the audit report** (once S5U-287 lands) to
-   confirm the change does not mask regressions elsewhere.
+4. **Threshold changes require the audit report** (`atr audit`) to confirm
+   the change does not mask regressions elsewhere.
 
 ## 5. PR Definition of Done for Extraction Tickets
 
@@ -236,15 +174,6 @@ Every PR that changes extraction behavior must report metrics.
 
 ### How to Report
 
-Until the evaluation harness (S5U-274) and metric thresholds (S5U-281) are
-implemented:
-
-1. Run the pipeline on the walking skeleton fixture and at least 2 real pages.
-2. Compare output artifacts against expected fixtures.
-3. Report diffs in the PR description as a markdown table.
-
-Once the evaluation harness exists:
-
 1. Run `atr eval --golden-set core` and capture the summary.
 2. Paste the before/after summary in the PR description.
 3. If any metric degrades, explain why and whether it is acceptable.
@@ -254,7 +183,7 @@ Once the evaluation harness exists:
 Changes to confidence thresholds, routing bands, or block policies affect the
 entire extraction pipeline and must be governed carefully.
 
-### Confidence Bands (target state per S5U-293)
+### Confidence Bands
 
 | Band | Confidence range | Action |
 |------|-----------------|--------|
@@ -274,8 +203,7 @@ A calibration review is required when any of the following change:
 
 ### Calibration Review Process
 
-1. Run the full-document audit (S5U-287, once available) to produce calibration
-   data.
+1. Run the full-document audit (`atr audit`) to produce calibration data.
 2. Verify that the proposed change does not silently move pages between bands
    in unexpected ways.
 3. Include a histogram or table in the PR showing page distribution across
@@ -283,155 +211,42 @@ A calibration review is required when any of the following change:
 4. If the change moves more than 10% of pages between bands, flag it for
    explicit human review.
 
-## 8. CI/Helper-Script Enforcement Design
+## 8. CI/Helper-Script Enforcement
 
-This section is a **design spec** for enforcement scripts to be implemented in
-a follow-up issue. Some file paths referenced below (e.g., `configs/qa/`,
-`scripts/check_extraction_scope.py`) do not exist yet and will be created by
-the implementing issue. Once the scripts exist, the scripts themselves are the
-source of truth; this section serves as the design intent.
+The following scripts enforce extraction governance in CI. They are integrated
+into `.github/workflows/python-tests.yml`. The scripts themselves are the
+source of truth for detection patterns and logic.
 
 ### 8.1 Extraction Change Detector
 
 **Script**: `scripts/check_extraction_scope.py`
 
-**Purpose**: Detect whether a PR touches extraction-relevant files and
-determine which checks are mandatory.
-
-**Detection rules** (file path patterns):
-
-```python
-EXTRACTION_PATTERNS = {
-    "schema": [
-        "packages/schemas/python/atr_schemas/native_page_*",
-        "packages/schemas/python/atr_schemas/layout_page_*",
-        "packages/schemas/python/atr_schemas/page_ir_*",
-        "packages/schemas/python/atr_schemas/asset_*",
-        "packages/schemas/python/atr_schemas/symbol_*",
-        "packages/schemas/python/atr_schemas/page_evidence_*",
-        "packages/schemas/python/atr_schemas/resolved_page_*",
-    ],
-    "primitive_extraction": [
-        "apps/pipeline/src/atr_pipeline/stages/extract_native/**",
-        "apps/pipeline/src/atr_pipeline/stages/extract_layout/**",
-    ],
-    "region_order": [
-        "apps/pipeline/src/atr_pipeline/stages/structure/reading_order*",
-        "apps/pipeline/src/atr_pipeline/stages/structure/region_*",
-        "apps/pipeline/src/atr_pipeline/stages/structure/block_builder*",
-        "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder*",
-    ],
-    "symbol_asset": [
-        "apps/pipeline/src/atr_pipeline/stages/symbols/**",
-        "packages/schemas/python/atr_schemas/symbol_*",
-        "packages/schemas/python/atr_schemas/asset_*",
-    ],
-    "figure_callout_table": [
-        "apps/pipeline/src/atr_pipeline/stages/structure/furniture*",
-        "apps/pipeline/src/atr_pipeline/stages/structure/heuristics*",
-    ],
-    "confidence_routing": [
-        "apps/pipeline/src/atr_pipeline/stages/extract_layout/difficulty_*",
-        "apps/pipeline/src/atr_pipeline/stages/extract_layout/fallback_*",
-        "configs/qa/thresholds*",
-    ],
-    "golden_fixtures": [
-        "packages/fixtures/**/expected/**",
-    ],
-    "thresholds": [
-        "configs/qa/thresholds*",
-    ],
-}
-```
-
-**Output**: A JSON object mapping each detected change area to a list of
-mandatory checks. Example:
-
-```json
-{
-  "areas": ["primitive_extraction", "schema"],
-  "mandatory_checks": [
-    "unit_tests",
-    "contract_tests",
-    "invariant_checker",
-    "golden_eval",
-    "codegen_fresh"
-  ],
-  "golden_refresh_detected": false,
-  "threshold_change_detected": false
-}
-```
+Detects whether a PR touches extraction-relevant files and determines which
+checks are mandatory. Outputs a JSON object with detected areas, mandatory
+checks, and flags for golden refresh / threshold changes.
 
 ### 8.2 Golden Refresh Guard
 
 **Script**: `scripts/check_golden_refresh.py`
 
-**Purpose**: Prevent silent golden overwrites.
-
-**Logic**:
-
-1. Parse `git diff --name-only` for files matching `packages/fixtures/**/expected/**`.
-2. If golden files changed:
-   a. Verify the golden changes are in dedicated commits (commit message
-      contains `refresh goldens`).
-   b. Verify the PR description contains a before/after metric diff section.
-   c. If either check fails, exit non-zero with an actionable error message.
+Prevents silent golden overwrites. Runs conditionally when the extraction
+scope detector flags golden changes. Enforces that golden changes are in
+dedicated commits and that annotation metadata is updated.
 
 ### 8.3 Threshold Loosening Guard
 
-**Script**: `scripts/check_threshold_changes.py`
+**Script**: `scripts/check_threshold_changes.py` (not yet implemented)
 
-**Purpose**: Prevent silent threshold loosening.
+Will prevent silent threshold loosening in `configs/qa/thresholds.toml`.
+When implemented, it should verify that loosened thresholds include a
+justification comment or linked calibration report.
 
-**Logic**:
+### 8.4 Fixture Manifest Validator
 
-1. Parse `git diff` for changes to `configs/qa/thresholds.toml`.
-2. For each changed threshold:
-   a. Compare old and new values.
-   b. If any threshold is loosened (value decreased for accuracy metrics,
-      increased for error/leakage metrics), flag it.
-   c. Require a justification comment in the diff (line starting with `#
-      Justification:`) or a linked calibration report in the PR.
+**Script**: `scripts/validate_fixture_manifest.py`
 
-### 8.4 Mandatory Check Selector
-
-**CI integration**: Add a step to `python-tests.yml` that runs
-`check_extraction_scope.py` and conditionally enables additional CI jobs:
-
-```yaml
-# Proposed addition to .github/workflows/python-tests.yml
-- name: Detect extraction scope
-  id: extraction-scope
-  run: |
-    python scripts/check_extraction_scope.py \
-      --base origin/main --head HEAD \
-      --output-json /tmp/extraction-scope.json
-
-- name: Golden refresh guard
-  if: fromJSON(steps.extraction-scope.outputs.result).golden_refresh_detected
-  run: python scripts/check_golden_refresh.py --base origin/main --head HEAD
-
-- name: Threshold change guard
-  if: fromJSON(steps.extraction-scope.outputs.result).threshold_change_detected
-  run: python scripts/check_threshold_changes.py --base origin/main --head HEAD
-
-- name: Extraction eval (golden set)
-  if: contains(fromJSON(steps.extraction-scope.outputs.result).mandatory_checks, 'golden_eval')
-  run: uv run atr eval --golden-set core --fail-on-threshold
-```
-
-### 8.5 Implementation Plan
-
-The enforcement scripts should be implemented in this order:
-
-1. `check_extraction_scope.py` — the foundation; determines what else runs.
-2. `check_golden_refresh.py` — prevents the most common silent regression.
-3. `check_threshold_changes.py` — prevents silent quality erosion.
-4. CI workflow integration — wires the scripts into the existing pipeline.
-
-Each script should be a standalone Python file under `scripts/`, runnable with
-`uv run python scripts/<name>.py`, and testable with pytest. Target a follow-up
-implementation issue for the actual code.
+Validates fixture inventory completeness and checksum integrity. Runs on every
+CI push/PR.
 
 ## 9. Agent-Facing Execution Summary
 

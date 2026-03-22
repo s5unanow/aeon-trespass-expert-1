@@ -1,13 +1,12 @@
 # Extraction Ticket Template
 
-Copy this template when creating new Linear issues for extraction work under
-S5U-191 or S5U-274.
+Copy this template when creating new Linear issues for extraction work.
 
 ---
 
 ## Issue Title
 
-`[Phase N] <concise description of the extraction change>`
+`<concise description of the extraction change>`
 
 ## Description
 
@@ -23,7 +22,7 @@ _What specific files, schemas, or stages will change?_
 
 - `docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md` (always)
 - `docs/PROJECT_ARCHITECTURE.md` (if touching architecture)
-- `review/architect-photos/REFINED_V3_ADOPTION_MEMO.md` (if touching extraction contracts)
+- `review/architect-photos/REFINED_V3_ADOPTION_MEMO.md` (for extraction contract context)
 - _Add issue-specific documents here_
 
 ## Blocked By
