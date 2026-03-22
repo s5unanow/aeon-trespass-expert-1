@@ -1,0 +1,48 @@
+# Confidence-band governance — versioned page-routing policy.
+#
+# Each band defines a confidence range [min_confidence, max_confidence)
+# and an action the pipeline takes for pages that fall in that range.
+#
+# Actions:
+#   primary          — normal processing, no extra review
+#   hard_route       — route to hard-page extraction pipeline
+#   qa_required      — must appear in QA review pack for human review
+#   publish_blocking — blocks publishing until explicitly waived
+#
+# Governance rules (see docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §4):
+#   - Loosening (lowering min_confidence for a less restrictive action)
+#     requires justification and calibration data in the PR description
+#   - Tightening (raising min_confidence) is always allowed
+#   - Band boundaries must be contiguous: no gaps or overlaps in [0, 1]
+#   - Changes must be reviewed against the latest calibration report
+#     once S5U-287 lands
+
+version = 1
+
+[[bands]]
+name = "primary"
+min_confidence = 0.85
+max_confidence = 1.01
+action = "primary"
+description = "High confidence — normal processing path"
+
+[[bands]]
+name = "hard_route"
+min_confidence = 0.60
+max_confidence = 0.85
+action = "hard_route"
+description = "Medium confidence — routed to hard-page extraction"
+
+[[bands]]
+name = "qa_required"
+min_confidence = 0.30
+max_confidence = 0.60
+action = "qa_required"
+description = "Low confidence — requires QA review before release"
+
+[[bands]]
+name = "publish_blocking"
+min_confidence = 0.0
+max_confidence = 0.30
+action = "publish_blocking"
+description = "Very low confidence — blocks publishing until waived"
