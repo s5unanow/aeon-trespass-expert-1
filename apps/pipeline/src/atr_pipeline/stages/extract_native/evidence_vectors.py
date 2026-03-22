@@ -86,7 +86,7 @@ def extract_vector_evidence(
                 path_ops=ops,
                 stroke_color=_color_to_int(d.get("color")),
                 fill_color=_color_to_int(d.get("fill")),
-                line_width=d.get("width", 0.0),
+                line_width=d.get("width") or 0.0,
             )
         )
 
