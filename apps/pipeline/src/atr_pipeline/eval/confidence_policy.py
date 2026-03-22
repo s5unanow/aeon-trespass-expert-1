@@ -116,11 +116,20 @@ def evaluate_page_confidence(
 ) -> BandResult:
     """Determine which confidence band a page falls into.
 
-    Bands are matched as [min_confidence, max_confidence).
+    Bands are matched as ``[min, max)`` except for the top band which
+    uses ``[min, max]`` (inclusive upper bound) so that confidence=1.0
+    is always matchable with ``max_confidence=1.0``.
+
     Returns a ``BandResult`` with the band name and action.
     """
-    for band in sorted(policy.bands, key=lambda b: b.min_confidence):
-        if band.min_confidence <= confidence < band.max_confidence:
+    sorted_bands = sorted(policy.bands, key=lambda b: b.min_confidence)
+    top_band = sorted_bands[-1] if sorted_bands else None
+    for band in sorted_bands:
+        if band is top_band:
+            matched = band.min_confidence <= confidence <= band.max_confidence
+        else:
+            matched = band.min_confidence <= confidence < band.max_confidence
+        if matched:
             logger.debug(
                 "page %s confidence=%.3f -> band=%s action=%s",
                 page_id,
