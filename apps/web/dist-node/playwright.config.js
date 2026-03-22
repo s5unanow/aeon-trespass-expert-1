@@ -6,6 +6,10 @@ export default defineConfig({
     retries: process.env.CI ? 1 : 0,
     workers: 1,
     reporter: 'list',
+    snapshotPathTemplate: '{testDir}/{testFileDir}/__snapshots__/{arg}{ext}',
+    expect: {
+        toHaveScreenshot: { maxDiffPixelRatio: 0.05 },
+    },
     use: {
         baseURL: 'http://localhost:4173',
         trace: 'on-first-retry',
@@ -17,7 +21,7 @@ export default defineConfig({
         },
     ],
     webServer: {
-        command: 'pnpm run preview',
+        command: 'pnpm run build && pnpm run preview',
         port: 4173,
         reuseExistingServer: !process.env.CI,
     },

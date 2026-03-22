@@ -12,3 +12,6 @@ jobs:
 
   web:
     uses: ./.github/workflows/web-tests.yml
+
+  visual-regression:
+    uses: ./.github/workflows/visual-regression.yml

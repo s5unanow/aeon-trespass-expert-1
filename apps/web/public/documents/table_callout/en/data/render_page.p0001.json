@@ -1,0 +1,58 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0001",
+    "title": "Equipment Table",
+    "section_path": [],
+    "source_page_number": 1
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 2,
+      "children": [
+        { "kind": "text", "text": "Equipment Table", "marks": [] }
+      ]
+    },
+    {
+      "kind": "table",
+      "id": "p0001.b002",
+      "children": [
+        { "kind": "text", "text": "Item | Weight | Effect\nIron Sword | 3 | +2 Attack\nShield | 5 | +3 Defense", "marks": [] }
+      ]
+    },
+    {
+      "kind": "callout",
+      "id": "p0001.b003",
+      "variant": "warning",
+      "children": [
+        { "kind": "text", "text": "Important! Cursed items cannot be unequipped once worn.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b004",
+      "children": [
+        { "kind": "text", "text": "See appendix for full item catalog.", "marks": [] }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {
+    "raw_text": "Equipment Table Item Weight Effect Iron Sword 3 +2 Attack Shield 5 +3 Defense Important! Cursed items cannot be unequipped once worn. See appendix for full item catalog.",
+    "normalized_terms": ["equipment", "table", "item", "sword", "shield", "cursed"]
+  },
+  "source_map": {
+    "page_id": "p0001",
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003", "p0001.b004"]
+  },
+  "build_meta": null
+}

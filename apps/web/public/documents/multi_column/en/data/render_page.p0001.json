@@ -1,0 +1,64 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0001",
+    "title": "Combat Rules",
+    "section_path": [],
+    "source_page_number": 1
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 2,
+      "children": [
+        { "kind": "text", "text": "Combat Rules", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b002",
+      "children": [
+        { "kind": "text", "text": "When a Titan attacks, roll the combat dice and compare the result.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b003",
+      "children": [
+        { "kind": "text", "text": "Critical hits deal double damage and ignore armor values.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b004",
+      "children": [
+        { "kind": "text", "text": "Defense is calculated from base armor plus any active shield.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b005",
+      "children": [
+        { "kind": "text", "text": "If damage exceeds threshold the target enters wounded state.", "marks": [] }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "search": {
+    "raw_text": "Combat Rules When a Titan attacks, roll the combat dice and compare the result. Critical hits deal double damage and ignore armor values. Defense is calculated from base armor plus any active shield. If damage exceeds threshold the target enters wounded state.",
+    "normalized_terms": ["combat", "rules", "titan", "attack", "damage", "defense", "armor"]
+  },
+  "source_map": {
+    "page_id": "p0001",
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003", "p0001.b004", "p0001.b005"]
+  },
+  "build_meta": null
+}

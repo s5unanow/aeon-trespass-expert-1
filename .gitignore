@@ -52,9 +52,13 @@ apps/web/storybook-static/
 artifacts/
 
 # Generated document corpus (re-export from artifacts via `make export`)
-# walking_skeleton fixture is kept tracked for tests
+# Test fixtures are kept tracked for e2e tests
 apps/web/public/documents/*
 !apps/web/public/documents/walking_skeleton/
+!apps/web/public/documents/icon_dense/
+!apps/web/public/documents/multi_column/
+!apps/web/public/documents/table_callout/
+!apps/web/public/documents/figure_caption/
 
 # Runtime state
 var/*.db

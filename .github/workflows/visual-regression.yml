@@ -28,5 +28,13 @@ jobs:
       - name: Build
         run: pnpm --filter @atr/web run build
 
-      - name: Run visual regression tests
+      - name: Run e2e and visual regression tests
         run: pnpm --filter @atr/web run test:e2e
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results
+          path: apps/web/test-results/
+          retention-days: 14
