@@ -5,7 +5,7 @@ globs: apps/pipeline/src/pipeline/extraction/**,apps/pipeline/tests/**/test_extr
 
 - All extraction work follows `docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md`
 - Read the playbook before starting any extraction ticket
-- Check Linear `blockedBy` relations before starting an issue
+- Verify all `blockedBy` relations are Done before starting an issue
 - Fixtures mandatory for every extraction change
 - Golden refreshes must be in separate commits with before/after metric diffs
 - Threshold loosening requires justification

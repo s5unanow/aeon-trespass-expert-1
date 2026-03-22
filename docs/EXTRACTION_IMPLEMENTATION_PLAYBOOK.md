@@ -113,7 +113,7 @@ are prohibited.
    in the commit message.
 2. **Include before/after metric diff.** The PR description must show the
    metric delta for every affected golden page. Use the guarded refresh tool
-   (`scripts/golden_refresh.py --apply`) when available.
+   (`scripts/golden_refresh.py`) to preview diffs before applying.
 3. **Golden refresh commits must not be mixed** with implementation commits.
    Keep them separate so reviewers can distinguish algorithmic changes from
    expectation updates.
@@ -213,9 +213,9 @@ A calibration review is required when any of the following change:
 
 ## 8. CI/Helper-Script Enforcement
 
-The following scripts enforce extraction governance in CI. They are integrated
-into `.github/workflows/python-tests.yml`. The scripts themselves are the
-source of truth for detection patterns and logic.
+The following scripts enforce extraction governance in CI. Implemented scripts
+are integrated into `.github/workflows/python-tests.yml`. The scripts
+themselves are the source of truth for detection patterns and logic.
 
 ### 8.1 Extraction Change Detector
 
