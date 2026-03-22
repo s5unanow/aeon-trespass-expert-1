@@ -12,23 +12,22 @@ Supported fixers:
 
 from __future__ import annotations
 
+import logging
 import re
 import uuid
 from typing import Any
 
+from atr_pipeline.stages.qa.rules.decorative_icon_rule import DECORATIVE_PATTERNS
 from atr_schemas.enums import PatchScope
 from atr_schemas.patch_set_v1 import PatchOperation, PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
-from atr_schemas.render_page_v1 import RenderDividerBlock, RenderPageV1
+from atr_schemas.render_page_v1 import (
+    RenderDividerBlock,
+    RenderPageV1,
+    RenderTextInline,
+)
 
-# ── Decorative patterns (kept in sync with decorative_icon_rule.py) ───
-
-_DECORATIVE_PATTERNS: list[re.Pattern[str]] = [
-    re.compile(r"\b[A-Z]{2}\d{4}\b"),
-    re.compile(r"\bT\d{2}T\d{2}\b"),
-    re.compile(r"[\uE000-\uF8FF]"),
-    re.compile(r"(?:^|\s)[.\u03B1](?:\s|$)"),
-]
+logger = logging.getLogger(__name__)
 
 # ── Sentence boundary for paragraph splitting ─────────────────────────
 
@@ -59,6 +58,25 @@ def generate_patches_for_page(
 
     # 2. Structural changes — process highest block index first so that
     #    delete/insert ops on earlier indices remain valid.
+    ops.extend(_collect_structural_ops(fixable, render_page))
+
+    if not ops:
+        return None
+
+    page_id = render_page.page.id
+    return PatchSetV1(
+        patch_id=f"auto-fix-{page_id}-{uuid.uuid4().hex[:8]}",
+        operations=ops,
+        reason="Auto-generated fixes from QA findings",
+        author="qa-auto-fix",
+    )
+
+
+def _collect_structural_ops(
+    fixable: list[QARecordV1],
+    render_page: RenderPageV1,
+) -> list[PatchOperation]:
+    """Gather delete/insert ops sorted by descending block index."""
     structural: list[tuple[int, list[PatchOperation]]] = []
     for r in fixable:
         if not (r.auto_fix and r.entity_ref):
@@ -83,21 +101,14 @@ def generate_patches_for_page(
             split_ops = _fix_split_paragraph(render_page, idx)
             if split_ops:
                 structural.append((idx, split_ops))
+        elif r.auto_fix.fixer != "remove_decorative":
+            logger.warning("Unknown fixer %s in %s", r.auto_fix.fixer, r.qa_id)
 
     structural.sort(key=lambda x: x[0], reverse=True)
+    ops: list[PatchOperation] = []
     for _, s_ops in structural:
         ops.extend(s_ops)
-
-    if not ops:
-        return None
-
-    page_id = render_page.page.id
-    return PatchSetV1(
-        patch_id=f"auto-fix-{page_id}-{uuid.uuid4().hex[:8]}",
-        operations=ops,
-        reason="Auto-generated fixes from QA findings",
-        author="qa-auto-fix",
-    )
+    return ops
 
 
 # ── Decorative removal ───────────────────────────────────────────────
@@ -137,7 +148,7 @@ def _fix_remove_decorative(
 def _strip_decorative(text: str) -> str:
     """Remove all decorative patterns from *text*."""
     result = text
-    for pattern in _DECORATIVE_PATTERNS:
+    for pattern in DECORATIVE_PATTERNS:
         result = pattern.sub("", result)
     return re.sub(r"  +", " ", result).strip()
 
@@ -173,11 +184,9 @@ def _fix_split_paragraph(
 
     first_ser = [_serialize_inline(c) for c in first_children]
     second_ser = [_serialize_inline(c) for c in second_children]
-    new_block: dict[str, Any] = {
-        "kind": block.kind,
-        "id": f"{block.id}_split",
-        "children": second_ser,
-    }
+    new_block: dict[str, Any] = block.model_dump()
+    new_block["id"] = f"{block.id}_split"
+    new_block["children"] = second_ser
 
     return [
         PatchOperation(
@@ -259,8 +268,6 @@ def _serialize_inline(child: Any) -> dict[str, Any]:
     return child.model_dump()  # type: ignore[no-any-return]
 
 
-def _clone_text(original: Any, new_text: str) -> Any:
+def _clone_text(original: Any, new_text: str) -> RenderTextInline:
     """Clone a text inline node with different text content."""
-    from atr_schemas.render_page_v1 import RenderTextInline
-
     return RenderTextInline(text=new_text, marks=list(original.marks))
