@@ -1,7 +1,8 @@
 # Confidence-band governance — versioned page-routing policy.
 #
 # Each band defines a confidence range [min_confidence, max_confidence)
-# and an action the pipeline takes for pages that fall in that range.
+# except the top band which uses [min_confidence, max_confidence] (inclusive)
+# so that confidence=1.0 is always matchable.
 #
 # Actions:
 #   primary          — normal processing, no extra review
@@ -22,7 +23,7 @@ version = 1
 [[bands]]
 name = "primary"
 min_confidence = 0.85
-max_confidence = 1.01
+max_confidence = 1.0
 action = "primary"
 description = "High confidence — normal processing path"
 
