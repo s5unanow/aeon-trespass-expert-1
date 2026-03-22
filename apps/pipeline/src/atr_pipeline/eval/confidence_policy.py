@@ -76,6 +76,14 @@ class ConfidenceBandPolicy(BaseModel):
             )
             raise ValueError(msg)
 
+        last = sorted_bands[-1]
+        if last.max_confidence < 1.0:
+            msg = (
+                f"Bands must cover confidence=1.0, but highest band "
+                f"'{last.name}' ends at {last.max_confidence}"
+            )
+            raise ValueError(msg)
+
         return self
 
 

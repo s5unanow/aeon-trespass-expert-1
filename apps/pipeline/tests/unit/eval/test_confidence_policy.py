@@ -178,6 +178,20 @@ class TestPolicyValidation:
                 ]
             )
 
+    def test_upper_bound_too_low_rejected(self) -> None:
+        """Bands that don't cover confidence=1.0 are rejected."""
+        with pytest.raises(ValueError, match=r"cover confidence=1\.0"):
+            ConfidenceBandPolicy(
+                bands=[
+                    ConfidenceBand(
+                        name="only",
+                        min_confidence=0.0,
+                        max_confidence=0.90,
+                        action=BandAction.PRIMARY,
+                    ),
+                ]
+            )
+
 
 # -------------------------------------------------------------------
 # Evaluation — one page per band
@@ -259,6 +273,12 @@ class TestEvaluatePageConfidence:
         )
         result = evaluate_page_confidence("p0011", 0.5, policy)
         assert result.description == "test description"
+
+    def test_no_band_matched_raises(self) -> None:
+        """ValueError when confidence falls outside all bands."""
+        policy = ConfidenceBandPolicy(bands=[])
+        with pytest.raises(ValueError, match="No band matched"):
+            evaluate_page_confidence("p0012", 0.5, policy)
 
 
 # -------------------------------------------------------------------
