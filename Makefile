@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test codegen export clean validate-fixtures
+.PHONY: help bootstrap lint format typecheck test codegen export clean validate-fixtures config-health
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -41,6 +41,9 @@ codegen: ## Regenerate JSON Schema + TS types from Pydantic models
 
 validate-fixtures: ## Validate fixture manifest and annotation metadata
 	uv run python scripts/validate_fixture_manifest.py
+
+config-health: ## Check config drift across CLAUDE.md, hooks, skills, and CI
+	uv run python scripts/check_config_health.py
 
 clean: ## Remove caches and build artifacts
 	rm -rf artifacts/*
