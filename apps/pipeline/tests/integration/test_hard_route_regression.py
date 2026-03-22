@@ -226,7 +226,7 @@ def test_multicolumn_page_routes_to_r2(tmp_path: Path) -> None:
 
 def test_fallback_records_default_route(tmp_path: Path) -> None:
     """When primary extractor fails, fallback produces no difficulty;
-    structure stage defaults to R1 with no confidence metrics."""
+    structure stage defaults to R1 with default confidence scores."""
     doc_id = "route_fallback"
     ctx = _make_ctx(tmp_path, doc_id)
 
