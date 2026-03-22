@@ -146,7 +146,7 @@ def test_normal_page_routes_to_r1(tmp_path: Path) -> None:
     conf = ir["confidence"]
     assert conf is not None
     assert conf["native_text_coverage"] >= 0.30
-    assert conf["page_confidence"] == 1.0  # extractor_agreement stub
+    assert 0.0 < conf["page_confidence"] <= 1.0  # multi-signal scorer
 
 
 # ---------------------------------------------------------------------------
@@ -226,7 +226,7 @@ def test_multicolumn_page_routes_to_r2(tmp_path: Path) -> None:
 
 def test_fallback_records_default_route(tmp_path: Path) -> None:
     """When primary extractor fails, fallback produces no difficulty;
-    structure stage defaults to R1 with no confidence metrics."""
+    structure stage defaults to R1 with default confidence scores."""
     doc_id = "route_fallback"
     ctx = _make_ctx(tmp_path, doc_id)
 
@@ -254,8 +254,10 @@ def test_fallback_records_default_route(tmp_path: Path) -> None:
     assert prov is not None
     assert prov["evidence_ids"] == ["route:R1"]
 
-    # No difficulty → no confidence metrics
-    assert ir["confidence"] is None
+    # No difficulty → scorer uses defaults (text_coverage=1.0)
+    conf = ir["confidence"]
+    assert conf is not None
+    assert conf["page_confidence"] == 1.0
 
 
 # ---------------------------------------------------------------------------

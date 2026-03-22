@@ -110,14 +110,15 @@ def _extract_reading_order_completeness(page_ir: PageIRV1 | None) -> float:
 
     A complete reading order means all block IDs are present.
     Missing order for a page with no blocks is treated as perfect.
+    Deduplicates reading order entries and validates against actual block IDs.
     """
     if page_ir is None:
         return 1.0
-    total_blocks = len(page_ir.blocks)
-    if total_blocks == 0:
+    block_ids = {b.block_id for b in page_ir.blocks}
+    if not block_ids:
         return 1.0
-    ordered = len(page_ir.reading_order)
-    return min(ordered / total_blocks, 1.0)
+    valid_ordered = set(page_ir.reading_order) & block_ids
+    return len(valid_ordered) / len(block_ids)
 
 
 def _extract_symbol_confidence(page_ir: PageIRV1 | None) -> float:
