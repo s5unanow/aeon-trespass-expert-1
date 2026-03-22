@@ -3,9 +3,9 @@ description: Extraction work rules — applies to extraction-related pipeline co
 globs: apps/pipeline/src/pipeline/extraction/**,apps/pipeline/tests/**/test_extract*
 ---
 
-- All extraction issues (S5U-191 epic, S5U-274 evaluation track) follow `docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md`
+- All extraction work follows `docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md`
 - Read the playbook before starting any extraction ticket
-- Strict sequencing — do not start an issue until all its blockers are Done
+- Verify all `blockedBy` relations are Done before starting an issue
 - Fixtures mandatory for every extraction change
 - Golden refreshes must be in separate commits with before/after metric diffs
 - Threshold loosening requires justification
