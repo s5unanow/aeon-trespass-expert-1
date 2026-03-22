@@ -25,6 +25,8 @@ from atr_schemas.enums import (
     InlineType,
     LanguageCode,
     OccurrenceContext,
+    PatchScope,
+    PatchTargetKind,
     QALayer,
     RegionKind,
     Severity,
@@ -73,7 +75,7 @@ from atr_schemas.page_ir_v1 import (
     UnknownBlock,
     XrefInline,
 )
-from atr_schemas.patch_set_v1 import PatchSetV1
+from atr_schemas.patch_set_v1 import PatchOperation, PatchProvenance, PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.raster_meta_v1 import RasterLevel, RasterMetaV1
@@ -169,7 +171,11 @@ __all__ = [
     "PageEvidenceV1",
     "PageIRV1",
     "ParagraphBlock",
+    "PatchOperation",
+    "PatchProvenance",
+    "PatchScope",
     "PatchSetV1",
+    "PatchTargetKind",
     "ProvenanceRef",
     "QALayer",
     "QARecordV1",

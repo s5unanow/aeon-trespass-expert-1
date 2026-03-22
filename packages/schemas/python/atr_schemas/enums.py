@@ -99,6 +99,28 @@ class AnchorEdgeKind(StrEnum):
     ASIDE_TO_MAIN = "aside_to_main"
 
 
+class PatchTargetKind(StrEnum):
+    """Which artifact schema a patch set targets."""
+
+    PAGE_IR = "page_ir"
+    RESOLVED_PAGE = "resolved_page"
+    LAYOUT_PAGE = "layout_page"
+    PAGE_EVIDENCE = "page_evidence"
+
+
+class PatchScope(StrEnum):
+    """Classification of what a patch operation corrects."""
+
+    TEXT = "text"
+    BLOCK_STRUCTURE = "block_structure"
+    READING_ORDER = "reading_order"
+    REGION_ASSIGNMENT = "region_assignment"
+    ASSET_LINK = "asset_link"
+    SYMBOL_RESOLUTION = "symbol_resolution"
+    CONFIDENCE_OVERRIDE = "confidence_override"
+    FALLBACK_RESOLUTION = "fallback_resolution"
+
+
 class AssetSourceKind(StrEnum):
     """How the asset was originally captured."""
 
