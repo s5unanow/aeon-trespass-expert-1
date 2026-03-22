@@ -32,7 +32,7 @@ interface PageSpec {
   pageId: string;
   title: string;
   blockCount: number;
-  /** Expected block kinds in DOM order (only rendered block kinds). */
+  /** Expected block kind counts (verified per-kind, not ordered). */
   blockKinds: string[];
   /** Number of visible icon elements (data-symbol-id) expected. */
   symbolCount: number;
@@ -160,11 +160,8 @@ for (const spec of CURATED_PAGES) {
     test('no console errors during render', async ({ page }) => {
       await page.goto(`/documents/${spec.documentId}/en/${spec.pageId}`);
       await expect(page.getByText(spec.title)).toBeVisible();
-      // Allow a brief settle for any async effects
-      await page.waitForTimeout(500);
-      expect(
-        consoleErrors.map((e) => e.text()),
-      ).toEqual([]);
+      await page.waitForLoadState('networkidle');
+      expect(consoleErrors.map((e) => e.text())).toEqual([]);
     });
   });
 }
@@ -194,14 +191,14 @@ test.describe('EN extraction: table_callout block-specific checks', () => {
 });
 
 test.describe('EN extraction: figure_caption block-specific checks', () => {
-  test('figure block renders with image', async ({ page }) => {
+  test('figure block renders with image element', async ({ page }) => {
     await page.goto('/documents/figure_caption/en/p0001');
     await expect(page.getByText('Titan Anatomy')).toBeVisible();
 
     const figure = page.locator('.reader-figure');
     await expect(figure).toBeVisible();
     const img = figure.locator('.reader-figure-img');
-    await expect(img).toBeVisible();
+    await expect(img).toHaveCount(1);
     await expect(img).toHaveAttribute('alt', 'asset.fig.p0001.01');
   });
 

@@ -49,7 +49,7 @@
   },
   "source_map": {
     "page_id": "p0001",
-    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003", "p0001.b004"]
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003"]
   },
   "build_meta": null
 }
