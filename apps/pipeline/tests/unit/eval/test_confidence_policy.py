@@ -45,7 +45,7 @@ def _default_policy() -> ConfidenceBandPolicy:
             ConfidenceBand(
                 name="primary",
                 min_confidence=0.85,
-                max_confidence=1.01,
+                max_confidence=1.0,
                 action=BandAction.PRIMARY,
             ),
         ],
@@ -88,7 +88,7 @@ class TestLoadConfidenceBands:
             "[[bands]]\n"
             'name = "only"\n'
             "min_confidence = 0.0\n"
-            "max_confidence = 1.01\n"
+            "max_confidence = 1.0\n"
             'action = "primary"\n'
         )
         policy = load_confidence_bands(repo_root=tmp_path)
@@ -124,7 +124,7 @@ class TestPolicyValidation:
                     ConfidenceBand(
                         name="high",
                         min_confidence=0.50,
-                        max_confidence=1.01,
+                        max_confidence=1.0,
                         action=BandAction.PRIMARY,
                     ),
                 ]
@@ -144,7 +144,7 @@ class TestPolicyValidation:
                     ConfidenceBand(
                         name="high",
                         min_confidence=0.50,
-                        max_confidence=1.01,
+                        max_confidence=1.0,
                         action=BandAction.PRIMARY,
                     ),
                 ]
@@ -158,7 +158,7 @@ class TestPolicyValidation:
                     ConfidenceBand(
                         name="only",
                         min_confidence=0.5,
-                        max_confidence=1.01,
+                        max_confidence=1.0,
                         action=BandAction.PRIMARY,
                     ),
                 ]
@@ -265,7 +265,7 @@ class TestEvaluatePageConfidence:
                 ConfidenceBand(
                     name="only",
                     min_confidence=0.0,
-                    max_confidence=1.01,
+                    max_confidence=1.0,
                     action=BandAction.PRIMARY,
                     description="test description",
                 ),

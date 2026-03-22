@@ -29,8 +29,8 @@ class ConfidenceBand(BaseModel):
     """A single named confidence band with a threshold range and action."""
 
     name: str
-    min_confidence: float = Field(ge=0.0, le=1.01)
-    max_confidence: float = Field(ge=0.0, le=1.01)
+    min_confidence: float = Field(ge=0.0, le=1.0)
+    max_confidence: float = Field(ge=0.0, le=1.0)
     action: BandAction
     description: str = ""
 
