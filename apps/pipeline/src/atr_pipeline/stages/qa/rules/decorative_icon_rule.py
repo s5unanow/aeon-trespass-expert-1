@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 
 from atr_schemas.enums import QALayer, Severity
-from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.qa_record_v1 import AutoFix, QARecordV1
 from atr_schemas.render_page_v1 import RenderDividerBlock, RenderPageV1
 
 # Raw asset tokens: two uppercase letters followed by four digits
@@ -64,6 +64,7 @@ def evaluate_decorative_icons(render_page: RenderPageV1) -> list[QARecordV1]:
                         page_id=page_id,
                         entity_ref=block.id,
                         message=reason,
+                        auto_fix=AutoFix(available=True, fixer="remove_decorative"),
                     )
                 )
                 break  # one record per block

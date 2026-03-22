@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from atr_schemas.enums import QALayer, Severity
-from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.qa_record_v1 import AutoFix, QARecordV1
 from atr_schemas.render_page_v1 import RenderDividerBlock, RenderPageV1
 
 DEFAULT_MAX_CHARS = 1000
@@ -39,6 +39,7 @@ def evaluate_paragraph_length(
                     message=f"Block has {total} chars (max {max_chars})",
                     expected={"max_chars": max_chars},
                     actual={"chars": total},
+                    auto_fix=AutoFix(available=True, fixer="split_paragraph"),
                 )
             )
 

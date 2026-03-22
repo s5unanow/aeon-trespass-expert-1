@@ -8,6 +8,7 @@ from collections import Counter
 import typer
 
 from atr_pipeline.config import load_document_config
+from atr_pipeline.stages.qa.auto_fix import generate_patches_for_page
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
@@ -24,6 +25,11 @@ def qa(
         "--review-pack",
         help="Generate review pack JSON for blocking findings",
     ),
+    auto_fix: bool = typer.Option(
+        False,
+        "--auto-fix",
+        help="Generate patch files for deterministic auto-fixes",
+    ),
 ) -> None:
     """Run QA checks on existing artifacts for a document."""
     config = load_document_config(doc)
@@ -36,6 +42,7 @@ def qa(
 
     rules = get_all_rules()
     all_records: list[QARecordV1] = []
+    page_renders: dict[str, RenderPageV1] = {}
 
     for page_id in page_ids:
         en_ir = _load_ir(store, doc, "page_ir.v1.en", page_id)
@@ -49,6 +56,8 @@ def qa(
         ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
         for rule in rules:
             all_records.extend(rule.evaluate(ctx))
+        if auto_fix:
+            page_renders[page_id] = render
 
     waivers_dir = config.repo_root / config.qa.waivers_dir
     waivers = load_waivers(waivers_dir, doc)
@@ -63,9 +72,50 @@ def qa(
     if review_pack:
         _write_review_pack(store, doc, all_records, block_on)
 
+    if auto_fix:
+        _write_auto_fix_patches(store, doc, all_records, page_renders)
+
     has_blocking = any(r.severity.value in block_on and not r.waived for r in all_records)
     if has_blocking:
         raise typer.Exit(1)
+
+
+def _write_auto_fix_patches(
+    store: ArtifactStore,
+    doc: str,
+    records: list[QARecordV1],
+    page_renders: dict[str, RenderPageV1],
+) -> None:
+    """Generate and persist auto-fix patch sets grouped by page."""
+    fixable = [r for r in records if r.auto_fix and r.auto_fix.available and not r.waived]
+    if not fixable:
+        typer.echo("\nNo auto-fixable findings.")
+        return
+
+    by_page: dict[str, list[QARecordV1]] = {}
+    for r in fixable:
+        pid = r.page_id or ""
+        by_page.setdefault(pid, []).append(r)
+
+    written = 0
+    for page_id, page_records in sorted(by_page.items()):
+        render = page_renders.get(page_id)
+        if render is None:
+            continue
+        patch_set = generate_patches_for_page(page_records, render)
+        if patch_set is None:
+            continue
+        ref = store.put_json(
+            document_id=doc,
+            schema_family="patch_set.v1",
+            scope="page",
+            entity_id=page_id,
+            data=patch_set,
+        )
+        typer.echo(f"  Patch: {ref.relative_path}")
+        written += 1
+
+    typer.echo(f"\nAuto-fix: {written} patch file(s) generated from {len(fixable)} finding(s)")
 
 
 def _write_review_pack(

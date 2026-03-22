@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from atr_schemas.enums import QALayer, Severity
-from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.qa_record_v1 import AutoFix, QARecordV1
 from atr_schemas.render_page_v1 import RenderBlock, RenderDividerBlock, RenderPageV1
 
 DEFAULT_JACCARD_THRESHOLD = 0.9
@@ -64,6 +64,7 @@ def evaluate_duplicate_content(
                     page_id=page_id,
                     entity_ref=block.id,
                     message=f"Near-duplicate of preceding block {prev_id}",
+                    auto_fix=AutoFix(available=True, fixer="delete_duplicate"),
                 )
             )
 
