@@ -88,6 +88,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 ### 4. Definition of done (all must be true before PR)
 - [ ] Code changes directly address the Linear issue description
 - [ ] New/changed code has tests (unless pure config/docs change)
+- [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 12 gates — local green alone is not sufficient)
 
