@@ -126,18 +126,27 @@ def check_path_references(root: Path) -> list[Finding]:
 
 
 def _count_numbered_items(text: str, section_heading: str) -> int:
-    """Count numbered list items under a markdown section."""
+    """Count numbered list items under a markdown section.
+
+    Respects heading hierarchy: only stops at headings of the same level
+    or higher than the matched section, not at deeper subsections.
+    """
     in_section = False
+    section_level = 0
     count = 0
     for line in text.splitlines():
-        lower = line.lower().strip()
-        if section_heading.lower() in lower and lower.startswith("#"):
-            in_section = True
+        stripped = line.strip()
+        lower = stripped.lower()
+        if not in_section:
+            if lower.startswith("#") and section_heading.lower() in lower:
+                in_section = True
+                section_level = len(stripped) - len(stripped.lstrip("#"))
             continue
-        if in_section:
-            if re.match(r"^\d+\.", line.strip()):
-                count += 1
-            elif line.strip().startswith("#"):
+        if re.match(r"^\d+\.", stripped):
+            count += 1
+        elif stripped.startswith("#"):
+            heading_level = len(stripped) - len(stripped.lstrip("#"))
+            if heading_level <= section_level:
                 break
     return count
 
@@ -147,10 +156,12 @@ def check_gate_consistency(root: Path) -> list[Finding]:
     findings: list[Finding] = []
     gate_counts: dict[str, int] = {}
 
-    for name in ("CLAUDE.md", "AGENTS.md"):
+    # CLAUDE.md lists gates under ### Local subsection; AGENTS.md has a flat list.
+    section_map = {"CLAUDE.md": "local", "AGENTS.md": "quality gates"}
+    for name, section in section_map.items():
         p = root / name
         if p.exists():
-            gate_counts[name] = _count_numbered_items(p.read_text(), "quality gates")
+            gate_counts[name] = _count_numbered_items(p.read_text(), section)
 
     hook = root / ".claude" / "hooks" / "pre-commit-check.sh"
     if hook.exists():
@@ -160,8 +171,8 @@ def check_gate_consistency(root: Path) -> list[Finding]:
     preflight = root / ".claude" / "skills" / "preflight" / "SKILL.md"
     if preflight.exists():
         text = preflight.read_text()
-        gate_counts[".claude/skills/preflight/SKILL.md"] = len(
-            re.findall(r"^###\s+\d+\.", text, re.MULTILINE)
+        gate_counts[".claude/skills/preflight/SKILL.md"] = _count_numbered_items(
+            text, "gates"
         )
 
     if gate_counts:

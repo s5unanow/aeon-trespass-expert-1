@@ -33,7 +33,7 @@ def health_module() -> Iterator[ModuleType]:
 def healthy_repo(tmp_path: Path) -> Path:
     """Create a minimal repo structure that passes all checks."""
     (tmp_path / "CLAUDE.md").write_text(
-        "## Quality gates\n1. ruff check\n2. ruff format\n3. mypy\n"
+        "## Quality gates\n\n### Local\n1. ruff check\n2. ruff format\n3. mypy\n"
     )
     (tmp_path / "AGENTS.md").write_text(
         "## Quality gates\n1. ruff check\n2. ruff format\n3. mypy\n"
@@ -94,6 +94,43 @@ class TestGateConsistency:
         assert "mismatch" in findings[0][2]
         assert "CLAUDE.md: 3" in findings[0][2]
         assert "AGENTS.md: 2" in findings[0][2]
+
+    def test_nested_subsections_counted(
+        self, health_module: ModuleType, healthy_repo: Path
+    ) -> None:
+        """Numbered items under ### subsections are counted correctly."""
+        (healthy_repo / "CLAUDE.md").write_text(
+            "## Quality gates\n\n"
+            "### Local (pre-commit hook, 8 gates)\n\n"
+            "1. ruff check\n"
+            "2. ruff format\n"
+            "3. mypy\n\n"
+            "### CI (3 extra)\n\n"
+            "4. codegen check\n"
+            "5. fixture check\n"
+            "## Next section\n"
+        )
+        (healthy_repo / "AGENTS.md").write_text(
+            "## Quality gates\n1. ruff check\n2. ruff format\n3. mypy\n"
+        )
+        findings = health_module.check_gate_consistency(healthy_repo)
+        # CLAUDE.md counts under ### Local = 3, AGENTS.md = 3 → match
+        assert findings == []
+
+    def test_preflight_gates_counted(
+        self, health_module: ModuleType, healthy_repo: Path
+    ) -> None:
+        """Preflight SKILL.md gates are counted via numbered items under ## Gates."""
+        preflight_dir = healthy_repo / ".claude" / "skills" / "preflight"
+        preflight_dir.mkdir(parents=True)
+        (preflight_dir / "SKILL.md").write_text(
+            "# Preflight\n\n## Gates\n\n"
+            "1. ruff check\n2. ruff format\n3. mypy\n\n"
+            "## Reporting\n"
+        )
+        findings = health_module.check_gate_consistency(healthy_repo)
+        # All surfaces now have 3 → match
+        assert findings == []
 
     def test_hook_gate_count_included(self, health_module: ModuleType, healthy_repo: Path) -> None:
         hooks_dir = healthy_repo / ".claude" / "hooks"
