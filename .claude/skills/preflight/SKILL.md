@@ -1,93 +1,34 @@
 ---
 name: preflight
-description: Run all quality gates before committing. Use when you're about to commit, want to verify code readiness, or need to check if changes will pass CI.
+description: Run all quality gates before committing. Use when about to commit, verifying code readiness, or checking if changes will pass CI.
 ---
 
 # Preflight quality check
 
-Run all 8 quality gates from the repo root. Collect ALL results before reporting — do not stop at the first failure.
+Run all 8 gates from repo root. Collect ALL results before reporting — do not stop at first failure.
 
-## Output management
+## Output rules
 
-For each gate, minimize context usage:
-- On **success**: report only `✓ <gate> passed` — do not include full command output
-- On **failure**: show only the first 30 lines of output, then note how many lines were truncated (e.g., `... (42 more lines truncated)`)
+- **Pass**: report only `✓ <gate> passed` — no full output
+- **Fail**: show first 30 lines, note truncation count
+- Skip frontend gates (7-8) if no frontend files changed
 
-This keeps context lean across multi-commit sessions.
+## Gates
 
-## Gates to run
-
-Run each gate and record pass/fail:
-
-### 1. Ruff lint
-```bash
-uv run ruff check apps/pipeline/src apps/pipeline/tests packages/schemas/python
-```
-
-### 2. Ruff format
-```bash
-uv run ruff format --check apps/pipeline/src apps/pipeline/tests packages/schemas/python
-```
-
-### 3. Mypy (strict)
-```bash
-uv run mypy apps/pipeline/src packages/schemas/python
-```
-
-### 4. lint-imports
-```bash
-uv run lint-imports
-```
-
-### 5. File length check
-```bash
-uv run python scripts/check_file_length.py
-```
-
-### 6. Pytest (fast)
-```bash
-uv run pytest -x -q --timeout=60 -m "not slow"
-```
-
-### 7. ESLint (frontend)
-```bash
-cd apps/web && pnpm lint
-```
-
-### 8. TypeScript (frontend)
-```bash
-cd apps/web && pnpm typecheck
-```
+1. `uv run ruff check apps/pipeline/src apps/pipeline/tests packages/schemas/python`
+2. `uv run ruff format --check apps/pipeline/src apps/pipeline/tests packages/schemas/python`
+3. `uv run mypy apps/pipeline/src packages/schemas/python`
+4. `uv run lint-imports`
+5. `uv run python scripts/check_file_length.py`
+6. `uv run pytest -x -q --timeout=60 -m "not slow"`
+7. `cd apps/web && pnpm lint`
+8. `cd apps/web && pnpm typecheck`
 
 ## Reporting
 
-After running all gates, output a summary table:
+Output a summary table (gate / PASS|FAIL / error count). For failures, include truncated output (≤30 lines).
 
-```
-Gate            Status   Notes
-─────────────── ──────── ──────────────
-Ruff lint       PASS/FAIL  (error count)
-Ruff format     PASS/FAIL  (file count)
-Mypy            PASS/FAIL  (error count)
-lint-imports    PASS/FAIL  (error count)
-File length     PASS/FAIL  (file count)
-Pytest          PASS/FAIL  (passed/failed)
-ESLint          PASS/FAIL  (error count)
-TypeScript      PASS/FAIL  (error count)
-```
-
-For each failed gate, include the truncated error output (≤30 lines) so you can fix the issues.
-
-## Auto-fix hints
-
-- If **only ruff format** fails: run `uv run ruff format .` then re-check
-- If **only ruff lint** fails with auto-fixable rules: run `uv run ruff check --fix .` then re-check
-- If **pytest** fails: read the test output carefully, fix the code, don't skip the test
-
-## Important
-
-- This does NOT commit anything — it's purely diagnostic
-- Run from the repo root, not from a subdirectory
-- If all gates pass, say "All gates pass — ready to commit"
-- If any gate fails, fix the issues before committing
-- Skip frontend gates (ESLint, TypeScript) if no frontend files were changed
+- All pass → "All gates pass — ready to commit"
+- Any fail → fix before committing
+- Ruff format only → `uv run ruff format .` then re-check
+- Ruff lint auto-fixable → `uv run ruff check --fix .` then re-check
