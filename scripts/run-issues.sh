@@ -28,10 +28,13 @@ DRY_RUN=false
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=true ;;
-    [0-9]*)    MAX_ISSUES="$arg" ;;
     *)
-      echo "Usage: $0 [MAX_ISSUES] [--dry-run]" >&2
-      exit 1
+      if [[ "$arg" =~ ^[0-9]+$ ]] && [ "$arg" -ge 1 ]; then
+        MAX_ISSUES="$arg"
+      else
+        echo "Usage: $0 [MAX_ISSUES] [--dry-run]" >&2
+        exit 1
+      fi
       ;;
   esac
 done
@@ -78,17 +81,26 @@ while [ "$count" -lt "$MAX_ISSUES" ]; do
   # Ensure we start from main with a clean state for each issue.
   # The /next skill handles branching, but we need to be on main first.
   cd "$REPO_ROOT"
+  if ! git diff --quiet HEAD 2>/dev/null || [ -n "$(git status --porcelain)" ]; then
+    log "!!! Dirty working tree detected — stashing before checkout"
+    git stash push -m "run-issues: auto-stash before issue #$issue_num" --quiet
+  fi
   git checkout main --quiet
   git pull --quiet
 
   # Run a fresh Claude agent. /next auto-picks the highest-priority
   # unassigned Backlog issue and runs the full workflow: branch -> implement
   # -> review -> PR -> merge -> update Linear.
+  #
+  # Disable pipefail so PIPESTATUS captures claude's exit code even when
+  # piped through tee.
+  set +o pipefail
   claude -p "/next" \
     --dangerously-skip-permissions \
     --max-turns 60 2>&1 | tee -a "$LOG_FILE"
-
   exit_code=${PIPESTATUS[0]}
+  set -o pipefail
+
   count=$((count + 1))
 
   if [ "$exit_code" -ne 0 ]; then
