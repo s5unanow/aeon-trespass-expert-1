@@ -88,7 +88,6 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 ### 4. Definition of done (all must be true before PR)
 - [ ] Code changes directly address the Linear issue description
 - [ ] New/changed code has tests (unless pure config/docs change)
-- [ ] No new `except Exception` without structured logging
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 12 gates — local green alone is not sufficient)
 
@@ -118,13 +117,22 @@ If a merged PR breaks something:
 2. Revert it: `git revert <commit-sha>` (creates a new commit, does NOT rewrite history)
 3. Push the revert, open a new PR for the fix
 4. Reopen the Linear issue and set back to **In Progress**
-- **Never** use `git reset --hard` or `git push --force` on main
 
 ## Conventions
 
 - **Commit prefixes**: `S5U-XXX:` referencing the Linear issue
 - **Config format**: TOML for all pipeline/document configuration
 - Path-specific conventions (Python, TypeScript, extraction, schemas) are in `.claude/rules/` — loaded automatically when touching matching paths
+
+## NEVER
+
+- Never use `git reset --hard` or `git push --force` on main
+- Never commit .env, credentials, API keys, or secret files
+- Never write manual TypeScript types (generate from Pydantic via codegen)
+- Never add bare `except Exception` without structured logging
+- Never skip the sub-agent review before creating a PR
+- Never commit directly to main (use feature branches)
+- Never merge with failing CI
 
 ## Compact Instructions
 
