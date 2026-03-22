@@ -29,6 +29,8 @@ Read `.claude/prompts/review.md` and use it as the Agent prompt.
 git push -u origin HEAD
 ```
 
+Never use `--force` or `-f`.
+
 ## 3. Create PR
 
 ```bash
