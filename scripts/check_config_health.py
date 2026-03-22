@@ -207,8 +207,11 @@ def check_hook_registration(root: Path) -> list[Finding]:
         findings.append(("FAIL", ".claude/settings.json", "settings file not found"))
         return findings
 
-    with open(settings_path) as f:
-        settings = json.load(f)
+    try:
+        settings = json.loads(settings_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        findings.append(("FAIL", ".claude/settings.json", f"invalid JSON: {exc}"))
+        return findings
 
     hooks = settings.get("hooks", {})
     checked = 0

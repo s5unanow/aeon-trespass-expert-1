@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test codegen export clean validate-fixtures
+.PHONY: help bootstrap lint format typecheck test codegen export clean validate-fixtures config-health
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
