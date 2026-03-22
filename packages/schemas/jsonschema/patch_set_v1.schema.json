@@ -14,6 +14,18 @@
         "value": {
           "default": null,
           "title": "Value"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PatchScope"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Classification of what this operation corrects"
         }
       },
       "required": [
@@ -22,6 +34,87 @@
       ],
       "title": "PatchOperation",
       "type": "object"
+    },
+    "PatchProvenance": {
+      "description": "Tracks who/what created the patch and its expected confidence impact.",
+      "properties": {
+        "author": {
+          "default": "",
+          "title": "Author",
+          "type": "string"
+        },
+        "created_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created At"
+        },
+        "source_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Page confidence before patch",
+          "title": "Source Confidence"
+        },
+        "expected_confidence_delta": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": -1.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Expected change in page confidence after patch",
+          "title": "Expected Confidence Delta"
+        }
+      },
+      "title": "PatchProvenance",
+      "type": "object"
+    },
+    "PatchScope": {
+      "description": "Classification of what a patch operation corrects.",
+      "enum": [
+        "text",
+        "block_structure",
+        "reading_order",
+        "region_assignment",
+        "asset_link",
+        "symbol_resolution",
+        "confidence_override",
+        "fallback_resolution"
+      ],
+      "title": "PatchScope",
+      "type": "string"
+    },
+    "PatchTargetKind": {
+      "description": "Which artifact schema a patch set targets.",
+      "enum": [
+        "page_ir",
+        "resolved_page",
+        "layout_page",
+        "page_evidence"
+      ],
+      "title": "PatchTargetKind",
+      "type": "string"
     }
   },
   "description": "A set of typed patches for a specific artifact.",
@@ -41,6 +134,18 @@
       "title": "Target Artifact Ref",
       "type": "string"
     },
+    "target_kind": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PatchTargetKind"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Which artifact schema this patch targets"
+    },
     "operations": {
       "items": {
         "$ref": "#/$defs/PatchOperation"
@@ -57,6 +162,17 @@
       "default": "",
       "title": "Author",
       "type": "string"
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PatchProvenance"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     }
   },
   "required": [
