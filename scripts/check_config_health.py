@@ -171,9 +171,7 @@ def check_gate_consistency(root: Path) -> list[Finding]:
     preflight = root / ".claude" / "skills" / "preflight" / "SKILL.md"
     if preflight.exists():
         text = preflight.read_text()
-        gate_counts[".claude/skills/preflight/SKILL.md"] = _count_numbered_items(
-            text, "gates"
-        )
+        gate_counts[".claude/skills/preflight/SKILL.md"] = _count_numbered_items(text, "gates")
 
     if gate_counts:
         values = set(gate_counts.values())

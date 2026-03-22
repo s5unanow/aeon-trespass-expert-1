@@ -117,16 +117,12 @@ class TestGateConsistency:
         # CLAUDE.md counts under ### Local = 3, AGENTS.md = 3 → match
         assert findings == []
 
-    def test_preflight_gates_counted(
-        self, health_module: ModuleType, healthy_repo: Path
-    ) -> None:
+    def test_preflight_gates_counted(self, health_module: ModuleType, healthy_repo: Path) -> None:
         """Preflight SKILL.md gates are counted via numbered items under ## Gates."""
         preflight_dir = healthy_repo / ".claude" / "skills" / "preflight"
         preflight_dir.mkdir(parents=True)
         (preflight_dir / "SKILL.md").write_text(
-            "# Preflight\n\n## Gates\n\n"
-            "1. ruff check\n2. ruff format\n3. mypy\n\n"
-            "## Reporting\n"
+            "# Preflight\n\n## Gates\n\n1. ruff check\n2. ruff format\n3. mypy\n\n## Reporting\n"
         )
         findings = health_module.check_gate_consistency(healthy_repo)
         # All surfaces now have 3 → match
