@@ -6,6 +6,7 @@ import json
 
 from pydantic import BaseModel, Field
 
+from atr_pipeline.eval.confidence_scorer import score_page_from_artifacts
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.assets.resolver import (
     ResolvedSymbolPlacement,
@@ -22,7 +23,7 @@ from atr_pipeline.stages.structure.reading_order import (
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_pipeline.stages.structure.region_graph import segment_regions
 from atr_pipeline.stages.structure.semantic_resolver import SemanticResolution, resolve_semantics
-from atr_schemas.common import ConfidenceMetrics, ProvenanceRef
+from atr_schemas.common import ProvenanceRef
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
@@ -135,12 +136,12 @@ class StructureStage:
                 version=self.version,
                 evidence_ids=[f"route:{route}"],
             )
-            if layout and layout.difficulty:
-                d = layout.difficulty
-                ir.confidence = ConfidenceMetrics(
-                    native_text_coverage=d.native_text_coverage,
-                    page_confidence=d.extractor_agreement,
-                )
+            difficulty = layout.difficulty if layout else None
+            ir.confidence = score_page_from_artifacts(
+                difficulty=difficulty,
+                layout=layout,
+                page_ir=ir,
+            )
 
             ctx.artifact_store.put_json(
                 document_id=ctx.document_id,

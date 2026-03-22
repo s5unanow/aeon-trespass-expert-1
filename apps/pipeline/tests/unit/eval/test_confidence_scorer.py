@@ -123,6 +123,43 @@ class TestCollectSignals:
         inputs = collect_signals(page_ir=ir)
         assert inputs.reading_order_completeness == 1.0
 
+    def test_reading_order_duplicate_ids_not_inflated(self) -> None:
+        """Duplicate IDs in reading_order should not inflate the score."""
+        ir = _make_page_ir(block_count=3, ordered_count=0)
+        # Manually set reading_order with duplicates of the first block
+        ir.reading_order = ["p0001.b000", "p0001.b000", "p0001.b000"]
+        inputs = collect_signals(page_ir=ir)
+        # Only 1 unique valid ID out of 3 blocks
+        assert inputs.reading_order_completeness == pytest.approx(1.0 / 3.0)
+
+    def test_reading_order_foreign_ids_ignored(self) -> None:
+        """IDs not present in blocks should not count toward completeness."""
+        ir = _make_page_ir(block_count=3, ordered_count=0)
+        ir.reading_order = ["p0001.b000", "foreign_1", "foreign_2"]
+        inputs = collect_signals(page_ir=ir)
+        # Only 1 valid ID out of 3 blocks
+        assert inputs.reading_order_completeness == pytest.approx(1.0 / 3.0)
+
+    def test_reading_order_mixed_duplicates_and_foreign(self) -> None:
+        """Combined duplicates and foreign IDs should both be handled."""
+        ir = _make_page_ir(block_count=4, ordered_count=0)
+        ir.reading_order = [
+            "p0001.b000",
+            "p0001.b000",  # duplicate
+            "p0001.b001",
+            "foreign_id",  # foreign
+        ]
+        inputs = collect_signals(page_ir=ir)
+        # 2 unique valid IDs out of 4 blocks
+        assert inputs.reading_order_completeness == pytest.approx(0.5)
+
+    def test_reading_order_all_foreign(self) -> None:
+        """All foreign IDs → zero completeness."""
+        ir = _make_page_ir(block_count=2, ordered_count=0)
+        ir.reading_order = ["ghost_1", "ghost_2"]
+        inputs = collect_signals(page_ir=ir)
+        assert inputs.reading_order_completeness == 0.0
+
     def test_symbol_confidence_mean(self) -> None:
         ir = _make_page_ir(icon_confidences=[0.9, 0.5])
         inputs = collect_signals(page_ir=ir)
