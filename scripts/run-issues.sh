@@ -116,6 +116,13 @@ while [ "$count" -lt "$MAX_ISSUES" ]; do
 
   if [ "$exit_code" -ne 0 ]; then
     log "!!! Claude exited with code $exit_code on issue #$issue_num"
+
+    # Unrecoverable infrastructure errors — don't waste cycles retrying
+    if [ "$exit_code" -ge 126 ]; then
+      log "!!! Exit code >= 126 (infrastructure failure) — stopping"
+      failed+=("issue-$issue_num (exit $exit_code)")
+      break
+    fi
   fi
 
   # -----------------------------------------------------------------------
@@ -148,9 +155,13 @@ while [ "$count" -lt "$MAX_ISSUES" ]; do
       log "[ERROR] Issue #$issue_num did not ship after retry (branch: $current_branch, exit: $retry_exit)"
       failed+=("$current_branch")
 
-      # Return to main so the next issue can start clean
+      # Return to main so the next issue can start clean.
+      # The repo may be in a conflict/rebase state, so abort those first.
+      git rebase --abort 2>/dev/null || true
+      git merge --abort 2>/dev/null || true
       if ! git diff --quiet HEAD 2>/dev/null || [ -n "$(git status --porcelain)" ]; then
-        git stash push -m "run-issues: auto-stash failed issue on $current_branch" --quiet
+        git stash push -m "run-issues: auto-stash failed issue on $current_branch" --quiet || \
+          git checkout -- . 2>/dev/null || true
       fi
       git checkout main --quiet
       git pull --quiet
