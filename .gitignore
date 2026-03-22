@@ -65,5 +65,8 @@ var/*.db-wal
 .env.local
 .env.*.local
 
+# Session handoff (ephemeral, not committed)
+HANDOFF.md
+
 # review
 review/
