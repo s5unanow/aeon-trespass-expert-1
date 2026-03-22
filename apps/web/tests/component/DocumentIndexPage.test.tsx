@@ -120,6 +120,41 @@ describe('DocumentIndexPage', () => {
     expect(screen.getByText('ato_core_v1_1 (EN)')).toBeDefined();
   });
 
+  it('uses index.json when available instead of hardcoded list', async () => {
+    const index = {
+      documents: [{ document_id: 'custom_doc', editions: ['en'] }],
+    };
+    fetchSpy.mockImplementation((url) => {
+      const urlStr = String(url);
+      if (urlStr.endsWith('/documents/index.json')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(index),
+        } as Response);
+      }
+      if (urlStr.includes('custom_doc') && urlStr.includes('/en/')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              document_id: 'custom_doc',
+              pages: [{ page_id: 'p0001', title: 'Dynamic' }],
+            }),
+        } as Response);
+      }
+      return Promise.resolve({ ok: false, status: 404 } as Response);
+    });
+
+    render(<DocumentIndexPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('custom_doc (EN)')).toBeDefined();
+    });
+    // Hardcoded documents should NOT appear
+    expect(screen.queryByText(/ato_core/)).toBeNull();
+    expect(screen.queryByText(/walking_skeleton/)).toBeNull();
+  });
+
   it('formats page numbers without leading zeros', async () => {
     fetchSpy.mockImplementation((url) => {
       const urlStr = String(url);

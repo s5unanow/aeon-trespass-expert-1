@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""Export pipeline artifacts to the web viewer public directory.
-
-Picks the best render version per page (edition-aware scoring),
-populates prev/next navigation, extracts embedded images from the source PDF,
-and writes everything to apps/web/public/documents/{doc_id}/{edition}/.
-
-Usage:
-    python scripts/export_to_web.py                     # Export all editions
-    python scripts/export_to_web.py --edition en        # Export EN only
-    python scripts/export_to_web.py --edition ru        # Export RU only
-    python scripts/export_to_web.py --doc walking_skeleton --edition en
-"""
+"""Export pipeline artifacts to apps/web/public/documents/{doc_id}/{edition}/."""
 
 from __future__ import annotations
 
@@ -28,10 +17,7 @@ PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
 
 def score_render(data: dict, edition: str = "ru") -> int:
-    """Score a render artifact — higher = better quality.
-
-    For RU edition, prefers Cyrillic text. For EN, prefers Latin-only.
-    """
+    """Score a render artifact — higher = better quality."""
     blocks = data.get("blocks", [])
     texts = [
         c.get("text", "")
@@ -53,7 +39,7 @@ def score_render(data: dict, edition: str = "ru") -> int:
 
 
 def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
-    """Extract significant images from the PDF, save to web public, return per-page map."""
+    """Extract images from PDF and save to web public dir."""
     if not PDF_PATH.exists():
         print(f"  PDF not found at {PDF_PATH}, skipping image extraction")
         return {}
@@ -120,7 +106,7 @@ def _text_content(block: dict) -> str:
 
 
 def _postprocess_blocks(blocks: list[dict]) -> list[dict]:
-    """Post-process render blocks: strip decorative icons, split long paragraphs, deduplicate."""
+    """Strip decorative icons, split long paragraphs, deduplicate."""
     result: list[dict] = []
 
     for block in blocks:
@@ -239,16 +225,18 @@ def _is_duplicate(blocks: list[dict], block: dict) -> bool:
     return False
 
 
+_KIND_MAP = {
+    "list_item": "list_items",
+    "figure": "figures",
+    "heading": "headings",
+    "paragraph": "paragraphs",
+}
+
+
 def _count_block_stats(blocks: list[dict], stats: dict) -> None:
     """Accumulate block kind counts into stats dict."""
-    kind_map = {
-        "list_item": "list_items",
-        "figure": "figures",
-        "heading": "headings",
-        "paragraph": "paragraphs",
-    }
     for b in blocks:
-        key = kind_map.get(b.get("kind", ""))
+        key = _KIND_MAP.get(b.get("kind", ""))
         if key:
             stats[key] += 1
         if b.get("kind") == "paragraph" and len(_text_content(b)) > 800:
@@ -269,13 +257,7 @@ def export_pages(
 
     page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
     pages_meta = []
-    stats = {
-        "list_items": 0,
-        "figures": 0,
-        "headings": 0,
-        "paragraphs": 0,
-        "long_paras": 0,
-    }
+    stats = {"list_items": 0, "figures": 0, "headings": 0, "paragraphs": 0, "long_paras": 0}
 
     for i, pid in enumerate(page_ids):
         page_dir = render_src / pid
@@ -356,14 +338,34 @@ def export_pages(
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Export pipeline artifacts to web viewer")
-    parser.add_argument("--doc", default="ato_core_v1_1", help="Document ID to export")
-    parser.add_argument(
-        "--edition",
-        choices=["en", "ru", "all"],
-        default="all",
-        help="Edition to export (default: all)",
-    )
+    parser.add_argument("--doc", default="ato_core_v1_1", help="Document ID")
+    parser.add_argument("--edition", choices=["en", "ru", "all"], default="all", help="Edition")
     return parser.parse_args(argv)
+
+
+def _build_document_index(documents_root: Path) -> list[dict]:
+    """Scan documents directory and return list of {document_id, editions}."""
+    if not documents_root.exists():
+        return []
+    entries: list[dict] = []
+    for doc_dir in sorted(documents_root.iterdir()):
+        if not doc_dir.is_dir() or doc_dir.name.startswith("."):
+            continue
+        editions = sorted(
+            d.name for d in doc_dir.iterdir() if d.is_dir() and (d / "manifest.json").exists()
+        )
+        if editions:
+            entries.append({"document_id": doc_dir.name, "editions": editions})
+    return entries
+
+
+def write_document_index(documents_root: Path) -> None:
+    """Write /documents/index.json listing all exported documents and editions."""
+    entries = _build_document_index(documents_root)
+    (documents_root / "index.json").write_text(
+        json.dumps({"documents": entries}, ensure_ascii=False, indent=2)
+    )
+    print(f"Wrote document index: {len(entries)} document(s)")
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -372,7 +374,8 @@ def main(argv: list[str] | None = None) -> None:
     editions = ["en", "ru"] if args.edition == "all" else [args.edition]
 
     render_src = ARTIFACT_ROOT / doc_id / "render_page.v1" / "page"
-    doc_public = REPO / "apps" / "web" / "public" / "documents" / doc_id
+    documents_root = REPO / "apps" / "web" / "public" / "documents"
+    doc_public = documents_root / doc_id
 
     if not render_src.exists():
         print(f"No render artifacts found at {render_src}")
@@ -385,6 +388,7 @@ def main(argv: list[str] | None = None) -> None:
         print(f"Exporting {edition.upper()} render pages...")
         export_pages(doc_id, edition, render_src, doc_public, page_images)
 
+    write_document_index(documents_root)
     print("Done.")
 
 

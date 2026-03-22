@@ -82,6 +82,56 @@ class TestParseArgs:
         assert args.doc == "walking_skeleton"
 
 
+class TestBuildDocumentIndex:
+    def test_empty_directory(self, tmp_path: Path, export_module: ModuleType) -> None:
+        docs_root = tmp_path / "documents"
+        docs_root.mkdir()
+        result = export_module._build_document_index(docs_root)
+        assert result == []
+
+    def test_nonexistent_directory(self, tmp_path: Path, export_module: ModuleType) -> None:
+        result = export_module._build_document_index(tmp_path / "missing")
+        assert result == []
+
+    def test_single_doc_single_edition(self, tmp_path: Path, export_module: ModuleType) -> None:
+        docs_root = tmp_path / "documents"
+        (docs_root / "doc1" / "en").mkdir(parents=True)
+        (docs_root / "doc1" / "en" / "manifest.json").write_text("{}")
+        result = export_module._build_document_index(docs_root)
+        assert result == [{"document_id": "doc1", "editions": ["en"]}]
+
+    def test_multiple_docs_and_editions(self, tmp_path: Path, export_module: ModuleType) -> None:
+        docs_root = tmp_path / "documents"
+        for doc, editions in [("aaa", ["en", "ru"]), ("bbb", ["en"])]:
+            for ed in editions:
+                (docs_root / doc / ed).mkdir(parents=True)
+                (docs_root / doc / ed / "manifest.json").write_text("{}")
+        result = export_module._build_document_index(docs_root)
+        assert result == [
+            {"document_id": "aaa", "editions": ["en", "ru"]},
+            {"document_id": "bbb", "editions": ["en"]},
+        ]
+
+    def test_skips_dirs_without_manifest(self, tmp_path: Path, export_module: ModuleType) -> None:
+        docs_root = tmp_path / "documents"
+        (docs_root / "doc1" / "en").mkdir(parents=True)
+        (docs_root / "doc1" / "en" / "manifest.json").write_text("{}")
+        # images dir has no manifest — should be ignored
+        (docs_root / "doc1" / "images").mkdir(parents=True)
+        result = export_module._build_document_index(docs_root)
+        assert result == [{"document_id": "doc1", "editions": ["en"]}]
+
+
+class TestWriteDocumentIndex:
+    def test_writes_index_json(self, tmp_path: Path, export_module: ModuleType) -> None:
+        docs_root = tmp_path / "documents"
+        (docs_root / "doc1" / "en").mkdir(parents=True)
+        (docs_root / "doc1" / "en" / "manifest.json").write_text("{}")
+        export_module.write_document_index(docs_root)
+        index = json.loads((docs_root / "index.json").read_text())
+        assert index == {"documents": [{"document_id": "doc1", "editions": ["en"]}]}
+
+
 class TestExportPages:
     def _setup_render_artifacts(
         self, tmp_path: Path, doc_id: str, pages: list[str], has_cyrillic: bool = False
