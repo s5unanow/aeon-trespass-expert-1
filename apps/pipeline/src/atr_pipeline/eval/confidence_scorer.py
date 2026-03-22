@@ -7,14 +7,11 @@ no ML models — so that confidence is reproducible from the same inputs.
 
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass
 
 from atr_schemas.common import ConfidenceMetrics
 from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1
 from atr_schemas.page_ir_v1 import IconInline, PageIRV1
-
-logger = logging.getLogger(__name__)
 
 # ── Weights for the aggregate page_confidence score ───────────────────
 
