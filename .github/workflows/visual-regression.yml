@@ -28,5 +28,13 @@ jobs:
       - name: Build
         run: pnpm --filter @atr/web run build
 
-      - name: Run visual regression tests
-        run: pnpm --filter @atr/web run test:e2e
+      - name: Run e2e and visual regression tests
+        run: pnpm --filter @atr/web run test:e2e --update-snapshots
+
+      - name: Upload snapshot artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-snapshots
+          path: apps/web/tests/e2e/__snapshots__/
+          retention-days: 30

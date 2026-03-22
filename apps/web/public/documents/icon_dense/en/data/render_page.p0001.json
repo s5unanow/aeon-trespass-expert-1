@@ -1,0 +1,69 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0001",
+    "title": "Action Costs",
+    "section_path": [],
+    "source_page_number": 1
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 2,
+      "children": [
+        { "kind": "text", "text": "Action Costs", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b002",
+      "children": [
+        { "kind": "text", "text": "Gain 2 ", "marks": [] },
+        { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
+        { "kind": "text", "text": " and 1 ", "marks": [] },
+        { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
+        { "kind": "text", "text": " per round.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b003",
+      "children": [
+        { "kind": "text", "text": "Spend 3 ", "marks": [] },
+        { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
+        { "kind": "text", "text": " to activate ", "marks": [] },
+        { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
+        { "kind": "text", "text": " ability.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b004",
+      "children": [
+        { "kind": "text", "text": "Lose 1 ", "marks": [] },
+        { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
+        { "kind": "text", "text": " but recover 2 ", "marks": [] },
+        { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
+        { "kind": "text", "text": " at dawn.", "marks": [] }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": ["concept.progress"],
+  "search": {
+    "raw_text": "Action Costs Gain 2 Progress and 1 Progress per round. Spend 3 Progress to activate Progress ability. Lose 1 Progress but recover 2 Progress at dawn.",
+    "normalized_terms": ["action", "cost", "progress", "gain", "spend", "activate", "recover"]
+  },
+  "source_map": {
+    "page_id": "p0001",
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003", "p0001.b004"]
+  },
+  "build_meta": null
+}

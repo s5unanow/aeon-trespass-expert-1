@@ -1,0 +1,55 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "",
+  "page": {
+    "id": "p0001",
+    "title": "Titan Anatomy",
+    "section_path": [],
+    "source_page_number": 1
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 2,
+      "children": [
+        { "kind": "text", "text": "Titan Anatomy", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b002",
+      "children": [
+        { "kind": "text", "text": "The diagram below shows vulnerable regions.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0001.b003",
+      "asset_id": "asset.fig.p0001.01",
+      "children": []
+    }
+  ],
+  "figures": {
+    "asset.fig.p0001.01": {
+      "src": "asset.fig.p0001.01",
+      "alt": "asset.fig.p0001.01",
+      "caption": "Figure 1: Titan weak points and armor zones."
+    }
+  },
+  "glossary_mentions": [],
+  "search": {
+    "raw_text": "Titan Anatomy The diagram below shows vulnerable regions. Figure 1: Titan weak points and armor zones.",
+    "normalized_terms": ["titan", "anatomy", "diagram", "vulnerable", "regions", "weak", "armor"]
+  },
+  "source_map": {
+    "page_id": "p0001",
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003", "p0001.b004"]
+  },
+  "build_meta": null
+}

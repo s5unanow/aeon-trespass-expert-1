@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('walking skeleton reader page renders correctly', async ({ page }) => {
-  await page.goto('/documents/walking_skeleton/p0001');
+  await page.goto('/documents/walking_skeleton/ru/p0001');
 
   // Wait for content to load
   await expect(page.getByText('Проверка атаки')).toBeVisible();
