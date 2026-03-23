@@ -42,7 +42,7 @@ export function AppHeader({
 
       <div className="app-header-center">
         <span className="app-header-title">{documentTitle}</span>
-        {pageId && totalPages > 0 && (
+        {pageId && currentPageIndex >= 0 && totalPages > 0 && (
           <span className="app-header-progress">
             Page {currentPageIndex + 1} of {totalPages}
           </span>
@@ -50,18 +50,11 @@ export function AppHeader({
       </div>
 
       <div className="app-header-right">
-        <Link
-          to={`/documents/${documentId}/${edition}/glossary`}
-          className="app-header-link"
-        >
+        <Link to={`/documents/${documentId}/${edition}/glossary`} className="app-header-link">
           Glossary
         </Link>
         {pageId && (
-          <EditionSwitcher
-            documentId={documentId}
-            pageId={pageId}
-            currentEdition={edition}
-          />
+          <EditionSwitcher documentId={documentId} pageId={pageId} currentEdition={edition} />
         )}
       </div>
     </header>

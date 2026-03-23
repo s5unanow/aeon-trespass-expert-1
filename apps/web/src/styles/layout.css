@@ -182,13 +182,13 @@
     transform: translateX(0);
   }
 
-  .sidebar-backdrop {
-    display: none;
-  }
-
-  .sidebar--open ~ .sidebar-backdrop,
-  .sidebar-backdrop {
-    display: none;
+  .sidebar--open + .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    top: var(--header-height);
+    z-index: 9;
+    background: rgba(0, 0, 0, 0.3);
   }
 
   .layout-content {
@@ -213,27 +213,10 @@
   }
 
   .sidebar--open + .sidebar-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    top: var(--header-height);
-    z-index: 9;
     background: rgba(0, 0, 0, 0.5);
   }
 
   .sidebar-link {
     padding: var(--space-3) var(--space-4);
-  }
-}
-
-/* Sidebar backdrop for tablet — show when sidebar is open */
-@media (min-width: 641px) and (max-width: 1024px) {
-  .sidebar--open + .sidebar-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    top: var(--header-height);
-    z-index: 9;
-    background: rgba(0, 0, 0, 0.3);
   }
 }

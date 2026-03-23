@@ -38,7 +38,6 @@ export function PageSidebar({
 
   return (
     <>
-      {isOpen && <div className="sidebar-backdrop" onClick={onClose} aria-hidden="true" />}
       <nav className={`sidebar ${isOpen ? 'sidebar--open' : ''}`} aria-label="Page navigation">
         <ul className="sidebar-list">
           {pages.map((page) => {
@@ -60,6 +59,7 @@ export function PageSidebar({
           })}
         </ul>
       </nav>
+      {isOpen && <div className="sidebar-backdrop" onClick={onClose} aria-hidden="true" />}
     </>
   );
 }

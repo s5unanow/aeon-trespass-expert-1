@@ -74,13 +74,16 @@ export function ReaderLayout() {
   const toggleSidebar = useCallback(() => setSidebarOpen((v) => !v), []);
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 
-  const documentTitle = documentId ? formatDocumentTitle(documentId) : '';
+  // Route pattern guarantees these params exist; guard just in case.
+  if (!documentId || !edition) return <Outlet />;
+
+  const documentTitle = formatDocumentTitle(documentId);
 
   return (
     <div className="reader-layout">
       <AppHeader
-        documentId={documentId!}
-        edition={edition!}
+        documentId={documentId}
+        edition={edition}
         pageId={pageId}
         documentTitle={documentTitle}
         totalPages={pages.length}
@@ -90,8 +93,8 @@ export function ReaderLayout() {
       />
       <PageSidebar
         pages={pages}
-        documentId={documentId!}
-        edition={edition!}
+        documentId={documentId}
+        edition={edition}
         currentPageId={pageId}
         isOpen={sidebarOpen}
         onClose={closeSidebar}
