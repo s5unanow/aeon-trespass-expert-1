@@ -11,6 +11,9 @@ export async function loadRenderPage(
 
   let res = await fetch(editionUrl);
   if (!res.ok) {
+    if (res.status !== 404) {
+      throw new Error(`Edition fetch failed: ${res.status} ${editionUrl}`);
+    }
     res = await fetch(rootUrl);
   }
   if (!res.ok) {

@@ -29,12 +29,39 @@ describe('loadManifest', () => {
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/manifest.json');
   });
 
-  it('throws when both paths fail', async () => {
+  it('throws when both paths fail with 404', async () => {
     fetchSpy.mockResolvedValue({ ok: false, status: 404 } as Response);
 
     await expect(loadManifest('missing')).rejects.toThrow(
       'Failed to load manifest: 404 /documents/missing/manifest.json',
     );
+  });
+
+  it('throws on 500 from edition path without falling back', async () => {
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 500 } as Response);
+
+    await expect(loadManifest('doc1')).rejects.toThrow(
+      'Edition fetch failed: 500 /documents/doc1/ru/manifest.json',
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('throws on 403 from edition path without falling back', async () => {
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 403 } as Response);
+
+    await expect(loadManifest('doc1')).rejects.toThrow(
+      'Edition fetch failed: 403 /documents/doc1/ru/manifest.json',
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('throws on 502 from edition path without falling back', async () => {
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 502 } as Response);
+
+    await expect(loadManifest('doc1')).rejects.toThrow(
+      'Edition fetch failed: 502 /documents/doc1/ru/manifest.json',
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it('throws on network failure', async () => {

@@ -18,6 +18,9 @@ export async function loadManifest(
     const data: DocumentManifest = await editionRes.json();
     return { ...data, edition_specific: true };
   }
+  if (editionRes.status !== 404) {
+    throw new Error(`Edition fetch failed: ${editionRes.status} ${editionUrl}`);
+  }
 
   const rootRes = await fetch(rootUrl);
   if (rootRes.ok) {
