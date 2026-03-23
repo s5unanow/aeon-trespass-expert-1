@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams } from 'react-router';
 import type { GlossaryPayloadV1, glossaryPayloadV1 } from '@atr/schemas';
 import { loadGlossary } from '../lib/api/loadGlossary';
 import { GlossaryEntryCard } from '../components/glossary/GlossaryEntryCard';
@@ -46,9 +46,6 @@ export function GlossaryPage() {
   return (
     <article className="glossary-page">
       <header className="glossary-header">
-        <Link to={`/documents/${documentId}/${edition}/p0001`} className="glossary-back-link">
-          &larr; Reader
-        </Link>
         <h1 className="glossary-title">Glossary</h1>
         <input
           className="glossary-search"

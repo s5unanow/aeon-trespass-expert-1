@@ -79,4 +79,6 @@
   /* --- Layout --- */
   --content-max-width: 720px;
   --index-max-width: 960px;
+  --sidebar-width: 240px;
+  --header-height: 3.5rem;
 }

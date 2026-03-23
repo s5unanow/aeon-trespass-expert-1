@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams } from 'react-router';
 import { loadRenderPage } from '../lib/api/loadRenderPage';
 import type { RenderPageData } from '../lib/render/types';
 import { BlockRenderer } from '../components/reader/BlockRenderer';
-import { EditionSwitcher } from '../components/nav/EditionSwitcher';
 import { SourcePageBadge } from '../components/nav/SourcePageBadge';
 import { GlossaryProvider } from '../contexts/GlossaryContext';
 
@@ -42,43 +41,11 @@ export function ReaderPage() {
     return <div>Loading...</div>;
   }
 
-  const prev = page.nav?.prev;
-  const next = page.nav?.next;
-
   return (
     <GlossaryProvider documentId={documentId!} edition={edition!}>
       <article className="reader-page">
         <header>
-          <nav className="reader-nav">
-            <span>
-              {prev ? (
-                <Link to={`/documents/${documentId}/${edition}/${prev}`}>&larr; Prev</Link>
-              ) : (
-                <Link to="/">&larr; Index</Link>
-              )}
-            </span>
-            <span className="reader-nav-right">
-              <Link
-                to={`/documents/${documentId}/${edition}/glossary`}
-                className="glossary-nav-link"
-              >
-                Glossary
-              </Link>
-              <EditionSwitcher
-                documentId={documentId!}
-                pageId={pageId!}
-                currentEdition={edition!}
-              />
-              <SourcePageBadge pageNumber={page.page.source_page_number} />
-            </span>
-            <span>
-              {next ? (
-                <Link to={`/documents/${documentId}/${edition}/${next}`}>Next &rarr;</Link>
-              ) : (
-                <span />
-              )}
-            </span>
-          </nav>
+          <SourcePageBadge pageNumber={page.page.source_page_number} />
         </header>
         <section className="reader-content">
           {page.blocks.map((block) => (
