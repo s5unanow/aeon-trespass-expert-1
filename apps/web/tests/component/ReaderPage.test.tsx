@@ -76,6 +76,62 @@ describe('ReaderPage', () => {
     expect(next?.getAttribute('href')).toBe('/documents/walking_skeleton/ru/p0003');
   });
 
+  it('discards stale responses on rapid navigation', async () => {
+    const stalePage = {
+      ...sampleRenderPage,
+      page: { ...sampleRenderPage.page, id: 'p0001', source_page_number: 99 },
+    };
+    const freshPage = {
+      ...sampleRenderPage,
+      page: { ...sampleRenderPage.page, id: 'p0002', source_page_number: 42 },
+    };
+
+    // First fetch (p0001) resolves slowly after second fetch (p0002)
+    let resolveStale: (v: Response) => void;
+    const stalePromise = new Promise<Response>((r) => {
+      resolveStale = r;
+    });
+
+    fetchSpy.mockReturnValueOnce(stalePromise).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(freshPage),
+    } as Response);
+
+    const { unmount } = renderPage('/documents/doc1/ru/p0001');
+
+    // Re-render with new route (simulates rapid navigation)
+    unmount();
+    renderPage('/documents/doc1/ru/p0002');
+
+    // Fresh page renders with source_page_number 42
+    await waitFor(() => {
+      expect(screen.getByText('p.42')).toBeDefined();
+    });
+
+    // Now resolve the stale request — it should NOT update state
+    resolveStale!({
+      ok: true,
+      json: () => Promise.resolve(stalePage),
+    } as Response);
+
+    // Verify the page still shows fresh data (p.42), not stale (p.99)
+    await waitFor(() => {
+      expect(screen.getByText('p.42')).toBeDefined();
+    });
+    expect(screen.queryByText('p.99')).toBeNull();
+  });
+
+  it('does not set error when request is aborted', async () => {
+    fetchSpy.mockRejectedValue(new DOMException('The operation was aborted.', 'AbortError'));
+
+    renderPage('/documents/doc1/ru/p0001');
+
+    // Wait for the rejection to be processed, then verify no error is shown
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).toBeNull();
+    });
+  });
+
   it('renders index link when no prev page', async () => {
     const pageNoPrev = {
       ...sampleRenderPage,
