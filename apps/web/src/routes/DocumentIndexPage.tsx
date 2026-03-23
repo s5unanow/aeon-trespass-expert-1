@@ -58,20 +58,17 @@ export function DocumentIndexPage() {
   }, []);
 
   return (
-    <main style={{ maxWidth: 800, margin: '0 auto', padding: '2rem' }}>
+    <main className="index-page">
       <h1>Aeon Trespass — Rules Reader</h1>
       {manifests.map((manifest) => (
-        <section
-          key={`${manifest.document_id}-${manifest.edition}`}
-          style={{ marginBottom: '2rem' }}
-        >
+        <section key={`${manifest.document_id}-${manifest.edition}`} className="index-section">
           <h2>
             {manifest.document_id} ({manifest.edition.toUpperCase()})
           </h2>
           <nav>
-            <ul style={{ columns: 3, listStyle: 'none', padding: 0 }}>
+            <ul className="index-page-list">
               {manifest.pages.map((p) => (
-                <li key={p.page_id} style={{ marginBottom: '0.25rem' }}>
+                <li key={p.page_id}>
                   <a href={`/documents/${manifest.document_id}/${manifest.edition}/${p.page_id}`}>
                     {formatPageNumber(p.page_id)}
                     {p.title ? ` — ${p.title}` : ''}
