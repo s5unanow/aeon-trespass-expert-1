@@ -19,13 +19,12 @@ PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 def score_render(data: dict, edition: str = "ru") -> int:
     """Score a render artifact — higher = better quality."""
     blocks = data.get("blocks", [])
-    texts = [
+    full = " ".join(
         c.get("text", "")
         for b in blocks[:3]
         for c in b.get("children", [])
         if c.get("kind") == "text"
-    ]
-    full = " ".join(texts)
+    )
     has_cyrillic = any("\u0400" <= ch <= "\u04ff" for ch in full)
     has_lists = any(b.get("kind") == "list_item" for b in blocks)
     has_marks = any(
@@ -43,31 +42,21 @@ def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
     if not PDF_PATH.exists():
         print(f"  PDF not found at {PDF_PATH}, skipping image extraction")
         return {}
-
     from atr_pipeline.services.pdf.image_extractor import extract_page_images
 
     img_dir = doc_public / "images"
     img_dir.mkdir(parents=True, exist_ok=True)
-
     page_images: dict[str, list[dict]] = {}
     total = 0
-
     for pnum in range(1, 84):
         pid = f"p{pnum:04d}"
         try:
-            images = extract_page_images(
-                PDF_PATH,
-                page_number=pnum,
-                min_width=100,
-                min_height=100,
-            )
+            images = extract_page_images(PDF_PATH, page_number=pnum, min_width=100, min_height=100)
         except Exception as e:
             print(f"  WARN: image extraction failed for {pid}: {e}")
             continue
-
         if not images:
             continue
-
         page_images[pid] = []
         for img in images:
             fname = f"{img.image_id}{img.extension}"
@@ -82,7 +71,6 @@ def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
                 }
             )
             total += 1
-
     print(f"  Extracted {total} images across {len(page_images)} pages")
     return page_images
 
@@ -152,10 +140,7 @@ def _find_split_point(boundaries: list[int], max_chars: int) -> int | None:
     return split_at
 
 
-def _locate_split_child(
-    children: list[dict],
-    split_at: int,
-) -> tuple[int | None, int | None]:
+def _locate_split_child(children: list[dict], split_at: int) -> tuple[int | None, int | None]:
     """Find the child index and offset where text position falls."""
     char_count = 0
     for i, child in enumerate(children):
@@ -336,6 +321,19 @@ def export_pages(
         print(f"    {k}: {v}")
 
 
+def export_glossary(doc_id: str, edition: str, glossary_src: Path, doc_public: Path) -> None:
+    """Export glossary payload to web bundle."""
+    files = list(glossary_src.glob("*.json")) if glossary_src.exists() else []
+    if not files:
+        print(f"  [{edition.upper()}] No glossary artifact found, skipping")
+        return
+    data = json.loads(files[0].read_text())
+    out = doc_public / edition / "data"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "glossary.json").write_text(json.dumps(data, ensure_ascii=False, indent=2))
+    print(f"  [{edition.upper()}] Exported glossary with {len(data.get('entries', []))} entries")
+
+
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Export pipeline artifacts to web viewer")
     parser.add_argument("--doc", default="ato_core_v1_1", help="Document ID")
@@ -357,8 +355,7 @@ def _build_document_index(documents_root: Path) -> list[dict]:
         if editions:
             entries.append({"document_id": doc_dir.name, "editions": editions})
         elif (doc_dir / "manifest.json").exists():
-            # Root-level-only manifest — synthetic "default" edition so the
-            # web reader's loadManifest() can fall back to the root path.
+            # Root-level-only manifest — synthetic "default" edition for loadManifest() fallback
             entries.append({"document_id": doc_dir.name, "editions": ["default"]})
     return entries
 
@@ -388,9 +385,12 @@ def main(argv: list[str] | None = None) -> None:
     print("Extracting images from PDF...")
     page_images = extract_images(doc_id, doc_public)
 
+    glossary_src = ARTIFACT_ROOT / doc_id / "glossary_payload.v1" / "document" / doc_id
+
     for edition in editions:
         print(f"Exporting {edition.upper()} render pages...")
         export_pages(doc_id, edition, render_src, doc_public, page_images)
+        export_glossary(doc_id, edition, glossary_src, doc_public)
 
     write_document_index(documents_root)
     print("Done.")

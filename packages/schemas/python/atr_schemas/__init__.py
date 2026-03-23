@@ -44,7 +44,7 @@ from atr_schemas.evidence_primitives_v1 import (
     EvidenceVectorCluster,
     EvidenceVectorPath,
 )
-from atr_schemas.glossary_payload_v1 import GlossaryEntryV1, GlossaryPayloadV1
+from atr_schemas.glossary_payload_v1 import GlossaryEntryV1, GlossaryPageRef, GlossaryPayloadV1
 from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
 from atr_schemas.native_page_v1 import (
     ImageBlockEvidence,
@@ -150,6 +150,7 @@ __all__ = [
     "FigureBlock",
     "FigureRefInline",
     "GlossaryEntryV1",
+    "GlossaryPageRef",
     "GlossaryPayloadV1",
     "HeadingBlock",
     "IconInline",

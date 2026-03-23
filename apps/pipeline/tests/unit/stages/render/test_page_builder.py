@@ -69,9 +69,14 @@ def test_glossary_builder() -> None:
     glossary = build_glossary_payload("walking_skeleton", registry, [render])
 
     assert len(glossary.entries) == 1
-    assert glossary.entries[0].concept_id == "concept.progress"
-    assert glossary.entries[0].preferred_term == "Прогресс"
-    assert glossary.entries[0].icon_binding == "sym.progress"
+    entry = glossary.entries[0]
+    assert entry.concept_id == "concept.progress"
+    assert entry.preferred_term == "Прогресс"
+    assert entry.icon_binding == "sym.progress"
+    # page_refs populated from render page
+    assert len(entry.page_refs) == 1
+    assert entry.page_refs[0].page_id == "p0001"
+    assert entry.page_refs[0].source_page_number == 1
 
 
 def test_search_builder() -> None:

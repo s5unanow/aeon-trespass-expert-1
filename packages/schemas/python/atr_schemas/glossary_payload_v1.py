@@ -5,6 +5,13 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 
+class GlossaryPageRef(BaseModel):
+    """A page where a glossary concept is mentioned."""
+
+    page_id: str
+    source_page_number: int
+
+
 class GlossaryEntryV1(BaseModel):
     """A single glossary entry for the frontend."""
 
@@ -14,6 +21,7 @@ class GlossaryEntryV1(BaseModel):
     aliases: list[str] = Field(default_factory=list)
     icon_binding: str | None = None
     notes: str = ""
+    page_refs: list[GlossaryPageRef] = Field(default_factory=list)
 
 
 class GlossaryPayloadV1(BaseModel):
