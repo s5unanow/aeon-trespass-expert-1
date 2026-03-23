@@ -1,3 +1,5 @@
+import { useGlossary } from '../../contexts/GlossaryContext';
+
 interface IconInlineProps {
   symbolId: string;
   alt?: string;
@@ -46,33 +48,44 @@ const HIDDEN_ICONS = new Set([
 ]);
 
 export function IconInline({ symbolId, alt }: IconInlineProps) {
+  const glossary = useGlossary();
+
   if (HIDDEN_ICONS.has(symbolId)) {
     return null;
   }
 
   const label = alt || symbolId.replace('sym.', '');
   const src = ICON_MAP[symbolId];
+  const entry = glossary.get(symbolId);
+  const tooltip = entry
+    ? entry.source_term
+      ? `${entry.source_term} — ${entry.notes ?? entry.preferred_term}`
+      : (entry.notes ?? entry.preferred_term)
+    : undefined;
 
   if (src) {
     return (
-      <img
-        className="icon-inline"
-        src={src}
-        alt={label}
-        title={label}
-        data-symbol-id={symbolId}
-        style={{ height: '1em', verticalAlign: 'middle', display: 'inline' }}
-      />
+      <span className={tooltip ? 'glossary-tooltip' : undefined} data-tooltip={tooltip}>
+        <img
+          className="icon-inline"
+          src={src}
+          alt={label}
+          title={tooltip ?? label}
+          data-symbol-id={symbolId}
+          style={{ height: '1em', verticalAlign: 'middle', display: 'inline' }}
+        />
+      </span>
     );
   }
 
   return (
     <span
-      className="icon-inline"
+      className={`icon-inline${tooltip ? ' glossary-tooltip' : ''}`}
       role="img"
       aria-label={label}
       data-symbol-id={symbolId}
-      title={label}
+      title={tooltip ?? label}
+      data-tooltip={tooltip}
     >
       [{label}]
     </span>

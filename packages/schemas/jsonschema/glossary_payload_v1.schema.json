@@ -39,6 +39,13 @@
           "default": "",
           "title": "Notes",
           "type": "string"
+        },
+        "page_refs": {
+          "items": {
+            "$ref": "#/$defs/GlossaryPageRef"
+          },
+          "title": "Page Refs",
+          "type": "array"
         }
       },
       "required": [
@@ -46,6 +53,25 @@
         "preferred_term"
       ],
       "title": "GlossaryEntryV1",
+      "type": "object"
+    },
+    "GlossaryPageRef": {
+      "description": "A page where a glossary concept is mentioned.",
+      "properties": {
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "source_page_number": {
+          "title": "Source Page Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page_id",
+        "source_page_number"
+      ],
+      "title": "GlossaryPageRef",
       "type": "object"
     }
   },

@@ -8,6 +8,9 @@ export type SourceTerm = string;
 export type Aliases = string[];
 export type IconBinding = string | null;
 export type Notes = string;
+export type PageId = string;
+export type SourcePageNumber = number;
+export type PageRefs = GlossaryPageRef[];
 export type Entries = GlossaryEntryV1[];
 
 /**
@@ -28,4 +31,12 @@ export interface GlossaryEntryV1 {
   aliases?: Aliases;
   icon_binding?: IconBinding;
   notes?: Notes;
+  page_refs?: PageRefs;
+}
+/**
+ * A page where a glossary concept is mentioned.
+ */
+export interface GlossaryPageRef {
+  page_id: PageId;
+  source_page_number: SourcePageNumber;
 }
