@@ -78,7 +78,7 @@ def runs_show(
             typer.echo(f"\n{'STAGE':<20} {'SCOPE':<10} {'STATUS':<12} {'DURATION':<10}")
             typer.echo("-" * 52)
             for ev in events:
-                dur = f"{ev['duration_ms']}ms" if ev["duration_ms"] else "-"
+                dur = f"{ev['duration_ms']}ms" if ev["duration_ms"] is not None else "-"
                 typer.echo(f"{ev['stage_name']:<20} {ev['scope']:<10} {ev['status']:<12} {dur:<10}")
     finally:
         conn.close()

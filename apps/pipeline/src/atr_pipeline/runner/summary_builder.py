@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sqlite3
+from datetime import UTC, datetime
 
 from atr_pipeline.registry.events import list_stage_events
 from atr_pipeline.registry.runs import get_run
@@ -34,18 +35,18 @@ def build_run_summary(
     stages_completed = sum(1 for s in stage_statuses.values() if s == "completed")
     stages_failed = sum(1 for s in stage_statuses.values() if s == "failed")
 
-    # Compute page-level aggregates from page-scoped events
+    # Compute page-level aggregates from page-scoped events (per unique page)
     page_events = [ev for ev in events if ev["scope"] == "page"]
     page_ids: set[str] = set()
-    pages_cached = 0
-    pages_failed = 0
+    cached_pages: set[str] = set()
+    failed_pages: set[str] = set()
     for ev in page_events:
         page_ids.add(ev["entity_id"])
         if ev["status"] == "cached":
-            pages_cached += 1
+            cached_pages.add(ev["entity_id"])
         elif ev["status"] == "failed":
-            pages_failed += 1
-    pages_processed = len(page_ids) - pages_failed
+            failed_pages.add(ev["entity_id"])
+    pages_processed = len(page_ids) - len(failed_pages)
 
     # Compute duration
     duration_s = _compute_duration(run["started_at"], run["finished_at"])
@@ -62,8 +63,8 @@ def build_run_summary(
         stages_failed=stages_failed,
         pages_total=len(page_ids),
         pages_processed=pages_processed,
-        pages_cached=pages_cached,
-        pages_failed=pages_failed,
+        pages_cached=len(cached_pages),
+        pages_failed=len(failed_pages),
         page_filter=sorted(page_filter) if page_filter else None,
         duration_s=duration_s,
         started_at=run["started_at"],
@@ -77,8 +78,6 @@ def _compute_duration(started_at: str, finished_at: str | None) -> float:
     """Compute run duration in seconds from ISO timestamps."""
     if not finished_at:
         return 0.0
-    from datetime import UTC, datetime
-
     try:
         start = datetime.fromisoformat(started_at).replace(tzinfo=UTC)
         end = datetime.fromisoformat(finished_at).replace(tzinfo=UTC)
