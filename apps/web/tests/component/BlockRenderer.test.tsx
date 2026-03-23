@@ -59,7 +59,7 @@ describe('BlockRenderer', () => {
     expect(screen.getByText('Первый пункт')).toBeDefined();
   });
 
-  it('renders a callout block', () => {
+  it('renders a callout block with variant', () => {
     const block: RenderBlock = {
       kind: 'callout',
       id: 'p0001.b005',
@@ -74,6 +74,21 @@ describe('BlockRenderer', () => {
     expect(aside?.className).toBe('reader-callout');
     expect(aside?.dataset.variant).toBe('warning');
     expect(screen.getByText('Внимание!')).toBeDefined();
+  });
+
+  it('renders a callout block without variant', () => {
+    const block: RenderBlock = {
+      kind: 'callout',
+      id: 'p0001.b008',
+      children: [{ kind: 'text', text: 'Примечание', marks: [] }],
+    };
+
+    const { container } = render(<BlockRenderer block={block} />);
+    const aside = container.querySelector('aside');
+    expect(aside).toBeDefined();
+    expect(aside?.className).toBe('reader-callout');
+    expect(aside?.dataset.variant).toBeUndefined();
+    expect(screen.getByText('Примечание')).toBeDefined();
   });
 
   it('renders a table block', () => {

@@ -16,7 +16,6 @@
 
   --color-border: #2a2a40;
   --color-border-light: #353550;
-  --color-divider: #2a2a40;
 
   --color-badge-bg: #1e2a4a;
   --color-badge-text: #a8a4a0;
@@ -24,6 +23,13 @@
   --color-icon: #6dbf6d;
   --color-figure-shadow: rgba(0, 0, 0, 0.4);
   --color-figure-caption: #a8a4a0;
+
+  --color-callout-warning: #d4a030;
+  --color-callout-warning-bg: rgba(212, 160, 48, 0.06);
+  --color-callout-info: #5b9bd5;
+  --color-callout-info-bg: rgba(91, 155, 213, 0.06);
+  --color-callout-tip: #5bbd5b;
+  --color-callout-tip-bg: rgba(91, 189, 91, 0.06);
 
   /* --- Typography --- */
   --font-heading: 'Cinzel', 'Times New Roman', serif;
