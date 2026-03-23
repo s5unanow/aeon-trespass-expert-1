@@ -118,7 +118,7 @@ def _spans_to_text_inline(
             prev_text = inlines[-1].text
             if prev_text and text and not prev_text[-1].isspace() and not text[0].isspace():
                 gap = span.bbox.x0 - prev_span.bbox.x1
-                if gap > _WORD_GAP_THRESHOLD:
+                if gap < 0 or gap > _WORD_GAP_THRESHOLD:
                     text = " " + text
 
         # Merge with previous if same marks
@@ -447,7 +447,7 @@ def _insert_icons_line_aware(
                 and not first_text[0].isspace()
             ):
                 gap = line_spans[0].bbox.x0 - prev_line_spans[-1].bbox.x1
-                if gap > _WORD_GAP_THRESHOLD:
+                if gap < 0 or gap > _WORD_GAP_THRESHOLD:
                     first = line_inlines[0]
                     line_inlines[0] = TextInline(
                         text=" " + first.text,
