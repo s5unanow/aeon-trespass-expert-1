@@ -162,6 +162,40 @@ def test_footer_image_is_ignored() -> None:
     assert len(figure_blocks) == 0
 
 
+def test_small_caps_spans_merge_without_space() -> None:
+    """Small-caps word parts (touching x-positions) should merge without spaces."""
+    spans = [
+        SpanEvidence(
+            span_id="s001",
+            text="I",
+            font_name="Adonis-Bold-SC700",
+            font_size=12.0,
+            bbox=Rect(x0=92.3, y0=86.6, x1=96.3, y1=98.6),
+        ),
+        SpanEvidence(
+            span_id="s002",
+            text="ntroduction",
+            font_name="Adonis-Bold-SC700",
+            font_size=8.4,
+            bbox=Rect(x0=96.3, y0=89.9, x1=156.9, y1=98.3),
+        ),
+    ]
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=spans,
+        image_blocks=[],
+    )
+    ir = build_page_ir_real(native)
+    assert len(ir.blocks) == 1
+    text = "".join(c.text for c in ir.blocks[0].children if hasattr(c, "text"))
+    assert "Introduction" in text
+    assert "I ntroduction" not in text
+
+
 def test_custom_config_changes_footer_threshold() -> None:
     """Passing a custom StructureConfig should change classification behavior."""
     span_in_default_footer = SpanEvidence(
