@@ -58,7 +58,9 @@ export function IconInline({ symbolId, alt }: IconInlineProps) {
   const src = ICON_MAP[symbolId];
   const entry = glossary.get(symbolId);
   const tooltip = entry
-    ? `${entry.source_term ?? ''} — ${entry.notes ?? entry.preferred_term}`
+    ? entry.source_term
+      ? `${entry.source_term} — ${entry.notes ?? entry.preferred_term}`
+      : (entry.notes ?? entry.preferred_term)
     : undefined;
 
   if (src) {

@@ -28,8 +28,8 @@ export function GlossaryProvider({ documentId, edition, children }: GlossaryProv
         }
         setGlossaryMap(map);
       })
-      .catch(() => {
-        // Glossary is optional — silently fail
+      .catch((err: unknown) => {
+        console.warn('Glossary load failed (non-blocking):', err);
       });
     return () => {
       stale = true;

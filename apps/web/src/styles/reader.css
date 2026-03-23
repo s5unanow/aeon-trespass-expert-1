@@ -302,7 +302,6 @@ h2.reader-heading {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  white-space: nowrap;
   max-width: 300px;
   white-space: normal;
   pointer-events: none;
