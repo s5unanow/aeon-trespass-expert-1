@@ -146,3 +146,21 @@ def test_factory_skips_fallback_when_same_provider() -> None:
         )
         adapter = create_translator(config)
     assert type(adapter).__name__ == "OpenAIAdapter"
+
+
+def test_factory_creates_gemini_cli_adapter() -> None:
+    """Factory should instantiate GeminiCLIAdapter for provider='gemini-cli'."""
+    config = TranslationConfig(
+        provider="gemini-cli",
+        model_default="gemini-2.5-flash",
+        fallback_provider="",
+    )
+    adapter = create_translator(config)
+    assert type(adapter).__name__ == "GeminiCLIAdapter"
+
+
+def test_factory_gemini_cli_uses_fallback_model() -> None:
+    """When model_default is empty, gemini-cli should get 'gemini-2.5-flash'."""
+    config = TranslationConfig(provider="gemini-cli", model_default="", fallback_provider="")
+    adapter = create_translator(config)
+    assert adapter._model == "gemini-2.5-flash"
