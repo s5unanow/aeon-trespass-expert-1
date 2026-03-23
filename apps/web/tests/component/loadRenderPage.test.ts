@@ -29,26 +29,57 @@ describe('loadRenderPage', () => {
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/data/render_page.p0001.json');
   });
 
-  it('throws when both paths fail', async () => {
-    fetchSpy.mockResolvedValue({ ok: false, status: 500 } as Response);
+  it('throws when both paths fail with 404', async () => {
+    fetchSpy.mockResolvedValue({ ok: false, status: 404 } as Response);
 
     await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
-      'Failed to load render page: 500 /documents/doc1/data/render_page.p0001.json',
+      'Failed to load render page: 404 /documents/doc1/data/render_page.p0001.json',
     );
+  });
+
+  it('throws on 500 from edition path without falling back', async () => {
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 500 } as Response);
+
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      'Edition fetch failed: 500 /documents/doc1/ru/data/render_page.p0001.json',
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('throws on 403 from edition path without falling back', async () => {
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 403 } as Response);
+
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      'Edition fetch failed: 403 /documents/doc1/ru/data/render_page.p0001.json',
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('throws on 502 from edition path without falling back', async () => {
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 502 } as Response);
+
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      'Edition fetch failed: 502 /documents/doc1/ru/data/render_page.p0001.json',
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it('throws on missing schema_version', async () => {
     const data = { page: { id: 'p0001' }, blocks: [] };
     fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
 
-    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow('Invalid render page data for p0001');
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      'Invalid render page data for p0001',
+    );
   });
 
   it('throws on missing page field', async () => {
     const data = { schema_version: 'render_page.v1', blocks: [] };
     fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
 
-    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow('Invalid render page data for p0001');
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      'Invalid render page data for p0001',
+    );
   });
 
   it('throws on network failure', async () => {
