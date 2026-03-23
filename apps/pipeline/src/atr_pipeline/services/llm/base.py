@@ -33,7 +33,8 @@ class TranslationResponse:
 class TranslatorAdapter(Protocol):
     """Protocol for translation provider adapters.
 
-    Implementations: MockTranslator, OpenAIAdapter, AnthropicAdapter, GeminiAdapter.
+    Implementations: MockTranslator, OpenAIAdapter, AnthropicAdapter,
+    GeminiAdapter, GeminiCLIAdapter.
     """
 
     def translate_batch(

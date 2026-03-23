@@ -48,6 +48,14 @@ def _create_single_adapter(
             concept_registry=concept_registry,
         )
 
+    if provider == "gemini-cli":
+        from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
+
+        return GeminiCLIAdapter(
+            model=model or "gemini-2.5-flash",
+            concept_registry=concept_registry,
+        )
+
     msg = f"Unknown translation provider: {provider!r}"
     raise ValueError(msg)
 
