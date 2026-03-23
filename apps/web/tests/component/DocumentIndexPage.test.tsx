@@ -10,10 +10,9 @@ describe('DocumentIndexPage', () => {
     cleanup();
   });
 
-  it('renders document sections from manifests', async () => {
+  it('renders document cards from manifests', async () => {
     fetchSpy.mockImplementation((url) => {
       const urlStr = String(url);
-      // Respond to root-path fallback for both docs
       if (urlStr.includes('ato_core') && !urlStr.includes('/ru/') && !urlStr.includes('/en/')) {
         return Promise.resolve({
           ok: true,
@@ -44,9 +43,9 @@ describe('DocumentIndexPage', () => {
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('walking_skeleton (RU)')).toBeDefined();
+      expect(screen.getByText('Walking Skeleton')).toBeDefined();
     });
-    expect(screen.getByText('ato_core_v1_1 (RU)')).toBeDefined();
+    expect(screen.getByText('Ato Core v1.1')).toBeDefined();
   });
 
   it('filters out failed manifest fetches', async () => {
@@ -68,26 +67,25 @@ describe('DocumentIndexPage', () => {
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('walking_skeleton (RU)')).toBeDefined();
+      expect(screen.getAllByText('Walking Skeleton').length).toBeGreaterThanOrEqual(1);
     });
-    expect(screen.queryByText('ato_core_v1_1')).toBeNull();
+    expect(screen.queryByText(/Ato Core/)).toBeNull();
   });
 
-  it('renders empty when all manifests fail', async () => {
+  it('shows empty state when all manifests fail', async () => {
     fetchSpy.mockResolvedValue({ ok: false, status: 500 } as Response);
 
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('Aeon Trespass — Rules Reader')).toBeDefined();
+      expect(screen.getByText('No documents found')).toBeDefined();
     });
-    expect(screen.queryByRole('list')).toBeNull();
+    expect(screen.getByText('Aeon Trespass')).toBeDefined();
   });
 
   it('shows both editions when manifests are edition-specific', async () => {
     fetchSpy.mockImplementation((url) => {
       const urlStr = String(url);
-      // Edition-specific manifests for ato_core
       if (urlStr.includes('ato_core') && urlStr.includes('/ru/')) {
         return Promise.resolve({
           ok: true,
@@ -114,10 +112,10 @@ describe('DocumentIndexPage', () => {
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('ato_core_v1_1 (RU)')).toBeDefined();
+      expect(screen.getAllByText('Ato Core v1.1')).toHaveLength(2);
     });
-    // Both editions should be visible since they resolved to edition-specific paths
-    expect(screen.getByText('ato_core_v1_1 (EN)')).toBeDefined();
+    expect(screen.getByText('RU')).toBeDefined();
+    expect(screen.getByText('EN')).toBeDefined();
   });
 
   it('uses index.json when available instead of hardcoded list', async () => {
@@ -148,17 +146,15 @@ describe('DocumentIndexPage', () => {
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('custom_doc (EN)')).toBeDefined();
+      expect(screen.getByText('Custom Doc')).toBeDefined();
     });
-    // Hardcoded documents should NOT appear
-    expect(screen.queryByText(/ato_core/)).toBeNull();
-    expect(screen.queryByText(/walking_skeleton/)).toBeNull();
+    expect(screen.queryByText(/Ato Core/)).toBeNull();
+    expect(screen.queryByText(/Walking Skeleton/)).toBeNull();
   });
 
-  it('formats page numbers without leading zeros', async () => {
+  it('renders page pills with formatted numbers', async () => {
     fetchSpy.mockImplementation((url) => {
       const urlStr = String(url);
-      // Only respond to ru edition of walking_skeleton
       if (urlStr.includes('walking_skeleton') && urlStr.includes('/ru/')) {
         return Promise.resolve({
           ok: true,
@@ -178,8 +174,44 @@ describe('DocumentIndexPage', () => {
     render(<DocumentIndexPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/^1 — First$/)).toBeDefined();
+      expect(screen.getByTitle('First')).toBeDefined();
     });
-    expect(screen.getByText(/^49 — Forty-Nine$/)).toBeDefined();
+    expect(screen.getByTitle('First').textContent).toBe('1');
+    expect(screen.getByTitle('Forty-Nine').textContent).toBe('49');
+  });
+
+  it('shows page count in card metadata', async () => {
+    fetchSpy.mockImplementation((url) => {
+      const urlStr = String(url);
+      if (urlStr.includes('walking_skeleton') && urlStr.includes('/ru/')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              document_id: 'walking_skeleton',
+              pages: [
+                { page_id: 'p0001', title: 'A' },
+                { page_id: 'p0002', title: 'B' },
+                { page_id: 'p0003', title: 'C' },
+              ],
+            }),
+        } as Response);
+      }
+      return Promise.resolve({ ok: false, status: 404 } as Response);
+    });
+
+    render(<DocumentIndexPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('3 pages')).toBeDefined();
+    });
+  });
+
+  it('shows loading state before manifests resolve', () => {
+    fetchSpy.mockReturnValue(new Promise(() => {}));
+
+    render(<DocumentIndexPage />);
+
+    expect(screen.getByText('Loading documents…')).toBeDefined();
   });
 });
