@@ -79,11 +79,11 @@ describe('ReaderPage', () => {
   it('discards stale responses on rapid navigation', async () => {
     const stalePage = {
       ...sampleRenderPage,
-      page: { ...sampleRenderPage.page, id: 'p0001' },
+      page: { ...sampleRenderPage.page, id: 'p0001', source_page_number: 99 },
     };
     const freshPage = {
       ...sampleRenderPage,
-      page: { ...sampleRenderPage.page, id: 'p0002' },
+      page: { ...sampleRenderPage.page, id: 'p0002', source_page_number: 42 },
     };
 
     // First fetch (p0001) resolves slowly after second fetch (p0002)
@@ -103,9 +103,9 @@ describe('ReaderPage', () => {
     unmount();
     renderPage('/documents/doc1/ru/p0002');
 
-    // Fresh page renders
+    // Fresh page renders with source_page_number 42
     await waitFor(() => {
-      expect(screen.getByText('p.1')).toBeDefined();
+      expect(screen.getByText('p.42')).toBeDefined();
     });
 
     // Now resolve the stale request — it should NOT update state
@@ -114,20 +114,22 @@ describe('ReaderPage', () => {
       json: () => Promise.resolve(stalePage),
     } as Response);
 
-    // Verify the page still shows fresh data, not stale
+    // Verify the page still shows fresh data (p.42), not stale (p.99)
     await waitFor(() => {
-      expect(screen.getByText('p.1')).toBeDefined();
+      expect(screen.getByText('p.42')).toBeDefined();
     });
+    expect(screen.queryByText('p.99')).toBeNull();
   });
 
   it('does not set error when request is aborted', async () => {
     fetchSpy.mockRejectedValue(new DOMException('The operation was aborted.', 'AbortError'));
 
-    const { unmount } = renderPage('/documents/doc1/ru/p0001');
-    unmount();
+    renderPage('/documents/doc1/ru/p0001');
 
-    // After unmount, AbortError should not cause error state
-    // (component is unmounted so we just verify no unhandled rejection)
+    // Wait for the rejection to be processed, then verify no error is shown
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).toBeNull();
+    });
   });
 
   it('renders index link when no prev page', async () => {
