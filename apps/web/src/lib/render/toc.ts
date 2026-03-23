@@ -29,7 +29,7 @@ export function parseTocEntries(children: RenderInlineNode[]): TocEntry[] | null
   // Quick guard: need at least MIN_DOTS consecutive dots somewhere
   if (!raw.includes('.'.repeat(MIN_DOTS))) return null;
 
-  const re = /(.+?)\.{3,}(\d+)/g;
+  const re = /(.+?)\.{3,}\s*(\d+)/g;
   const entries: TocEntry[] = [];
   let match: RegExpExecArray | null;
 

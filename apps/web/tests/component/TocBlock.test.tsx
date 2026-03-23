@@ -49,6 +49,20 @@ describe('parseTocEntries', () => {
     expect(result![1].title).toBe('Основы');
   });
 
+  it('handles space before multi-digit page numbers', () => {
+    const children: RenderInlineNode[] = [
+      {
+        kind: 'text',
+        text: 'Introduction...............3 Voyage Phase........... 13 Battle Phase........... 33',
+        marks: [],
+      },
+    ];
+    const result = parseTocEntries(children);
+    expect(result).toHaveLength(3);
+    expect(result![1]).toEqual({ title: 'Voyage Phase', pageNumber: '13' });
+    expect(result![2]).toEqual({ title: 'Battle Phase', pageNumber: '33' });
+  });
+
   it('skips non-text inline nodes when flattening', () => {
     const children: RenderInlineNode[] = [
       { kind: 'text', text: 'A...............1', marks: [] },
