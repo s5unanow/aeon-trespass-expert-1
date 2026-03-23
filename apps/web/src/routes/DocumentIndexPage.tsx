@@ -22,6 +22,7 @@ function formatDocumentTitle(docId: string): string {
     .replace(/_v(\d+)_(\d+)$/, ' v$1.$2')
     .replace(/_/g, ' ')
     .split(' ')
+    .filter(Boolean)
     .map((word) => (/^v\d/.test(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)))
     .join(' ');
 }
