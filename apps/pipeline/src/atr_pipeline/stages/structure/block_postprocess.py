@@ -86,7 +86,9 @@ def split_long_paragraphs(
             remaining_text = "".join(c.text for c in remaining_children if hasattr(c, "text"))
             if len(remaining_text) <= max_chars:
                 part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
+                result.append(
+                    ParagraphBlock(block_id=part_id, bbox=block.bbox, children=remaining_children)
+                )
                 break
 
             offset_map = _build_offset_map(remaining_children)
@@ -94,7 +96,9 @@ def split_long_paragraphs(
 
             if split_pos <= 0:
                 part_id = f"{base_id}.{part}" if part > 0 else base_id
-                result.append(ParagraphBlock(block_id=part_id, children=remaining_children))
+                result.append(
+                    ParagraphBlock(block_id=part_id, bbox=block.bbox, children=remaining_children)
+                )
                 break
 
             first_children, second_children = _split_children_at(
@@ -105,7 +109,9 @@ def split_long_paragraphs(
 
             part_id = f"{base_id}.{part}" if part > 0 else base_id
             if first_children:
-                result.append(ParagraphBlock(block_id=part_id, children=first_children))
+                result.append(
+                    ParagraphBlock(block_id=part_id, bbox=block.bbox, children=first_children)
+                )
             part += 1
             remaining_children = second_children
 

@@ -1,9 +1,4 @@
-"""Semantic resolver — post-process blocks using region context.
-
-Runs after ``build_page_ir_real`` and before ``_store_regions`` to produce
-richer IR blocks and anchor edges by linking captions to figures, promoting
-callout regions, and resolving tables from evidence.
-"""
+"""Semantic resolver — post-process blocks using region context."""
 
 from __future__ import annotations
 
@@ -49,26 +44,14 @@ def resolve_semantics(
     region_map = _assign_blocks_to_regions(blocks, regions)
     edges: list[AnchorEdge] = []
 
-    # 1. Detect captions near figures
     blocks, caption_edges = _detect_captions(blocks, region_map, cfg)
     edges.extend(caption_edges)
-
-    # 2. Promote blocks in CALLOUT_AREA regions
     blocks, callout_edges = _promote_callouts(blocks, region_map, regions)
     edges.extend(callout_edges)
-
-    # 3. Resolve tables from evidence
     blocks, table_edges = _resolve_tables(blocks, evidence, cfg)
     edges.extend(table_edges)
-
-    # 4. Build BLOCK_TO_REGION edges
-    region_edges = _build_region_edges(blocks, region_map)
-    edges.extend(region_edges)
-
-    # 5. Build resolved blocks
+    edges.extend(_build_region_edges(blocks, region_map))
     resolved = _build_resolved_blocks(blocks, region_map)
-
-    # Confidence: fraction of blocks that were enriched
     enriched = sum(1 for b in blocks if not isinstance(b, ParagraphBlock))
     total = len(blocks)
     conf = enriched / total if total > 0 else 1.0
@@ -83,18 +66,15 @@ def resolve_semantics(
 
 
 def _block_center(block: Block) -> tuple[float, float] | None:
-    """Return center point of a block's bbox, or None if no bbox."""
     bbox = getattr(block, "bbox", None)
-    if bbox is None:
-        return None
-    return ((bbox.x0 + bbox.x1) / 2, (bbox.y0 + bbox.y1) / 2)
+    return ((bbox.x0 + bbox.x1) / 2, (bbox.y0 + bbox.y1) / 2) if bbox else None
 
 
 def _assign_blocks_to_regions(
     blocks: list[Block],
     regions: list[ResolvedRegion],
 ) -> dict[str, str]:
-    """Map block_id → region_id by center-point containment."""
+    """Map block_id -> region_id by center-point containment."""
     result: dict[str, str] = {}
     for block in blocks:
         center = _block_center(block)
@@ -110,7 +90,6 @@ def _assign_blocks_to_regions(
 
 
 def _region_kind_map(regions: list[ResolvedRegion]) -> dict[str, RegionKind]:
-    """Build region_id → kind lookup."""
     return {r.region_id: r.kind for r in regions}
 
 
@@ -126,8 +105,7 @@ def _detect_captions(
 
     edges: list[AnchorEdge] = []
     claimed_caption_ids: set[str] = set()
-    # Map each paragraph to its nearest figure (if within threshold)
-    caption_map: dict[str, str] = {}  # para block_id → figure block_id
+    caption_map: dict[str, str] = {}
 
     paragraphs = [b for b in blocks if isinstance(b, ParagraphBlock) and b.bbox is not None]
     for para in paragraphs:
@@ -358,6 +336,48 @@ def _resolve_region_id(block: Block, region_map: dict[str, str]) -> str:
     if isinstance(block, CalloutBlock) and block.region_id:
         return block.region_id
     return region_map.get(block.block_id, "")
+
+
+def reorder_blocks_by_regions(
+    blocks: list[Block],
+    regions: list[ResolvedRegion],
+    main_flow_order: list[str],
+) -> list[Block]:
+    """Reorder blocks to match region-based spatial reading order."""
+    if not main_flow_order or not blocks:
+        return blocks
+
+    region_map = _assign_blocks_to_regions(blocks, regions)
+    region_pos = {rid: i for i, rid in enumerate(main_flow_order)}
+    aside_pos = _map_aside_to_main(regions, region_pos)
+    sentinel = len(main_flow_order)
+
+    def _sort_key(item: tuple[int, Block]) -> tuple[int, float, int]:
+        orig_idx, block = item
+        rid = region_map.get(block.block_id)
+        pos = region_pos.get(rid, aside_pos.get(rid, sentinel)) if rid is not None else sentinel
+        bbox = getattr(block, "bbox", None)
+        y0 = bbox.y0 if bbox is not None else 0.0
+        return (pos, y0, orig_idx)
+
+    indexed = list(enumerate(blocks))
+    indexed.sort(key=_sort_key)
+    return [block for _, block in indexed]
+
+
+def _map_aside_to_main(regions: list[ResolvedRegion], region_pos: dict[str, int]) -> dict[str, int]:
+    """Map non-main-flow region IDs to nearest main-flow region position."""
+    main = [r for r in regions if r.region_id in region_pos]
+    if not main:
+        return {}
+    result: dict[str, int] = {}
+    for r in regions:
+        if r.region_id in region_pos:
+            continue
+        cy = (r.bbox.y0 + r.bbox.y1) / 2
+        best = min(main, key=lambda m: abs(cy - (m.bbox.y0 + m.bbox.y1) / 2))
+        result[r.region_id] = region_pos[best.region_id]
+    return result
 
 
 def _build_resolved_blocks(
