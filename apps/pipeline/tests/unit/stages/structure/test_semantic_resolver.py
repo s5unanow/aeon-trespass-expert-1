@@ -393,3 +393,15 @@ class TestReorderBlocksByRegions:
         # Two columns, left first
         result = reorder_blocks_by_regions([a1, b1, a2, b2], regions, ["r010", "r020"])
         assert [b.block_id for b in result] == ["a1", "a2", "b1", "b2"]
+
+    def test_aside_region_placed_near_main(self) -> None:
+        """Blocks in aside regions should be placed near their closest main region."""
+        heading = _heading("b1", 200, 30, 400, 70)  # in sidebar region
+        body = _para("b2", 50, 100, 500, 200)  # in body region
+        regions = [
+            _region("r001", RegionKind.BODY, 40, 80, 520, 250),
+            _region("r002", RegionKind.SIDEBAR, 190, 20, 410, 80),
+        ]
+        result = reorder_blocks_by_regions([body, heading], regions, ["r001"])
+        ids = [b.block_id for b in result]
+        assert ids.index("b1") < ids.index("b2")  # heading y0=30 before body y0=100
