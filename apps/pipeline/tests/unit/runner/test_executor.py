@@ -116,3 +116,27 @@ def test_execute_stage_failure(tmp_path: Path) -> None:
     assert result.error is not None
     assert "failed on purpose" in result.error
     assert not result.cached
+
+
+def test_page_filter_changes_cache_key(tmp_path: Path) -> None:
+    """Same stage with different page filters produces different cache keys."""
+    ctx_no_filter = _make_ctx(tmp_path / "a")
+    ctx_filtered = _make_ctx(tmp_path / "b")
+    ctx_filtered.page_filter = frozenset(["p0015", "p0018"])
+
+    result_no_filter = execute_stage(DummyStage(), ctx_no_filter, input_hashes=["fixed"])
+    result_filtered = execute_stage(DummyStage(), ctx_filtered, input_hashes=["fixed"])
+
+    assert result_no_filter.cache_key != result_filtered.cache_key
+
+
+def test_different_input_hashes_miss_cache(tmp_path: Path) -> None:
+    """Different upstream refs cause a cache miss."""
+    ctx = _make_ctx(tmp_path)
+
+    result1 = execute_stage(DummyStage(), ctx, input_hashes=["upstream_v1"])
+    result2 = execute_stage(DummyStage(), ctx, input_hashes=["upstream_v2"])
+
+    assert result1.cache_key != result2.cache_key
+    assert not result1.cached
+    assert not result2.cached

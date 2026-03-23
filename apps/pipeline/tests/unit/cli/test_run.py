@@ -29,6 +29,7 @@ class CLIRunResult:
     exit_code: int
     stdout: str
     finish_mock: Any
+    execute_calls: list[Any] | None = None
 
 
 def _ok(name: str, *, cached: bool = False) -> StageResult:
@@ -59,11 +60,18 @@ def _run_with(
     stage_names: list[str],
     results: list[StageResult],
     tmp_path: Path,
+    *,
+    capture_execute: bool = False,
 ) -> CLIRunResult:
     """Invoke ``atr run`` with mocked stages returning *results*."""
     cfg = _mock_config(tmp_path)
     registry = {n: MagicMock(name=n) for n in stage_names}
     result_iter = iter(results)
+    captured_calls: list[Any] = []
+
+    def _capture_execute(*a: Any, **kw: Any) -> StageResult:
+        captured_calls.append(kw)
+        return next(result_iter)
 
     with (
         patch(f"{_MOD}.load_document_config", return_value=cfg),
@@ -81,10 +89,7 @@ def _run_with(
         patch(f"{_MOD}.detach_run_log_handler"),
         patch(f"{_MOD}.build_stage_registry", return_value=registry),
         patch(f"{_MOD}.resolve_stage_range", return_value=stage_names),
-        patch(
-            f"{_MOD}.execute_stage",
-            side_effect=lambda *a, **kw: next(result_iter),
-        ),
+        patch(f"{_MOD}.execute_stage", side_effect=_capture_execute),
         patch(f"{_MOD}.SourceManifestV1"),
     ):
         cli_result = runner.invoke(app, ["run", "--doc", "test"])
@@ -93,6 +98,7 @@ def _run_with(
         exit_code=cli_result.exit_code,
         stdout=cli_result.stdout,
         finish_mock=finish_mock,
+        execute_calls=captured_calls if capture_execute else None,
     )
 
 
@@ -141,3 +147,37 @@ def test_run_records_failed_status_on_error(tmp_path: Path) -> None:
     result = _run_with(["ingest"], [_fail("ingest")], tmp_path)
     result.finish_mock.assert_called_once()
     assert result.finish_mock.call_args.kwargs["status"] == "failed"
+
+
+def _ok_with_hash(name: str, content_hash: str) -> StageResult:
+    ref = ArtifactRef(
+        document_id="d",
+        schema_family=name,
+        scope="document",
+        entity_id="d",
+        content_hash=content_hash,
+    )
+    return StageResult(stage_name=name, cache_key="k", cached=False, artifact_ref=ref)
+
+
+def test_run_threads_upstream_refs(tmp_path: Path) -> None:
+    """Each stage receives accumulated upstream artifact content hashes."""
+    names = ["ingest", "structure", "render"]
+    results = [
+        _ok_with_hash("ingest", "hash_ingest"),
+        _ok_with_hash("structure", "hash_structure"),
+        _ok_with_hash("render", "hash_render"),
+    ]
+    result = _run_with(names, results, tmp_path, capture_execute=True)
+    assert result.exit_code == 0
+    assert result.execute_calls is not None
+
+    # First stage: no upstream refs
+    assert result.execute_calls[0]["input_hashes"] == []
+    # Second stage: ingest ref
+    assert result.execute_calls[1]["input_hashes"] == ["hash_ingest"]
+    # Third stage: ingest + structure refs
+    assert result.execute_calls[2]["input_hashes"] == [
+        "hash_ingest",
+        "hash_structure",
+    ]

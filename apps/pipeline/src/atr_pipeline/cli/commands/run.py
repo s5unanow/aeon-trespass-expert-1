@@ -77,12 +77,13 @@ def run(
     typer.echo(f"Running stages: {' → '.join(stages)}")
     has_errors = False
     qa_summary_ref: str | None = None
+    upstream_refs: list[str] = []
 
     for stage_name in stages:
         stage = registry[stage_name]
         typer.echo(f"  [{stage_name}]")
 
-        result = execute_stage(stage, ctx)
+        result = execute_stage(stage, ctx, input_hashes=list(upstream_refs))
 
         if result.cached:
             typer.echo("    (cached)")
@@ -90,6 +91,9 @@ def run(
             typer.echo(f"    FAILED: {result.error}", err=True)
             has_errors = True
             break
+
+        if result.artifact_ref is not None:
+            upstream_refs.append(result.artifact_ref.content_hash)
 
         # Capture source PDF fingerprint after ingest for run provenance
         if stage_name == "ingest" and result.artifact_ref is not None:
@@ -106,26 +110,27 @@ def run(
     try:
         finish_run(conn, run_id=run_id, status=status, qa_summary_ref=qa_summary_ref)
 
-        manifest = build_run_manifest(conn, run_id=run_id)
         manifest_ref = store.put_json(
             document_id=doc,
             schema_family="run_manifest.v1",
             scope="run",
             entity_id=run_id,
-            data=manifest,
+            data=build_run_manifest(conn, run_id=run_id),
         )
         set_run_manifest_ref(conn, run_id=run_id, ref=manifest_ref.relative_path)
 
         # Write flat run_summary.json at artifact root for LLM observability
-        summary = build_run_summary(
-            conn,
-            run_id=run_id,
-            document_id=doc,
-            stages_requested=stages,
-            page_filter=page_filter,
+        atomic_write_text(
+            config.artifact_root / "run_summary.json",
+            build_run_summary(
+                conn,
+                run_id=run_id,
+                document_id=doc,
+                stages_requested=stages,
+                page_filter=page_filter,
+            ).model_dump_json(indent=2)
+            + "\n",
         )
-        summary_json = summary.model_dump_json(indent=2) + "\n"
-        atomic_write_text(config.artifact_root / "run_summary.json", summary_json)
     finally:
         detach_run_log_handler(log_handler)
         conn.close()

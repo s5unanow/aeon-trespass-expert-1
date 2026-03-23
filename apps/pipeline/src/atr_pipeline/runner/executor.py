@@ -33,9 +33,11 @@ def execute_stage(
     Otherwise runs the stage, records the event, and returns the result.
     """
     # Build cache key
-    i_hashes = input_hashes or []
+    i_hashes = list(input_hashes or [])
     if input_data is not None and not i_hashes:
         i_hashes = [content_hash(input_data.model_dump())]
+    if ctx.page_filter:
+        i_hashes.append("page_filter:" + "|".join(sorted(ctx.page_filter)))
 
     cache_key = build_cache_key(
         stage_name=stage.name,
