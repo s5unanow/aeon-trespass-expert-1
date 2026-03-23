@@ -37,7 +37,7 @@ export function ReaderPage() {
   return (
     <article className="reader-page">
       <header>
-        <nav style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+        <nav className="reader-nav">
           <span>
             {prev ? (
               <Link to={`/documents/${documentId}/${edition}/${prev}`}>&larr; Prev</Link>
@@ -45,7 +45,7 @@ export function ReaderPage() {
               <Link to="/">&larr; Index</Link>
             )}
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <span className="reader-nav-right">
             <EditionSwitcher documentId={documentId!} pageId={pageId!} currentEdition={edition!} />
             <SourcePageBadge pageNumber={page.page.source_page_number} />
           </span>
