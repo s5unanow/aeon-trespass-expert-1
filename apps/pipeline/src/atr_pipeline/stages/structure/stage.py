@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 from pydantic import BaseModel, Field
 
 from atr_pipeline.eval.confidence_scorer import score_page_from_artifacts
@@ -303,44 +301,39 @@ class StructureStage:
         ctx: StageContext,
         page_id: str,
     ) -> NativePageV1 | None:
-        page_dir = ctx.artifact_store.root / ctx.document_id / "native_page.v1" / "page" / page_id
-        if not page_dir.exists():
-            return None
-        jsons = sorted(page_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return NativePageV1.model_validate(data)
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="native_page.v1",
+            scope="page",
+            entity_id=page_id,
+        )
+        return NativePageV1.model_validate(data) if data else None
 
     @staticmethod
     def _load_symbol_matches(
         ctx: StageContext,
         page_id: str,
     ) -> SymbolMatchSetV1 | None:
-        page_dir = (
-            ctx.artifact_store.root / ctx.document_id / "symbol_match_set.v1" / "page" / page_id
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="symbol_match_set.v1",
+            scope="page",
+            entity_id=page_id,
         )
-        if not page_dir.exists():
-            return None
-        jsons = sorted(page_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return SymbolMatchSetV1.model_validate(data)
+        return SymbolMatchSetV1.model_validate(data) if data else None
 
     @staticmethod
     def _load_evidence(
         ctx: StageContext,
         page_id: str,
     ) -> PageEvidenceV1 | None:
-        page_dir = ctx.artifact_store.root / ctx.document_id / "page_evidence.v1" / "page" / page_id
-        if not page_dir.exists():
-            return None
-        jsons = sorted(page_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return PageEvidenceV1.model_validate(data)
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="page_evidence.v1",
+            scope="page",
+            entity_id=page_id,
+        )
+        return PageEvidenceV1.model_validate(data) if data else None
 
     @staticmethod
     def _store_regions(
@@ -390,11 +383,10 @@ class StructureStage:
         ctx: StageContext,
         page_id: str,
     ) -> LayoutPageV1 | None:
-        page_dir = ctx.artifact_store.root / ctx.document_id / "layout_page.v1" / "page" / page_id
-        if not page_dir.exists():
-            return None
-        jsons = sorted(page_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return LayoutPageV1.model_validate(data)
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="layout_page.v1",
+            scope="page",
+            entity_id=page_id,
+        )
+        return LayoutPageV1.model_validate(data) if data else None

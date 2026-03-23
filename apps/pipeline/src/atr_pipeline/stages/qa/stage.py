@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
@@ -139,26 +137,24 @@ class QAStage:
     @staticmethod
     def _load_ir(ctx: StageContext, family: str, page_id: str) -> PageIRV1 | None:
         """Load a PageIRV1 from the artifact store."""
-        page_dir = ctx.artifact_store.root / ctx.document_id / family / "page" / page_id
-        if not page_dir.exists():
-            return None
-        jsons = sorted(page_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return PageIRV1.model_validate(data)
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family=family,
+            scope="page",
+            entity_id=page_id,
+        )
+        return PageIRV1.model_validate(data) if data else None
 
     @staticmethod
     def _load_render(ctx: StageContext, page_id: str) -> RenderPageV1 | None:
         """Load a RenderPageV1 from the artifact store."""
-        page_dir = ctx.artifact_store.root / ctx.document_id / "render_page.v1" / "page" / page_id
-        if not page_dir.exists():
-            return None
-        jsons = sorted(page_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return RenderPageV1.model_validate(data)
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="render_page.v1",
+            scope="page",
+            entity_id=page_id,
+        )
+        return RenderPageV1.model_validate(data) if data else None
 
 
 def _tally_severities(records: list[QARecordV1]) -> SeverityCounts:

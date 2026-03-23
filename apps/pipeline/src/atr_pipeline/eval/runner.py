@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import logging
 from datetime import UTC, datetime
 from pathlib import Path
@@ -131,13 +130,10 @@ def _filter_pages(
 
 def load_page_ir(store: ArtifactStore, document_id: str, page_id: str) -> PageIRV1 | None:
     """Load the latest EN page IR from the artifact store."""
-    page_dir = store.root / document_id / "page_ir.v1.en" / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return PageIRV1.model_validate(json.loads(jsons[-1].read_text()))
+    data = store.load_latest_json(
+        document_id=document_id, schema_family="page_ir.v1.en", scope="page", entity_id=page_id
+    )
+    return PageIRV1.model_validate(data) if data else None
 
 
 def _build_expected_block_types(spec: GoldenPageSpec) -> dict[str, str]:

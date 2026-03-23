@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import logging
 from datetime import UTC, datetime
 
@@ -22,13 +21,10 @@ def load_resolved_page(
     page_id: str,
 ) -> ResolvedPageV1 | None:
     """Load the latest resolved page from the artifact store."""
-    page_dir = store.root / document_id / "resolved_page.v1" / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return ResolvedPageV1.model_validate(json.loads(jsons[-1].read_text()))
+    data = store.load_latest_json(
+        document_id=document_id, schema_family="resolved_page.v1", scope="page", entity_id=page_id
+    )
+    return ResolvedPageV1.model_validate(data) if data else None
 
 
 def load_evidence_page(
@@ -37,13 +33,10 @@ def load_evidence_page(
     page_id: str,
 ) -> PageEvidenceV1 | None:
     """Load the latest evidence page from the artifact store."""
-    page_dir = store.root / document_id / "page_evidence.v1" / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return PageEvidenceV1.model_validate(json.loads(jsons[-1].read_text()))
+    data = store.load_latest_json(
+        document_id=document_id, schema_family="page_evidence.v1", scope="page", entity_id=page_id
+    )
+    return PageEvidenceV1.model_validate(data) if data else None
 
 
 def _discover_pages(store: ArtifactStore, document_id: str) -> list[str]:
