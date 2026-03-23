@@ -44,13 +44,16 @@ export function DocumentIndexPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    discoverDocuments().then((pairs) => {
-      const fetches = pairs.map(({ docId, edition }) =>
-        loadManifest(docId, edition)
-          .then((data): ManifestWithEdition => ({ ...data, edition }))
-          .catch(() => null),
-      );
-      Promise.all(fetches).then((results) => {
+    discoverDocuments()
+      .then((pairs) => {
+        const fetches = pairs.map(({ docId, edition }) =>
+          loadManifest(docId, edition)
+            .then((data): ManifestWithEdition => ({ ...data, edition }))
+            .catch(() => null),
+        );
+        return Promise.all(fetches);
+      })
+      .then((results) => {
         const loaded = results.filter((m): m is ManifestWithEdition => m !== null);
         const seen = new Set<string>();
         const unique = loaded.filter((m) => {
@@ -62,8 +65,8 @@ export function DocumentIndexPage() {
         });
         setManifests(unique);
         setLoading(false);
-      });
-    });
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   return (
@@ -80,14 +83,9 @@ export function DocumentIndexPage() {
       ) : (
         <div className="index-cards">
           {manifests.map((manifest) => (
-            <article
-              key={`${manifest.document_id}-${manifest.edition}`}
-              className="doc-card"
-            >
+            <article key={`${manifest.document_id}-${manifest.edition}`} className="doc-card">
               <div className="doc-card-header">
-                <h2 className="doc-card-title">
-                  {formatDocumentTitle(manifest.document_id)}
-                </h2>
+                <h2 className="doc-card-title">{formatDocumentTitle(manifest.document_id)}</h2>
                 <span className="doc-card-edition">{manifest.edition.toUpperCase()}</span>
               </div>
               <p className="doc-card-meta">
