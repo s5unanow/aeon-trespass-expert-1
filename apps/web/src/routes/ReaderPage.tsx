@@ -17,11 +17,21 @@ export function ReaderPage() {
 
   useEffect(() => {
     if (!documentId || !pageId || !edition) return;
+    const controller = new AbortController();
+    let stale = false;
     setPage(null);
     setError(null);
-    loadRenderPage(documentId, pageId, edition)
-      .then(setPage)
-      .catch((e) => setError(e.message));
+    loadRenderPage(documentId, pageId, edition, controller.signal)
+      .then((data) => {
+        if (!stale) setPage(data);
+      })
+      .catch((e) => {
+        if (!stale && e.name !== 'AbortError') setError(e.message);
+      });
+    return () => {
+      stale = true;
+      controller.abort();
+    };
   }, [documentId, edition, pageId]);
 
   if (error) {
