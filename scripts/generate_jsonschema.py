@@ -28,6 +28,7 @@ from atr_schemas.render_page_v1 import RenderPageV1
 from atr_schemas.resolved_page_v1 import ResolvedPageV1
 from atr_schemas.review_pack_v1 import ReviewPackV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
+from atr_schemas.run_summary_v1 import RunSummaryV1
 from atr_schemas.search_docs_v1 import SearchDocsV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1
@@ -57,6 +58,7 @@ MODELS = {
     "resolved_page_v1": ResolvedPageV1,
     "review_pack_v1": ReviewPackV1,
     "run_manifest_v1": RunManifestV1,
+    "run_summary_v1": RunSummaryV1,
     "search_docs_v1": SearchDocsV1,
     "source_manifest_v1": SourceManifestV1,
     "symbol_catalog_v1": SymbolCatalogV1,

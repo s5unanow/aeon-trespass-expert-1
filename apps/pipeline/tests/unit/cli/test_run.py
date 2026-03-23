@@ -75,6 +75,10 @@ def _run_with(
         patch(f"{_MOD}.git_head", return_value="abc123"),
         patch(f"{_MOD}.build_run_manifest", return_value={}),
         patch(f"{_MOD}.set_run_manifest_ref"),
+        patch(f"{_MOD}.build_run_summary"),
+        patch(f"{_MOD}.atomic_write_text"),
+        patch(f"{_MOD}.attach_run_log_handler", return_value=MagicMock()),
+        patch(f"{_MOD}.detach_run_log_handler"),
         patch(f"{_MOD}.build_stage_registry", return_value=registry),
         patch(f"{_MOD}.resolve_stage_range", return_value=stage_names),
         patch(

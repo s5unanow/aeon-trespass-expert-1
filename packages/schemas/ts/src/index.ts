@@ -21,6 +21,7 @@ export * as renderPageV1 from './generated/render_page_v1';
 export * as resolvedPageV1 from './generated/resolved_page_v1';
 export * as reviewPackV1 from './generated/review_pack_v1';
 export * as runManifestV1 from './generated/run_manifest_v1';
+export * as runSummaryV1 from './generated/run_summary_v1';
 export * as searchDocsV1 from './generated/search_docs_v1';
 export * as sourceManifestV1 from './generated/source_manifest_v1';
 export * as symbolCatalogV1 from './generated/symbol_catalog_v1';

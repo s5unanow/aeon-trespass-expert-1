@@ -147,6 +147,29 @@ def eval_cmd(
     )
 
 
+@app.command(name="runs-list")
+def runs_list_cmd(
+    doc: str = typer.Option("", "--doc", help="Filter by document id"),
+    limit: int = typer.Option(20, "--limit", help="Max runs to show"),
+    output_json: bool = typer.Option(False, "--json", help="Output as JSON"),
+) -> None:
+    """List recent pipeline runs."""
+    from atr_pipeline.cli.commands.runs import runs_list
+
+    runs_list(doc=doc, limit=limit, output_json=output_json)
+
+
+@app.command(name="runs-show")
+def runs_show_cmd(
+    run_id: str = typer.Argument(..., help="Run ID to inspect"),
+    output_json: bool = typer.Option(False, "--json", help="Output as JSON"),
+) -> None:
+    """Show detailed info for a specific run."""
+    from atr_pipeline.cli.commands.runs import runs_show
+
+    runs_show(run_id=run_id, output_json=output_json)
+
+
 @app.command(name="audit")
 def audit_cmd(
     doc: str = typer.Option(..., "--doc", help="Document id to audit"),
