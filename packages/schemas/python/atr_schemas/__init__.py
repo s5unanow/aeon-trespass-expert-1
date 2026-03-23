@@ -104,6 +104,7 @@ from atr_schemas.resolved_page_v1 import (
 )
 from atr_schemas.review_pack_v1 import ReviewFinding, ReviewPackV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
+from atr_schemas.run_summary_v1 import RunSummaryV1
 from atr_schemas.search_docs_v1 import SearchDocEntry, SearchDocsV1
 from atr_schemas.source_manifest_v1 import PageEntry, SourceManifestV1
 from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1, SymbolEntry
@@ -206,6 +207,7 @@ __all__ = [
     "ReviewFinding",
     "ReviewPackV1",
     "RunManifestV1",
+    "RunSummaryV1",
     "SearchDocEntry",
     "SearchDocsV1",
     "SemanticConfidence",

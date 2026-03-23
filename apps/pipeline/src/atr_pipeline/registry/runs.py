@@ -97,5 +97,11 @@ def list_runs(conn: sqlite3.Connection, document_id: str) -> list[sqlite3.Row]:
     return cursor.fetchall()
 
 
+def list_all_runs(conn: sqlite3.Connection) -> list[sqlite3.Row]:
+    """List all runs across all documents, most recent first."""
+    cursor = conn.execute("SELECT * FROM runs ORDER BY started_at DESC")
+    return cursor.fetchall()
+
+
 def _now_iso() -> str:
     return datetime.now(UTC).isoformat()

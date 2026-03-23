@@ -1,0 +1,122 @@
+{
+  "description": "Human/LLM-readable summary written to artifact root after each run.",
+  "properties": {
+    "schema_version": {
+      "default": "run_summary.v1",
+      "pattern": "^run_summary\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "status": {
+      "default": "",
+      "title": "Status",
+      "type": "string"
+    },
+    "edition": {
+      "default": "all",
+      "title": "Edition",
+      "type": "string"
+    },
+    "pipeline_version": {
+      "default": "",
+      "title": "Pipeline Version",
+      "type": "string"
+    },
+    "git_commit": {
+      "default": "",
+      "title": "Git Commit",
+      "type": "string"
+    },
+    "stages_requested": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Stages Requested",
+      "type": "array"
+    },
+    "stages_completed": {
+      "default": 0,
+      "title": "Stages Completed",
+      "type": "integer"
+    },
+    "stages_failed": {
+      "default": 0,
+      "title": "Stages Failed",
+      "type": "integer"
+    },
+    "pages_total": {
+      "default": 0,
+      "title": "Pages Total",
+      "type": "integer"
+    },
+    "pages_processed": {
+      "default": 0,
+      "title": "Pages Processed",
+      "type": "integer"
+    },
+    "pages_cached": {
+      "default": 0,
+      "title": "Pages Cached",
+      "type": "integer"
+    },
+    "pages_failed": {
+      "default": 0,
+      "title": "Pages Failed",
+      "type": "integer"
+    },
+    "page_filter": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Page Filter"
+    },
+    "duration_s": {
+      "default": 0.0,
+      "title": "Duration S",
+      "type": "number"
+    },
+    "started_at": {
+      "default": "",
+      "title": "Started At",
+      "type": "string"
+    },
+    "finished_at": {
+      "default": "",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "config_hash": {
+      "default": "",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "source_pdf_sha256": {
+      "default": "",
+      "title": "Source Pdf Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "document_id"
+  ],
+  "title": "RunSummaryV1",
+  "type": "object"
+}

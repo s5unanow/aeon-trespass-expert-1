@@ -16,11 +16,14 @@ from atr_pipeline.registry.runs import (
     update_run_provenance,
 )
 from atr_pipeline.runner.executor import execute_stage
+from atr_pipeline.runner.log_file import attach_run_log_handler, detach_run_log_handler
 from atr_pipeline.runner.manifest_builder import build_run_manifest, git_head
 from atr_pipeline.runner.plan import resolve_stage_range
 from atr_pipeline.runner.registry import build_stage_registry
 from atr_pipeline.runner.stage_context import StageContext, parse_page_filter
+from atr_pipeline.runner.summary_builder import build_run_summary
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.store.atomic_write import atomic_write_text
 from atr_pipeline.utils.hashing import content_hash
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
@@ -50,6 +53,8 @@ def run(
         git_commit=git_head(),
         edition=edition,
     )
+
+    log_handler = attach_run_log_handler(config.artifact_root, run_id)
 
     page_filter = parse_page_filter(pages) if pages else None
 
@@ -110,7 +115,19 @@ def run(
             data=manifest,
         )
         set_run_manifest_ref(conn, run_id=run_id, ref=manifest_ref.relative_path)
+
+        # Write flat run_summary.json at artifact root for LLM observability
+        summary = build_run_summary(
+            conn,
+            run_id=run_id,
+            document_id=doc,
+            stages_requested=stages,
+            page_filter=page_filter,
+        )
+        summary_json = summary.model_dump_json(indent=2) + "\n"
+        atomic_write_text(config.artifact_root / "run_summary.json", summary_json)
     finally:
+        detach_run_log_handler(log_handler)
         conn.close()
 
     if has_errors:
