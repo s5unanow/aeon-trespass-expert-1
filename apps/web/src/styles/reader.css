@@ -83,7 +83,9 @@ h2.reader-heading {
   text-decoration: underline;
   text-decoration-color: var(--color-border-light);
   text-underline-offset: 2px;
-  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    text-decoration-color var(--transition-fast);
 }
 
 .figure-ref:hover {
@@ -144,16 +146,6 @@ h2.reader-heading {
   letter-spacing: 0.02em;
 }
 
-.edition-switcher a {
-  color: var(--color-link);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-.edition-switcher a:hover {
-  color: var(--color-link-hover);
-}
-
 /* --- Document index page --- */
 
 .index-page {
@@ -188,6 +180,18 @@ h2.reader-heading {
   columns: 3;
   list-style: none;
   padding: 0;
+}
+
+@media (max-width: 640px) {
+  .index-page-list {
+    columns: 1;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .index-page-list {
+    columns: 2;
+  }
 }
 
 .index-page-list li {
