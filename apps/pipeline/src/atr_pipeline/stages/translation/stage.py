@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from typing import cast
 
 from pydantic import BaseModel, Field
@@ -210,14 +209,13 @@ class TranslationStage:
     @staticmethod
     def _load_en_ir(ctx: StageContext, page_id: str) -> PageIRV1 | None:
         """Load an EN PageIRV1 from the artifact store."""
-        page_dir = ctx.artifact_store.root / ctx.document_id / "page_ir.v1.en" / "page" / page_id
-        if not page_dir.exists():
-            return None
-        jsons = sorted(page_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return PageIRV1.model_validate(data)
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="page_ir.v1.en",
+            scope="page",
+            entity_id=page_id,
+        )
+        return PageIRV1.model_validate(data) if data else None
 
     @staticmethod
     def _load_concept_registry(ctx: StageContext) -> ConceptRegistryV1 | None:

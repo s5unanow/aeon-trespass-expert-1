@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
@@ -108,15 +106,15 @@ class ExtractNativeStage:
 
         # Fallback: read manifest from artifact store (stored by executor
         # under schema_family="ingest", scope="document")
-        manifest_dir = (
-            ctx.artifact_store.root / ctx.document_id / "ingest" / "document" / ctx.document_id
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="ingest",
+            scope="document",
+            entity_id=ctx.document_id,
         )
-        if manifest_dir.exists():
-            jsons = sorted(manifest_dir.glob("*.json"))
-            if jsons:
-                data = json.loads(jsons[-1].read_text())
-                manifest = SourceManifestV1.model_validate(data)
-                return manifest.page_count
+        if data is not None:
+            manifest = SourceManifestV1.model_validate(data)
+            return manifest.page_count
 
         msg = (
             "Cannot determine page count: no SourceManifestV1 input and no "

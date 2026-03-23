@@ -24,30 +24,25 @@ _UNRESOLVED_CONFIDENCE = 0.5
 logger = logging.getLogger(__name__)
 
 
-def _load_latest_json(store: ArtifactStore, doc_id: str, family: str, page_id: str) -> str | None:
-    """Read the latest JSON artifact for a (family, page_id) pair."""
-    page_dir = store.root / doc_id / family / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return jsons[-1].read_text()
-
-
 def _load_resolved(store: ArtifactStore, doc_id: str, page_id: str) -> ResolvedPageV1 | None:
-    raw = _load_latest_json(store, doc_id, "resolved_page.v1", page_id)
-    return ResolvedPageV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family="resolved_page.v1", scope="page", entity_id=page_id
+    )
+    return ResolvedPageV1.model_validate(data) if data else None
 
 
 def _load_evidence(store: ArtifactStore, doc_id: str, page_id: str) -> PageEvidenceV1 | None:
-    raw = _load_latest_json(store, doc_id, "page_evidence.v1", page_id)
-    return PageEvidenceV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family="page_evidence.v1", scope="page", entity_id=page_id
+    )
+    return PageEvidenceV1.model_validate(data) if data else None
 
 
 def _load_layout(store: ArtifactStore, doc_id: str, page_id: str) -> LayoutPageV1 | None:
-    raw = _load_latest_json(store, doc_id, "layout_page.v1", page_id)
-    return LayoutPageV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family="layout_page.v1", scope="page", entity_id=page_id
+    )
+    return LayoutPageV1.model_validate(data) if data else None
 
 
 def _discover_all_pages(store: ArtifactStore, document_id: str) -> list[str]:

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
@@ -160,10 +158,10 @@ class RenderStage:
         for asset_dir in sorted(image_dir.iterdir()):
             if not asset_dir.is_dir():
                 continue
-            files = sorted(f for f in asset_dir.iterdir() if f.suffix in image_exts)
+            files = [f for f in asset_dir.iterdir() if f.suffix in image_exts]
             if not files:
                 continue
-            img_file = files[-1]
+            img_file = max(files, key=lambda f: f.stat().st_mtime)
             asset_id = asset_dir.name
             sources[asset_id] = f"data/images/{asset_id}{img_file.suffix}"
             refs[asset_id] = str(img_file.relative_to(ctx.artifact_store.root))
@@ -186,11 +184,12 @@ class RenderStage:
     def _load_page_ir(ctx: StageContext, page_id: str) -> PageIRV1 | None:
         """Load RU PageIRV1 (preferred) or EN PageIRV1 from the artifact store."""
         for family in ("page_ir.v1.ru", "page_ir.v1.en"):
-            page_dir = ctx.artifact_store.root / ctx.document_id / family / "page" / page_id
-            if not page_dir.exists():
-                continue
-            jsons = sorted(page_dir.glob("*.json"))
-            if jsons:
-                data = json.loads(jsons[-1].read_text())
+            data = ctx.artifact_store.load_latest_json(
+                document_id=ctx.document_id,
+                schema_family=family,
+                scope="page",
+                entity_id=page_id,
+            )
+            if data is not None:
                 return PageIRV1.model_validate(data)
         return None

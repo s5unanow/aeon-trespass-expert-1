@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import struct
 from pathlib import Path
 
@@ -113,14 +112,13 @@ class PageRasterProvider:
 
     def get_meta(self, page_id: str) -> RasterMetaV1 | None:
         """Load raster provenance metadata for a page."""
-        meta_dir = self._store.root / self._document_id / "raster_meta.v1" / "page" / page_id
-        if not meta_dir.exists():
-            return None
-        jsons = sorted(meta_dir.glob("*.json"))
-        if not jsons:
-            return None
-        data = json.loads(jsons[-1].read_text())
-        return RasterMetaV1.model_validate(data)
+        data = self._store.load_latest_json(
+            document_id=self._document_id,
+            schema_family="raster_meta.v1",
+            scope="page",
+            entity_id=page_id,
+        )
+        return RasterMetaV1.model_validate(data) if data else None
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -128,18 +126,22 @@ class PageRasterProvider:
 
     def _lookup_raster(self, page_id: str, dpi: int) -> Path | None:
         entity_id = f"{page_id}__{dpi}dpi"
-        raster_dir = self._store.root / self._document_id / "raster" / "page" / entity_id
-        if not raster_dir.exists():
-            return None
-        pngs = sorted(raster_dir.glob("*.png"))
-        return pngs[-1] if pngs else None
+        return self._store.resolve_latest_path(
+            document_id=self._document_id,
+            schema_family="raster",
+            scope="page",
+            entity_id=entity_id,
+            glob_pattern="*.png",
+        )
 
     def _find_legacy_raster(self, page_id: str) -> Path | None:
-        raster_dir = self._store.root / self._document_id / "raster" / "page" / page_id
-        if not raster_dir.exists():
-            return None
-        pngs = sorted(raster_dir.glob("*.png"))
-        return pngs[-1] if pngs else None
+        return self._store.resolve_latest_path(
+            document_id=self._document_id,
+            schema_family="raster",
+            scope="page",
+            entity_id=page_id,
+            glob_pattern="*.png",
+        )
 
 
 _PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -55,6 +56,7 @@ class ArtifactStore:
 
         target = artifact_path(self._root, ref)
         if target.exists():
+            os.utime(target)  # update mtime so latest-selection works on reuse
             return ref
 
         text = json.dumps(json_data, indent=2, ensure_ascii=False) + "\n"
@@ -98,6 +100,54 @@ class ArtifactStore:
         c_hash = sha256_bytes(data)[:12]
         rel = f"{document_id}/{schema_family}/{scope}/{entity_id}/{c_hash}{extension}"
         target = self._root / rel
-        if not target.exists():
+        if target.exists():
+            os.utime(target)  # update mtime so latest-selection works on reuse
+        else:
             atomic_write_bytes(target, data)
         return target
+
+    def load_latest_json(
+        self,
+        *,
+        document_id: str,
+        schema_family: str,
+        scope: str,
+        entity_id: str,
+    ) -> dict[str, object] | None:
+        """Load the most recently written JSON artifact for an entity.
+
+        Selects by file modification time (updated on every ``put_json``
+        call) so that partial rebuilds always pick the current-run artifact.
+        Returns ``None`` if no artifact exists.
+        """
+        entity_dir = self._root / document_id / schema_family / scope / entity_id
+        if not entity_dir.exists():
+            return None
+        jsons = list(entity_dir.glob("*.json"))
+        if not jsons:
+            return None
+        latest = max(jsons, key=lambda p: p.stat().st_mtime)
+        with open(latest, encoding="utf-8") as f:
+            return json.load(f)  # type: ignore[no-any-return]
+
+    def resolve_latest_path(
+        self,
+        *,
+        document_id: str,
+        schema_family: str,
+        scope: str,
+        entity_id: str,
+        glob_pattern: str = "*.json",
+    ) -> Path | None:
+        """Resolve the most recently written file for an entity.
+
+        Like ``load_latest_json`` but returns the filesystem path instead
+        of parsed content, useful for binary artifacts (PNGs, etc.).
+        """
+        entity_dir = self._root / document_id / schema_family / scope / entity_id
+        if not entity_dir.exists():
+            return None
+        files = list(entity_dir.glob(glob_pattern))
+        if not files:
+            return None
+        return max(files, key=lambda p: p.stat().st_mtime)

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from collections import Counter
 
 import typer
@@ -154,13 +153,10 @@ def _load_ir(
     family: str,
     page_id: str,
 ) -> PageIRV1 | None:
-    page_dir = store.root / doc / family / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return PageIRV1.model_validate(json.loads(jsons[-1].read_text()))
+    data = store.load_latest_json(
+        document_id=doc, schema_family=family, scope="page", entity_id=page_id
+    )
+    return PageIRV1.model_validate(data) if data else None
 
 
 def _load_render(
@@ -168,13 +164,10 @@ def _load_render(
     doc: str,
     page_id: str,
 ) -> RenderPageV1 | None:
-    page_dir = store.root / doc / "render_page.v1" / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return RenderPageV1.model_validate(json.loads(jsons[-1].read_text()))
+    data = store.load_latest_json(
+        document_id=doc, schema_family="render_page.v1", scope="page", entity_id=page_id
+    )
+    return RenderPageV1.model_validate(data) if data else None
 
 
 def _print_summary(records: list[QARecordV1]) -> None:

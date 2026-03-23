@@ -6,7 +6,6 @@ checks, and builds a verification report.
 
 from __future__ import annotations
 
-import json
 from datetime import UTC, datetime
 
 from atr_pipeline.eval.cross_stage_refs import PageArtifacts, run_cross_stage_checks
@@ -20,42 +19,41 @@ from atr_schemas.render_page_v1 import RenderPageV1
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 
 
-def _load_latest_json(store: ArtifactStore, doc_id: str, family: str, page_id: str) -> str | None:
-    """Read the latest JSON artifact for a (family, page_id) pair."""
-    page_dir = store.root / doc_id / family / "page" / page_id
-    if not page_dir.exists():
-        return None
-    jsons = sorted(page_dir.glob("*.json"))
-    if not jsons:
-        return None
-    return jsons[-1].read_text()
-
-
 def load_native_page(store: ArtifactStore, doc_id: str, page_id: str) -> NativePageV1 | None:
-    raw = _load_latest_json(store, doc_id, "native_page.v1", page_id)
-    return NativePageV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family="native_page.v1", scope="page", entity_id=page_id
+    )
+    return NativePageV1.model_validate(data) if data else None
 
 
 def load_evidence_page(store: ArtifactStore, doc_id: str, page_id: str) -> PageEvidenceV1 | None:
-    raw = _load_latest_json(store, doc_id, "page_evidence.v1", page_id)
-    return PageEvidenceV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family="page_evidence.v1", scope="page", entity_id=page_id
+    )
+    return PageEvidenceV1.model_validate(data) if data else None
 
 
 def load_ir_page(
     store: ArtifactStore, doc_id: str, page_id: str, edition: str = "en"
 ) -> PageIRV1 | None:
-    raw = _load_latest_json(store, doc_id, f"page_ir.v1.{edition}", page_id)
-    return PageIRV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family=f"page_ir.v1.{edition}", scope="page", entity_id=page_id
+    )
+    return PageIRV1.model_validate(data) if data else None
 
 
 def load_render_page(store: ArtifactStore, doc_id: str, page_id: str) -> RenderPageV1 | None:
-    raw = _load_latest_json(store, doc_id, "render_page.v1", page_id)
-    return RenderPageV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family="render_page.v1", scope="page", entity_id=page_id
+    )
+    return RenderPageV1.model_validate(data) if data else None
 
 
 def load_symbol_matches(store: ArtifactStore, doc_id: str, page_id: str) -> SymbolMatchSetV1 | None:
-    raw = _load_latest_json(store, doc_id, "symbol_match_set.v1", page_id)
-    return SymbolMatchSetV1.model_validate(json.loads(raw)) if raw else None
+    data = store.load_latest_json(
+        document_id=doc_id, schema_family="symbol_match_set.v1", scope="page", entity_id=page_id
+    )
+    return SymbolMatchSetV1.model_validate(data) if data else None
 
 
 def _discover_pages(store: ArtifactStore, document_id: str) -> list[str]:
