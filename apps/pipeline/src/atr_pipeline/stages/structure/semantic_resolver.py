@@ -1,9 +1,4 @@
-"""Semantic resolver — post-process blocks using region context.
-
-Runs after ``build_page_ir_real`` and before ``_store_regions`` to produce
-richer IR blocks and anchor edges by linking captions to figures, promoting
-callout regions, and resolving tables from evidence.
-"""
+"""Semantic resolver — post-process blocks using region context."""
 
 from __future__ import annotations
 
@@ -358,6 +353,32 @@ def _resolve_region_id(block: Block, region_map: dict[str, str]) -> str:
     if isinstance(block, CalloutBlock) and block.region_id:
         return block.region_id
     return region_map.get(block.block_id, "")
+
+
+def reorder_blocks_by_regions(
+    blocks: list[Block],
+    regions: list[ResolvedRegion],
+    main_flow_order: list[str],
+) -> list[Block]:
+    """Reorder blocks to match region-based spatial reading order."""
+    if not main_flow_order or not blocks:
+        return blocks
+
+    region_map = _assign_blocks_to_regions(blocks, regions)
+    region_pos = {rid: i for i, rid in enumerate(main_flow_order)}
+    sentinel = len(main_flow_order)
+
+    def _sort_key(item: tuple[int, Block]) -> tuple[int, float, int]:
+        orig_idx, block = item
+        rid = region_map.get(block.block_id)
+        pos = region_pos[rid] if rid is not None and rid in region_pos else sentinel
+        bbox = getattr(block, "bbox", None)
+        y0 = bbox.y0 if bbox is not None else 0.0
+        return (pos, y0, orig_idx)
+
+    indexed = list(enumerate(blocks))
+    indexed.sort(key=_sort_key)
+    return [block for _, block in indexed]
 
 
 def _build_resolved_blocks(

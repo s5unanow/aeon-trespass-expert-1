@@ -22,7 +22,11 @@ from atr_pipeline.stages.structure.reading_order import (
 )
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_pipeline.stages.structure.region_graph import segment_regions
-from atr_pipeline.stages.structure.semantic_resolver import SemanticResolution, resolve_semantics
+from atr_pipeline.stages.structure.semantic_resolver import (
+    SemanticResolution,
+    reorder_blocks_by_regions,
+    resolve_semantics,
+)
 from atr_schemas.common import ProvenanceRef
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
@@ -175,7 +179,6 @@ class StructureStage:
         symbols: SymbolMatchSetV1 | None,
         furniture: FurnitureMap,
     ) -> PageIRV1:
-        """Build page IR, run region segmentation, and resolve symbols."""
         regions, order, evidence = self._run_region_segmentation(ctx, native, page_id)
 
         if builder == "simple":
@@ -200,7 +203,6 @@ class StructureStage:
                 placements=sym_placements,
             )
 
-            # Semantic resolver: enrich blocks using region context
             if regions:
                 sem = resolve_semantics(
                     ir.blocks,
@@ -208,8 +210,14 @@ class StructureStage:
                     evidence,
                     ctx.config.structure,
                 )
-                ir.blocks = sem.blocks
-                ir.reading_order = [b.block_id for b in sem.blocks]
+                if order is not None:
+                    reordered = reorder_blocks_by_regions(
+                        sem.blocks, regions, order.main_flow_order
+                    )
+                else:
+                    reordered = sem.blocks
+                ir.blocks = reordered
+                ir.reading_order = [b.block_id for b in reordered]
 
                 sym_refs = build_symbol_refs(sym_placements) if sym_placements else None
                 self._store_regions(
@@ -232,7 +240,6 @@ class StructureStage:
         native: NativePageV1,
         page_id: str,
     ) -> tuple[list[ResolvedRegion], ReadingOrderResult | None, PageEvidenceV1 | None]:
-        """Run region graph segmentation and reading order if evidence is available."""
         evidence = self._load_evidence(ctx, page_id)
         if evidence is None:
             return [], None, None
@@ -262,7 +269,6 @@ class StructureStage:
         symbols: SymbolMatchSetV1 | None,
         regions: list[ResolvedRegion],
     ) -> list[ResolvedSymbolPlacement] | None:
-        """Resolve symbol matches into typed placements."""
         if symbols is None or not symbols.matches:
             return None
         inp = SymbolResolverInput(
@@ -285,7 +291,6 @@ class StructureStage:
         ctx: StageContext,
         input_data: BaseModel | None,
     ) -> list[str]:
-        """Get page IDs from the artifact store."""
         native_dir = ctx.artifact_store.root / ctx.document_id / "native_page.v1" / "page"
         if native_dir.exists():
             return sorted(d.name for d in native_dir.iterdir() if d.is_dir())
@@ -298,7 +303,6 @@ class StructureStage:
         ctx: StageContext,
         page_id: str,
     ) -> NativePageV1 | None:
-        """Load a NativePageV1 from the artifact store."""
         page_dir = ctx.artifact_store.root / ctx.document_id / "native_page.v1" / "page" / page_id
         if not page_dir.exists():
             return None
@@ -313,7 +317,6 @@ class StructureStage:
         ctx: StageContext,
         page_id: str,
     ) -> SymbolMatchSetV1 | None:
-        """Load symbol matches from the artifact store, if available."""
         page_dir = (
             ctx.artifact_store.root / ctx.document_id / "symbol_match_set.v1" / "page" / page_id
         )
@@ -330,7 +333,6 @@ class StructureStage:
         ctx: StageContext,
         page_id: str,
     ) -> PageEvidenceV1 | None:
-        """Load page evidence from the artifact store, if available."""
         page_dir = ctx.artifact_store.root / ctx.document_id / "page_evidence.v1" / "page" / page_id
         if not page_dir.exists():
             return None
@@ -350,7 +352,6 @@ class StructureStage:
         symbol_refs: list[ResolvedSymbolRef] | None = None,
         semantics: SemanticResolution | None = None,
     ) -> None:
-        """Store region graph and reading order as a ResolvedPageV1 artifact."""
         refs = symbol_refs or []
         avg_conf = sum(r.confidence for r in refs) / len(refs) if refs else 1.0
         # Combine reading-order edges with semantic edges
@@ -389,7 +390,6 @@ class StructureStage:
         ctx: StageContext,
         page_id: str,
     ) -> LayoutPageV1 | None:
-        """Load layout evidence from the artifact store, if available."""
         page_dir = ctx.artifact_store.root / ctx.document_id / "layout_page.v1" / "page" / page_id
         if not page_dir.exists():
             return None

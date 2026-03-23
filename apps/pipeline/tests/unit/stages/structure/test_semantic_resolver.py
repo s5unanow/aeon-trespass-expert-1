@@ -12,6 +12,7 @@ from atr_pipeline.stages.structure.semantic_resolver import (
     _detect_captions,
     _promote_callouts,
     _resolve_tables,
+    reorder_blocks_by_regions,
     resolve_semantics,
 )
 from atr_schemas.common import NormRect, PageDimensions, Rect
@@ -332,3 +333,63 @@ class TestResolveSemanticsIntegration:
             [para], regions, _evidence([tc]), StructureConfig(table_min_confidence=0.6)
         )
         assert len([b for b in result.blocks if isinstance(b, TableBlock)]) == 1
+
+
+class TestReorderBlocksByRegions:
+    def test_headings_before_content_p0003_pattern(self) -> None:
+        """Reproduce the p0003 bug: headings after content in extraction order."""
+        para1 = _para("b001", 50, 80, 500, 300)
+        para2 = _para("b002", 50, 370, 500, 600)
+        heading1 = _heading("b003", 200, 30, 400, 70)
+        heading2 = _heading("b004", 200, 320, 400, 360)
+        regions = [
+            _region("r001", RegionKind.BODY, 40, 20, 520, 310),
+            _region("r002", RegionKind.BODY, 40, 315, 520, 610),
+        ]
+        blocks = [para1, para2, heading1, heading2]
+        result = reorder_blocks_by_regions(blocks, regions, ["r001", "r002"])
+        ids = [b.block_id for b in result]
+        assert ids.index("b003") < ids.index("b001")
+        assert ids.index("b004") < ids.index("b002")
+        assert ids.index("b003") < ids.index("b004")
+
+    def test_already_correct_order_preserved(self) -> None:
+        heading = _heading("b1", 50, 30, 400, 60)
+        para = _para("b2", 50, 70, 400, 200)
+        regions = [_region("r001", RegionKind.BODY, 40, 20, 420, 210)]
+        main_flow = ["r001"]
+
+        result = reorder_blocks_by_regions([heading, para], regions, main_flow)
+        assert [b.block_id for b in result] == ["b1", "b2"]
+
+    def test_empty_inputs(self) -> None:
+        assert reorder_blocks_by_regions([], [], []) == []
+
+    def test_no_main_flow_preserves_order(self) -> None:
+        blocks = [_para("b1", 50, 100, 200, 120), _para("b2", 50, 200, 200, 220)]
+        regions = [_region("r001", RegionKind.BODY, 40, 90, 210, 230)]
+        result = reorder_blocks_by_regions(blocks, regions, [])
+        assert [b.block_id for b in result] == ["b1", "b2"]
+
+    def test_unmapped_blocks_placed_after_mapped(self) -> None:
+        mapped = _para("b1", 50, 100, 200, 120)
+        unmapped = ParagraphBlock(block_id="b2", children=[TextInline(text="no bbox")])
+        regions = [_region("r001", RegionKind.BODY, 40, 90, 210, 130)]
+        result = reorder_blocks_by_regions([unmapped, mapped], regions, ["r001"])
+        ids = [b.block_id for b in result]
+        assert ids == ["b1", "b2"]
+
+    def test_multi_region_interleaved(self) -> None:
+        """Blocks from different regions interleaved in extraction order."""
+        a1 = _para("a1", 50, 100, 200, 150)  # region A
+        b1 = _para("b1", 300, 100, 500, 150)  # region B
+        a2 = _para("a2", 50, 200, 200, 250)  # region A
+        b2 = _para("b2", 300, 200, 500, 250)  # region B
+
+        regions = [
+            _region("r010", RegionKind.BODY, 40, 50, 220, 300),
+            _region("r020", RegionKind.BODY, 280, 50, 520, 300),
+        ]
+        # Two columns, left first
+        result = reorder_blocks_by_regions([a1, b1, a2, b2], regions, ["r010", "r020"])
+        assert [b.block_id for b in result] == ["a1", "a2", "b1", "b2"]
