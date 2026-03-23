@@ -91,3 +91,22 @@ def test_cache_key_is_12_hex_chars() -> None:
     )
     assert len(key) == 12
     assert all(c in "0123456789abcdef" for c in key)
+
+
+def test_cache_key_upstream_change_invalidates() -> None:
+    """Different upstream artifact refs produce different cache keys."""
+    key_original = build_cache_key(
+        stage_name="structure",
+        stage_version="1",
+        schema_version="v1",
+        config_hash="c",
+        input_hashes=["upstream_hash_v1"],
+    )
+    key_after_reextract = build_cache_key(
+        stage_name="structure",
+        stage_version="1",
+        schema_version="v1",
+        config_hash="c",
+        input_hashes=["upstream_hash_v2"],
+    )
+    assert key_original != key_after_reextract
