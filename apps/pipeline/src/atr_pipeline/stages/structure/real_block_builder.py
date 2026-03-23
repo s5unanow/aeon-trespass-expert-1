@@ -97,6 +97,7 @@ def _spans_to_text_inline(
         return []
 
     inlines: list[TextInline] = []
+    prev_span: SpanEvidence | None = None
     for span in spans:
         role = _classify_span(span, cfg)
         marks: list[str] = []
@@ -111,11 +112,14 @@ def _spans_to_text_inline(
         if not text.strip():
             continue
 
-        # Ensure whitespace between adjacent spans
-        if inlines:
+        # Insert whitespace between non-adjacent spans (but not for
+        # horizontally touching spans like small-caps word parts).
+        if inlines and prev_span is not None:
             prev_text = inlines[-1].text
             if prev_text and text and not prev_text[-1].isspace() and not text[0].isspace():
-                text = " " + text
+                gap = span.bbox.x0 - prev_span.bbox.x1
+                if gap > _WORD_GAP_THRESHOLD:
+                    text = " " + text
 
         # Merge with previous if same marks
         if inlines and inlines[-1].marks == marks:
@@ -126,8 +130,13 @@ def _spans_to_text_inline(
             )
         else:
             inlines.append(TextInline(text=text, marks=marks, lang=LanguageCode.EN))
+        prev_span = span
 
     return inlines
+
+
+# Horizontal gap (pt) below which spans are treated as the same word.
+_WORD_GAP_THRESHOLD = 1.5
 
 
 def _significant_image_blocks(
