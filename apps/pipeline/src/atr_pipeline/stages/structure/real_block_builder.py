@@ -431,12 +431,13 @@ def _insert_icons_line_aware(
     line so the cumulative x-cursor resets at each line break.
     """
     result: list[TextInline | IconInline] = []
+    prev_line_spans: list[SpanEvidence] = []
     for line_spans in _group_spans_by_line(spans):
         line_inlines = _spans_to_text_inline(line_spans, cfg)
         if not line_inlines:
             continue
-        # Ensure whitespace between consecutive visual lines
-        if result and isinstance(result[-1], TextInline):
+        # Insert whitespace between lines unless spans are x-adjacent
+        if result and isinstance(result[-1], TextInline) and prev_line_spans:
             prev_text = result[-1].text
             first_text = line_inlines[0].text
             if (
@@ -445,13 +446,16 @@ def _insert_icons_line_aware(
                 and not prev_text[-1].isspace()
                 and not first_text[0].isspace()
             ):
-                first = line_inlines[0]
-                line_inlines[0] = TextInline(
-                    text=" " + first.text,
-                    marks=first.marks,
-                    lang=first.lang,
-                )
+                gap = line_spans[0].bbox.x0 - prev_line_spans[-1].bbox.x1
+                if gap > _WORD_GAP_THRESHOLD:
+                    first = line_inlines[0]
+                    line_inlines[0] = TextInline(
+                        text=" " + first.text,
+                        marks=first.marks,
+                        lang=first.lang,
+                    )
         result.extend(_insert_icons(line_inlines, line_spans, symbols, page_id))
+        prev_line_spans = line_spans
     return result
 
 
