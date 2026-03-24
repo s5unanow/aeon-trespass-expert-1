@@ -96,11 +96,12 @@ export function ReaderLayout() {
         documentId={documentId}
         edition={edition}
         currentPageId={pageId}
+        pageOffset={manifest?.page_offset}
         isOpen={sidebarOpen}
         onClose={closeSidebar}
       />
       <main className="layout-content">
-        <Outlet />
+        <Outlet context={{ pageOffset: manifest?.page_offset ?? 0 }} />
       </main>
     </div>
   );

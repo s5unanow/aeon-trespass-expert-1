@@ -1,6 +1,8 @@
 export interface DocumentManifest {
   document_id: string;
-  pages: { page_id: string; title?: string }[];
+  pages: { page_id: string; title?: string; depth?: number }[];
+  /** Offset between page_id number and printed page number (e.g. 1 if p0004 = printed page 3). */
+  page_offset?: number;
   /** True when loaded from an edition-specific path (not a root fallback). */
   edition_specific?: boolean;
 }

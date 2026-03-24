@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 interface SidebarPage {
   page_id: string;
   title?: string;
+  depth?: number;
 }
 
 interface PageSidebarProps {
@@ -11,13 +12,16 @@ interface PageSidebarProps {
   documentId: string;
   edition: string;
   currentPageId?: string;
+  pageOffset?: number;
   isOpen: boolean;
   onClose: () => void;
 }
 
-function formatPageNumber(pageId: string): string {
+function formatPageNumber(pageId: string, offset: number): string {
   const num = parseInt(pageId.replace(/^p/, ''), 10);
-  return Number.isNaN(num) ? pageId : String(num);
+  if (Number.isNaN(num)) return pageId;
+  const printed = num - offset;
+  return String(printed > 0 ? printed : num);
 }
 
 export function PageSidebar({
@@ -25,6 +29,7 @@ export function PageSidebar({
   documentId,
   edition,
   currentPageId,
+  pageOffset = 0,
   isOpen,
   onClose,
 }: PageSidebarProps) {
@@ -42,16 +47,26 @@ export function PageSidebar({
         <ul className="sidebar-list">
           {pages.map((page) => {
             const isCurrent = page.page_id === currentPageId;
+            const isSection = page.depth === 0;
+            const linkClass = [
+              'sidebar-link',
+              isCurrent && 'sidebar-link--active',
+              isSection && 'sidebar-link--section',
+            ]
+              .filter(Boolean)
+              .join(' ');
             return (
               <li key={page.page_id}>
                 <Link
                   ref={isCurrent ? activeRef : undefined}
                   to={`/documents/${documentId}/${edition}/${page.page_id}`}
-                  className={`sidebar-link ${isCurrent ? 'sidebar-link--active' : ''}`}
+                  className={linkClass}
                   aria-current={isCurrent ? 'page' : undefined}
                   onClick={onClose}
                 >
-                  <span className="sidebar-link-number">{formatPageNumber(page.page_id)}</span>
+                  <span className="sidebar-link-number">
+                    {formatPageNumber(page.page_id, pageOffset)}
+                  </span>
                   {page.title && <span className="sidebar-link-title">{page.title}</span>}
                 </Link>
               </li>
