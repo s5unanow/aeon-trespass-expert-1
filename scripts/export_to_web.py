@@ -9,8 +9,12 @@ import re
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+REPO = _SCRIPTS_DIR.parent
 sys.path.insert(0, str(REPO / "apps" / "pipeline" / "src"))
+sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from _export_blocks import postprocess_blocks, text_content  # noqa: E402
 
 ARTIFACT_ROOT = REPO / "artifacts"
 PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
@@ -75,139 +79,62 @@ def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
     return page_images
 
 
-DECORATIVE_PREFIXES = (
-    "sym.board_tile",
-    "sym.art_",
-    "sym.terrain_",
-    "sym.marker_",
-    "sym.crown_",
-    "sym.die_",
-    "sym.titan_helmet",
-)
-
-_SENTENCE_RE = re.compile(r"(?<=\. )(?=[A-ZА-ЯЁ])")  # noqa: RUF001
+_TOC_ENTRY_RE = re.compile(r"(.+?)\.{3,}\s*(\d+)")
 
 
-def _text_content(block: dict) -> str:
-    """Extract concatenated text from a block's children."""
-    return "".join(c.get("text", "") for c in block.get("children", []) if c.get("kind") == "text")
-
-
-def _postprocess_blocks(blocks: list[dict]) -> list[dict]:
-    """Strip decorative icons, split long paragraphs, deduplicate."""
-    result: list[dict] = []
-
-    for block in blocks:
-        # Strip decorative icons from children
-        if "children" in block:
-            block["children"] = [
-                c
-                for c in block["children"]
-                if not (
-                    c.get("kind") == "icon"
-                    and c.get("symbol_id", "").startswith(DECORATIVE_PREFIXES)
-                )
-            ]
-
-        # Split long paragraphs at sentence boundaries
-        if block.get("kind") == "paragraph":
-            text = _text_content(block)
-            if len(text) > 600:
-                parts = _split_paragraph(block)
-                # Deduplicate before adding
-                for part in parts:
-                    if not _is_duplicate(result, part):
-                        result.append(part)
+def _parse_toc_entries(data_dir: Path) -> list[tuple[str, int]]:
+    """Extract (title, printed_page_number) pairs from TOC paragraphs."""
+    entries: list[tuple[str, int]] = []
+    for render_file in sorted(data_dir.glob("render_page.*.json")):
+        page_data = json.loads(render_file.read_text())
+        for block in page_data.get("blocks", []):
+            if block.get("kind") != "paragraph":
                 continue
-
-        # Deduplicate
-        if not _is_duplicate(result, block):
-            result.append(block)
-
-    return result
+            matches = _TOC_ENTRY_RE.findall(text_content(block))
+            if len(matches) >= 2:
+                entries.extend((t.strip(), int(n)) for t, n in matches)
+    return entries
 
 
-def _find_split_point(boundaries: list[int], max_chars: int) -> int | None:
-    """Find the best sentence boundary to split at."""
-    split_at = None
-    for b in boundaries:
-        if b <= max_chars:
-            split_at = b
-        else:
-            break
-    if split_at is None or split_at < 100:
-        split_at = next((b for b in boundaries if b >= 100), None)
-    return split_at
+def _match_toc_by_title(
+    toc_entries: list[tuple[str, int]], pages_meta: list[dict]
+) -> tuple[set[str], int]:
+    """Match TOC entries to pages by normalized title; return (section_pids, offset)."""
+    title_lookup: dict[str, tuple[str, int]] = {}
+    for pm in pages_meta:
+        title = pm.get("title", "").strip().lower()
+        if title:
+            title_lookup[title] = (pm["page_id"], int(pm["page_id"].lstrip("p")))
+
+    section_pids: set[str] = set()
+    offset = 0
+    for title, printed_num in toc_entries:
+        match = title_lookup.get(title.lower())
+        if match:
+            if not section_pids:
+                offset = match[1] - printed_num
+            section_pids.add(match[0])
+    return section_pids, offset
 
 
-def _locate_split_child(children: list[dict], split_at: int) -> tuple[int | None, int | None]:
-    """Find the child index and offset where text position falls."""
-    char_count = 0
-    for i, child in enumerate(children):
-        if child.get("kind") != "text":
-            continue
-        child_text = child.get("text", "")
-        if char_count + len(child_text) >= split_at:
-            return i, split_at - char_count
-        char_count += len(child_text)
-    return None, None
+def _extract_toc_sections(data_dir: Path, pages_meta: list[dict]) -> tuple[set[str], int]:
+    """Parse TOC, match to manifest pages, return (section_page_ids, page_offset)."""
+    toc_entries = _parse_toc_entries(data_dir)
+    if not toc_entries:
+        return set(), 0
 
+    section_pids, offset = _match_toc_by_title(toc_entries, pages_meta)
+    if section_pids:
+        return section_pids, offset
 
-def _split_paragraph(block: dict, max_chars: int = 600) -> list[dict]:
-    """Split a paragraph block at sentence boundaries."""
-    children = block.get("children", [])
-    text = _text_content(block)
-    if len(text) <= max_chars:
-        return [block]
+    # Fallback: titles differ (e.g. translated) — try candidate offsets by page number
+    titled_pids = {pm["page_id"] for pm in pages_meta if pm.get("title", "").strip()}
+    for candidate in range(4):
+        matched = {f"p{n + candidate:04d}" for _, n in toc_entries}
+        if matched <= titled_pids:
+            return matched, candidate
 
-    boundaries = [m.start() for m in _SENTENCE_RE.finditer(text)]
-    if not boundaries:
-        return [block]
-
-    split_at = _find_split_point(boundaries, max_chars)
-    if split_at is None:
-        return [block]
-
-    split_idx, split_offset = _locate_split_child(children, split_at)
-    if split_idx is None:
-        return [block]
-
-    first_children = children[:split_idx]
-    remainder_children = children[split_idx:]
-
-    split_child = remainder_children[0]
-    if split_child.get("kind") == "text" and split_offset:
-        text1 = split_child["text"][:split_offset]
-        text2 = split_child["text"][split_offset:]
-        if text1.strip():
-            first_children.append({**split_child, "text": text1})
-        if text2.strip():
-            remainder_children = [{**split_child, "text": text2}, *remainder_children[1:]]
-        else:
-            remainder_children = remainder_children[1:]
-
-    block1 = {**block, "id": f"{block['id']}.0", "children": first_children}
-    block2 = {**block, "id": f"{block['id']}.1", "children": remainder_children}
-
-    result = [block1]
-    if len(_text_content(block2)) > max_chars:
-        result.extend(_split_paragraph(block2, max_chars))
-    else:
-        result.append(block2)
-    return result
-
-
-def _is_duplicate(blocks: list[dict], block: dict) -> bool:
-    """Check if block duplicates any recent block (within last 5)."""
-    this_text = _text_content(block)[:80]
-    if not this_text or len(this_text) < 3:
-        return False
-    for prev in blocks[-5:]:
-        if prev.get("kind") != block.get("kind"):
-            continue
-        if _text_content(prev)[:80] == this_text:
-            return True
-    return False
+    return set(), 0
 
 
 _KIND_MAP = {
@@ -224,7 +151,7 @@ def _count_block_stats(blocks: list[dict], stats: dict) -> None:
         key = _KIND_MAP.get(b.get("kind", ""))
         if key:
             stats[key] += 1
-        if b.get("kind") == "paragraph" and len(_text_content(b)) > 800:
+        if b.get("kind") == "paragraph" and len(text_content(b)) > 800:
             stats["long_paras"] += 1
 
 
@@ -261,7 +188,7 @@ def export_pages(
                 best_score = s
 
         # Post-process blocks: strip decorative icons, split, deduplicate
-        best["blocks"] = _postprocess_blocks(best.get("blocks", []))
+        best["blocks"] = postprocess_blocks(best.get("blocks", []))
 
         # Inject image figures if we have them
         imgs = page_images.get(pid, [])
@@ -299,29 +226,22 @@ def export_pages(
         (data_dir / f"render_page.{pid}.json").write_text(
             json.dumps(best, ensure_ascii=False, indent=2)
         )
-        # Compute depth from first heading level (h1 → 0 = section, h2+ → 1)
-        first_heading_level = next(
-            (b.get("level", 2) for b in best.get("blocks", []) if b.get("kind") == "heading"),
-            2,
-        )
-        depth = 0 if first_heading_level == 1 else 1
-
         pages_meta.append(
             {
                 "page_id": pid,
                 "title": best.get("page", {}).get("title", ""),
-                "depth": depth,
             }
         )
 
+    # Derive sections and page offset from TOC entries
+    section_pids, page_offset = _extract_toc_sections(data_dir, pages_meta)
+    for pm in pages_meta:
+        pm["depth"] = 0 if pm["page_id"] in section_pids else 1
+
     # Edition-scoped manifest
-    (edition_dir / "manifest.json").write_text(
-        json.dumps(
-            {"document_id": doc_id, "pages": pages_meta},
-            ensure_ascii=False,
-            indent=2,
-        )
-    )
+    manifest = {"document_id": doc_id, "page_offset": page_offset, "pages": pages_meta}
+    (edition_dir / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+    print(f"  [{edition.upper()}] TOC sections: {len(section_pids)}, page_offset: {page_offset}")
 
     total = stats["headings"] + stats["paragraphs"] + stats["list_items"] + stats["figures"]
     print(f"  [{edition.upper()}] Exported {len(pages_meta)} pages, {total} blocks:")

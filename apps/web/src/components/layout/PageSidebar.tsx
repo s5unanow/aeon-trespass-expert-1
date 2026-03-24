@@ -12,13 +12,16 @@ interface PageSidebarProps {
   documentId: string;
   edition: string;
   currentPageId?: string;
+  pageOffset?: number;
   isOpen: boolean;
   onClose: () => void;
 }
 
-function formatPageNumber(pageId: string): string {
+function formatPageNumber(pageId: string, offset: number): string {
   const num = parseInt(pageId.replace(/^p/, ''), 10);
-  return Number.isNaN(num) ? pageId : String(num);
+  if (Number.isNaN(num)) return pageId;
+  const printed = num - offset;
+  return String(printed > 0 ? printed : num);
 }
 
 export function PageSidebar({
@@ -26,6 +29,7 @@ export function PageSidebar({
   documentId,
   edition,
   currentPageId,
+  pageOffset = 0,
   isOpen,
   onClose,
 }: PageSidebarProps) {
@@ -60,7 +64,9 @@ export function PageSidebar({
                   aria-current={isCurrent ? 'page' : undefined}
                   onClick={onClose}
                 >
-                  <span className="sidebar-link-number">{formatPageNumber(page.page_id)}</span>
+                  <span className="sidebar-link-number">
+                    {formatPageNumber(page.page_id, pageOffset)}
+                  </span>
                   {page.title && <span className="sidebar-link-title">{page.title}</span>}
                 </Link>
               </li>

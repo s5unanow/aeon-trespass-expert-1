@@ -96,6 +96,7 @@ export function ReaderLayout() {
         documentId={documentId}
         edition={edition}
         currentPageId={pageId}
+        pageOffset={manifest?.page_offset}
         isOpen={sidebarOpen}
         onClose={closeSidebar}
       />
