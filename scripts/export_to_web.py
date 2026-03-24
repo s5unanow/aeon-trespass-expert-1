@@ -28,6 +28,9 @@ PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
 def score_render(data: dict, edition: str = "ru") -> int:
     """Score a render artifact — higher = better quality."""
+    # Facsimile is an explicit pipeline decision — always preferred
+    if data.get("presentation_mode") == "facsimile":
+        return 10_000
     blocks = data.get("blocks", [])
     full = " ".join(
         c.get("text", "")
