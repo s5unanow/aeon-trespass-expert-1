@@ -299,10 +299,18 @@ def export_pages(
         (data_dir / f"render_page.{pid}.json").write_text(
             json.dumps(best, ensure_ascii=False, indent=2)
         )
+        # Compute depth from first heading level (h1 → 0 = section, h2+ → 1)
+        first_heading_level = next(
+            (b.get("level", 2) for b in best.get("blocks", []) if b.get("kind") == "heading"),
+            2,
+        )
+        depth = 0 if first_heading_level == 1 else 1
+
         pages_meta.append(
             {
                 "page_id": pid,
                 "title": best.get("page", {}).get("title", ""),
+                "depth": depth,
             }
         )
 

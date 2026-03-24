@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 interface SidebarPage {
   page_id: string;
   title?: string;
+  depth?: number;
 }
 
 interface PageSidebarProps {
@@ -42,12 +43,20 @@ export function PageSidebar({
         <ul className="sidebar-list">
           {pages.map((page) => {
             const isCurrent = page.page_id === currentPageId;
+            const isSection = page.depth === 0;
+            const linkClass = [
+              'sidebar-link',
+              isCurrent && 'sidebar-link--active',
+              isSection && 'sidebar-link--section',
+            ]
+              .filter(Boolean)
+              .join(' ');
             return (
               <li key={page.page_id}>
                 <Link
                   ref={isCurrent ? activeRef : undefined}
                   to={`/documents/${documentId}/${edition}/${page.page_id}`}
-                  className={`sidebar-link ${isCurrent ? 'sidebar-link--active' : ''}`}
+                  className={linkClass}
                   aria-current={isCurrent ? 'page' : undefined}
                   onClick={onClose}
                 >

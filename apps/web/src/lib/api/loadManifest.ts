@@ -1,6 +1,6 @@
 export interface DocumentManifest {
   document_id: string;
-  pages: { page_id: string; title?: string }[];
+  pages: { page_id: string; title?: string; depth?: number }[];
   /** True when loaded from an edition-specific path (not a root fallback). */
   edition_specific?: boolean;
 }
