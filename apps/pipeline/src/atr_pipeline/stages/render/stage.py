@@ -5,6 +5,7 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.stages.render.annotation_builder import build_facsimile_annotations
 from atr_pipeline.stages.render.page_builder import build_render_page
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
 from atr_schemas.enums import StageScope
@@ -83,6 +84,15 @@ class RenderStage:
                     ctx.logger.warning("Facsimile %s: raster meta has no levels", page_id)
                 else:
                     ctx.logger.warning("Facsimile %s: no raster metadata found", page_id)
+
+                # Build translation overlay annotations
+                if render_page.facsimile is not None:
+                    en_ir = self._load_page_ir_by_lang(ctx, page_id, "en")
+                    ru_ir = self._load_page_ir_by_lang(ctx, page_id, "ru")
+                    if en_ir is not None:
+                        annotations = build_facsimile_annotations(en_ir, ru_ir)
+                        render_page.facsimile.annotations = annotations
+                        ctx.logger.info("Facsimile %s: %d annotations", page_id, len(annotations))
 
             # Apply title override or fallback
             override = render_cfg.page_overrides.get(page_id)
@@ -230,6 +240,19 @@ class RenderStage:
             if data is not None:
                 return PageIRV1.model_validate(data)
         return None
+
+    @staticmethod
+    def _load_page_ir_by_lang(ctx: StageContext, page_id: str, lang: str) -> PageIRV1 | None:
+        """Load PageIRV1 for a specific language."""
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family=f"page_ir.v1.{lang}",
+            scope="page",
+            entity_id=page_id,
+        )
+        if data is None:
+            return None
+        return PageIRV1.model_validate(data)
 
     @staticmethod
     def _load_difficulty(ctx: StageContext, page_id: str) -> DifficultyScoreV1 | None:

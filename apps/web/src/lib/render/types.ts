@@ -66,6 +66,7 @@ export type RenderPageMeta = Required<renderPageV1.RenderPageMeta>;
 export type RenderNav = Required<renderPageV1.RenderNav>;
 export type RenderFigure = renderPageV1.RenderFigure;
 export type RenderFacsimile = renderPageV1.RenderFacsimile;
+export type FacsimileAnnotation = renderPageV1.FacsimileAnnotation;
 export type RenderSourceMap = Required<renderPageV1.RenderSourceMap>;
 
 /** Frontend page payload — derived from RenderPageV1 with required fields. */
