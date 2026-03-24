@@ -24,7 +24,7 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
           loading="lazy"
         />
         {hasAnnotations && (
-          <div className="facsimile-overlay" aria-hidden="true">
+          <div className="facsimile-overlay">
             {annotations.map((ann, i) => (
               <AnnotationHotspot key={i} annotation={ann} />
             ))}
@@ -53,6 +53,7 @@ function AnnotationHotspot({ annotation }: { annotation: FacsimileAnnotation }) 
       className={`facsimile-hotspot${expanded ? ' is-expanded' : ''}`}
       style={style}
       data-kind={annotation.kind}
+      aria-label={display}
       onClick={() => setExpanded((v) => !v)}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}

@@ -131,7 +131,7 @@ h2.reader-heading {
 
 .facsimile-hotspot:hover,
 .facsimile-hotspot.is-expanded {
-  background: hsl(var(--accent-hsl) / 0.15);
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
 }
 
 .facsimile-hotspot-text {
