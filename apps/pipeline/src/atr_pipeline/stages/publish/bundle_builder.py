@@ -56,6 +56,18 @@ def _copy_ref_artifact(
     )
 
 
+def flatten_raster_refs(raw: object) -> dict[str, str]:
+    """Flatten nested {page_id: {dpi: path}} into {page_id__Ndpi: path}."""
+    flat: dict[str, str] = {}
+    if not isinstance(raw, dict):
+        return flat
+    for pid, dpi_map in raw.items():
+        if isinstance(dpi_map, dict):
+            for dpi_str, path in dpi_map.items():
+                flat[f"{pid}__{dpi_str}dpi"] = str(path)
+    return flat
+
+
 def _compute_build_id(refs: BundleRefs) -> str:
     """Derive a deterministic build id from all input artifact refs.
 

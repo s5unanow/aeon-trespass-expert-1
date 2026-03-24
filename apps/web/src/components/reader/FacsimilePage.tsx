@@ -14,6 +14,7 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
         srcSet={facsimile.raster_src_hires ? `${facsimile.raster_src_hires} 2x` : undefined}
         alt={`Page ${pageNumber}: ${pageTitle}`}
         width={facsimile.width_px || undefined}
+        height={facsimile.height_px || undefined}
         className="facsimile-raster"
         loading="lazy"
       />

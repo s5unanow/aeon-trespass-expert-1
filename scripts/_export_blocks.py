@@ -152,7 +152,6 @@ def rewrite_facsimile_urls(page_data: dict, doc_id: str) -> None:
 def inject_image_figures(
     page_data: dict,
     pid: str,
-    doc_id: str,
     imgs: list[dict],
 ) -> None:
     """Add image figure blocks and figure entries for article pages."""

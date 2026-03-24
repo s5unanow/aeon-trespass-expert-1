@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from atr_pipeline.config.models import PageOverride
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.render.page_builder import build_render_page
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
@@ -76,14 +75,18 @@ class RenderStage:
 
             if mode == "facsimile":
                 raster_meta = self._load_raster_meta(ctx, page_id)
-                if raster_meta:
+                if raster_meta and raster_meta.levels:
                     render_page.facsimile = _build_facsimile(raster_meta)
                     for level in raster_meta.levels:
                         raster_refs.setdefault(page_id, {})[level.dpi] = level.relative_path
+                elif raster_meta:
+                    ctx.logger.warning("Facsimile %s: raster meta has no levels", page_id)
+                else:
+                    ctx.logger.warning("Facsimile %s: no raster metadata found", page_id)
 
             # Apply title override or fallback
-            override = render_cfg.page_overrides.get(page_id, PageOverride())
-            if override.title is not None:
+            override = render_cfg.page_overrides.get(page_id)
+            if override and override.title is not None:
                 render_page.page.title = override.title
             elif mode == "facsimile" and len(render_page.page.title) <= 2:
                 render_page.page.title = f"Page {ir.page_number}"

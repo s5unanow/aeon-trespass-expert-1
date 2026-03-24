@@ -197,7 +197,7 @@ def export_pages(
             rewrite_facsimile_urls(best, doc_id)
         else:
             best["blocks"] = postprocess_blocks(best.get("blocks", []))
-            inject_image_figures(best, pid, doc_id, page_images.get(pid, []))
+            inject_image_figures(best, pid, page_images.get(pid, []))
 
         # Navigation
         best["nav"] = {

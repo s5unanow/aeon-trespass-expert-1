@@ -10,7 +10,11 @@ import typer
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import get_run, list_runs
-from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
+from atr_pipeline.stages.publish.bundle_builder import (
+    BundleRefs,
+    build_release_bundle,
+    flatten_raster_refs,
+)
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 
@@ -135,13 +139,7 @@ def _extract_bundle_refs(artifact_root: Path, run_data: dict[str, str | None]) -
 
     raw_image_refs = render_data.get("image_refs", {})
 
-    raw_raster_refs = render_data.get("raster_refs", {})
-    flat_rasters: dict[str, str] = {}
-    if isinstance(raw_raster_refs, dict):
-        for pid, dpi_map in raw_raster_refs.items():
-            if isinstance(dpi_map, dict):
-                for dpi_str, path in dpi_map.items():
-                    flat_rasters[f"{pid}__{dpi_str}dpi"] = str(path)
+    flat_rasters = flatten_raster_refs(render_data.get("raster_refs", {}))
 
     return BundleRefs(
         render_pages={str(k): str(v) for k, v in page_refs.items()},
