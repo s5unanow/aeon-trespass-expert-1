@@ -306,11 +306,11 @@ def main(argv: list[str] | None = None) -> None:
     for pid_dir in sorted(render_src.iterdir()):
         if not pid_dir.is_dir():
             continue
-        for jf in pid_dir.glob("*.json"):
-            data = json.loads(jf.read_text())
-            if data.get("presentation_mode") == "facsimile":
-                facsimile_pids.append(pid_dir.name)
-            break
+        if any(
+            json.loads(jf.read_text()).get("presentation_mode") == "facsimile"
+            for jf in pid_dir.glob("*.json")
+        ):
+            facsimile_pids.append(pid_dir.name)
 
     if facsimile_pids:
         print(f"Exporting rasters for {len(facsimile_pids)} facsimile pages...")
