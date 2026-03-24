@@ -135,6 +135,14 @@ def _extract_bundle_refs(artifact_root: Path, run_data: dict[str, str | None]) -
 
     raw_image_refs = render_data.get("image_refs", {})
 
+    raw_raster_refs = render_data.get("raster_refs", {})
+    flat_rasters: dict[str, str] = {}
+    if isinstance(raw_raster_refs, dict):
+        for pid, dpi_map in raw_raster_refs.items():
+            if isinstance(dpi_map, dict):
+                for dpi_str, path in dpi_map.items():
+                    flat_rasters[f"{pid}__{dpi_str}dpi"] = str(path)
+
     return BundleRefs(
         render_pages={str(k): str(v) for k, v in page_refs.items()},
         companions={
@@ -147,6 +155,7 @@ def _extract_bundle_refs(artifact_root: Path, run_data: dict[str, str | None]) -
             if isinstance(raw_image_refs, dict)
             else {}
         ),
+        rasters=flat_rasters,
         run_id=run_data.get("run_id") or "",
         source_pdf_sha256=manifest.source_pdf_sha256,
     )

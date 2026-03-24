@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import re
+import shutil
+from pathlib import Path
 
 _SENTENCE_RE = re.compile(r"(?<=\. )(?=[A-ZА-ЯЁ])")  # noqa: RUF001
 
@@ -132,3 +135,87 @@ def _is_duplicate(blocks: list[dict], block: dict) -> bool:
         if text_content(prev)[:80] == this_text:
             return True
     return False
+
+
+def rewrite_facsimile_urls(page_data: dict, doc_id: str) -> None:
+    """Update facsimile raster URLs to web-public paths in place."""
+    fac = page_data.get("facsimile")
+    if not fac:
+        return
+    base = f"/documents/{doc_id}/rasters"
+    for key in ("raster_src", "raster_src_hires"):
+        val = fac.get(key)
+        if val:
+            fac[key] = f"{base}/{val.rsplit('/', 1)[-1]}"
+
+
+def inject_image_figures(
+    page_data: dict,
+    pid: str,
+    doc_id: str,
+    imgs: list[dict],
+) -> None:
+    """Add image figure blocks and figure entries for article pages."""
+    if not imgs:
+        return
+    figures = page_data.get("figures", {}) or {}
+    for img in imgs:
+        figures[img["asset_id"]] = {"src": img["src"], "alt": img["alt"]}
+        has_fig = any(
+            b.get("kind") == "figure" and b.get("asset_id") == img["asset_id"]
+            for b in page_data.get("blocks", [])
+        )
+        if not has_fig:
+            page_data.setdefault("blocks", []).append(
+                {
+                    "kind": "figure",
+                    "id": f"{pid}.fig.{img['asset_id']}",
+                    "asset_id": img["asset_id"],
+                    "children": [],
+                }
+            )
+    page_data["figures"] = figures
+
+
+def export_facsimile_rasters(
+    doc_id: str,
+    doc_public: Path,
+    artifact_root: Path,
+    facsimile_page_ids: list[str],
+) -> None:
+    """Copy rasters for facsimile pages to web public directory."""
+    if not facsimile_page_ids:
+        return
+    rasters_dir = doc_public / "rasters"
+    rasters_dir.mkdir(parents=True, exist_ok=True)
+    copied = 0
+
+    # Prefer release bundle rasters
+    release_rasters = artifact_root / doc_id / "release" / "rasters"
+
+    for pid in facsimile_page_ids:
+        for dpi in (150, 300):
+            fname = f"{pid}__{dpi}dpi.png"
+            if release_rasters.exists():
+                src = release_rasters / fname
+                if src.exists():
+                    shutil.copy2(src, rasters_dir / fname)
+                    copied += 1
+                    continue
+
+            # Fallback: resolve from raster_meta.v1
+            meta_dir = artifact_root / doc_id / "raster_meta.v1" / "page" / pid
+            if not meta_dir.exists():
+                continue
+            meta_files = sorted(meta_dir.glob("*.json"))
+            if not meta_files:
+                continue
+            meta = json.loads(meta_files[-1].read_text())
+            for level in meta.get("levels", []):
+                if level.get("dpi") == dpi:
+                    src = artifact_root / level["relative_path"]
+                    if src.exists():
+                        shutil.copy2(src, rasters_dir / fname)
+                        copied += 1
+
+    print(f"  Copied {copied} raster files for {len(facsimile_page_ids)} facsimile pages")

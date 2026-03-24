@@ -3,6 +3,7 @@ import { useOutletContext, useParams } from 'react-router';
 import { loadRenderPage } from '../lib/api/loadRenderPage';
 import type { RenderPageData } from '../lib/render/types';
 import { BlockRenderer } from '../components/reader/BlockRenderer';
+import { FacsimilePage } from '../components/reader/FacsimilePage';
 import { SourcePageBadge } from '../components/nav/SourcePageBadge';
 import { GlossaryProvider } from '../contexts/GlossaryContext';
 
@@ -50,14 +51,22 @@ export function ReaderPage() {
           <SourcePageBadge pageNumber={page.page.source_page_number} />
         </header>
         <section className="reader-content">
-          {page.blocks.map((block) => (
-            <BlockRenderer
-              key={block.id}
-              block={block}
-              figures={page.figures}
-              pageOffset={pageOffset}
+          {page.presentation_mode === 'facsimile' && page.facsimile ? (
+            <FacsimilePage
+              facsimile={page.facsimile}
+              pageTitle={page.page.title}
+              pageNumber={page.page.source_page_number}
             />
-          ))}
+          ) : (
+            page.blocks.map((block) => (
+              <BlockRenderer
+                key={block.id}
+                block={block}
+                figures={page.figures}
+                pageOffset={pageOffset}
+              />
+            ))
+          )}
         </section>
       </article>
     </GlossaryProvider>

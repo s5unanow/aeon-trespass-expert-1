@@ -2,6 +2,7 @@
 
 export type SchemaVersion = string;
 export type DocumentVersion = string;
+export type PresentationMode = 'article' | 'facsimile';
 export type Id = string;
 export type Title = string;
 export type SectionPath = string[];
@@ -53,6 +54,10 @@ export type Blocks = (
 export type Src = string;
 export type Alt1 = string;
 export type Caption = string;
+export type RasterSrc = string;
+export type RasterSrcHires = string;
+export type WidthPx = number;
+export type HeightPx = number;
 export type GlossaryMentions = string[];
 export type PageId = string;
 export type BlockRefs = string[];
@@ -65,10 +70,12 @@ export type GeneratedAt = string;
 export interface RenderPageV1 {
   schema_version?: SchemaVersion;
   document_version?: DocumentVersion;
+  presentation_mode?: PresentationMode;
   page: RenderPageMeta;
   nav?: RenderNav;
   blocks?: Blocks;
   figures?: Figures;
+  facsimile?: RenderFacsimile | null;
   glossary_mentions?: GlossaryMentions;
   search?: Search;
   source_map?: RenderSourceMap | null;
@@ -144,6 +151,15 @@ export interface RenderFigure {
   src: Src;
   alt?: Alt1;
   caption?: Caption;
+}
+/**
+ * Raster metadata for facsimile page presentation.
+ */
+export interface RenderFacsimile {
+  raster_src: RasterSrc;
+  raster_src_hires?: RasterSrcHires;
+  width_px?: WidthPx;
+  height_px?: HeightPx;
 }
 export interface Search {
   [k: string]: string | string[];

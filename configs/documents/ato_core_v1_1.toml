@@ -12,6 +12,14 @@ catalog = "configs/symbols/ato_core_v1_1.symbols.toml"
 [extraction.layout]
 dpi = 200
 
+[render.page_overrides.p0006]
+presentation_mode = "facsimile"
+title = "Components (continued)"
+
+[render.page_overrides.p0007]
+presentation_mode = "facsimile"
+title = "Components"
+
 [structure]
 # ATO Core uses denser layouts — lower footer threshold
 footer_y_threshold = 785.0

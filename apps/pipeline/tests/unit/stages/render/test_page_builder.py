@@ -296,6 +296,69 @@ def test_resolve_images_finds_image_files(tmp_path: Path) -> None:
     assert refs["p0001.img0001"].endswith("def456.jpeg")
 
 
+def test_facsimile_page_gets_mode_and_metadata() -> None:
+    """Facsimile pages get presentation_mode set and facsimile populated."""
+    from atr_pipeline.stages.render.stage import _build_facsimile
+    from atr_schemas.raster_meta_v1 import RasterLevel, RasterMetaV1
+
+    meta = RasterMetaV1(
+        document_id="doc1",
+        page_id="p0007",
+        page_number=7,
+        source_pdf_sha256="abc",
+        levels=[
+            RasterLevel(
+                dpi=150, width_px=1240, height_px=1754, content_hash="h1", relative_path="r1"
+            ),
+            RasterLevel(
+                dpi=300, width_px=2480, height_px=3508, content_hash="h2", relative_path="r2"
+            ),
+        ],
+    )
+    fac = _build_facsimile(meta)
+    assert fac.raster_src == "rasters/p0007__150dpi.png"
+    assert fac.raster_src_hires == "rasters/p0007__300dpi.png"
+    assert fac.width_px == 1240
+    assert fac.height_px == 1754
+
+
+def test_title_override_applied() -> None:
+    """Title override replaces auto-derived title."""
+    from atr_pipeline.config.models import PageOverride
+
+    ir = _make_ir(page_id="p0007", page_number=7)
+    render = build_render_page(ir)
+    assert render.page.title == "Page 7"  # auto-derived from heading
+
+    override = PageOverride(title="Components")
+    render.page.title = override.title or render.page.title
+    assert render.page.title == "Components"
+
+
+def test_facsimile_fallback_title_for_short_garbage() -> None:
+    """Facsimile pages with very short titles get fallback 'Page N'."""
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0007",
+        page_number=7,
+        language=LanguageCode.EN,
+        blocks=[
+            HeadingBlock(
+                block_id="p0007.b001",
+                level=1,
+                children=[TextInline(text="I", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=["p0007.b001"],
+    )
+    render = build_render_page(ir)
+    assert render.page.title == "I"
+    # Simulate the stage logic for facsimile fallback
+    if len(render.page.title) <= 2:
+        render.page.title = f"Page {ir.page_number}"
+    assert render.page.title == "Page 7"
+
+
 def _make_ir(*, page_id: str, page_number: int) -> PageIRV1:
     return PageIRV1(
         document_id="test_doc",

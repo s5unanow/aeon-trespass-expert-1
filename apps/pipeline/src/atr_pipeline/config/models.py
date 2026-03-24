@@ -141,6 +141,20 @@ class StructureConfig(BaseModel):
         return self
 
 
+class PageOverride(BaseModel):
+    """Per-page configuration override."""
+
+    presentation_mode: Literal["article", "facsimile"] | None = None
+    title: str | None = None
+
+
+class RenderConfig(BaseModel):
+    """Render stage configuration."""
+
+    facsimile_coverage_threshold: float = Field(default=0.15, ge=0.0, le=1.0)
+    page_overrides: dict[str, PageOverride] = Field(default_factory=dict)
+
+
 class QAConfig(BaseModel):
     """QA gate configuration."""
 
@@ -157,6 +171,7 @@ class DocumentBuildConfig(BaseModel):
     symbols: SymbolsConfig = Field(default_factory=SymbolsConfig)
     structure: StructureConfig = Field(default_factory=StructureConfig)
     translation: TranslationConfig = Field(default_factory=TranslationConfig)
+    render: RenderConfig = Field(default_factory=RenderConfig)
     qa: QAConfig = Field(default_factory=QAConfig)
 
     # Resolved paths (set by loader)

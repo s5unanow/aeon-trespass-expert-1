@@ -14,7 +14,13 @@ REPO = _SCRIPTS_DIR.parent
 sys.path.insert(0, str(REPO / "apps" / "pipeline" / "src"))
 sys.path.insert(0, str(_SCRIPTS_DIR))
 
-from _export_blocks import postprocess_blocks, text_content  # noqa: E402
+from _export_blocks import (  # noqa: E402
+    export_facsimile_rasters,
+    inject_image_figures,
+    postprocess_blocks,
+    rewrite_facsimile_urls,
+    text_content,
+)
 
 ARTIFACT_ROOT = REPO / "artifacts"
 PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
@@ -187,32 +193,11 @@ def export_pages(
                 best = data
                 best_score = s
 
-        # Post-process blocks: strip decorative icons, split, deduplicate
-        best["blocks"] = postprocess_blocks(best.get("blocks", []))
-
-        # Inject image figures if we have them
-        imgs = page_images.get(pid, [])
-        if imgs:
-            figures = best.get("figures", {}) or {}
-            for img in imgs:
-                figures[img["asset_id"]] = {
-                    "src": img["src"],
-                    "alt": img["alt"],
-                }
-                has_fig = any(
-                    b.get("kind") == "figure" and b.get("asset_id") == img["asset_id"]
-                    for b in best.get("blocks", [])
-                )
-                if not has_fig:
-                    best.setdefault("blocks", []).append(
-                        {
-                            "kind": "figure",
-                            "id": f"{pid}.fig.{img['asset_id']}",
-                            "asset_id": img["asset_id"],
-                            "children": [],
-                        }
-                    )
-            best["figures"] = figures
+        if best.get("presentation_mode") == "facsimile":
+            rewrite_facsimile_urls(best, doc_id)
+        else:
+            best["blocks"] = postprocess_blocks(best.get("blocks", []))
+            inject_image_figures(best, pid, doc_id, page_images.get(pid, []))
 
         # Navigation
         best["nav"] = {
@@ -312,6 +297,21 @@ def main(argv: list[str] | None = None) -> None:
 
     print("Extracting images from PDF...")
     page_images = extract_images(doc_id, doc_public)
+
+    # Collect facsimile page IDs from render artifacts
+    facsimile_pids: list[str] = []
+    for pid_dir in sorted(render_src.iterdir()):
+        if not pid_dir.is_dir():
+            continue
+        for jf in pid_dir.glob("*.json"):
+            data = json.loads(jf.read_text())
+            if data.get("presentation_mode") == "facsimile":
+                facsimile_pids.append(pid_dir.name)
+            break
+
+    if facsimile_pids:
+        print(f"Exporting rasters for {len(facsimile_pids)} facsimile pages...")
+        export_facsimile_rasters(doc_id, doc_public, ARTIFACT_ROOT, facsimile_pids)
 
     glossary_src = ARTIFACT_ROOT / doc_id / "glossary_payload.v1" / "document" / doc_id
 

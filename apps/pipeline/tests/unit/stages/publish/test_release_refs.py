@@ -140,3 +140,45 @@ def test_extract_companion_refs_partial(tmp_path: Path) -> None:
     assert "glossary_ref" in refs.companions
     assert "search_docs_ref" not in refs.companions
     assert "nav_ref" not in refs.companions
+
+
+def test_extract_raster_refs_from_render_result(tmp_path: Path) -> None:
+    """Raster refs are flattened and extracted from render result."""
+    artifact_root = tmp_path / "artifacts"
+
+    render_result = {
+        "document_id": "doc1",
+        "pages_rendered": 1,
+        "page_refs": {"p1": "doc1/render_page.v1/page/p1/abc.json"},
+        "raster_refs": {
+            "p0007": {
+                "150": "doc1/raster/page/p0007__150dpi/h1.png",
+                "300": "doc1/raster/page/p0007__300dpi/h2.png",
+            },
+        },
+    }
+    render_ref = "doc1/render/document/doc1/render_hash.json"
+    _write_artifact(artifact_root, render_ref, render_result)
+
+    manifest_data = {
+        "schema_version": "run_manifest.v1",
+        "run_id": "run_1",
+        "stages": [
+            {
+                "stage_name": "render",
+                "scope": "document",
+                "entity_id": "doc1",
+                "cache_key": "abc",
+                "status": "completed",
+                "artifact_ref": render_ref,
+            },
+        ],
+    }
+    manifest_ref = "doc1/run_manifest.v1/run/run_1/mh.json"
+    _write_artifact(artifact_root, manifest_ref, manifest_data)
+
+    run_data = {"run_id": "r1", "qa_summary_ref": None, "run_manifest_ref": manifest_ref}
+    refs = _extract_bundle_refs(artifact_root, run_data)
+
+    assert refs.rasters["p0007__150dpi"] == "doc1/raster/page/p0007__150dpi/h1.png"
+    assert refs.rasters["p0007__300dpi"] == "doc1/raster/page/p0007__300dpi/h2.png"

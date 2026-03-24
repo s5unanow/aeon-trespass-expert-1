@@ -206,3 +206,56 @@ def test_companion_refs_affect_build_id(tmp_path: Path) -> None:
     )
 
     assert m1.build_id != m2.build_id
+
+
+def test_raster_refs_copied_to_bundle(tmp_path: Path) -> None:
+    """Raster assets are copied into rasters/ dir in release bundle."""
+    artifact_root = tmp_path / "artifacts"
+    output_dir = tmp_path / "release"
+    ref_p1 = _write_render_page(artifact_root, "doc1", "p1")
+
+    raster_path = artifact_root / "doc1/raster/page/p0007__150dpi/abc123.png"
+    raster_path.parent.mkdir(parents=True, exist_ok=True)
+    raster_path.write_bytes(b"\x89PNG fake raster")
+
+    manifest = build_release_bundle(
+        document_id="doc1",
+        artifact_root=artifact_root,
+        output_dir=output_dir,
+        refs=BundleRefs(
+            render_pages={"p1": ref_p1},
+            rasters={"p0007__150dpi": "doc1/raster/page/p0007__150dpi/abc123.png"},
+        ),
+    )
+
+    data_files = [f.path for f in manifest.files]
+    assert "rasters/p0007__150dpi.png" in data_files
+    assert (output_dir / "rasters" / "p0007__150dpi.png").exists()
+
+
+def test_raster_refs_affect_build_id(tmp_path: Path) -> None:
+    """Raster refs contribute to content-addressed build_id."""
+    artifact_root = tmp_path / "artifacts"
+    ref_p1 = _write_render_page(artifact_root, "doc1", "p1")
+
+    raster_path = artifact_root / "doc1/raster/page/p0007__150dpi/abc.png"
+    raster_path.parent.mkdir(parents=True, exist_ok=True)
+    raster_path.write_bytes(b"\x89PNG")
+
+    m1 = build_release_bundle(
+        document_id="doc1",
+        artifact_root=artifact_root,
+        output_dir=tmp_path / "r1",
+        refs=BundleRefs(render_pages={"p1": ref_p1}),
+    )
+    m2 = build_release_bundle(
+        document_id="doc1",
+        artifact_root=artifact_root,
+        output_dir=tmp_path / "r2",
+        refs=BundleRefs(
+            render_pages={"p1": ref_p1},
+            rasters={"p0007__150dpi": "doc1/raster/page/p0007__150dpi/abc.png"},
+        ),
+    )
+
+    assert m1.build_id != m2.build_id

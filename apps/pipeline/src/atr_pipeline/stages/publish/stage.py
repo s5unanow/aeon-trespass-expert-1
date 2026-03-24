@@ -61,6 +61,14 @@ class PublishStage:
             else {}
         )
 
+        raw_raster_refs = render_data.get("raster_refs", {})
+        flat_rasters: dict[str, str] = {}
+        if isinstance(raw_raster_refs, dict):
+            for pid, dpi_map in raw_raster_refs.items():
+                if isinstance(dpi_map, dict):
+                    for dpi_str, path in dpi_map.items():
+                        flat_rasters[f"{pid}__{dpi_str}dpi"] = str(path)
+
         output_dir = ctx.artifact_store.root / ctx.document_id / "release"
 
         run_row = get_run(ctx.registry_conn, ctx.run_id)
@@ -75,6 +83,7 @@ class PublishStage:
                 render_pages={str(k): str(v) for k, v in page_refs.items()},
                 companions=companion_refs,
                 images=image_refs,
+                rasters=flat_rasters,
                 run_id=ctx.run_id,
                 source_pdf_sha256=source_sha or "",
                 edition="en" if ctx.edition == "en" else "ru",

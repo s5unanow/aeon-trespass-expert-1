@@ -6,6 +6,18 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Discriminator, Field, Tag
 
+# --- Facsimile metadata ---
+
+
+class RenderFacsimile(BaseModel):
+    """Raster metadata for facsimile page presentation."""
+
+    raster_src: str
+    raster_src_hires: str = ""
+    width_px: int = 0
+    height_px: int = 0
+
+
 # --- Render inline nodes ---
 
 
@@ -146,10 +158,12 @@ class RenderPageV1(BaseModel):
 
     schema_version: str = Field(default="render_page.v1", pattern=r"^render_page\.v\d+$")
     document_version: str = ""
+    presentation_mode: Literal["article", "facsimile"] = "article"
     page: RenderPageMeta
     nav: RenderNav = Field(default_factory=RenderNav)
     blocks: list[RenderBlock] = Field(default_factory=list)
     figures: dict[str, RenderFigure] = Field(default_factory=dict)
+    facsimile: RenderFacsimile | None = None
     glossary_mentions: list[str] = Field(default_factory=list)
     search: dict[str, str | list[str]] = Field(default_factory=dict)
     source_map: RenderSourceMap | None = None

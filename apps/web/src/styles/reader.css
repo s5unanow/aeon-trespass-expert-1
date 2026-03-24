@@ -91,6 +91,20 @@ h2.reader-heading {
   text-decoration-color: var(--color-link-hover);
 }
 
+/* --- Facsimile pages --- */
+
+.facsimile-page {
+  text-align: center;
+  margin: var(--space-4) 0;
+}
+
+.facsimile-raster {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
 /* --- Callouts --- */
 
 .reader-callout {
