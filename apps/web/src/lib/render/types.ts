@@ -65,16 +65,19 @@ export type RenderBlock =
 export type RenderPageMeta = Required<renderPageV1.RenderPageMeta>;
 export type RenderNav = Required<renderPageV1.RenderNav>;
 export type RenderFigure = renderPageV1.RenderFigure;
+export type RenderFacsimile = renderPageV1.RenderFacsimile;
 export type RenderSourceMap = Required<renderPageV1.RenderSourceMap>;
 
 /** Frontend page payload — derived from RenderPageV1 with required fields. */
 export interface RenderPageData {
   schema_version: NonNullable<renderPageV1.RenderPageV1['schema_version']>;
   document_version: NonNullable<renderPageV1.RenderPageV1['document_version']>;
+  presentation_mode: NonNullable<renderPageV1.RenderPageV1['presentation_mode']>;
   page: RenderPageMeta;
   nav: RenderNav;
   blocks: RenderBlock[];
   figures: Record<string, RenderFigure>;
+  facsimile: renderPageV1.RenderFacsimile | null;
   glossary_mentions: string[];
   source_map: RenderSourceMap | null;
 }

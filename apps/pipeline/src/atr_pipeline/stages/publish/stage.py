@@ -9,7 +9,11 @@ from pydantic import BaseModel, Field
 from atr_pipeline.registry.events import list_stage_events
 from atr_pipeline.registry.runs import get_run
 from atr_pipeline.runner.stage_context import StageContext
-from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
+from atr_pipeline.stages.publish.bundle_builder import (
+    BundleRefs,
+    build_release_bundle,
+    flatten_raster_refs,
+)
 from atr_schemas.enums import StageScope
 
 
@@ -61,6 +65,8 @@ class PublishStage:
             else {}
         )
 
+        flat_rasters = flatten_raster_refs(render_data.get("raster_refs", {}))
+
         output_dir = ctx.artifact_store.root / ctx.document_id / "release"
 
         run_row = get_run(ctx.registry_conn, ctx.run_id)
@@ -75,6 +81,7 @@ class PublishStage:
                 render_pages={str(k): str(v) for k, v in page_refs.items()},
                 companions=companion_refs,
                 images=image_refs,
+                rasters=flat_rasters,
                 run_id=ctx.run_id,
                 source_pdf_sha256=source_sha or "",
                 edition="en" if ctx.edition == "en" else "ru",

@@ -229,3 +229,36 @@ class TestExportPages:
         p3 = json.loads((doc_public / "en" / "data" / "render_page.p0003.json").read_text())
         assert p3["nav"]["prev"] == "p0002"
         assert p3["nav"]["next"] is None
+
+    def test_facsimile_pages_skip_image_injection(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Facsimile pages skip postprocessing and image injection."""
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+        page_dir = render_src / "p0007"
+        page_dir.mkdir(parents=True, exist_ok=True)
+        facsimile_page = {
+            "schema_version": "1.0",
+            "presentation_mode": "facsimile",
+            "page": {"page_id": "p0007", "title": "Components"},
+            "blocks": [{"kind": "paragraph", "id": "p0007.b1", "children": []}],
+            "facsimile": {
+                "raster_src": "rasters/p0007__150dpi.png",
+                "raster_src_hires": "rasters/p0007__300dpi.png",
+                "width_px": 1240,
+                "height_px": 1754,
+            },
+        }
+        (page_dir / "hash_001.json").write_text(json.dumps(facsimile_page))
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+
+        # Pass image data — should NOT be injected for facsimile page
+        images = {"p0007": [{"asset_id": "img0051", "src": "/img.png", "alt": "x"}]}
+        export_module.export_pages("doc1", "en", render_src, doc_public, images)
+
+        exported = json.loads((doc_public / "en" / "data" / "render_page.p0007.json").read_text())
+        assert exported["presentation_mode"] == "facsimile"
+        # Raster URLs rewritten to web-public paths
+        assert "/documents/doc1/rasters/" in exported["facsimile"]["raster_src"]
+        # No synthetic figure blocks injected
+        assert not any(b.get("asset_id") == "img0051" for b in exported.get("blocks", []))

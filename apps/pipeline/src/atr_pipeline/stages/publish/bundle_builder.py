@@ -26,6 +26,7 @@ class BundleRefs(BaseModel):
     render_pages: dict[str, str] = Field(default_factory=dict)
     companions: dict[str, str] = Field(default_factory=dict)
     images: dict[str, str] = Field(default_factory=dict)
+    rasters: dict[str, str] = Field(default_factory=dict)
     run_id: str = ""
     source_pdf_sha256: str = ""
     edition: str = "ru"
@@ -55,6 +56,18 @@ def _copy_ref_artifact(
     )
 
 
+def flatten_raster_refs(raw: object) -> dict[str, str]:
+    """Flatten nested {page_id: {dpi: path}} into {page_id__Ndpi: path}."""
+    flat: dict[str, str] = {}
+    if not isinstance(raw, dict):
+        return flat
+    for pid, dpi_map in raw.items():
+        if isinstance(dpi_map, dict):
+            for dpi_str, path in dpi_map.items():
+                flat[f"{pid}__{dpi_str}dpi"] = str(path)
+    return flat
+
+
 def _compute_build_id(refs: BundleRefs) -> str:
     """Derive a deterministic build id from all input artifact refs.
 
@@ -67,6 +80,8 @@ def _compute_build_id(refs: BundleRefs) -> str:
         parts.append(f"companion:{key}={refs.companions[key]}")
     for asset_id in sorted(refs.images):
         parts.append(f"image:{asset_id}={refs.images[asset_id]}")
+    for raster_key in sorted(refs.rasters):
+        parts.append(f"raster:{raster_key}={refs.rasters[raster_key]}")
     digest = sha256_str("\n".join(parts))[:12]
     return f"build_{digest}"
 
@@ -124,6 +139,26 @@ def build_release_bundle(
             files.append(
                 ReleaseFile(
                     path=f"images/{img_filename}",
+                    sha256=sha256_file(dest),
+                    size_bytes=dest.stat().st_size,
+                )
+            )
+
+    # Copy raster assets (shared across editions, like images)
+    if refs.rasters:
+        rasters_dir = output_dir / "rasters"
+        rasters_dir.mkdir(exist_ok=True)
+        for raster_key in sorted(refs.rasters):
+            src = artifact_root / refs.rasters[raster_key]
+            if not src.exists():
+                msg = f"Raster artifact not found: {refs.rasters[raster_key]}"
+                raise FileNotFoundError(msg)
+            dest_name = f"{raster_key}.png"
+            dest = rasters_dir / dest_name
+            shutil.copy2(src, dest)
+            files.append(
+                ReleaseFile(
+                    path=f"rasters/{dest_name}",
                     sha256=sha256_file(dest),
                     size_bytes=dest.stat().st_size,
                 )

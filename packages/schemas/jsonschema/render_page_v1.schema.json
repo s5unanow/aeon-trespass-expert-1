@@ -76,6 +76,35 @@
       "title": "RenderDividerBlock",
       "type": "object"
     },
+    "RenderFacsimile": {
+      "description": "Raster metadata for facsimile page presentation.",
+      "properties": {
+        "raster_src": {
+          "title": "Raster Src",
+          "type": "string"
+        },
+        "raster_src_hires": {
+          "default": "",
+          "title": "Raster Src Hires",
+          "type": "string"
+        },
+        "width_px": {
+          "default": 0,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "default": 0,
+          "title": "Height Px",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "raster_src"
+      ],
+      "title": "RenderFacsimile",
+      "type": "object"
+    },
     "RenderFigure": {
       "properties": {
         "src": {
@@ -462,6 +491,15 @@
       "title": "Document Version",
       "type": "string"
     },
+    "presentation_mode": {
+      "default": "article",
+      "enum": [
+        "article",
+        "facsimile"
+      ],
+      "title": "Presentation Mode",
+      "type": "string"
+    },
     "page": {
       "$ref": "#/$defs/RenderPageMeta"
     },
@@ -503,6 +541,17 @@
       },
       "title": "Figures",
       "type": "object"
+    },
+    "facsimile": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RenderFacsimile"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "glossary_mentions": {
       "items": {

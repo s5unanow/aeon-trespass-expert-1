@@ -54,5 +54,8 @@ band_gap_min_pt = 15.0
 furniture_top_max_y = 60.0
 furniture_bottom_min_y = 750.0
 
+[render]
+facsimile_coverage_threshold = 0.15
+
 [qa]
 block_publish_on = ["error", "critical"]
