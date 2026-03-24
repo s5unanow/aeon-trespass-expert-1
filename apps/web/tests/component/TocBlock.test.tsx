@@ -1,9 +1,23 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
+import { afterEach, describe, expect, it } from 'vitest';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { parseTocEntries } from '../../src/lib/render/toc';
 import { TocBlock } from '../../src/components/reader/TocBlock';
 import { BlockRenderer } from '../../src/components/reader/BlockRenderer';
 import type { RenderBlock, RenderInlineNode } from '../../src/lib/render/types';
+
+afterEach(cleanup);
+
+function withRouter(ui: React.ReactNode, path = '/documents/test-doc/en/p0003') {
+  return (
+    <MemoryRouter initialEntries={[path]}>
+      <Routes>
+        <Route path="/documents/:documentId/:edition/:pageId" element={<>{ui}</>} />
+        <Route path="*" element={<>{ui}</>} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
 
 describe('parseTocEntries', () => {
   it('parses concatenated TOC text into entries', () => {
@@ -75,16 +89,32 @@ describe('parseTocEntries', () => {
 });
 
 describe('TocBlock', () => {
-  it('renders a nav with toc entries', () => {
+  it('renders a nav with clickable toc entries', () => {
     const entries = [
       { title: 'Chapter 1', pageNumber: '3' },
       { title: 'Chapter 2', pageNumber: '10' },
     ];
-    render(<TocBlock id="toc-1" entries={entries} />);
+    render(withRouter(<TocBlock id="toc-1" entries={entries} pageOffset={1} />));
 
     expect(screen.getByRole('navigation')).toBeDefined();
     expect(screen.getByText('Chapter 1')).toBeDefined();
     expect(screen.getByText('10')).toBeDefined();
+
+    const links = screen.getAllByRole('link');
+    expect(links).toHaveLength(2);
+    expect(links[0].getAttribute('href')).toBe('/documents/test-doc/en/p0004');
+    expect(links[1].getAttribute('href')).toBe('/documents/test-doc/en/p0011');
+  });
+
+  it('renders without links when no route params available', () => {
+    const entries = [
+      { title: 'Chapter 1', pageNumber: '3' },
+      { title: 'Chapter 2', pageNumber: '10' },
+    ];
+    render(withRouter(<TocBlock id="toc-1" entries={entries} />, '/'));
+
+    expect(screen.getByRole('navigation')).toBeDefined();
+    expect(screen.queryAllByRole('link')).toHaveLength(0);
   });
 });
 
@@ -101,7 +131,7 @@ describe('BlockRenderer with TOC paragraph', () => {
         },
       ],
     };
-    const { container } = render(<BlockRenderer block={block} />);
+    const { container } = render(withRouter(<BlockRenderer block={block} />));
     expect(container.querySelector('nav.reader-toc')).not.toBeNull();
     expect(container.querySelectorAll('.reader-toc-entry')).toHaveLength(3);
   });

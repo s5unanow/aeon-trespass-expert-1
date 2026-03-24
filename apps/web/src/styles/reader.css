@@ -198,6 +198,19 @@ h2.reader-heading {
   font-variant-numeric: tabular-nums;
 }
 
+.reader-toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  width: 100%;
+  color: inherit;
+  transition: color var(--transition-fast);
+}
+
+.reader-toc-link:hover {
+  color: var(--color-accent);
+}
+
 /* --- Edition switcher --- */
 
 .edition-switcher {

@@ -5,12 +5,13 @@ import { TocBlock } from './TocBlock';
 
 interface ParagraphBlockProps {
   block: ParagraphData;
+  pageOffset?: number;
 }
 
-export function ParagraphBlock({ block }: ParagraphBlockProps) {
+export function ParagraphBlock({ block, pageOffset }: ParagraphBlockProps) {
   const tocEntries = parseTocEntries(block.children);
   if (tocEntries) {
-    return <TocBlock id={block.id} entries={tocEntries} />;
+    return <TocBlock id={block.id} entries={tocEntries} pageOffset={pageOffset} />;
   }
 
   return (

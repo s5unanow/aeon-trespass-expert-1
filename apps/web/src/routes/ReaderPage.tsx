@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useOutletContext, useParams } from 'react-router';
 import { loadRenderPage } from '../lib/api/loadRenderPage';
 import type { RenderPageData } from '../lib/render/types';
 import { BlockRenderer } from '../components/reader/BlockRenderer';
@@ -12,6 +12,8 @@ export function ReaderPage() {
     edition: string;
     pageId: string;
   }>();
+  const outletContext = useOutletContext<{ pageOffset?: number } | null>();
+  const pageOffset = outletContext?.pageOffset ?? 0;
   const [page, setPage] = useState<RenderPageData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,7 +51,12 @@ export function ReaderPage() {
         </header>
         <section className="reader-content">
           {page.blocks.map((block) => (
-            <BlockRenderer key={block.id} block={block} figures={page.figures} />
+            <BlockRenderer
+              key={block.id}
+              block={block}
+              figures={page.figures}
+              pageOffset={pageOffset}
+            />
           ))}
         </section>
       </article>

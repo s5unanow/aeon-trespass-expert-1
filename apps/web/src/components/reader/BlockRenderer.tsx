@@ -9,14 +9,15 @@ import { TableBlock } from './TableBlock';
 interface BlockRendererProps {
   block: RenderBlock;
   figures?: Record<string, RenderFigure>;
+  pageOffset?: number;
 }
 
-export function BlockRenderer({ block, figures }: BlockRendererProps) {
+export function BlockRenderer({ block, figures, pageOffset }: BlockRendererProps) {
   switch (block.kind) {
     case 'heading':
       return <HeadingBlock block={block} />;
     case 'paragraph':
-      return <ParagraphBlock block={block} />;
+      return <ParagraphBlock block={block} pageOffset={pageOffset} />;
     case 'figure':
       return <FigureBlock block={block} figures={figures} />;
     case 'list_item':

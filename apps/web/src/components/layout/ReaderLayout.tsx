@@ -101,7 +101,7 @@ export function ReaderLayout() {
         onClose={closeSidebar}
       />
       <main className="layout-content">
-        <Outlet />
+        <Outlet context={{ pageOffset: manifest?.page_offset ?? 0 }} />
       </main>
     </div>
   );
