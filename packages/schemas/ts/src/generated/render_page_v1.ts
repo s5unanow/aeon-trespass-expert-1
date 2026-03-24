@@ -58,6 +58,15 @@ export type RasterSrc = string;
 export type RasterSrcHires = string;
 export type WidthPx = number;
 export type HeightPx = number;
+export type Text1 = string;
+export type TranslatedText = string;
+export type X0 = number;
+export type Y0 = number;
+export type X1 = number;
+export type Y1 = number;
+export type Kind10 = 'title' | 'body' | 'caption' | 'callout' | 'label';
+export type Priority = number;
+export type Annotations = FacsimileAnnotation[];
 export type GlossaryMentions = string[];
 export type PageId = string;
 export type BlockRefs = string[];
@@ -160,6 +169,26 @@ export interface RenderFacsimile {
   raster_src_hires?: RasterSrcHires;
   width_px?: WidthPx;
   height_px?: HeightPx;
+  annotations?: Annotations;
+}
+/**
+ * Positioned text overlay on a facsimile raster.
+ */
+export interface FacsimileAnnotation {
+  text: Text1;
+  translated_text?: TranslatedText;
+  bbox: NormRect;
+  kind?: Kind10;
+  priority?: Priority;
+}
+/**
+ * Bounding box in normalized [0,1] page coordinate space.
+ */
+export interface NormRect {
+  x0: X0;
+  y0: Y0;
+  x1: X1;
+  y1: Y1;
 }
 export interface Search {
   [k: string]: string | string[];

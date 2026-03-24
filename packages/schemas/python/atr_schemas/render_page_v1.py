@@ -6,7 +6,19 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Discriminator, Field, Tag
 
+from atr_schemas.common import NormRect
+
 # --- Facsimile metadata ---
+
+
+class FacsimileAnnotation(BaseModel):
+    """Positioned text overlay on a facsimile raster."""
+
+    text: str
+    translated_text: str = ""
+    bbox: NormRect
+    kind: Literal["title", "body", "caption", "callout", "label"] = "body"
+    priority: int = Field(default=0, ge=0)
 
 
 class RenderFacsimile(BaseModel):
@@ -16,6 +28,7 @@ class RenderFacsimile(BaseModel):
     raster_src_hires: str = ""
     width_px: int = 0
     height_px: int = 0
+    annotations: list[FacsimileAnnotation] = Field(default_factory=list)
 
 
 # --- Render inline nodes ---

@@ -1,5 +1,83 @@
 {
   "$defs": {
+    "FacsimileAnnotation": {
+      "description": "Positioned text overlay on a facsimile raster.",
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "translated_text": {
+          "default": "",
+          "title": "Translated Text",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/NormRect"
+        },
+        "kind": {
+          "default": "body",
+          "enum": [
+            "title",
+            "body",
+            "caption",
+            "callout",
+            "label"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "priority": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Priority",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "text",
+        "bbox"
+      ],
+      "title": "FacsimileAnnotation",
+      "type": "object"
+    },
+    "NormRect": {
+      "description": "Bounding box in normalized [0,1] page coordinate space.",
+      "properties": {
+        "x0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "NormRect",
+      "type": "object"
+    },
     "RenderBuildMeta": {
       "properties": {
         "build_id": {
@@ -97,6 +175,13 @@
           "default": 0,
           "title": "Height Px",
           "type": "integer"
+        },
+        "annotations": {
+          "items": {
+            "$ref": "#/$defs/FacsimileAnnotation"
+          },
+          "title": "Annotations",
+          "type": "array"
         }
       },
       "required": [
