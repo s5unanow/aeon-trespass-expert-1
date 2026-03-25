@@ -78,11 +78,15 @@ export function DocumentIndexPage() {
       </header>
 
       {loading ? (
-        <p className="index-loading">Loading documents…</p>
+        <div className="skeleton" aria-busy="true" aria-label="Loading documents">
+          <div className="skeleton-bone skeleton-heading" />
+          <div className="skeleton-bone skeleton-block" />
+          <div className="skeleton-bone skeleton-block" />
+        </div>
       ) : manifests.length === 0 ? (
         <p className="index-empty">No documents found</p>
       ) : (
-        <div className="index-cards">
+        <div className="index-cards fade-in">
           {manifests.map((manifest) => (
             <article key={`${manifest.document_id}-${manifest.edition}`} className="doc-card">
               <div className="doc-card-header">

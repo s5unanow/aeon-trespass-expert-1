@@ -27,11 +27,20 @@ function makeFacsimile(annotationCount: number): RenderFacsimile {
 }
 
 describe('FacsimilePage', () => {
-  it('renders raster image', () => {
+  it('renders raster image with lazy fade-in class', () => {
     render(<FacsimilePage facsimile={makeFacsimile(0)} pageTitle="Cover" pageNumber={1} />);
     const img = screen.getByRole('img');
     expect(img.getAttribute('src')).toBe('/test-raster.png');
     expect(img.getAttribute('alt')).toBe('Page 1: Cover');
+    expect(img.className).toContain('img-lazy');
+    expect(img.className).not.toContain('is-loaded');
+  });
+
+  it('adds is-loaded class on image load', () => {
+    render(<FacsimilePage facsimile={makeFacsimile(0)} pageTitle="Cover" pageNumber={1} />);
+    const img = screen.getByRole('img');
+    fireEvent.load(img);
+    expect(img.className).toContain('is-loaded');
   });
 
   it('renders numbered markers for annotations', () => {
@@ -58,7 +67,9 @@ describe('FacsimilePage', () => {
     const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
     fireEvent.click(markers[0]);
     expect(markers[0].className).toContain('is-active');
-    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole('listitem');
+    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
+      'listitem',
+    );
     expect(entries[0].className).toContain('is-active');
   });
 
@@ -73,7 +84,9 @@ describe('FacsimilePage', () => {
 
   it('highlights marker when panel entry is clicked', () => {
     render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={2} />);
-    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole('listitem');
+    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
+      'listitem',
+    );
     fireEvent.click(entries[1]);
     expect(entries[1].className).toContain('is-active');
     const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
@@ -86,12 +99,26 @@ describe('FacsimilePage', () => {
       width_px: 800,
       height_px: 1200,
       annotations: [
-        { text: 'Bottom', translated_text: 'Низ', bbox: { x0: 0.1, y0: 0.8, x1: 0.3, y1: 0.9 }, kind: 'body', priority: 0 },
-        { text: 'Top', translated_text: 'Верх', bbox: { x0: 0.1, y0: 0.1, x1: 0.3, y1: 0.2 }, kind: 'body', priority: 0 },
+        {
+          text: 'Bottom',
+          translated_text: 'Низ',
+          bbox: { x0: 0.1, y0: 0.8, x1: 0.3, y1: 0.9 },
+          kind: 'body',
+          priority: 0,
+        },
+        {
+          text: 'Top',
+          translated_text: 'Верх',
+          bbox: { x0: 0.1, y0: 0.1, x1: 0.3, y1: 0.2 },
+          kind: 'body',
+          priority: 0,
+        },
       ],
     };
     render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);
-    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole('listitem');
+    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
+      'listitem',
+    );
     expect(entries[0].textContent).toContain('Top');
     expect(entries[1].textContent).toContain('Bottom');
   });
@@ -102,7 +129,13 @@ describe('FacsimilePage', () => {
       width_px: 800,
       height_px: 1200,
       annotations: [
-        { text: 'English only', translated_text: '', bbox: { x0: 0.1, y0: 0.1, x1: 0.3, y1: 0.2 }, kind: 'body', priority: 0 },
+        {
+          text: 'English only',
+          translated_text: '',
+          bbox: { x0: 0.1, y0: 0.1, x1: 0.3, y1: 0.2 },
+          kind: 'body',
+          priority: 0,
+        },
       ],
     };
     render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);

@@ -133,10 +133,11 @@ describe('GlossaryPage', () => {
     expect(screen.getByText('0 of 3 entries')).toBeDefined();
   });
 
-  it('shows loading state before data arrives', () => {
+  it('shows loading skeleton before data arrives', () => {
     fetchSpy.mockReturnValue(new Promise(() => {}));
     renderGlossary();
-    expect(screen.getByText('Loading glossary...')).toBeDefined();
+    expect(screen.getByLabelText('Loading glossary')).toBeDefined();
+    expect(screen.getByLabelText('Loading glossary').getAttribute('aria-busy')).toBe('true');
   });
 
   it('shows error when fetch fails', async () => {

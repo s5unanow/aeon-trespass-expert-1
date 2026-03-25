@@ -93,6 +93,10 @@
   background: var(--color-bg-elevated);
 }
 
+.sidebar-toggle:active {
+  background: var(--color-bg-surface);
+}
+
 /* --- Sidebar --- */
 
 .sidebar {
@@ -209,6 +213,7 @@
     top: var(--header-height);
     z-index: 9;
     background: rgba(0, 0, 0, 0.3);
+    animation: fadeIn 200ms ease both;
   }
 
   .layout-content {
