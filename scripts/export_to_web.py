@@ -26,31 +26,14 @@ ARTIFACT_ROOT = REPO / "artifacts"
 PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
 
-def score_render(data: dict, edition: str = "ru") -> int:
-    """Score a render artifact — higher = better quality."""
-    # Facsimile is an explicit pipeline decision — always preferred.
-    # Use annotation count as tiebreaker among facsimile artifacts.
-    if data.get("presentation_mode") == "facsimile":
-        fac = data.get("facsimile") or {}
-        ann_count = len(fac.get("annotations", []))
-        return 10_000 + ann_count
-    blocks = data.get("blocks", [])
-    full = " ".join(
-        c.get("text", "")
-        for b in blocks[:3]
-        for c in b.get("children", [])
-        if c.get("kind") == "text"
-    )
-    has_cyrillic = any("\u0400" <= ch <= "\u04ff" for ch in full)
-    has_lists = any(b.get("kind") == "list_item" for b in blocks)
-    has_marks = any(
-        c.get("marks")
-        for b in blocks
-        for c in b.get("children", [])
-        if c.get("kind") == "text" and c.get("marks")
-    )
-    lang_score = (0 if has_cyrillic else 100) if edition == "en" else (100 if has_cyrillic else 0)
-    return lang_score + (10 if has_lists else 0) + (5 if has_marks else 0) + len(blocks)
+def _pick_latest(jsons: list[Path]) -> Path:
+    """Select the most recently modified artifact file.
+
+    Mirrors ``ArtifactStore.load_latest_json`` — the latest pipeline run
+    always produces the best artifact (quality-filtered, etc.), so stale
+    historical versions should never win.
+    """
+    return max(jsons, key=lambda p: p.stat().st_mtime)
 
 
 def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
@@ -189,15 +172,9 @@ def export_pages(
         if not jsons:
             continue
 
-        # Pick best render version (edition-aware scoring)
-        best = None
-        best_score = -1
-        for j in jsons:
-            data = json.loads(j.read_text())
-            s = score_render(data, edition)
-            if s > best_score:
-                best = data
-                best_score = s
+        # Pick the latest artifact by mtime — the most recent pipeline run
+        # always has the best quality (filtered annotations, etc.).
+        best = json.loads(_pick_latest(jsons).read_text())
 
         if best.get("presentation_mode") == "facsimile":
             rewrite_facsimile_urls(best, doc_id)
