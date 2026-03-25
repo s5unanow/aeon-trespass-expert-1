@@ -137,14 +137,17 @@ def test_bbox_normalization() -> None:
 
 def test_missing_dimensions_returns_empty() -> None:
     """No annotations when page dimensions are missing."""
-    en_ir = _make_ir(dims=None, blocks=[
-        HeadingBlock(
-            block_id="p0007.b001",
-            level=1,
-            bbox=Rect(x0=0, y0=0, x1=100, y1=50),
-            children=[TextInline(text="Title")],
-        ),
-    ])
+    en_ir = _make_ir(
+        dims=None,
+        blocks=[
+            HeadingBlock(
+                block_id="p0007.b001",
+                level=1,
+                bbox=Rect(x0=0, y0=0, x1=100, y1=50),
+                children=[TextInline(text="Title")],
+            ),
+        ],
+    )
     en_ir.dimensions_pt = None
     annotations = build_facsimile_annotations(en_ir)
     assert annotations == []
@@ -152,19 +155,21 @@ def test_missing_dimensions_returns_empty() -> None:
 
 def test_blocks_without_bbox_skipped() -> None:
     """Blocks missing bbox are skipped."""
-    en_ir = _make_ir(blocks=[
-        HeadingBlock(
-            block_id="p0007.b001",
-            level=1,
-            bbox=None,
-            children=[TextInline(text="No bbox heading")],
-        ),
-        ParagraphBlock(
-            block_id="p0007.b002",
-            bbox=Rect(x0=10, y0=10, x1=200, y1=50),
-            children=[TextInline(text="Has bbox")],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            HeadingBlock(
+                block_id="p0007.b001",
+                level=1,
+                bbox=None,
+                children=[TextInline(text="No bbox heading")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=10, x1=200, y1=50),
+                children=[TextInline(text="Has bbox")],
+            ),
+        ]
+    )
     annotations = build_facsimile_annotations(en_ir)
     assert len(annotations) == 1
     assert annotations[0].text == "Has bbox"
@@ -172,39 +177,45 @@ def test_blocks_without_bbox_skipped() -> None:
 
 def test_divider_blocks_skipped() -> None:
     """Divider blocks produce no annotations."""
-    en_ir = _make_ir(blocks=[
-        DividerBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=0, y0=400, x1=612, y1=402),
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            DividerBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=0, y0=400, x1=612, y1=402),
+            ),
+        ]
+    )
     annotations = build_facsimile_annotations(en_ir)
     assert annotations == []
 
 
 def test_empty_text_blocks_skipped() -> None:
     """Blocks with no text content produce no annotations."""
-    en_ir = _make_ir(blocks=[
-        ParagraphBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=10, y0=10, x1=200, y1=50),
-            children=[],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=10, y0=10, x1=200, y1=50),
+                children=[],
+            ),
+        ]
+    )
     annotations = build_facsimile_annotations(en_ir)
     assert annotations == []
 
 
 def test_unmatched_ru_block_gives_empty_translation() -> None:
     """RU IR with no matching block_id gives empty translated_text."""
-    en_ir = _make_ir(blocks=[
-        HeadingBlock(
-            block_id="p0007.b001",
-            level=1,
-            bbox=Rect(x0=50, y0=40, x1=300, y1=80),
-            children=[TextInline(text="Title")],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            HeadingBlock(
+                block_id="p0007.b001",
+                level=1,
+                bbox=Rect(x0=50, y0=40, x1=300, y1=80),
+                children=[TextInline(text="Title")],
+            ),
+        ]
+    )
     ru_ir = _make_ir(
         lang=LanguageCode.RU,
         blocks=[
@@ -229,18 +240,20 @@ def test_unmatched_ru_block_gives_empty_translation() -> None:
 
 def test_identical_en_ru_text_dropped() -> None:
     """Annotations where EN == RU (codes, numbers) are filtered out."""
-    en_ir = _make_ir(blocks=[
-        ParagraphBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=10, y0=10, x1=100, y1=30),
-            children=[TextInline(text="AM0308")],
-        ),
-        ParagraphBlock(
-            block_id="p0007.b002",
-            bbox=Rect(x0=10, y0=40, x1=100, y1=60),
-            children=[TextInline(text="Real content here")],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=10, y0=10, x1=100, y1=30),
+                children=[TextInline(text="AM0308")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=40, x1=100, y1=60),
+                children=[TextInline(text="Real content here")],
+            ),
+        ]
+    )
     ru_ir = _make_ir(
         lang=LanguageCode.RU,
         blocks=[
@@ -263,18 +276,20 @@ def test_identical_en_ru_text_dropped() -> None:
 
 def test_oversized_bbox_dropped() -> None:
     """Annotations covering more than max_bbox_area are filtered out."""
-    en_ir = _make_ir(blocks=[
-        ParagraphBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=0, y0=0, x1=612, y1=500),  # huge bbox
-            children=[TextInline(text="Giant block")],
-        ),
-        ParagraphBlock(
-            block_id="p0007.b002",
-            bbox=Rect(x0=10, y0=10, x1=80, y1=30),  # small bbox
-            children=[TextInline(text="Small block")],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=0, y0=0, x1=612, y1=500),  # huge bbox
+                children=[TextInline(text="Giant block")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=10, x1=80, y1=30),  # small bbox
+                children=[TextInline(text="Small block")],
+            ),
+        ]
+    )
     annotations = build_facsimile_annotations(en_ir)
     assert len(annotations) == 1
     assert annotations[0].text == "Small block"
@@ -282,18 +297,20 @@ def test_oversized_bbox_dropped() -> None:
 
 def test_garbled_ocr_text_dropped() -> None:
     """Annotations with garbled OCR text are filtered out."""
-    en_ir = _make_ir(blocks=[
-        ParagraphBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=10, y0=10, x1=100, y1=30),
-            children=[TextInline(text="_____+_____=_____")],
-        ),
-        ParagraphBlock(
-            block_id="p0007.b002",
-            bbox=Rect(x0=10, y0=40, x1=100, y1=60),
-            children=[TextInline(text="Normal readable text")],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=10, y0=10, x1=100, y1=30),
+                children=[TextInline(text="_____+_____=_____")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=40, x1=100, y1=60),
+                children=[TextInline(text="Normal readable text")],
+            ),
+        ]
+    )
     annotations = build_facsimile_annotations(en_ir)
     assert len(annotations) == 1
     assert annotations[0].text == "Normal readable text"
@@ -301,31 +318,35 @@ def test_garbled_ocr_text_dropped() -> None:
 
 def test_valid_short_labels_preserved() -> None:
     """Short but valid game labels (single chars, numbers) are kept."""
-    en_ir = _make_ir(blocks=[
-        ParagraphBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=10, y0=10, x1=30, y1=25),
-            children=[TextInline(text="I")],  # single-char label
-        ),
-        ParagraphBlock(
-            block_id="p0007.b002",
-            bbox=Rect(x0=10, y0=40, x1=50, y1=55),
-            children=[TextInline(text="HP")],  # two-char abbreviation
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=10, y0=10, x1=30, y1=25),
+                children=[TextInline(text="I")],  # single-char label
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=40, x1=50, y1=55),
+                children=[TextInline(text="HP")],  # two-char abbreviation
+            ),
+        ]
+    )
     annotations = build_facsimile_annotations(en_ir)
     assert len(annotations) == 2
 
 
 def test_identical_case_insensitive_dropped() -> None:
     """Case-insensitive identity is detected."""
-    en_ir = _make_ir(blocks=[
-        ParagraphBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=10, y0=10, x1=100, y1=30),
-            children=[TextInline(text="TITAN")],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=10, y0=10, x1=100, y1=30),
+                children=[TextInline(text="TITAN")],
+            ),
+        ]
+    )
     ru_ir = _make_ir(
         lang=LanguageCode.RU,
         blocks=[
@@ -391,13 +412,15 @@ def test_page_with_good_quality_not_suppressed() -> None:
 
 def test_custom_quality_config() -> None:
     """Quality config thresholds are respected."""
-    en_ir = _make_ir(blocks=[
-        ParagraphBlock(
-            block_id="p0007.b001",
-            bbox=Rect(x0=0, y0=0, x1=400, y1=400),  # area ~0.27
-            children=[TextInline(text="Medium block")],
-        ),
-    ])
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=0, y0=0, x1=400, y1=400),  # area ~0.27
+                children=[TextInline(text="Medium block")],
+            ),
+        ]
+    )
     # Default max_bbox_area=0.10 would filter this out
     strict = AnnotationQualityConfig(max_bbox_area=0.10)
     assert build_facsimile_annotations(en_ir, quality=strict) == []
@@ -405,3 +428,46 @@ def test_custom_quality_config() -> None:
     # Permissive config keeps it
     permissive = AnnotationQualityConfig(max_bbox_area=0.50)
     assert len(build_facsimile_annotations(en_ir, quality=permissive)) == 1
+
+
+def test_bbox_clamped_to_unit_range() -> None:
+    """Bboxes outside page bounds are clamped to [0,1]."""
+    en_ir = _make_ir(
+        dims=PageDimensions(width=100.0, height=100.0),
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=-10, y0=-5, x1=150, y1=120),
+                children=[TextInline(text="Overflow text")],
+            ),
+        ],
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    annotations = build_facsimile_annotations(en_ir, quality=cfg)
+
+    assert len(annotations) == 1
+    bbox = annotations[0].bbox
+    assert bbox.x0 == 0.0
+    assert bbox.y0 == 0.0
+    assert bbox.x1 == 1.0
+    assert bbox.y1 == 1.0
+
+
+def test_numeric_game_values_not_garbled() -> None:
+    """Multi-digit game values like '10', '+2' are not flagged as garbled."""
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=10, y0=10, x1=30, y1=25),
+                children=[TextInline(text="10")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=40, x1=50, y1=55),
+                children=[TextInline(text="1-3")],
+            ),
+        ]
+    )
+    annotations = build_facsimile_annotations(en_ir)
+    assert len(annotations) == 2

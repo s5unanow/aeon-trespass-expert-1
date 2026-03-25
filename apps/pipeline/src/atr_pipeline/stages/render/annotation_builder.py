@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 import unicodedata
 from typing import Literal
 
@@ -31,9 +30,6 @@ _BLOCK_KIND_MAP: dict[str, tuple[AnnotationKind, int]] = {
     "table": ("body", 30),
     "figure": ("label", 10),
 }
-
-# Regex: text is mostly non-letter characters (garbled OCR)
-_NON_LETTER_RE = re.compile(r"[^\w\s]", re.UNICODE)
 
 
 class AnnotationQualityConfig(BaseModel):
@@ -192,5 +188,5 @@ def _is_garbled(text: str, min_letter_ratio: float) -> bool:
     stripped = text.replace(" ", "")
     if len(stripped) < 2:
         return False  # single chars are fine (game labels like "I", "?")
-    letters = sum(1 for c in stripped if c.isalpha())
-    return (letters / len(stripped)) < min_letter_ratio
+    alphanumeric = sum(1 for c in stripped if c.isalnum())
+    return (alphanumeric / len(stripped)) < min_letter_ratio
