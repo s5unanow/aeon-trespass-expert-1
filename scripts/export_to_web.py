@@ -26,14 +26,28 @@ ARTIFACT_ROOT = REPO / "artifacts"
 PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
 
-def _pick_latest(jsons: list[Path]) -> Path:
-    """Select the most recently modified artifact file.
+def _pick_latest(jsons: list[Path], edition: str = "") -> dict | None:
+    """Load the newest artifact whose ``document_version`` matches *edition*.
 
-    Mirrors ``ArtifactStore.load_latest_json`` — the latest pipeline run
-    always produces the best artifact (quality-filtered, etc.), so stale
-    historical versions should never win.
+    Each artifact's JSON is read to check its ``document_version`` field.
+    Artifacts with an empty ``document_version`` (pre-S5U-402 renders) match
+    any edition for backwards compatibility.
+
+    Returns the parsed JSON dict of the winning artifact, or ``None`` when
+    no artifact matches the requested edition.
     """
-    return max(jsons, key=lambda p: p.stat().st_mtime)
+    best: dict | None = None
+    best_mtime: float = 0.0
+    for p in jsons:
+        mt = p.stat().st_mtime
+        if mt <= best_mtime:
+            continue
+        data = json.loads(p.read_text())
+        dv = data.get("document_version", "")
+        if dv == edition or dv == "" or edition == "":
+            best = data
+            best_mtime = mt
+    return best
 
 
 def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
@@ -162,19 +176,22 @@ def export_pages(
     data_dir = edition_dir / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
+    all_page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
+    exported: list[tuple[str, dict]] = []  # (page_id, data) for exported pages
     pages_meta = []
     stats = {"list_items": 0, "figures": 0, "headings": 0, "paragraphs": 0, "long_paras": 0}
 
-    for i, pid in enumerate(page_ids):
+    for pid in all_page_ids:
         page_dir = render_src / pid
         jsons = list(page_dir.glob("*.json"))
         if not jsons:
             continue
 
-        # Pick the latest artifact by mtime — the most recent pipeline run
-        # always has the best quality (filtered annotations, etc.).
-        best = json.loads(_pick_latest(jsons).read_text())
+        # Pick the latest artifact matching this edition — the most recent
+        # pipeline run always has the best quality (filtered annotations, etc.).
+        best = _pick_latest(jsons, edition)
+        if best is None:
+            continue
 
         if best.get("presentation_mode") == "facsimile":
             rewrite_facsimile_urls(best, doc_id)
@@ -182,15 +199,17 @@ def export_pages(
             best["blocks"] = postprocess_blocks(best.get("blocks", []))
             inject_image_figures(best, pid, page_images.get(pid, []))
 
-        # Navigation
+        _count_block_stats(best.get("blocks", []), stats)
+        exported.append((pid, best))
+
+    # Inject navigation using only the actually-exported page list
+    exported_ids = [pid for pid, _ in exported]
+    for i, (pid, best) in enumerate(exported):
         best["nav"] = {
-            "prev": page_ids[i - 1] if i > 0 else None,
-            "next": page_ids[i + 1] if i < len(page_ids) - 1 else None,
+            "prev": exported_ids[i - 1] if i > 0 else None,
+            "next": exported_ids[i + 1] if i < len(exported_ids) - 1 else None,
             "parent_section": "",
         }
-
-        _count_block_stats(best.get("blocks", []), stats)
-
         (data_dir / f"render_page.{pid}.json").write_text(
             json.dumps(best, ensure_ascii=False, indent=2)
         )

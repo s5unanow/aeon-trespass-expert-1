@@ -67,14 +67,16 @@ class RenderStage:
 
         # First pass: build all render pages
         for page_id in page_ids:
-            ir = self._load_page_ir(ctx, page_id)
-            if ir is None:
+            result = self._load_page_ir(ctx, page_id)
+            if result is None:
                 ctx.logger.warning("Skipping %s: missing page IR", page_id)
                 continue
+            ir, ir_lang = result
             ctx.logger.info("Building render page for %s", page_id)
             render_page = build_render_page(
                 ir, image_sources=image_sources, concept_registry=concept_registry
             )
+            render_page.document_version = ir_lang
 
             # Classify presentation mode
             difficulty = self._load_difficulty(ctx, page_id)
@@ -235,8 +237,12 @@ class RenderStage:
         raise RuntimeError(msg)
 
     @staticmethod
-    def _load_page_ir(ctx: StageContext, page_id: str) -> PageIRV1 | None:
-        """Load RU PageIRV1 (preferred) or EN PageIRV1 from the artifact store."""
+    def _load_page_ir(ctx: StageContext, page_id: str) -> tuple[PageIRV1, str] | None:
+        """Load RU PageIRV1 (preferred) or EN PageIRV1 from the artifact store.
+
+        Returns a tuple of (page_ir, lang) where lang is ``"ru"`` or ``"en"``,
+        or ``None`` if no IR is found.
+        """
         for family in ("page_ir.v1.ru", "page_ir.v1.en"):
             data = ctx.artifact_store.load_latest_json(
                 document_id=ctx.document_id,
@@ -245,7 +251,8 @@ class RenderStage:
                 entity_id=page_id,
             )
             if data is not None:
-                return PageIRV1.model_validate(data)
+                lang = family.rsplit(".", 1)[-1]
+                return PageIRV1.model_validate(data), lang
         return None
 
     def _attach_annotations(

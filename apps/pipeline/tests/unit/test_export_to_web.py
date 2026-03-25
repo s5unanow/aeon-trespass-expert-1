@@ -33,6 +33,7 @@ def _make_render_page(
     has_cyrillic: bool = False,
     has_marks: bool = False,
     block_count: int = 3,
+    edition: str = "",
 ) -> dict:
     """Build a minimal render page dict for scoring tests."""
     text = "Пример текста" if has_cyrillic else "Example text"
@@ -45,6 +46,7 @@ def _make_render_page(
     ]
     return {
         "schema_version": "1.0",
+        "document_version": edition,
         "page": {"page_id": page_id, "title": f"Page {page_id}"},
         "blocks": blocks,
     }
@@ -64,7 +66,7 @@ class TestPickLatest:
         os.utime(new, (2_000_000, 2_000_000))
 
         result = export_module._pick_latest([old, new])
-        assert result == new
+        assert result == {"v": "new"}
 
     def test_newer_filtered_facsimile_beats_stale_unfiltered(
         self, tmp_path: Path, export_module: ModuleType
@@ -97,7 +99,57 @@ class TestPickLatest:
         os.utime(filtered, (2_000_000, 2_000_000))
 
         result = export_module._pick_latest([stale, filtered])
-        assert result == filtered
+        assert result is not None
+        assert len(result["facsimile"]["annotations"]) == 31
+
+    def test_filters_by_edition(self, tmp_path: Path, export_module: ModuleType) -> None:
+        """Only artifacts whose document_version matches the edition are selected."""
+        import os
+
+        en_artifact = tmp_path / "en.json"
+        en_artifact.write_text(json.dumps({"document_version": "en", "lang": "en"}))
+        os.utime(en_artifact, (1_000_000, 1_000_000))
+
+        ru_artifact = tmp_path / "ru.json"
+        ru_artifact.write_text(json.dumps({"document_version": "ru", "lang": "ru"}))
+        os.utime(ru_artifact, (2_000_000, 2_000_000))
+
+        # Requesting EN should pick the EN artifact even though RU is newer
+        result = export_module._pick_latest([en_artifact, ru_artifact], "en")
+        assert result is not None
+        assert result["document_version"] == "en"
+
+        # Requesting RU should pick the RU artifact
+        result = export_module._pick_latest([en_artifact, ru_artifact], "ru")
+        assert result is not None
+        assert result["document_version"] == "ru"
+
+    def test_empty_document_version_matches_any_edition(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Pre-S5U-402 artifacts with empty document_version match any edition."""
+        import os
+
+        legacy = tmp_path / "legacy.json"
+        legacy.write_text(json.dumps({"document_version": "", "data": "ok"}))
+        os.utime(legacy, (1_000_000, 1_000_000))
+
+        result = export_module._pick_latest([legacy], "en")
+        assert result is not None
+        assert result["data"] == "ok"
+
+    def test_no_matching_edition_returns_none(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """When no artifact matches the edition, return None."""
+        import os
+
+        ru_only = tmp_path / "ru.json"
+        ru_only.write_text(json.dumps({"document_version": "ru"}))
+        os.utime(ru_only, (1_000_000, 1_000_000))
+
+        result = export_module._pick_latest([ru_only], "en")
+        assert result is None
 
 
 class TestParseArgs:
@@ -188,14 +240,19 @@ class TestWriteDocumentIndex:
 
 class TestExportPages:
     def _setup_render_artifacts(
-        self, tmp_path: Path, doc_id: str, pages: list[str], has_cyrillic: bool = False
+        self,
+        tmp_path: Path,
+        doc_id: str,
+        pages: list[str],
+        has_cyrillic: bool = False,
+        edition: str = "",
     ) -> Path:
         """Create fake render artifacts and return the render_src path."""
         render_src = tmp_path / "artifacts" / doc_id / "render_page.v1" / "page"
         for pid in pages:
             page_dir = render_src / pid
             page_dir.mkdir(parents=True, exist_ok=True)
-            data = _make_render_page(pid, has_cyrillic=has_cyrillic)
+            data = _make_render_page(pid, has_cyrillic=has_cyrillic, edition=edition)
             (page_dir / "hash_001.json").write_text(json.dumps(data))
         return render_src
 
@@ -341,3 +398,76 @@ class TestExportPages:
 
         exported = json.loads((doc_public / "ru" / "data" / "render_page.p0007.json").read_text())
         assert len(exported["facsimile"]["annotations"]) == 31
+
+    def test_edition_filter_skips_wrong_language(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression S5U-402: exporting --edition=en must not pick a RU artifact."""
+        import os
+
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+        page_dir = render_src / "p0001"
+        page_dir.mkdir(parents=True, exist_ok=True)
+
+        # EN artifact (older)
+        en_data = _make_render_page("p0001", edition="en")
+        en_path = page_dir / "hash_en.json"
+        en_path.write_text(json.dumps(en_data))
+        os.utime(en_path, (1_000_000, 1_000_000))
+
+        # RU artifact (newer — would win without edition filtering)
+        ru_data = _make_render_page("p0001", has_cyrillic=True, edition="ru")
+        ru_path = page_dir / "hash_ru.json"
+        ru_path.write_text(json.dumps(ru_data))
+        os.utime(ru_path, (2_000_000, 2_000_000))
+
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+
+        exported = json.loads((doc_public / "en" / "data" / "render_page.p0001.json").read_text())
+        # Must contain English text, not Russian
+        block_text = exported["blocks"][0]["children"][0]["text"]
+        assert block_text == "Example text"
+
+    def test_nav_links_skip_filtered_pages(self, tmp_path: Path, export_module: ModuleType) -> None:
+        """Navigation links reference only pages that were actually exported."""
+        import os
+
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+
+        # p0001: EN only
+        p1_dir = render_src / "p0001"
+        p1_dir.mkdir(parents=True, exist_ok=True)
+        p1 = p1_dir / "h1.json"
+        p1.write_text(json.dumps(_make_render_page("p0001", edition="en")))
+        os.utime(p1, (1_000_000, 1_000_000))
+
+        # p0002: RU only (no EN artifact — should be skipped for EN export)
+        p2_dir = render_src / "p0002"
+        p2_dir.mkdir(parents=True, exist_ok=True)
+        p2 = p2_dir / "h2.json"
+        p2.write_text(json.dumps(_make_render_page("p0002", has_cyrillic=True, edition="ru")))
+        os.utime(p2, (1_000_000, 1_000_000))
+
+        # p0003: EN only
+        p3_dir = render_src / "p0003"
+        p3_dir.mkdir(parents=True, exist_ok=True)
+        p3 = p3_dir / "h3.json"
+        p3.write_text(json.dumps(_make_render_page("p0003", edition="en")))
+        os.utime(p3, (1_000_000, 1_000_000))
+
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+
+        # p0002 should not be exported
+        assert not (doc_public / "en" / "data" / "render_page.p0002.json").exists()
+
+        # p0001 → next should be p0003 (skipping p0002)
+        e1 = json.loads((doc_public / "en" / "data" / "render_page.p0001.json").read_text())
+        assert e1["nav"]["prev"] is None
+        assert e1["nav"]["next"] == "p0003"
+
+        # p0003 → prev should be p0001 (skipping p0002)
+        e3 = json.loads((doc_public / "en" / "data" / "render_page.p0003.json").read_text())
+        assert e3["nav"]["prev"] == "p0001"
+        assert e3["nav"]["next"] is None
