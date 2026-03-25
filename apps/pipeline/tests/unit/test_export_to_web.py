@@ -53,14 +53,15 @@ def _make_render_page(
 class TestPickLatest:
     def test_picks_most_recently_modified(self, tmp_path: Path, export_module: ModuleType) -> None:
         """The newest file by mtime wins, regardless of content."""
-        import time
+        import os
 
         old = tmp_path / "old.json"
         old.write_text('{"v": "old"}')
+        os.utime(old, (1_000_000, 1_000_000))
 
-        time.sleep(0.05)
         new = tmp_path / "new.json"
         new.write_text('{"v": "new"}')
+        os.utime(new, (2_000_000, 2_000_000))
 
         result = export_module._pick_latest([old, new])
         assert result == new
@@ -69,7 +70,7 @@ class TestPickLatest:
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
         """Regression: newer quality-filtered artifact must beat stale one with more annotations."""
-        import time
+        import os
 
         stale = tmp_path / "stale.json"
         stale.write_text(
@@ -81,8 +82,8 @@ class TestPickLatest:
                 }
             )
         )
+        os.utime(stale, (1_000_000, 1_000_000))
 
-        time.sleep(0.05)
         filtered = tmp_path / "filtered.json"
         filtered.write_text(
             json.dumps(
@@ -93,6 +94,7 @@ class TestPickLatest:
                 }
             )
         )
+        os.utime(filtered, (2_000_000, 2_000_000))
 
         result = export_module._pick_latest([stale, filtered])
         assert result == filtered
@@ -298,13 +300,13 @@ class TestExportPages:
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
         """Regression S5U-392: newer quality-filtered artifact must win over stale one."""
-        import time
+        import os
 
         render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
         page_dir = render_src / "p0007"
         page_dir.mkdir(parents=True, exist_ok=True)
 
-        # Stale artifact: 56 unfiltered annotations (written first → older mtime)
+        # Stale artifact: 56 unfiltered annotations (older mtime)
         stale = {
             "schema_version": "1.0",
             "presentation_mode": "facsimile",
@@ -315,11 +317,11 @@ class TestExportPages:
                 "annotations": [{"text": f"a{i}", "bbox": {}} for i in range(56)],
             },
         }
-        (page_dir / "hash_stale.json").write_text(json.dumps(stale))
+        stale_path = page_dir / "hash_stale.json"
+        stale_path.write_text(json.dumps(stale))
+        os.utime(stale_path, (1_000_000, 1_000_000))
 
-        time.sleep(0.05)
-
-        # Newer artifact: 31 quality-filtered annotations (written second → newer mtime)
+        # Newer artifact: 31 quality-filtered annotations (newer mtime)
         filtered = {
             "schema_version": "1.0",
             "presentation_mode": "facsimile",
@@ -330,7 +332,9 @@ class TestExportPages:
                 "annotations": [{"text": f"a{i}", "bbox": {}} for i in range(31)],
             },
         }
-        (page_dir / "hash_filtered.json").write_text(json.dumps(filtered))
+        filtered_path = page_dir / "hash_filtered.json"
+        filtered_path.write_text(json.dumps(filtered))
+        os.utime(filtered_path, (2_000_000, 2_000_000))
 
         doc_public = tmp_path / "web" / "documents" / "doc1"
         export_module.export_pages("doc1", "ru", render_src, doc_public, {})
