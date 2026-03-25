@@ -50,44 +50,54 @@ def _make_render_page(
     }
 
 
-class TestScoreRender:
-    def test_ru_prefers_cyrillic(self, export_module: ModuleType) -> None:
-        ru_page = _make_render_page("p0001", has_cyrillic=True)
-        en_page = _make_render_page("p0001", has_cyrillic=False)
-        assert export_module.score_render(ru_page, "ru") > export_module.score_render(en_page, "ru")
+class TestPickLatest:
+    def test_picks_most_recently_modified(self, tmp_path: Path, export_module: ModuleType) -> None:
+        """The newest file by mtime wins, regardless of content."""
+        import os
 
-    def test_en_prefers_latin(self, export_module: ModuleType) -> None:
-        ru_page = _make_render_page("p0001", has_cyrillic=True)
-        en_page = _make_render_page("p0001", has_cyrillic=False)
-        assert export_module.score_render(en_page, "en") > export_module.score_render(ru_page, "en")
+        old = tmp_path / "old.json"
+        old.write_text('{"v": "old"}')
+        os.utime(old, (1_000_000, 1_000_000))
 
-    def test_marks_increase_score(self, export_module: ModuleType) -> None:
-        plain = _make_render_page("p0001")
-        marked = _make_render_page("p0001", has_marks=True)
-        assert export_module.score_render(marked, "en") > export_module.score_render(plain, "en")
+        new = tmp_path / "new.json"
+        new.write_text('{"v": "new"}')
+        os.utime(new, (2_000_000, 2_000_000))
 
-    def test_facsimile_with_annotations_beats_without(self, export_module: ModuleType) -> None:
-        """Facsimile artifact with annotations scores higher than one without."""
-        no_ann = {
-            "presentation_mode": "facsimile",
-            "facsimile": {"raster_src": "r.png"},
-            "blocks": [],
-        }
-        with_ann = {
-            "presentation_mode": "facsimile",
-            "facsimile": {
-                "raster_src": "r.png",
-                "annotations": [{"text": "T", "bbox": {}}] * 10,
-            },
-            "blocks": [],
-        }
-        assert export_module.score_render(with_ann, "ru") > export_module.score_render(no_ann, "ru")
+        result = export_module._pick_latest([old, new])
+        assert result == new
 
-    def test_facsimile_always_beats_article(self, export_module: ModuleType) -> None:
-        """Even a facsimile with no annotations beats the best article."""
-        fac = {"presentation_mode": "facsimile", "facsimile": {}, "blocks": []}
-        art = _make_render_page("p0001", has_cyrillic=True, has_marks=True, block_count=100)
-        assert export_module.score_render(fac, "ru") > export_module.score_render(art, "ru")
+    def test_newer_filtered_facsimile_beats_stale_unfiltered(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression: newer quality-filtered artifact must beat stale one with more annotations."""
+        import os
+
+        stale = tmp_path / "stale.json"
+        stale.write_text(
+            json.dumps(
+                {
+                    "presentation_mode": "facsimile",
+                    "facsimile": {"annotations": [{"text": "T"}] * 56},
+                    "blocks": [],
+                }
+            )
+        )
+        os.utime(stale, (1_000_000, 1_000_000))
+
+        filtered = tmp_path / "filtered.json"
+        filtered.write_text(
+            json.dumps(
+                {
+                    "presentation_mode": "facsimile",
+                    "facsimile": {"annotations": [{"text": "T"}] * 31},
+                    "blocks": [],
+                }
+            )
+        )
+        os.utime(filtered, (2_000_000, 2_000_000))
+
+        result = export_module._pick_latest([stale, filtered])
+        assert result == filtered
 
 
 class TestParseArgs:
@@ -285,3 +295,49 @@ class TestExportPages:
         assert "/documents/doc1/rasters/" in exported["facsimile"]["raster_src"]
         # No synthetic figure blocks injected
         assert not any(b.get("asset_id") == "img0051" for b in exported.get("blocks", []))
+
+    def test_export_picks_latest_artifact_not_highest_annotation_count(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression S5U-392: newer quality-filtered artifact must win over stale one."""
+        import os
+
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+        page_dir = render_src / "p0007"
+        page_dir.mkdir(parents=True, exist_ok=True)
+
+        # Stale artifact: 56 unfiltered annotations (older mtime)
+        stale = {
+            "schema_version": "1.0",
+            "presentation_mode": "facsimile",
+            "page": {"page_id": "p0007", "title": "Components"},
+            "blocks": [],
+            "facsimile": {
+                "raster_src": "rasters/p0007__150dpi.png",
+                "annotations": [{"text": f"a{i}", "bbox": {}} for i in range(56)],
+            },
+        }
+        stale_path = page_dir / "hash_stale.json"
+        stale_path.write_text(json.dumps(stale))
+        os.utime(stale_path, (1_000_000, 1_000_000))
+
+        # Newer artifact: 31 quality-filtered annotations (newer mtime)
+        filtered = {
+            "schema_version": "1.0",
+            "presentation_mode": "facsimile",
+            "page": {"page_id": "p0007", "title": "Components"},
+            "blocks": [],
+            "facsimile": {
+                "raster_src": "rasters/p0007__150dpi.png",
+                "annotations": [{"text": f"a{i}", "bbox": {}} for i in range(31)],
+            },
+        }
+        filtered_path = page_dir / "hash_filtered.json"
+        filtered_path.write_text(json.dumps(filtered))
+        os.utime(filtered_path, (2_000_000, 2_000_000))
+
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+        export_module.export_pages("doc1", "ru", render_src, doc_public, {})
+
+        exported = json.loads((doc_public / "ru" / "data" / "render_page.p0007.json").read_text())
+        assert len(exported["facsimile"]["annotations"]) == 31
