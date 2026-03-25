@@ -172,6 +172,7 @@ class TranslationStage:
             kwargs: dict[str, object] = {
                 "block_id": seg.segment_id,
                 "children": list(seg.target_inline),
+                "bbox": src_block.bbox,
             }
             for field in _STRUCTURAL_FIELDS.get(src_block.type, []):
                 kwargs[field] = getattr(src_block, field)

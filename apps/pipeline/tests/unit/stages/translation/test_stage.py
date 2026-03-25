@@ -122,6 +122,43 @@ def test_translation_persists_metadata(tmp_path: Path) -> None:
         assert len(checksum) == 12
 
 
+def test_translation_copies_bbox_to_ru_blocks(tmp_path: Path) -> None:
+    """TranslationStage copies bbox from EN source blocks to RU blocks."""
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+
+    result = execute_stage(TranslationStage(), ctx)
+    assert result.success
+
+    from atr_schemas.page_ir_v1 import PageIRV1
+
+    # Load EN and RU IR for p0001
+    en_data = ctx.artifact_store.load_latest_json(
+        document_id="walking_skeleton",
+        schema_family="page_ir.v1.en",
+        scope="page",
+        entity_id="p0001",
+    )
+    ru_data = ctx.artifact_store.load_latest_json(
+        document_id="walking_skeleton",
+        schema_family="page_ir.v1.ru",
+        scope="page",
+        entity_id="p0001",
+    )
+    assert en_data is not None
+    assert ru_data is not None
+
+    en_ir = PageIRV1.model_validate(en_data)
+    ru_ir = PageIRV1.model_validate(ru_data)
+
+    en_bboxes = {b.block_id: b.bbox for b in en_ir.blocks}
+    for ru_block in ru_ir.blocks:
+        en_bbox = en_bboxes.get(ru_block.block_id)
+        assert ru_block.bbox == en_bbox, (
+            f"Block {ru_block.block_id}: RU bbox={ru_block.bbox} != EN bbox={en_bbox}"
+        )
+
+
 def test_translation_raises_without_en_ir(tmp_path: Path) -> None:
     """TranslationStage fails when no EN IR pages available."""
     ctx = _make_ctx(tmp_path)
