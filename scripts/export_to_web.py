@@ -176,11 +176,12 @@ def export_pages(
     data_dir = edition_dir / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
+    all_page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
+    exported: list[tuple[str, dict]] = []  # (page_id, data) for exported pages
     pages_meta = []
     stats = {"list_items": 0, "figures": 0, "headings": 0, "paragraphs": 0, "long_paras": 0}
 
-    for i, pid in enumerate(page_ids):
+    for pid in all_page_ids:
         page_dir = render_src / pid
         jsons = list(page_dir.glob("*.json"))
         if not jsons:
@@ -198,15 +199,17 @@ def export_pages(
             best["blocks"] = postprocess_blocks(best.get("blocks", []))
             inject_image_figures(best, pid, page_images.get(pid, []))
 
-        # Navigation
+        _count_block_stats(best.get("blocks", []), stats)
+        exported.append((pid, best))
+
+    # Inject navigation using only the actually-exported page list
+    exported_ids = [pid for pid, _ in exported]
+    for i, (pid, best) in enumerate(exported):
         best["nav"] = {
-            "prev": page_ids[i - 1] if i > 0 else None,
-            "next": page_ids[i + 1] if i < len(page_ids) - 1 else None,
+            "prev": exported_ids[i - 1] if i > 0 else None,
+            "next": exported_ids[i + 1] if i < len(exported_ids) - 1 else None,
             "parent_section": "",
         }
-
-        _count_block_stats(best.get("blocks", []), stats)
-
         (data_dir / f"render_page.{pid}.json").write_text(
             json.dumps(best, ensure_ascii=False, indent=2)
         )

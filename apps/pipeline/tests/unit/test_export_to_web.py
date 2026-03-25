@@ -428,3 +428,46 @@ class TestExportPages:
         # Must contain English text, not Russian
         block_text = exported["blocks"][0]["children"][0]["text"]
         assert block_text == "Example text"
+
+    def test_nav_links_skip_filtered_pages(self, tmp_path: Path, export_module: ModuleType) -> None:
+        """Navigation links reference only pages that were actually exported."""
+        import os
+
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+
+        # p0001: EN only
+        p1_dir = render_src / "p0001"
+        p1_dir.mkdir(parents=True, exist_ok=True)
+        p1 = p1_dir / "h1.json"
+        p1.write_text(json.dumps(_make_render_page("p0001", edition="en")))
+        os.utime(p1, (1_000_000, 1_000_000))
+
+        # p0002: RU only (no EN artifact — should be skipped for EN export)
+        p2_dir = render_src / "p0002"
+        p2_dir.mkdir(parents=True, exist_ok=True)
+        p2 = p2_dir / "h2.json"
+        p2.write_text(json.dumps(_make_render_page("p0002", has_cyrillic=True, edition="ru")))
+        os.utime(p2, (1_000_000, 1_000_000))
+
+        # p0003: EN only
+        p3_dir = render_src / "p0003"
+        p3_dir.mkdir(parents=True, exist_ok=True)
+        p3 = p3_dir / "h3.json"
+        p3.write_text(json.dumps(_make_render_page("p0003", edition="en")))
+        os.utime(p3, (1_000_000, 1_000_000))
+
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+
+        # p0002 should not be exported
+        assert not (doc_public / "en" / "data" / "render_page.p0002.json").exists()
+
+        # p0001 → next should be p0003 (skipping p0002)
+        e1 = json.loads((doc_public / "en" / "data" / "render_page.p0001.json").read_text())
+        assert e1["nav"]["prev"] is None
+        assert e1["nav"]["next"] == "p0003"
+
+        # p0003 → prev should be p0001 (skipping p0002)
+        e3 = json.loads((doc_public / "en" / "data" / "render_page.p0003.json").read_text())
+        assert e3["nav"]["prev"] == "p0001"
+        assert e3["nav"]["next"] is None
