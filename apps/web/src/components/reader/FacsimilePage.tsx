@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import type { FacsimileAnnotation, RenderFacsimile } from '../../lib/render/types';
 
 interface FacsimilePageProps {
@@ -7,24 +7,33 @@ interface FacsimilePageProps {
   pageNumber: number;
 }
 
+/** Vertical tolerance (fraction of page height) for same-row grouping. */
+const ROW_TOLERANCE = 0.02;
+
 /** Sort annotations in reading order: top-to-bottom, then left-to-right. */
 function readingOrder(a: FacsimileAnnotation, b: FacsimileAnnotation): number {
   const ay = (a.bbox.y0 + a.bbox.y1) / 2;
   const by = (b.bbox.y0 + b.bbox.y1) / 2;
-  if (Math.abs(ay - by) > 0.02) return ay - by;
+  if (Math.abs(ay - by) > ROW_TOLERANCE) return ay - by;
   return a.bbox.x0 - b.bbox.x0;
 }
 
 export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePageProps) {
-  const annotations = [...((facsimile.annotations ?? []) as FacsimileAnnotation[])].sort(readingOrder);
+  const annotations = useMemo(
+    () => [...((facsimile.annotations ?? []) as FacsimileAnnotation[])].sort(readingOrder),
+    [facsimile.annotations],
+  );
   const hasAnnotations = annotations.length > 0;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const handleMarkerClick = useCallback((index: number) => {
-    setActiveIndex((prev) => (prev === index ? null : index));
-    setPanelOpen(true);
+    setActiveIndex((prev) => {
+      const next = prev === index ? null : index;
+      if (next !== null) setPanelOpen(true);
+      return next;
+    });
     requestAnimationFrame(() => {
       const entry = panelRef.current?.querySelector(`[data-index="${index}"]`);
       entry?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -135,7 +144,8 @@ function AnnotationPanelEntry({
   isActive: boolean;
   onClick: (index: number) => void;
 }) {
-  const hasTranslation = annotation.translated_text && annotation.text !== annotation.translated_text;
+  const hasTranslation =
+    annotation.translated_text && annotation.text !== annotation.translated_text;
 
   return (
     <button
@@ -154,7 +164,9 @@ function AnnotationPanelEntry({
             <span className="facsimile-panel-translated">{annotation.translated_text}</span>
           </>
         ) : (
-          <span className="facsimile-panel-translated">{annotation.translated_text || annotation.text}</span>
+          <span className="facsimile-panel-translated">
+            {annotation.translated_text || annotation.text}
+          </span>
         )}
       </span>
     </button>
