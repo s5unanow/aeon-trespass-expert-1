@@ -72,11 +72,11 @@ class SymbolsConfig(BaseModel):
 class TranslationConfig(BaseModel):
     """Translation provider and model configuration."""
 
-    provider: str = "openai"
-    model_default: str = "gpt-4o"
-    model_hard: str = "gpt-4o"
-    fallback_provider: str = "anthropic"
-    fallback_model: str = "claude-sonnet-4-6"
+    provider: str = "gemini-cli"
+    model_default: str = "gemini-2.5-flash"
+    model_hard: str = "gemini-2.5-flash"
+    fallback_provider: str = "gemini"
+    fallback_model: str = "gemini-2.5-flash"
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     batch_size: int = Field(default=24, ge=1)
     prompt_profile: str = "translate_rules_ru.v1"
