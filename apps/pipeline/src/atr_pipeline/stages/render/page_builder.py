@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import re
+
+from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.page_ir_v1 import (
     DividerBlock,
     FigureBlock,
@@ -9,6 +12,7 @@ from atr_schemas.page_ir_v1 import (
     IconInline,
     InlineNode,
     PageIRV1,
+    TextInline,
     UnknownBlock,
 )
 from atr_schemas.render_page_v1 import (
@@ -32,6 +36,7 @@ def build_render_page(
     *,
     image_base_path: str = "",
     image_sources: dict[str, str] | None = None,
+    concept_registry: ConceptRegistryV1 | None = None,
 ) -> RenderPageV1:
     """Map a translated PageIRV1 to a RenderPageV1 payload.
 
@@ -97,7 +102,7 @@ def build_render_page(
         ),
         blocks=render_blocks,
         figures=figures,
-        glossary_mentions=_extract_concept_mentions(page_ir),
+        glossary_mentions=_extract_concept_mentions(page_ir, concept_registry),
         source_map=RenderSourceMap(
             page_id=page_ir.page_id,
             block_refs=block_refs,
@@ -120,9 +125,14 @@ def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
     return result
 
 
-def _extract_concept_mentions(page_ir: PageIRV1) -> list[str]:
-    """Extract concept mentions from block annotations."""
+def _extract_concept_mentions(
+    page_ir: PageIRV1,
+    concept_registry: ConceptRegistryV1 | None = None,
+) -> list[str]:
+    """Extract concept mentions from icon annotations and text content."""
     mentions: list[str] = []
+    text_patterns = _build_text_pattern_index(concept_registry) if concept_registry else []
+
     for block in page_ir.blocks:
         if isinstance(block, (DividerBlock, UnknownBlock)):
             continue
@@ -131,4 +141,21 @@ def _extract_concept_mentions(page_ir: PageIRV1) -> list[str]:
                 concept = f"concept.{child.symbol_id.removeprefix('sym.')}"
                 if concept not in mentions:
                     mentions.append(concept)
+            elif isinstance(child, TextInline) and text_patterns:
+                for pattern, concept_id in text_patterns:
+                    if concept_id not in mentions and pattern.search(child.text):
+                        mentions.append(concept_id)
     return mentions
+
+
+def _build_text_pattern_index(
+    registry: ConceptRegistryV1,
+) -> list[tuple[re.Pattern[str], str]]:
+    """Build compiled regex patterns for text-based concept detection."""
+    index: list[tuple[re.Pattern[str], str]] = []
+    for concept in registry.concepts:
+        for text in (*concept.source.patterns, *concept.target.allowed_surface_forms):
+            if text:
+                pattern = re.compile(r"\b" + re.escape(text) + r"\b", re.IGNORECASE)
+                index.append((pattern, concept.concept_id))
+    return index

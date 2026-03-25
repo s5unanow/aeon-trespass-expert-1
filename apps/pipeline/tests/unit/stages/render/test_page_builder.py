@@ -105,6 +105,94 @@ def test_nav_builder() -> None:
     assert nav.pages[0].page_id == "p0001"
 
 
+def test_text_based_concept_mentions() -> None:
+    """Text-only concepts are detected from TextInline content."""
+    registry = load_concept_registry(_repo_root() / "configs" / "glossary" / "concepts.toml")
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0010",
+        page_number=10,
+        language=LanguageCode.RU,
+        blocks=[
+            HeadingBlock(
+                block_id="p0010.b001",
+                level=2,
+                children=[TextInline(text="Фаза путешествия", lang=LanguageCode.RU)],
+            ),
+            ParagraphBlock(
+                block_id="p0010.b002",
+                children=[
+                    TextInline(
+                        text="During the Voyage Phase heroes travel.",
+                        lang=LanguageCode.EN,
+                    ),
+                ],
+            ),
+        ],
+        reading_order=["p0010.b001", "p0010.b002"],
+    )
+    render = build_render_page(ir, concept_registry=registry)
+    assert "concept.voyage_phase" in render.glossary_mentions
+
+
+def test_text_and_icon_concept_mentions_no_duplicates() -> None:
+    """Icon and text both referring to same concept produce no duplicates."""
+    registry = load_concept_registry(_repo_root() / "configs" / "glossary" / "concepts.toml")
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0011",
+        page_number=11,
+        language=LanguageCode.RU,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0011.b001",
+                children=[
+                    TextInline(text="Получите 1 ", lang=LanguageCode.RU),
+                    IconInline(symbol_id="sym.progress", instance_id="syminst.p0011.01"),
+                    TextInline(text=" Прогресс.", lang=LanguageCode.RU),
+                ],
+            ),
+        ],
+        reading_order=["p0011.b001"],
+    )
+    render = build_render_page(ir, concept_registry=registry)
+    # Icon detected it first; text should not duplicate
+    progress_count = render.glossary_mentions.count("concept.progress")
+    assert progress_count == 1
+
+
+def test_russian_surface_form_detection() -> None:
+    """Russian allowed_surface_forms are detected in text nodes."""
+    registry = load_concept_registry(_repo_root() / "configs" / "glossary" / "concepts.toml")
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0012",
+        page_number=12,
+        language=LanguageCode.RU,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0012.b001",
+                children=[
+                    TextInline(text="Начинается Фаза Странствия.", lang=LanguageCode.RU),
+                ],
+            ),
+        ],
+        reading_order=["p0012.b001"],
+    )
+    render = build_render_page(ir, concept_registry=registry)
+    assert "concept.voyage_phase" in render.glossary_mentions
+
+
+def test_text_concept_mentions_without_registry() -> None:
+    """Without a registry, only icon-based detection works (backward compat)."""
+    ir = _make_ru_ir()
+    render = build_render_page(ir)
+    # Icon-based: concept.progress is found
+    assert "concept.progress" in render.glossary_mentions
+    # Text "Прогресс" is in the IR but no registry → not double-counted
+    assert render.glossary_mentions.count("concept.progress") == 1
+
+
 def test_concept_registry_loader() -> None:
     """Load concept registry from TOML."""
     registry = load_concept_registry(_repo_root() / "configs" / "glossary" / "concepts.toml")
