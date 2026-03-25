@@ -51,6 +51,10 @@
           {
             "type": "command",
             "command": ".claude/hooks/pre-branch-check.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/pre-pr-check.sh"
           }
         ]
       }

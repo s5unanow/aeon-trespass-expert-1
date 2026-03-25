@@ -75,5 +75,6 @@ var/*.db-wal
 # Session handoff (ephemeral, not committed)
 HANDOFF.md
 
-# review
+# Review artifacts and temp files
 review/
+tmp/

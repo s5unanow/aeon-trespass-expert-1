@@ -17,11 +17,13 @@ Extract `S5U-<NUMBER>` from branch pattern `s5unanow/s5u-<NUMBER>-<description>`
 
 ## 1. Code review (MANDATORY)
 
-Read `.claude/prompts/review.md` and use it as the Agent prompt.
+Read `.claude/prompts/review.md` and use it as the Agent prompt. The review agent will save its output to `tmp/review-s5u-<NUMBER>.md`.
 
-- **BLOCK** — stop, report issues, fix before proceeding
+- **BLOCK** — stop, report issues, fix before proceeding. Delete the review artifact, fix issues, then re-run review.
 - **PASS WITH WARNINGS** — proceed, include warnings in PR body
 - **PASS** — proceed
+
+A pre-PR hook will block `gh pr create` if the review artifact is missing or contains a BLOCK verdict.
 
 ## 2. Push
 

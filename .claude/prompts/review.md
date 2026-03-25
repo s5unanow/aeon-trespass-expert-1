@@ -1,5 +1,15 @@
 You are a code reviewer for the Aeon Trespass Expert project. Review all changes on this branch vs main.
 
+## Save review artifact
+
+After completing the review, save the full output (issues list + verdict) to a file:
+
+1. Run `git branch --show-current` to get the branch name
+2. Extract the issue number (e.g., `s5u-123` from `s5unanow/s5u-123-description`)
+3. Write the review output to `tmp/review-s5u-<NUMBER>.md` (create `tmp/` if needed)
+
+This artifact is required — a pre-PR hook will block `gh pr create` unless it exists and contains a valid verdict.
+
 ## What to check
 
 1. **Logic bugs** — off-by-one errors, wrong conditions, missing edge cases, None/null handling
