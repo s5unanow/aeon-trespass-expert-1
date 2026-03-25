@@ -12,6 +12,7 @@ from atr_pipeline.stages.render.annotation_builder import (
 )
 from atr_pipeline.stages.render.page_builder import build_render_page
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
+from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1
 from atr_schemas.page_ir_v1 import PageIRV1
@@ -53,11 +54,16 @@ class RenderStage:
         return "1.0"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> RenderResult:
+        from atr_pipeline.stages.glossary.registry_loader import load_concept_registry
+
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
         image_sources, image_refs = self._resolve_images(ctx)
         render_cfg = ctx.config.render
         rendered_pages: list[RenderPageV1] = []
         raster_refs: dict[str, dict[int, str]] = {}
+
+        glossary_path = ctx.config.repo_root / "configs" / "glossary" / "concepts.toml"
+        concept_registry = load_concept_registry(glossary_path) if glossary_path.exists() else None
 
         # First pass: build all render pages
         for page_id in page_ids:
@@ -66,7 +72,9 @@ class RenderStage:
                 ctx.logger.warning("Skipping %s: missing page IR", page_id)
                 continue
             ctx.logger.info("Building render page for %s", page_id)
-            render_page = build_render_page(ir, image_sources=image_sources)
+            render_page = build_render_page(
+                ir, image_sources=image_sources, concept_registry=concept_registry
+            )
 
             # Classify presentation mode
             difficulty = self._load_difficulty(ctx, page_id)
@@ -119,7 +127,7 @@ class RenderStage:
 
         ctx.logger.info("Rendered %d pages", len(rendered_pages))
 
-        companion_refs = self._emit_companion_artifacts(ctx, rendered_pages)
+        companion_refs = self._emit_companion_artifacts(ctx, rendered_pages, concept_registry)
         return RenderResult(
             document_id=ctx.document_id,
             pages_rendered=len(rendered_pages),
@@ -130,9 +138,12 @@ class RenderStage:
         )
 
     @staticmethod
-    def _emit_companion_artifacts(ctx: StageContext, pages: list[RenderPageV1]) -> dict[str, str]:
+    def _emit_companion_artifacts(
+        ctx: StageContext,
+        pages: list[RenderPageV1],
+        concept_registry: ConceptRegistryV1 | None = None,
+    ) -> dict[str, str]:
         """Emit glossary, search_docs, and nav artifacts."""
-        from atr_pipeline.stages.glossary.registry_loader import load_concept_registry
         from atr_pipeline.stages.render.glossary_builder import build_glossary_payload
         from atr_pipeline.stages.render.nav_builder import build_nav_payload
         from atr_pipeline.stages.render.search_builder import build_search_docs
@@ -141,10 +152,7 @@ class RenderStage:
         doc = ctx.document_id
         refs: dict[str, str] = {}
 
-        glossary_path = ctx.config.repo_root / "configs" / "glossary" / "concepts.toml"
-        registry = load_concept_registry(glossary_path) if glossary_path.exists() else None
-
-        glossary = build_glossary_payload(doc, registry, pages)
+        glossary = build_glossary_payload(doc, concept_registry, pages)
         r = store.put_json(
             document_id=doc,
             schema_family="glossary_payload.v1",
