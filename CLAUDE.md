@@ -157,6 +157,13 @@ Before ending a long session (context limit approaching, user break, or switchin
 
 The next session starts by reading this file. `HANDOFF.md` is ephemeral and gitignored — it is not committed.
 
+## Context management
+
+- Use `/compact` between task phases within the same issue
+- Use `/clear` when switching to a different issue
+- Use `/context` to inspect token consumption in long sessions
+- For task switches, prefer `/clear`; for a new phase of same task, use `/compact`
+
 ## Current state
 
 All work is tracked in Linear (project ATE1). Check `mcp__linear__list_issues(project="ATE1")` for current status.
