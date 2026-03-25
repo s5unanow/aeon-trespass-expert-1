@@ -28,7 +28,7 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
   const hasAnnotations = annotations.length > 0;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLUListElement>(null);
 
   const handleMarkerClick = useCallback((index: number) => {
     setActiveIndex((prev) => {
@@ -84,10 +84,9 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
             >
               {panelOpen ? 'Hide' : 'Show'} annotations ({annotations.length})
             </button>
-            <div
+            <ul
               className={`facsimile-panel${panelOpen ? ' is-open' : ''}`}
               ref={panelRef}
-              role="list"
               aria-label="Annotations"
             >
               {annotations.map((ann, i) => (
@@ -99,7 +98,7 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
                   onClick={handlePanelClick}
                 />
               ))}
-            </div>
+            </ul>
           </>
         )}
       </div>
@@ -151,27 +150,27 @@ function AnnotationPanelEntry({
     annotation.translated_text && annotation.text !== annotation.translated_text;
 
   return (
-    <button
-      type="button"
-      role="listitem"
-      className={`facsimile-panel-entry${isActive ? ' is-active' : ''}`}
-      data-index={index}
-      onClick={() => onClick(index)}
-    >
-      <span className="facsimile-panel-number">{index + 1}</span>
-      <span className="facsimile-panel-text">
-        {hasTranslation ? (
-          <>
-            <span className="facsimile-panel-original">{annotation.text}</span>
-            <span className="facsimile-panel-arrow">{'\u2192'}</span>
-            <span className="facsimile-panel-translated">{annotation.translated_text}</span>
-          </>
-        ) : (
-          <span className="facsimile-panel-translated">
-            {annotation.translated_text || annotation.text}
-          </span>
-        )}
-      </span>
-    </button>
+    <li data-index={index}>
+      <button
+        type="button"
+        className={`facsimile-panel-entry${isActive ? ' is-active' : ''}`}
+        onClick={() => onClick(index)}
+      >
+        <span className="facsimile-panel-number">{index + 1}</span>
+        <span className="facsimile-panel-text">
+          {hasTranslation ? (
+            <>
+              <span className="facsimile-panel-original">{annotation.text}</span>
+              <span className="facsimile-panel-arrow">{'\u2192'}</span>
+              <span className="facsimile-panel-translated">{annotation.translated_text}</span>
+            </>
+          ) : (
+            <span className="facsimile-panel-translated">
+              {annotation.translated_text || annotation.text}
+            </span>
+          )}
+        </span>
+      </button>
+    </li>
   );
 }

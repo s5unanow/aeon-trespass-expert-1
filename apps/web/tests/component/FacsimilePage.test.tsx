@@ -55,11 +55,13 @@ describe('FacsimilePage', () => {
   it('renders side panel with EN -> RU entries', () => {
     render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={2} />);
     const panel = screen.getByRole('list', { name: 'Annotations' });
-    const entries = within(panel).getAllByRole('listitem');
-    expect(entries).toHaveLength(2);
-    expect(entries[0].textContent).toContain('EN text 1');
-    expect(entries[0].textContent).toContain('RU text 1');
-    expect(entries[0].textContent).toContain('\u2192');
+    const items = within(panel).getAllByRole('listitem');
+    expect(items).toHaveLength(2);
+    const buttons = within(panel).getAllByRole('button');
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0].textContent).toContain('EN text 1');
+    expect(buttons[0].textContent).toContain('RU text 1');
+    expect(buttons[0].textContent).toContain('\u2192');
   });
 
   it('highlights marker and panel entry on marker click', () => {
@@ -68,7 +70,7 @@ describe('FacsimilePage', () => {
     fireEvent.click(markers[0]);
     expect(markers[0].className).toContain('is-active');
     const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
-      'listitem',
+      'button',
     );
     expect(entries[0].className).toContain('is-active');
   });
@@ -85,7 +87,7 @@ describe('FacsimilePage', () => {
   it('highlights marker when panel entry is clicked', () => {
     render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={2} />);
     const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
-      'listitem',
+      'button',
     );
     fireEvent.click(entries[1]);
     expect(entries[1].className).toContain('is-active');
@@ -117,7 +119,7 @@ describe('FacsimilePage', () => {
     };
     render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);
     const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
-      'listitem',
+      'button',
     );
     expect(entries[0].textContent).toContain('Top');
     expect(entries[1].textContent).toContain('Bottom');
@@ -139,7 +141,7 @@ describe('FacsimilePage', () => {
       ],
     };
     render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);
-    const entry = within(screen.getByRole('list', { name: 'Annotations' })).getByRole('listitem');
+    const entry = within(screen.getByRole('list', { name: 'Annotations' })).getByRole('button');
     expect(entry.textContent).toContain('English only');
     expect(entry.textContent).not.toContain('\u2192');
   });
