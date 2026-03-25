@@ -154,9 +154,10 @@ class RenderConfig(BaseModel):
 
     facsimile_coverage_threshold: float = Field(default=0.15, ge=0.0, le=1.0)
     annotation_max_bbox_area: float = Field(default=0.10, ge=0.0, le=1.0)
-    annotation_max_total_area: float = Field(default=1.0, ge=0.0)
-    annotation_max_count: int = Field(default=40, ge=0)
+    annotation_max_total_area: float = Field(default=0.30, ge=0.0)
+    annotation_max_count: int = Field(default=25, ge=0)
     annotation_min_letter_ratio: float = Field(default=0.3, ge=0.0, le=1.0)
+    annotation_max_drop_ratio: float = Field(default=0.5, ge=0.0, le=1.0)
     page_overrides: dict[str, PageOverride] = Field(default_factory=dict)
 
 
