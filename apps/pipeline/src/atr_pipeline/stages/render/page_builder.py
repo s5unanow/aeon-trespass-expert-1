@@ -139,28 +139,73 @@ def _extract_concept_mentions(
     for block in page_ir.blocks:
         if isinstance(block, (DividerBlock, UnknownBlock)):
             continue
+
+        # Icon-based detection
         for child in block.children:
             if isinstance(child, IconInline):
                 concept = f"concept.{child.symbol_id.removeprefix('sym.')}"
                 if concept not in seen:
                     seen.add(concept)
                     mentions.append(concept)
-            elif isinstance(child, TextInline) and text_patterns:
-                for pattern, concept_id in text_patterns:
-                    if concept_id not in seen and pattern.search(child.text):
-                        seen.add(concept_id)
-                        mentions.append(concept_id)
+
+        # Text-based detection: concatenate all TextInline texts in the
+        # block so phrases spanning node boundaries are found.
+        if text_patterns:
+            full_text = "".join(
+                child.text for child in block.children if isinstance(child, TextInline)
+            )
+            if full_text:
+                _match_text_patterns(full_text, text_patterns, seen, mentions)
+
     return mentions
+
+
+def _match_text_patterns(
+    text: str,
+    patterns: list[tuple[re.Pattern[str], str, int]],
+    seen: set[str],
+    mentions: list[str],
+) -> None:
+    """Match text patterns with longest-match-first span deduplication.
+
+    Each pattern carries a specificity score (lower = more specific):
+    0 = lemma match, 1 = pattern/surface-form match.
+    When spans overlap, the longest match wins; ties broken by specificity.
+    """
+    hits: list[tuple[int, int, str, int]] = []
+    for pattern, concept_id, specificity in patterns:
+        for m in pattern.finditer(text):
+            hits.append((m.start(), m.end(), concept_id, specificity))
+
+    # Sort: longest span first, then most specific, then earliest position
+    hits.sort(key=lambda h: (-(h[1] - h[0]), h[3], h[0]))
+
+    # Greedily accept longest matches; skip overlapping shorter ones
+    claimed: list[tuple[int, int]] = []
+    for start, end, concept_id, _spec in hits:
+        if concept_id in seen:
+            continue
+        if any(start < ce and end > cs for cs, ce in claimed):
+            continue
+        claimed.append((start, end))
+        seen.add(concept_id)
+        mentions.append(concept_id)
 
 
 def _build_text_pattern_index(
     registry: ConceptRegistryV1,
-) -> list[tuple[re.Pattern[str], str]]:
-    """Build compiled regex patterns for text-based concept detection."""
-    index: list[tuple[re.Pattern[str], str]] = []
+) -> list[tuple[re.Pattern[str], str, int]]:
+    """Build compiled regex patterns for text-based concept detection.
+
+    Returns (compiled_pattern, concept_id, specificity) tuples.
+    Specificity 0 = lemma match, 1 = pattern/surface-form match.
+    """
+    index: list[tuple[re.Pattern[str], str, int]] = []
     for concept in registry.concepts:
+        lemma_lower = concept.source.lemma.lower()
         for text in (*concept.source.patterns, *concept.target.allowed_surface_forms):
             if text:
-                pattern = re.compile(r"\b" + re.escape(text) + r"\b", re.IGNORECASE)
-                index.append((pattern, concept.concept_id))
+                specificity = 0 if text.lower() == lemma_lower else 1
+                pat = re.compile(r"\b" + re.escape(text) + r"\b", re.IGNORECASE)
+                index.append((pat, concept.concept_id, specificity))
     return index
