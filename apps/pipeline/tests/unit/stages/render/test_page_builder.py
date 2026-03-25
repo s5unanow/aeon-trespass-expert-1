@@ -452,6 +452,55 @@ def test_facsimile_fallback_title_for_short_garbage() -> None:
     assert render.page.title == "Page 7"
 
 
+def test_overlapping_patterns_prefer_most_specific() -> None:
+    """'Fated Mnemos' matches concept.fated_mnemos, not concept.mnemos_card."""
+    registry = load_concept_registry(_repo_root() / "configs" / "glossary" / "concepts.toml")
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0020",
+        page_number=20,
+        language=LanguageCode.EN,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0020.b001",
+                children=[
+                    TextInline(text="Play a Fated Mnemos card.", lang=LanguageCode.EN),
+                ],
+            ),
+        ],
+        reading_order=["p0020.b001"],
+    )
+    render = build_render_page(ir, concept_registry=registry)
+    # Most specific match wins — "Fated Mnemos" is a longer pattern
+    assert "concept.fated_mnemos" in render.glossary_mentions
+    # The shorter "Mnemos card" pattern should NOT match because it
+    # overlaps with the already-claimed "Fated Mnemos" span.
+    assert "concept.mnemos_card" not in render.glossary_mentions
+
+
+def test_split_node_phrase_detection() -> None:
+    """Phrase spanning two TextInline nodes with different marks is detected."""
+    registry = load_concept_registry(_repo_root() / "configs" / "glossary" / "concepts.toml")
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0021",
+        page_number=21,
+        language=LanguageCode.EN,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0021.b001",
+                children=[
+                    TextInline(text="During the Voyage", marks=["bold"], lang=LanguageCode.EN),
+                    TextInline(text=" Phase heroes travel.", lang=LanguageCode.EN),
+                ],
+            ),
+        ],
+        reading_order=["p0021.b001"],
+    )
+    render = build_render_page(ir, concept_registry=registry)
+    assert "concept.voyage_phase" in render.glossary_mentions
+
+
 def _make_ir(*, page_id: str, page_number: int) -> PageIRV1:
     return PageIRV1(
         document_id="test_doc",
