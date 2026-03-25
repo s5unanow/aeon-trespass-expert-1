@@ -81,7 +81,7 @@ class GeminiAdapter:
 
         # Build few-shot examples as conversation turns
         examples = build_few_shot_examples()
-        messages: list[types.Content] = []
+        messages: list[types.ContentUnionDict] = []
         for ex in examples:
             messages.append(
                 types.Content(
