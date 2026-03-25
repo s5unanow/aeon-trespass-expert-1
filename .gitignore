@@ -78,3 +78,6 @@ HANDOFF.md
 # Review artifacts and temp files
 review/
 tmp/
+
+# Playwright MCP runtime logs
+.playwright-mcp/
