@@ -147,6 +147,7 @@ class PageOverride(BaseModel):
     presentation_mode: Literal["article", "facsimile"] | None = None
     title: str | None = None
     facsimile_annotations: bool | None = None
+    facsimile_annotation_keep_texts: list[str] | None = None
 
 
 class RenderConfig(BaseModel):

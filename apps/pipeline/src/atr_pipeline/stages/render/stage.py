@@ -268,10 +268,16 @@ class RenderStage:
             min_letter_ratio=render_cfg.annotation_min_letter_ratio,
             max_drop_ratio=render_cfg.annotation_max_drop_ratio,
         )
+        keep_texts = override.facsimile_annotation_keep_texts if override else None
         en_ir = self._load_page_ir_by_lang(ctx, page_id, "en")
         ru_ir = self._load_page_ir_by_lang(ctx, page_id, "ru")
         if en_ir is not None and render_page.facsimile is not None:
-            annotations = build_facsimile_annotations(en_ir, ru_ir, quality=quality_cfg)
+            annotations = build_facsimile_annotations(
+                en_ir,
+                ru_ir,
+                quality=quality_cfg,
+                keep_texts=keep_texts,
+            )
             render_page.facsimile.annotations = annotations
             ctx.logger.info("Facsimile %s: %d annotations", page_id, len(annotations))
 

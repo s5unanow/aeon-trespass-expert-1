@@ -556,6 +556,56 @@ def test_page_not_suppressed_when_drop_ratio_acceptable() -> None:
     assert len(result) == 3
 
 
+# ---------------------------------------------------------------------------
+# keep_texts filtering
+# ---------------------------------------------------------------------------
+
+
+def test_keep_texts_filters_to_matching_annotations() -> None:
+    """Only annotations whose EN text contains a keep_texts substring are kept."""
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=10, y0=10, x1=100, y1=30),
+                children=[TextInline(text="233 AI Cards")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=40, x1=100, y1=60),
+                children=[TextInline(text="Card artwork ability text here")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b003",
+                bbox=Rect(x0=10, y0=70, x1=100, y1=90),
+                children=[TextInline(text="20 Divider Cards")],
+            ),
+        ]
+    )
+    annotations = build_facsimile_annotations(
+        en_ir,
+        keep_texts=["AI Cards", "Divider Cards"],
+    )
+    assert len(annotations) == 2
+    texts = {a.text for a in annotations}
+    assert "233 AI Cards" in texts
+    assert "20 Divider Cards" in texts
+
+
+def test_keep_texts_none_keeps_all() -> None:
+    """When keep_texts is None (default), all candidates are kept."""
+    en_ir = _en_ir_with_blocks()
+    annotations = build_facsimile_annotations(en_ir, keep_texts=None)
+    assert len(annotations) == 3
+
+
+def test_keep_texts_empty_list_keeps_none() -> None:
+    """Empty keep_texts list removes all candidates."""
+    en_ir = _en_ir_with_blocks()
+    annotations = build_facsimile_annotations(en_ir, keep_texts=[])
+    assert annotations == []
+
+
 def test_numeric_game_values_not_garbled() -> None:
     """Multi-digit game values like '10', '+2' are not flagged as garbled."""
     en_ir = _make_ir(

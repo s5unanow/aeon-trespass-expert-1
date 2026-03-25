@@ -20,7 +20,18 @@ facsimile_annotations = false
 [render.page_overrides.p0007]
 presentation_mode = "facsimile"
 title = "Components"
-facsimile_annotations = false
+facsimile_annotation_keep_texts = [
+    "Primordial Sheets",
+    "AI Cards",
+    "BP Cards",
+    "Divider Cards",
+    "Secret Envelopes",
+    "Argonaut Cards",
+    "Pattern Cards",
+    "1901 Cards",
+    "Card Game",
+    "Small Square",
+]
 
 [structure]
 # ATO Core uses denser layouts — lower footer threshold
