@@ -1,6 +1,6 @@
 ---
 name: preflight
-description: Run all quality gates before committing. Use when about to commit, verifying code readiness, or checking if changes will pass CI.
+description: Run all quality gates before committing. Use when about to commit or checking if changes will pass CI.
 ---
 
 # Preflight quality check

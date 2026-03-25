@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Ship current work — review, PR, CI, merge, update Linear. Use when implementation is done and committed, or user says "ship it", "create PR", "merge it".
+description: Ship current work to main. Use when implementation is done and committed, or user says "ship it", "create PR", "merge it".
 ---
 
 # Ship current work
