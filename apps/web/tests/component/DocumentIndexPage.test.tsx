@@ -207,11 +207,12 @@ describe('DocumentIndexPage', () => {
     });
   });
 
-  it('shows loading state before manifests resolve', () => {
+  it('shows loading skeleton before manifests resolve', () => {
     fetchSpy.mockReturnValue(new Promise(() => {}));
 
     render(<DocumentIndexPage />);
 
-    expect(screen.getByText('Loading documents…')).toBeDefined();
+    expect(screen.getByLabelText('Loading documents')).toBeDefined();
+    expect(screen.getByLabelText('Loading documents').getAttribute('aria-busy')).toBe('true');
   });
 });

@@ -41,10 +41,19 @@ export function GlossaryPage() {
   }, [glossary, query]);
 
   if (error) return <div role="alert">Error: {error}</div>;
-  if (!glossary) return <div>Loading glossary...</div>;
+  if (!glossary) {
+    return (
+      <div className="skeleton" aria-busy="true" aria-label="Loading glossary">
+        <div className="skeleton-bone skeleton-heading" />
+        <div className="skeleton-bone skeleton-block" />
+        <div className="skeleton-bone skeleton-block" />
+        <div className="skeleton-bone skeleton-block" />
+      </div>
+    );
+  }
 
   return (
-    <article className="glossary-page">
+    <article className="glossary-page fade-in">
       <header className="glossary-header">
         <h1 className="glossary-title">Glossary</h1>
         <input

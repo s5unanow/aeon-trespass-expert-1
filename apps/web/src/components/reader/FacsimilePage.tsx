@@ -19,6 +19,8 @@ function readingOrder(a: FacsimileAnnotation, b: FacsimileAnnotation): number {
 }
 
 export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePageProps) {
+  const [rasterLoaded, setRasterLoaded] = useState(false);
+  const handleRasterLoad = useCallback(() => setRasterLoaded(true), []);
   const annotations = useMemo(
     () => [...((facsimile.annotations ?? []) as FacsimileAnnotation[])].sort(readingOrder),
     [facsimile.annotations],
@@ -54,8 +56,9 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
             alt={`Page ${pageNumber}: ${pageTitle}`}
             width={facsimile.width_px || undefined}
             height={facsimile.height_px || undefined}
-            className="facsimile-raster"
+            className={`facsimile-raster img-lazy${rasterLoaded ? ' is-loaded' : ''}`}
             loading="lazy"
+            onLoad={handleRasterLoad}
           />
           {hasAnnotations && (
             <div className="facsimile-overlay">

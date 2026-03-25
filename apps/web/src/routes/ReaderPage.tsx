@@ -41,12 +41,22 @@ export function ReaderPage() {
     return <div role="alert">Error: {error}</div>;
   }
   if (!page) {
-    return <div>Loading...</div>;
+    return (
+      <div className="skeleton" aria-busy="true" aria-label="Loading page">
+        <div className="skeleton-bone skeleton-heading" />
+        <div className="skeleton-bone skeleton-line" />
+        <div className="skeleton-bone skeleton-line" />
+        <div className="skeleton-bone skeleton-line" />
+        <div className="skeleton-bone skeleton-block" />
+        <div className="skeleton-bone skeleton-line" />
+        <div className="skeleton-bone skeleton-line" />
+      </div>
+    );
   }
 
   return (
     <GlossaryProvider documentId={documentId!} edition={edition!}>
-      <article className="reader-page">
+      <article className="reader-page fade-in">
         <header>
           <SourcePageBadge pageNumber={page.page.source_page_number} />
         </header>

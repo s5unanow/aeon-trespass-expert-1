@@ -38,10 +38,26 @@ describe('ReaderPage', () => {
     expect(screen.getByText('p.1')).toBeDefined();
   });
 
-  it('shows loading state before data arrives', () => {
+  it('applies fade-in class after data loads', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(sampleRenderPage),
+    } as Response);
+
+    renderPage('/documents/walking_skeleton/ru/p0001');
+
+    await waitFor(() => {
+      expect(screen.getByText('Проверка атаки')).toBeDefined();
+    });
+    const article = screen.getByRole('article');
+    expect(article.className).toContain('fade-in');
+  });
+
+  it('shows loading skeleton before data arrives', () => {
     fetchSpy.mockReturnValue(new Promise(() => {})); // never resolves
     renderPage('/documents/walking_skeleton/ru/p0001');
-    expect(screen.getByText('Loading...')).toBeDefined();
+    expect(screen.getByLabelText('Loading page')).toBeDefined();
+    expect(screen.getByLabelText('Loading page').getAttribute('aria-busy')).toBe('true');
   });
 
   it('shows error when fetch fails', async () => {

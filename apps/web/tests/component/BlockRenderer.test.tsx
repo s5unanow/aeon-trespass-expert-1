@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { BlockRenderer } from '../../src/components/reader/BlockRenderer';
 import { InlineRenderer } from '../../src/components/reader/InlineRenderer';
-import type { RenderBlock, RenderInlineNode } from '../../src/lib/render/types';
+import type { RenderBlock, RenderFigure, RenderInlineNode } from '../../src/lib/render/types';
 
 describe('BlockRenderer', () => {
   it('renders a heading block', () => {
@@ -104,6 +104,26 @@ describe('BlockRenderer', () => {
     expect(table?.id).toBe('p0001.b006');
     expect(table?.className).toBe('reader-table');
     expect(screen.getByText('Ячейка')).toBeDefined();
+  });
+
+  it('renders a figure block with lazy fade-in image', () => {
+    const block: RenderBlock = {
+      kind: 'figure',
+      id: 'p0001.b010',
+      asset_id: 'fig001',
+      children: [],
+    };
+    const figures: Record<string, RenderFigure> = {
+      fig001: { src: '/img/fig001.png', alt: 'Test figure' },
+    };
+
+    render(<BlockRenderer block={block} figures={figures} />);
+    const img = screen.getByRole('img', { name: 'Test figure' });
+    expect(img.className).toContain('img-lazy');
+    expect(img.className).not.toContain('is-loaded');
+
+    fireEvent.load(img);
+    expect(img.className).toContain('is-loaded');
   });
 
   it('throws on unsupported block kind', () => {

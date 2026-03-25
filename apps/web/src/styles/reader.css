@@ -406,6 +406,18 @@ h2.reader-heading {
   letter-spacing: 0.02em;
 }
 
+.edition-switcher strong {
+  color: var(--color-accent);
+}
+
+.edition-switcher a {
+  color: var(--color-text-muted);
+}
+
+.edition-switcher a:hover {
+  color: var(--color-accent-hover);
+}
+
 /* --- Document index page --- */
 
 .index-page {
