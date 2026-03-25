@@ -112,7 +112,7 @@ class GeminiAdapter:
 
         response = self._client.models.generate_content(
             model=model,
-            contents=messages,  # type: ignore[arg-type]  # SDK union typing vs list invariance
+            contents=messages,
             config=types.GenerateContentConfig(
                 system_instruction=system_prompt,
                 temperature=self._temperature,
