@@ -36,9 +36,10 @@ class AnnotationQualityConfig(BaseModel):
     """Thresholds for per-annotation and page-level quality filtering."""
 
     max_bbox_area: float = Field(default=0.10, ge=0.0, le=1.0)
-    max_total_area: float = Field(default=1.0, ge=0.0)
-    max_annotation_count: int = Field(default=40, ge=0)
+    max_total_area: float = Field(default=0.30, ge=0.0)
+    max_annotation_count: int = Field(default=25, ge=0)
     min_letter_ratio: float = Field(default=0.3, ge=0.0, le=1.0)
+    max_drop_ratio: float = Field(default=0.5, ge=0.0, le=1.0)
 
 
 def build_facsimile_annotations(
@@ -56,7 +57,7 @@ def build_facsimile_annotations(
     cfg = quality or AnnotationQualityConfig()
     candidates = _build_candidates(en_ir, ru_ir)
     filtered = _filter_annotations(candidates, cfg)
-    if not _page_quality_ok(filtered, cfg):
+    if not _page_quality_ok(filtered, cfg, candidate_count=len(candidates)):
         return []
     filtered.sort(key=lambda a: a.priority, reverse=True)
     return filtered
@@ -133,6 +134,8 @@ def _filter_annotations(
 def _page_quality_ok(
     annotations: list[FacsimileAnnotation],
     cfg: AnnotationQualityConfig,
+    *,
+    candidate_count: int = 0,
 ) -> bool:
     """Evaluate whether the annotation set is good enough to display."""
     if not annotations:
@@ -140,7 +143,13 @@ def _page_quality_ok(
     if len(annotations) > cfg.max_annotation_count:
         return False
     total_area = sum(_bbox_area(a.bbox) for a in annotations)
-    return total_area <= cfg.max_total_area
+    if total_area > cfg.max_total_area:
+        return False
+    if candidate_count > 0:
+        dropped = candidate_count - len(annotations)
+        if (dropped / candidate_count) > cfg.max_drop_ratio:
+            return False
+    return True
 
 
 # ---------------------------------------------------------------------------

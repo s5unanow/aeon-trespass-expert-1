@@ -258,6 +258,7 @@ class RenderStage:
             max_total_area=render_cfg.annotation_max_total_area,
             max_annotation_count=render_cfg.annotation_max_count,
             min_letter_ratio=render_cfg.annotation_min_letter_ratio,
+            max_drop_ratio=render_cfg.annotation_max_drop_ratio,
         )
         en_ir = self._load_page_ir_by_lang(ctx, page_id, "en")
         ru_ir = self._load_page_ir_by_lang(ctx, page_id, "ru")

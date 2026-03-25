@@ -426,7 +426,7 @@ def test_custom_quality_config() -> None:
     assert build_facsimile_annotations(en_ir, quality=strict) == []
 
     # Permissive config keeps it
-    permissive = AnnotationQualityConfig(max_bbox_area=0.50)
+    permissive = AnnotationQualityConfig(max_bbox_area=0.50, max_total_area=1.0)
     assert len(build_facsimile_annotations(en_ir, quality=permissive)) == 1
 
 
@@ -451,6 +451,109 @@ def test_bbox_clamped_to_unit_range() -> None:
     assert bbox.y0 == 0.0
     assert bbox.x1 == 1.0
     assert bbox.y1 == 1.0
+
+
+def test_page_suppressed_when_drop_ratio_too_high() -> None:
+    """Page is suppressed when most candidates are dropped by quality filters."""
+    # 6 blocks: 4 with identical EN/RU (dropped), 2 with real translations
+    en_blocks = [
+        ParagraphBlock(
+            block_id=f"p0007.b{i:03d}",
+            bbox=Rect(x0=10, y0=10 + i * 30, x1=100, y1=30 + i * 30),
+            children=[TextInline(text=f"CODE{i}")],
+        )
+        for i in range(4)
+    ] + [
+        ParagraphBlock(
+            block_id="p0007.b010",
+            bbox=Rect(x0=10, y0=200, x1=100, y1=220),
+            children=[TextInline(text="Real text here")],
+        ),
+        ParagraphBlock(
+            block_id="p0007.b011",
+            bbox=Rect(x0=10, y0=230, x1=100, y1=250),
+            children=[TextInline(text="Another real block")],
+        ),
+    ]
+    ru_blocks = [
+        ParagraphBlock(
+            block_id=f"p0007.b{i:03d}",
+            bbox=Rect(x0=10, y0=10 + i * 30, x1=100, y1=30 + i * 30),
+            children=[TextInline(text=f"CODE{i}")],  # identical → dropped
+        )
+        for i in range(4)
+    ] + [
+        ParagraphBlock(
+            block_id="p0007.b010",
+            bbox=Rect(x0=10, y0=200, x1=100, y1=220),
+            children=[TextInline(text="Реальный текст")],
+        ),
+        ParagraphBlock(
+            block_id="p0007.b011",
+            bbox=Rect(x0=10, y0=230, x1=100, y1=250),
+            children=[TextInline(text="Ещё один блок")],
+        ),
+    ]
+    en_ir = _make_ir(blocks=en_blocks)
+    ru_ir = _make_ir(lang=LanguageCode.RU, blocks=ru_blocks)
+    # 4/6 = 66.7% dropped — exceeds max_drop_ratio=0.5
+    cfg = AnnotationQualityConfig(max_drop_ratio=0.5)
+    assert build_facsimile_annotations(en_ir, ru_ir, quality=cfg) == []
+
+
+def test_page_not_suppressed_when_drop_ratio_acceptable() -> None:
+    """Page with low drop ratio is not suppressed."""
+    # 4 blocks: 1 with identical EN/RU (dropped), 3 with real translations
+    en_blocks = [
+        ParagraphBlock(
+            block_id="p0007.b001",
+            bbox=Rect(x0=10, y0=10, x1=100, y1=30),
+            children=[TextInline(text="CODE1")],
+        ),
+        ParagraphBlock(
+            block_id="p0007.b002",
+            bbox=Rect(x0=10, y0=40, x1=100, y1=60),
+            children=[TextInline(text="Real text one")],
+        ),
+        ParagraphBlock(
+            block_id="p0007.b003",
+            bbox=Rect(x0=10, y0=70, x1=100, y1=90),
+            children=[TextInline(text="Real text two")],
+        ),
+        ParagraphBlock(
+            block_id="p0007.b004",
+            bbox=Rect(x0=10, y0=100, x1=100, y1=120),
+            children=[TextInline(text="Real text three")],
+        ),
+    ]
+    ru_blocks = [
+        ParagraphBlock(
+            block_id="p0007.b001",
+            bbox=Rect(x0=10, y0=10, x1=100, y1=30),
+            children=[TextInline(text="CODE1")],  # identical → dropped
+        ),
+        ParagraphBlock(
+            block_id="p0007.b002",
+            bbox=Rect(x0=10, y0=40, x1=100, y1=60),
+            children=[TextInline(text="Текст один")],
+        ),
+        ParagraphBlock(
+            block_id="p0007.b003",
+            bbox=Rect(x0=10, y0=70, x1=100, y1=90),
+            children=[TextInline(text="Текст два")],
+        ),
+        ParagraphBlock(
+            block_id="p0007.b004",
+            bbox=Rect(x0=10, y0=100, x1=100, y1=120),
+            children=[TextInline(text="Текст три")],
+        ),
+    ]
+    en_ir = _make_ir(blocks=en_blocks)
+    ru_ir = _make_ir(lang=LanguageCode.RU, blocks=ru_blocks)
+    # 1/4 = 25% dropped — below max_drop_ratio=0.5
+    cfg = AnnotationQualityConfig(max_drop_ratio=0.5)
+    result = build_facsimile_annotations(en_ir, ru_ir, quality=cfg)
+    assert len(result) == 3
 
 
 def test_numeric_game_values_not_garbled() -> None:
