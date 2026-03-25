@@ -68,15 +68,20 @@ def test_glossary_builder() -> None:
 
     glossary = build_glossary_payload("walking_skeleton", registry, [render])
 
-    assert len(glossary.entries) == 1
-    entry = glossary.entries[0]
-    assert entry.concept_id == "concept.progress"
-    assert entry.preferred_term == "Прогресс"
-    assert entry.icon_binding == "sym.progress"
-    # page_refs populated from render page
-    assert len(entry.page_refs) == 1
-    assert entry.page_refs[0].page_id == "p0001"
-    assert entry.page_refs[0].source_page_number == 1
+    # All registry concepts are included, not just mentioned ones
+    assert len(glossary.entries) == len(registry.concepts)
+    by_id = {e.concept_id: e for e in glossary.entries}
+    # Mentioned concept has page_refs
+    progress = by_id["concept.progress"]
+    assert progress.preferred_term == "Прогресс"
+    assert progress.icon_binding == "sym.progress"
+    assert len(progress.page_refs) == 1
+    assert progress.page_refs[0].page_id == "p0001"
+    assert progress.page_refs[0].source_page_number == 1
+    # Unmentioned concept is still present but with empty page_refs
+    triskelion = by_id["concept.triskelion"]
+    assert triskelion.preferred_term == "Трискелион"
+    assert triskelion.page_refs == []
 
 
 def test_search_builder() -> None:

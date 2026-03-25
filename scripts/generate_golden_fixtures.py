@@ -7,6 +7,8 @@ These are the expected outputs that integration tests compare against.
 import json
 from pathlib import Path
 
+from atr_pipeline.stages.glossary.registry_loader import load_concept_registry
+
 OUTPUT_DIR = (
     Path(__file__).resolve().parent.parent
     / "packages"
@@ -393,21 +395,23 @@ def main() -> None:
     )
 
     # --- glossary_payload.json ---
+    # All registry concepts are included; only concept.progress has page_refs
+    repo_root = Path(__file__).resolve().parent.parent
+    registry = load_concept_registry(repo_root / "configs" / "glossary" / "concepts.toml")
+    glossary_entries = []
+    for concept in registry.concepts:
+        entry: dict[str, object] = {
+            "concept_id": concept.concept_id,
+            "preferred_term": concept.target.lemma,
+            "source_term": concept.source.lemma,
+            "aliases": list(concept.source.aliases),
+            "icon_binding": concept.icon_binding,
+            "notes": concept.notes or "",
+        }
+        glossary_entries.append(entry)
     write_json(
         "glossary_payload.json",
-        {
-            "document_id": "walking_skeleton",
-            "entries": [
-                {
-                    "concept_id": "concept.progress",
-                    "preferred_term": "Прогресс",
-                    "source_term": "Progress",
-                    "aliases": [],
-                    "icon_binding": "sym.progress",
-                    "notes": "",
-                }
-            ],
-        },
+        {"document_id": "walking_skeleton", "entries": glossary_entries},
     )
 
     # --- qa_summary.json ---

@@ -6,7 +6,7 @@ last_refresh_commit = ""
 reviewer = "s5unanow"
 
 [checksums]
-"glossary_payload.json" = "219144457e9583454ed5adaabe3c3ed413fa47374c3a85ab80effd37c4f5b8b9"
+"glossary_payload.json" = "90ce140d23979db92016444f238a9bedb02b94eedfa7da98b91a1e239f622598"
 "native_page.p0001.json" = "7ffe9cbf3e858ed16014e662d611884b72eda0c5836aeffe9ec29cf6f0146c3f"
 "page_ir.en.p0001.json" = "1f9a40651ab7ad6d8ad172966dbe094393835e83cc5613139af252e16fde0ed1"
 "page_ir.ru.p0001.json" = "5072b97083f47d81f2bee3fa3de96be5a348e41af2cb2f1e1abf29b0984db336"

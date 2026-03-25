@@ -2,12 +2,322 @@
   "document_id": "walking_skeleton",
   "entries": [
     {
+      "concept_id": "concept.danger",
+      "preferred_term": "Опасность",
+      "source_term": "Danger",
+      "aliases": [
+        "danger stat",
+        "Danger value"
+      ],
+      "icon_binding": "sym.danger",
+      "notes": "Triskelion stat (Mortal axis). Translated as meaningful Russian word."
+    },
+    {
+      "concept_id": "concept.fate",
+      "preferred_term": "Судьба",
+      "source_term": "Fate",
+      "aliases": [
+        "Fate stat",
+        "Fate value",
+        "Fate Re-roll",
+        "Fate re-rolls"
+      ],
+      "icon_binding": "sym.fate",
+      "notes": "Triskelion stat (Divine axis). Рок reserved for Doom."
+    },
+    {
+      "concept_id": "concept.rage",
+      "preferred_term": "Ярость",
+      "source_term": "Rage",
+      "aliases": [
+        "Rage stat",
+        "Rage value"
+      ],
+      "icon_binding": "sym.rage",
+      "notes": "Triskelion stat (Titan axis)."
+    },
+    {
+      "concept_id": "concept.fury_skill",
+      "preferred_term": "Неистовство",
+      "source_term": "Fury",
+      "aliases": [
+        "Fury skill"
+      ],
+      "icon_binding": null,
+      "notes": "Argonaut Skill (not Triskelion stat Rage). Неистовство avoids collision with Ярость."
+    },
+    {
       "concept_id": "concept.progress",
       "preferred_term": "Прогресс",
       "source_term": "Progress",
-      "aliases": [],
+      "aliases": [
+        "progress token",
+        "Progress tokens"
+      ],
       "icon_binding": "sym.progress",
-      "notes": ""
+      "notes": "Campaign progress resource. Прогресс is an established Russian word."
+    },
+    {
+      "concept_id": "concept.doom",
+      "preferred_term": "Рок",
+      "source_term": "Doom",
+      "aliases": [
+        "Doom card",
+        "Doom token"
+      ],
+      "icon_binding": "sym.doom",
+      "notes": "Doom resource — campaign penalty, opposite of Progress. Рок = dark fate/doom."
+    },
+    {
+      "concept_id": "concept.crew",
+      "preferred_term": "Экипаж",
+      "source_term": "Crew",
+      "aliases": [
+        "Crew stat",
+        "Crew value"
+      ],
+      "icon_binding": "sym.crew",
+      "notes": "Argo stat. Standard nautical term."
+    },
+    {
+      "concept_id": "concept.hull",
+      "preferred_term": "Корпус",
+      "source_term": "Hull",
+      "aliases": [
+        "Hull stat",
+        "Hull value"
+      ],
+      "icon_binding": "sym.hull",
+      "notes": "Argo stat. Standard nautical term."
+    },
+    {
+      "concept_id": "concept.argo_fate",
+      "preferred_term": "Судьба Арго",
+      "source_term": "Argo Fate",
+      "aliases": [
+        "Argo Fate stat"
+      ],
+      "icon_binding": "sym.argo_fate",
+      "notes": "Argo stat — distinct from Triskelion Fate, same root word Судьба."
+    },
+    {
+      "concept_id": "concept.argo_knowledge",
+      "preferred_term": "Знание Арго",
+      "source_term": "Argo Knowledge",
+      "aliases": [
+        "Argo Knowledge stat"
+      ],
+      "icon_binding": "sym.argo_knowledge",
+      "notes": "Argo stat."
+    },
+    {
+      "concept_id": "concept.triskelion",
+      "preferred_term": "Трискелион",
+      "source_term": "Triskelion",
+      "aliases": [
+        "Triskelion dial",
+        "Triskelion stats"
+      ],
+      "icon_binding": null,
+      "notes": "Core game mechanic — the three-stat dial. Established Russian form of the Greek/Celtic symbol."
+    },
+    {
+      "concept_id": "concept.argonaut",
+      "preferred_term": "Аргонавт",
+      "source_term": "Argonaut",
+      "aliases": [
+        "Argonauts"
+      ],
+      "icon_binding": null,
+      "notes": "Player character type. Established Russian mythology term."
+    },
+    {
+      "concept_id": "concept.titan",
+      "preferred_term": "Титан",
+      "source_term": "Titan",
+      "aliases": [
+        "Titans"
+      ],
+      "icon_binding": null,
+      "notes": "Controllable combat creature — linked to Argonaut via Triskelion."
+    },
+    {
+      "concept_id": "concept.primordial",
+      "preferred_term": "Первозданный",
+      "source_term": "Primordial",
+      "aliases": [
+        "Primordials",
+        "Primordial's"
+      ],
+      "icon_binding": null,
+      "notes": "Enemy boss creature. Первозданный = The Primeval One — evocative, natural Russian."
+    },
+    {
+      "concept_id": "concept.argo",
+      "preferred_term": "Арго",
+      "source_term": "Argo",
+      "aliases": [
+        "the Argo"
+      ],
+      "icon_binding": null,
+      "notes": "The player's city-ship. Proper noun, established Russian form."
+    },
+    {
+      "concept_id": "concept.voyage_phase",
+      "preferred_term": "Фаза Странствия",
+      "source_term": "Voyage Phase",
+      "aliases": [
+        "Voyage"
+      ],
+      "icon_binding": null,
+      "notes": "Major game phase. Странствие = odyssey/wandering, fits the Odyssey theme."
+    },
+    {
+      "concept_id": "concept.battle_phase",
+      "preferred_term": "Фаза Битвы",
+      "source_term": "Battle Phase",
+      "aliases": [
+        "Battle"
+      ],
+      "icon_binding": null,
+      "notes": "Major game phase — Primordial combat."
+    },
+    {
+      "concept_id": "concept.evasion_roll",
+      "preferred_term": "Бросок Уклонения",
+      "source_term": "Evasion Roll",
+      "aliases": [
+        "Evasion Rolls",
+        "Evasion roll"
+      ],
+      "icon_binding": null,
+      "notes": "Combat mechanic — dice roll to dodge attacks. Standard board-game Russian."
+    },
+    {
+      "concept_id": "concept.exploration",
+      "preferred_term": "Исследование",
+      "source_term": "Exploration",
+      "aliases": [
+        "Exploration Step",
+        "Exploration Draw"
+      ],
+      "icon_binding": null,
+      "notes": "Voyage phase step."
+    },
+    {
+      "concept_id": "concept.gear",
+      "preferred_term": "Снаряжение",
+      "source_term": "Gear",
+      "aliases": [
+        "Gear card",
+        "Gear cards"
+      ],
+      "icon_binding": null,
+      "notes": "Craftable equipment cards."
+    },
+    {
+      "concept_id": "concept.technology",
+      "preferred_term": "Технология",
+      "source_term": "Technology",
+      "aliases": [
+        "Technology card",
+        "Technology cards"
+      ],
+      "icon_binding": null,
+      "notes": "Technology cards — Titan abilities and equipment."
+    },
+    {
+      "concept_id": "concept.cycle",
+      "preferred_term": "Цикл",
+      "source_term": "Cycle",
+      "aliases": [
+        "Cycles"
+      ],
+      "icon_binding": null,
+      "notes": "Major campaign division (Cycle I, II, III)."
+    },
+    {
+      "concept_id": "concept.obol_draw",
+      "preferred_term": "Жребий Обола",
+      "source_term": "Obol Draw",
+      "aliases": [
+        "Obol Draws"
+      ],
+      "icon_binding": null,
+      "notes": "Penalty mechanic — draw from the Obol bag. Жребий = lot/fortune, mythological weight."
+    },
+    {
+      "concept_id": "concept.moiros_card",
+      "preferred_term": "карта Мойрос",
+      "source_term": "Moiros card",
+      "aliases": [
+        "Moiros cards"
+      ],
+      "icon_binding": null,
+      "notes": "Fate card drawn as penalty. Game-specific name derived from Moirai."
+    },
+    {
+      "concept_id": "concept.mnemos_card",
+      "preferred_term": "карта Мнемос",
+      "source_term": "Mnemos card",
+      "aliases": [
+        "Mnemos cards",
+        "Fated Mnemos"
+      ],
+      "icon_binding": null,
+      "notes": "Memory/skill cards for Argonauts. Game-specific name derived from Mnemosyne."
+    },
+    {
+      "concept_id": "concept.fated_mnemos",
+      "preferred_term": "Судьбоносная Мнемос",
+      "source_term": "Fated Mnemos",
+      "aliases": [
+        "Fated Mnemos card",
+        "Fated Mnemos cards"
+      ],
+      "icon_binding": null,
+      "notes": "Special Mnemos cards marked as Fated. Судьбоносный = fateful/destined."
+    },
+    {
+      "concept_id": "concept.mnemos_storage",
+      "preferred_term": "Хранилище Мнемос",
+      "source_term": "Mnemos Storage",
+      "aliases": [
+        "Mnemos storage"
+      ],
+      "icon_binding": null,
+      "notes": "The storage/repository for Mnemos cards on Argonaut Sheet."
+    },
+    {
+      "concept_id": "concept.wounds",
+      "preferred_term": "Раны",
+      "source_term": "Wounds",
+      "aliases": [
+        "Wound",
+        "Wounds value"
+      ],
+      "icon_binding": null,
+      "notes": "Primordial health stat."
+    },
+    {
+      "concept_id": "concept.retreat",
+      "preferred_term": "Отступление",
+      "source_term": "Retreat",
+      "aliases": [
+        "Retreating"
+      ],
+      "icon_binding": null,
+      "notes": "Ending a battle by choice."
+    },
+    {
+      "concept_id": "concept.escalation",
+      "preferred_term": "Эскалация",
+      "source_term": "Escalation",
+      "aliases": [
+        "Escalations"
+      ],
+      "icon_binding": null,
+      "notes": "Battle event that adds environmental hazards."
     }
   ]
 }
