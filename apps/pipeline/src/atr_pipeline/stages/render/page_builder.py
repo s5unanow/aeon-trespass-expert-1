@@ -46,6 +46,8 @@ def build_render_page(
             When empty, asset_id is used as-is.
         image_sources: Per-asset src overrides (asset_id → src URL).
             Takes precedence over *image_base_path*.
+        concept_registry: When provided, text content is scanned for
+            concept patterns and surface forms in addition to icon detection.
     """
     render_blocks: list[RenderBlock] = []
     block_refs: list[str] = []
@@ -131,6 +133,7 @@ def _extract_concept_mentions(
 ) -> list[str]:
     """Extract concept mentions from icon annotations and text content."""
     mentions: list[str] = []
+    seen: set[str] = set()
     text_patterns = _build_text_pattern_index(concept_registry) if concept_registry else []
 
     for block in page_ir.blocks:
@@ -139,11 +142,13 @@ def _extract_concept_mentions(
         for child in block.children:
             if isinstance(child, IconInline):
                 concept = f"concept.{child.symbol_id.removeprefix('sym.')}"
-                if concept not in mentions:
+                if concept not in seen:
+                    seen.add(concept)
                     mentions.append(concept)
             elif isinstance(child, TextInline) and text_patterns:
                 for pattern, concept_id in text_patterns:
-                    if concept_id not in mentions and pattern.search(child.text):
+                    if concept_id not in seen and pattern.search(child.text):
+                        seen.add(concept_id)
                         mentions.append(concept_id)
     return mentions
 
