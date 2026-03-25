@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import unicodedata
 from typing import Literal
+
+from pydantic import BaseModel, Field
 
 from atr_schemas.common import NormRect
 from atr_schemas.page_ir_v1 import (
@@ -29,25 +32,45 @@ _BLOCK_KIND_MAP: dict[str, tuple[AnnotationKind, int]] = {
 }
 
 
+class AnnotationQualityConfig(BaseModel):
+    """Thresholds for per-annotation and page-level quality filtering."""
+
+    max_bbox_area: float = Field(default=0.10, ge=0.0, le=1.0)
+    max_total_area: float = Field(default=1.0, ge=0.0)
+    max_annotation_count: int = Field(default=40, ge=0)
+    min_letter_ratio: float = Field(default=0.3, ge=0.0, le=1.0)
+
+
 def build_facsimile_annotations(
     en_ir: PageIRV1,
     ru_ir: PageIRV1 | None = None,
+    *,
+    quality: AnnotationQualityConfig | None = None,
 ) -> list[FacsimileAnnotation]:
     """Convert PageIRV1 blocks to positioned facsimile annotations.
 
-    Args:
-        en_ir: English page IR (source of bboxes and original text).
-        ru_ir: Russian page IR (source of translated text). May be ``None``
-            for EN-only editions.
-
-    Returns:
-        Annotations sorted by descending priority.
+    Builds candidate annotations, applies per-annotation quality filters,
+    then evaluates page-level quality. Returns an empty list if the
+    overlay would be too noisy.
     """
+    cfg = quality or AnnotationQualityConfig()
+    candidates = _build_candidates(en_ir, ru_ir)
+    filtered = _filter_annotations(candidates, cfg)
+    if not _page_quality_ok(filtered, cfg):
+        return []
+    filtered.sort(key=lambda a: a.priority, reverse=True)
+    return filtered
+
+
+def _build_candidates(
+    en_ir: PageIRV1,
+    ru_ir: PageIRV1 | None,
+) -> list[FacsimileAnnotation]:
+    """Extract raw annotation candidates from IR blocks."""
     dims = en_ir.dimensions_pt
     if dims is None or dims.width <= 0 or dims.height <= 0:
         return []
 
-    # Index RU blocks by block_id for fast lookup
     ru_blocks: dict[str, Block] = {}
     if ru_ir is not None:
         for block in ru_ir.blocks:
@@ -87,9 +110,42 @@ def build_facsimile_annotations(
                 priority=priority,
             )
         )
-
-    annotations.sort(key=lambda a: a.priority, reverse=True)
     return annotations
+
+
+def _filter_annotations(
+    candidates: list[FacsimileAnnotation],
+    cfg: AnnotationQualityConfig,
+) -> list[FacsimileAnnotation]:
+    """Apply per-annotation quality filters."""
+    result: list[FacsimileAnnotation] = []
+    for ann in candidates:
+        if _is_identical_translation(ann.text, ann.translated_text):
+            continue
+        if _bbox_area(ann.bbox) > cfg.max_bbox_area:
+            continue
+        if _is_garbled(ann.text, cfg.min_letter_ratio):
+            continue
+        result.append(ann)
+    return result
+
+
+def _page_quality_ok(
+    annotations: list[FacsimileAnnotation],
+    cfg: AnnotationQualityConfig,
+) -> bool:
+    """Evaluate whether the annotation set is good enough to display."""
+    if not annotations:
+        return True  # empty is fine — nothing to suppress
+    if len(annotations) > cfg.max_annotation_count:
+        return False
+    total_area = sum(_bbox_area(a.bbox) for a in annotations)
+    return total_area <= cfg.max_total_area
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
 
 
 def _extract_block_text(block: Block) -> str:
@@ -103,3 +159,34 @@ def _extract_block_text(block: Block) -> str:
         elif isinstance(child, IconInline) and child.symbol_id:
             parts.append(f"[{child.symbol_id}]")
     return " ".join(parts)
+
+
+def _normalize_for_compare(text: str) -> str:
+    """Normalize text for EN/RU identity comparison."""
+    t = unicodedata.normalize("NFC", text)
+    t = " ".join(t.split())  # collapse whitespace
+    t = t.casefold().strip()
+    return t
+
+
+def _is_identical_translation(en: str, ru: str) -> bool:
+    """Return True if EN and RU are effectively the same text."""
+    if not ru:
+        return False  # no translation available — keep the annotation
+    return _normalize_for_compare(en) == _normalize_for_compare(ru)
+
+
+def _bbox_area(bbox: NormRect) -> float:
+    """Compute normalized area of a bounding box."""
+    w = max(0.0, bbox.x1 - bbox.x0)
+    h = max(0.0, bbox.y1 - bbox.y0)
+    return w * h
+
+
+def _is_garbled(text: str, min_letter_ratio: float) -> bool:
+    """Return True if text is mostly non-letter characters (OCR noise)."""
+    stripped = text.replace(" ", "")
+    if len(stripped) < 2:
+        return False  # single chars are fine (game labels like "I", "?")
+    alphanumeric = sum(1 for c in stripped if c.isalnum())
+    return (alphanumeric / len(stripped)) < min_letter_ratio

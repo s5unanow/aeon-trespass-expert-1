@@ -4,8 +4,12 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+from atr_pipeline.config.models import PageOverride, RenderConfig
 from atr_pipeline.runner.stage_context import StageContext
-from atr_pipeline.stages.render.annotation_builder import build_facsimile_annotations
+from atr_pipeline.stages.render.annotation_builder import (
+    AnnotationQualityConfig,
+    build_facsimile_annotations,
+)
 from atr_pipeline.stages.render.page_builder import build_render_page
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
 from atr_schemas.enums import StageScope
@@ -73,6 +77,7 @@ class RenderStage:
                 render_cfg.page_overrides,
             )
             render_page.presentation_mode = mode
+            override = render_cfg.page_overrides.get(page_id)
 
             if mode == "facsimile":
                 raster_meta = self._load_raster_meta(ctx, page_id)
@@ -87,15 +92,9 @@ class RenderStage:
 
                 # Build translation overlay annotations
                 if render_page.facsimile is not None:
-                    en_ir = self._load_page_ir_by_lang(ctx, page_id, "en")
-                    ru_ir = self._load_page_ir_by_lang(ctx, page_id, "ru")
-                    if en_ir is not None:
-                        annotations = build_facsimile_annotations(en_ir, ru_ir)
-                        render_page.facsimile.annotations = annotations
-                        ctx.logger.info("Facsimile %s: %d annotations", page_id, len(annotations))
+                    self._attach_annotations(ctx, render_page, page_id, render_cfg, override)
 
             # Apply title override or fallback
-            override = render_cfg.page_overrides.get(page_id)
             if override and override.title is not None:
                 render_page.page.title = override.title
             elif mode == "facsimile" and len(render_page.page.title) <= 2:
@@ -240,6 +239,32 @@ class RenderStage:
             if data is not None:
                 return PageIRV1.model_validate(data)
         return None
+
+    def _attach_annotations(
+        self,
+        ctx: StageContext,
+        render_page: RenderPageV1,
+        page_id: str,
+        render_cfg: RenderConfig,
+        override: PageOverride | None,
+    ) -> None:
+        """Build and attach facsimile annotations with quality filtering."""
+        ann_flag = override.facsimile_annotations if override else None
+        if ann_flag is False:
+            ctx.logger.info("Facsimile %s: annotations disabled by override", page_id)
+            return
+        quality_cfg = AnnotationQualityConfig(
+            max_bbox_area=render_cfg.annotation_max_bbox_area,
+            max_total_area=render_cfg.annotation_max_total_area,
+            max_annotation_count=render_cfg.annotation_max_count,
+            min_letter_ratio=render_cfg.annotation_min_letter_ratio,
+        )
+        en_ir = self._load_page_ir_by_lang(ctx, page_id, "en")
+        ru_ir = self._load_page_ir_by_lang(ctx, page_id, "ru")
+        if en_ir is not None and render_page.facsimile is not None:
+            annotations = build_facsimile_annotations(en_ir, ru_ir, quality=quality_cfg)
+            render_page.facsimile.annotations = annotations
+            ctx.logger.info("Facsimile %s: %d annotations", page_id, len(annotations))
 
     @staticmethod
     def _load_page_ir_by_lang(ctx: StageContext, page_id: str, lang: str) -> PageIRV1 | None:

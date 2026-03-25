@@ -66,6 +66,29 @@ class TestScoreRender:
         marked = _make_render_page("p0001", has_marks=True)
         assert export_module.score_render(marked, "en") > export_module.score_render(plain, "en")
 
+    def test_facsimile_with_annotations_beats_without(self, export_module: ModuleType) -> None:
+        """Facsimile artifact with annotations scores higher than one without."""
+        no_ann = {
+            "presentation_mode": "facsimile",
+            "facsimile": {"raster_src": "r.png"},
+            "blocks": [],
+        }
+        with_ann = {
+            "presentation_mode": "facsimile",
+            "facsimile": {
+                "raster_src": "r.png",
+                "annotations": [{"text": "T", "bbox": {}}] * 10,
+            },
+            "blocks": [],
+        }
+        assert export_module.score_render(with_ann, "ru") > export_module.score_render(no_ann, "ru")
+
+    def test_facsimile_always_beats_article(self, export_module: ModuleType) -> None:
+        """Even a facsimile with no annotations beats the best article."""
+        fac = {"presentation_mode": "facsimile", "facsimile": {}, "blocks": []}
+        art = _make_render_page("p0001", has_cyrillic=True, has_marks=True, block_count=100)
+        assert export_module.score_render(fac, "ru") > export_module.score_render(art, "ru")
+
 
 class TestParseArgs:
     def test_defaults(self, export_module: ModuleType) -> None:
