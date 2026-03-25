@@ -33,27 +33,22 @@ def build_glossary_payload(
     concept_registry: ConceptRegistryV1 | None,
     render_pages: list[RenderPageV1],
 ) -> GlossaryPayloadV1:
-    """Build a glossary payload from concepts mentioned in render pages."""
-    mentioned: set[str] = set()
-    for page in render_pages:
-        mentioned.update(page.glossary_mentions)
-
+    """Build a glossary payload from all registered concepts."""
     page_refs = _build_page_refs(render_pages)
 
     entries: list[GlossaryEntryV1] = []
     if concept_registry:
         for concept in concept_registry.concepts:
-            if concept.concept_id in mentioned or not mentioned:
-                entries.append(
-                    GlossaryEntryV1(
-                        concept_id=concept.concept_id,
-                        preferred_term=concept.target.lemma,
-                        source_term=concept.source.lemma,
-                        aliases=list(concept.source.aliases),
-                        icon_binding=concept.icon_binding,
-                        notes=concept.notes,
-                        page_refs=page_refs.get(concept.concept_id, []),
-                    )
+            entries.append(
+                GlossaryEntryV1(
+                    concept_id=concept.concept_id,
+                    preferred_term=concept.target.lemma,
+                    source_term=concept.source.lemma,
+                    aliases=list(concept.source.aliases),
+                    icon_binding=concept.icon_binding,
+                    notes=concept.notes,
+                    page_refs=page_refs.get(concept.concept_id, []),
                 )
+            )
 
     return GlossaryPayloadV1(document_id=document_id, entries=entries)
