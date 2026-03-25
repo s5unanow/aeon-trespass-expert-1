@@ -47,15 +47,22 @@ def build_facsimile_annotations(
     ru_ir: PageIRV1 | None = None,
     *,
     quality: AnnotationQualityConfig | None = None,
+    keep_texts: list[str] | None = None,
 ) -> list[FacsimileAnnotation]:
     """Convert PageIRV1 blocks to positioned facsimile annotations.
 
     Builds candidate annotations, applies per-annotation quality filters,
     then evaluates page-level quality. Returns an empty list if the
     overlay would be too noisy.
+
+    When *keep_texts* is provided, only candidates whose English text
+    contains at least one of the given substrings are kept (applied
+    before quality filtering).
     """
     cfg = quality or AnnotationQualityConfig()
     candidates = _build_candidates(en_ir, ru_ir)
+    if keep_texts is not None:
+        candidates = [c for c in candidates if any(kt in c.text for kt in keep_texts)]
     filtered = _filter_annotations(candidates, cfg)
     if not _page_quality_ok(filtered, cfg, candidate_count=len(candidates)):
         return []
