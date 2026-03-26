@@ -67,10 +67,6 @@
   color: var(--color-link);
 }
 
-.app-header a:hover {
-  text-decoration: none;
-}
-
 .app-header-link:hover {
   color: var(--color-link-hover);
 }

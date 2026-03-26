@@ -16,6 +16,11 @@
   line-height: var(--leading-relaxed);
 }
 
+.reader-content a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-link-hover);
+}
+
 .reader-heading {
   margin-top: var(--space-6);
   margin-bottom: var(--space-3);
