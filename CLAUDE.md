@@ -81,33 +81,39 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - Direct commits to `main` are **blocked by hook**
 - Dirty working tree on main is **blocked by hook** — stash or discard before branching
 
-### 3. Work on the branch
+### 3. Plan before coding (cross-subsystem changes)
+- **If the issue touches more than one subsystem** (pipeline + web, export + render, config + stage, schemas + pipeline, etc.), **run the planning prompt first**: read `.claude/prompts/plan.md` and use it as the Agent prompt
+- The plan identifies cross-subsystem invariants, blast radius, and test strategy *before* any code is written
+- Save the plan to `tmp/plan-s5u-<NUMBER>.md`
+- Single-subsystem changes skip this step
+
+### 4. Work on the branch
 - Commit early and often with prefix `S5U-XXX: description`
 - The 8 local gates run automatically before each commit via hook
 
-### 4. Definition of done (all must be true before PR)
+### 5. Definition of done (all must be true before PR)
 - [ ] Code changes directly address the Linear issue description
 - [ ] New/changed code has tests (unless pure config/docs change)
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 12 gates — local green alone is not sufficient)
 
-### 5. Sub-agent code review (MANDATORY before PR)
+### 6. Sub-agent code review (MANDATORY before PR)
 - **You MUST spawn a review agent before creating a PR.** This is not optional.
 - Read `.claude/prompts/review.md` and use it as the Agent prompt
 - If the review agent says **BLOCK**, fix the issues before proceeding
 - If only warnings/nits, use judgement — fix warnings, nits are optional
 
-### 6. Create PR
+### 7. Create PR
 - Push branch: `git push -u origin HEAD`
 - Create PR via `gh pr create` with summary and test plan
 - Link the Linear issue in PR body
 
-### 7. Wait for CI
+### 8. Wait for CI
 - Check CI status: `gh pr checks <pr-number> --watch`
 - If CI fails, fix and push — do not merge with red CI
 
-### 8. Merge and sync
+### 9. Merge and sync
 - Merge via: `gh pr merge <pr-number> --squash --delete-branch`
 - Sync local: `git checkout main && git pull`
 - Update Linear issue to **Done**: `mcp__linear__save_issue(id="S5U-XXX", state="Done")`
