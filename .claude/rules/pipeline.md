@@ -11,3 +11,4 @@ globs: apps/pipeline/**,packages/schemas/python/**
 - No bare `except Exception` without structured logging
 - Max 400 lines per source file (enforced by `check_file_length.py`)
 - Import layers enforced by `lint-imports` — no cyclic dependencies
+- When concatenating text from a sequence containing mixed inline types (TextInline, IconInline, etc.), non-text inlines represent word boundaries — use `" "` as separator for skipped elements, never `"".join()` on the filtered subset alone
