@@ -20,6 +20,11 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 6. **Code quality** — dead code, unnecessary complexity, duplicated logic, unclear naming
 7. **Type safety** — any/unknown types, missing type annotations on new code, Pydantic model misuse
 8. **Performance** — unnecessary loops, N+1 patterns, unbounded collections, missing pagination
+9. **Accessibility** — if JSX touches interactive elements or ARIA roles, verify semantic HTML nesting (no `role` overriding native element semantics, e.g. `<button role="link">` should be `<a>`)
+10. **Cross-concern regressions** — if the change touches data selection/filtering, verify all existing filter dimensions are preserved (e.g., edition, language, document). Check callers of modified functions for broken invariants
+11. **Config format consistency** — if new config or rule files are added under `.claude/rules/`, `configs/`, or similar directories, verify they match the format and conventions of existing files in the same directory
+12. **Claim verification** — if the PR description or commit message claims a fix (e.g., "fix mypy error"), verify the fix is present in the actual diff. Unfulfilled claims are CRITICAL
+13. **Tool/API reference validation** — if documentation or config references external tool names or MCP methods, verify they match actual available tool signatures
 
 ## How to review
 
