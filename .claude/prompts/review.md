@@ -31,9 +31,9 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 1. Run `git diff main...HEAD` to see all changes
 2. Read each changed file in full context (not just the diff) to understand the surrounding code
 3. Check if tests exist for new/changed functionality
-4. Run `mypy --strict` on all Python files changed in the branch to catch type regressions:
+4. Run `uv run mypy --strict` on all Python files changed in the branch to catch type regressions:
    ```bash
-   git diff --name-only main...HEAD -- '*.py' | xargs -r mypy --strict
+   git diff --name-only main...HEAD -- '*.py' | xargs -r uv run mypy --strict
    ```
    Any mypy errors on changed files are **CRITICAL** — they indicate type safety regressions or unfulfilled fix claims.
 
