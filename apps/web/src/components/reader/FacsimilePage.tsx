@@ -75,7 +75,7 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
           )}
         </div>
         {hasAnnotations && (
-          <>
+          <div className="facsimile-sidebar">
             <button
               type="button"
               className="facsimile-panel-toggle"
@@ -99,7 +99,7 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
                 />
               ))}
             </ul>
-          </>
+          </div>
         )}
       </div>
     </div>
