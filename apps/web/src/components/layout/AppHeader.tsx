@@ -57,7 +57,7 @@ export function AppHeader({
         {isGlossaryPage ? (
           <Link
             to={fromPageId ? `/documents/${documentId}/${edition}/${fromPageId}` : '/'}
-            className="app-header-link app-header-back"
+            className="app-header-link"
           >
             {'\u2190'} Back
           </Link>
