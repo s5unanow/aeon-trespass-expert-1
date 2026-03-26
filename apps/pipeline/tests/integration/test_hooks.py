@@ -114,7 +114,7 @@ class TestPreCommitCheckToolchain:
         # Find all run_gate lines with Python tools
         python_tools = ["ruff", "mypy", "lint-imports", "pytest"]
         for tool in python_tools:
-            lines = [ln for ln in content.splitlines() if f"run_gate" in ln and tool in ln]
+            lines = [ln for ln in content.splitlines() if "run_gate" in ln and tool in ln]
             for line in lines:
                 assert "uv run" in line, f"Gate for '{tool}' must use 'uv run': {line}"
 
