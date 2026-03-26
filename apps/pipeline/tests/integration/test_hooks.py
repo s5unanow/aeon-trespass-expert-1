@@ -16,15 +16,15 @@ PRE_PR_CHECK = REPO_ROOT / ".claude" / "hooks" / "pre-pr-check.sh"
 PRE_COMMIT_CHECK = REPO_ROOT / ".claude" / "hooks" / "pre-commit-check.sh"
 
 
-def _run_pre_pr_check(review_file: Path | None, *, branch: str = "s5unanow/s5u-999-test") -> int:
-    """Run pre-pr-check.sh with a synthetic review artifact.
+def _run_pre_pr_check(review_file: Path | None) -> int:
+    """Test pre-pr-check.sh verdict logic with a synthetic review artifact.
 
-    Overrides git branch detection and review file path via env manipulation.
-    We invoke only the verdict-checking portion by providing CLAUDE_TOOL_INPUT
-    that matches 'gh pr create'.
+    Replicates the verdict-checking portion of pre-pr-check.sh (lines 34-47)
+    in an isolated script so tests don't depend on git state or hardcoded paths.
+    If the hook's verdict logic changes, these tests must be updated to match.
     """
     env_input = '{"command": "gh pr create --title test"}'
-    script = _build_pr_check_script(review_file, branch)
+    script = _build_pr_check_script(review_file)
     result = subprocess.run(
         ["bash", "-c", script],
         capture_output=True,
@@ -35,8 +35,8 @@ def _run_pre_pr_check(review_file: Path | None, *, branch: str = "s5unanow/s5u-9
     return result.returncode
 
 
-def _build_pr_check_script(review_file: Path | None, branch: str) -> str:
-    """Build a self-contained script that tests verdict logic without git."""
+def _build_pr_check_script(review_file: Path | None) -> str:
+    """Build a self-contained script replicating pre-pr-check.sh verdict logic."""
     review_path = str(review_file) if review_file else "/nonexistent/review.md"
     return f"""\
 set -euo pipefail
