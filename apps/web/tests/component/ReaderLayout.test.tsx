@@ -136,4 +136,63 @@ describe('ReaderLayout', () => {
       expect(link?.getAttribute('href')).toBe('/documents/ato_core_v1_1/ru/glossary');
     });
   });
+
+  it('shows back link instead of glossary link on glossary page', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(MANIFEST),
+    } as Response);
+
+    renderLayout('/documents/ato_core_v1_1/ru/glossary');
+
+    await waitFor(() => {
+      expect(screen.getByText(/Back/)).toBeDefined();
+    });
+    const glossaryLink = screen.queryByRole('link', { name: 'Glossary' });
+    expect(glossaryLink).toBeNull();
+  });
+
+  it('back link on glossary points to referring page when state provided', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(MANIFEST),
+    } as Response);
+
+    render(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: '/documents/ato_core_v1_1/ru/glossary',
+            state: { fromPageId: 'p0002' },
+          },
+        ]}
+      >
+        <Routes>
+          <Route path="/documents/:documentId/:edition" element={<ReaderLayout />}>
+            <Route path=":pageId" element={<div>Page</div>} />
+            <Route path="glossary" element={<div>Glossary</div>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      const back = screen.getByText(/Back/).closest('a');
+      expect(back?.getAttribute('href')).toBe('/documents/ato_core_v1_1/ru/p0002');
+    });
+  });
+
+  it('back link on glossary falls back to home when no state', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(MANIFEST),
+    } as Response);
+
+    renderLayout('/documents/ato_core_v1_1/ru/glossary');
+
+    await waitFor(() => {
+      const back = screen.getByText(/Back/).closest('a');
+      expect(back?.getAttribute('href')).toBe('/');
+    });
+  });
 });
