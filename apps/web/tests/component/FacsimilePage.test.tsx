@@ -150,4 +150,45 @@ describe('FacsimilePage', () => {
     render(<FacsimilePage facsimile={makeFacsimile(0)} pageTitle="Test" pageNumber={1} />);
     expect(screen.queryByRole('list', { name: 'Annotations' })).toBeNull();
   });
+
+  it('renders toggle button with annotation count', () => {
+    render(<FacsimilePage facsimile={makeFacsimile(5)} pageTitle="Test" pageNumber={1} />);
+    const toggle = screen.getByRole('button', { name: /annotations/i });
+    expect(toggle.textContent).toBe('Show annotations (5)');
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('toggle button opens and closes the panel', () => {
+    render(<FacsimilePage facsimile={makeFacsimile(3)} pageTitle="Test" pageNumber={1} />);
+    const toggle = screen.getByRole('button', { name: /annotations/i });
+    const panel = screen.getByRole('list', { name: 'Annotations' });
+
+    expect(panel.className).not.toContain('is-open');
+    expect(toggle.textContent).toBe('Show annotations (3)');
+
+    fireEvent.click(toggle);
+    expect(panel.className).toContain('is-open');
+    expect(toggle.textContent).toBe('Hide annotations (3)');
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+
+    fireEvent.click(toggle);
+    expect(panel.className).not.toContain('is-open');
+    expect(toggle.textContent).toBe('Show annotations (3)');
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('marker click opens the panel', () => {
+    render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={1} />);
+    const panel = screen.getByRole('list', { name: 'Annotations' });
+    expect(panel.className).not.toContain('is-open');
+
+    const marker = screen.getByRole('button', { name: /^Annotation 1:/ });
+    fireEvent.click(marker);
+    expect(panel.className).toContain('is-open');
+  });
+
+  it('does not render toggle button when no annotations', () => {
+    render(<FacsimilePage facsimile={makeFacsimile(0)} pageTitle="Test" pageNumber={1} />);
+    expect(screen.queryByRole('button', { name: /annotations/i })).toBeNull();
+  });
 });
