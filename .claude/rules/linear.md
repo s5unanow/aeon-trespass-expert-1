@@ -38,6 +38,19 @@ If the work belongs to an existing epic, set `parentId`:
 - S5U-144 — Epic 3: Config-driven structure recovery
 - S5U-146 — Epic 5: Patch application + dynamic document discovery
 
+## Must not break (required for Bug, Regression, Improvement, Refactor)
+
+When creating issues of these types, include a **"Must not break"** section listing invariants the implementation must preserve. Each entry should name the invariant and briefly explain why it matters.
+
+Examples:
+- "Edition filtering — EN export must never include RU content"
+- "Existing `glossary_mentions` on pages that already have them"
+- "`mypy --strict` passing on all changed files"
+
+If there are genuinely no invariants at risk, write "None identified" — do not omit the section.
+
+Skip this section only for `Feature` issues (net-new capabilities with no existing behavior to protect).
+
 ## Dependencies
 
 Set `blockedBy` when the issue genuinely cannot start until another is Done.
