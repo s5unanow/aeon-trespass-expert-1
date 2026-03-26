@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test codegen export clean validate-fixtures config-health
+.PHONY: help bootstrap lint format typecheck test test-hooks codegen export clean validate-fixtures config-health
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -28,6 +28,9 @@ typecheck: ## Run mypy + tsc
 test: ## Run all tests (pytest + pnpm test)
 	uv run pytest
 	pnpm -r run test
+
+test-hooks: ## Run hook integration tests (fast, no external deps)
+	uv run pytest apps/pipeline/tests/integration/test_hooks.py -v --timeout=10
 
 export: ## Export pipeline artifacts to web public (re-generates apps/web/public/documents/)
 	uv run python scripts/export_to_web.py
