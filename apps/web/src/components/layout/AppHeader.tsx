@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { EditionSwitcher } from '../nav/EditionSwitcher';
 
 interface AppHeaderProps {
@@ -22,6 +22,10 @@ export function AppHeader({
   sidebarOpen,
   onToggleSidebar,
 }: AppHeaderProps) {
+  const location = useLocation();
+  const isGlossaryPage = location.pathname.endsWith('/glossary');
+  const fromPageId = (location.state as { fromPageId?: string } | null)?.fromPageId;
+
   return (
     <header className="app-header">
       <div className="app-header-left">
@@ -50,9 +54,22 @@ export function AppHeader({
       </div>
 
       <div className="app-header-right">
-        <Link to={`/documents/${documentId}/${edition}/glossary`} className="app-header-link">
-          Glossary
-        </Link>
+        {isGlossaryPage ? (
+          <Link
+            to={fromPageId ? `/documents/${documentId}/${edition}/${fromPageId}` : '/'}
+            className="app-header-link"
+          >
+            {'\u2190'} Back
+          </Link>
+        ) : (
+          <Link
+            to={`/documents/${documentId}/${edition}/glossary`}
+            className="app-header-link"
+            state={pageId ? { fromPageId: pageId } : undefined}
+          >
+            Glossary
+          </Link>
+        )}
         {pageId && (
           <EditionSwitcher documentId={documentId} pageId={pageId} currentEdition={edition} />
         )}
