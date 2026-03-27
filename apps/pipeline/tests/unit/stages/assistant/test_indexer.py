@@ -124,6 +124,7 @@ def test_fts_query_returns_metadata(tmp_path: Path) -> None:
     assert row["edition"] == "en"
     assert row["page_id"] == "p0001"
     assert row["source_page_number"] == 1
+    assert isinstance(row["deep_link"], str)
     assert row["deep_link"].startswith("/documents/")
     assert "canonical_anchor_id" in row
 
@@ -195,5 +196,5 @@ def test_chunk_metadata_round_trips(tmp_path: Path) -> None:
     conn.close()
 
     assert '"Chapter 1"' in row["section_path"]
-    assert "c_titan" in row["glossary_json"]
+    assert "c_titan" in row["glossary_text"]
     assert "icon_move" in row["symbol_ids"]

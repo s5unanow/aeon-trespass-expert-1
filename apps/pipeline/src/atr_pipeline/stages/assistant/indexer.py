@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS chunks (
     language        TEXT NOT NULL,
     text            TEXT NOT NULL,
     normalized_text TEXT NOT NULL DEFAULT '',
-    glossary_json   TEXT NOT NULL DEFAULT '[]',
+    glossary_text   TEXT NOT NULL DEFAULT '[]',
     symbol_ids      TEXT NOT NULL DEFAULT '[]',
     deep_link       TEXT NOT NULL DEFAULT ''
 )
@@ -46,9 +46,9 @@ INSERT INTO chunks_fts(
     section_text, glossary_text, symbol_text
 )
 SELECT rowid, rule_chunk_id, normalized_text,
-       json_extract(section_path, '$') AS section_text,
-       glossary_json AS glossary_text,
-       symbol_ids AS symbol_text
+       replace(replace(replace(section_path, '"', ''), '[', ''), ']', '') AS section_text,
+       glossary_text AS glossary_text,
+       replace(replace(replace(symbol_ids, '"', ''), '[', ''), ']', '') AS symbol_text
 FROM chunks
 """
 
@@ -89,7 +89,7 @@ def _insert_chunks(conn: sqlite3.Connection, chunks: list[RuleChunkV1]) -> None:
                (rule_chunk_id, document_id, edition, page_id,
                 source_page_number, section_path, block_ids,
                 canonical_anchor_id, language, text, normalized_text,
-                glossary_json, symbol_ids, deep_link)
+                glossary_text, symbol_ids, deep_link)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 chunk.rule_chunk_id,
@@ -140,7 +140,7 @@ def query_index(db_path: Path, query: str, *, limit: int = 10) -> list[dict[str,
         rows = conn.execute(
             """SELECT c.rule_chunk_id, c.document_id, c.edition, c.page_id,
                       c.source_page_number, c.canonical_anchor_id, c.language,
-                      c.text, c.deep_link, c.section_path, c.glossary_json,
+                      c.text, c.deep_link, c.section_path, c.glossary_text,
                       c.symbol_ids
                FROM chunks_fts f
                JOIN chunks c ON c.rowid = f.rowid
