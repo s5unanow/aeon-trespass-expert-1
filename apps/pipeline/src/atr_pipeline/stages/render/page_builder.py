@@ -152,7 +152,7 @@ def _extract_concept_mentions(
         # block so phrases spanning node boundaries are found.
         if text_patterns:
             full_text = "".join(
-                child.text for child in block.children if isinstance(child, TextInline)
+                child.text if isinstance(child, TextInline) else " " for child in block.children
             )
             if full_text:
                 _match_text_patterns(full_text, text_patterns, seen, mentions)

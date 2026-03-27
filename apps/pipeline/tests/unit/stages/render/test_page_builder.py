@@ -501,6 +501,93 @@ def test_split_node_phrase_detection() -> None:
     assert "concept.voyage_phase" in render.glossary_mentions
 
 
+def test_icon_boundary_prevents_false_concatenation() -> None:
+    """Icon between text nodes acts as word boundary, preventing false matches.
+
+    Regression test for S5U-413: `"".join()` on filtered TextInline nodes
+    erased the word boundary an icon represents, causing e.g.
+    "battle" + icon + "field" to produce "battlefield".
+    """
+    from atr_schemas.concept_registry_v1 import (
+        ConceptRegistryV1,
+        ConceptSource,
+        ConceptTarget,
+        ConceptV1,
+    )
+
+    registry = ConceptRegistryV1(
+        concepts=[
+            ConceptV1(
+                concept_id="concept.battlefield",
+                source=ConceptSource(lemma="Battlefield", patterns=["Battlefield"]),
+                target=ConceptTarget(lemma="Поле боя"),
+            ),
+        ],
+    )
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0030",
+        page_number=30,
+        language=LanguageCode.EN,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0030.b001",
+                children=[
+                    TextInline(text="battle", lang=LanguageCode.EN),
+                    IconInline(symbol_id="sym.sword", instance_id="syminst.p0030.01"),
+                    TextInline(text="field", lang=LanguageCode.EN),
+                ],
+            ),
+        ],
+        reading_order=["p0030.b001"],
+    )
+    render = build_render_page(ir, concept_registry=registry)
+    # "battlefield" must NOT match — the icon is a word boundary
+    assert "concept.battlefield" not in render.glossary_mentions
+
+
+def test_cross_node_phrase_still_matches_without_icon() -> None:
+    """Phrase split across two TextInline nodes (no icon gap) still matches.
+
+    Ensures the S5U-413 fix does not break legitimate cross-node detection.
+    """
+    from atr_schemas.concept_registry_v1 import (
+        ConceptRegistryV1,
+        ConceptSource,
+        ConceptTarget,
+        ConceptV1,
+    )
+
+    registry = ConceptRegistryV1(
+        concepts=[
+            ConceptV1(
+                concept_id="concept.battlefield",
+                source=ConceptSource(lemma="Battlefield", patterns=["Battlefield"]),
+                target=ConceptTarget(lemma="Поле боя"),
+            ),
+        ],
+    )
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0031",
+        page_number=31,
+        language=LanguageCode.EN,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0031.b001",
+                children=[
+                    TextInline(text="Battle", marks=["bold"], lang=LanguageCode.EN),
+                    TextInline(text="field is ready.", lang=LanguageCode.EN),
+                ],
+            ),
+        ],
+        reading_order=["p0031.b001"],
+    )
+    render = build_render_page(ir, concept_registry=registry)
+    # Cross-node "Battlefield" with no icon gap should still match
+    assert "concept.battlefield" in render.glossary_mentions
+
+
 def _make_ir(*, page_id: str, page_number: int) -> PageIRV1:
     return PageIRV1(
         document_id="test_doc",
