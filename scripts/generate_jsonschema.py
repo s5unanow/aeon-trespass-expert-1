@@ -12,6 +12,8 @@ from atr_schemas.asset_class_v1 import AssetClassV1
 from atr_schemas.asset_occurrence_v1 import AssetOccurrenceV1
 from atr_schemas.asset_registry_v1 import AssetRegistryV1
 from atr_schemas.asset_v1 import AssetV1
+from atr_schemas.assistant_citation_v1 import AssistantCitationV1
+from atr_schemas.assistant_pack_v1 import AssistantPackV1
 from atr_schemas.build_manifest_v1 import BuildManifestV1
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.glossary_payload_v1 import GlossaryPayloadV1
@@ -27,6 +29,7 @@ from atr_schemas.raster_meta_v1 import RasterMetaV1
 from atr_schemas.render_page_v1 import RenderPageV1
 from atr_schemas.resolved_page_v1 import ResolvedPageV1
 from atr_schemas.review_pack_v1 import ReviewPackV1
+from atr_schemas.rule_chunk_v1 import RuleChunkV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.run_summary_v1 import RunSummaryV1
 from atr_schemas.search_docs_v1 import SearchDocsV1
@@ -38,6 +41,8 @@ from atr_schemas.translation_result_v1 import TranslationResultV1
 from atr_schemas.waiver_v1 import WaiverSetV1
 
 MODELS = {
+    "assistant_citation_v1": AssistantCitationV1,
+    "assistant_pack_v1": AssistantPackV1,
     "asset_class_v1": AssetClassV1,
     "asset_occurrence_v1": AssetOccurrenceV1,
     "asset_registry_v1": AssetRegistryV1,
@@ -57,6 +62,7 @@ MODELS = {
     "render_page_v1": RenderPageV1,
     "resolved_page_v1": ResolvedPageV1,
     "review_pack_v1": ReviewPackV1,
+    "rule_chunk_v1": RuleChunkV1,
     "run_manifest_v1": RunManifestV1,
     "run_summary_v1": RunSummaryV1,
     "search_docs_v1": SearchDocsV1,

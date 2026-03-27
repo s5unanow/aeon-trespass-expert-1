@@ -20,6 +20,8 @@ const OUTPUT_DIR = join(ROOT, 'packages', 'schemas', 'ts', 'src', 'generated');
 
 // Map from schema file stem to the primary exported type name
 const PRIMARY_TYPES = {
+  assistant_citation_v1: 'AssistantCitationV1',
+  assistant_pack_v1: 'AssistantPackV1',
   asset_class_v1: 'AssetClassV1',
   asset_occurrence_v1: 'AssetOccurrenceV1',
   asset_registry_v1: 'AssetRegistryV1',
@@ -38,6 +40,7 @@ const PRIMARY_TYPES = {
   render_page_v1: 'RenderPageV1',
   resolved_page_v1: 'ResolvedPageV1',
   review_pack_v1: 'ReviewPackV1',
+  rule_chunk_v1: 'RuleChunkV1',
   run_manifest_v1: 'RunManifestV1',
   search_docs_v1: 'SearchDocsV1',
   source_manifest_v1: 'SourceManifestV1',

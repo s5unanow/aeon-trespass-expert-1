@@ -1,0 +1,56 @@
+{
+  "description": "Manifest describing the assistant artifact bundle for a document edition.\n\nProduced by the pipeline export step, consumed by the assistant\nquery service to locate chunks and the FTS5 index.",
+  "properties": {
+    "schema_version": {
+      "default": "assistant_pack.v1",
+      "pattern": "^assistant_pack\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "edition": {
+      "title": "Edition",
+      "type": "string"
+    },
+    "chunks_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Chunks Count",
+      "type": "integer"
+    },
+    "index_path": {
+      "default": "",
+      "title": "Index Path",
+      "type": "string"
+    },
+    "chunks_path": {
+      "default": "",
+      "title": "Chunks Path",
+      "type": "string"
+    },
+    "build_id": {
+      "default": "",
+      "title": "Build Id",
+      "type": "string"
+    },
+    "generated_at": {
+      "default": "",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "pipeline_version": {
+      "default": "",
+      "title": "Pipeline Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "document_id",
+    "edition"
+  ],
+  "title": "AssistantPackV1",
+  "type": "object"
+}

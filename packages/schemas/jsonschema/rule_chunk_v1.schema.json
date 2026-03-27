@@ -1,0 +1,167 @@
+{
+  "$defs": {
+    "GlossaryConcept": {
+      "description": "A glossary concept referenced within a rule chunk.",
+      "properties": {
+        "concept_id": {
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "surface_form": {
+          "default": "",
+          "title": "Surface Form",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_id"
+      ],
+      "title": "GlossaryConcept",
+      "type": "object"
+    },
+    "LanguageCode": {
+      "enum": [
+        "en",
+        "ru"
+      ],
+      "title": "LanguageCode",
+      "type": "string"
+    },
+    "NormRect": {
+      "description": "Bounding box in normalized [0,1] page coordinate space.",
+      "properties": {
+        "x0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "NormRect",
+      "type": "object"
+    }
+  },
+  "description": "Semantic rule chunk anchored to canonical IR for assistant retrieval.\n\nEach chunk represents one answerable unit of rule text derived from\nPageIRV1 blocks, with bilingual text payloads tied to the same\ncanonical anchor.",
+  "properties": {
+    "schema_version": {
+      "default": "rule_chunk.v1",
+      "pattern": "^rule_chunk\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "rule_chunk_id": {
+      "title": "Rule Chunk Id",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "edition": {
+      "title": "Edition",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "source_page_number": {
+      "minimum": 1,
+      "title": "Source Page Number",
+      "type": "integer"
+    },
+    "section_path": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Section Path",
+      "type": "array"
+    },
+    "block_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Block Ids",
+      "type": "array"
+    },
+    "canonical_anchor_id": {
+      "title": "Canonical Anchor Id",
+      "type": "string"
+    },
+    "language": {
+      "$ref": "#/$defs/LanguageCode"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "normalized_text": {
+      "default": "",
+      "title": "Normalized Text",
+      "type": "string"
+    },
+    "glossary_concepts": {
+      "items": {
+        "$ref": "#/$defs/GlossaryConcept"
+      },
+      "title": "Glossary Concepts",
+      "type": "array"
+    },
+    "symbol_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Symbol Ids",
+      "type": "array"
+    },
+    "deep_link": {
+      "default": "",
+      "title": "Deep Link",
+      "type": "string"
+    },
+    "facsimile_bbox_refs": {
+      "items": {
+        "$ref": "#/$defs/NormRect"
+      },
+      "title": "Facsimile Bbox Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "rule_chunk_id",
+    "document_id",
+    "edition",
+    "page_id",
+    "source_page_number",
+    "canonical_anchor_id",
+    "language",
+    "text"
+  ],
+  "title": "RuleChunkV1",
+  "type": "object"
+}
