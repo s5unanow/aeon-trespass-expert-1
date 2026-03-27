@@ -376,3 +376,75 @@ def test_translation_result_roundtrip() -> None:
         ],
     )
     _roundtrip(result)
+
+
+def test_rule_chunk_roundtrip() -> None:
+    from atr_schemas.common import NormRect
+    from atr_schemas.rule_chunk_v1 import GlossaryConcept, RuleChunkV1
+
+    chunk = RuleChunkV1(
+        rule_chunk_id="rc.ato_core_v1_1.en.p0042.01",
+        document_id="ato_core_v1_1",
+        edition="en",
+        page_id="p0042",
+        source_page_number=42,
+        section_path=["Chapter 5", "Attack Test"],
+        block_ids=["p0042.b001", "p0042.b002"],
+        canonical_anchor_id="rule.chunk.0042.01",
+        language=LanguageCode.EN,
+        text="Gain 1 Progress.",
+        normalized_text="gain 1 progress",
+        glossary_concepts=[GlossaryConcept(concept_id="concept.progress", surface_form="Progress")],
+        symbol_ids=["sym.progress"],
+        deep_link="/documents/ato_core_v1_1/en/p0042#anchor=rule.chunk.0042.01",
+        facsimile_bbox_refs=[NormRect(x0=0.1, y0=0.2, x1=0.9, y1=0.3)],
+    )
+    _roundtrip(chunk)
+
+
+def test_rule_chunk_minimal_roundtrip() -> None:
+    from atr_schemas.rule_chunk_v1 import RuleChunkV1
+
+    chunk = RuleChunkV1(
+        rule_chunk_id="rc.test.en.p0001.01",
+        document_id="test",
+        edition="en",
+        page_id="p0001",
+        source_page_number=1,
+        canonical_anchor_id="rule.chunk.0001.01",
+        language=LanguageCode.EN,
+        text="A simple rule.",
+    )
+    _roundtrip(chunk)
+
+
+def test_assistant_citation_roundtrip() -> None:
+    from atr_schemas.assistant_citation_v1 import AssistantCitationV1
+
+    citation = AssistantCitationV1(
+        document_id="ato_core_v1_1",
+        edition="en",
+        page_id="p0042",
+        source_page_number=42,
+        canonical_anchor_id="rule.chunk.0042.01",
+        deep_link="/documents/ato_core_v1_1/en/p0042#anchor=rule.chunk.0042.01",
+        quote_snippet="Gain 1 Progress.",
+        relevance_reason="Directly answers the attack test resolution step.",
+    )
+    _roundtrip(citation)
+
+
+def test_assistant_pack_roundtrip() -> None:
+    from atr_schemas.assistant_pack_v1 import AssistantPackV1
+
+    pack = AssistantPackV1(
+        document_id="ato_core_v1_1",
+        edition="en",
+        chunks_count=150,
+        index_path="assistant/ato_core_v1_1/en/assistant_index.sqlite",
+        chunks_path="assistant/ato_core_v1_1/en/rule_chunks.json",
+        build_id="build_001",
+        generated_at="2026-03-27T08:00:00Z",
+        pipeline_version="0.2.0",
+    )
+    _roundtrip(pack)

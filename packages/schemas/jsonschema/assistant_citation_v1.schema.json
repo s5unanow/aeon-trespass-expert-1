@@ -1,0 +1,57 @@
+{
+  "description": "Citation tying an assistant answer claim to a specific rule chunk.\n\nEach citation resolves to a reader deep link and includes a short\nverbatim snippet from the rulebook for verification.",
+  "properties": {
+    "schema_version": {
+      "default": "assistant_citation.v1",
+      "pattern": "^assistant_citation\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "edition": {
+      "title": "Edition",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "source_page_number": {
+      "minimum": 1,
+      "title": "Source Page Number",
+      "type": "integer"
+    },
+    "canonical_anchor_id": {
+      "title": "Canonical Anchor Id",
+      "type": "string"
+    },
+    "deep_link": {
+      "default": "",
+      "title": "Deep Link",
+      "type": "string"
+    },
+    "quote_snippet": {
+      "default": "",
+      "title": "Quote Snippet",
+      "type": "string"
+    },
+    "relevance_reason": {
+      "default": "",
+      "title": "Relevance Reason",
+      "type": "string"
+    }
+  },
+  "required": [
+    "document_id",
+    "edition",
+    "page_id",
+    "source_page_number",
+    "canonical_anchor_id"
+  ],
+  "title": "AssistantCitationV1",
+  "type": "object"
+}

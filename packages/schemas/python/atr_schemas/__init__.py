@@ -4,6 +4,8 @@ from atr_schemas.asset_class_v1 import AssetClassV1, AssetIdentity
 from atr_schemas.asset_occurrence_v1 import AssetOccurrenceV1
 from atr_schemas.asset_registry_v1 import AssetRegistryV1
 from atr_schemas.asset_v1 import AssetV1, AssetVariant
+from atr_schemas.assistant_citation_v1 import AssistantCitationV1
+from atr_schemas.assistant_pack_v1 import AssistantPackV1
 from atr_schemas.build_manifest_v1 import BuildManifestV1, ReleaseFile
 from atr_schemas.common import (
     ArtifactRef,
@@ -103,6 +105,7 @@ from atr_schemas.resolved_page_v1 import (
     SemanticConfidence,
 )
 from atr_schemas.review_pack_v1 import ReviewFinding, ReviewPackV1
+from atr_schemas.rule_chunk_v1 import GlossaryConcept, RuleChunkV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.run_summary_v1 import RunSummaryV1
 from atr_schemas.search_docs_v1 import SearchDocEntry, SearchDocsV1
@@ -125,6 +128,8 @@ __all__ = [
     "AssetSourceKind",
     "AssetV1",
     "AssetVariant",
+    "AssistantCitationV1",
+    "AssistantPackV1",
     "Block",
     "BlockType",
     "BuildManifestV1",
@@ -149,6 +154,7 @@ __all__ = [
     "FallbackProvenance",
     "FigureBlock",
     "FigureRefInline",
+    "GlossaryConcept",
     "GlossaryEntryV1",
     "GlossaryPageRef",
     "GlossaryPayloadV1",
@@ -207,6 +213,7 @@ __all__ = [
     "ResolvedSymbolRef",
     "ReviewFinding",
     "ReviewPackV1",
+    "RuleChunkV1",
     "RunManifestV1",
     "RunSummaryV1",
     "SearchDocEntry",
