@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FacsimileAnnotation, RenderFacsimile } from '../../lib/render/types';
 
 interface FacsimilePageProps {
@@ -27,24 +27,29 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
   );
   const hasAnnotations = annotations.length > 0;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [panelOpen, setPanelOpen] = useState(false);
-  const panelRef = useRef<HTMLUListElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const handleMarkerClick = useCallback((index: number) => {
-    setActiveIndex((prev) => {
-      const next = prev === index ? null : index;
-      if (next !== null) setPanelOpen(true);
-      return next;
-    });
-    requestAnimationFrame(() => {
-      const entry = panelRef.current?.querySelector(`[data-index="${index}"]`);
-      entry?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-  }, []);
-
-  const handlePanelClick = useCallback((index: number) => {
     setActiveIndex((prev) => (prev === index ? null : index));
   }, []);
+
+  useEffect(() => {
+    if (activeIndex === null) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (overlayRef.current && !overlayRef.current.contains(e.target as Node)) {
+        setActiveIndex(null);
+      }
+    }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setActiveIndex(null);
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeIndex]);
 
   return (
     <div className={`facsimile-page${hasAnnotations ? ' has-annotations' : ''}`}>
@@ -61,46 +66,21 @@ export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePag
             onLoad={handleRasterLoad}
           />
           {hasAnnotations && (
-            <div className="facsimile-overlay">
+            <div className="facsimile-overlay" ref={overlayRef}>
               {annotations.map((ann, i) => (
                 <AnnotationMarker
                   key={i}
                   index={i}
                   annotation={ann}
                   isActive={activeIndex === i}
+                  tooltipId={activeIndex === i ? 'facsimile-tooltip' : undefined}
                   onClick={handleMarkerClick}
                 />
               ))}
+              {activeIndex !== null && <AnnotationTooltip annotation={annotations[activeIndex]} />}
             </div>
           )}
         </div>
-        {hasAnnotations && (
-          <div className="facsimile-sidebar">
-            <button
-              type="button"
-              className="facsimile-panel-toggle"
-              onClick={() => setPanelOpen((v) => !v)}
-              aria-expanded={panelOpen}
-            >
-              {panelOpen ? 'Hide' : 'Show'} annotations ({annotations.length})
-            </button>
-            <ul
-              className={`facsimile-panel${panelOpen ? ' is-open' : ''}`}
-              ref={panelRef}
-              aria-label="Annotations"
-            >
-              {annotations.map((ann, i) => (
-                <AnnotationPanelEntry
-                  key={i}
-                  index={i}
-                  annotation={ann}
-                  isActive={activeIndex === i}
-                  onClick={handlePanelClick}
-                />
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -110,11 +90,13 @@ function AnnotationMarker({
   index,
   annotation,
   isActive,
+  tooltipId,
   onClick,
 }: {
   index: number;
   annotation: FacsimileAnnotation;
   isActive: boolean;
+  tooltipId?: string;
   onClick: (index: number) => void;
 }) {
   const { bbox } = annotation;
@@ -128,6 +110,7 @@ function AnnotationMarker({
       className={`facsimile-marker${isActive ? ' is-active' : ''}`}
       style={{ left: `${cx}%`, top: `${cy}%` }}
       aria-label={`Annotation ${index + 1}: ${display}`}
+      aria-describedby={tooltipId}
       onClick={() => onClick(index)}
     >
       {index + 1}
@@ -135,42 +118,31 @@ function AnnotationMarker({
   );
 }
 
-function AnnotationPanelEntry({
-  index,
-  annotation,
-  isActive,
-  onClick,
-}: {
-  index: number;
-  annotation: FacsimileAnnotation;
-  isActive: boolean;
-  onClick: (index: number) => void;
-}) {
+function AnnotationTooltip({ annotation }: { annotation: FacsimileAnnotation }) {
+  const { bbox } = annotation;
+  const cx = ((bbox.x0 + bbox.x1) / 2) * 100;
+  const cy = ((bbox.y0 + bbox.y1) / 2) * 100;
   const hasTranslation =
     annotation.translated_text && annotation.text !== annotation.translated_text;
 
   return (
-    <li data-index={index}>
-      <button
-        type="button"
-        className={`facsimile-panel-entry${isActive ? ' is-active' : ''}`}
-        onClick={() => onClick(index)}
-      >
-        <span className="facsimile-panel-number">{index + 1}</span>
-        <span className="facsimile-panel-text">
-          {hasTranslation ? (
-            <>
-              <span className="facsimile-panel-original">{annotation.text}</span>
-              <span className="facsimile-panel-arrow">{'\u2192'}</span>
-              <span className="facsimile-panel-translated">{annotation.translated_text}</span>
-            </>
-          ) : (
-            <span className="facsimile-panel-translated">
-              {annotation.translated_text || annotation.text}
-            </span>
-          )}
+    <div
+      className="facsimile-tooltip"
+      id="facsimile-tooltip"
+      role="tooltip"
+      style={{ left: `${cx}%`, top: `${cy}%` }}
+    >
+      {hasTranslation ? (
+        <>
+          <span className="facsimile-tooltip-original">{annotation.text}</span>
+          <span className="facsimile-tooltip-arrow">{'\u2192'}</span>
+          <span className="facsimile-tooltip-translated">{annotation.translated_text}</span>
+        </>
+      ) : (
+        <span className="facsimile-tooltip-translated">
+          {annotation.translated_text || annotation.text}
         </span>
-      </button>
-    </li>
+      )}
+    </div>
   );
 }
