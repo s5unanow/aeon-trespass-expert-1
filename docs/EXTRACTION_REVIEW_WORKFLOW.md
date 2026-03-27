@@ -14,7 +14,7 @@ make export-en
 
 # 3. Start the dev server and open the reader
 cd apps/web && pnpm dev
-# Open http://localhost:5173/documents/ato_core_v1_1/en/p0015
+# Open http://localhost:3001/documents/ato_core_v1_1/en/p0015
 ```
 
 ## Step-by-step
@@ -60,7 +60,7 @@ Start the dev server:
 cd apps/web && pnpm dev
 ```
 
-Navigate to `http://localhost:5173/documents/{doc_id}/en/{page_id}`.
+Navigate to `http://localhost:3001/documents/{doc_id}/en/{page_id}`.
 
 The reader has an **EN/RU edition switcher** in the navigation bar. When both
 editions are exported, you can toggle between them to compare extraction output
