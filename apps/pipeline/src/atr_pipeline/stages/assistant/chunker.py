@@ -184,7 +184,7 @@ def _canonical_anchor(page_id: str, block_ids: list[str]) -> str:
 
 
 def _normalize_text(text: str) -> str:
-    """Lowercase, strip accents, collapse whitespace for FTS."""
+    """Lowercase, NFKD-normalize, collapse whitespace for FTS."""
     text = text.lower()
     text = unicodedata.normalize("NFKD", text)
     return re.sub(r"\s+", " ", text).strip()

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 from atr_pipeline.stages.assistant.chunker import (
     _canonical_anchor,
     _extract_text,
@@ -11,6 +13,7 @@ from atr_pipeline.stages.assistant.chunker import (
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import (
+    Block,
     CalloutBlock,
     CaptionBlock,
     DividerBlock,
@@ -27,7 +30,7 @@ from atr_schemas.page_ir_v1 import (
 
 
 def _make_page(
-    blocks: list[object],
+    blocks: Sequence[Block],
     reading_order: list[str] | None = None,
     page_id: str = "p0001",
     page_number: int = 1,
@@ -36,13 +39,13 @@ def _make_page(
     dimensions: PageDimensions | None = None,
 ) -> PageIRV1:
     if reading_order is None:
-        reading_order = [b.block_id for b in blocks]  # type: ignore[union-attr]
+        reading_order = [b.block_id for b in blocks]
     return PageIRV1(
         document_id="test_doc",
         page_id=page_id,
         page_number=page_number,
         language=language,
-        blocks=blocks,  # type: ignore[arg-type]
+        blocks=list(blocks),
         reading_order=reading_order,
         section_hint=section_hint,
         dimensions_pt=dimensions,
@@ -78,7 +81,7 @@ def test_single_paragraph_produces_one_chunk() -> None:
 
 def test_heading_plus_paragraphs_merged() -> None:
     """Heading + up to 3 following paragraphs form one chunk."""
-    blocks = [
+    blocks: list[Block] = [
         _heading("p0001.b001", "Section Title"),
         _para("p0001.b002", "First paragraph."),
         _para("p0001.b003", "Second paragraph."),
@@ -93,7 +96,7 @@ def test_heading_plus_paragraphs_merged() -> None:
 
 def test_heading_group_splits_after_max_paragraphs() -> None:
     """After 3 paragraphs, the 4th starts a new standalone chunk."""
-    blocks = [
+    blocks: list[Block] = [
         _heading("p0001.b001", "Title"),
         _para("p0001.b002", "P1"),
         _para("p0001.b003", "P2"),
@@ -108,7 +111,7 @@ def test_heading_group_splits_after_max_paragraphs() -> None:
 
 
 def test_callout_is_standalone() -> None:
-    blocks = [
+    blocks: list[Block] = [
         _para("p0001.b001", "Before callout."),
         CalloutBlock(block_id="p0001.b002", children=[TextInline(text="Warning!")]),
         _para("p0001.b003", "After callout."),
@@ -121,7 +124,7 @@ def test_callout_is_standalone() -> None:
 
 
 def test_table_is_standalone() -> None:
-    blocks = [
+    blocks: list[Block] = [
         _para("p0001.b001", "Before table."),
         TableBlock(block_id="p0001.b002", children=[TextInline(text="Col1 Col2")]),
     ]
@@ -143,7 +146,7 @@ def test_list_item_is_standalone() -> None:
 
 def test_divider_splits_groups() -> None:
     """Dividers break heading groups without producing a chunk."""
-    blocks = [
+    blocks: list[Block] = [
         _heading("p0001.b001", "Title"),
         DividerBlock(block_id="p0001.b002"),
         _para("p0001.b003", "After divider."),
@@ -200,7 +203,7 @@ def test_anchor_format() -> None:
 
 def test_extract_text_with_icons_as_word_boundaries() -> None:
     """Non-text inlines should produce word boundaries, not be silently dropped."""
-    blocks = [
+    blocks: list[Block] = [
         ParagraphBlock(
             block_id="p0001.b001",
             children=[
@@ -210,12 +213,12 @@ def test_extract_text_with_icons_as_word_boundaries() -> None:
             ],
         ),
     ]
-    text = _extract_text(blocks)  # type: ignore[arg-type]
+    text = _extract_text(blocks)
     assert text == "Roll then move"
 
 
 def test_extract_text_multiple_blocks() -> None:
-    blocks = [
+    blocks: list[Block] = [
         ParagraphBlock(
             block_id="p0001.b001",
             children=[TextInline(text="First block.")],
@@ -225,7 +228,7 @@ def test_extract_text_multiple_blocks() -> None:
             children=[TextInline(text="Second block.")],
         ),
     ]
-    text = _extract_text(blocks)  # type: ignore[arg-type]
+    text = _extract_text(blocks)
     assert text == "First block. Second block."
 
 

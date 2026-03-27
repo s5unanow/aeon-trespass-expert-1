@@ -51,6 +51,7 @@ def _run_prerequisites(ctx: StageContext) -> None:
     """Run ingest → extract_native → symbols → structure → translate."""
     r = execute_stage(IngestStage(), ctx)
     assert r.success
+    assert r.artifact_ref is not None
     manifest = SourceManifestV1.model_validate(ctx.artifact_store.get_json(r.artifact_ref))
 
     r = execute_stage(ExtractNativeStage(), ctx, input_data=manifest)
@@ -84,7 +85,9 @@ def test_chunk_export_produces_chunks(tmp_path: Path) -> None:
     assert result.success
     assert result.artifact_ref is not None
 
-    data = ctx.artifact_store.get_json(result.artifact_ref)
+    ref = result.artifact_ref
+    assert ref is not None
+    data = ctx.artifact_store.get_json(ref)
     export_result = ChunkExportResult.model_validate(data)
     assert export_result.document_id == "walking_skeleton"
     assert export_result.pages_processed >= 1
