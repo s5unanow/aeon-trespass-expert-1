@@ -1,11 +1,7 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it } from 'vitest';
 import { FacsimilePage } from '../../src/components/reader/FacsimilePage';
 import type { RenderFacsimile } from '../../src/lib/render/types';
-
-beforeAll(() => {
-  Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 
@@ -52,47 +48,73 @@ describe('FacsimilePage', () => {
     expect(markers[2].textContent).toBe('3');
   });
 
-  it('renders side panel with EN -> RU entries', () => {
+  it('shows tooltip with EN → RU text on marker click', () => {
     render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={2} />);
-    const panel = screen.getByRole('list', { name: 'Annotations' });
-    const items = within(panel).getAllByRole('listitem');
-    expect(items).toHaveLength(2);
-    const buttons = within(panel).getAllByRole('button');
-    expect(buttons).toHaveLength(2);
-    expect(buttons[0].textContent).toContain('EN text 1');
-    expect(buttons[0].textContent).toContain('RU text 1');
-    expect(buttons[0].textContent).toContain('\u2192');
+    expect(screen.queryByRole('tooltip')).toBeNull();
+
+    const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
+    fireEvent.click(markers[0]);
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip.textContent).toContain('EN text 1');
+    expect(tooltip.textContent).toContain('\u2192');
+    expect(tooltip.textContent).toContain('RU text 1');
   });
 
-  it('highlights marker and panel entry on marker click', () => {
+  it('highlights marker when tooltip is shown', () => {
     render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={2} />);
     const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
     fireEvent.click(markers[0]);
     expect(markers[0].className).toContain('is-active');
-    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
-      'button',
-    );
-    expect(entries[0].className).toContain('is-active');
+    expect(markers[0].getAttribute('aria-describedby')).toBe('facsimile-tooltip');
   });
 
-  it('toggles active state on second click', () => {
+  it('dismisses tooltip on second click of same marker', () => {
     render(<FacsimilePage facsimile={makeFacsimile(1)} pageTitle="Test" pageNumber={2} />);
     const marker = screen.getByRole('button', { name: /^Annotation 1:/ });
+
     fireEvent.click(marker);
+    expect(screen.getByRole('tooltip')).toBeTruthy();
     expect(marker.className).toContain('is-active');
+
     fireEvent.click(marker);
+    expect(screen.queryByRole('tooltip')).toBeNull();
     expect(marker.className).not.toContain('is-active');
   });
 
-  it('highlights marker when panel entry is clicked', () => {
+  it('switches tooltip when different marker is clicked', () => {
     render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={2} />);
-    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
-      'button',
-    );
-    fireEvent.click(entries[1]);
-    expect(entries[1].className).toContain('is-active');
     const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
+
+    fireEvent.click(markers[0]);
+    expect(screen.getByRole('tooltip').textContent).toContain('EN text 1');
+
+    fireEvent.click(markers[1]);
+    expect(screen.getByRole('tooltip').textContent).toContain('EN text 2');
+    expect(markers[0].className).not.toContain('is-active');
     expect(markers[1].className).toContain('is-active');
+  });
+
+  it('dismisses tooltip on click outside', () => {
+    render(<FacsimilePage facsimile={makeFacsimile(1)} pageTitle="Test" pageNumber={2} />);
+    const marker = screen.getByRole('button', { name: /^Annotation 1:/ });
+
+    fireEvent.click(marker);
+    expect(screen.getByRole('tooltip')).toBeTruthy();
+
+    fireEvent.mouseDown(document.body);
+    expect(screen.queryByRole('tooltip')).toBeNull();
+  });
+
+  it('dismisses tooltip on Escape key', () => {
+    render(<FacsimilePage facsimile={makeFacsimile(1)} pageTitle="Test" pageNumber={2} />);
+    const marker = screen.getByRole('button', { name: /^Annotation 1:/ });
+
+    fireEvent.click(marker);
+    expect(screen.getByRole('tooltip')).toBeTruthy();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('tooltip')).toBeNull();
   });
 
   it('sorts annotations in reading order (top-to-bottom)', () => {
@@ -118,11 +140,9 @@ describe('FacsimilePage', () => {
       ],
     };
     render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);
-    const entries = within(screen.getByRole('list', { name: 'Annotations' })).getAllByRole(
-      'button',
-    );
-    expect(entries[0].textContent).toContain('Top');
-    expect(entries[1].textContent).toContain('Bottom');
+    const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
+    expect(markers[0].getAttribute('aria-label')).toBe('Annotation 1: Верх');
+    expect(markers[1].getAttribute('aria-label')).toBe('Annotation 2: Низ');
   });
 
   it('shows only text when no translation exists', () => {
@@ -141,54 +161,17 @@ describe('FacsimilePage', () => {
       ],
     };
     render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);
-    const entry = within(screen.getByRole('list', { name: 'Annotations' })).getByRole('button');
-    expect(entry.textContent).toContain('English only');
-    expect(entry.textContent).not.toContain('\u2192');
-  });
-
-  it('renders no panel when annotations are empty', () => {
-    render(<FacsimilePage facsimile={makeFacsimile(0)} pageTitle="Test" pageNumber={1} />);
-    expect(screen.queryByRole('list', { name: 'Annotations' })).toBeNull();
-  });
-
-  it('renders toggle button with annotation count', () => {
-    render(<FacsimilePage facsimile={makeFacsimile(5)} pageTitle="Test" pageNumber={1} />);
-    const toggle = screen.getByRole('button', { name: /annotations/i });
-    expect(toggle.textContent).toBe('Show annotations (5)');
-    expect(toggle.getAttribute('aria-expanded')).toBe('false');
-  });
-
-  it('toggle button opens and closes the panel', () => {
-    render(<FacsimilePage facsimile={makeFacsimile(3)} pageTitle="Test" pageNumber={1} />);
-    const toggle = screen.getByRole('button', { name: /annotations/i });
-    const panel = screen.getByRole('list', { name: 'Annotations' });
-
-    expect(panel.className).not.toContain('is-open');
-    expect(toggle.textContent).toBe('Show annotations (3)');
-
-    fireEvent.click(toggle);
-    expect(panel.className).toContain('is-open');
-    expect(toggle.textContent).toBe('Hide annotations (3)');
-    expect(toggle.getAttribute('aria-expanded')).toBe('true');
-
-    fireEvent.click(toggle);
-    expect(panel.className).not.toContain('is-open');
-    expect(toggle.textContent).toBe('Show annotations (3)');
-    expect(toggle.getAttribute('aria-expanded')).toBe('false');
-  });
-
-  it('marker click opens the panel', () => {
-    render(<FacsimilePage facsimile={makeFacsimile(2)} pageTitle="Test" pageNumber={1} />);
-    const panel = screen.getByRole('list', { name: 'Annotations' });
-    expect(panel.className).not.toContain('is-open');
-
     const marker = screen.getByRole('button', { name: /^Annotation 1:/ });
     fireEvent.click(marker);
-    expect(panel.className).toContain('is-open');
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip.textContent).toContain('English only');
+    expect(tooltip.textContent).not.toContain('\u2192');
   });
 
-  it('does not render toggle button when no annotations', () => {
+  it('renders no markers or tooltip when annotations are empty', () => {
     render(<FacsimilePage facsimile={makeFacsimile(0)} pageTitle="Test" pageNumber={1} />);
-    expect(screen.queryByRole('button', { name: /annotations/i })).toBeNull();
+    expect(screen.queryAllByRole('button', { name: /^Annotation \d+:/ })).toHaveLength(0);
+    expect(screen.queryByRole('tooltip')).toBeNull();
   });
 });
