@@ -3,3 +3,6 @@ packages:
   - "apps/web"
 allowBuilds:
   esbuild: false
+peerDependencyRules:
+  allowedVersions:
+    typescript: ">=6.0.0"

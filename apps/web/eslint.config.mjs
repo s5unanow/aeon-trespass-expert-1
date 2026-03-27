@@ -13,6 +13,9 @@ export default tseslint.config(
     languageOptions: {
       globals: globals.browser,
       ecmaVersion: 2022,
+      parserOptions: {
+        warnOnUnsupportedTypeScriptVersion: false,
+      },
     },
     settings: {
       "import/resolver": {
