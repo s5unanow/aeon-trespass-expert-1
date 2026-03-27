@@ -46,7 +46,7 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 3. `mypy --strict` — type errors
 4. `lint-imports` — import layer contracts (no cyclic dependencies)
 5. `check_file_length.py` — max 400 lines per source file
-6. `eslint` — frontend lint (`import/no-cycle`, `max-lines: 400`)
+6. `oxlint` — frontend lint (`import/no-cycle`, `max-lines: 400`)
 7. `tsc --noEmit` — frontend type check
 8. `pytest -x -q --timeout=60 -m "not slow"` — fast test subset only
 

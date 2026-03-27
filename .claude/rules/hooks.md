@@ -4,9 +4,9 @@ globs: .claude/hooks/**,.claude/prompts/**
 ---
 
 - Every shell command added or modified must be smoke-tested in a clean shell (`bash -c "..."`) before committing — document the test in the commit message or PR
-- Use toolchain wrappers — bare `mypy`, `pytest`, `ruff`, `eslint`, `tsc` will fail in this repo:
+- Use toolchain wrappers — bare `mypy`, `pytest`, `ruff`, `oxlint`, `tsc` will fail in this repo:
   * Python: `uv run mypy`, `uv run pytest`, `uv run ruff`
-  * JS: `pnpm lint`, `pnpm typecheck` (or `pnpm exec eslint`, `pnpm exec tsc` for direct invocations)
+  * JS: `pnpm lint`, `pnpm typecheck` (or `pnpm exec oxlint`, `pnpm exec tsc` for direct invocations)
 - Any `if`/`grep`/pattern-match used for safety gating must be tested with at least three inputs:
   * Happy-path (should pass)
   * Failure input (should block)

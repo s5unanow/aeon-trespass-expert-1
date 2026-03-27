@@ -65,7 +65,7 @@ run_gate "[2/8] ruff format" uv run ruff format --check . || exit 1
 run_gate "[3/8] mypy" uv run mypy apps/pipeline/src/ packages/schemas/python/ || exit 1
 run_gate "[4/8] lint-imports" uv run lint-imports || exit 1
 run_gate "[5/8] file length" uv run python scripts/check_file_length.py || exit 1
-run_gate "[6/8] eslint" bash -c "cd apps/web && pnpm lint" || exit 1
+run_gate "[6/8] oxlint" bash -c "cd apps/web && pnpm lint" || exit 1
 run_gate "[7/8] tsc" bash -c "cd apps/web && pnpm typecheck" || exit 1
 run_gate "[8/8] pytest" uv run pytest -x -q --timeout=60 -m "not slow" || exit 1
 

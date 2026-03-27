@@ -114,7 +114,7 @@ class TestPreCommitCheckToolchain:
 
     def test_all_js_gates_use_pnpm(self) -> None:
         content = PRE_COMMIT_CHECK.read_text()
-        js_tools = ["eslint", "tsc"]
+        js_tools = ["oxlint", "tsc"]
         for tool in js_tools:
             lines = [ln for ln in content.splitlines() if "run_gate" in ln and tool in ln]
             for line in lines:
@@ -128,7 +128,7 @@ class TestPreCommitCheckToolchain:
             " ruff format",
             " mypy ",
             " pytest ",
-            " eslint",
+            " oxlint",
             " tsc",
         ]
         for line in content.splitlines():
