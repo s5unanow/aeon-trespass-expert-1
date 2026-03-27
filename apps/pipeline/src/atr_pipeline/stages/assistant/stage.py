@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from pathlib import Path
 
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.assistant.chunker import chunk_page
+from atr_pipeline.stages.assistant.indexer import build_index
 from atr_schemas.assistant_pack_v1 import AssistantPackV1
 from atr_schemas.enums import StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
@@ -22,6 +24,7 @@ class ChunkExportResult(BaseModel):
     chunks_produced: int = Field(ge=0, default=0)
     chunk_refs: dict[str, str] = Field(default_factory=dict)
     manifest_ref: str = ""
+    index_path: str = ""
 
 
 class ChunkExportStage:
@@ -78,10 +81,15 @@ class ChunkExportStage:
             all_chunks.extend(chunks)
             ctx.logger.info("Page %s: %d chunks", page_id, len(chunks))
 
+        # Build FTS5 index from collected chunks
+        index_db_path = self._build_fts_index(ctx, all_chunks, edition)
+        index_rel = str(index_db_path.relative_to(ctx.artifact_store.root))
+
         manifest = AssistantPackV1(
             document_id=ctx.document_id,
             edition=edition,
             chunks_count=len(all_chunks),
+            index_path=index_rel,
             build_id=ctx.run_id,
             generated_at=datetime.now(tz=UTC).isoformat(),
             pipeline_version="0.1.0",
@@ -95,9 +103,10 @@ class ChunkExportStage:
         )
 
         ctx.logger.info(
-            "Chunk export complete: %d pages, %d chunks",
+            "Chunk export complete: %d pages, %d chunks, index at %s",
             len(page_ids),
             len(all_chunks),
+            index_rel,
         )
 
         return ChunkExportResult(
@@ -106,7 +115,24 @@ class ChunkExportStage:
             chunks_produced=len(all_chunks),
             chunk_refs=chunk_refs,
             manifest_ref=manifest_ref.relative_path,
+            index_path=index_rel,
         )
+
+    @staticmethod
+    def _build_fts_index(ctx: StageContext, chunks: list[RuleChunkV1], edition: str) -> Path:
+        """Build the FTS5 SQLite index and store it via artifact store."""
+        index_dir = (
+            ctx.artifact_store.root
+            / ctx.document_id
+            / f"assistant_index.{edition}"
+            / "document"
+            / ctx.document_id
+        )
+        index_dir.mkdir(parents=True, exist_ok=True)
+        db_path = index_dir / "assistant_index.sqlite"
+        build_index(chunks, db_path)
+        ctx.logger.info("FTS5 index built: %d chunks indexed", len(chunks))
+        return db_path
 
     @staticmethod
     def _resolve_en_page_ids(ctx: StageContext) -> list[str]:
