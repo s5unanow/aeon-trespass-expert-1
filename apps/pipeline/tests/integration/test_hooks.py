@@ -9,8 +9,6 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-import pytest
-
 REPO_ROOT = Path(__file__).resolve().parents[4]
 PRE_PR_CHECK = REPO_ROOT / ".claude" / "hooks" / "pre-pr-check.sh"
 PRE_COMMIT_CHECK = REPO_ROOT / ".claude" / "hooks" / "pre-commit-check.sh"
@@ -52,7 +50,7 @@ if ! grep -qE '\\*\\*(BLOCK|PASS WITH WARNINGS|PASS)\\*\\*' "$REVIEW_FILE"; then
   exit 1
 fi
 
-if grep -qE '\\*\\*BLOCK\\*\\*' "$REVIEW_FILE" && ! grep -qE '\\*\\*PASS' "$REVIEW_FILE"; then
+if grep -qE '\\*\\*BLOCK\\*\\*' "$REVIEW_FILE"; then
   exit 1
 fi
 
@@ -73,10 +71,6 @@ class TestPrePrCheckVerdicts:
         review.write_text("## Review\n\nVerdict: **BLOCK**\n")
         assert _run_pre_pr_check(review) != 0
 
-    @pytest.mark.xfail(
-        reason="S5U-414: BLOCK bypassed when PASS also present (line 42 logic bug)",
-        strict=True,
-    )
     def test_pass_header_block_verdict(self, tmp_path: Path) -> None:
         """PASS in section header + BLOCK as final verdict should block."""
         review = tmp_path / "review.md"
@@ -84,12 +78,12 @@ class TestPrePrCheckVerdicts:
         assert _run_pre_pr_check(review) != 0
 
     def test_block_header_pass_verdict(self, tmp_path: Path) -> None:
-        """BLOCK in section header + PASS as final verdict should allow."""
+        """BLOCK anywhere in file must block, even if PASS also appears."""
         review = tmp_path / "review.md"
         review.write_text(
             "## Section: **BLOCK** on linting (resolved)\n\n### Final Verdict\n\n**PASS**\n"
         )
-        assert _run_pre_pr_check(review) == 0
+        assert _run_pre_pr_check(review) != 0
 
     def test_empty_file(self, tmp_path: Path) -> None:
         review = tmp_path / "review.md"

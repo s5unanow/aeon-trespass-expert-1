@@ -39,7 +39,7 @@ if ! grep -qE '\*\*(BLOCK|PASS WITH WARNINGS|PASS)\*\*' "$REVIEW_FILE"; then
 fi
 
 # Block if the verdict is BLOCK
-if grep -qE '\*\*BLOCK\*\*' "$REVIEW_FILE" && ! grep -qE '\*\*PASS' "$REVIEW_FILE"; then
+if grep -qE '\*\*BLOCK\*\*' "$REVIEW_FILE"; then
   echo "BLOCKED: Review verdict is BLOCK. Fix the issues before creating a PR."
   echo ""
   cat "$REVIEW_FILE"
