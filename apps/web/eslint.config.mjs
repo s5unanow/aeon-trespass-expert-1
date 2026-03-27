@@ -13,6 +13,10 @@ export default tseslint.config(
     languageOptions: {
       globals: globals.browser,
       ecmaVersion: 2022,
+      parserOptions: {
+        // TODO: remove once typescript-eslint ships TS 6 support (PR #12124)
+        warnOnUnsupportedTypeScriptVersion: false,
+      },
     },
     settings: {
       "import/resolver": {
