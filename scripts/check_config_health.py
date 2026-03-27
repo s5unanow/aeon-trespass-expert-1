@@ -36,7 +36,7 @@ _SKIP_PREFIXES = (
     "S5U-",
     "ruff ",
     "mypy ",
-    "eslint",
+    "oxlint",
     "tsc ",
     "pytest",
     "lint-",
