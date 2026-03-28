@@ -104,6 +104,31 @@ def test_severity_is_warning() -> None:
     assert records[0].severity.value == "warning"
 
 
+def test_detects_latin_punctuation_glue() -> None:
+    """Lowercase Latin + period + uppercase Latin is flagged."""
+    page = _page([_para("b1", "sentence end.Next sentence")])
+    records = evaluate_glued_text(page)
+
+    assert len(records) == 1
+    assert "Latin punctuation" in records[0].message
+
+
+def test_ignores_abbreviation_period() -> None:
+    """Uppercase-period-uppercase (e.g. U.S.) is not flagged."""
+    page = _page([_para("b1", "The U.S.A. is large")])
+    records = evaluate_glued_text(page)
+
+    assert len(records) == 0
+
+
+def test_ignores_latin_sentence_with_space() -> None:
+    """Period followed by space and uppercase is not flagged."""
+    page = _page([_para("b1", "end. Start")])
+    records = evaluate_glued_text(page)
+
+    assert len(records) == 0
+
+
 def test_layer_is_extraction() -> None:
     """Glued text issues are in the EXTRACTION layer."""
     page = _page([_para("b1", _REPEAT)])

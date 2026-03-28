@@ -23,6 +23,9 @@ _WORD_NUM_RE = re.compile(
 # Punctuation glue: sentence-end punctuation directly followed by uppercase Cyrillic
 _PUNCT_GLUE_RE = re.compile(r"[.!?][\u0410-\u042F\u0401]")
 
+# Latin punctuation glue: lowercase Latin + sentence-end + uppercase Latin
+_LATIN_PUNCT_GLUE_RE = re.compile(r"[a-z][.!?][A-Z]")
+
 
 def _check_text(text: str) -> str | None:
     """Return a reason string if *text* contains glued content."""
@@ -38,6 +41,9 @@ def _check_text(text: str) -> str | None:
     m = _WORD_NUM_RE.search(text)
     if m:
         return f"Word-number glue: '{m.group()}'"
+    m = _LATIN_PUNCT_GLUE_RE.search(text)
+    if m:
+        return f"Latin punctuation glue: '{m.group()}'"
     return None
 
 
