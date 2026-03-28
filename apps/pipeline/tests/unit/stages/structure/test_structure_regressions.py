@@ -306,3 +306,113 @@ def test_small_vertical_gap_keeps_single_paragraph() -> None:
     ir = build_page_ir_real(native)
     paragraphs = [b for b in ir.blocks if b.type == "paragraph"]
     assert len(paragraphs) == 1, "Close lines should be one paragraph"
+
+
+# --- Numbered step detection ---
+
+
+def test_standalone_number_heading_becomes_list_item() -> None:
+    """A heading line containing only a number (e.g., '1') should become a list item."""
+    spans = [
+        _span("1", font="Adonis-Bold", size=10.0, y0=100, x0=50, span_id="s0001"),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    list_items = [b for b in ir.blocks if b.type == "list_item"]
+    assert len(headings) == 0, "Standalone '1' must not become a heading"
+    assert len(list_items) == 1, "Standalone '1' must become a list item"
+    text = "".join(c.text for c in list_items[0].children if hasattr(c, "text"))
+    assert text.strip() == "1"
+
+
+def test_numbered_step_merged_with_following_paragraph() -> None:
+    """A numbered heading ('1') followed by body text should merge into one list item."""
+    spans = [
+        _span("1", font="Adonis-Bold", size=10.0, y0=100, x0=50, span_id="s0001"),
+        _span(
+            "Place the tiles on the board.",
+            font="Adonis-Regular",
+            size=9.0,
+            y0=112,
+            x0=50,
+            span_id="s0002",
+        ),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    list_items = [b for b in ir.blocks if b.type == "list_item"]
+    paragraphs = [b for b in ir.blocks if b.type == "paragraph"]
+    assert len(headings) == 0, "Number must not become heading"
+    assert len(list_items) == 1, "Should merge into one list item"
+    assert len(paragraphs) == 0, "Continuation should be absorbed"
+    text = "".join(c.text for c in list_items[0].children if hasattr(c, "text"))
+    assert "1" in text
+    assert "Place the tiles" in text
+
+
+def test_real_heading_text_stays_heading() -> None:
+    """A heading with actual text (not just a number) remains a heading."""
+    spans = [
+        _span("Battle Phase", font="Adonis-Bold", size=10.0, y0=100, x0=50, span_id="s0001"),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    assert len(headings) == 1, "Real heading text must stay a heading"
+
+
+# --- List-item continuation merging ---
+
+
+def test_bullet_item_continuation_merged() -> None:
+    """A paragraph following a bullet list item at similar indentation should merge."""
+    spans = [
+        _span("l", font="ITCZapfDingbatsMedium", size=9.0, y0=100, x0=50, span_id="s0001"),
+        _span("First item text", font="Adonis-Regular", size=9.0, y0=100, x0=65, span_id="s0002"),
+        _span(
+            "continuation of first item.",
+            font="Adonis-Regular",
+            size=9.0,
+            y0=112,
+            x0=65,
+            span_id="s0003",
+        ),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    list_items = [b for b in ir.blocks if b.type == "list_item"]
+    paragraphs = [b for b in ir.blocks if b.type == "paragraph"]
+    assert len(list_items) == 1, "Should have one merged list item"
+    assert len(paragraphs) == 0, "Continuation should not be a separate paragraph"
+    text = "".join(c.text for c in list_items[0].children if hasattr(c, "text"))
+    assert "First item text" in text
+    assert "continuation" in text
+
+
+def test_paragraph_after_list_item_with_large_gap_stays_separate() -> None:
+    """A paragraph far below a list item should NOT be merged."""
+    spans = [
+        _span("l", font="ITCZapfDingbatsMedium", size=9.0, y0=100, x0=50, span_id="s0001"),
+        _span("Item text", font="Adonis-Regular", size=9.0, y0=100, x0=65, span_id="s0002"),
+        _span(
+            "Separate paragraph.",
+            font="Adonis-Regular",
+            size=9.0,
+            y0=200,
+            x0=50,
+            span_id="s0003",
+        ),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    list_items = [b for b in ir.blocks if b.type == "list_item"]
+    paragraphs = [b for b in ir.blocks if b.type == "paragraph"]
+    assert len(list_items) == 1
+    assert len(paragraphs) == 1, "Far paragraph must stay separate"
