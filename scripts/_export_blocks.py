@@ -8,6 +8,7 @@ import shutil
 from pathlib import Path
 
 _SENTENCE_RE = re.compile(r"(?<=\. )(?=[A-ZА-ЯЁ])")  # noqa: RUF001
+_BARE_ASSET_RE = re.compile(r"^img\d{4}$")
 
 DECORATIVE_PREFIXES = (
     "sym.board_tile",
@@ -174,6 +175,57 @@ def inject_image_figures(
                 }
             )
     page_data["figures"] = figures
+
+
+def namespace_bare_figures(page_data: dict, pid: str) -> int:
+    """Rewrite bare ``imgNNNN`` asset IDs to ``{pid}.imgNNNN`` in place.
+
+    Handles legacy render artifacts produced before asset-ID namespacing.
+    Returns the number of entries rewritten.
+    """
+    figures: dict = page_data.get("figures") or {}
+    rewritten = 0
+
+    # Rewrite figures dict keys and fix self-referencing src values
+    bare_keys = [k for k in figures if _BARE_ASSET_RE.match(k)]
+    for bare in bare_keys:
+        namespaced = f"{pid}.{bare}"
+        if namespaced not in figures:
+            entry = figures[bare]
+            # Fix self-referencing src (e.g. "src": "img0000" -> drop it;
+            # inject_image_figures will populate a valid src later)
+            if _BARE_ASSET_RE.match(entry.get("src", "")):
+                entry["src"] = ""
+            figures[namespaced] = entry
+        del figures[bare]
+        rewritten += 1
+
+    # Rewrite asset_id in figure blocks
+    for block in page_data.get("blocks", []):
+        if block.get("kind") == "figure" and _BARE_ASSET_RE.match(block.get("asset_id", "")):
+            block["asset_id"] = f"{pid}.{block['asset_id']}"
+            rewritten += 1
+
+    page_data["figures"] = figures
+    return rewritten
+
+
+def validate_figure_refs(page_data: dict, pid: str) -> list[str]:
+    """Check that every figure block resolves to a valid figures entry.
+
+    Returns a list of error messages (empty = valid).
+    """
+    figures: dict = page_data.get("figures") or {}
+    errors: list[str] = []
+    for block in page_data.get("blocks", []):
+        if block.get("kind") != "figure":
+            continue
+        aid = block.get("asset_id", "")
+        if aid not in figures:
+            errors.append(f"{pid}: figure block references missing asset '{aid}'")
+        elif _BARE_ASSET_RE.match(figures[aid].get("src", "")):
+            errors.append(f"{pid}: figure '{aid}' has bare src '{figures[aid]['src']}'")
+    return errors
 
 
 def export_facsimile_rasters(
