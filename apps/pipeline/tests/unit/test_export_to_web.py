@@ -429,6 +429,71 @@ class TestExportPages:
         block_text = exported["blocks"][0]["children"][0]["text"]
         assert block_text == "Example text"
 
+    def test_empty_pages_excluded_from_manifest(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression S5U-431: pages with 0 blocks must not appear in the manifest."""
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+
+        # p0001: normal page with blocks
+        p1_dir = render_src / "p0001"
+        p1_dir.mkdir(parents=True, exist_ok=True)
+        (p1_dir / "h1.json").write_text(json.dumps(_make_render_page("p0001")))
+
+        # p0002: empty page (0 blocks, like a blank cover)
+        p2_dir = render_src / "p0002"
+        p2_dir.mkdir(parents=True, exist_ok=True)
+        (p2_dir / "h2.json").write_text(json.dumps(_make_render_page("p0002", block_count=0)))
+
+        # p0003: normal page with blocks
+        p3_dir = render_src / "p0003"
+        p3_dir.mkdir(parents=True, exist_ok=True)
+        (p3_dir / "h3.json").write_text(json.dumps(_make_render_page("p0003")))
+
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+
+        manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
+        page_ids = [p["page_id"] for p in manifest["pages"]]
+        assert "p0002" not in page_ids
+        assert page_ids == ["p0001", "p0003"]
+
+        # No render artifact written for empty page
+        assert not (doc_public / "en" / "data" / "render_page.p0002.json").exists()
+
+        # Navigation skips the empty page
+        p1 = json.loads((doc_public / "en" / "data" / "render_page.p0001.json").read_text())
+        assert p1["nav"]["next"] == "p0003"
+        p3 = json.loads((doc_public / "en" / "data" / "render_page.p0003.json").read_text())
+        assert p3["nav"]["prev"] == "p0001"
+
+    def test_empty_facsimile_pages_still_exported(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Facsimile pages with 0 blocks are valid — content is the raster image."""
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+        page_dir = render_src / "p0007"
+        page_dir.mkdir(parents=True, exist_ok=True)
+        facsimile_page = {
+            "schema_version": "1.0",
+            "presentation_mode": "facsimile",
+            "document_version": "",
+            "page": {"page_id": "p0007", "title": "Components"},
+            "blocks": [],
+            "facsimile": {
+                "raster_src": "rasters/p0007__150dpi.png",
+                "raster_src_hires": "rasters/p0007__300dpi.png",
+            },
+        }
+        (page_dir / "h1.json").write_text(json.dumps(facsimile_page))
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+
+        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+
+        manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
+        assert [p["page_id"] for p in manifest["pages"]] == ["p0007"]
+        assert (doc_public / "en" / "data" / "render_page.p0007.json").exists()
+
     def test_nav_links_skip_filtered_pages(self, tmp_path: Path, export_module: ModuleType) -> None:
         """Navigation links reference only pages that were actually exported."""
         import os

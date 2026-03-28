@@ -176,6 +176,10 @@ def export_pages(
     data_dir = edition_dir / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
+    # Remove stale render_page files from prior exports
+    for stale in data_dir.glob("render_page.*.json"):
+        stale.unlink()
+
     all_page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
     exported: list[tuple[str, dict]] = []  # (page_id, data) for exported pages
     pages_meta = []
@@ -198,6 +202,11 @@ def export_pages(
         else:
             best["blocks"] = postprocess_blocks(best.get("blocks", []))
             inject_image_figures(best, pid, page_images.get(pid, []))
+
+        # Skip pages with no renderable content (e.g. blank cover pages)
+        is_facsimile = best.get("presentation_mode") == "facsimile"
+        if not is_facsimile and not best.get("blocks"):
+            continue
 
         _count_block_stats(best.get("blocks", []), stats)
         exported.append((pid, best))
