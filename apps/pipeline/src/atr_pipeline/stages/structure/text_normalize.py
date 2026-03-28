@@ -28,9 +28,11 @@ _LINE_HYPHEN_RE = re.compile(r"([a-zA-Z]+)- ([a-z])")
 # and are virtually always hyphenated when used as modifiers.
 _COMPOUND_PREFIXES = frozenset(
     {
+        "co",
         "all",
         "half",
         "non",
+        "re",
         "self",
         "well",
     }

@@ -32,6 +32,14 @@ def test_dehyphenate_preserves_half_life() -> None:
     assert normalize_text("half- life") == "half-life"
 
 
+def test_dehyphenate_preserves_co_op() -> None:
+    assert normalize_text("co- op") == "co-op"
+
+
+def test_dehyphenate_preserves_re_roll() -> None:
+    assert normalize_text("re- roll") == "re-roll"
+
+
 def test_real_hyphen_untouched() -> None:
     """In-word hyphens without a trailing space are not changed."""
     assert normalize_text("co-op") == "co-op"

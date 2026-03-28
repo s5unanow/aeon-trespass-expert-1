@@ -17,7 +17,8 @@ from atr_pipeline.stages.structure.stage import StructureStage
 from atr_pipeline.stages.symbols.stage import SymbolsStage
 from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
-from atr_schemas.enums import StageScope
+from atr_schemas.enums import LanguageCode, StageScope
+from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 
@@ -51,6 +52,7 @@ def _run_prerequisites(ctx: StageContext) -> None:
     """Run ingest → extract_native → symbols → structure → translate."""
     r = execute_stage(IngestStage(), ctx)
     assert r.success
+    assert r.artifact_ref is not None
     manifest = SourceManifestV1.model_validate(ctx.artifact_store.get_json(r.artifact_ref))
 
     r = execute_stage(ExtractNativeStage(), ctx, input_data=manifest)
@@ -115,3 +117,48 @@ def test_render_raises_without_ir(tmp_path: Path) -> None:
     result = execute_stage(RenderStage(), ctx)
     assert not result.success
     assert "No IR pages found" in (result.error or "")
+
+
+def _put_page_ir(ctx: StageContext, *, lang: str, page_id: str) -> None:
+    ir = PageIRV1(
+        document_id=ctx.document_id,
+        page_id=page_id,
+        page_number=int(page_id.removeprefix("p")),
+        language=LanguageCode.EN if lang == "en" else LanguageCode.RU,
+        reading_order=[],
+        blocks=[],
+    )
+    ctx.artifact_store.put_json(
+        document_id=ctx.document_id,
+        schema_family=f"page_ir.v1.{lang}",
+        scope="page",
+        entity_id=page_id,
+        data=ir,
+    )
+
+
+def test_render_load_page_ir_prefers_en_for_source_only(tmp_path: Path) -> None:
+    """edition=en must not load stale RU IR when both families exist."""
+    ctx = _make_ctx(tmp_path)
+    ctx.edition = "en"
+    _put_page_ir(ctx, lang="ru", page_id="p0001")
+    _put_page_ir(ctx, lang="en", page_id="p0001")
+
+    loaded = RenderStage._load_page_ir(ctx, "p0001")
+
+    assert loaded is not None
+    ir, lang = loaded
+    assert lang == "en"
+    assert ir.language == LanguageCode.EN
+
+
+def test_render_resolve_page_ids_prefers_en_family_for_source_only(tmp_path: Path) -> None:
+    """edition=en should enumerate EN IR pages before legacy RU families."""
+    ctx = _make_ctx(tmp_path)
+    ctx.edition = "en"
+    _put_page_ir(ctx, lang="ru", page_id="p0009")
+    _put_page_ir(ctx, lang="en", page_id="p0001")
+
+    page_ids = RenderStage._resolve_page_ids(ctx)
+
+    assert page_ids == ["p0001"]
