@@ -124,10 +124,11 @@ class TestPickLatest:
         assert result is not None
         assert result["document_version"] == "ru"
 
-    def test_empty_document_version_matches_any_edition(
+    def test_empty_document_version_matches_when_no_tagged_artifacts(
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
-        """Pre-S5U-402 artifacts with empty document_version match any edition."""
+        """Pre-S5U-402 artifacts with empty document_version match any edition
+        when no tagged artifacts exist for the page."""
         import os
 
         legacy = tmp_path / "legacy.json"
@@ -137,6 +138,33 @@ class TestPickLatest:
         result = export_module._pick_latest([legacy], "en")
         assert result is not None
         assert result["data"] == "ok"
+
+    def test_untagged_rejected_when_tagged_artifact_exists(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression S5U-437: untagged artifacts must not match an edition
+        when a tagged artifact for a *different* edition exists — the tag
+        proves the page has edition-specific content."""
+        import os
+
+        # Untagged artifact (older — from before edition tagging)
+        untagged = tmp_path / "legacy.json"
+        untagged.write_text(json.dumps({"document_version": "", "data": "stale-ru-content"}))
+        os.utime(untagged, (1_000_000, 1_000_000))
+
+        # Tagged RU artifact (newer)
+        tagged_ru = tmp_path / "tagged_ru.json"
+        tagged_ru.write_text(json.dumps({"document_version": "ru", "data": "ru-content"}))
+        os.utime(tagged_ru, (2_000_000, 2_000_000))
+
+        # EN request: exact match absent, untagged fallback blocked by tag
+        result = export_module._pick_latest([untagged, tagged_ru], "en")
+        assert result is None
+
+        # RU request: exact match found
+        result = export_module._pick_latest([untagged, tagged_ru], "ru")
+        assert result is not None
+        assert result["document_version"] == "ru"
 
     def test_no_matching_edition_returns_none(
         self, tmp_path: Path, export_module: ModuleType
@@ -536,3 +564,54 @@ class TestExportPages:
         e3 = json.loads((doc_public / "en" / "data" / "render_page.p0003.json").read_text())
         assert e3["nav"]["prev"] == "p0001"
         assert e3["nav"]["next"] is None
+
+    def test_untagged_facsimile_excluded_when_tagged_ru_exists(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression S5U-437: EN export must not pick an untagged facsimile
+        that contains RU content when a tagged RU facsimile also exists."""
+        import os
+
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+        page_dir = render_src / "p0007"
+        page_dir.mkdir(parents=True, exist_ok=True)
+
+        # Untagged facsimile with RU content (pre-S5U-402)
+        untagged = {
+            "schema_version": "1.0",
+            "presentation_mode": "facsimile",
+            "document_version": "",
+            "page": {"page_id": "p0007", "title": "Components"},
+            "blocks": [
+                {
+                    "kind": "paragraph",
+                    "id": "p0007.b1",
+                    "children": [{"kind": "text", "text": "Пример"}],
+                }
+            ],
+            "facsimile": {"raster_src": "rasters/p0007__150dpi.png"},
+        }
+        up = page_dir / "hash_old.json"
+        up.write_text(json.dumps(untagged))
+        os.utime(up, (1_000_000, 1_000_000))
+
+        # Tagged RU facsimile (newer)
+        tagged_ru = {
+            **untagged,
+            "document_version": "ru",
+        }
+        rp = page_dir / "hash_ru.json"
+        rp.write_text(json.dumps(tagged_ru))
+        os.utime(rp, (2_000_000, 2_000_000))
+
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+
+        # p0007 must NOT appear in EN export
+        assert not (doc_public / "en" / "data" / "render_page.p0007.json").exists()
+        manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
+        assert all(p["page_id"] != "p0007" for p in manifest["pages"])
+
+        # RU export should still work
+        export_module.export_pages("doc1", "ru", render_src, doc_public, {})
+        assert (doc_public / "ru" / "data" / "render_page.p0007.json").exists()
