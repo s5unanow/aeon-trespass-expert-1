@@ -226,7 +226,7 @@ class RenderStage:
     @staticmethod
     def _resolve_page_ids(ctx: StageContext) -> list[str]:
         """Get page IDs from RU or EN IR artifacts in the store."""
-        for family in ("page_ir.v1.ru", "page_ir.v1.en"):
+        for family in RenderStage._preferred_ir_families(ctx):
             ir_dir = ctx.artifact_store.root / ctx.document_id / family / "page"
             if ir_dir.exists():
                 ids = sorted(d.name for d in ir_dir.iterdir() if d.is_dir())
@@ -243,7 +243,7 @@ class RenderStage:
         Returns a tuple of (page_ir, lang) where lang is ``"ru"`` or ``"en"``,
         or ``None`` if no IR is found.
         """
-        for family in ("page_ir.v1.ru", "page_ir.v1.en"):
+        for family in RenderStage._preferred_ir_families(ctx):
             data = ctx.artifact_store.load_latest_json(
                 document_id=ctx.document_id,
                 schema_family=family,
@@ -254,6 +254,18 @@ class RenderStage:
                 lang = family.rsplit(".", 1)[-1]
                 return PageIRV1.model_validate(data), lang
         return None
+
+    @staticmethod
+    def _preferred_ir_families(ctx: StageContext) -> tuple[str, str]:
+        """Return IR family preference order for the current edition.
+
+        Source-only runs must render from EN IR first. Otherwise stale RU IR
+        from earlier translation runs can leak back into an ``edition=en``
+        rebuild and contaminate the exported EN bundle.
+        """
+        if ctx.edition == "en":
+            return ("page_ir.v1.en", "page_ir.v1.ru")
+        return ("page_ir.v1.ru", "page_ir.v1.en")
 
     def _attach_annotations(
         self,
