@@ -52,6 +52,7 @@ def _run_prerequisites(ctx: StageContext) -> None:
     """Run ingest → extract_native → symbols → structure → translate."""
     r = execute_stage(IngestStage(), ctx)
     assert r.success
+    assert r.artifact_ref is not None
     manifest = SourceManifestV1.model_validate(ctx.artifact_store.get_json(r.artifact_ref))
 
     r = execute_stage(ExtractNativeStage(), ctx, input_data=manifest)
