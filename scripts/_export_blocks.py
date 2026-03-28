@@ -206,8 +206,7 @@ def namespace_bare_figures(page_data: dict, pid: str) -> int:
             block["asset_id"] = f"{pid}.{block['asset_id']}"
             rewritten += 1
 
-    if figures:
-        page_data["figures"] = figures
+    page_data["figures"] = figures
     return rewritten
 
 

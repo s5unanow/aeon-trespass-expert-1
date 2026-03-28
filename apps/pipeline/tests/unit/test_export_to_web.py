@@ -606,16 +606,31 @@ class TestExportPages:
         (page_dir / "hash_001.json").write_text(json.dumps(page_data))
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+        # Pass namespaced page_images (simulates extract_images() output)
+        page_images = {
+            "p0020": [
+                {
+                    "asset_id": "p0020.img0000",
+                    "src": "/documents/doc1/images/p0020.img0000.jpeg",
+                    "alt": "p0020.img0000",
+                }
+            ]
+        }
+        export_module.export_pages("doc1", "en", render_src, doc_public, page_images)
 
         exported = json.loads((doc_public / "en" / "data" / "render_page.p0020.json").read_text())
         # No bare imgNNNN keys should remain in figures
         for key in exported.get("figures", {}):
             assert not key.startswith("img"), f"Bare asset key '{key}' found in exported figures"
         # Figure blocks should have namespaced asset_id
-        for block in exported.get("blocks", []):
-            if block.get("kind") == "figure":
-                assert "." in block["asset_id"], f"Bare asset_id in block: {block['asset_id']}"
+        fig_blocks = [b for b in exported.get("blocks", []) if b.get("kind") == "figure"]
+        for block in fig_blocks:
+            assert "." in block["asset_id"], f"Bare asset_id in block: {block['asset_id']}"
+        # Should have exactly one figure block (no duplicates from inject_image_figures)
+        assert len(fig_blocks) == 1
+        # The figure entry should have a valid src from page_images
+        fig_entry = exported["figures"]["p0020.img0000"]
+        assert fig_entry["src"] == "/documents/doc1/images/p0020.img0000.jpeg"
 
     def test_untagged_facsimile_excluded_when_tagged_ru_exists(
         self, tmp_path: Path, export_module: ModuleType
