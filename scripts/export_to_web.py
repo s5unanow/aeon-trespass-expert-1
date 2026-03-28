@@ -29,25 +29,57 @@ PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 def _pick_latest(jsons: list[Path], edition: str = "") -> dict | None:
     """Load the newest artifact whose ``document_version`` matches *edition*.
 
-    Each artifact's JSON is read to check its ``document_version`` field.
-    Artifacts with an empty ``document_version`` (pre-S5U-402 renders) match
-    any edition for backwards compatibility.
+    Selection follows two tiers when *edition* is non-empty:
+
+    1. **Exact match** — ``document_version == edition``.
+    2. **Untagged fallback** — ``document_version == ""``, used only when *no*
+       tagged artifacts exist in the candidate set.  This preserves backwards
+       compatibility for pages that predate edition tagging (S5U-402) while
+       preventing cross-edition contamination when a tagged artifact for a
+       *different* edition proves the page has edition-specific content.
+
+    When *edition* is empty all artifacts are eligible (no filtering).
 
     Returns the parsed JSON dict of the winning artifact, or ``None`` when
     no artifact matches the requested edition.
     """
-    best: dict | None = None
-    best_mtime: float = 0.0
+    best_exact: dict | None = None
+    best_exact_mtime: float = 0.0
+    best_untagged: dict | None = None
+    best_untagged_mtime: float = 0.0
+    has_any_tagged = False
+
     for p in jsons:
         mt = p.stat().st_mtime
-        if mt <= best_mtime:
-            continue
         data = json.loads(p.read_text())
         dv = data.get("document_version", "")
-        if dv == edition or dv == "" or edition == "":
-            best = data
-            best_mtime = mt
-    return best
+
+        if edition == "":
+            # No specific edition requested — accept everything.
+            if mt > best_exact_mtime:
+                best_exact = data
+                best_exact_mtime = mt
+        elif dv == edition:
+            if mt > best_exact_mtime:
+                best_exact = data
+                best_exact_mtime = mt
+        elif dv != "":
+            has_any_tagged = True
+        elif mt > best_untagged_mtime:
+            # dv == "" and edition != ""
+            best_untagged = data
+            best_untagged_mtime = mt
+
+    if best_exact is not None:
+        return best_exact
+
+    # Fall back to untagged artifacts only when no tagged artifacts exist
+    # at all for this page — avoids picking stale pre-tagging artifacts
+    # whose actual edition is unknown.
+    if not has_any_tagged:
+        return best_untagged
+
+    return None
 
 
 def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
