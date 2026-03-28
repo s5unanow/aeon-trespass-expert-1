@@ -15,6 +15,10 @@ from atr_pipeline.stages.structure.block_postprocess import (
     split_long_paragraphs,
 )
 from atr_pipeline.stages.structure.furniture import FurnitureMap
+from atr_pipeline.stages.structure.text_normalize import (
+    normalize_text,
+    normalize_text_inlines,
+)
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
@@ -132,7 +136,7 @@ def _spans_to_text_inline(
             inlines.append(TextInline(text=text, marks=marks, lang=LanguageCode.EN))
         prev_span = span
 
-    return inlines
+    return normalize_text_inlines(inlines)
 
 
 # Horizontal gap (pt) below which spans are treated as the same word.
@@ -268,7 +272,7 @@ def build_page_ir_real(
             block_idx += 1
             block_id = f"{native.page_id}.b{block_idx:03d}"
             text = "".join(s.text for _, s in line if _classify_span(s, cfg) != "decorative")
-            text = text.strip()
+            text = normalize_text(text.strip())
             if text:
                 # Determine heading level
                 max_size = max(s.font_size for _, s in line)
