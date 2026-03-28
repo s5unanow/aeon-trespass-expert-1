@@ -8,7 +8,8 @@ from __future__ import annotations
 
 import re
 
-from atr_schemas.page_ir_v1 import InlineNode, ParagraphBlock, TextInline
+from atr_schemas.common import Rect
+from atr_schemas.page_ir_v1 import InlineNode, ListItemBlock, ParagraphBlock, TextInline
 
 # Sentence boundary: ". " followed by uppercase Latin or Cyrillic letter.
 SENTENCE_BOUNDARY_RE = re.compile(r"\. (?=[A-ZА-ЯЁ])")  # noqa: RUF001
@@ -135,4 +136,98 @@ def deduplicate_blocks(blocks: list[object]) -> list[object]:
         if prev_key and prev_key == curr_key:
             continue
         result.append(block)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# List-item continuation merging
+# ---------------------------------------------------------------------------
+
+# Maximum vertical gap (pt) between a list item and its continuation paragraph.
+_CONTINUATION_Y_GAP_MAX = 20.0
+
+
+def _block_text(block: object) -> str:
+    """Extract plain text from a block's children."""
+    children = getattr(block, "children", [])
+    return "".join(c.text for c in children if hasattr(c, "text"))
+
+
+def _should_merge_continuation(item: ListItemBlock, para: ParagraphBlock) -> bool:
+    """Return True when *para* looks like a continuation of *item*."""
+    if not item.bbox or not para.bbox:
+        return False
+    y_gap = para.bbox.y0 - item.bbox.y1
+    if y_gap > _CONTINUATION_Y_GAP_MAX or y_gap < -5.0:
+        return False
+    # Short-text list items (numbered steps like "1", "2.") always merge.
+    if len(_block_text(item).strip()) <= 5:
+        return True
+    # Otherwise merge when the paragraph is indented at least as far.
+    return para.bbox.x0 >= item.bbox.x0 - 5.0
+
+
+def _merge_bbox(a: Rect | None, b: Rect | None) -> Rect | None:
+    if a is None:
+        return b
+    if b is None:
+        return a
+    return Rect(
+        x0=min(a.x0, b.x0),
+        y0=min(a.y0, b.y0),
+        x1=max(a.x1, b.x1),
+        y1=max(a.y1, b.y1),
+    )
+
+
+def _merge_into_list_item(
+    item: ListItemBlock,
+    para: ParagraphBlock,
+) -> ListItemBlock:
+    """Merge *para* children into *item*, inserting a space separator."""
+    merged: list[InlineNode] = list(item.children)
+    if merged and para.children:
+        last = merged[-1]
+        if isinstance(last, TextInline) and last.text and not last.text[-1].isspace():
+            merged[-1] = TextInline(text=last.text + " ", marks=last.marks, lang=last.lang)
+    merged.extend(para.children)
+    return ListItemBlock(
+        block_id=item.block_id,
+        bbox=_merge_bbox(item.bbox, para.bbox),
+        children=merged,
+    )
+
+
+def merge_list_continuations(blocks: list[object]) -> list[object]:
+    """Merge paragraphs that are continuations of a preceding list item.
+
+    Handles two patterns:
+    1. ListItemBlock with short numeric text + ParagraphBlock → merged.
+    2. ListItemBlock (any) + ParagraphBlock at matching indentation → merged.
+    """
+    if len(blocks) < 2:
+        return list(blocks)
+
+    result: list[object] = []
+    i = 0
+    while i < len(blocks):
+        block = blocks[i]
+        if isinstance(block, ListItemBlock):
+            # Greedily absorb consecutive continuation paragraphs.
+            merged = block
+            j = i + 1
+            while j < len(blocks):
+                next_block = blocks[j]
+                if isinstance(next_block, ParagraphBlock) and _should_merge_continuation(
+                    merged, next_block
+                ):
+                    merged = _merge_into_list_item(merged, next_block)
+                    j += 1
+                else:
+                    break
+            result.append(merged)
+            i = j
+        else:
+            result.append(block)
+            i += 1
     return result

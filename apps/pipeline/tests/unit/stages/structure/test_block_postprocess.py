@@ -1,13 +1,14 @@
-"""Tests for block post-processing: paragraph splitting and deduplication."""
+"""Tests for block post-processing: paragraph splitting, deduplication, and list merging."""
 
 from __future__ import annotations
 
 from atr_pipeline.stages.structure.block_postprocess import (
     deduplicate_blocks,
+    merge_list_continuations,
     split_long_paragraphs,
 )
 from atr_schemas.common import Rect
-from atr_schemas.page_ir_v1 import HeadingBlock, ParagraphBlock, TextInline
+from atr_schemas.page_ir_v1 import HeadingBlock, ListItemBlock, ParagraphBlock, TextInline
 
 
 def _rect(x0: float, y0: float, x1: float, y1: float) -> Rect:
@@ -87,3 +88,72 @@ class TestDeduplicateBlocks:
         ]
         result = deduplicate_blocks(blocks)
         assert len(result) == 3
+
+
+def _list_item(bid: str, text: str, bbox: Rect | None = None) -> ListItemBlock:
+    return ListItemBlock(block_id=bid, bbox=bbox, children=[TextInline(text=text)])
+
+
+class TestMergeListContinuations:
+    """Tests for merge_list_continuations."""
+
+    def test_numbered_step_merges_with_following_paragraph(self) -> None:
+        item = _list_item("b1", "1", bbox=_rect(50, 100, 60, 110))
+        para = _para("b2", "Step description.", bbox=_rect(50, 112, 300, 122))
+        result = merge_list_continuations([item, para])
+        assert len(result) == 1
+        assert isinstance(result[0], ListItemBlock)
+        text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
+        assert "1" in text and "Step description" in text
+
+    def test_bullet_item_merges_indented_continuation(self) -> None:
+        item = _list_item("b1", "First item text", bbox=_rect(65, 100, 200, 109))
+        para = _para("b2", "continues here.", bbox=_rect(65, 112, 250, 121))
+        result = merge_list_continuations([item, para])
+        assert len(result) == 1
+        assert isinstance(result[0], ListItemBlock)
+        text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
+        assert "First item text" in text and "continues here" in text
+
+    def test_large_gap_prevents_merge(self) -> None:
+        item = _list_item("b1", "Item text", bbox=_rect(65, 100, 200, 109))
+        para = _para("b2", "Far away.", bbox=_rect(65, 200, 250, 209))
+        result = merge_list_continuations([item, para])
+        assert len(result) == 2
+
+    def test_left_indented_paragraph_prevents_merge(self) -> None:
+        """A paragraph starting far left of the list item should not merge."""
+        item = _list_item("b1", "Item with long text here", bbox=_rect(100, 100, 300, 109))
+        para = _para("b2", "Different section.", bbox=_rect(50, 112, 250, 121))
+        result = merge_list_continuations([item, para])
+        assert len(result) == 2
+
+    def test_non_list_blocks_pass_through(self) -> None:
+        heading = HeadingBlock(
+            block_id="h1",
+            bbox=_rect(50, 50, 400, 70),
+            level=1,
+            children=[TextInline(text="Title")],
+        )
+        para = _para("b1", "Body text.", bbox=_rect(50, 80, 400, 90))
+        result = merge_list_continuations([heading, para])
+        assert len(result) == 2
+
+    def test_chained_continuations_all_merged(self) -> None:
+        """Multiple consecutive paragraphs after a list item should all merge."""
+        item = _list_item("b1", "1", bbox=_rect(50, 100, 60, 110))
+        para1 = _para("b2", "First line.", bbox=_rect(50, 112, 300, 122))
+        para2 = _para("b3", "Second line.", bbox=_rect(50, 124, 300, 134))
+        result = merge_list_continuations([item, para1, para2])
+        assert len(result) == 1
+        assert isinstance(result[0], ListItemBlock)
+        text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
+        assert "1" in text and "First line" in text and "Second line" in text
+
+    def test_space_inserted_between_merged_parts(self) -> None:
+        item = _list_item("b1", "1", bbox=_rect(50, 100, 60, 110))
+        para = _para("b2", "Step text.", bbox=_rect(50, 112, 300, 122))
+        result = merge_list_continuations([item, para])
+        assert isinstance(result[0], ListItemBlock)
+        text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
+        assert "1 Step" in text or "1  Step" in text  # space separator present

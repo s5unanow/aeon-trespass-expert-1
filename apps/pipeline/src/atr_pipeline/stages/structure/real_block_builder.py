@@ -7,11 +7,14 @@ match the ATO Core Rulebook v1.1 analysis.
 
 from __future__ import annotations
 
+import re
+
 from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
 from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
 from atr_pipeline.stages.structure.block_postprocess import (
     deduplicate_blocks,
+    merge_list_continuations,
     split_long_paragraphs,
 )
 from atr_pipeline.stages.structure.furniture import FurnitureMap
@@ -142,6 +145,9 @@ def _spans_to_text_inline(
 # Horizontal gap (pt) below which spans are treated as the same word.
 _WORD_GAP_THRESHOLD = 1.5
 
+# Standalone numbered step: "1", "2.", "3)", "10:", etc.
+_NUMBERED_STEP_RE = re.compile(r"^\d{1,3}[.):]*$")
+
 
 def _significant_image_blocks(
     native: NativePageV1,
@@ -269,22 +275,33 @@ def build_page_ir_real(
         # Heading line
         if roles & {"heading", "subheading"} and "body" not in roles:
             flush_paragraph()
-            block_idx += 1
-            block_id = f"{native.page_id}.b{block_idx:03d}"
             text = "".join(s.text for _, s in line if _classify_span(s, cfg) != "decorative")
             text = normalize_text(text.strip())
             if text:
-                # Determine heading level
-                max_size = max(s.font_size for _, s in line)
-                level = 1 if max_size >= 14 else 2 if max_size >= 10 else 3
-                blocks.append(
-                    HeadingBlock(
-                        block_id=block_id,
-                        bbox=_bbox_from_spans(spans_in_line),
-                        level=level,
-                        children=[TextInline(text=text, lang=LanguageCode.EN)],
+                if _NUMBERED_STEP_RE.match(text):
+                    # Standalone number → list item (merged with next para later)
+                    block_idx += 1
+                    block_id = f"{native.page_id}.b{block_idx:03d}"
+                    blocks.append(
+                        ListItemBlock(
+                            block_id=block_id,
+                            bbox=_bbox_from_spans(spans_in_line),
+                            children=[TextInline(text=text, lang=LanguageCode.EN)],
+                        )
                     )
-                )
+                else:
+                    block_idx += 1
+                    block_id = f"{native.page_id}.b{block_idx:03d}"
+                    max_size = max(s.font_size for _, s in line)
+                    level = 1 if max_size >= 14 else 2 if max_size >= 10 else 3
+                    blocks.append(
+                        HeadingBlock(
+                            block_id=block_id,
+                            bbox=_bbox_from_spans(spans_in_line),
+                            level=level,
+                            children=[TextInline(text=text, lang=LanguageCode.EN)],
+                        )
+                    )
             continue
 
         # Decorative-only line (skip, often visual noise)
@@ -343,7 +360,8 @@ def build_page_ir_real(
         )
         asset_ids.append(asset_id)
 
-    # Post-processing: split overly long paragraphs, then deduplicate.
+    # Post-processing: merge list continuations, split long paragraphs, deduplicate.
+    blocks = merge_list_continuations(blocks)  # type: ignore[arg-type,assignment]
     blocks = split_long_paragraphs(blocks)  # type: ignore[arg-type,assignment]
     blocks = deduplicate_blocks(blocks)  # type: ignore[arg-type,assignment]
 
