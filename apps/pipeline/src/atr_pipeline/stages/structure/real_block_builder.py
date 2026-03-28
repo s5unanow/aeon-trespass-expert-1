@@ -327,7 +327,7 @@ def build_page_ir_real(
     for img in figure_images:
         block_idx += 1
         block_id = f"{native.page_id}.b{block_idx:03d}"
-        asset_id = img.image_id
+        asset_id = f"{native.page_id}.{img.image_id}"
         blocks.append(
             FigureBlock(
                 block_id=block_id,

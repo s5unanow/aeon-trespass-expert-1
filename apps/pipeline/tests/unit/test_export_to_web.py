@@ -13,6 +13,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[4]
 SCRIPT_PATH = REPO / "scripts" / "export_to_web.py"
+SCRIPTS_DIR = REPO / "scripts"
 
 
 @pytest.fixture()
@@ -26,6 +27,20 @@ def export_module() -> Iterator[ModuleType]:
     spec.loader.exec_module(mod)
     yield mod
     sys.modules.pop("export_to_web", None)
+
+
+@pytest.fixture()
+def blocks_module() -> Iterator[ModuleType]:
+    """Import _export_blocks.py as a module."""
+    blocks_path = SCRIPTS_DIR / "_export_blocks.py"
+    spec = importlib.util.spec_from_file_location("_export_blocks", blocks_path)
+    assert spec is not None
+    assert spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["_export_blocks_test"] = mod
+    spec.loader.exec_module(mod)
+    yield mod
+    sys.modules.pop("_export_blocks_test", None)
 
 
 def _make_render_page(
@@ -565,6 +580,43 @@ class TestExportPages:
         assert e3["nav"]["prev"] == "p0001"
         assert e3["nav"]["next"] is None
 
+    def test_bare_figure_ids_rewritten_during_export(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression S5U-438: bare imgNNNN asset IDs must be namespaced during export."""
+        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
+        page_dir = render_src / "p0020"
+        page_dir.mkdir(parents=True, exist_ok=True)
+        page_data = {
+            "schema_version": "1.0",
+            "document_version": "",
+            "page": {"page_id": "p0020", "title": "Test page"},
+            "blocks": [
+                {"kind": "figure", "id": "p0020.b002", "asset_id": "img0000", "children": []},
+                {
+                    "kind": "paragraph",
+                    "id": "p0020.b001",
+                    "children": [{"kind": "text", "text": "Some text"}],
+                },
+            ],
+            "figures": {
+                "img0000": {"src": "img0000", "alt": "img0000"},
+            },
+        }
+        (page_dir / "hash_001.json").write_text(json.dumps(page_data))
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+
+        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+
+        exported = json.loads((doc_public / "en" / "data" / "render_page.p0020.json").read_text())
+        # No bare imgNNNN keys should remain in figures
+        for key in exported.get("figures", {}):
+            assert not key.startswith("img"), f"Bare asset key '{key}' found in exported figures"
+        # Figure blocks should have namespaced asset_id
+        for block in exported.get("blocks", []):
+            if block.get("kind") == "figure":
+                assert "." in block["asset_id"], f"Bare asset_id in block: {block['asset_id']}"
+
     def test_untagged_facsimile_excluded_when_tagged_ru_exists(
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
@@ -615,3 +667,108 @@ class TestExportPages:
         # RU export should still work
         export_module.export_pages("doc1", "ru", render_src, doc_public, {})
         assert (doc_public / "ru" / "data" / "render_page.p0007.json").exists()
+
+
+class TestNamespaceBareFigures:
+    def test_rewrites_bare_keys_in_figures_dict(self, blocks_module: ModuleType) -> None:
+        """Bare imgNNNN keys are namespaced with page id."""
+        page_data: dict = {
+            "figures": {
+                "img0000": {"src": "img0000", "alt": "img0000"},
+            },
+            "blocks": [],
+        }
+        count = blocks_module.namespace_bare_figures(page_data, "p0020")
+        assert count == 1
+        assert "img0000" not in page_data["figures"]
+        assert "p0020.img0000" in page_data["figures"]
+
+    def test_clears_bare_self_referencing_src(self, blocks_module: ModuleType) -> None:
+        """When src is a bare self-reference, it's cleared."""
+        page_data: dict = {
+            "figures": {
+                "img0001": {"src": "img0001", "alt": "img0001"},
+            },
+            "blocks": [],
+        }
+        blocks_module.namespace_bare_figures(page_data, "p0060")
+        assert page_data["figures"]["p0060.img0001"]["src"] == ""
+
+    def test_preserves_namespaced_when_both_exist(self, blocks_module: ModuleType) -> None:
+        """When both bare and namespaced exist, namespaced is kept."""
+        page_data: dict = {
+            "figures": {
+                "img0000": {"src": "img0000", "alt": "img0000"},
+                "p0020.img0000": {"src": "/documents/doc/images/p0020.img0000.jpeg", "alt": "x"},
+            },
+            "blocks": [],
+        }
+        blocks_module.namespace_bare_figures(page_data, "p0020")
+        assert "img0000" not in page_data["figures"]
+        assert page_data["figures"]["p0020.img0000"]["src"] == (
+            "/documents/doc/images/p0020.img0000.jpeg"
+        )
+
+    def test_rewrites_bare_asset_id_in_figure_blocks(self, blocks_module: ModuleType) -> None:
+        """Figure blocks with bare asset_id get namespaced."""
+        page_data: dict = {
+            "figures": {},
+            "blocks": [
+                {"kind": "figure", "id": "p0020.b002", "asset_id": "img0000", "children": []},
+            ],
+        }
+        count = blocks_module.namespace_bare_figures(page_data, "p0020")
+        assert count == 1
+        assert page_data["blocks"][0]["asset_id"] == "p0020.img0000"
+
+    def test_noop_for_already_namespaced(self, blocks_module: ModuleType) -> None:
+        """Already-namespaced entries are not touched."""
+        page_data: dict = {
+            "figures": {
+                "p0020.img0000": {"src": "/documents/doc/images/p0020.img0000.jpeg", "alt": "x"},
+            },
+            "blocks": [
+                {"kind": "figure", "id": "p0020.b002", "asset_id": "p0020.img0000", "children": []},
+            ],
+        }
+        count = blocks_module.namespace_bare_figures(page_data, "p0020")
+        assert count == 0
+
+
+class TestValidateFigureRefs:
+    def test_valid_figure_refs_pass(self, blocks_module: ModuleType) -> None:
+        """Valid figure references produce no errors."""
+        page_data: dict = {
+            "figures": {
+                "p0020.img0000": {"src": "/documents/doc/images/p0020.img0000.jpeg", "alt": "x"},
+            },
+            "blocks": [
+                {"kind": "figure", "id": "p0020.b002", "asset_id": "p0020.img0000", "children": []},
+            ],
+        }
+        errors = blocks_module.validate_figure_refs(page_data, "p0020")
+        assert errors == []
+
+    def test_missing_figure_entry_reported(self, blocks_module: ModuleType) -> None:
+        """Figure block referencing a missing asset produces an error."""
+        page_data: dict = {
+            "figures": {},
+            "blocks": [
+                {"kind": "figure", "id": "p0020.b002", "asset_id": "p0020.img0000", "children": []},
+            ],
+        }
+        errors = blocks_module.validate_figure_refs(page_data, "p0020")
+        assert len(errors) == 1
+        assert "missing asset" in errors[0]
+
+    def test_bare_src_reported(self, blocks_module: ModuleType) -> None:
+        """Figure with bare src value produces an error."""
+        page_data: dict = {
+            "figures": {"img0000": {"src": "img0000", "alt": "img0000"}},
+            "blocks": [
+                {"kind": "figure", "id": "p0020.b002", "asset_id": "img0000", "children": []},
+            ],
+        }
+        errors = blocks_module.validate_figure_refs(page_data, "p0020")
+        assert len(errors) == 1
+        assert "bare src" in errors[0]

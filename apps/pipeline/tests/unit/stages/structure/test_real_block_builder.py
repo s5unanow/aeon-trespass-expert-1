@@ -110,8 +110,8 @@ def test_large_image_block_creates_figure() -> None:
     ir = build_page_ir_real(native)
     figure_blocks = [b for b in ir.blocks if b.type == "figure"]
     assert len(figure_blocks) == 1
-    assert figure_blocks[0].asset_id == "img0000"
-    assert "img0000" in ir.assets
+    assert figure_blocks[0].asset_id == "p0001.img0000"
+    assert "p0001.img0000" in ir.assets
 
 
 def test_small_image_block_is_ignored() -> None:

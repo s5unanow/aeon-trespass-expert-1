@@ -17,9 +17,11 @@ sys.path.insert(0, str(_SCRIPTS_DIR))
 from _export_blocks import (  # noqa: E402
     export_facsimile_rasters,
     inject_image_figures,
+    namespace_bare_figures,
     postprocess_blocks,
     rewrite_facsimile_urls,
     text_content,
+    validate_figure_refs,
 )
 
 ARTIFACT_ROOT = REPO / "artifacts"
@@ -196,6 +198,13 @@ def _count_block_stats(blocks: list[dict], stats: dict) -> None:
             stats["long_paras"] += 1
 
 
+def _warn_figure_ref_errors(exported: list[tuple[str, dict]]) -> None:
+    """Log warnings for any broken figure asset references."""
+    for pid, data in exported:
+        for err in validate_figure_refs(data, pid):
+            print(f"  WARN: {err}")
+
+
 def export_pages(
     doc_id: str,
     edition: str,
@@ -229,6 +238,9 @@ def export_pages(
         if best is None:
             continue
 
+        # Rewrite legacy bare imgNNNN asset IDs to namespaced pid.imgNNNN
+        namespace_bare_figures(best, pid)
+
         if best.get("presentation_mode") == "facsimile":
             rewrite_facsimile_urls(best, doc_id)
         else:
@@ -242,6 +254,8 @@ def export_pages(
 
         _count_block_stats(best.get("blocks", []), stats)
         exported.append((pid, best))
+
+    _warn_figure_ref_errors(exported)
 
     # Inject navigation using only the actually-exported page list
     exported_ids = [pid for pid, _ in exported]
