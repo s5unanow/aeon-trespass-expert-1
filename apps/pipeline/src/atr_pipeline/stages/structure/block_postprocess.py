@@ -212,14 +212,21 @@ def merge_list_continuations(blocks: list[object]) -> list[object]:
     i = 0
     while i < len(blocks):
         block = blocks[i]
-        next_block = blocks[i + 1] if i + 1 < len(blocks) else None
-        if (
-            isinstance(block, ListItemBlock)
-            and isinstance(next_block, ParagraphBlock)
-            and _should_merge_continuation(block, next_block)
-        ):
-            result.append(_merge_into_list_item(block, next_block))
-            i += 2
+        if isinstance(block, ListItemBlock):
+            # Greedily absorb consecutive continuation paragraphs.
+            merged = block
+            j = i + 1
+            while j < len(blocks):
+                next_block = blocks[j]
+                if isinstance(next_block, ParagraphBlock) and _should_merge_continuation(
+                    merged, next_block
+                ):
+                    merged = _merge_into_list_item(merged, next_block)
+                    j += 1
+                else:
+                    break
+            result.append(merged)
+            i = j
         else:
             result.append(block)
             i += 1

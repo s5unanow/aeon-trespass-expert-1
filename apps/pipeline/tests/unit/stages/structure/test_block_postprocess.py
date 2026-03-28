@@ -111,6 +111,7 @@ class TestMergeListContinuations:
         para = _para("b2", "continues here.", bbox=_rect(65, 112, 250, 121))
         result = merge_list_continuations([item, para])
         assert len(result) == 1
+        assert isinstance(result[0], ListItemBlock)
         text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
         assert "First item text" in text and "continues here" in text
 
@@ -138,9 +139,21 @@ class TestMergeListContinuations:
         result = merge_list_continuations([heading, para])
         assert len(result) == 2
 
+    def test_chained_continuations_all_merged(self) -> None:
+        """Multiple consecutive paragraphs after a list item should all merge."""
+        item = _list_item("b1", "1", bbox=_rect(50, 100, 60, 110))
+        para1 = _para("b2", "First line.", bbox=_rect(50, 112, 300, 122))
+        para2 = _para("b3", "Second line.", bbox=_rect(50, 124, 300, 134))
+        result = merge_list_continuations([item, para1, para2])
+        assert len(result) == 1
+        assert isinstance(result[0], ListItemBlock)
+        text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
+        assert "1" in text and "First line" in text and "Second line" in text
+
     def test_space_inserted_between_merged_parts(self) -> None:
         item = _list_item("b1", "1", bbox=_rect(50, 100, 60, 110))
         para = _para("b2", "Step text.", bbox=_rect(50, 112, 300, 122))
         result = merge_list_continuations([item, para])
+        assert isinstance(result[0], ListItemBlock)
         text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
         assert "1 Step" in text or "1  Step" in text  # space separator present
