@@ -14,8 +14,10 @@ from atr_schemas.native_page_v1 import SpanEvidence
 from atr_schemas.resolved_page_v1 import ResolvedRegion, ResolvedSymbolRef
 from atr_schemas.symbol_match_set_v1 import SymbolMatch
 
-# Same tolerance used by _same_line in real_block_builder
-_LINE_TOLERANCE = 3.0
+# Tolerance for grouping spans into lines and matching symbols to text.
+# Slightly wider than the block builder's 3.0 to handle multi-column
+# layouts where column baselines differ by a few points.
+_LINE_TOLERANCE = 6.0
 
 # Vertical proximity threshold for "near text" (block-attached)
 _NEAR_TEXT_TOLERANCE = 15.0

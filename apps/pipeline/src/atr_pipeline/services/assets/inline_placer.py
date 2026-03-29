@@ -51,7 +51,8 @@ def _filter_block_placements(
     inline_placements: list[ResolvedSymbolPlacement] = []
 
     for p in placements:
-        if p.match.bbox.y0 < block_y_min or p.match.bbox.y1 > block_y_max:
+        sym_cy = (p.match.bbox.y0 + p.match.bbox.y1) / 2
+        if sym_cy < block_y_min or sym_cy > block_y_max:
             continue
         if p.anchor_kind == SymbolAnchorKind.PREFIX:
             prefix_icons.append(_make_icon(p))

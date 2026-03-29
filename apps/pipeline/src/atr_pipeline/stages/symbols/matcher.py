@@ -24,7 +24,7 @@ from atr_schemas.symbol_match_set_v1 import SymbolMatch, SymbolMatchSetV1
 # Scale factors to try when matching templates against the rasterized page.
 # Templates are at native pixel size; the page raster may be at 300 DPI,
 # so the icon could appear 2-5x larger than the template.
-_SCALE_FACTORS = [1.0, 2.0, 3.0, 4.0, 4.17, 5.0]
+_SCALE_FACTORS = [1.0, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 4.0, 4.17, 5.0]
 
 # If the best score at any scale exceeds this, skip remaining scales.
 _EARLY_EXIT_SCORE = 0.98
