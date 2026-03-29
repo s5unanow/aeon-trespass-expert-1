@@ -5,6 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from atr_pipeline.config.models import StructureConfig
+from atr_pipeline.stages.structure.block_filter import (
+    filter_figure_area_blocks,
+    filter_heading_clusters,
+)
 from atr_schemas.common import Rect
 from atr_schemas.enums import AnchorEdgeKind, BlockType, RegionKind
 from atr_schemas.evidence_primitives_v1 import EvidenceTableCandidate
@@ -46,6 +50,8 @@ def resolve_semantics(
 
     blocks, caption_edges = _detect_captions(blocks, region_map, cfg)
     edges.extend(caption_edges)
+    blocks = filter_figure_area_blocks(blocks, region_map, regions)
+    blocks = filter_heading_clusters(blocks)
     blocks, callout_edges = _promote_callouts(blocks, region_map, regions)
     edges.extend(callout_edges)
     blocks, table_edges = _resolve_tables(blocks, evidence, cfg)
@@ -239,9 +245,7 @@ def _bbox_overlap(a: Rect, b: Rect) -> float:
     if ix1 <= ix0 or iy1 <= iy0:
         return 0.0
     intersection = (ix1 - ix0) * (iy1 - iy0)
-    area_a = (a.x1 - a.x0) * (a.y1 - a.y0)
-    area_b = (b.x1 - b.x0) * (b.y1 - b.y0)
-    min_area = min(area_a, area_b)
+    min_area = min((a.x1 - a.x0) * (a.y1 - a.y0), (b.x1 - b.x0) * (b.y1 - b.y0))
     return intersection / min_area if min_area > 0 else 0.0
 
 

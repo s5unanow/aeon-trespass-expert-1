@@ -12,6 +12,7 @@ import re
 from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
 from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
+from atr_pipeline.stages.structure.block_filter import figure_overlap_span_ids
 from atr_pipeline.stages.structure.block_postprocess import (
     deduplicate_blocks,
     merge_list_continuations,
@@ -61,6 +62,9 @@ def _classify_span(span: SpanEvidence, cfg: StructureConfig) -> str:
         return "heading"
     if span.font_name in cfg.decorative_fonts:
         return "decorative"
+    # Heading font at sub-body size → diagram/figure label text, not prose.
+    if span.font_name in cfg.heading_fonts and span.font_size < cfg.body_size_min:
+        return "diagram_label"
     if span.font_name == cfg.bold_font and span.font_size >= cfg.subheading_bold_min_size:
         return "subheading"
     if span.font_name == cfg.dingbat_font:
@@ -201,6 +205,8 @@ def build_page_ir_real(
     furniture_map = furniture or FurnitureMap()
     # Collect significant images (even if there are no text spans)
     figure_images = _significant_image_blocks(native, cfg)
+    # Identify short text spans sitting on top of figure images (diagram labels).
+    figure_span_ids = figure_overlap_span_ids(native.spans, figure_images)
     # Filter out images that overlap heavily with text
     non_footer_spans = [s for s in native.spans if s.bbox.y0 < cfg.footer_y_threshold]
     figure_images = [
@@ -226,8 +232,12 @@ def build_page_ir_real(
     for role, span in classified:
         if role == "footer":
             continue  # Strip footer zone
+        if role == "diagram_label":
+            continue  # Strip diagram/figure label text
         if furniture_map.is_furniture_span(span.span_id):
             continue  # Strip detected furniture
+        if span.span_id in figure_span_ids:
+            continue  # Strip text overlapping figure images
 
         if current_line and not _same_line(current_line[-1][1], span):
             lines.append(current_line)
