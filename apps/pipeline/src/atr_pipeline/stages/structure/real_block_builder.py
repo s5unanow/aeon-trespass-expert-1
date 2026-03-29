@@ -32,9 +32,11 @@ from atr_schemas.page_ir_v1 import (
     FigureBlock,
     HeadingBlock,
     IconInline,
+    LineBreakInline,
     ListItemBlock,
     PageIRV1,
     ParagraphBlock,
+    TableBlock,
     TextInline,
 )
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
@@ -192,6 +194,26 @@ def _image_overlaps_text(
     return False
 
 
+def _line_in_table_region(
+    spans: list[SpanEvidence],
+    table_regions: list[Rect],
+    tolerance: float = 5.0,
+) -> int:
+    """Return index of the table region containing the majority of spans, or -1."""
+    for idx, region in enumerate(table_regions):
+        count = sum(
+            1
+            for s in spans
+            if (
+                region.x0 - tolerance <= (s.bbox.x0 + s.bbox.x1) / 2 <= region.x1 + tolerance
+                and region.y0 - tolerance <= (s.bbox.y0 + s.bbox.y1) / 2 <= region.y1 + tolerance
+            )
+        )
+        if count > len(spans) / 2:
+            return idx
+    return -1
+
+
 def build_page_ir_real(
     native: NativePageV1,
     symbols: SymbolMatchSetV1 | None = None,
@@ -199,6 +221,7 @@ def build_page_ir_real(
     config: StructureConfig | None = None,
     furniture: FurnitureMap | None = None,
     placements: list[ResolvedSymbolPlacement] | None = None,
+    table_regions: list[Rect] | None = None,
 ) -> PageIRV1:
     """Build PageIRV1 from real page evidence using font-based heuristics."""
     cfg = config or StructureConfig()
@@ -267,7 +290,13 @@ def build_page_ir_real(
 
     # Build blocks from lines
     _Block = (
-        HeadingBlock | ParagraphBlock | ListItemBlock | CalloutBlock | DividerBlock | FigureBlock
+        HeadingBlock
+        | ParagraphBlock
+        | ListItemBlock
+        | CalloutBlock
+        | DividerBlock
+        | FigureBlock
+        | TableBlock
     )
     blocks: list[_Block] = []
     block_idx = 0
@@ -296,9 +325,50 @@ def build_page_ir_real(
         blocks.append(ParagraphBlock(block_id=block_id, bbox=para_bbox, children=inlines))  # type: ignore[arg-type]
         current_para_spans.clear()
 
+    # Table accumulator — groups table-region lines into TableBlocks
+    _tbl_regions = table_regions or []
+    current_table_idx = -1
+    current_table_rows: list[list[SpanEvidence]] = []
+
+    def flush_table() -> None:
+        nonlocal block_idx, current_table_idx
+        if not current_table_rows:
+            current_table_idx = -1
+            return
+        block_idx += 1
+        block_id = f"{native.page_id}.b{block_idx:03d}"
+        inlines: list[TextInline | IconInline | LineBreakInline] = []
+        for ri, row_spans in enumerate(current_table_rows):
+            if ri > 0:
+                inlines.append(LineBreakInline())
+            inlines.extend(_spans_to_text_inline(row_spans, cfg))
+        all_spans = [s for row in current_table_rows for s in row]
+        blocks.append(
+            TableBlock(
+                block_id=block_id,
+                bbox=_bbox_from_spans(all_spans),
+                children=inlines,  # type: ignore[arg-type]
+            )
+        )
+        current_table_rows.clear()
+        current_table_idx = -1
+
     for line in lines:
         roles = {role for role, _ in line}
         spans_in_line = [s for _, s in line]
+
+        # Check if this line belongs to a table region
+        if _tbl_regions:
+            tbl_idx = _line_in_table_region(spans_in_line, _tbl_regions)
+            if tbl_idx >= 0:
+                if current_table_idx >= 0 and current_table_idx != tbl_idx:
+                    flush_table()
+                elif current_table_idx < 0:
+                    flush_paragraph()
+                current_table_idx = tbl_idx
+                current_table_rows.append(spans_in_line)
+                continue
+            flush_table()
 
         # Heading line
         if roles & {"heading", "subheading"} and "body" not in roles:
@@ -365,6 +435,7 @@ def build_page_ir_real(
 
         current_para_spans.extend(spans_in_line)
 
+    flush_table()
     flush_paragraph()
 
     # Append FigureBlocks for significant images that don't overlap text
