@@ -117,6 +117,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 ### 9. Merge and sync
 - Merge via: `gh pr merge <pr-number> --squash --delete-branch`
 - Sync local: `git checkout main && git pull`
+- **Wait for CI on main**: after merging, verify the latest CI run on `main` is green (`gh run list -b main --limit 1 --json status,conclusion`) before merging any subsequent PR. Do not batch-merge — cascading failures propagate undetected when merges skip CI verification.
 - Update Linear issue to **Done**: `mcp__linear__save_issue(id="S5U-XXX", state="Done")`
 
 ### Rollback process
