@@ -11,6 +11,7 @@ from atr_schemas.page_ir_v1 import (
     HeadingBlock,
     IconInline,
     InlineNode,
+    LineBreakInline,
     PageIRV1,
     TextInline,
     UnknownBlock,
@@ -27,6 +28,7 @@ from atr_schemas.render_page_v1 import (
     RenderPageV1,
     RenderParagraphBlock,
     RenderSourceMap,
+    RenderTableBlock,
     RenderTextInline,
 )
 
@@ -93,6 +95,8 @@ def build_render_page(
             )
         elif block.type == "paragraph":
             render_blocks.append(RenderParagraphBlock(id=block.block_id, children=children))
+        elif block.type == "table":
+            render_blocks.append(RenderTableBlock(id=block.block_id, children=children))
         elif block.type == "list_item":
             render_blocks.append(RenderListItemBlock(id=block.block_id, children=children))
 
@@ -124,6 +128,9 @@ def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
             sym_id = node.symbol_id
             alt = sym_id.removeprefix("sym.").capitalize()
             result.append(RenderIconInline(symbol_id=sym_id, alt=alt))
+        elif node.type == "line_break":
+            assert isinstance(node, LineBreakInline)
+            result.append(RenderTextInline(text="\n"))
     return result
 
 

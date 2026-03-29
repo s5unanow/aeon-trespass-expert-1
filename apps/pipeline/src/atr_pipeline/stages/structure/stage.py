@@ -102,14 +102,10 @@ class StructureStage:
 
             symbols = self._load_symbol_matches(ctx, page_id)
             layout = self._load_layout_page(ctx, page_id)
-
-            # Determine evidence path from layout difficulty
-            route = "R1"
-            is_hard = False
+            route, is_hard = "R1", False
             if layout and layout.difficulty:
                 route = layout.difficulty.recommended_route
                 is_hard = layout.difficulty.hard_page
-
             if is_hard:
                 hard_pages += 1
                 ctx.logger.warning(
@@ -132,8 +128,6 @@ class StructureStage:
                 symbols,
                 furniture_map,
             )
-
-            # Record evidence path and confidence from layout scoring
             ir.provenance = ProvenanceRef(
                 extractor="structure",
                 version=self.version,
@@ -199,14 +193,18 @@ class StructureStage:
                 e.bbox
                 for e in (evidence.entities if evidence else [])
                 if isinstance(e, EvidenceTableCandidate) and e.confidence >= min_conf
-            ] or None
+            ]
+            pg_ov = ctx.config.structure.page_overrides.get(page_id)
+            if pg_ov:
+                table_regions.extend(pg_ov.table_regions)
+            table_regions_arg = table_regions or None
             ir = build_page_ir_real(
                 native,
                 symbols,
                 config=ctx.config.structure,
                 furniture=furniture,
                 placements=sym_placements,
-                table_regions=table_regions,
+                table_regions=table_regions_arg,
             )
 
             if regions:
@@ -355,14 +353,15 @@ class StructureStage:
     ) -> None:
         refs = symbol_refs or []
         avg_conf = sum(r.confidence for r in refs) / len(refs) if refs else 1.0
-        # Combine reading-order edges with semantic edges
         all_edges: list[AnchorEdge] = list(order.anchor_edges) if order else []
         sem_blocks: list[ResolvedBlock] = []
         block_conf = 1.0
         if semantics is not None:
             all_edges.extend(semantics.anchor_edges)
-            sem_blocks = semantics.resolved_blocks
-            block_conf = semantics.block_classification_confidence
+            sem_blocks, block_conf = (
+                semantics.resolved_blocks,
+                semantics.block_classification_confidence,
+            )
         resolved = ResolvedPageV1(
             document_id=native.document_id,
             page_id=native.page_id,

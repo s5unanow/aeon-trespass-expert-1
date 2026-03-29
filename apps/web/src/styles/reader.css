@@ -254,6 +254,7 @@ h2.reader-heading {
   border-radius: var(--radius-md);
   overflow-x: auto;
   line-height: var(--leading-normal);
+  white-space: pre-wrap;
 }
 
 /* --- Divider --- */

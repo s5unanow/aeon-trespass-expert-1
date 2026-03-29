@@ -452,3 +452,58 @@ def test_single_size_headings_stay_same_level() -> None:
     headings = [b for b in ir.blocks if b.type == "heading"]
     assert len(headings) == 2
     assert headings[0].level == headings[1].level, "Same-size headings must share one level"
+
+
+# --- Config-driven table regions (S5U-442) ---
+
+
+def test_config_table_region_produces_table_block() -> None:
+    """Spans inside a config-driven table region become a TableBlock (S5U-442).
+
+    Regression: when PyMuPDF fails to detect gridless tables, config overrides
+    supply the table region. The structure stage must group those spans into
+    a TableBlock rather than separate paragraphs.
+    """
+    spans = [
+        _span("BP I", y0=110, x0=60, span_id="s0001"),
+        _span("Shuffle a card into the deck.", y0=130, x0=60, span_id="s0002"),
+        _span("BP II", y0=200, x0=60, span_id="s0003"),
+        _span("Remove a card from battle.", y0=220, x0=60, span_id="s0004"),
+    ]
+    native = _page(spans)
+    table_regions = [Rect(x0=55, y0=105, x1=550, y1=250)]
+
+    ir = build_page_ir_real(native, table_regions=table_regions)
+    tables = [b for b in ir.blocks if b.type == "table"]
+    assert len(tables) >= 1, "Config-driven table region must produce TableBlock"
+    table_text = " ".join(c.text for c in tables[0].children if hasattr(c, "text"))
+    assert "BP I" in table_text
+    assert "BP II" in table_text
+
+
+def test_table_block_survives_render_stage() -> None:
+    """TableBlock in page_ir must produce RenderTableBlock in render_page (S5U-442).
+
+    Regression: the render stage silently dropped TableBlocks because the
+    block type dispatcher had no 'table' branch. This must not regress.
+    """
+    from atr_pipeline.stages.render.page_builder import build_render_page
+    from atr_schemas.enums import LanguageCode
+    from atr_schemas.page_ir_v1 import PageIRV1, TableBlock, TextInline
+
+    ir = PageIRV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        language=LanguageCode.EN,
+        blocks=[
+            TableBlock(
+                block_id="p0001.b001",
+                children=[TextInline(text="Row 1 data", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=["p0001.b001"],
+    )
+    render = build_render_page(ir)
+    assert len(render.blocks) == 1, "TableBlock must not be dropped by render stage"
+    assert render.blocks[0].kind == "table"

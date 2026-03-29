@@ -36,3 +36,9 @@ facsimile_annotation_keep_texts = [
 [structure]
 # ATO Core uses denser layouts — lower footer threshold
 footer_y_threshold = 785.0
+
+# p0054: escalation / wounded-card chart — PyMuPDF misses gridless tables
+[structure.page_overrides.p0054]
+table_regions = [
+    { x0 = 55.0, y0 = 105.0, x1 = 550.0, y1 = 695.0 },
+]
