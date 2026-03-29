@@ -13,9 +13,11 @@ from atr_schemas.page_ir_v1 import (
     FigureBlock,
     HeadingBlock,
     IconInline,
+    LineBreakInline,
     ListItemBlock,
     PageIRV1,
     ParagraphBlock,
+    TableBlock,
     TextInline,
 )
 
@@ -250,6 +252,47 @@ def test_render_page_builder_list_items() -> None:
     li_block = render.blocks[1]
     assert len(li_block.children) == 1  # type: ignore[union-attr]
     assert li_block.children[0].kind == "text"  # type: ignore[union-attr]
+
+
+def test_render_page_builder_table_blocks() -> None:
+    """Table blocks with LineBreakInline row separators are rendered as table render blocks."""
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0006",
+        page_number=6,
+        language=LanguageCode.EN,
+        blocks=[
+            HeadingBlock(
+                block_id="p0006.b001",
+                level=2,
+                children=[TextInline(text="Evolution Track", lang=LanguageCode.EN)],
+            ),
+            TableBlock(
+                block_id="p0006.b002",
+                children=[
+                    TextInline(text="Hekaton 0 I II III IV", lang=LanguageCode.EN),
+                    LineBreakInline(),
+                    TextInline(text="Labyrinthauros I II III IV", lang=LanguageCode.EN),
+                ],
+            ),
+        ],
+        reading_order=["p0006.b001", "p0006.b002"],
+    )
+    render = build_render_page(ir)
+
+    assert len(render.blocks) == 2
+    assert render.blocks[0].kind == "heading"
+    assert render.blocks[1].kind == "table"
+
+    table_block = render.blocks[1]
+    # 3 children: text, line break (→ "\n" text), text
+    assert len(table_block.children) == 3  # type: ignore[union-attr]
+    assert table_block.children[0].kind == "text"  # type: ignore[union-attr]
+    assert table_block.children[1].text == "\n"  # type: ignore[union-attr]
+    assert table_block.children[2].kind == "text"  # type: ignore[union-attr]
+
+    # Table content must NOT contribute to page title
+    assert render.page.title == "Evolution Track"
 
 
 def test_render_page_builder_figure_blocks() -> None:

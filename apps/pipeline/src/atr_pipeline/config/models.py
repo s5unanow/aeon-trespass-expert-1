@@ -7,6 +7,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, model_validator
 
+from atr_schemas.common import Rect
+
 
 class DocumentConfig(BaseModel):
     """Document-specific configuration."""
@@ -84,6 +86,12 @@ class TranslationConfig(BaseModel):
     retry_delay_seconds: float = Field(default=1.0, ge=0.0)
 
 
+class StructurePageOverride(BaseModel):
+    """Per-page structure override — for pages where automatic detection fails."""
+
+    table_regions: list[Rect] = Field(default_factory=list)
+
+
 class StructureConfig(BaseModel):
     """Structure recovery constants — externalised from real_block_builder."""
 
@@ -129,6 +137,9 @@ class StructureConfig(BaseModel):
     caption_proximity_pt: float = Field(default=25.0, ge=0.0)
     caption_max_text_length: int = Field(default=200, ge=1)
     table_min_confidence: float = Field(default=0.6, ge=0.0, le=1.0)
+
+    # Per-page structure overrides
+    page_overrides: dict[str, StructurePageOverride] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def _check_body_size_range(self) -> StructureConfig:

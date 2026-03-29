@@ -42,9 +42,8 @@ FIXTURES = REPO_ROOT / "packages" / "fixtures" / "sample_documents"
 # Curated fixtures — at least 3 required by acceptance criteria.
 CURATED_FIXTURES = ["multi_column", "icon_dense", "table_callout", "figure_caption", "hard_route"]
 
-# Only heading, paragraph, list_item, figure types produce render blocks;
-# table, callout, caption fall through the page builder without rendering.
-_RENDERABLE = {"heading", "paragraph", "list_item", "figure"}
+# Block types that produce render blocks in the page builder.
+_RENDERABLE = {"heading", "paragraph", "list_item", "figure", "table"}
 
 
 # ---------------------------------------------------------------------------
