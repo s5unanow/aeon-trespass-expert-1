@@ -211,10 +211,10 @@ class TestDedupIconInstances:
         ]
         dedup_icon_instances(blocks)
         # Table should lose the icon
-        table_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[union-attr]
+        table_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
         assert len(table_icons) == 0
         # Paragraph keeps it
-        para_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[union-attr]
+        para_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
         assert len(para_icons) == 1
         assert para_icons[0].instance_id == "i1"
 
@@ -230,8 +230,8 @@ class TestDedupIconInstances:
             ),
         ]
         dedup_icon_instances(blocks)
-        p1_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[union-attr]
-        p2_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[union-attr]
+        p1_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        p2_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
         assert len(p1_icons) == 1
         assert len(p2_icons) == 0
 
@@ -241,7 +241,7 @@ class TestDedupIconInstances:
             TableBlock(block_id="t2", children=[_icon("i1")]),
         ]
         dedup_icon_instances(blocks)
-        t1_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[union-attr]
-        t2_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[union-attr]
+        t1_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        t2_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
         assert len(t1_icons) == 1
         assert len(t2_icons) == 0
