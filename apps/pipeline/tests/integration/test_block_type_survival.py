@@ -23,6 +23,7 @@ from atr_schemas.page_ir_v1 import (
     DividerBlock,
     FigureBlock,
     HeadingBlock,
+    InlineNode,
     ListBlock,
     ListItemBlock,
     PageIRV1,
@@ -36,7 +37,7 @@ from atr_schemas.page_ir_v1 import (
 # Block type → minimal constructor
 # ---------------------------------------------------------------------------
 
-_DUMMY_TEXT = [TextInline(text="test", lang=LanguageCode.EN)]
+_DUMMY_TEXT: list[InlineNode] = [TextInline(text="test", lang=LanguageCode.EN)]
 
 _BLOCK_FACTORIES: dict[str, Block] = {
     "heading": HeadingBlock(block_id="p0001.b001", level=1, children=_DUMMY_TEXT),
