@@ -49,13 +49,25 @@ gh pr checks <pr-number> --watch
 
 CI passes → merge. CI fails → fix and push. No checks → merge.
 
-## 5. Merge and sync
+## 5. Check main CI status
+
+Before merging, verify the latest CI run on `main` is green to prevent cascading failures:
+
+```bash
+gh run list -b main --limit 1 --json status,conclusion -q '.[0]'
+```
+
+- If `conclusion` is `"success"` → proceed to merge.
+- If `status` is `"in_progress"` → wait for it to finish: `gh run list -b main --limit 1 --json databaseId -q '.[0].databaseId' | xargs gh run watch --exit-status`
+- If `conclusion` is `"failure"` → **stop and warn**: "Main CI is red — merging now would compound the failure. Fix main first or confirm override." Do not merge unless the user explicitly overrides.
+
+## 6. Merge and sync
 
 ```bash
 gh pr merge <pr-number> --squash --delete-branch && git checkout main && git pull
 ```
 
-## 6. Update Linear
+## 7. Update Linear
 
 ```
 mcp__plugin_linear_linear__save_issue(id="S5U-XXX", state="Done")
