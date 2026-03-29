@@ -285,11 +285,12 @@ def test_render_page_builder_table_blocks() -> None:
     assert render.blocks[1].kind == "table"
 
     table_block = render.blocks[1]
+    assert table_block.kind == "table"
     # 3 children: text, line break (→ "\n" text), text
-    assert len(table_block.children) == 3  # type: ignore[union-attr]
-    assert table_block.children[0].kind == "text"  # type: ignore[union-attr]
-    assert table_block.children[1].text == "\n"  # type: ignore[union-attr]
-    assert table_block.children[2].kind == "text"  # type: ignore[union-attr]
+    assert len(table_block.children) == 3
+    assert table_block.children[0].kind == "text"
+    assert table_block.children[1].text == "\n"
+    assert table_block.children[2].kind == "text"
 
     # Table content must NOT contribute to page title
     assert render.page.title == "Evolution Track"
