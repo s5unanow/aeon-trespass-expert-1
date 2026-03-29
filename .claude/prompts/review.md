@@ -25,6 +25,7 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 11. **Config format consistency** — if new config or rule files are added under `.claude/rules/`, `configs/`, or similar directories, verify they match the format and conventions of existing files in the same directory
 12. **Claim verification** — if the PR description or commit message claims a fix (e.g., "fix mypy error"), verify the fix is present in the actual diff. Unfulfilled claims are CRITICAL
 13. **Tool/API reference validation** — if documentation or config references external tool names or MCP methods, verify they match actual available tool signatures
+14. **Real-page acceptance (extraction PRs only)** — if the Linear issue or PR description names specific pages (e.g., p0036, p0054), at least one test must load that page's fixture/artifact and assert the claimed behavior. Synthetic-only coverage for page-specific claims is a **WARNING**. This check does not apply to non-extraction PRs (web, config, DevOps, etc.)
 
 ## How to review
 
