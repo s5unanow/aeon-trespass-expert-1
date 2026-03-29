@@ -27,6 +27,7 @@ from atr_pipeline.stages.structure.semantic_resolver import (
 )
 from atr_schemas.common import ProvenanceRef
 from atr_schemas.enums import StageScope
+from atr_schemas.evidence_primitives_v1 import EvidenceTableCandidate
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
@@ -193,12 +194,19 @@ class StructureStage:
                 symbols,
                 regions,
             )
+            min_conf = ctx.config.structure.table_min_confidence
+            table_regions = [
+                e.bbox
+                for e in (evidence.entities if evidence else [])
+                if isinstance(e, EvidenceTableCandidate) and e.confidence >= min_conf
+            ] or None
             ir = build_page_ir_real(
                 native,
                 symbols,
                 config=ctx.config.structure,
                 furniture=furniture,
                 placements=sym_placements,
+                table_regions=table_regions,
             )
 
             if regions:

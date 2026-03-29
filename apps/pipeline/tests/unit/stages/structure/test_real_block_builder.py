@@ -330,3 +330,227 @@ def test_custom_config_changes_footer_threshold() -> None:
     ir_custom = build_page_ir_real(native, config=cfg)
     assert len(ir_custom.blocks) == 1
     assert ir_custom.blocks[0].type == "paragraph"
+
+
+# --- Table region tests ---
+
+
+def _table_spans() -> list[SpanEvidence]:
+    """Three rows of table-like text within a known table region."""
+    return [
+        SpanEvidence(
+            span_id="s001",
+            text="Header A",
+            font_name="Adonis-Bold",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=200, x1=140, y1=212),
+        ),
+        SpanEvidence(
+            span_id="s002",
+            text="Header B",
+            font_name="Adonis-Bold",
+            font_size=9.0,
+            bbox=Rect(x0=200, y0=200, x1=280, y1=212),
+        ),
+        SpanEvidence(
+            span_id="s003",
+            text="Cell 1",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=220, x1=120, y1=232),
+        ),
+        SpanEvidence(
+            span_id="s004",
+            text="Cell 2",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=200, y0=220, x1=260, y1=232),
+        ),
+        SpanEvidence(
+            span_id="s005",
+            text="Cell 3",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=240, x1=120, y1=252),
+        ),
+        SpanEvidence(
+            span_id="s006",
+            text="Cell 4",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=200, y0=240, x1=260, y1=252),
+        ),
+    ]
+
+
+def test_table_region_produces_table_block() -> None:
+    """Spans inside a table region should produce a TableBlock, not paragraphs."""
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=_table_spans(),
+        image_blocks=[],
+    )
+    table_bbox = Rect(x0=50, y0=190, x1=300, y1=260)
+    ir = build_page_ir_real(native, table_regions=[table_bbox])
+
+    table_blocks = [b for b in ir.blocks if b.type == "table"]
+    assert len(table_blocks) == 1
+    # Should contain text from all rows
+    text = " ".join(c.text for c in table_blocks[0].children if hasattr(c, "text"))
+    assert "Header A" in text
+    assert "Cell 4" in text
+
+
+def test_table_region_has_line_breaks_between_rows() -> None:
+    """TableBlock should have LineBreakInline between visual rows."""
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=_table_spans(),
+        image_blocks=[],
+    )
+    table_bbox = Rect(x0=50, y0=190, x1=300, y1=260)
+    ir = build_page_ir_real(native, table_regions=[table_bbox])
+
+    table_blocks = [b for b in ir.blocks if b.type == "table"]
+    assert len(table_blocks) == 1
+    # 3 rows → 2 line breaks
+    line_breaks = [c for c in table_blocks[0].children if c.type == "line_break"]
+    assert len(line_breaks) == 2
+
+
+def test_table_heading_not_promoted() -> None:
+    """Heading-font text inside table region should NOT become a HeadingBlock."""
+    spans = [
+        SpanEvidence(
+            span_id="s001",
+            text="Evolution Track",
+            font_name="GreenleafLightPro",
+            font_size=12.0,
+            bbox=Rect(x0=60, y0=200, x1=200, y1=215),
+        ),
+        SpanEvidence(
+            span_id="s002",
+            text="Level 1",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=225, x1=120, y1=237),
+        ),
+    ]
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=spans,
+        image_blocks=[],
+    )
+    table_bbox = Rect(x0=50, y0=190, x1=250, y1=250)
+    ir = build_page_ir_real(native, table_regions=[table_bbox])
+
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    assert len(headings) == 0
+    table_blocks = [b for b in ir.blocks if b.type == "table"]
+    assert len(table_blocks) == 1
+    text = " ".join(c.text for c in table_blocks[0].children if hasattr(c, "text"))
+    assert "Evolution Track" in text
+
+
+def test_no_table_region_unchanged_behavior() -> None:
+    """Without table_regions, existing behavior is unchanged."""
+    spans = [
+        SpanEvidence(
+            span_id="s001",
+            text="Normal paragraph text",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=200, x1=300, y1=212),
+        ),
+    ]
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=spans,
+        image_blocks=[],
+    )
+    ir_no_regions = build_page_ir_real(native)
+    ir_empty_regions = build_page_ir_real(native, table_regions=[])
+
+    assert len(ir_no_regions.blocks) == 1
+    assert ir_no_regions.blocks[0].type == "paragraph"
+    assert len(ir_empty_regions.blocks) == 1
+    assert ir_empty_regions.blocks[0].type == "paragraph"
+
+
+def test_mixed_table_and_prose() -> None:
+    """Table region spans and non-table prose coexist on the same page."""
+    spans = [
+        SpanEvidence(
+            span_id="s001",
+            text="Introduction",
+            font_name="GreenleafLightPro",
+            font_size=14.0,
+            bbox=Rect(x0=60, y0=80, x1=200, y1=98),
+        ),
+        SpanEvidence(
+            span_id="s002",
+            text="Some prose text before the table.",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=110, x1=400, y1=122),
+        ),
+        # Table content
+        SpanEvidence(
+            span_id="s003",
+            text="Row A",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=200, x1=120, y1=212),
+        ),
+        SpanEvidence(
+            span_id="s004",
+            text="Row B",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=220, x1=120, y1=232),
+        ),
+        # More prose after table
+        SpanEvidence(
+            span_id="s005",
+            text="Text after the table.",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=60, y0=300, x1=300, y1=312),
+        ),
+    ]
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=spans,
+        image_blocks=[],
+    )
+    table_bbox = Rect(x0=50, y0=190, x1=200, y1=240)
+    ir = build_page_ir_real(native, table_regions=[table_bbox])
+
+    types = [b.type for b in ir.blocks]
+    assert "heading" in types
+    assert "table" in types
+    assert "paragraph" in types
+    # Table appears after heading and between two paragraphs
+    assert types.index("heading") < types.index("table")
+    assert types.count("paragraph") == 2
+    assert types.count("table") == 1
