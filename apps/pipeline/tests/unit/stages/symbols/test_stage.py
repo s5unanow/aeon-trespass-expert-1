@@ -64,7 +64,7 @@ def test_symbols_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "symbols"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.0"
+    assert stage.version == "1.2"
 
 
 def test_symbols_runs_after_extract_native(tmp_path: Path) -> None:
