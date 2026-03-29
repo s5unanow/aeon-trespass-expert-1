@@ -196,6 +196,114 @@ def test_small_caps_spans_merge_without_space() -> None:
     assert "I ntroduction" not in text
 
 
+def test_diagram_label_heading_font_at_tiny_size_excluded() -> None:
+    """Heading fonts at sub-body size (diagram labels) should not become blocks."""
+    spans = [
+        SpanEvidence(
+            span_id="s001",
+            text="Strangers",
+            font_name="GreenleafLightPro",
+            font_size=4.1,  # Below body_size_min (7.5)
+            bbox=Rect(x0=512, y0=661, x1=545, y1=670),
+        ),
+        SpanEvidence(
+            span_id="s002",
+            text="Real body text here",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=50, y0=100, x1=400, y1=112),
+        ),
+    ]
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=spans,
+        image_blocks=[],
+    )
+    ir = build_page_ir_real(native)
+    all_text = " ".join(c.text for b in ir.blocks for c in b.children if hasattr(c, "text"))
+    assert "Strangers" not in all_text
+    assert "Real body text" in all_text
+
+
+def test_short_span_on_figure_image_excluded() -> None:
+    """Short text spans overlapping a figure image should be filtered out."""
+    spans = [
+        SpanEvidence(
+            span_id="s001",
+            text="3",
+            font_name="Adonis-Bold",
+            font_size=9.0,
+            bbox=Rect(x0=200, y0=500, x1=210, y1=510),
+        ),
+        SpanEvidence(
+            span_id="s002",
+            text="Real paragraph text content",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=50, y0=100, x1=400, y1=112),
+        ),
+    ]
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=spans,
+        image_blocks=[
+            ImageBlockEvidence(
+                image_id="img0000",
+                bbox=Rect(x0=100, y0=400, x1=500, y1=700),
+                width_px=800,
+                height_px=600,
+                xref=1,
+            ),
+        ],
+    )
+    ir = build_page_ir_real(native)
+    all_text = " ".join(c.text for b in ir.blocks for c in b.children if hasattr(c, "text"))
+    # "3" is inside the figure image and should be excluded
+    assert "3" not in all_text.split()
+    assert "Real paragraph text" in all_text
+
+
+def test_long_span_on_figure_image_kept() -> None:
+    """Long text spans overlapping figure images should NOT be filtered."""
+    spans = [
+        SpanEvidence(
+            span_id="s001",
+            text="This is a real body text sentence near an image",
+            font_name="Adonis-Regular",
+            font_size=9.0,
+            bbox=Rect(x0=100, y0=450, x1=490, y1=462),
+        ),
+    ]
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=612, height=842),
+        words=[],
+        spans=spans,
+        image_blocks=[
+            ImageBlockEvidence(
+                image_id="img0000",
+                bbox=Rect(x0=100, y0=400, x1=500, y1=700),
+                width_px=800,
+                height_px=600,
+                xref=1,
+            ),
+        ],
+    )
+    ir = build_page_ir_real(native)
+    all_text = " ".join(c.text for b in ir.blocks for c in b.children if hasattr(c, "text"))
+    assert "real body text" in all_text
+
+
 def test_custom_config_changes_footer_threshold() -> None:
     """Passing a custom StructureConfig should change classification behavior."""
     span_in_default_footer = SpanEvidence(
