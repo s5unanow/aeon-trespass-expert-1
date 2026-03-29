@@ -112,6 +112,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 ### 8. Wait for CI
 - Check CI status: `gh pr checks <pr-number> --watch`
 - If CI fails, fix and push — do not merge with red CI
+- **Branch protection enforces this**: GitHub blocks merge if any required check (`python / test`, `web / test`, `visual-regression / visual`) is red
 
 ### 9. Merge and sync
 - Merge via: `gh pr merge <pr-number> --squash --delete-branch`
@@ -124,6 +125,13 @@ If a merged PR breaks something:
 2. Revert it: `git revert <commit-sha>` (creates a new commit, does NOT rewrite history)
 3. Push the revert, open a new PR for the fix
 4. Reopen the Linear issue and set back to **In Progress**
+
+### Emergency bypass (admin only)
+Branch protection on `main` requires all CI checks to pass before merge. If a genuine emergency requires bypassing (e.g., CI infrastructure is down, not a code failure):
+1. A repo admin can merge via the GitHub UI using **"Merge without waiting for requirements"**
+2. Document the bypass reason in the PR description
+3. Open a follow-up issue to address the underlying failure
+4. **Never bypass for code test failures** — fix the tests first
 
 ## Conventions
 
