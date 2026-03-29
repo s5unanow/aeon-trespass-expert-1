@@ -37,6 +37,18 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
    git diff --name-only main...HEAD -- '*.py' | xargs -r uv run mypy --strict
    ```
    Any mypy errors on changed files are **CRITICAL** — they indicate type safety regressions or unfulfilled fix claims.
+5. Run the fast pytest subset (same as pre-commit gate 8) to catch test breakage:
+   ```bash
+   uv run pytest -x -q --timeout=60 -m "not slow"
+   ```
+   If any test fails, determine whether the failing test is **pre-existing** or **new** (added in this branch):
+   ```bash
+   # List test files added in this branch
+   git diff --name-only --diff-filter=A main...HEAD -- 'tests/**/*.py' 'apps/*/tests/**/*.py'
+   ```
+   - If the failing test is in a file that existed before this branch (not in the added-files list), it is a **pre-existing test broken by changes** → **CRITICAL**: `"Pre-existing test {test_name} broken by changes"`
+   - If the failing test is in a file added by this branch, it is a **new test failure** → **WARNING**: `"New test {test_name} fails — likely in-progress"`
+   - Pre-existing test breakage means the branch introduces a regression. This **MUST** produce a **BLOCK** verdict regardless of other findings.
 
 ## Output format
 
