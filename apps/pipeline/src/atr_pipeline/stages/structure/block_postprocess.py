@@ -241,6 +241,18 @@ def merge_list_continuations(blocks: list[object]) -> list[object]:
 _RENDERABLE_BLOCK_TYPES = frozenset({"heading", "paragraph", "list_item"})
 
 
+def _collect_icon_locations(
+    blocks: list[object],
+) -> dict[str, list[tuple[int, int, str]]]:
+    """Map each icon instance_id to its (block_idx, child_idx, block_type) locations."""
+    locs: dict[str, list[tuple[int, int, str]]] = {}
+    for bi, block in enumerate(blocks):
+        for ci, child in enumerate(getattr(block, "children", [])):
+            if isinstance(child, IconInline) and child.instance_id:
+                locs.setdefault(child.instance_id, []).append((bi, ci, getattr(block, "type", "")))
+    return locs
+
+
 def dedup_icon_instances(blocks: list[object]) -> None:
     """Remove duplicate icon instance_ids across blocks (in-place).
 
@@ -248,45 +260,25 @@ def dedup_icon_instances(blocks: list[object]) -> None:
     and a table due to overlapping y-ranges), keep the copy in the
     renderable block and strip it from non-renderable blocks.
     """
-    # Collect instance_id → list of (block_index, child_index, block_type)
-    icon_locs: dict[str, list[tuple[int, int, str]]] = {}
-    for bi, block in enumerate(blocks):
-        children = getattr(block, "children", [])
-        for ci, child in enumerate(children):
-            if isinstance(child, IconInline) and child.instance_id:
-                icon_locs.setdefault(child.instance_id, []).append(
-                    (bi, ci, getattr(block, "type", ""))
-                )
+    icon_locs = _collect_icon_locations(blocks)
 
-    # For each duplicate, mark removals
     remove: set[tuple[int, int]] = set()
     for locs in icon_locs.values():
-        if len(locs) <= 1:
-            continue
-        renderable = [loc for loc in locs if loc[2] in _RENDERABLE_BLOCK_TYPES]
-        non_renderable = [loc for loc in locs if loc[2] not in _RENDERABLE_BLOCK_TYPES]
-
-        if renderable:
-            # Keep first renderable occurrence, remove all others
-            for bi, ci, _ in renderable[1:]:
-                remove.add((bi, ci))
-            for bi, ci, _ in non_renderable:
-                remove.add((bi, ci))
-        else:
-            # All in non-renderable blocks — keep only the first
-            for bi, ci, _ in locs[1:]:
-                remove.add((bi, ci))
+        if len(locs) > 1:
+            renderable = [loc for loc in locs if loc[2] in _RENDERABLE_BLOCK_TYPES]
+            others = [loc for loc in locs if loc[2] not in _RENDERABLE_BLOCK_TYPES]
+            # Keep first renderable (or first overall); remove the rest
+            victims = (renderable[1:] + others) if renderable else locs[1:]
+            remove.update((bi, ci) for bi, ci, _ in victims)
 
     if not remove:
         return
 
-    # Apply removals — rebuild children for affected blocks
     for bi in sorted({bi for bi, _ in remove}):
-        child_indices = sorted(
-            (ci for b, ci in remove if b == bi),
-            reverse=True,
-        )
+        to_drop = sorted((ci for b, ci in remove if b == bi), reverse=True)
         children = list(getattr(blocks[bi], "children", []))
-        for ci in child_indices:
+        for ci in to_drop:
             children.pop(ci)
-        blocks[bi] = blocks[bi].model_copy(update={"children": children})  # type: ignore[union-attr]
+        block = blocks[bi]
+        if hasattr(block, "model_copy"):
+            blocks[bi] = block.model_copy(update={"children": children})
