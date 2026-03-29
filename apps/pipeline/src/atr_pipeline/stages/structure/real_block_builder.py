@@ -14,6 +14,7 @@ from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
 from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
 from atr_pipeline.stages.structure.block_filter import figure_overlap_span_ids
 from atr_pipeline.stages.structure.block_postprocess import (
+    dedup_icon_instances,
     deduplicate_blocks,
     merge_list_continuations,
     split_long_paragraphs,
@@ -463,6 +464,7 @@ def build_page_ir_real(
     blocks = merge_list_continuations(blocks)  # type: ignore[arg-type,assignment]
     blocks = split_long_paragraphs(blocks)  # type: ignore[arg-type,assignment]
     blocks = deduplicate_blocks(blocks)  # type: ignore[arg-type,assignment]
+    dedup_icon_instances(blocks)  # type: ignore[arg-type]
 
     reading_order = [b.block_id for b in blocks]
 
