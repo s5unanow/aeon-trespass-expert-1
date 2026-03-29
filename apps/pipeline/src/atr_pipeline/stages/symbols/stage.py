@@ -39,7 +39,7 @@ class SymbolsStage:
 
     @property
     def version(self) -> str:
-        return "1.0"
+        return "1.2"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> SymbolsResult:
         catalog_path = ctx.config.symbol_catalog_path
