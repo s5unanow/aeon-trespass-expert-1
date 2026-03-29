@@ -247,6 +247,24 @@ def build_page_ir_real(
     if current_line:
         lines.append(current_line)
 
+    # Pre-scan heading lines to build a relative heading-level map.
+    # Anchors the largest heading to its absolute-threshold level, then
+    # increments for each smaller distinct size — so pages with multiple
+    # heading depths get distinct levels instead of collapsing into one.
+    _heading_sizes: set[float] = set()
+    for _pre_ln in lines:
+        _pre_roles = {r for r, _ in _pre_ln}
+        if _pre_roles & {"heading", "subheading"} and "body" not in _pre_roles:
+            _pre_txt = "".join(s.text for _, s in _pre_ln if _classify_span(s, cfg) != "decorative")
+            _pre_txt = normalize_text(_pre_txt.strip())
+            if _pre_txt and not _NUMBERED_STEP_RE.match(_pre_txt):
+                _heading_sizes.add(max(s.font_size for _, s in _pre_ln))
+    _sorted_hs = sorted(_heading_sizes, reverse=True)
+    _size_to_level: dict[float, int] = {}
+    if _sorted_hs:
+        _base_lvl = 1 if _sorted_hs[0] >= 14 else 2 if _sorted_hs[0] >= 10 else 3
+        _size_to_level = {sz: min(_base_lvl + i, 6) for i, sz in enumerate(_sorted_hs)}
+
     # Build blocks from lines
     _Block = (
         HeadingBlock | ParagraphBlock | ListItemBlock | CalloutBlock | DividerBlock | FigureBlock
@@ -303,7 +321,7 @@ def build_page_ir_real(
                     block_idx += 1
                     block_id = f"{native.page_id}.b{block_idx:03d}"
                     max_size = max(s.font_size for _, s in line)
-                    level = 1 if max_size >= 14 else 2 if max_size >= 10 else 3
+                    level = _size_to_level.get(max_size, 3)
                     blocks.append(
                         HeadingBlock(
                             block_id=block_id,
