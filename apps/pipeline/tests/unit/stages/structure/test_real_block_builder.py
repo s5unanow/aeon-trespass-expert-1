@@ -75,7 +75,7 @@ def test_empty_page_produces_empty_ir() -> None:
 
 
 def test_heading_levels_differentiated() -> None:
-    """Larger headings should get level 1, smaller should get level 2+."""
+    """Page with multiple heading sizes should produce distinct heading levels."""
     if _skip_if_no_pdf():
         return
     native = extract_native_page(PDF_PATH, page_number=11, document_id="ato")
@@ -83,9 +83,8 @@ def test_heading_levels_differentiated() -> None:
 
     headings = [b for b in ir.blocks if b.type == "heading"]
     if len(headings) >= 2:
-        # Should have different levels if fonts differ
-        levels = {h.level for h in headings}
-        assert len(levels) >= 1  # At least one level present
+        levels = [h.level for h in headings]
+        assert len(set(levels)) >= 2, f"Expected >1 distinct level, got {levels}"
 
 
 def test_large_image_block_creates_figure() -> None:

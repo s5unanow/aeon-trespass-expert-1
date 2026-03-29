@@ -416,3 +416,39 @@ def test_paragraph_after_list_item_with_large_gap_stays_separate() -> None:
     paragraphs = [b for b in ir.blocks if b.type == "paragraph"]
     assert len(list_items) == 1
     assert len(paragraphs) == 1, "Far paragraph must stay separate"
+
+
+# --- Heading level hierarchy (S5U-441) ---
+
+
+def test_multi_size_headings_get_distinct_levels() -> None:
+    """Headings at different font sizes must produce distinct heading levels."""
+    spans = [
+        _span("Chapter Title", font="GreenleafLightPro", size=18.0, y0=80, span_id="s0001"),
+        _span("Body text.", font="Adonis-Regular", size=9.0, y0=120, span_id="s0002"),
+        _span("Section Heading", font="GreenleafLightPro", size=14.0, y0=200, span_id="s0003"),
+        _span("More body.", font="Adonis-Regular", size=9.0, y0=240, span_id="s0004"),
+        _span("Subsection", font="Adonis-Bold", size=10.0, y0=320, span_id="s0005"),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    assert len(headings) == 3, f"Expected 3 headings, got {len(headings)}"
+    levels = [h.level for h in headings]
+    assert levels[0] < levels[1] < levels[2], f"Levels must be strictly increasing: {levels}"
+
+
+def test_single_size_headings_stay_same_level() -> None:
+    """Headings all at the same font size must share one heading level."""
+    spans = [
+        _span("Heading A", font="Adonis-Bold", size=10.0, y0=100, span_id="s0001"),
+        _span("Body text.", font="Adonis-Regular", size=9.0, y0=130, span_id="s0002"),
+        _span("Heading B", font="Adonis-Bold", size=10.0, y0=200, span_id="s0003"),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    assert len(headings) == 2
+    assert headings[0].level == headings[1].level, "Same-size headings must share one level"
