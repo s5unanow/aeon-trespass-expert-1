@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 
 from atr_schemas.common import Rect
-from atr_schemas.page_ir_v1 import InlineNode, ListItemBlock, ParagraphBlock, TextInline
+from atr_schemas.page_ir_v1 import IconInline, InlineNode, ListItemBlock, ParagraphBlock, TextInline
 
 # Sentence boundary: ". " followed by uppercase Latin or Cyrillic letter.
 SENTENCE_BOUNDARY_RE = re.compile(r"\. (?=[A-ZА-ЯЁ])")  # noqa: RUF001
@@ -231,3 +231,54 @@ def merge_list_continuations(blocks: list[object]) -> list[object]:
             result.append(block)
             i += 1
     return result
+
+
+# ---------------------------------------------------------------------------
+# Icon instance deduplication
+# ---------------------------------------------------------------------------
+
+# Block types that produce visible output in the render page builder.
+_RENDERABLE_BLOCK_TYPES = frozenset({"heading", "paragraph", "list_item"})
+
+
+def _collect_icon_locations(
+    blocks: list[object],
+) -> dict[str, list[tuple[int, int, str]]]:
+    """Map each icon instance_id to its (block_idx, child_idx, block_type) locations."""
+    locs: dict[str, list[tuple[int, int, str]]] = {}
+    for bi, block in enumerate(blocks):
+        for ci, child in enumerate(getattr(block, "children", [])):
+            if isinstance(child, IconInline) and child.instance_id:
+                locs.setdefault(child.instance_id, []).append((bi, ci, getattr(block, "type", "")))
+    return locs
+
+
+def dedup_icon_instances(blocks: list[object]) -> None:
+    """Remove duplicate icon instance_ids across blocks (in-place).
+
+    When the same icon instance appears in multiple blocks (e.g. a paragraph
+    and a table due to overlapping y-ranges), keep the copy in the
+    renderable block and strip it from non-renderable blocks.
+    """
+    icon_locs = _collect_icon_locations(blocks)
+
+    remove: set[tuple[int, int]] = set()
+    for locs in icon_locs.values():
+        if len(locs) > 1:
+            renderable = [loc for loc in locs if loc[2] in _RENDERABLE_BLOCK_TYPES]
+            others = [loc for loc in locs if loc[2] not in _RENDERABLE_BLOCK_TYPES]
+            # Keep first renderable (or first overall); remove the rest
+            victims = (renderable[1:] + others) if renderable else locs[1:]
+            remove.update((bi, ci) for bi, ci, _ in victims)
+
+    if not remove:
+        return
+
+    for bi in sorted({bi for bi, _ in remove}):
+        to_drop = sorted((ci for b, ci in remove if b == bi), reverse=True)
+        children = list(getattr(blocks[bi], "children", []))
+        for ci in to_drop:
+            children.pop(ci)
+        block = blocks[bi]
+        if hasattr(block, "model_copy"):
+            blocks[bi] = block.model_copy(update={"children": children})

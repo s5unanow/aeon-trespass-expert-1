@@ -8,5 +8,5 @@ symbol_id = "sym.progress"
 label = "Progress"
 alt_label_ru = "Прогресс"
 template_asset = "packages/fixtures/sample_documents/walking_skeleton/source/symbol_progress.png"
-match_threshold = 0.70
+match_threshold = 0.74
 inline = true

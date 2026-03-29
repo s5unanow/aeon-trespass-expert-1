@@ -3,12 +3,21 @@
 from __future__ import annotations
 
 from atr_pipeline.stages.structure.block_postprocess import (
+    dedup_icon_instances,
     deduplicate_blocks,
     merge_list_continuations,
     split_long_paragraphs,
 )
 from atr_schemas.common import Rect
-from atr_schemas.page_ir_v1 import HeadingBlock, ListItemBlock, ParagraphBlock, TextInline
+from atr_schemas.enums import SymbolAnchorKind
+from atr_schemas.page_ir_v1 import (
+    HeadingBlock,
+    IconInline,
+    ListItemBlock,
+    ParagraphBlock,
+    TableBlock,
+    TextInline,
+)
 
 
 def _rect(x0: float, y0: float, x1: float, y1: float) -> Rect:
@@ -157,3 +166,82 @@ class TestMergeListContinuations:
         assert isinstance(result[0], ListItemBlock)
         text = "".join(c.text for c in result[0].children if hasattr(c, "text"))
         assert "1 Step" in text or "1  Step" in text  # space separator present
+
+
+# ---------------------------------------------------------------------------
+# Icon instance deduplication
+# ---------------------------------------------------------------------------
+
+
+def _icon(instance_id: str, symbol_id: str = "sym.test") -> IconInline:
+    return IconInline(
+        symbol_id=symbol_id,
+        instance_id=instance_id,
+        bbox=Rect(x0=0, y0=0, x1=10, y1=10),
+        anchor_kind=SymbolAnchorKind.INLINE,
+    )
+
+
+class TestDedupIconInstances:
+    """Tests for dedup_icon_instances."""
+
+    def test_no_duplicates_unchanged(self) -> None:
+        blocks: list[object] = [
+            _para("b1", "text"),
+            ParagraphBlock(
+                block_id="b2",
+                children=[TextInline(text="a"), _icon("i1")],
+            ),
+        ]
+        dedup_icon_instances(blocks)
+        icons = [c for b in blocks for c in getattr(b, "children", []) if isinstance(c, IconInline)]
+        assert len(icons) == 1
+
+    def test_duplicate_in_paragraph_and_table_keeps_paragraph(self) -> None:
+        """Icon in both a paragraph and table — paragraph copy survives."""
+        blocks: list[object] = [
+            TableBlock(
+                block_id="t1",
+                children=[TextInline(text="table"), _icon("i1", "sym.progress")],
+            ),
+            ParagraphBlock(
+                block_id="p1",
+                children=[TextInline(text="para"), _icon("i1", "sym.progress")],
+            ),
+        ]
+        dedup_icon_instances(blocks)
+        # Table should lose the icon
+        table_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        assert len(table_icons) == 0
+        # Paragraph keeps it
+        para_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        assert len(para_icons) == 1
+        assert para_icons[0].instance_id == "i1"
+
+    def test_duplicate_in_two_paragraphs_keeps_first(self) -> None:
+        blocks: list[object] = [
+            ParagraphBlock(
+                block_id="p1",
+                children=[TextInline(text="first"), _icon("i1")],
+            ),
+            ParagraphBlock(
+                block_id="p2",
+                children=[TextInline(text="second"), _icon("i1")],
+            ),
+        ]
+        dedup_icon_instances(blocks)
+        p1_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        p2_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        assert len(p1_icons) == 1
+        assert len(p2_icons) == 0
+
+    def test_duplicate_in_two_tables_keeps_first(self) -> None:
+        blocks: list[object] = [
+            TableBlock(block_id="t1", children=[_icon("i1")]),
+            TableBlock(block_id="t2", children=[_icon("i1")]),
+        ]
+        dedup_icon_instances(blocks)
+        t1_icons = [c for c in blocks[0].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        t2_icons = [c for c in blocks[1].children if isinstance(c, IconInline)]  # type: ignore[attr-defined]
+        assert len(t1_icons) == 1
+        assert len(t2_icons) == 0
