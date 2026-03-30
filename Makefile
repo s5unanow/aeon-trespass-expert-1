@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test test-hooks codegen export clean validate-fixtures config-health
+.PHONY: help bootstrap lint format typecheck test test-hooks codegen check-codegen export clean validate-fixtures config-health
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -7,13 +7,14 @@ bootstrap: ## Install all deps (uv sync + pnpm install)
 	uv sync
 	pnpm install
 
-lint: ## Run ruff check + ruff format --check + mypy + import-linter + file-length + fixtures + pnpm lint
+lint: ## Run ruff check + ruff format --check + mypy + import-linter + file-length + fixtures + codegen freshness + pnpm lint
 	uv run ruff check .
 	uv run ruff format --check .
 	uv run mypy apps/pipeline/src packages/schemas/python
 	uv run lint-imports
 	uv run python scripts/check_file_length.py
 	uv run python scripts/validate_fixture_manifest.py
+	bash scripts/check_codegen_fresh.sh
 	pnpm -r run lint
 
 format: ## Auto-fix formatting
@@ -37,6 +38,11 @@ export: ## Export pipeline artifacts to web public (re-generates apps/web/public
 
 export-en: ## Export EN-only extraction artifacts for review
 	uv run python scripts/export_to_web.py --edition en
+
+check-codegen: ## Check that generated schemas match Pydantic sources (requires pnpm install)
+	@command -v node >/dev/null 2>&1 || { echo "ERROR: node not found. Run 'make bootstrap' first."; exit 1; }
+	@test -d node_modules/.pnpm || { echo "ERROR: pnpm packages not installed. Run 'pnpm install' first."; exit 1; }
+	bash scripts/check_codegen_fresh.sh
 
 codegen: ## Regenerate JSON Schema + TS types from Pydantic models
 	uv run python scripts/generate_jsonschema.py
