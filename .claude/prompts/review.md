@@ -26,6 +26,11 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 12. **Claim verification** — if the PR description or commit message claims a fix (e.g., "fix mypy error"), verify the fix is present in the actual diff. Unfulfilled claims are CRITICAL
 13. **Tool/API reference validation** — if documentation or config references external tool names or MCP methods, verify they match actual available tool signatures
 14. **Real-page acceptance (extraction PRs only)** — if the Linear issue or PR description names specific pages (e.g., p0036, p0054), at least one test must load that page's fixture/artifact and assert the claimed behavior. Synthetic-only coverage for page-specific claims is a **WARNING**. This check does not apply to non-extraction PRs (web, config, DevOps, etc.)
+15. **"Must not break" section (Bug/Regression/Improvement/Refactor only)** — extract the issue number from the branch name (`s5u-XXX`), fetch the Linear issue via `mcp__plugin_linear_linear__get_issue`, and check its type labels. If the issue has any of the labels `Bug`, `Regression`, `Improvement`, or `Refactor`:
+    - If the issue description does **not** contain "must not break" (case-insensitive): **WARNING** — `"Linear issue missing 'Must not break' section — invariants should be listed before merge"`
+    - If the section exists but says only "None identified": **NIT** — `"'Must not break' says 'None identified' — consider whether invariants truly don't apply"`
+    - If the issue has only `Feature` label (no applicable types): skip this check entirely
+    - This check must **never** produce a CRITICAL or BLOCK on its own — WARNING is the maximum severity
 
 ## How to review
 

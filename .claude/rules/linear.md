@@ -42,10 +42,19 @@ If the work belongs to an existing epic, set `parentId`:
 
 When creating issues of these types, include a **"Must not break"** section listing invariants the implementation must preserve. Each entry should name the invariant and briefly explain why it matters.
 
+**How to draft this section** — before writing the issue, investigate:
+
+1. **Current outputs** — run the affected code on representative pages/inputs and note what it produces today. These outputs are your invariants.
+2. **Cross-stage / cross-edition contracts** — if the change touches a pipeline stage, check what downstream stages consume its output. If it touches filtering (edition, language, document), list every filter dimension that must be preserved.
+3. **Existing tests** — run `uv run pytest -x -q --timeout=60 -m "not slow"` and name specific test functions that cover the area being changed. These tests must stay green.
+
+Each invariant should follow the pattern: `"<what> — <why it matters>"`.
+
 Examples:
 - "Edition filtering — EN export must never include RU content"
 - "Existing `glossary_mentions` on pages that already have them"
 - "`mypy --strict` passing on all changed files"
+- "`test_render_icon_inline_spacing` — verifies icon-to-text separator logic"
 
 If there are genuinely no invariants at risk, write "None identified" — do not omit the section.
 
