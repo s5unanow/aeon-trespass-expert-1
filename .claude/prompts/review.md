@@ -41,13 +41,15 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
    ```bash
    uv run pytest -x -q --timeout=60 -m "not slow"
    ```
-   If any test fails, determine whether the failing test is **pre-existing** or **new** (added in this branch):
+   If any test fails, determine whether each failing test function is **pre-existing** or **new** (added in this branch):
    ```bash
-   # List test files added in this branch
-   git diff --name-only --diff-filter=A main...HEAD -- 'tests/**/*.py' 'apps/*/tests/**/*.py'
+   # List test function names added in this branch (function-level, not file-level)
+   git diff main...HEAD -- 'tests/**/*.py' 'apps/*/tests/**/*.py' | grep -E '^\+\s*(async )?def test_' | sed 's/^+[[:space:]]*//'
    ```
-   - If the failing test is in a file that existed before this branch (not in the added-files list), it is a **pre-existing test broken by changes** → **CRITICAL**: `"Pre-existing test {test_name} broken by changes"`
-   - If the failing test is in a file added by this branch, it is a **new test failure** → **WARNING**: `"New test {test_name} fails — likely in-progress"`
+   For each failing test `test_foo`, check if `def test_foo` appears in the added lines above:
+   - If `def test_foo` is **NOT** in the added-functions list, it is a **pre-existing test broken by changes** → **CRITICAL**: `"Pre-existing test {test_name} broken by changes"`
+   - If `def test_foo` **IS** in the added-functions list, it is a **new test failure** → **WARNING**: `"New test {test_name} fails — likely in-progress"`
+   - Classify each failing test independently — a single file may contain both new and pre-existing tests
    - Pre-existing test breakage means the branch introduces a regression. This **MUST** produce a **BLOCK** verdict regardless of other findings.
 
 ## Output format
