@@ -22,6 +22,32 @@ When creating a Linear issue (`mcp__linear__save_issue`), always set:
 - `Improvement` — enhancement to existing capability
 - `Refactor` — architecture cleanup, tech debt reduction
 
+**Execution mode** (modifier — combine with area + type labels):
+- `cross-system-review` — Triggers mandatory Codex second review in `/ship` workflow
+
+## When to apply `cross-system-review`
+
+Apply this label when the issue's implementation will **cross subsystem boundaries** and the contract between subsystems is non-trivial. A second-model review (Codex) catches interface mismatches that a single reviewer misses.
+
+**Apply when:**
+- Change spans **pipeline + web** (e.g., new IR field that the reader must render)
+- Change spans **schemas + pipeline** (e.g., Pydantic model change that affects stage contracts)
+- Change spans **schemas + web** (e.g., generated TS type consumed by new component)
+- Change affects **export + render** (e.g., export script changes that alter what the web app receives)
+- Change modifies a **shared config** consumed by both pipeline and web
+- Change adds a **new data flow path** between any two subsystems
+
+**Do NOT apply when:**
+- Change is isolated to one subsystem (only pipeline stages, only web components)
+- Change is config/docs/DevOps only (no cross-boundary data flow)
+- Change is a pure refactor within one subsystem boundary
+
+**Examples:**
+- "Add `glossary_mentions` field to IR and render tooltips in reader" → YES (schemas + pipeline + web)
+- "Fix CSS spacing on sidebar component" → NO (web only)
+- "Add new extraction stage for evidence blocks" → NO (pipeline only, unless it adds new IR types)
+- "Externalize render config to TOML and consume in both pipeline and web" → YES (config + pipeline + web)
+
 ## Milestone
 
 Assign to the matching milestone if the work clearly fits one:

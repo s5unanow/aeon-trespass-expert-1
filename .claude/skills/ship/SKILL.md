@@ -25,6 +25,30 @@ Read `.claude/prompts/review.md` and use it as the Agent prompt. The review agen
 
 A pre-PR hook will block `gh pr create` if the review artifact is missing or contains a BLOCK verdict.
 
+## 1b. Codex review (conditional on label)
+
+Fetch the Linear issue if not already fetched in step 0/1:
+
+```
+mcp__plugin_linear_linear__get_issue(id="S5U-XXX")
+```
+
+Check the issue's labels for `cross-system-review`:
+
+**Label ABSENT** → skip to step 2.
+
+**Label PRESENT** →
+
+1. Write marker file:
+   ```bash
+   mkdir -p tmp
+   touch tmp/.codex-required-s5u-<NUMBER>
+   ```
+2. Read `.claude/prompts/codex-review.md` and follow its instructions (manages `codex exec`, REVISE loop, artifact)
+3. If Codex reached **APPROVED** → proceed
+4. If code changed during the REVISE loop, `tmp/review-s5u-<NUMBER>.md` is stale — delete it and re-run step 1 (Claude review). The Codex orchestration prompt handles the deletion; you re-run step 1.
+5. If Codex did **not converge** (INCOMPLETE after 3 rounds) → **stop and ask user**. Do not proceed to push.
+
 ## 2. Push
 
 ```bash

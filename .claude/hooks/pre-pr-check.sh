@@ -48,6 +48,31 @@ fi
 
 echo "Review artifact verified: $REVIEW_FILE"
 
+# --- Conditional Codex review enforcement ---
+# If the ship skill detected a cross-system-review label, it writes a marker file.
+# When the marker exists, the Codex review artifact must also exist with APPROVED verdict.
+CODEX_MARKER="tmp/.codex-required-${ISSUE_NUM}"
+
+if [ -f "$CODEX_MARKER" ]; then
+  CODEX_FILE="tmp/codex-review-${ISSUE_NUM}.md"
+
+  if [ ! -f "$CODEX_FILE" ]; then
+    echo "BLOCKED: Codex review required (cross-system-review label) but no artifact at '$CODEX_FILE'."
+    echo ""
+    echo "Run /codex-review or use /ship which includes conditional Codex review."
+    exit 1
+  fi
+
+  if ! grep -q 'verdict: APPROVED' "$CODEX_FILE"; then
+    echo "BLOCKED: Codex review artifact exists but verdict is not APPROVED."
+    echo ""
+    echo "Address Codex feedback and re-run the review."
+    exit 1
+  fi
+
+  echo "Codex review artifact verified: $CODEX_FILE"
+fi
+
 # --- Advisory visual verification check ---
 # If the branch touches rendering paths (components, styles, render stages),
 # check for recent screenshot artifacts in tmp/. Advisory only — exit 0 regardless.
