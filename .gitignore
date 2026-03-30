@@ -62,6 +62,7 @@ apps/web/public/documents/*
 !apps/web/public/documents/multi_column/
 !apps/web/public/documents/table_callout/
 !apps/web/public/documents/figure_caption/
+!apps/web/public/documents/dense_figures/
 
 # Runtime state
 var/*.db
