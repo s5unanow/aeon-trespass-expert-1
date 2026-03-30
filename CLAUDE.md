@@ -56,7 +56,7 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 
 Runs on every push to `main` and on every PR. Includes all 9 local gates plus:
 
-9. `check_codegen_fresh.sh` — verifies generated JSON Schema + TS types match Pydantic sources. *CI-only because it needs `pnpm install` and a clean checkout to be reliable.*
+9. `check_codegen_fresh.sh` — verifies generated JSON Schema + TS types match Pydantic sources. *Also available locally via `make check-codegen` and included in `make lint`.*
 10. `validate_fixture_manifest.py` — fixture integrity checks. *CI-only because it can be slow with large fixture sets.*
 11. `check_extraction_scope.py` — detects extraction-related changes in PRs. *CI-only because it compares against the PR base branch.*
 12. `check_golden_refresh.py` — validates golden file updates when extraction scope is detected. *CI-only because it requires base-branch comparison and only triggers conditionally.*
