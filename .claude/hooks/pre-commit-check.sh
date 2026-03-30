@@ -96,6 +96,12 @@ if [ "$SECRETS_FOUND" -ne 0 ]; then
 fi
 echo "  ✓ [0/9] secret guard"
 
+# -- Advisory: schema model change reminder --
+SCHEMA_MODELS_STAGED=$(git diff --cached --name-only -- 'packages/schemas/python/' | grep '\.py$' || true)
+if [ -n "$SCHEMA_MODELS_STAGED" ]; then
+  echo "  ⚠ Schema models changed — run 'make codegen' if you haven't already"
+fi
+
 run_gate "[1/9] ruff check" uv run ruff check . || exit 1
 run_gate "[2/9] ruff format" uv run ruff format --check . || exit 1
 run_gate "[3/9] mypy" uv run mypy apps/pipeline/src/ packages/schemas/python/ || exit 1

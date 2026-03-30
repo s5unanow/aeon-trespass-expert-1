@@ -24,10 +24,11 @@ docs/                Architecture docs (read on demand, not memorized)
 
 ```bash
 make bootstrap        # Install all deps (uv sync + pnpm install)
-make lint             # ruff check + mypy + import-linter + file-length + pnpm lint
+make lint             # ruff check + mypy + import-linter + file-length + codegen freshness + pnpm lint
 make typecheck        # mypy + tsc
 make test             # All tests (pytest + pnpm test)
 make codegen          # Regenerate JSON Schema + TS types from Pydantic models
+make check-codegen    # Verify generated schemas match Pydantic sources
 make export           # Export pipeline artifacts to web public (re-generates documents/)
 make format           # Auto-fix formatting (ruff format + ruff check --fix + pnpm format)
 make clean            # Remove caches and build artifacts
@@ -55,7 +56,7 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 
 Runs on every push to `main` and on every PR. Includes all 9 local gates plus:
 
-9. `check_codegen_fresh.sh` — verifies generated JSON Schema + TS types match Pydantic sources. *CI-only because it needs `pnpm install` and a clean checkout to be reliable.*
+9. `check_codegen_fresh.sh` — verifies generated JSON Schema + TS types match Pydantic sources. *Also available locally via `make check-codegen` and included in `make lint`.*
 10. `validate_fixture_manifest.py` — fixture integrity checks. *CI-only because it can be slow with large fixture sets.*
 11. `check_extraction_scope.py` — detects extraction-related changes in PRs. *CI-only because it compares against the PR base branch.*
 12. `check_golden_refresh.py` — validates golden file updates when extraction scope is detected. *CI-only because it requires base-branch comparison and only triggers conditionally.*
