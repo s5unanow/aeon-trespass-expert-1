@@ -48,6 +48,32 @@ fi
 
 echo "Review artifact verified: $REVIEW_FILE"
 
+# --- Advisory visual verification check ---
+# If the branch touches rendering paths (components, styles, render stages),
+# check for recent screenshot artifacts in tmp/. Advisory only — exit 0 regardless.
+
+RENDER_PATHS=$(git diff --name-only main...HEAD -- \
+  'apps/web/src/components/' \
+  'apps/web/src/routes/' \
+  'apps/web/src/styles/' \
+  'scripts/export_to_web.py' \
+  'scripts/_export_blocks.py' \
+  'apps/pipeline/src/atr_pipeline/stages/render/' 2>/dev/null || true)
+
+if [ -n "$RENDER_PATHS" ]; then
+  # Check for PNG screenshots in tmp/ modified within the last 2 hours
+  SCREENSHOTS=$(find tmp/ -maxdepth 1 -name '*.png' -mmin -120 2>/dev/null | head -1)
+
+  if [ -z "$SCREENSHOTS" ]; then
+    echo ""
+    echo "WARNING: Rendering changes detected but no visual verification screenshots in tmp/."
+    echo "Consider running visual verification before PR."
+    echo "Changed rendering files:"
+    echo "$RENDER_PATHS" | sed 's/^/  /'
+    echo ""
+  fi
+fi
+
 # --- Advisory extraction scope + golden refresh check ---
 # Runs check_extraction_scope.py to detect extraction-related changes.
 # If extraction scope is detected but no golden refresh commit is found, warns the user.
