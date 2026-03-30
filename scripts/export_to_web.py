@@ -20,6 +20,7 @@ from _export_blocks import (  # noqa: E402
     namespace_bare_figures,
     postprocess_blocks,
     rewrite_facsimile_urls,
+    rewrite_figure_urls,
     text_content,
     validate_figure_refs,
 )
@@ -240,6 +241,9 @@ def export_pages(
 
         # Rewrite legacy bare imgNNNN asset IDs to namespaced pid.imgNNNN
         namespace_bare_figures(best, pid)
+
+        # Rewrite pipeline-relative figure src paths for all page types
+        rewrite_figure_urls(best, doc_id)
 
         if best.get("presentation_mode") == "facsimile":
             rewrite_facsimile_urls(best, doc_id)
