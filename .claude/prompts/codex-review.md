@@ -49,7 +49,6 @@ Run codex exec in read-only sandbox mode:
 ```bash
 codex exec \
   -s read-only \
-  --ephemeral \
   -o tmp/codex-review-s5u-<NUMBER>.md \
   "You are reviewing a pull request for the Aeon Trespass Expert project. \
 The diff is in tmp/codex-input-s5u-<NUMBER>.md. The codebase is available read-only. \
@@ -84,8 +83,6 @@ Track iteration count. For each REVISE:
 4. Resume the Codex session:
    ```bash
    codex exec resume --last \
-     -s read-only \
-     --ephemeral \
      -o tmp/codex-review-s5u-<NUMBER>.md \
      "I have addressed your feedback. Please re-review the changes."
    ```
