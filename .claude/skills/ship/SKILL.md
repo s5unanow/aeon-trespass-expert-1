@@ -51,14 +51,20 @@ CI passes → merge. CI fails → fix and push. No checks → merge.
 
 ## 5. Check main CI status
 
-Before merging, verify the latest CI run on `main` is green to prevent cascading failures:
+Before merging, verify the latest CI run on `main` is green **and matches the current main HEAD** to prevent cascading failures from dispatch latency.
 
 ```bash
-gh run list -b main --limit 1 --json status,conclusion -q '.[0]'
+MAIN_SHA=$(gh api repos/{owner}/{repo}/branches/main --jq '.commit.sha')
+RUN_JSON=$(gh run list -b main --limit 1 --json headSha,status,conclusion,databaseId -q '.[0]')
+RUN_SHA=$(echo "$RUN_JSON" | jq -r '.headSha')
 ```
 
+**Step A — Verify SHA match.** If `RUN_SHA` ≠ `MAIN_SHA`, the latest run is stale (GitHub hasn't dispatched CI for the new HEAD yet). Retry up to 3 times with 10 s delay between attempts. If still mismatched after 3 retries, **stop and warn**: "No CI run found for current main HEAD — cannot verify CI status."
+
+**Step B — Evaluate the matched run:**
+
 - If `conclusion` is `"success"` → proceed to merge.
-- If `status` is `"in_progress"` → wait for it to finish: `gh run list -b main --limit 1 --json databaseId -q '.[0].databaseId' | xargs gh run watch --exit-status`
+- If `status` is `"in_progress"` → wait for it to finish: extract `databaseId` and run `gh run watch <id> --exit-status`.
 - If `conclusion` is `"failure"` → **stop and warn**: "Main CI is red — merging now would compound the failure. Fix main first or confirm override." Do not merge unless the user explicitly overrides.
 
 ## 6. Merge and sync

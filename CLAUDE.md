@@ -117,7 +117,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 ### 9. Merge and sync
 - Merge via: `gh pr merge <pr-number> --squash --delete-branch`
 - Sync local: `git checkout main && git pull`
-- **Check main CI before merge**: before running `gh pr merge`, verify the latest CI run on `main` is green (`gh run list -b main --limit 1 --json status,conclusion -q '.[0]'`). If main is red, fix it first. If in-progress, wait. Do not batch-merge — cascading failures propagate undetected when merges skip CI verification.
+- **Check main CI before merge**: before running `gh pr merge`, verify the latest CI run on `main` is green **and its `headSha` matches current main HEAD** (`gh api repos/{owner}/{repo}/branches/main --jq '.commit.sha'`). If the SHA doesn't match (stale run from dispatch latency), retry up to 3× with 10 s delay. If main is red, fix it first. If in-progress, wait. Do not batch-merge — cascading failures propagate undetected when merges skip CI verification.
 - Update Linear issue to **Done**: `mcp__linear__save_issue(id="S5U-XXX", state="Done")`
 
 ### Rollback process
