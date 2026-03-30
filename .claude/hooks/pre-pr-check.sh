@@ -47,4 +47,33 @@ if grep -qE '\*\*BLOCK\*\*' "$REVIEW_FILE"; then
 fi
 
 echo "Review artifact verified: $REVIEW_FILE"
+
+# --- Advisory extraction scope + golden refresh check ---
+# Runs check_extraction_scope.py to detect extraction-related changes.
+# If extraction scope is detected but no golden refresh commit is found, warns the user.
+# Advisory only — never blocks PR creation.
+
+SCOPE_JSON=$(cd /Users/s5una/projects/aeon-trespass-expert-1 && uv run python scripts/check_extraction_scope.py --base main --head HEAD 2>/dev/null || true)
+
+if [ -n "$SCOPE_JSON" ]; then
+  # check_extraction_scope.py outputs indented JSON — "areas": [] means no extraction scope
+  if ! echo "$SCOPE_JSON" | grep -q '"areas": \[\]'; then
+    # Extraction scope detected — extract area names for the warning message
+    AREAS=$(echo "$SCOPE_JSON" | python3 -c "import sys,json; print(','.join(json.load(sys.stdin).get('areas',[])))" 2>/dev/null || echo "unknown")
+    GOLDEN_DETECTED=$(echo "$SCOPE_JSON" | grep -c '"golden_refresh_detected": true' || true)
+
+    if [ "$GOLDEN_DETECTED" -eq 0 ]; then
+      # Check if any commit on this branch has "refresh goldens" in its message
+      HAS_REFRESH=$(git log main..HEAD --format='%s' | grep -ic 'refresh goldens' || true)
+
+      if [ "$HAS_REFRESH" -eq 0 ]; then
+        echo ""
+        echo "WARNING: Extraction scope detected (areas: $AREAS) but no golden refresh commit found."
+        echo "CI will likely fail — consider running golden refresh before pushing."
+        echo ""
+      fi
+    fi
+  fi
+fi
+
 exit 0
