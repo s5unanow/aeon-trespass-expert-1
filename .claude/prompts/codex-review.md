@@ -48,6 +48,8 @@ Run codex exec in read-only sandbox mode:
 
 ```bash
 codex exec \
+  -m gpt-5.4 \
+  -c model_reasoning_effort="high" \
   -s read-only \
   -o tmp/codex-review-s5u-<NUMBER>.md \
   "You are reviewing a pull request for the Aeon Trespass Expert project. \
