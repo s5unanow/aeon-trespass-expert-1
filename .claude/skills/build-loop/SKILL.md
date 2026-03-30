@@ -11,14 +11,14 @@ Work through Linear backlog issues one at a time until stopped.
 
 Repeat:
 
-1. **Pick up** — invoke `/next` to select and branch for the highest-priority backlog issue
-2. **Implement** — read the issue, identify files, implement changes with tests following project conventions
-3. **Preflight** — invoke `/preflight`; fix failures and re-run until all gates pass
-4. **Commit** — `git add <specific files> && git commit -m "S5U-XXX: <description>"`
-5. **Ship** — invoke `/ship` to review, PR, CI, merge, and update Linear
-6. **Checkpoint** — ask: "S5U-XXX shipped. Continue to next issue?"
+1. **Pick up & ship** — invoke `/next`, which handles the full single-issue lifecycle: select issue, branch, implement, preflight, commit, and ship
+2. **Checkpoint** — after `/next` returns, pause and report to the user:
+   - Show: issue ID, title, PR link, what was done
+   - Ask: "S5U-XXX shipped. Continue to next issue?"
    - Yes/keep going → loop back to step 1
    - No/stop/no response → exit
+
+**Important**: `/next` owns the single-issue scope (implement through ship). `/build-loop` owns the multi-issue loop and checkpoints between issues. Never skip the checkpoint — always pause between issues to let the user redirect or stop.
 
 ## Failure handling
 
