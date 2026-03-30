@@ -37,10 +37,11 @@ make clean            # Remove caches and build artifacts
 
 Two tiers of checks run at different stages. Both must pass.
 
-### Local (pre-commit hook, 8 gates)
+### Local (pre-commit hook, 9 gates)
 
 Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`. Fast — targets < 60 s.
 
+0. `secret guard` — blocks staged secrets (filenames: `.env`, `*.key`, `*.pem`, `credentials.json`; content: `sk-`, `AKIA`, `ghp_`, `gho_`, PEM headers)
 1. `ruff check` — lint (includes McCabe complexity C901, max 12)
 2. `ruff format --check` — format violations
 3. `mypy --strict` — type errors
@@ -50,9 +51,9 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 7. `tsc --noEmit` — frontend type check
 8. `pytest -x -q --timeout=60 -m "not slow"` — fast test subset only
 
-### CI (GitHub Actions, 8 + 4 extra)
+### CI (GitHub Actions, 9 + 4 extra)
 
-Runs on every push to `main` and on every PR. Includes all 8 local gates plus:
+Runs on every push to `main` and on every PR. Includes all 9 local gates plus:
 
 9. `check_codegen_fresh.sh` — verifies generated JSON Schema + TS types match Pydantic sources. *CI-only because it needs `pnpm install` and a clean checkout to be reliable.*
 10. `validate_fixture_manifest.py` — fixture integrity checks. *CI-only because it can be slow with large fixture sets.*
@@ -64,7 +65,7 @@ CI also runs `pytest --tb=short` (full suite — includes slow tests, no timeout
 ### What "passing" means
 
 - **Local green** = safe to commit and push, but not sufficient for merge.
-- **CI green** = all 12 gates pass — required for merge. "Definition of Done" means CI green.
+- **CI green** = all 13 gates pass — required for merge. "Definition of Done" means CI green.
 
 ## Development workflow (MANDATORY)
 
@@ -89,14 +90,14 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 
 ### 4. Work on the branch
 - Commit early and often with prefix `S5U-XXX: description`
-- The 8 local gates run automatically before each commit via hook
+- The 9 local gates run automatically before each commit via hook
 
 ### 5. Definition of done (all must be true before PR)
 - [ ] Code changes directly address the Linear issue description
 - [ ] New/changed code has tests (unless pure config/docs change)
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
-- [ ] CI green after push (all 12 gates — local green alone is not sufficient)
+- [ ] CI green after push (all 13 gates — local green alone is not sufficient)
 
 ### 6. Sub-agent code review (MANDATORY before PR)
 - **You MUST spawn a review agent before creating a PR.** This is not optional.
