@@ -44,7 +44,7 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
    If any test fails, determine whether each failing test function is **pre-existing** or **new** (added in this branch):
    ```bash
    # List test function names added in this branch (function-level, not file-level)
-   git diff main...HEAD -- 'tests/**/*.py' 'apps/*/tests/**/*.py' | grep -E '^\+\s*(async )?def test_' | sed 's/^+\s*//'
+   git diff main...HEAD -- 'tests/**/*.py' 'apps/*/tests/**/*.py' | grep -E '^\+\s*(async )?def test_' | sed 's/^+[[:space:]]*//'
    ```
    For each failing test `test_foo`, check if `def test_foo` appears in the added lines above:
    - If `def test_foo` is **NOT** in the added-functions list, it is a **pre-existing test broken by changes** → **CRITICAL**: `"Pre-existing test {test_name} broken by changes"`
