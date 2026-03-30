@@ -60,14 +60,50 @@ run_gate() {
 
 echo "Running pre-commit quality gates..."
 
-run_gate "[1/8] ruff check" uv run ruff check . || exit 1
-run_gate "[2/8] ruff format" uv run ruff format --check . || exit 1
-run_gate "[3/8] mypy" uv run mypy apps/pipeline/src/ packages/schemas/python/ || exit 1
-run_gate "[4/8] lint-imports" uv run lint-imports || exit 1
-run_gate "[5/8] file length" uv run python scripts/check_file_length.py || exit 1
-run_gate "[6/8] oxlint" bash -c "cd apps/web && pnpm lint" || exit 1
-run_gate "[7/8] tsc" bash -c "cd apps/web && pnpm typecheck" || exit 1
-run_gate "[8/8] pytest" uv run pytest -x -q --timeout=60 -m "not slow" || exit 1
+# -- Gate 0: Credential & secret guard --
+# Scans staged files for secrets before any other quality gate.
+SECRETS_FOUND=0
+
+# 0a. Filename patterns — block dangerous file types
+STAGED_FILES=$(git diff --cached --name-only)
+if [ -n "$STAGED_FILES" ]; then
+  DANGEROUS_FILES=$(echo "$STAGED_FILES" \
+    | grep -E '(^|/)\.env$|(^|/)\.env\.[^/]+$|\.key$|\.pem$|(^|/)credentials\.json$|(^|/)secrets\.[^/]+$|\.secret$' \
+    | grep -vE '\.(example|template)$' || true)
+  if [ -n "$DANGEROUS_FILES" ]; then
+    echo "BLOCKED: Staged files match secret/credential filename patterns:"
+    echo "$DANGEROUS_FILES" | sed 's/^/  /'
+    SECRETS_FOUND=1
+  fi
+fi
+
+# 0b. Content patterns — detect API keys/secrets in added lines of staged diffs
+# Exclude this hook file to avoid self-matching on pattern strings.
+CONTENT_MATCHES=$(git diff --cached -U0 -- . ':!.claude/hooks/pre-commit-check.sh' \
+  | grep -E '^\+' | grep -vE '^\+\+\+' \
+  | grep -E 'sk-[a-zA-Z0-9_-]{8,}|AKIA[0-9A-Z]{8,}|ghp_[a-zA-Z0-9]{8,}|gho_[a-zA-Z0-9]{8,}|-----BEGIN (RSA|EC|DSA|OPENSSH) PRIVATE KEY-----' \
+  || true)
+if [ -n "$CONTENT_MATCHES" ]; then
+  echo "BLOCKED: Staged diffs contain potential secrets:"
+  echo "$CONTENT_MATCHES" | head -10 | sed 's/^/  /'
+  SECRETS_FOUND=1
+fi
+
+if [ "$SECRETS_FOUND" -ne 0 ]; then
+  echo ""
+  echo "If this is a false positive, unstage the file or add to an allowlist."
+  exit 1
+fi
+echo "  ✓ [0/9] secret guard"
+
+run_gate "[1/9] ruff check" uv run ruff check . || exit 1
+run_gate "[2/9] ruff format" uv run ruff format --check . || exit 1
+run_gate "[3/9] mypy" uv run mypy apps/pipeline/src/ packages/schemas/python/ || exit 1
+run_gate "[4/9] lint-imports" uv run lint-imports || exit 1
+run_gate "[5/9] file length" uv run python scripts/check_file_length.py || exit 1
+run_gate "[6/9] oxlint" bash -c "cd apps/web && pnpm lint" || exit 1
+run_gate "[7/9] tsc" bash -c "cd apps/web && pnpm typecheck" || exit 1
+run_gate "[8/9] pytest" uv run pytest -x -q --timeout=60 -m "not slow" || exit 1
 
 echo "All quality gates passed."
 exit 0
