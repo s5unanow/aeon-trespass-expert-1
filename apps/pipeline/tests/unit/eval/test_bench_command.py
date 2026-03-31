@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -11,14 +12,20 @@ from atr_pipeline.cli.main import app
 runner = CliRunner()
 
 
+def _strip_ansi(text: str) -> str:
+    """Remove ANSI escape sequences from text."""
+    return re.sub(r"\x1b\[[0-9;]*m", "", text)
+
+
 class TestBenchHelp:
     def test_help_shows_options(self) -> None:
         result = runner.invoke(app, ["bench", "--help"])
         assert result.exit_code == 0
-        assert "--ladder" in result.output
-        assert "--output-json" in result.output
-        assert "--baseline" in result.output
-        assert "--fail-on-regression" in result.output
+        text = _strip_ansi(result.output)
+        assert "--ladder" in text
+        assert "--output-json" in text
+        assert "--baseline" in text
+        assert "--fail-on-regression" in text
 
 
 class TestBenchErrors:
