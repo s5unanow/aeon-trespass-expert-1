@@ -19,15 +19,9 @@ from typing import TypedDict
 
 THRESHOLDS = {"complexity": 12, "branches": 12, "statements": 50, "args": 7}
 
-HOTSPOT_REGISTRY: dict[str, tuple[str, list[str]]] = {
-    "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py": (
-        "S5U-144",
-        ["C901", "PLR0912", "PLR0915"],
-    ),
-    "apps/pipeline/src/atr_pipeline/stages/translation/planner.py": (
-        "S5U-143",
-        ["C901", "PLR0912"],
-    ),
+HOTSPOT_REGISTRY: dict[str, str] = {
+    "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py": "S5U-144",
+    "apps/pipeline/src/atr_pipeline/stages/translation/planner.py": "S5U-143",
 }
 
 PYTHON_DIRS = ("apps/pipeline/src", "packages/schemas/python", "scripts")
@@ -88,13 +82,19 @@ _BRANCH_TYPES: tuple[type[ast.AST], ...] = (
 
 def _count_branches(node: ast.AST) -> int:
     count = 0
-    for child in ast.walk(node):
+    # Manual walk to skip nested function bodies (ruff scopes per-function).
+    stack: list[ast.AST] = list(ast.iter_child_nodes(node))
+    while stack:
+        child = stack.pop()
+        if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue  # don't descend into nested functions
         if isinstance(child, _BRANCH_TYPES):
             count += 1
         elif isinstance(child, ast.BoolOp):
             count += len(child.values) - 1
         elif isinstance(child, ast.comprehension):
             count += 1 + len(child.ifs)
+        stack.extend(ast.iter_child_nodes(child))
     return count
 
 
@@ -255,7 +255,7 @@ def compute_verbosity_drift(
 
 def compute_hotspot_ratchet(base: str, head: str) -> list[HotspotEntry]:
     entries: list[HotspotEntry] = []
-    for path, (issue, _waivers) in HOTSPOT_REGISTRY.items():
+    for path, issue in HOTSPOT_REGISTRY.items():
         base_src = get_file_at_ref(base, path)
         head_src = get_file_at_ref(head, path)
         base_worst = max((m["complexity"] for m in analyze_source(base_src or "")), default=0)
