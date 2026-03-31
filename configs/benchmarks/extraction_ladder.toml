@@ -1,0 +1,52 @@
+# Checkpointed extraction benchmark ladder.
+#
+# Checkpoints are ordered by fixture complexity.  Each references an
+# existing golden-set name (configs/golden_sets/{golden_set}.toml).
+# The runner executes all in order; each checkpoint inherits the
+# expectation that all prior checkpoints still pass.
+
+schema_version = 1
+name = "extraction_ladder"
+description = "Extraction robustness — 7 checkpoints from single-column baseline to cross-page furniture"
+
+[[checkpoints]]
+order = 1
+name = "walking_skeleton"
+golden_set = "core"
+description = "Single-column baseline (heading + paragraph + icon)"
+
+[[checkpoints]]
+order = 2
+name = "multi_column"
+golden_set = "multi_column"
+description = "Two-column reading order"
+
+[[checkpoints]]
+order = 3
+name = "icon_dense"
+golden_set = "icon_dense"
+description = "6 inline icons across 3 paragraphs"
+
+[[checkpoints]]
+order = 4
+name = "table_callout"
+golden_set = "table_callout"
+description = "Table + callout structure"
+
+[[checkpoints]]
+order = 5
+name = "figure_caption"
+golden_set = "figure_caption"
+description = "Figure + caption linkage"
+
+[[checkpoints]]
+order = 6
+name = "hard_route"
+golden_set = "hard_route"
+description = "Mixed layout (columns + icons + callout + figure)"
+
+[[checkpoints]]
+order = 7
+name = "furniture_repetition"
+golden_set = "furniture_repetition"
+description = "3-page cross-page furniture consistency"
