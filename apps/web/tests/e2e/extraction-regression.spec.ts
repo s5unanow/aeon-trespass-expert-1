@@ -231,6 +231,40 @@ test.describe('EN extraction: icon_dense block-specific checks', () => {
 });
 
 // ---------------------------------------------------------------------------
+// Dense figure page — regression for S5U-439 (sliver-collapse, capping)
+// ---------------------------------------------------------------------------
+
+test.describe('EN extraction: dense_figures page checks', () => {
+  test('page renders with capped figure count', async ({ page }) => {
+    await page.goto('/documents/dense_figures/en/p0001');
+    await expect(page.locator('.reader-content').getByText('Component Reference')).toBeVisible();
+
+    const figures = page.locator('.reader-figure');
+    await expect(figures).toHaveCount(20);
+  });
+
+  test('reader-content has normal width (no sliver collapse)', async ({ page }) => {
+    await page.goto('/documents/dense_figures/en/p0001');
+    await expect(page.locator('.reader-content').getByText('Component Reference')).toBeVisible();
+
+    const content = page.locator('.reader-content');
+    const box = await content.boundingBox();
+    expect(box).not.toBeNull();
+    // Content area should be at least 400px wide — a sliver would be < 100px
+    expect(box!.width).toBeGreaterThan(400);
+  });
+
+  test('figure images have orientation CSS', async ({ page }) => {
+    await page.goto('/documents/dense_figures/en/p0001');
+    await expect(page.locator('.reader-content').getByText('Component Reference')).toBeVisible();
+
+    const img = page.locator('.reader-figure-img').first();
+    const orientation = await img.evaluate((el) => getComputedStyle(el).imageOrientation);
+    expect(orientation).toBe('from-image');
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Visual snapshot for regression detection (icon_dense — most complex layout)
 // ---------------------------------------------------------------------------
 

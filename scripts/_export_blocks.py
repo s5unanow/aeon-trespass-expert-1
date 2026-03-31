@@ -150,6 +150,29 @@ def rewrite_facsimile_urls(page_data: dict, doc_id: str) -> None:
             fac[key] = f"{base}/{val.rsplit('/', 1)[-1]}"
 
 
+def rewrite_figure_urls(page_data: dict, doc_id: str) -> int:
+    """Rewrite pipeline-relative ``data/images/`` figure src paths to web-public paths.
+
+    Returns the number of entries rewritten.
+    """
+    figures: dict = page_data.get("figures") or {}
+    rewritten = 0
+    prefix = "data/images/"
+    web_base = f"/documents/{doc_id}/images"
+    for entry in figures.values():
+        src = entry.get("src", "")
+        if src.startswith(prefix):
+            entry["src"] = f"{web_base}/{src[len(prefix) :]}"
+            rewritten += 1
+    return rewritten
+
+
+# Maximum figures injected per page.  Pages exceeding this threshold are
+# typically dense reference/component pages where the facsimile view is
+# more appropriate than dozens of stacked article-mode figures.
+_MAX_INJECTED_FIGURES = 20
+
+
 def inject_image_figures(
     page_data: dict,
     pid: str,
@@ -159,21 +182,30 @@ def inject_image_figures(
     if not imgs:
         return
     figures = page_data.get("figures", {}) or {}
+    existing_count = sum(1 for b in page_data.get("blocks", []) if b.get("kind") == "figure")
+    budget = max(0, _MAX_INJECTED_FIGURES - existing_count)
+    added = 0
     for img in imgs:
-        figures[img["asset_id"]] = {"src": img["src"], "alt": img["alt"]}
         has_fig = any(
             b.get("kind") == "figure" and b.get("asset_id") == img["asset_id"]
             for b in page_data.get("blocks", [])
         )
-        if not has_fig:
-            page_data.setdefault("blocks", []).append(
-                {
-                    "kind": "figure",
-                    "id": f"{pid}.fig.{img['asset_id']}",
-                    "asset_id": img["asset_id"],
-                    "children": [],
-                }
-            )
+        if has_fig:
+            # Already referenced — update src but don't count against budget
+            figures[img["asset_id"]] = {"src": img["src"], "alt": img["alt"]}
+            continue
+        if added >= budget:
+            continue
+        figures[img["asset_id"]] = {"src": img["src"], "alt": img["alt"]}
+        page_data.setdefault("blocks", []).append(
+            {
+                "kind": "figure",
+                "id": f"{pid}.fig.{img['asset_id']}",
+                "asset_id": img["asset_id"],
+                "children": [],
+            }
+        )
+        added += 1
     page_data["figures"] = figures
 
 

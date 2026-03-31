@@ -787,3 +787,77 @@ class TestValidateFigureRefs:
         errors = blocks_module.validate_figure_refs(page_data, "p0020")
         assert len(errors) == 1
         assert "bare src" in errors[0]
+
+
+class TestRewriteFigureUrls:
+    def test_rewrites_data_images_prefix(self, blocks_module: ModuleType) -> None:
+        """Pipeline-relative data/images/ paths are rewritten to web-public paths."""
+        page_data: dict = {
+            "figures": {
+                "p0067.img0000": {"src": "data/images/p0067.img0000.jpeg", "alt": "x"},
+            },
+        }
+        count = blocks_module.rewrite_figure_urls(page_data, "ato_core_v1_1")
+        assert count == 1
+        assert page_data["figures"]["p0067.img0000"]["src"] == (
+            "/documents/ato_core_v1_1/images/p0067.img0000.jpeg"
+        )
+
+    def test_skips_already_absolute_paths(self, blocks_module: ModuleType) -> None:
+        """Paths already using /documents/ prefix are not touched."""
+        page_data: dict = {
+            "figures": {
+                "p0065.img0000": {
+                    "src": "/documents/ato_core_v1_1/images/p0065.img0000.jpeg",
+                    "alt": "x",
+                },
+            },
+        }
+        count = blocks_module.rewrite_figure_urls(page_data, "ato_core_v1_1")
+        assert count == 0
+
+    def test_handles_empty_figures(self, blocks_module: ModuleType) -> None:
+        """No error when figures dict is empty or missing."""
+        assert blocks_module.rewrite_figure_urls({}, "doc") == 0
+        assert blocks_module.rewrite_figure_urls({"figures": {}}, "doc") == 0
+
+
+class TestInjectImageFiguresCap:
+    def test_respects_max_figure_cap(self, blocks_module: ModuleType) -> None:
+        """Image injection stops at _MAX_INJECTED_FIGURES."""
+        page_data: dict = {"blocks": [], "figures": {}}
+        imgs = [
+            {"asset_id": f"p0075.img{i:04d}", "src": f"/img/{i}.png", "alt": f"img{i}"}
+            for i in range(30)
+        ]
+        blocks_module.inject_image_figures(page_data, "p0075", imgs)
+        fig_blocks = [b for b in page_data["blocks"] if b["kind"] == "figure"]
+        assert len(fig_blocks) == blocks_module._MAX_INJECTED_FIGURES
+
+    def test_existing_figures_count_against_cap(self, blocks_module: ModuleType) -> None:
+        """Pre-existing figure blocks reduce the injection budget."""
+        existing = [
+            {"kind": "figure", "id": f"p0075.b{i}", "asset_id": f"p0075.existing{i}"}
+            for i in range(15)
+        ]
+        page_data: dict = {"blocks": list(existing), "figures": {}}
+        imgs = [
+            {"asset_id": f"p0075.img{i:04d}", "src": f"/img/{i}.png", "alt": f"img{i}"}
+            for i in range(30)
+        ]
+        blocks_module.inject_image_figures(page_data, "p0075", imgs)
+        fig_blocks = [b for b in page_data["blocks"] if b["kind"] == "figure"]
+        assert len(fig_blocks) == blocks_module._MAX_INJECTED_FIGURES
+
+    def test_already_referenced_images_update_src(self, blocks_module: ModuleType) -> None:
+        """Images already in blocks get src updated without counting against cap."""
+        page_data: dict = {
+            "blocks": [
+                {"kind": "figure", "id": "p.b0", "asset_id": "p.img0000", "children": []},
+            ],
+            "figures": {"p.img0000": {"src": "old", "alt": "old"}},
+        }
+        imgs = [{"asset_id": "p.img0000", "src": "/new.png", "alt": "new"}]
+        blocks_module.inject_image_figures(page_data, "p", imgs)
+        assert page_data["figures"]["p.img0000"]["src"] == "/new.png"
+        assert len(page_data["blocks"]) == 1  # no new block added
