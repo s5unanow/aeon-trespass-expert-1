@@ -147,6 +147,26 @@ def eval_cmd(
     )
 
 
+@app.command(name="bench")
+def bench_cmd(
+    ladder: str = typer.Option("extraction_ladder", "--ladder", help="Benchmark ladder name"),
+    output_json: str = typer.Option("", "--output-json", help="Path to write JSON report"),
+    baseline: str = typer.Option("", "--baseline", help="Path to a previous benchmark report JSON"),
+    fail_on_regression: bool = typer.Option(
+        False, "--fail-on-regression", help="Exit non-zero on backward regression"
+    ),
+) -> None:
+    """Run a checkpointed extraction benchmark ladder."""
+    from atr_pipeline.cli.commands.bench_cmd import bench_command
+
+    bench_command(
+        ladder=ladder,
+        output_json=output_json,
+        baseline=baseline,
+        fail_on_regression=fail_on_regression,
+    )
+
+
 @app.command(name="runs-list")
 def runs_list_cmd(
     doc: str = typer.Option("", "--doc", help="Filter by document id"),
