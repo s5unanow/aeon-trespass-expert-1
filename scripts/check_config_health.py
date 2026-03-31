@@ -152,16 +152,15 @@ def _count_numbered_items(text: str, section_heading: str) -> int:
 
 
 def check_gate_consistency(root: Path) -> list[Finding]:
-    """Verify gate count matches across CLAUDE.md, AGENTS.md, hook, preflight."""
+    """Verify gate count matches across CLAUDE.md, hook, preflight."""
     findings: list[Finding] = []
     gate_counts: dict[str, int] = {}
 
-    # CLAUDE.md lists gates under ### Local subsection; AGENTS.md has a flat list.
-    section_map = {"CLAUDE.md": "local", "AGENTS.md": "quality gates"}
-    for name, section in section_map.items():
-        p = root / name
-        if p.exists():
-            gate_counts[name] = _count_numbered_items(p.read_text(), section)
+    # CLAUDE.md lists gates under ### Local subsection.
+    # AGENTS.md is a compatibility shim — it does not list gates.
+    p = root / "CLAUDE.md"
+    if p.exists():
+        gate_counts["CLAUDE.md"] = _count_numbered_items(p.read_text(), "local")
 
     hook = root / ".claude" / "hooks" / "pre-commit-check.sh"
     if hook.exists():

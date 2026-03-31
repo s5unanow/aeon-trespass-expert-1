@@ -36,7 +36,7 @@ def healthy_repo(tmp_path: Path) -> Path:
         "## Quality gates\n\n### Local\n1. ruff check\n2. ruff format\n3. mypy\n"
     )
     (tmp_path / "AGENTS.md").write_text(
-        "## Quality gates\n1. ruff check\n2. ruff format\n3. mypy\n"
+        "# AGENTS.md — Compatibility Shim\n\nCanonical instructions live in CLAUDE.md.\n"
     )
     claude_dir = tmp_path / ".claude"
     claude_dir.mkdir()
@@ -88,12 +88,15 @@ class TestGateConsistency:
         assert findings == []
 
     def test_mismatch_detected(self, health_module: ModuleType, healthy_repo: Path) -> None:
-        (healthy_repo / "AGENTS.md").write_text("## Quality gates\n1. ruff check\n2. ruff format\n")
+        """Hook gate count differs from CLAUDE.md → mismatch."""
+        hooks_dir = healthy_repo / ".claude" / "hooks"
+        hooks_dir.mkdir(parents=True)
+        (hooks_dir / "pre-commit-check.sh").write_text('run_gate "a" cmd\nrun_gate "b" cmd\n')
         findings = health_module.check_gate_consistency(healthy_repo)
         assert len(findings) == 1
         assert "mismatch" in findings[0][2]
         assert "CLAUDE.md: 3" in findings[0][2]
-        assert "AGENTS.md: 2" in findings[0][2]
+        assert "pre-commit-check.sh: 2" in findings[0][2]
 
     def test_nested_subsections_counted(
         self, health_module: ModuleType, healthy_repo: Path
@@ -110,11 +113,8 @@ class TestGateConsistency:
             "5. fixture check\n"
             "## Next section\n"
         )
-        (healthy_repo / "AGENTS.md").write_text(
-            "## Quality gates\n1. ruff check\n2. ruff format\n3. mypy\n"
-        )
         findings = health_module.check_gate_consistency(healthy_repo)
-        # CLAUDE.md counts under ### Local = 3, AGENTS.md = 3 → match
+        # CLAUDE.md counts under ### Local = 3 — no other surfaces → pass
         assert findings == []
 
     def test_preflight_gates_counted(self, health_module: ModuleType, healthy_repo: Path) -> None:
@@ -131,10 +131,12 @@ class TestGateConsistency:
     def test_hook_gate_count_included(self, health_module: ModuleType, healthy_repo: Path) -> None:
         hooks_dir = healthy_repo / ".claude" / "hooks"
         hooks_dir.mkdir(parents=True)
-        (hooks_dir / "pre-commit-check.sh").write_text('run_gate "a" cmd\nrun_gate "b" cmd\n')
+        (hooks_dir / "pre-commit-check.sh").write_text(
+            'run_gate "a" cmd\nrun_gate "b" cmd\nrun_gate "c" cmd\n'
+        )
         findings = health_module.check_gate_consistency(healthy_repo)
-        assert len(findings) == 1
-        assert "pre-commit-check.sh: 2" in findings[0][2]
+        # 3 gates in hook matches 3 in CLAUDE.md → pass
+        assert findings == []
 
 
 # -- Skill sync checks --
