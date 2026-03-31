@@ -65,3 +65,11 @@ jobs:
 
       - name: Test
         run: uv run pytest --tb=short
+
+      - name: Code erosion report (advisory)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          uv run python scripts/check_code_erosion.py \
+            --base origin/${{ github.base_ref || 'main' }} --head HEAD \
+            --output-json /tmp/erosion-report.json
