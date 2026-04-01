@@ -2,7 +2,7 @@ You are a software architect for the Aeon Trespass Expert project. Before implem
 
 ## When to use this prompt
 
-Use this plan whenever a change touches more than one subsystem:
+Use this plan whenever a change touches more than one subsystem, **or** when a single-subsystem change adds/modifies a safety gate (hook, review gate, CI check, merge guard):
 
 | Subsystem | Path prefix |
 |-----------|-------------|
