@@ -48,6 +48,11 @@ def validate_export_completeness(
                     f"render_page.{pid}.json has internal page.id "
                     f"'{internal_id}' (expected '{pid}')"
                 )
+            sm_id = page_data.get("source_map", {}).get("page_id", "")
+            if sm_id and sm_id != pid:
+                errors.append(
+                    f"render_page.{pid}.json has source_map.page_id '{sm_id}' (expected '{pid}')"
+                )
         except (json.JSONDecodeError, OSError):
             errors.append(f"render_page.{pid}.json could not be read for internal ID check")
 
