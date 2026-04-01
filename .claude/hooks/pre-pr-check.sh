@@ -49,11 +49,61 @@ fi
 echo "Review artifact verified: $REVIEW_FILE"
 
 # --- Conditional Codex review enforcement ---
-# If the ship skill detected a cross-system-review label, it writes a marker file.
-# When the marker exists, the Codex review artifact must also exist with APPROVED verdict.
+# Primary: marker file (written by /ship or /codex-review skills).
+# Fallback: query Linear API directly for cross-system-review label.
 CODEX_MARKER="tmp/.codex-required-${ISSUE_NUM}"
+CODEX_REQUIRED=false
 
 if [ -f "$CODEX_MARKER" ]; then
+  CODEX_REQUIRED=true
+else
+  # No marker — query Linear API independently
+  # Source project .env if LINEAR_API_KEY not already in env
+  if [ -z "${LINEAR_API_KEY:-}" ] && [ -f .env ]; then
+    # shellcheck disable=SC1091
+    set +u; source .env; set -u
+  fi
+
+  if [ -z "${LINEAR_API_KEY:-}" ]; then
+    echo "WARNING: No marker file and LINEAR_API_KEY not set."
+    echo "Cannot verify cross-system-review label on Linear issue."
+    echo "Set LINEAR_API_KEY in .env for full safety coverage."
+  elif ! command -v jq >/dev/null 2>&1; then
+    echo "WARNING: jq not found. Cannot parse Linear API response."
+    echo "Install jq for full safety coverage."
+  else
+    # Extract numeric part only: s5u-467 -> 467 (sed avoids matching '5' in 's5u')
+    ISSUE_NUMBER=$(echo "$ISSUE_NUM" | sed 's/^s5u-//')
+    LINEAR_RESPONSE=$(curl -s --max-time 5 \
+      -X POST \
+      -H "Content-Type: application/json" \
+      -H "Authorization: $LINEAR_API_KEY" \
+      -d "{\"query\": \"{ issues(filter: { number: { eq: $ISSUE_NUMBER }, team: { key: { eq: \\\"S5U\\\" } } }) { nodes { labels { nodes { name } } } } }\"}" \
+      https://api.linear.app/graphql 2>/dev/null || true)
+
+    if [ -n "$LINEAR_RESPONSE" ]; then
+      # Check for API-level errors (expired key, auth failure, etc.)
+      HAS_DATA=$(echo "$LINEAR_RESPONSE" | jq -e '.data.issues.nodes[0]' >/dev/null 2>&1 && echo 1 || echo 0)
+      if [ "$HAS_DATA" -eq 0 ]; then
+        echo "WARNING: Linear API returned an error or unexpected response."
+        echo "Marker-file fallback only. Cannot confirm label status."
+      else
+        LABEL_MATCH=$(echo "$LINEAR_RESPONSE" | jq -r \
+          '.data.issues.nodes[0].labels.nodes[]?.name // empty' 2>/dev/null \
+          | grep -c 'cross-system-review' || true)
+        if [ "$LABEL_MATCH" -gt 0 ]; then
+          CODEX_REQUIRED=true
+          echo "Linear API: cross-system-review label detected on ${ISSUE_NUM}."
+        fi
+      fi
+    else
+      echo "WARNING: Linear API unreachable (timeout or error)."
+      echo "Marker-file fallback only. Cannot confirm label status."
+    fi
+  fi
+fi
+
+if [ "$CODEX_REQUIRED" = true ]; then
   CODEX_FILE="tmp/codex-review-${ISSUE_NUM}.md"
 
   if [ ! -f "$CODEX_FILE" ]; then
