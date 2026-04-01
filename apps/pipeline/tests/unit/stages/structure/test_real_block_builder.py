@@ -1,5 +1,6 @@
 """Tests for the real page block builder."""
 
+import re
 from pathlib import Path
 
 from atr_pipeline.config.models import StructureConfig
@@ -558,7 +559,7 @@ def test_mixed_table_and_prose() -> None:
 
 # --- Real-page heading regressions (S5U-443) ---
 
-_BARE_NUMBER_RE = __import__("re").compile(r"^\d{1,3}[.):]*$")
+_BARE_NUMBER_RE = re.compile(r"^\d{1,3}[.):]*$")
 
 
 def test_p0017_bare_numbers_not_headings() -> None:
