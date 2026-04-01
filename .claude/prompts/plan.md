@@ -44,13 +44,25 @@ Change in A → could break B because ...
 Change in A → could break C because ...
 ```
 
-### 4. Test strategy
+### 4. Adversarial scenarios (safety/DevOps changes only)
+
+If the change adds or modifies a safety mechanism (pre-commit hook, review gate, CI check, merge guard), enumerate at least two adversarial scenarios before implementation. Consider:
+
+- **Timing attack** — unexpected order or delays (e.g., CI dispatch latency, race between push and status check)
+- **Granularity mismatch** — file vs function, commit vs branch, run vs SHA
+- **Stale data** — cached/previous results satisfying the check (e.g., old CI run for wrong commit)
+
+Each scenario must conclude with: **"gate holds"** or **"gate defeated — fix needed."**
+
+Skip this section for non-safety changes (features, extraction, rendering, etc.).
+
+### 5. Test strategy
 
 For each risk identified in blast radius, what test would catch the breakage?
 - Name the test file and describe the assertion
 - If no test exists yet, mark it as **[NEW TEST NEEDED]**
 
-### 5. Acceptance test planning (extraction work)
+### 6. Acceptance test planning (extraction work)
 
 If this change involves extraction (stages, models, or fixtures under `apps/pipeline/`):
 
@@ -61,7 +73,7 @@ If this change involves extraction (stages, models, or fixtures under `apps/pipe
 
 Skip this section for non-extraction changes (web, config, DevOps, etc.).
 
-### 6. Implementation order
+### 7. Implementation order
 
 Sequence the changes to minimize risk:
 1. Which subsystem should be changed first?
