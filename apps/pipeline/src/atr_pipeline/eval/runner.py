@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -22,28 +23,37 @@ from atr_schemas.page_ir_v1 import PageIRV1
 
 logger = logging.getLogger(__name__)
 
+PageIRLoader = Callable[[str, str], PageIRV1 | None]
+"""Callback: (document_id, page_id) → PageIRV1 | None."""
+
 
 def run_evaluation(
     *,
     golden_set_name: str,
     document_id: str,
-    store: ArtifactStore,
+    store: ArtifactStore | None = None,
     repo_root: Path | None = None,
     page_filter: list[str] | None = None,
     threshold_config: ThresholdConfig | None = None,
+    page_ir_loader: PageIRLoader | None = None,
 ) -> EvalReport:
     """Run the full evaluation pipeline.
 
     Args:
         golden_set_name: Name of the golden set config (e.g. "core").
         document_id: Document to evaluate.
-        store: Artifact store to load IR from.
+        store: Artifact store to load IR from (optional if page_ir_loader given).
         repo_root: Repository root for locating configs.
         page_filter: Optional list of page IDs to evaluate.
+        page_ir_loader: Optional callback to load page IR instead of store.
 
     Returns:
         EvalReport with per-page and aggregate results.
     """
+    if store is None and page_ir_loader is None:
+        msg = "Either store or page_ir_loader must be provided"
+        raise ValueError(msg)
+
     golden = load_golden_set(golden_set_name, repo_root=repo_root)
     metrics = get_default_metrics()
     pages_to_eval = _filter_pages(golden, page_filter)
@@ -51,7 +61,11 @@ def run_evaluation(
     page_results: list[PageEvalResult] = []
 
     for spec in pages_to_eval:
-        page_ir = load_page_ir(store, document_id, spec.page_id)
+        if page_ir_loader is not None:
+            page_ir = page_ir_loader(document_id, spec.page_id)
+        else:
+            assert store is not None  # narrowing for mypy
+            page_ir = load_page_ir(store, document_id, spec.page_id)
         if page_ir is None:
             logger.warning("page IR missing: page_id=%s doc=%s", spec.page_id, document_id)
             page_results.append(

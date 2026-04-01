@@ -91,6 +91,7 @@ class TestFrontierDetection:
             ladder_name=MINI_LADDER,
             store_factory=factory,
             repo_root=REPO_ROOT,
+            use_fixtures=False,
         )
         assert not report.passed
         assert report.highest_passing == 1
@@ -106,6 +107,7 @@ class TestFrontierDetection:
             ladder_name=MINI_LADDER,
             store_factory=factory,
             repo_root=REPO_ROOT,
+            use_fixtures=False,
         )
         non_passing = [c for c in report.checkpoints if not c.passed]
         assert len(non_passing) > 0
@@ -139,6 +141,7 @@ class TestBaselineRegression:
             store_factory=factory,
             repo_root=REPO_ROOT,
             baseline=baseline,
+            use_fixtures=False,
         )
         assert not report.passed
         # Checkpoint 2 passed in baseline but fails now → regression.
@@ -152,6 +155,7 @@ class TestBaselineRegression:
             ladder_name=MINI_LADDER,
             store_factory=factory,
             repo_root=REPO_ROOT,
+            use_fixtures=False,
         )
         assert report.regressions == []
 
@@ -177,6 +181,7 @@ class TestBaselineRegression:
             store_factory=factory,
             repo_root=REPO_ROOT,
             baseline=baseline,
+            use_fixtures=False,
         )
         # Checkpoint 2 also failed in baseline → not a regression.
         assert 2 not in report.regressions
@@ -211,10 +216,10 @@ class TestDeterminism:
         factory = _make_store_factory(tmp_path, {"walking_skeleton"})
 
         r1 = run_benchmark_ladder(
-            ladder_name=MINI_LADDER, store_factory=factory, repo_root=REPO_ROOT
+            ladder_name=MINI_LADDER, store_factory=factory, repo_root=REPO_ROOT, use_fixtures=False
         )
         r2 = run_benchmark_ladder(
-            ladder_name=MINI_LADDER, store_factory=factory, repo_root=REPO_ROOT
+            ladder_name=MINI_LADDER, store_factory=factory, repo_root=REPO_ROOT, use_fixtures=False
         )
         # Compare everything except timestamp.
         assert r1.passed == r2.passed

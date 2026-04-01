@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import tomllib
 from pathlib import Path
 from typing import Literal
@@ -164,3 +165,22 @@ def validate_annotation_checksums(
             if path.name not in tracked:
                 errors.append(f"Fixture '{fixture_id}': untracked expected file: {path.name}")
     return errors
+
+
+def load_fixture_page_ir(
+    fixture_id: str,
+    page_id: str,
+    *,
+    lang: str = "en",
+    repo_root: Path | None = None,
+) -> dict[str, object] | None:
+    """Load page IR JSON from a checked-in fixture's expected/ directory.
+
+    Returns parsed JSON dict, or None if the file does not exist.
+    """
+    root = repo_root or _find_repo_root()
+    path = root / FIXTURES_DIR / fixture_id / "expected" / f"page_ir.{lang}.{page_id}.json"
+    if not path.exists():
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)  # type: ignore[no-any-return]
