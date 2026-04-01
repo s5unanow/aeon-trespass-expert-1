@@ -68,8 +68,12 @@ else
     echo "WARNING: No marker file and LINEAR_API_KEY not set."
     echo "Cannot verify cross-system-review label on Linear issue."
     echo "Set LINEAR_API_KEY in .env for full safety coverage."
+  elif ! command -v jq >/dev/null 2>&1; then
+    echo "WARNING: jq not found. Cannot parse Linear API response."
+    echo "Install jq for full safety coverage."
   else
-    ISSUE_NUMBER=$(echo "$ISSUE_NUM" | grep -oE '[0-9]+')
+    # Extract numeric part only: s5u-467 -> 467 (sed avoids matching '5' in 's5u')
+    ISSUE_NUMBER=$(echo "$ISSUE_NUM" | sed 's/^s5u-//')
     LINEAR_RESPONSE=$(curl -s --max-time 5 \
       -X POST \
       -H "Content-Type: application/json" \
