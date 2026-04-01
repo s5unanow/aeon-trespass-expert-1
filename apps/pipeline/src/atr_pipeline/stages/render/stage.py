@@ -10,7 +10,7 @@ from atr_pipeline.stages.render.annotation_builder import (
     AnnotationQualityConfig,
     build_facsimile_annotations,
 )
-from atr_pipeline.stages.render.page_builder import build_render_page
+from atr_pipeline.stages.render.page_builder import build_render_page, is_garbage_title
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.enums import StageScope
@@ -107,7 +107,7 @@ class RenderStage:
             # Apply title override or fallback
             if override and override.title is not None:
                 render_page.page.title = override.title
-            elif mode == "facsimile" and len(render_page.page.title) <= 2:
+            elif is_garbage_title(render_page.page.title):
                 render_page.page.title = f"Page {ir.page_number}"
 
             rendered_pages.append(render_page)

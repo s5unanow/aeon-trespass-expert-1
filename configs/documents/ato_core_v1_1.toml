@@ -33,6 +33,9 @@ facsimile_annotation_keep_texts = [
     "Small Square",
 ]
 
+[render.page_overrides.p0054]
+title = "Wounded / Escalation Charts"
+
 [structure]
 # ATO Core uses denser layouts — lower footer threshold
 footer_y_threshold = 785.0
