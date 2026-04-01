@@ -11,5 +11,5 @@ globs: .claude/hooks/**,.claude/prompts/**,.claude/skills/**
   * Happy-path (should pass)
   * Failure input (should block)
   * Mixed/adversarial input (e.g., both PASS and BLOCK present)
-- Any decision logic in a prompt or skill instruction that gates on a condition (e.g., "if the test file was added…", "if the CI run shows success…") must document at least three scenarios: happy-path (allows), failure input (blocks), adversarial edge (e.g., new function in old file, stale CI run for wrong commit)
+- Any **new or modified** decision logic in a prompt or skill instruction that gates on a condition (e.g., "if the test file was added…", "if the CI run shows success…") must document at least three scenarios: happy-path (allows), failure input (blocks), adversarial edge (e.g., new function in old file, stale CI run for wrong commit)
 - Include test commands as inline comments in the hook or as a companion test script

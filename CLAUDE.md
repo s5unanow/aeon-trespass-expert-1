@@ -99,7 +99,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 13 gates — local green alone is not sufficient)
-- [ ] If adding/modifying a safety gate: adversarial scenarios documented and each one either holds or has been fixed
+- [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed (enforced by review agent item 16)
 
 ### 6. Sub-agent code review (MANDATORY before PR)
 - **You MUST spawn a review agent before creating a PR.** This is not optional.
