@@ -1,0 +1,358 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "en",
+  "presentation_mode": "article",
+  "page": {
+    "id": "p0065",
+    "title": "",
+    "section_path": [],
+    "source_page_number": 65
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "paragraph",
+      "id": "p0065.b004",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Example: ",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Knockback to the left. Specific Knockback direction  ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "overrides regular rules.",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0065.b001",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Knockdown:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Gain the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Condition card, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Falling down ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "side up, and place your miniature on the side. Follow the rules of ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the Condition card. If Knockdown is caused by an Attack, it affects ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the Target only if it is within the Primordial\u2019s effective range (ad-",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " jacent for Melee Attacks, in the designated zone for Zone Attacks, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "within X spaces for Ranged X Attacks, etc.). If it\u2019s caused by a Re-",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": " sponse, it affects the Attacker only if they are within adjacency.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0065.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Knockdown is a special Condition. When you get knocked down, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "you put your miniature on its side and take a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown (falling ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "down)",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " card. While you have the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown (falling down) ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "card, ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "you cannot perform any actions, reactions or free actions, unless ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "stated otherwise. At the end of your next turn, you flip the card to ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "the ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown (standing up)",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " side. All Titans with a ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "Knockdown",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " (standing up) ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "card stand up at the start of their next turn. If for ",
+          "marks": []
+        },
+        {
+          "kind": "text",
+          "text": "whatever reason this card is discarded, stand up too.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0065.b006",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Example:",
+          "marks": [
+            "bold",
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": " Knockback 4 to the left. When a Titan is knocked back  ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "into another Titan, the other Titan is displaced (according  ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "to involuntary movement rules).",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0000",
+      "asset_id": "p0065.img0000",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0002",
+      "asset_id": "p0065.img0002",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0003",
+      "asset_id": "p0065.img0003",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0005",
+      "asset_id": "p0065.img0005",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0007",
+      "asset_id": "p0065.img0007",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0010",
+      "asset_id": "p0065.img0010",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0011",
+      "asset_id": "p0065.img0011",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0014",
+      "asset_id": "p0065.img0014",
+      "children": []
+    },
+    {
+      "kind": "figure",
+      "id": "p0065.fig.p0065.img0016",
+      "asset_id": "p0065.img0016",
+      "children": []
+    }
+  ],
+  "figures": {
+    "p0065.img0000": {
+      "src": "/documents/target_p0065/images/p0065.img0000.jpeg",
+      "alt": "p0065.img0000"
+    },
+    "p0065.img0002": {
+      "src": "/documents/target_p0065/images/p0065.img0002.jpeg",
+      "alt": "p0065.img0002"
+    },
+    "p0065.img0003": {
+      "src": "/documents/target_p0065/images/p0065.img0003.jpeg",
+      "alt": "p0065.img0003"
+    },
+    "p0065.img0005": {
+      "src": "/documents/target_p0065/images/p0065.img0005.jpeg",
+      "alt": "p0065.img0005"
+    },
+    "p0065.img0007": {
+      "src": "/documents/target_p0065/images/p0065.img0007.jpeg",
+      "alt": "p0065.img0007"
+    },
+    "p0065.img0010": {
+      "src": "/documents/target_p0065/images/p0065.img0010.jpeg",
+      "alt": "p0065.img0010"
+    },
+    "p0065.img0011": {
+      "src": "/documents/target_p0065/images/p0065.img0011.jpeg",
+      "alt": "p0065.img0011"
+    },
+    "p0065.img0014": {
+      "src": "/documents/target_p0065/images/p0065.img0014.jpeg",
+      "alt": "p0065.img0014"
+    },
+    "p0065.img0016": {
+      "src": "/documents/target_p0065/images/p0065.img0016.jpeg",
+      "alt": "p0065.img0016"
+    }
+  },
+  "facsimile": null,
+  "glossary_mentions": [
+    "concept.titan",
+    "concept.primordial"
+  ],
+  "search": {},
+  "source_map": {
+    "page_id": "p0065",
+    "block_refs": [
+      "p0065.b003",
+      "p0065.b003.1",
+      "p0065.b007",
+      "p0065.b004",
+      "p0065.b001",
+      "p0065.b002",
+      "p0065.b005",
+      "p0065.b006"
+    ]
+  },
+  "build_meta": null
+}

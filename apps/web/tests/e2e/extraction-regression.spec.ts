@@ -275,3 +275,23 @@ test('visual snapshot: icon_dense EN page', async ({ page }) => {
   const content = page.locator('.reader-content');
   await expect(content).toHaveScreenshot('icon-dense-en-p0001.png');
 });
+
+// ---------------------------------------------------------------------------
+// Visual snapshots for real target pages — S5U-439 acceptance criteria
+// ---------------------------------------------------------------------------
+
+test.describe('EN extraction: real page visual snapshots', () => {
+  test('visual snapshot: p0065 dense figures', async ({ page }) => {
+    await page.goto('/documents/target_p0065/en/p0001');
+    const content = page.locator('.reader-content');
+    await expect(content.locator('.reader-figure').first()).toBeVisible();
+    await expect(content).toHaveScreenshot('target-p0065-en.png');
+  });
+
+  test('visual snapshot: p0075 dense figures with orientation', async ({ page }) => {
+    await page.goto('/documents/target_p0075/en/p0001');
+    const content = page.locator('.reader-content');
+    await expect(content.locator('.reader-figure').first()).toBeVisible();
+    await expect(content).toHaveScreenshot('target-p0075-en.png');
+  });
+});
