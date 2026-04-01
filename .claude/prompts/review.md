@@ -31,7 +31,9 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
     - If the section exists but says only "None identified": **NIT** — `"'Must not break' says 'None identified' — consider whether invariants truly don't apply"`
     - If the issue has only `Feature` label (no applicable types): skip this check entirely
     - This check must **never** produce a CRITICAL or BLOCK on its own — WARNING is the maximum severity
-16. **Safety gate bypass** — if the change adds or modifies a safety mechanism (pre-commit hook, review gate, CI check, merge guard), any scenario where the mechanism can be defeated — even if unlikely — is **CRITICAL**, not NIT or WARNING. Evaluate against the adversarial case the gate is designed to prevent, not the common case. Ask: "Can a determined sequence of events bypass this gate?"
+16. **Safety gate bypass** — if the change adds or modifies a safety mechanism (pre-commit hook, review gate, CI check, merge guard):
+    - Check that `tmp/plan-s5u-<NUMBER>.md` exists and contains adversarial scenarios with conclusions ("gate holds" or "gate defeated — fix needed"). If missing: **CRITICAL** — `"Safety gate change missing adversarial scenario documentation"`
+    - Any scenario where the mechanism can be defeated — even if unlikely — is **CRITICAL**, not NIT or WARNING. Evaluate against the adversarial case the gate is designed to prevent, not the common case. Ask: "Can a determined sequence of events bypass this gate?"
 
 ## How to review
 
