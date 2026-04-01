@@ -63,6 +63,8 @@ apps/web/public/documents/*
 !apps/web/public/documents/table_callout/
 !apps/web/public/documents/figure_caption/
 !apps/web/public/documents/dense_figures/
+!apps/web/public/documents/target_p0065/
+!apps/web/public/documents/target_p0075/
 
 # Runtime state
 var/*.db
