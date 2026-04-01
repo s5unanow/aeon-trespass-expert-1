@@ -1,6 +1,6 @@
 ---
 description: Smoke-testing rules for shell commands in hooks and prompts — applies to .claude/hooks/ and .claude/prompts/
-globs: .claude/hooks/**,.claude/prompts/**
+globs: .claude/hooks/**,.claude/prompts/**,.claude/skills/**
 ---
 
 - Every shell command added or modified must be smoke-tested in a clean shell (`bash -c "..."`) before committing — document the test in the commit message or PR

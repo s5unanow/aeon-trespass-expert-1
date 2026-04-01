@@ -46,8 +46,13 @@ Change in A → could break C because ...
 
 ### 4. Adversarial scenarios (safety/DevOps changes only)
 
-If the change adds or modifies a safety mechanism (pre-commit hook, review gate, CI check, merge guard), enumerate at least two adversarial scenarios before implementation. Consider:
+If the change adds or modifies a safety mechanism (pre-commit hook, review gate, CI check, merge guard), document at least three scenarios for each gating condition:
 
+1. **Happy-path** — the gate allows a legitimate action (should pass)
+2. **Failure input** — the gate blocks the condition it is designed to catch (should block)
+3. **Adversarial edge** — an unexpected sequence defeats the gate (e.g., timing attack, granularity mismatch, stale data)
+
+Common adversarial patterns to consider:
 - **Timing attack** — unexpected order or delays (e.g., CI dispatch latency, race between push and status check)
 - **Granularity mismatch** — file vs function, commit vs branch, run vs SHA
 - **Stale data** — cached/previous results satisfying the check (e.g., old CI run for wrong commit)
