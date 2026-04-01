@@ -78,12 +78,19 @@ else
       https://api.linear.app/graphql 2>/dev/null || true)
 
     if [ -n "$LINEAR_RESPONSE" ]; then
-      LABEL_MATCH=$(echo "$LINEAR_RESPONSE" | jq -r \
-        '.data.issues.nodes[0].labels.nodes[]?.name // empty' 2>/dev/null \
-        | grep -c 'cross-system-review' || true)
-      if [ "$LABEL_MATCH" -gt 0 ]; then
-        CODEX_REQUIRED=true
-        echo "Linear API: cross-system-review label detected on ${ISSUE_NUM}."
+      # Check for API-level errors (expired key, auth failure, etc.)
+      HAS_DATA=$(echo "$LINEAR_RESPONSE" | jq -e '.data.issues.nodes[0]' >/dev/null 2>&1 && echo 1 || echo 0)
+      if [ "$HAS_DATA" -eq 0 ]; then
+        echo "WARNING: Linear API returned an error or unexpected response."
+        echo "Marker-file fallback only. Cannot confirm label status."
+      else
+        LABEL_MATCH=$(echo "$LINEAR_RESPONSE" | jq -r \
+          '.data.issues.nodes[0].labels.nodes[]?.name // empty' 2>/dev/null \
+          | grep -c 'cross-system-review' || true)
+        if [ "$LABEL_MATCH" -gt 0 ]; then
+          CODEX_REQUIRED=true
+          echo "Linear API: cross-system-review label detected on ${ISSUE_NUM}."
+        fi
       fi
     else
       echo "WARNING: Linear API unreachable (timeout or error)."
