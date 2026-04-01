@@ -1,0 +1,53 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "en",
+  "presentation_mode": "article",
+  "page": {
+    "id": "p0040",
+    "title": "Attack Phase",
+    "section_path": [],
+    "source_page_number": 40
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0040.b001",
+      "level": 2,
+      "children": [
+        { "kind": "text", "text": "Attack Phase", "marks": ["bold"] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0040.b002",
+      "children": [
+        { "kind": "text", "text": "Roll dice equal to your Attack Value.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0040.b003",
+      "children": [
+        { "kind": "text", "text": "1. Place your Argonaut in the Attack Zone.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "list_item",
+      "id": "p0040.b004",
+      "children": [
+        { "kind": "text", "text": "2. Choose a target limb or body part.", "marks": [] }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": [],
+  "source_map": {
+    "page_id": "p0040",
+    "block_refs": ["p0040.b001", "p0040.b002", "p0040.b003", "p0040.b004"]
+  }
+}

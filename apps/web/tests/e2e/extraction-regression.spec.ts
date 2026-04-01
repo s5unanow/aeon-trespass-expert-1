@@ -295,3 +295,53 @@ test.describe('EN extraction: real page visual snapshots', () => {
     await expect(content).toHaveScreenshot('target-p0075-en.png');
   });
 });
+
+// ---------------------------------------------------------------------------
+// Title quality regression — S5U-430 / S5U-435 prevention
+// ---------------------------------------------------------------------------
+
+test.describe('EN extraction: title quality (target_p0040)', () => {
+  test('page title is not a bare digit or empty', async ({ page }) => {
+    await page.goto('/documents/target_p0040/en/p0001');
+    const content = page.locator('.reader-content');
+    const heading = content.locator('h2.reader-heading');
+    await expect(heading).toBeVisible();
+
+    const text = await heading.textContent();
+    expect(text).toBeTruthy();
+    expect(text!.trim().length).toBeGreaterThan(1);
+    // Must not be a standalone digit — the original defect
+    expect(text!.trim()).not.toMatch(/^\d+$/);
+  });
+
+  test('visual snapshot: p0040 title quality', async ({ page }) => {
+    await page.goto('/documents/target_p0040/en/p0001');
+    const content = page.locator('.reader-content');
+    await expect(content.locator('h2.reader-heading')).toBeVisible();
+    await expect(content).toHaveScreenshot('target-p0040-en.png');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Symbol legend regression — S5U-430 / S5U-436 prevention
+// ---------------------------------------------------------------------------
+
+test.describe('EN extraction: symbol legend (target_p0082)', () => {
+  test('symbol icons render on legend page', async ({ page }) => {
+    await page.goto('/documents/target_p0082/en/p0001');
+    const content = page.locator('.reader-content');
+    await expect(content.getByText('Symbol Legend')).toBeVisible();
+
+    const icons = content.locator('[data-symbol-id]');
+    // Legend page should have at least 3 distinct symbol icons
+    const count = await icons.count();
+    expect(count).toBeGreaterThanOrEqual(3);
+  });
+
+  test('visual snapshot: p0082 symbol legend', async ({ page }) => {
+    await page.goto('/documents/target_p0082/en/p0001');
+    const content = page.locator('.reader-content');
+    await expect(content.getByText('Symbol Legend')).toBeVisible();
+    await expect(content).toHaveScreenshot('target-p0082-en.png');
+  });
+});

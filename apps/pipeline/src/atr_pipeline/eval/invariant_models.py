@@ -22,5 +22,6 @@ class VerificationReport(BaseModel):
     timestamp: str
     pages: list[PageVerificationResult] = Field(default_factory=list)
     severity_counts: dict[str, int] = Field(default_factory=dict)
+    symbol_drop_count: int = 0
     blocking: bool = False
     passed: bool = True

@@ -1,0 +1,64 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "en",
+  "presentation_mode": "article",
+  "page": {
+    "id": "p0082",
+    "title": "Symbol Legend",
+    "section_path": [],
+    "source_page_number": 82
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0082.b001",
+      "level": 2,
+      "children": [
+        { "kind": "text", "text": "Symbol Legend", "marks": ["bold"] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0082.b002",
+      "children": [
+        { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
+        { "kind": "text", "text": " Progress: Gain progress tokens.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0082.b003",
+      "children": [
+        { "kind": "icon", "symbol_id": "sym.attack", "alt": "Attack" },
+        { "kind": "text", "text": " Attack: Roll dice equal to your Attack Value.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0082.b004",
+      "children": [
+        { "kind": "icon", "symbol_id": "sym.defense", "alt": "Defense" },
+        { "kind": "text", "text": " Defense: Reduce incoming damage.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0082.b005",
+      "children": [
+        { "kind": "icon", "symbol_id": "sym.health", "alt": "Health" },
+        { "kind": "text", "text": " Health: Total hit points of your Argonaut.", "marks": [] }
+      ]
+    }
+  ],
+  "figures": {},
+  "glossary_mentions": ["concept.progress", "concept.attack"],
+  "source_map": {
+    "page_id": "p0082",
+    "block_refs": ["p0082.b001", "p0082.b002", "p0082.b003", "p0082.b004", "p0082.b005"]
+  }
+}

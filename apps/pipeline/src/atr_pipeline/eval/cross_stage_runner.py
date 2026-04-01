@@ -120,12 +120,16 @@ def run_cross_stage_verification(
         )
 
     blocking = any(not p.passed for p in page_results)
+    symbol_drops = sum(
+        1 for p in page_results for r in p.records if r.code == "XREF_SYMBOL_DROPPED"
+    )
 
     return VerificationReport(
         document_id=document_id,
         timestamp=datetime.now(tz=UTC).isoformat(),
         pages=page_results,
         severity_counts=severity_totals,
+        symbol_drop_count=symbol_drops,
         blocking=blocking,
         passed=not blocking,
     )

@@ -54,3 +54,15 @@ document_id = "furniture_repetition"
 description = "3-page PDF with identical header/footer furniture"
 failure_modes = ["furniture_leakage", "header_footer_consistency", "cross_page_template_drift"]
 eval_dimensions = ["furniture_template", "reading_order"]
+
+[broken_title]
+document_id = "target_p0040"
+description = "Page where first heading is a bare digit — title quality regression"
+failure_modes = ["garbage_title_selection", "bare_digit_heading_promoted_to_title"]
+eval_dimensions = ["reading_order"]
+
+[symbol_legend]
+document_id = "target_p0082"
+description = "Symbol legend page with multiple inline icon entries"
+failure_modes = ["symbol_loss_on_legend_page", "icon_inline_flattening"]
+eval_dimensions = ["symbols", "reading_order"]
