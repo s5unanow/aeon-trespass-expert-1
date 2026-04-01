@@ -62,25 +62,29 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 case "$CALL_NUM" in
   1)
+    # Smoke check: run-issues.sh verifies --max-turns is accepted
+    echo "ok"
+    ;;
+  2)
     # Issue 1: /next — success, stay on main (simulates full ship)
     echo "[mock] Issue 1: /next completed, on main"
     ;;
-  2)
+  3)
     # Issue 2: /next — stall, create and stay on feature branch
     git checkout -b s5unanow/s5u-999-stalled-issue --quiet
     echo "[mock] Issue 2: /next stalled on feature branch"
     ;;
-  3)
+  4)
     # Issue 2: /ship retry — success, return to main
     git checkout main --quiet
     echo "[mock] Issue 2: /ship retry succeeded"
     ;;
-  4)
+  5)
     # Issue 3: /next — stall, create and stay on feature branch
     git checkout -b s5unanow/s5u-888-another-stall --quiet
     echo "[mock] Issue 3: /next stalled on feature branch"
     ;;
-  5)
+  6)
     # Issue 3: /ship retry — also fails, stay on branch
     echo "[mock] Issue 3: /ship retry also failed"
     ;;
@@ -118,12 +122,12 @@ fi
 # Validate expected behavior
 ERRORS=0
 
-# Should have 5 claude calls: /next x3 + /ship retry x2
-if [ "$TOTAL_CALLS" -ne 5 ]; then
-  echo "FAIL: Expected 5 claude calls, got $TOTAL_CALLS"
+# Should have 6 claude calls: smoke check + /next x3 + /ship retry x2
+if [ "$TOTAL_CALLS" -ne 6 ]; then
+  echo "FAIL: Expected 6 claude calls, got $TOTAL_CALLS"
   ERRORS=$((ERRORS + 1))
 else
-  echo "PASS: 5 claude calls as expected"
+  echo "PASS: 6 claude calls as expected (1 smoke + 3 /next + 2 /ship)"
 fi
 
 # Check log for shipped count
@@ -148,6 +152,21 @@ if grep -q "attempting /ship retry" "$LOG_FILE"; then
   echo "PASS: Retry attempts logged"
 else
   echo "FAIL: No retry attempt logged"
+  ERRORS=$((ERRORS + 1))
+fi
+
+# Verify --max-turns values passed correctly
+if grep -q "max-turns 120" "$CALL_LOG"; then
+  echo "PASS: --max-turns 120 passed to /next"
+else
+  echo "FAIL: --max-turns 120 not found in claude calls"
+  ERRORS=$((ERRORS + 1))
+fi
+
+if grep -q "max-turns 20" "$CALL_LOG"; then
+  echo "PASS: --max-turns 20 passed to /ship retry"
+else
+  echo "FAIL: --max-turns 20 not found in /ship retry calls"
   ERRORS=$((ERRORS + 1))
 fi
 

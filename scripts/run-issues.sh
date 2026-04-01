@@ -55,6 +55,17 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 LOG_FILE="$ARTIFACTS_DIR/run-issues-$TIMESTAMP.log"
 
 # ---------------------------------------------------------------------------
+# Smoke-check: verify --max-turns is accepted by the current claude CLI.
+# The flag works but is not listed in --help (as of 2026-04-01).
+# ---------------------------------------------------------------------------
+if [ "$DRY_RUN" = false ]; then
+  if ! claude -p "ok" --max-turns 1 >/dev/null 2>&1; then
+    echo "FATAL: claude CLI does not accept --max-turns — flag may have been removed" >&2
+    exit 1
+  fi
+fi
+
+# ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 log() {
