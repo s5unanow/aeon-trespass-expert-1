@@ -2,10 +2,12 @@
 
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.stages.glossary.registry_loader import load_concept_registry
 from atr_pipeline.stages.render.glossary_builder import build_glossary_payload
 from atr_pipeline.stages.render.nav_builder import build_nav_payload
-from atr_pipeline.stages.render.page_builder import build_render_page
+from atr_pipeline.stages.render.page_builder import build_render_page, is_garbage_title
 from atr_pipeline.stages.render.search_builder import build_search_docs
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
@@ -473,7 +475,7 @@ def test_title_override_applied() -> None:
 
 
 def test_facsimile_fallback_title_for_short_garbage() -> None:
-    """Facsimile pages with very short titles get fallback 'Page N'."""
+    """Pages with garbage titles get fallback 'Page N'."""
     ir = PageIRV1(
         document_id="test_doc",
         page_id="p0007",
@@ -489,9 +491,10 @@ def test_facsimile_fallback_title_for_short_garbage() -> None:
         reading_order=["p0007.b001"],
     )
     render = build_render_page(ir)
-    assert render.page.title == "I"
-    # Simulate the stage logic for facsimile fallback
-    if len(render.page.title) <= 2:
+    # "I" has < 2 alpha chars, so it's skipped during title selection
+    assert render.page.title == ""
+    # Simulate the stage logic for garbage fallback
+    if is_garbage_title(render.page.title):
         render.page.title = f"Page {ir.page_number}"
     assert render.page.title == "Page 7"
 
@@ -647,3 +650,120 @@ def _make_ir(*, page_id: str, page_number: int) -> PageIRV1:
         ],
         reading_order=[f"{page_id}.b001"],
     )
+
+
+# ── Title quality filter tests ──────────────────────────────────
+
+
+@pytest.mark.parametrize(
+    "text, expected",
+    [
+        ("", True),
+        ("   ", True),
+        ("1", True),
+        ("42", True),
+        ("3.", True),
+        ("1)", True),
+        ("7:", True),
+        ("I", True),
+        ("A", True),
+        ("Attack Phase", False),
+        ("Проверка атаки", False),
+        ("Page 7", False),
+        ("Main Attributes:", False),
+        ("Hekaton level 8+:", False),
+        ("co-op", False),
+    ],
+    ids=[
+        "empty",
+        "whitespace",
+        "single_digit",
+        "multi_digit",
+        "digit_dot",
+        "digit_paren",
+        "digit_colon",
+        "single_alpha_I",
+        "single_alpha_A",
+        "valid_two_words",
+        "valid_cyrillic",
+        "valid_page_number",
+        "valid_with_colon",
+        "valid_with_plus",
+        "valid_compound",
+    ],
+)
+def test_is_garbage_title(text: str, expected: bool) -> None:
+    assert is_garbage_title(text) is expected
+
+
+def test_garbage_heading_skipped_for_title() -> None:
+    """First heading is garbage digit — title comes from second heading."""
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0040",
+        page_number=40,
+        language=LanguageCode.EN,
+        blocks=[
+            HeadingBlock(
+                block_id="p0040.b001",
+                level=1,
+                children=[TextInline(text="1", lang=LanguageCode.EN)],
+            ),
+            HeadingBlock(
+                block_id="p0040.b002",
+                level=2,
+                children=[TextInline(text="Attack Phase", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=["p0040.b001", "p0040.b002"],
+    )
+    render = build_render_page(ir)
+    assert render.page.title == "Attack Phase"
+
+
+def test_all_garbage_headings_produce_empty_title() -> None:
+    """When all headings are garbage, title stays empty for fallback."""
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0041",
+        page_number=41,
+        language=LanguageCode.EN,
+        blocks=[
+            HeadingBlock(
+                block_id="p0041.b001",
+                level=1,
+                children=[TextInline(text="1", lang=LanguageCode.EN)],
+            ),
+            HeadingBlock(
+                block_id="p0041.b002",
+                level=2,
+                children=[TextInline(text="3.", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=["p0041.b001", "p0041.b002"],
+    )
+    render = build_render_page(ir)
+    assert render.page.title == ""
+
+
+def test_article_mode_garbage_title_gets_fallback() -> None:
+    """Broadened fallback applies to article mode, not just facsimile."""
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0065",
+        page_number=65,
+        language=LanguageCode.EN,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0065.b001",
+                children=[TextInline(text="Some body text.", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=["p0065.b001"],
+    )
+    render = build_render_page(ir)
+    assert render.page.title == ""
+    # Simulate stage fallback (now applies to all modes)
+    if is_garbage_title(render.page.title):
+        render.page.title = f"Page {ir.page_number}"
+    assert render.page.title == "Page 65"

@@ -32,6 +32,23 @@ from atr_schemas.render_page_v1 import (
     RenderTextInline,
 )
 
+_LONE_MARKER_RE = re.compile(r"^\d+[\.\):]?\s*$")
+
+
+def is_garbage_title(text: str) -> bool:
+    """Return True if *text* is unsuitable as a page title.
+
+    Catches empty strings, lone list markers, standalone digits,
+    and strings with fewer than 2 alphabetic characters.
+    """
+    stripped = text.strip()
+    if not stripped:
+        return True
+    if _LONE_MARKER_RE.match(stripped):
+        return True
+    alpha_count = sum(1 for c in stripped if c.isalpha())
+    return alpha_count < 2
+
 
 def build_render_page(
     page_ir: PageIRV1,
@@ -85,7 +102,9 @@ def build_render_page(
 
         if block.type == "heading":
             if not title:
-                title = " ".join(c.text for c in children if isinstance(c, RenderTextInline))
+                candidate = " ".join(c.text for c in children if isinstance(c, RenderTextInline))
+                if not is_garbage_title(candidate):
+                    title = candidate
             render_blocks.append(
                 RenderHeadingBlock(
                     id=block.block_id,
