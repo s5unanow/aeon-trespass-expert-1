@@ -1,5 +1,5 @@
 ---
-description: Smoke-testing rules for shell commands in hooks and prompts — applies to .claude/hooks/ and .claude/prompts/
+description: Smoke-testing rules for shell commands and decision logic in hooks, prompts, and skills
 globs: .claude/hooks/**,.claude/prompts/**,.claude/skills/**
 ---
 
