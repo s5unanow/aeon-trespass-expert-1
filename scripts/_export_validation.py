@@ -37,6 +37,25 @@ def validate_export_completeness(
     for pid in sorted(orphan_render):
         errors.append(f"render_page.{pid}.json exists but is not in manifest")
 
+    # Verify internal page.id matches filename-derived ID
+    for pid in sorted(render_files & manifest_ids):
+        render_path = data_dir / f"render_page.{pid}.json"
+        try:
+            page_data = json.loads(render_path.read_text())
+            internal_id = page_data.get("page", {}).get("id", "")
+            if internal_id and internal_id != pid:
+                errors.append(
+                    f"render_page.{pid}.json has internal page.id "
+                    f"'{internal_id}' (expected '{pid}')"
+                )
+            sm_id = page_data.get("source_map", {}).get("page_id", "")
+            if sm_id and sm_id != pid:
+                errors.append(
+                    f"render_page.{pid}.json has source_map.page_id '{sm_id}' (expected '{pid}')"
+                )
+        except (json.JSONDecodeError, OSError, AttributeError):
+            errors.append(f"render_page.{pid}.json could not be read for internal ID check")
+
     return errors
 
 
