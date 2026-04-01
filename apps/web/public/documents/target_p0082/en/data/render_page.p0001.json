@@ -3,7 +3,7 @@
   "document_version": "en",
   "presentation_mode": "article",
   "page": {
-    "id": "p0082",
+    "id": "p0001",
     "title": "Symbol Legend",
     "section_path": [],
     "source_page_number": 82
@@ -16,7 +16,7 @@
   "blocks": [
     {
       "kind": "heading",
-      "id": "p0082.b001",
+      "id": "p0001.b001",
       "level": 2,
       "children": [
         { "kind": "text", "text": "Symbol Legend", "marks": ["bold"] }
@@ -24,7 +24,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0082.b002",
+      "id": "p0001.b002",
       "children": [
         { "kind": "icon", "symbol_id": "sym.progress", "alt": "Progress" },
         { "kind": "text", "text": " Progress: Gain progress tokens.", "marks": [] }
@@ -32,33 +32,33 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0082.b003",
+      "id": "p0001.b003",
       "children": [
-        { "kind": "icon", "symbol_id": "sym.attack", "alt": "Attack" },
-        { "kind": "text", "text": " Attack: Roll dice equal to your Attack Value.", "marks": [] }
+        { "kind": "icon", "symbol_id": "sym.rage", "alt": "Rage" },
+        { "kind": "text", "text": " Rage: Channel wrath to fuel devastating strikes.", "marks": [] }
       ]
     },
     {
       "kind": "paragraph",
-      "id": "p0082.b004",
+      "id": "p0001.b004",
       "children": [
-        { "kind": "icon", "symbol_id": "sym.defense", "alt": "Defense" },
-        { "kind": "text", "text": " Defense: Reduce incoming damage.", "marks": [] }
+        { "kind": "icon", "symbol_id": "sym.hull", "alt": "Hull" },
+        { "kind": "text", "text": " Hull: Structural integrity of the Argo.", "marks": [] }
       ]
     },
     {
       "kind": "paragraph",
-      "id": "p0082.b005",
+      "id": "p0001.b005",
       "children": [
-        { "kind": "icon", "symbol_id": "sym.health", "alt": "Health" },
-        { "kind": "text", "text": " Health: Total hit points of your Argonaut.", "marks": [] }
+        { "kind": "icon", "symbol_id": "sym.crew", "alt": "Crew" },
+        { "kind": "text", "text": " Crew: Available personnel aboard the Argo.", "marks": [] }
       ]
     }
   ],
   "figures": {},
-  "glossary_mentions": ["concept.progress", "concept.attack"],
+  "glossary_mentions": ["concept.progress"],
   "source_map": {
-    "page_id": "p0082",
-    "block_refs": ["p0082.b001", "p0082.b002", "p0082.b003", "p0082.b004", "p0082.b005"]
+    "page_id": "p0001",
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003", "p0001.b004", "p0001.b005"]
   }
 }

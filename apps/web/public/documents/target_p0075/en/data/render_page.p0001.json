@@ -2,7 +2,7 @@
   "schema_version": "render_page.v1",
   "document_version": "",
   "page": {
-    "id": "p0075",
+    "id": "p0001",
     "title": "Tree of Knowledge",
     "section_path": [],
     "source_page_number": 75
@@ -15,7 +15,7 @@
   "blocks": [
     {
       "kind": "heading",
-      "id": "p0075.b001",
+      "id": "p0001.b001",
       "level": 1,
       "children": [
         {
@@ -27,7 +27,7 @@
     },
     {
       "kind": "paragraph",
-      "id": "p0075.b002",
+      "id": "p0001.b002",
       "children": [
         {
           "kind": "text",
@@ -38,121 +38,121 @@
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0007",
+      "id": "p0001.fig.p0075.img0007",
       "asset_id": "p0075.img0007",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0008",
+      "id": "p0001.fig.p0075.img0008",
       "asset_id": "p0075.img0008",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0009",
+      "id": "p0001.fig.p0075.img0009",
       "asset_id": "p0075.img0009",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0010",
+      "id": "p0001.fig.p0075.img0010",
       "asset_id": "p0075.img0010",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0012",
+      "id": "p0001.fig.p0075.img0012",
       "asset_id": "p0075.img0012",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0014",
+      "id": "p0001.fig.p0075.img0014",
       "asset_id": "p0075.img0014",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0016",
+      "id": "p0001.fig.p0075.img0016",
       "asset_id": "p0075.img0016",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0018",
+      "id": "p0001.fig.p0075.img0018",
       "asset_id": "p0075.img0018",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0020",
+      "id": "p0001.fig.p0075.img0020",
       "asset_id": "p0075.img0020",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0022",
+      "id": "p0001.fig.p0075.img0022",
       "asset_id": "p0075.img0022",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0024",
+      "id": "p0001.fig.p0075.img0024",
       "asset_id": "p0075.img0024",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0026",
+      "id": "p0001.fig.p0075.img0026",
       "asset_id": "p0075.img0026",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0028",
+      "id": "p0001.fig.p0075.img0028",
       "asset_id": "p0075.img0028",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0030",
+      "id": "p0001.fig.p0075.img0030",
       "asset_id": "p0075.img0030",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0032",
+      "id": "p0001.fig.p0075.img0032",
       "asset_id": "p0075.img0032",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0034",
+      "id": "p0001.fig.p0075.img0034",
       "asset_id": "p0075.img0034",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0036",
+      "id": "p0001.fig.p0075.img0036",
       "asset_id": "p0075.img0036",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0038",
+      "id": "p0001.fig.p0075.img0038",
       "asset_id": "p0075.img0038",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0040",
+      "id": "p0001.fig.p0075.img0040",
       "asset_id": "p0075.img0040",
       "children": []
     },
     {
       "kind": "figure",
-      "id": "p0075.fig.p0075.img0042",
+      "id": "p0001.fig.p0075.img0042",
       "asset_id": "p0075.img0042",
       "children": []
     }
@@ -242,10 +242,10 @@
   "glossary_mentions": [],
   "search": {},
   "source_map": {
-    "page_id": "p0075",
+    "page_id": "p0001",
     "block_refs": [
-      "p0075.b001",
-      "p0075.b002"
+      "p0001.b001",
+      "p0001.b002"
     ]
   },
   "build_meta": null

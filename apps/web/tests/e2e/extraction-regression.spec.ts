@@ -336,6 +336,15 @@ test.describe('EN extraction: symbol legend (target_p0082)', () => {
     // Legend page should have at least 3 distinct symbol icons
     const count = await icons.count();
     expect(count).toBeGreaterThanOrEqual(3);
+
+    // At least one icon must render as a real <img> (not fallback <span>)
+    const imgIcons = content.locator('img[data-symbol-id]');
+    const imgCount = await imgIcons.count();
+    expect(imgCount).toBeGreaterThanOrEqual(1);
+
+    // Verify a mapped icon has a valid src pointing to /icons/
+    const src = await imgIcons.first().getAttribute('src');
+    expect(src).toMatch(/\/icons\//);
   });
 
   test('visual snapshot: p0082 symbol legend', async ({ page }) => {

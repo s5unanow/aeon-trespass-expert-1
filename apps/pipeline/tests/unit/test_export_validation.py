@@ -72,6 +72,23 @@ class TestValidateExportCompleteness:
         assert len(errors) == 1
         assert "p0001" in errors[0]
 
+    def test_error_when_internal_page_id_mismatches(self, export_dir: Path) -> None:
+        from _export_validation import validate_export_completeness
+
+        # Overwrite render file with mismatched internal page.id
+        render_data = {
+            "page": {"id": "p9999", "title": "Wrong ID"},
+            "blocks": [],
+            "figures": {},
+        }
+        (export_dir / "data" / "render_page.p0001.json").write_text(json.dumps(render_data))
+        pages = [{"page_id": "p0001", "title": "Attack Phase"}]
+        errors = validate_export_completeness(export_dir / "data", pages)
+        assert len(errors) == 1
+        assert "p0001" in errors[0]
+        assert "p9999" in errors[0]
+        assert "internal page.id" in errors[0]
+
 
 class TestValidateAssetExistence:
     def test_pass_when_no_figures(self, export_dir: Path) -> None:
