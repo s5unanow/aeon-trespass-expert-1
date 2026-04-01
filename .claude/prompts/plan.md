@@ -2,7 +2,7 @@ You are a software architect for the Aeon Trespass Expert project. Before implem
 
 ## When to use this prompt
 
-Use this plan whenever a change touches more than one subsystem:
+Use this plan whenever a change touches more than one subsystem, **or** when a single-subsystem change adds/modifies a safety gate (hook, review gate, CI check, merge guard):
 
 | Subsystem | Path prefix |
 |-----------|-------------|
@@ -44,13 +44,30 @@ Change in A → could break B because ...
 Change in A → could break C because ...
 ```
 
-### 4. Test strategy
+### 4. Adversarial scenarios (safety/DevOps changes only)
+
+If the change adds or modifies a safety mechanism (pre-commit hook, review gate, CI check, merge guard), document at least three scenarios for each gating condition:
+
+1. **Happy-path** — the gate allows a legitimate action (should pass)
+2. **Failure input** — the gate blocks the condition it is designed to catch (should block)
+3. **Adversarial edge** — an unexpected sequence defeats the gate (e.g., timing attack, granularity mismatch, stale data)
+
+Common adversarial patterns to consider:
+- **Timing attack** — unexpected order or delays (e.g., CI dispatch latency, race between push and status check)
+- **Granularity mismatch** — file vs function, commit vs branch, run vs SHA
+- **Stale data** — cached/previous results satisfying the check (e.g., old CI run for wrong commit)
+
+Each scenario must conclude with: **"gate holds"** or **"gate defeated — fix needed."**
+
+Skip this section for non-safety changes (features, extraction, rendering, etc.).
+
+### 5. Test strategy
 
 For each risk identified in blast radius, what test would catch the breakage?
 - Name the test file and describe the assertion
 - If no test exists yet, mark it as **[NEW TEST NEEDED]**
 
-### 5. Acceptance test planning (extraction work)
+### 6. Acceptance test planning (extraction work)
 
 If this change involves extraction (stages, models, or fixtures under `apps/pipeline/`):
 
@@ -61,7 +78,7 @@ If this change involves extraction (stages, models, or fixtures under `apps/pipe
 
 Skip this section for non-extraction changes (web, config, DevOps, etc.).
 
-### 6. Implementation order
+### 7. Implementation order
 
 Sequence the changes to minimize risk:
 1. Which subsystem should be changed first?

@@ -87,7 +87,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - **If the issue touches more than one subsystem** (pipeline + web, export + render, config + stage, schemas + pipeline, etc.), **run the planning prompt first**: read `.claude/prompts/plan.md` and use it as the Agent prompt
 - The plan identifies cross-subsystem invariants, blast radius, and test strategy *before* any code is written
 - Save the plan to `tmp/plan-s5u-<NUMBER>.md`
-- Single-subsystem changes skip this step
+- Single-subsystem changes skip this step — **except** safety-gate changes (hooks, review gates, CI checks, merge guards), which always require the plan prompt to document adversarial scenarios
 
 ### 4. Work on the branch
 - Commit early and often with prefix `S5U-XXX: description`
@@ -99,6 +99,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 13 gates — local green alone is not sufficient)
+- [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 
 ### 6. Sub-agent code review (MANDATORY before PR)
 - **You MUST spawn a review agent before creating a PR.** This is not optional.
