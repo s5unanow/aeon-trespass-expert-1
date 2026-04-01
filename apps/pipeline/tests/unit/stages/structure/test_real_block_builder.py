@@ -1,5 +1,6 @@
 """Tests for the real page block builder."""
 
+import re
 from pathlib import Path
 
 from atr_pipeline.config.models import StructureConfig
@@ -554,3 +555,61 @@ def test_mixed_table_and_prose() -> None:
     assert types.index("heading") < types.index("table")
     assert types.count("paragraph") == 2
     assert types.count("table") == 1
+
+
+# --- Real-page heading regressions (S5U-443) ---
+
+_BARE_NUMBER_RE = re.compile(r"^\d{1,3}[.):]*$")
+
+
+def test_p0017_bare_numbers_not_headings() -> None:
+    """p0017 must not promote bare numbers (17, 18, 19, 4) to headings.
+
+    Regression (S5U-443): the heading-font numeric markers on p0017 were
+    emitted as HeadingBlocks. They must be list items instead.
+    """
+    if _skip_if_no_pdf():
+        return
+    native = extract_native_page(PDF_PATH, page_number=17, document_id="ato")
+    ir = build_page_ir_real(native)
+
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    for h in headings:
+        text = " ".join(c.text for c in h.children if hasattr(c, "text")).strip()
+        assert not _BARE_NUMBER_RE.match(text), (
+            f"Bare number {text!r} must not be a heading on p0017"
+        )
+
+
+def test_p0017_has_multi_level_headings() -> None:
+    """p0017 must preserve multiple heading tiers (nested structure).
+
+    Regression (S5U-443): all headings collapsed to a single level before
+    the relative heading-level heuristic was added.
+    """
+    if _skip_if_no_pdf():
+        return
+    native = extract_native_page(PDF_PATH, page_number=17, document_id="ato")
+    ir = build_page_ir_real(native)
+
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    assert len(headings) >= 3, f"Expected ≥3 headings, got {len(headings)}"
+    levels = {h.level for h in headings}
+    assert len(levels) >= 2, f"Expected ≥2 distinct levels, got {levels}"
+
+
+def test_p0064_single_tier_headings_same_level() -> None:
+    """p0064 headings (all same font size) must share one heading level.
+
+    Regression (S5U-443): pages with genuinely single-depth headings must
+    not be artificially split into multiple levels.
+    """
+    if _skip_if_no_pdf():
+        return
+    native = extract_native_page(PDF_PATH, page_number=64, document_id="ato")
+    ir = build_page_ir_real(native)
+
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    assert len(headings) >= 2, f"Expected ≥2 headings, got {len(headings)}"
+    levels = {h.level for h in headings}
+    assert len(levels) == 1, f"Same-size headings must share one level, got {levels}"

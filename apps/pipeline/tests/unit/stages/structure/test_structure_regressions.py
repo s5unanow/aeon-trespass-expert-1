@@ -507,3 +507,71 @@ def test_table_block_survives_render_stage() -> None:
     render = build_render_page(ir)
     assert len(render.blocks) == 1, "TableBlock must not be dropped by render stage"
     assert render.blocks[0].kind == "table"
+
+
+# --- Bare-number heading filter (S5U-443) ---
+
+
+def test_bare_numbers_in_heading_font_become_list_items() -> None:
+    """Standalone numbers in heading font must become list items, not headings.
+
+    Regression: p0017 emitted bare numbers (17, 18, 19, 4) as headings
+    because they used GreenleafLightPro font. The _NUMBERED_STEP_RE filter
+    must redirect these to ListItemBlock.
+    """
+    spans = [
+        _span("Real Heading", font="GreenleafLightPro", size=14.0, y0=50, span_id="s0001"),
+        _span("Body text.", font="Adonis-Regular", size=9.0, y0=80, span_id="s0002"),
+        _span("17", font="GreenleafLightPro", size=12.5, y0=120, span_id="s0003"),
+        _span("18", font="GreenleafLightPro", size=12.5, y0=150, span_id="s0004"),
+        _span("4", font="GreenleafLightPro", size=13.8, y0=180, span_id="s0005"),
+        _span("More body.", font="Adonis-Regular", size=9.0, y0=210, span_id="s0006"),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    list_items = [b for b in ir.blocks if b.type == "list_item"]
+
+    # Only "Real Heading" should be a heading
+    assert len(headings) == 1, f"Expected 1 heading, got {len(headings)}: {headings}"
+    h_text = " ".join(c.text for c in headings[0].children if hasattr(c, "text"))
+    assert "Real Heading" in h_text
+
+    # Bare numbers should be list items
+    li_texts = [" ".join(c.text for c in li.children if hasattr(c, "text")) for li in list_items]
+    assert any("17" in t for t in li_texts), f"'17' missing from list items: {li_texts}"
+    assert any("18" in t for t in li_texts), f"'18' missing from list items: {li_texts}"
+    assert any("4" in t for t in li_texts), f"'4' missing from list items: {li_texts}"
+
+
+def test_numbered_section_heading_preserved() -> None:
+    """Numbered headings with descriptive text must remain headings.
+
+    '3. Moving the Adversary' is a legitimate heading — only bare numbers
+    like '17' or '4.' should be filtered.
+    """
+    spans = [
+        _span(
+            "3. Moving the Adversary",
+            font="GreenleafLightPro",
+            size=12.0,
+            y0=50,
+            span_id="s0001",
+        ),
+        _span("Body text.", font="Adonis-Regular", size=9.0, y0=80, span_id="s0002"),
+        _span("4.", font="GreenleafLightPro", size=12.0, y0=120, span_id="s0003"),
+    ]
+    native = _page(spans)
+
+    ir = build_page_ir_real(native)
+    headings = [b for b in ir.blocks if b.type == "heading"]
+    list_items = [b for b in ir.blocks if b.type == "list_item"]
+
+    # "3. Moving the Adversary" is a heading
+    assert len(headings) == 1
+    h_text = " ".join(c.text for c in headings[0].children if hasattr(c, "text"))
+    assert "Moving the Adversary" in h_text
+
+    # "4." is a bare number step → list item
+    assert len(list_items) >= 1
