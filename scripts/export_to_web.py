@@ -22,8 +22,8 @@ from _export_blocks import (  # noqa: E402
     rewrite_facsimile_urls,
     rewrite_figure_urls,
     text_content,
-    validate_figure_refs,
 )
+from _export_validation import run_export_validation  # noqa: E402
 
 ARTIFACT_ROOT = REPO / "artifacts"
 PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
@@ -199,13 +199,6 @@ def _count_block_stats(blocks: list[dict], stats: dict) -> None:
             stats["long_paras"] += 1
 
 
-def _warn_figure_ref_errors(exported: list[tuple[str, dict]]) -> None:
-    """Log warnings for any broken figure asset references."""
-    for pid, data in exported:
-        for err in validate_figure_refs(data, pid):
-            print(f"  WARN: {err}")
-
-
 def export_pages(
     doc_id: str,
     edition: str,
@@ -258,8 +251,6 @@ def export_pages(
 
         _count_block_stats(best.get("blocks", []), stats)
         exported.append((pid, best))
-
-    _warn_figure_ref_errors(exported)
 
     # Inject navigation using only the actually-exported page list
     exported_ids = [pid for pid, _ in exported]
@@ -376,12 +367,21 @@ def main(argv: list[str] | None = None) -> None:
 
     glossary_src = ARTIFACT_ROOT / doc_id / "glossary_payload.v1" / "document" / doc_id
 
+    validation_ok = True
     for edition in editions:
         print(f"Exporting {edition.upper()} render pages...")
         export_pages(doc_id, edition, render_src, doc_public, page_images)
         export_glossary(doc_id, edition, glossary_src, doc_public)
 
+        edition_dir = doc_public / edition
+        manifest = json.loads((edition_dir / "manifest.json").read_text())
+        if not run_export_validation(edition_dir, manifest["pages"]):
+            validation_ok = False
+
     write_document_index(documents_root)
+    if not validation_ok:
+        print("Export validation FAILED — see errors above.")
+        sys.exit(1)
     print("Done.")
 
 

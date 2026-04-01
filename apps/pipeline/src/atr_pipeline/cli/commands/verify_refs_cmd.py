@@ -61,6 +61,9 @@ def _print_summary(report: VerificationReport) -> None:
         counts_str = ", ".join(f"{k}={v}" for k, v in sorted(report.severity_counts.items()))
         typer.echo(f"Severity:         {counts_str}")
 
+    if report.symbol_drop_count:
+        typer.echo(f"Symbol drops:     {report.symbol_drop_count} (extraction-layer loss)")
+
     if total_records:
         typer.echo(f"\n{'PAGE':<10} {'CODE':<25} {'SEV':<10} {'ENTITY':<25}")
         typer.echo("-" * 70)

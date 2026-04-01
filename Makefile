@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test test-hooks codegen check-codegen export clean validate-fixtures config-health erosion-report
+.PHONY: help bootstrap lint format typecheck test test-hooks codegen check-codegen verify export clean validate-fixtures config-health erosion-report
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -32,6 +32,10 @@ test: ## Run all tests (pytest + pnpm test)
 
 test-hooks: ## Run hook integration tests (fast, no external deps)
 	uv run pytest apps/pipeline/tests/integration/test_hooks.py -v --timeout=10
+
+verify: ## Run extraction invariant and cross-stage ref checks on artifacts
+	uv run atr verify-extraction --doc ato_core_v1_1
+	uv run atr verify-refs --doc ato_core_v1_1
 
 export: ## Export pipeline artifacts to web public (re-generates apps/web/public/documents/)
 	uv run python scripts/export_to_web.py
