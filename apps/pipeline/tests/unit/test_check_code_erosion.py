@@ -279,6 +279,8 @@ class TestHotspotRatchet:
         assert entries[0]["waiver_issue"] == "S5U-200"
         assert entries[0]["waiver_expires"] == "2027-01-01"
         assert entries[0]["budget_exceeded"] is False  # waiver-adjusted
+        assert entries[0]["budget_complexity"] == 20  # effective, not raw 5
+        assert entries[0]["budget_lines"] == 200  # effective, not raw 50
 
 
 # -- Report and CLI ------------------------------------------------------------
