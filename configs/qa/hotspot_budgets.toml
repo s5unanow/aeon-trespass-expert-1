@@ -1,0 +1,37 @@
+# Hotspot budget watchlist — versioned complexity ratchet configuration.
+#
+# Each hotspot is a file with known high complexity, tracked by a Linear
+# issue for refactoring.  Budgets define the maximum tolerable worst-function
+# complexity and total line count.  The erosion report flags any touched
+# hotspot that exceeds its budget.
+#
+# Governance rules:
+#   - Adding a new hotspot is always allowed (tightening)
+#   - Raising a budget (loosening) requires justification in the PR
+#     description and a linked Linear issue in the waivers section
+#   - Removing a hotspot requires evidence the refactor is complete
+#   - Initial budgets are calibrated to current measured values
+
+version = 1
+
+[[hotspots]]
+path = "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py"
+tracking_issue = "S5U-144"
+max_complexity = 56
+max_lines = 594
+
+[[hotspots]]
+path = "apps/pipeline/src/atr_pipeline/stages/translation/planner.py"
+tracking_issue = "S5U-143"
+max_complexity = 27
+max_lines = 122
+
+# Waivers — use when an intentional refactor temporarily raises budgets.
+#
+# [[waivers]]
+# path = "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py"
+# issue = "S5U-XXX"
+# reason = "Intentional complexity increase for feature X; refactor planned in S5U-YYY"
+# expires = 2026-05-01
+# budget_override_complexity = 60
+# budget_override_lines = 650

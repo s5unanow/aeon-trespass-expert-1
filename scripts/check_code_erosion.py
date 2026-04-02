@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Non-blocking code erosion / verbosity drift report for main...HEAD.
 
-Reports structural erosion, verbosity drift, and hotspot ratchet.
-Complexity counting approximates ruff C901 via ast. Advisory only — always exits 0.
-
-Usage: uv run python scripts/check_code_erosion.py --base main --head HEAD
+Reports structural erosion, verbosity drift, hotspot ratchet, and budget
+violations.  Complexity counting approximates ruff C901 via ast.
+Advisory only — always exits 0.
 """
 
 from __future__ import annotations
@@ -17,12 +16,16 @@ import sys
 from pathlib import Path
 from typing import TypedDict
 
-THRESHOLDS = {"complexity": 12, "branches": 12, "statements": 50, "args": 7}
+from _hotspot_budgets import (
+    BudgetViolation,
+    HotspotConfig,
+    HotspotEntry,
+    check_budgets,
+    compute_ratchet,
+    load_hotspot_config,
+)
 
-HOTSPOT_REGISTRY: dict[str, str] = {
-    "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py": "S5U-144",
-    "apps/pipeline/src/atr_pipeline/stages/translation/planner.py": "S5U-143",
-}
+THRESHOLDS = {"complexity": 12, "branches": 12, "statements": 50, "args": 7}
 
 PYTHON_DIRS = ("apps/pipeline/src", "packages/schemas/python", "scripts")
 GROWTH_ABS = 50
@@ -56,18 +59,7 @@ class GrowthEntry(TypedDict):
     pct_growth: float
 
 
-class HotspotEntry(TypedDict):
-    file: str
-    issue: str
-    verdict: str
-    base_worst_complexity: int
-    head_worst_complexity: int
-    base_lines: int
-    head_lines: int
-
-
 # -- AST analysis -------------------------------------------------------------
-
 _BRANCH_TYPES: tuple[type[ast.AST], ...] = (
     ast.If,
     ast.For,
@@ -82,12 +74,11 @@ _BRANCH_TYPES: tuple[type[ast.AST], ...] = (
 
 def _count_branches(node: ast.AST) -> int:
     count = 0
-    # Manual walk to skip nested function bodies (ruff scopes per-function).
     stack: list[ast.AST] = list(ast.iter_child_nodes(node))
     while stack:
         child = stack.pop()
         if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            continue  # don't descend into nested functions
+            continue
         if isinstance(child, _BRANCH_TYPES):
             count += 1
         elif isinstance(child, ast.BoolOp):
@@ -181,8 +172,7 @@ def _violations_for(m: FunctionMetrics) -> list[str]:
 
 
 def compute_structural_erosion(
-    changed: list[str],
-    head: str,
+    changed: list[str], head: str
 ) -> tuple[list[FunctionViolation], int]:
     funcs: list[FunctionViolation] = []
     score = 0
@@ -217,9 +207,7 @@ def compute_structural_erosion(
 
 
 def compute_verbosity_drift(
-    changed: list[str],
-    base: str,
-    head: str,
+    changed: list[str], base: str, head: str
 ) -> tuple[list[GrowthEntry], int, float]:
     growth: list[GrowthEntry] = []
     new_funcs: list[int] = []
@@ -253,33 +241,21 @@ def compute_verbosity_drift(
     return growth, len(new_funcs), avg
 
 
-def compute_hotspot_ratchet(base: str, head: str) -> list[HotspotEntry]:
-    entries: list[HotspotEntry] = []
-    for path, issue in HOTSPOT_REGISTRY.items():
+def _gather_hotspot_metrics(
+    config: HotspotConfig, base: str, head: str
+) -> dict[str, tuple[int, int, int, int]]:
+    """Gather (base_worst, head_worst, base_lines, head_lines) per hotspot."""
+    result: dict[str, tuple[int, int, int, int]] = {}
+    for hotspot in config["hotspots"]:
+        path = hotspot["path"]
         base_src = get_file_at_ref(base, path)
         head_src = get_file_at_ref(head, path)
-        base_worst = max((m["complexity"] for m in analyze_source(base_src or "")), default=0)
-        head_worst = max((m["complexity"] for m in analyze_source(head_src or "")), default=0)
-        base_lines = len(base_src.splitlines()) if base_src else 0
-        head_lines = len(head_src.splitlines()) if head_src else 0
-        if head_worst > base_worst or head_lines > base_lines:
-            verdict = "WORSENED"
-        elif head_worst < base_worst or head_lines < base_lines:
-            verdict = "IMPROVED"
-        else:
-            verdict = "UNCHANGED"
-        entries.append(
-            HotspotEntry(
-                file=path,
-                issue=issue,
-                verdict=verdict,
-                base_worst_complexity=base_worst,
-                head_worst_complexity=head_worst,
-                base_lines=base_lines,
-                head_lines=head_lines,
-            )
-        )
-    return entries
+        bw = max((m["complexity"] for m in analyze_source(base_src or "")), default=0)
+        hw = max((m["complexity"] for m in analyze_source(head_src or "")), default=0)
+        bl = len(base_src.splitlines()) if base_src else 0
+        hl = len(head_src.splitlines()) if head_src else 0
+        result[path] = (bw, hw, bl, hl)
+    return result
 
 
 # -- Report formatting ---------------------------------------------------------
@@ -292,6 +268,7 @@ def build_report(
     erosion: tuple[list[FunctionViolation], int],
     drift: tuple[list[GrowthEntry], int, float],
     ratchet: list[HotspotEntry],
+    budget_violations: list[BudgetViolation],
 ) -> dict[str, object]:
     erosion_funcs, erosion_score = erosion
     growth, new_func_count, avg_new_func_len = drift
@@ -310,6 +287,7 @@ def build_report(
             "avg_new_function_length": avg_new_func_len,
         },
         "hotspot_ratchet": ratchet,
+        "budget_violations": budget_violations,
     }
 
 
@@ -319,8 +297,7 @@ def print_report(report: dict[str, object]) -> None:
     ratchet = report["hotspot_ratchet"]
     assert isinstance(erosion, dict) and isinstance(drift, dict) and isinstance(ratchet, list)
 
-    print(f"\nCode Erosion Report ({report['base']}...{report['head']})")
-    print("=" * 52)
+    print(f"\nCode Erosion Report ({report['base']}...{report['head']})\n{'=' * 52}")
     print(f"\n  Files changed: {report['files_changed']}, in scope: {report['files_in_scope']}")
 
     funcs: list[FunctionViolation] = erosion["over_threshold_functions"]
@@ -328,8 +305,7 @@ def print_report(report: dict[str, object]) -> None:
     if funcs:
         print(f"  Over-threshold functions: {len(funcs)}")
         for f in funcs:
-            print(f"\n  {f['file']}")
-            print(f"    {f['function']} (line {f['line']})")
+            print(f"\n  {f['file']}\n    {f['function']} (line {f['line']})")
             print(
                 f"      complexity={f['complexity']}  branches={f['branches']}"
                 f"  stmts={f['statements']}  [{', '.join(f['violations'])}]"
@@ -363,31 +339,60 @@ def print_report(report: dict[str, object]) -> None:
             f" -> {h['head_worst_complexity']} ({'+' if dc >= 0 else ''}{dc})"
         )
         print(f"    lines: {h['base_lines']} -> {h['head_lines']} ({'+' if dl >= 0 else ''}{dl})")
+        if h["budget_complexity"] > 0 or h["budget_lines"] > 0:
+            status = "EXCEEDED" if h["budget_exceeded"] else "within budget"
+            waiver_note = ""
+            if h["waiver_issue"]:
+                waiver_note = f"  waiver={h['waiver_issue']} expires={h['waiver_expires']}"
+            print(
+                f"    budget: complexity<={h['budget_complexity']}"
+                f"  lines<={h['budget_lines']}  [{status}]{waiver_note}"
+            )
 
-    print("\n---\nAdvisory only — does not block CI. Tracked by S5U-463.\n")
+    violations: list[BudgetViolation] = report.get("budget_violations", [])  # type: ignore[assignment]
+    print("\n## Budget Violations")
+    if violations:
+        for v in violations:
+            waiver = f" (waiver: {v['waiver_issue']})" if v["waiver_active"] else ""
+            print(
+                f"  {Path(v['file']).name} ({v['tracking_issue']}):"
+                f" {v['metric']} {v['current']} > budget {v['budget']}{waiver}"
+            )
+    else:
+        print("  No budget violations in touched hotspots.")
+
+    print("\n---\nAdvisory only — does not block CI. Tracked by S5U-465.\n")
 
 
 # -- CLI -----------------------------------------------------------------------
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Non-blocking code erosion report (S5U-463).")
+    parser = argparse.ArgumentParser(description="Non-blocking code erosion report.")
     parser.add_argument("--base", default="main", help="Base ref (default: main)")
     parser.add_argument("--head", default="HEAD", help="Head ref (default: HEAD)")
     parser.add_argument("--output-json", dest="output_json", help="Write JSON to file")
     args = parser.parse_args(argv)
 
+    config = load_hotspot_config()
     changed = get_changed_files(args.base, args.head)
     erosion = compute_structural_erosion(changed, args.head)
     drift = compute_verbosity_drift(changed, args.base, args.head)
-    ratchet = compute_hotspot_ratchet(args.base, args.head)
-    report = build_report(args.base, args.head, changed, erosion, drift, ratchet)
+
+    metrics = _gather_hotspot_metrics(config, args.base, args.head)
+    ratchet = compute_ratchet(config, metrics)
+    head_metrics = {p: (hw, hl) for p, (_bw, hw, _bl, hl) in metrics.items()}
+    budget_violations = check_budgets(changed, config, head_metrics=head_metrics)
+
+    report = build_report(args.base, args.head, changed, erosion, drift, ratchet, budget_violations)
     print_report(report)
 
     if args.output_json:
         Path(args.output_json).parent.mkdir(parents=True, exist_ok=True)
         Path(args.output_json).write_text(json.dumps(report, indent=2) + "\n")
         print(f"JSON report written to {args.output_json}")
+    # Advisory only — change to `return 1 if budget_violations else 0` when
+    # budget calibration is confirmed and blocking is desired.
     return 0
 
 
