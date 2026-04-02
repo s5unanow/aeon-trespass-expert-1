@@ -249,6 +249,37 @@ class TestHotspotRatchet:
             entries = erosion.compute_ratchet(self._config(paths), metrics)
         assert all(e["verdict"] == "WORSENED" for e in entries)
 
+    def test_waiver_metadata_in_ratchet(self, erosion: ModuleType, budgets: ModuleType) -> None:
+        """Active waiver surfaces issue and expiry in ratchet entries."""
+        config: dict[str, Any] = {
+            "version": 1,
+            "hotspots": [
+                {
+                    "path": "src/a.py",
+                    "tracking_issue": "S5U-100",
+                    "max_complexity": 5,
+                    "max_lines": 50,
+                },
+            ],
+            "waivers": [
+                {
+                    "path": "src/a.py",
+                    "issue": "S5U-200",
+                    "reason": "planned",
+                    "expires": date(2027, 1, 1),
+                    "budget_override_complexity": 20,
+                    "budget_override_lines": 200,
+                },
+            ],
+        }
+        # head: complexity=10, lines=60 — exceeds raw budget but within waiver
+        metrics = {"src/a.py": (5, 10, 50, 60)}
+        entries = budgets.compute_ratchet(config, metrics)
+        assert len(entries) == 1
+        assert entries[0]["waiver_issue"] == "S5U-200"
+        assert entries[0]["waiver_expires"] == "2027-01-01"
+        assert entries[0]["budget_exceeded"] is False  # waiver-adjusted
+
 
 # -- Report and CLI ------------------------------------------------------------
 

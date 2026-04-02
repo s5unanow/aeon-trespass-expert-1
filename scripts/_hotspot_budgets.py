@@ -50,6 +50,8 @@ class HotspotEntry(TypedDict):
     budget_complexity: int
     budget_lines: int
     budget_exceeded: bool
+    waiver_issue: str
+    waiver_expires: str
 
 
 class BudgetViolation(TypedDict):
@@ -111,6 +113,11 @@ def load_hotspot_config(repo_root: Path | None = None) -> HotspotConfig:
 # -- Ratchet computation -------------------------------------------------------
 
 
+def _active_waivers(config: HotspotConfig) -> dict[str, HotspotWaiver]:
+    today = date.today()
+    return {w["path"]: w for w in config["waivers"] if w["expires"] >= today}
+
+
 def compute_ratchet(
     config: HotspotConfig,
     file_metrics: dict[str, tuple[int, int, int, int]],
@@ -118,7 +125,10 @@ def compute_ratchet(
     """Compute ratchet verdicts for all hotspots.
 
     *file_metrics* maps path -> (base_worst, head_worst, base_lines, head_lines).
+    Uses waiver-adjusted budgets for ``budget_exceeded`` so the ratchet and
+    budget-violations sections stay consistent.
     """
+    waivers = _active_waivers(config)
     entries: list[HotspotEntry] = []
     for hotspot in config["hotspots"]:
         path = hotspot["path"]
@@ -129,9 +139,18 @@ def compute_ratchet(
             verdict = "IMPROVED"
         else:
             verdict = "UNCHANGED"
-        exceeded = (hotspot["max_complexity"] > 0 and head_worst > hotspot["max_complexity"]) or (
-            hotspot["max_lines"] > 0 and head_lines > hotspot["max_lines"]
+        waiver = waivers.get(path)
+        eff_c = (
+            waiver["budget_override_complexity"]
+            if waiver and waiver["budget_override_complexity"] > 0
+            else hotspot["max_complexity"]
         )
+        eff_l = (
+            waiver["budget_override_lines"]
+            if waiver and waiver["budget_override_lines"] > 0
+            else hotspot["max_lines"]
+        )
+        exceeded = (eff_c > 0 and head_worst > eff_c) or (eff_l > 0 and head_lines > eff_l)
         entries.append(
             HotspotEntry(
                 file=path,
@@ -144,6 +163,8 @@ def compute_ratchet(
                 budget_complexity=hotspot["max_complexity"],
                 budget_lines=hotspot["max_lines"],
                 budget_exceeded=exceeded,
+                waiver_issue=waiver["issue"] if waiver else "",
+                waiver_expires=str(waiver["expires"]) if waiver else "",
             )
         )
     return entries
@@ -163,12 +184,7 @@ def check_budgets(
     Only checks hotspot files that appear in *changed_files*.
     *head_metrics* maps file path -> (worst_complexity, line_count).
     """
-    today = date.today()
-    active_waivers: dict[str, HotspotWaiver] = {}
-    for w in config["waivers"]:
-        if w["expires"] >= today:
-            active_waivers[w["path"]] = w
-
+    waivers = _active_waivers(config)
     changed_set = set(changed_files)
     violations: list[BudgetViolation] = []
 
@@ -180,7 +196,7 @@ def check_budgets(
         if metrics is None:
             continue
         head_worst, head_lines = metrics
-        waiver = active_waivers.get(path)
+        waiver = waivers.get(path)
         eff_complexity = (
             waiver["budget_override_complexity"]
             if waiver and waiver["budget_override_complexity"] > 0

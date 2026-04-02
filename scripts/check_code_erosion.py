@@ -60,7 +60,6 @@ class GrowthEntry(TypedDict):
 
 
 # -- AST analysis -------------------------------------------------------------
-
 _BRANCH_TYPES: tuple[type[ast.AST], ...] = (
     ast.If,
     ast.For,
@@ -298,8 +297,7 @@ def print_report(report: dict[str, object]) -> None:
     ratchet = report["hotspot_ratchet"]
     assert isinstance(erosion, dict) and isinstance(drift, dict) and isinstance(ratchet, list)
 
-    print(f"\nCode Erosion Report ({report['base']}...{report['head']})")
-    print("=" * 52)
+    print(f"\nCode Erosion Report ({report['base']}...{report['head']})\n{'=' * 52}")
     print(f"\n  Files changed: {report['files_changed']}, in scope: {report['files_in_scope']}")
 
     funcs: list[FunctionViolation] = erosion["over_threshold_functions"]
@@ -343,9 +341,12 @@ def print_report(report: dict[str, object]) -> None:
         print(f"    lines: {h['base_lines']} -> {h['head_lines']} ({'+' if dl >= 0 else ''}{dl})")
         if h["budget_complexity"] > 0 or h["budget_lines"] > 0:
             status = "EXCEEDED" if h["budget_exceeded"] else "within budget"
+            waiver_note = ""
+            if h["waiver_issue"]:
+                waiver_note = f"  waiver={h['waiver_issue']} expires={h['waiver_expires']}"
             print(
                 f"    budget: complexity<={h['budget_complexity']}"
-                f"  lines<={h['budget_lines']}  [{status}]"
+                f"  lines<={h['budget_lines']}  [{status}]{waiver_note}"
             )
 
     violations: list[BudgetViolation] = report.get("budget_violations", [])  # type: ignore[assignment]
