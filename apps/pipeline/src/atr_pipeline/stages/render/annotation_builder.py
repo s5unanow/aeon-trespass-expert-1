@@ -61,10 +61,11 @@ def build_facsimile_annotations(
     """
     cfg = quality or AnnotationQualityConfig()
     candidates = _build_candidates(en_ir, ru_ir)
+    curated = keep_texts is not None
     if keep_texts is not None:
         candidates = [c for c in candidates if any(kt in c.text for kt in keep_texts)]
-    filtered = _filter_annotations(candidates, cfg)
-    if not _page_quality_ok(filtered, cfg, candidate_count=len(candidates)):
+    filtered = _filter_annotations(candidates, cfg, curated=curated)
+    if not curated and not _page_quality_ok(filtered, cfg, candidate_count=len(candidates)):
         return []
     filtered.sort(key=lambda a: a.priority, reverse=True)
     return filtered
@@ -124,13 +125,19 @@ def _build_candidates(
 def _filter_annotations(
     candidates: list[FacsimileAnnotation],
     cfg: AnnotationQualityConfig,
+    *,
+    curated: bool = False,
 ) -> list[FacsimileAnnotation]:
-    """Apply per-annotation quality filters."""
+    """Apply per-annotation quality filters.
+
+    When *curated* is True (keep_texts was specified), the bbox-area
+    check is skipped — the caller already curated the candidate set.
+    """
     result: list[FacsimileAnnotation] = []
     for ann in candidates:
         if _is_identical_translation(ann.text, ann.translated_text):
             continue
-        if _bbox_area(ann.bbox) > cfg.max_bbox_area:
+        if not curated and _bbox_area(ann.bbox) > cfg.max_bbox_area:
             continue
         if _is_garbled(ann.text, cfg.min_letter_ratio):
             continue

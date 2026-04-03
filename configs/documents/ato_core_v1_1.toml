@@ -31,6 +31,12 @@ facsimile_annotation_keep_texts = [
     "1901 Cards",
     "Card Game",
     "Small Square",
+    "Titan Sheets",
+    "Storybooks",
+    "Moiros Cards",
+    "Wound Cards",
+    "Secret Cards",
+    "Trauma Cards",
 ]
 
 [render.page_overrides.p0054]

@@ -606,6 +606,108 @@ def test_keep_texts_empty_list_keeps_none() -> None:
     assert annotations == []
 
 
+def test_keep_texts_bypasses_oversized_bbox_filter() -> None:
+    """Curated keep_texts allows oversized bboxes through."""
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=0, y0=0, x1=500, y1=500),  # ~53% area
+                children=[TextInline(text="8 Moiros Cards 170 Secret Cards")],
+            ),
+            ParagraphBlock(
+                block_id="p0007.b002",
+                bbox=Rect(x0=10, y0=10, x1=100, y1=30),
+                children=[TextInline(text="233 AI Cards")],
+            ),
+        ]
+    )
+    # Without keep_texts, oversized block is dropped
+    assert len(build_facsimile_annotations(en_ir)) == 1
+
+    # With keep_texts, oversized block is kept
+    result = build_facsimile_annotations(
+        en_ir,
+        keep_texts=["Moiros Cards", "AI Cards"],
+    )
+    assert len(result) == 2
+    texts = {a.text for a in result}
+    assert "8 Moiros Cards 170 Secret Cards" in texts
+    assert "233 AI Cards" in texts
+
+
+def test_keep_texts_bypasses_page_quality_suppression() -> None:
+    """Curated keep_texts skips page-level total-area suppression."""
+    blocks = [
+        ParagraphBlock(
+            block_id=f"p0007.b{i:03d}",
+            bbox=Rect(x0=0, y0=i * 150, x1=612, y1=i * 150 + 100),
+            children=[TextInline(text=f"Component {i} Cards")],
+        )
+        for i in range(4)
+    ]
+    en_ir = _make_ir(blocks=blocks)
+    cfg = AnnotationQualityConfig(max_bbox_area=0.20, max_total_area=0.30)
+
+    # Without keep_texts, total area > 0.30 → page suppressed
+    assert build_facsimile_annotations(en_ir, quality=cfg) == []
+
+    # With keep_texts, page-level suppression skipped
+    result = build_facsimile_annotations(
+        en_ir,
+        quality=cfg,
+        keep_texts=["Cards"],
+    )
+    assert len(result) == 4
+
+
+def test_keep_texts_still_drops_identical_translations() -> None:
+    """Curated mode still filters identical EN/RU text."""
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=0, y0=0, x1=500, y1=500),
+                children=[TextInline(text="AM0308")],
+            ),
+        ]
+    )
+    ru_ir = _make_ir(
+        lang=LanguageCode.RU,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=0, y0=0, x1=500, y1=500),
+                children=[TextInline(text="AM0308")],
+            ),
+        ],
+    )
+    result = build_facsimile_annotations(
+        en_ir,
+        ru_ir,
+        keep_texts=["AM0308"],
+    )
+    assert result == []
+
+
+def test_keep_texts_still_drops_garbled_text() -> None:
+    """Curated mode still filters garbled OCR text."""
+    en_ir = _make_ir(
+        blocks=[
+            ParagraphBlock(
+                block_id="p0007.b001",
+                bbox=Rect(x0=0, y0=0, x1=500, y1=500),
+                children=[TextInline(text="_____+_____=_____")],
+            ),
+        ]
+    )
+    result = build_facsimile_annotations(
+        en_ir,
+        keep_texts=["_____"],
+    )
+    assert result == []
+
+
 def test_numeric_game_values_not_garbled() -> None:
     """Multi-digit game values like '10', '+2' are not flagged as garbled."""
     en_ir = _make_ir(
