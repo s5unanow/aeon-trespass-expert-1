@@ -613,3 +613,51 @@ def test_p0064_single_tier_headings_same_level() -> None:
     assert len(headings) >= 2, f"Expected ≥2 headings, got {len(headings)}"
     levels = {h.level for h in headings}
     assert len(levels) == 1, f"Same-size headings must share one level, got {levels}"
+
+
+# --- Negative y-gap paragraph splitting ---
+
+
+def test_negative_y_gap_splits_paragraph() -> None:
+    """Spans that jump backwards vertically must not merge into one paragraph.
+
+    Reproduces S5U-429: on p0007 the PDF emits caption spans in non-monotonic
+    y-order.  A span at y=452 followed by a span at y=298 produces a negative
+    gap of -154 pt, well beyond the paragraph-gap threshold (~13.5 pt for
+    9 pt body text).  The builder must split them into separate blocks so each
+    gets its own tight bbox.
+    """
+    span_a = SpanEvidence(
+        span_id="s001",
+        text="199 BP Cards",
+        font_name="Adonis-Regular",
+        font_size=9.0,
+        bbox=Rect(x0=245, y0=452, x1=360, y1=462),
+    )
+    span_b = SpanEvidence(
+        span_id="s002",
+        text="10 Trait Cards",
+        font_name="Adonis-Regular",
+        font_size=9.0,
+        bbox=Rect(x0=245, y0=298, x1=380, y1=309),
+    )
+    native = NativePageV1(
+        document_id="test",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=PageDimensions(width=595, height=842),
+        words=[],
+        spans=[span_a, span_b],
+        image_blocks=[],
+    )
+    ir = build_page_ir_real(native)
+
+    paragraphs = [b for b in ir.blocks if b.type == "paragraph"]
+    assert len(paragraphs) == 2, (
+        f"Expected 2 paragraphs from disjoint y-positions, got {len(paragraphs)}"
+    )
+    # Each block should have a tight bbox, not a merged one
+    for p in paragraphs:
+        assert p.bbox is not None
+        bbox_height = p.bbox.y1 - p.bbox.y0
+        assert bbox_height < 20, f"Bbox height {bbox_height} too tall for a single caption"

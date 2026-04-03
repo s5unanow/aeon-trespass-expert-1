@@ -431,7 +431,7 @@ def build_page_ir_real(
             threshold = (
                 font_size * cfg.paragraph_gap_factor if font_size > 0 else cfg.paragraph_gap_abs
             )
-            if y_gap > threshold:
+            if abs(y_gap) > threshold:
                 flush_paragraph()
 
         current_para_spans.extend(spans_in_line)
