@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 from typing import TypedDict
 
+from _erosion_report_fmt import print_report
 from _hotspot_budgets import (
     BudgetViolation,
     HotspotConfig,
@@ -24,6 +25,7 @@ from _hotspot_budgets import (
     compute_ratchet,
     load_hotspot_config,
 )
+from _repo_summary import compute_repo_summary
 
 THRESHOLDS = {"complexity": 12, "branches": 12, "statements": 50, "args": 7}
 
@@ -291,79 +293,6 @@ def build_report(
     }
 
 
-def print_report(report: dict[str, object]) -> None:
-    erosion = report["structural_erosion"]
-    drift = report["verbosity_drift"]
-    ratchet = report["hotspot_ratchet"]
-    assert isinstance(erosion, dict) and isinstance(drift, dict) and isinstance(ratchet, list)
-
-    print(f"\nCode Erosion Report ({report['base']}...{report['head']})\n{'=' * 52}")
-    print(f"\n  Files changed: {report['files_changed']}, in scope: {report['files_in_scope']}")
-
-    funcs: list[FunctionViolation] = erosion["over_threshold_functions"]
-    print(f"\n## Structural Erosion  (score: {erosion['total_erosion_score']})")
-    if funcs:
-        print(f"  Over-threshold functions: {len(funcs)}")
-        for f in funcs:
-            print(f"\n  {f['file']}\n    {f['function']} (line {f['line']})")
-            print(
-                f"      complexity={f['complexity']}  branches={f['branches']}"
-                f"  stmts={f['statements']}  [{', '.join(f['violations'])}]"
-            )
-    else:
-        print("  No over-threshold functions in changed files.")
-
-    print("\n## Verbosity Drift")
-    growth_list: list[GrowthEntry] = drift["significant_growth"]
-    if growth_list:
-        for g in growth_list:
-            print(
-                f"    {g['file']}: {g['lines_base']} -> {g['lines_head']}"
-                f" (+{g['delta']}, {g['pct_growth']}%)"
-            )
-    else:
-        print("  No significant file growth.")
-    print(
-        f"  New functions: {drift['new_functions']}"
-        f", avg length: {drift['avg_new_function_length']} lines"
-    )
-
-    print("\n## Hotspot Ratchet")
-    for h in ratchet:
-        assert isinstance(h, dict)
-        dc = h["head_worst_complexity"] - h["base_worst_complexity"]
-        dl = h["head_lines"] - h["base_lines"]
-        print(f"  {Path(h['file']).name} ({h['issue']}): {h['verdict']}")
-        print(
-            f"    complexity: {h['base_worst_complexity']}"
-            f" -> {h['head_worst_complexity']} ({'+' if dc >= 0 else ''}{dc})"
-        )
-        print(f"    lines: {h['base_lines']} -> {h['head_lines']} ({'+' if dl >= 0 else ''}{dl})")
-        if h["budget_complexity"] > 0 or h["budget_lines"] > 0:
-            status = "EXCEEDED" if h["budget_exceeded"] else "within budget"
-            waiver_note = ""
-            if h["waiver_issue"]:
-                waiver_note = f"  waiver={h['waiver_issue']} expires={h['waiver_expires']}"
-            print(
-                f"    budget: complexity<={h['budget_complexity']}"
-                f"  lines<={h['budget_lines']}  [{status}]{waiver_note}"
-            )
-
-    violations: list[BudgetViolation] = report.get("budget_violations", [])  # type: ignore[assignment]
-    print("\n## Budget Violations")
-    if violations:
-        for v in violations:
-            waiver = f" (waiver: {v['waiver_issue']})" if v["waiver_active"] else ""
-            print(
-                f"  {Path(v['file']).name} ({v['tracking_issue']}):"
-                f" {v['metric']} {v['current']} > budget {v['budget']}{waiver}"
-            )
-    else:
-        print("  No budget violations in touched hotspots.")
-
-    print("\n---\nAdvisory only — does not block CI. Tracked by S5U-465.\n")
-
-
 # -- CLI -----------------------------------------------------------------------
 
 
@@ -384,7 +313,25 @@ def main(argv: list[str] | None = None) -> int:
     head_metrics = {p: (hw, hl) for p, (_bw, hw, _bl, hl) in metrics.items()}
     budget_violations = check_budgets(changed, config, head_metrics=head_metrics)
 
-    report = build_report(args.base, args.head, changed, erosion, drift, ratchet, budget_violations)
+    summary = compute_repo_summary(
+        args.base,
+        args.head,
+        PYTHON_DIRS,
+        get_file=get_file_at_ref,
+        analyze=analyze_source,
+        complexity_threshold=THRESHOLDS["complexity"],
+    )
+
+    report = build_report(
+        args.base,
+        args.head,
+        changed,
+        erosion,
+        drift,
+        ratchet,
+        budget_violations,
+    )
+    report["repo_summary"] = summary
     print_report(report)
 
     if args.output_json:
