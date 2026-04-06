@@ -12,6 +12,7 @@ WALKING_SKELETON_STAGES = [
     "translate",
     "render",
     "qa",
+    "chunk_export",
     "publish",
 ]
 
@@ -24,6 +25,7 @@ SOURCE_ONLY_STAGES = [
     "structure",
     "render",
     "qa",
+    "chunk_export",
     "publish",
 ]
 

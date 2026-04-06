@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from atr_pipeline.runner.stage_protocol import Stage
+from atr_pipeline.stages.assistant.stage import ChunkExportStage
 from atr_pipeline.stages.extract_layout.stage import ExtractLayoutStage
 from atr_pipeline.stages.extract_native.stage import ExtractNativeStage
 from atr_pipeline.stages.ingest.stage import IngestStage
@@ -25,5 +26,6 @@ def build_stage_registry() -> dict[str, Stage]:
         "translate": TranslationStage(),
         "render": RenderStage(),
         "qa": QAStage(),
+        "chunk_export": ChunkExportStage(),
         "publish": PublishStage(),
     }

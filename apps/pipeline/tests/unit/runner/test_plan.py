@@ -37,6 +37,14 @@ def test_edition_en_preserves_order() -> None:
     assert stages.index("render") < stages.index("qa")
 
 
+def test_chunk_export_after_qa_before_publish() -> None:
+    """chunk_export runs after qa and before publish in both plans."""
+    for stages in (WALKING_SKELETON_STAGES, SOURCE_ONLY_STAGES):
+        assert "chunk_export" in stages
+        assert stages.index("qa") < stages.index("chunk_export")
+        assert stages.index("chunk_export") < stages.index("publish")
+
+
 def test_edition_en_with_range() -> None:
     """Source-only with --from/--to works correctly."""
     stages = resolve_stage_range(from_stage="structure", to_stage="qa", edition="en")
