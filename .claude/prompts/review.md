@@ -45,6 +45,7 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 
 ## How to review
 
+0. If checks #4 or #15 apply, read `.claude/prompts/linear-conventions.md` for label definitions and "must not break" requirements.
 1. Run `git diff main...HEAD` to see all changes
 2. Read each changed file in full context (not just the diff) to understand the surrounding code
 3. Check if tests exist for new/changed functionality

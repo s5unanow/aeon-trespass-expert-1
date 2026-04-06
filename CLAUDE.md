@@ -142,6 +142,7 @@ Branch protection on `main` requires all CI checks to pass before merge. If a ge
 - **Commit prefixes**: `S5U-XXX:` referencing the Linear issue
 - **Config format**: TOML for all pipeline/document configuration
 - Path-specific conventions (Python, TypeScript, extraction, schemas) are in `.claude/rules/` — loaded automatically when touching matching paths
+- **Linear issue conventions**: read `.claude/prompts/linear-conventions.md` before creating or updating Linear issues
 
 ## NEVER
 

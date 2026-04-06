@@ -15,6 +15,8 @@ git branch --show-current
 
 Extract `S5U-<NUMBER>` from branch pattern `s5unanow/s5u-<NUMBER>-<description>`. Stop if on `main` or no valid issue ID.
 
+Read `.claude/prompts/linear-conventions.md` for issue convention context (labels, milestones, must-not-break).
+
 ## 1. Code review (MANDATORY)
 
 Read `.claude/prompts/review.md` and use it as the Agent prompt. The review agent will save its output to `tmp/review-s5u-<NUMBER>.md`.
