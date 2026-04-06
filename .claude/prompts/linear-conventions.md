@@ -1,8 +1,3 @@
----
-description: Linear issue creation conventions — applies when creating or updating issues via MCP
-globs: ""
----
-
 When creating a Linear issue (`mcp__linear__save_issue`), always set:
 
 ## Labels (required — at least one area + one type)

@@ -24,6 +24,10 @@ Sort by: priority ascending (1=Urgent … 4=Low; 0=No priority sorts last), then
 mcp__plugin_linear_linear__get_issue(id="S5U-XXX")
 ```
 
+## 3b. Load Linear conventions
+
+Read `.claude/prompts/linear-conventions.md` — apply these conventions when updating or creating Linear issues.
+
 ## 4. Set In Progress
 
 ```
