@@ -39,9 +39,11 @@ verify: ## Run extraction invariant and cross-stage ref checks on artifacts
 
 export: ## Export pipeline artifacts to web public (re-generates apps/web/public/documents/)
 	uv run python scripts/export_to_web.py
+	uv run python scripts/export_assistant_to_web.py
 
 export-en: ## Export EN-only extraction artifacts for review
 	uv run python scripts/export_to_web.py --edition en
+	uv run python scripts/export_assistant_to_web.py --edition en
 
 check-codegen: ## Check that generated schemas match Pydantic sources (requires pnpm install)
 	@command -v node >/dev/null 2>&1 || { echo "ERROR: node not found. Run 'make bootstrap' first."; exit 1; }
