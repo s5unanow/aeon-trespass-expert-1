@@ -147,7 +147,7 @@ class TestComputeRepoSummary:
             return list(files.get(ref, {}).keys())
 
         original_list = repo_summary.list_python_files
-        repo_summary.list_python_files = fake_list
+        repo_summary.list_python_files = fake_list  # type: ignore[attr-defined]
         try:
             result = repo_summary.compute_repo_summary(
                 "ref_a",
@@ -158,7 +158,7 @@ class TestComputeRepoSummary:
                 complexity_threshold=12,
             )
         finally:
-            repo_summary.list_python_files = original_list
+            repo_summary.list_python_files = original_list  # type: ignore[attr-defined]
 
         assert result["base"]["total_functions"] == 1
         assert result["head"]["total_functions"] == 2
