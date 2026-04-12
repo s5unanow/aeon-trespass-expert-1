@@ -2315,6 +2315,22 @@ lemma = "Утешение"
 allowed_surface_forms = ["Утешение", "Утешения"]
 
 [[concepts]]
+concept_id = "concept.kw_lifeline"
+kind = "trait"
+notes = "Safety-net keyword ability. Нить жизни = thread of life (Moirai mythology)."
+
+[concepts.source]
+lang = "en"
+lemma = "Lifeline"
+aliases = []
+patterns = ["Lifeline"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Нить жизни"
+allowed_surface_forms = ["Нить жизни", "Нити жизни"]
+
+[[concepts]]
 concept_id = "concept.kw_lumbering"
 kind = "trait"
 notes = "Primordial Basic Trait: cannot suffer Pushback or involuntary movement."
