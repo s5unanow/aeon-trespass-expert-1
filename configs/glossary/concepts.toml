@@ -2315,6 +2315,22 @@ lemma = "Утешение"
 allowed_surface_forms = ["Утешение", "Утешения"]
 
 [[concepts]]
+concept_id = "concept.kw_peril"
+kind = "trait"
+notes = "Keyword: party leader must decide alone, no discussion. Наедине = alone/in private."
+
+[concepts.source]
+lang = "en"
+lemma = "Peril"
+aliases = []
+patterns = ["Peril"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Наедине"
+allowed_surface_forms = ["Наедине"]
+
+[[concepts]]
 concept_id = "concept.kw_cumbersome"
 kind = "trait"
 notes = "Weapon trait making Gear harder to use."
