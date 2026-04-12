@@ -626,6 +626,9 @@ def test_negative_y_gap_splits_paragraph() -> None:
     gap of -154 pt, well beyond the paragraph-gap threshold (~13.5 pt for
     9 pt body text).  The builder must split them into separate blocks so each
     gets its own tight bbox.
+
+    See also: tests/integration/test_negative_ygap_annotations.py for full
+    end-to-end verification including annotation positioning (S5U-576).
     """
     span_a = SpanEvidence(
         span_id="s001",
