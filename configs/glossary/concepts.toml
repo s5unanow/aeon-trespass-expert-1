@@ -2315,6 +2315,22 @@ lemma = "Утешение"
 allowed_surface_forms = ["Утешение", "Утешения"]
 
 [[concepts]]
+concept_id = "concept.kw_judgement"
+kind = "trait"
+notes = "Mental assault forcing Skill test instead of Evasion Roll. Not an Attack. Кара = divine retribution."
+
+[concepts.source]
+lang = "en"
+lemma = "Judgement"
+aliases = ["Judgements"]
+patterns = ["Judgement", "Judgements"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Кара"
+allowed_surface_forms = ["Кара", "Кары", "Каре", "Кару", "Карой"]
+
+[[concepts]]
 concept_id = "concept.kw_lifeline"
 kind = "trait"
 notes = "Safety-net keyword ability. Нить жизни = thread of life (Moirai mythology)."
