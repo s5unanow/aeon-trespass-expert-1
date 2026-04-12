@@ -2327,8 +2327,8 @@ patterns = ["Peril"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Наедине"
-allowed_surface_forms = ["Наедине"]
+lemma = "Единолично"
+allowed_surface_forms = ["Единолично"]
 
 [[concepts]]
 concept_id = "concept.kw_cumbersome"
