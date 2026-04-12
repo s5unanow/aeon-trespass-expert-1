@@ -3039,6 +3039,22 @@ allowed_surface_forms = ["Древо Познания", "Древа Познан
 # =============================================================================
 
 [[concepts]]
+concept_id = "concept.routine"
+kind = "mechanic"
+notes = "Special Primordial action triggered when no eligible AI target exists. Usually devastating."
+
+[concepts.source]
+lang = "en"
+lemma = "Routine"
+aliases = ["Routines"]
+patterns = ["Routine", "Routines"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Стандарт"
+allowed_surface_forms = ["Стандарт", "Стандарта", "Стандарту", "Стандартом"]
+
+[[concepts]]
 concept_id = "concept.argo_ability"
 kind = "mechanic"
 notes = "Technology cards usable during Battle. Limited by AA Limit."
