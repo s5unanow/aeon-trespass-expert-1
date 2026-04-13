@@ -2495,6 +2495,22 @@ lemma = "Неразрушимый"
 allowed_surface_forms = ["Неразрушимый", "Неразрушимого"]
 
 [[concepts]]
+concept_id = "concept.terrain_boundless"
+kind = "trait"
+notes = "Cannot voluntarily move onto; forced movement onto/beyond kills the Titan. Бездна = abyss."
+
+[concepts.source]
+lang = "en"
+lemma = "Boundless"
+aliases = []
+patterns = ["Boundless"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Бездна"
+allowed_surface_forms = ["Бездна", "Бездны", "Бездну"]
+
+[[concepts]]
 concept_id = "concept.terrain_obscuring"
 kind = "trait"
 notes = "Blocks Line of Sight."
