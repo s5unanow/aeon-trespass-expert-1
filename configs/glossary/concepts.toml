@@ -10,7 +10,7 @@
 #   - Game-specific invented names → transliterate (Мойрос, Мнемос)
 #   - Stat/resource names → meaningful Russian words (Опасность, not Дэнджер)
 
-version = "glossary.2026-03-17.2"
+version = "glossary.2026-04-12.1"
 
 # =============================================================================
 # TRISKELION STATS — the three Triskelion dial stats
@@ -75,6 +75,22 @@ allowed_surface_forms = ["Ярость", "Ярости", "Яростью"]
 # =============================================================================
 
 [[concepts]]
+concept_id = "concept.skill"
+kind = "mechanic"
+notes = "Argonauts have six Skills used in tests during Adventures and Battles."
+
+[concepts.source]
+lang = "en"
+lemma = "Skill"
+aliases = ["Skills"]
+patterns = ["Skill", "Skills", "Skill bonus"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Навык"
+allowed_surface_forms = ["Навык", "Навыка", "Навыку", "Навыком", "Навыки", "Навыков"]
+
+[[concepts]]
 concept_id = "concept.fury_skill"
 kind = "mechanic"
 notes = "Argonaut Skill (not Triskelion stat Rage). Неистовство avoids collision with Ярость."
@@ -89,6 +105,86 @@ patterns = ["Fury"]
 lang = "ru"
 lemma = "Неистовство"
 allowed_surface_forms = ["Неистовство", "Неистовства", "Неистовству", "Неистовством", "Неистовстве"]
+
+[[concepts]]
+concept_id = "concept.courage"
+kind = "mechanic"
+notes = "One of six Argonaut Skills."
+
+[concepts.source]
+lang = "en"
+lemma = "Courage"
+aliases = []
+patterns = ["Courage"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Отвага"
+allowed_surface_forms = ["Отвага", "Отваги", "Отваге", "Отвагу", "Отвагой"]
+
+[[concepts]]
+concept_id = "concept.cunning"
+kind = "mechanic"
+notes = "One of six Argonaut Skills."
+
+[concepts.source]
+lang = "en"
+lemma = "Cunning"
+aliases = []
+patterns = ["Cunning"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Хитрость"
+allowed_surface_forms = ["Хитрость", "Хитрости", "Хитростью"]
+
+[[concepts]]
+concept_id = "concept.endurance"
+kind = "mechanic"
+notes = "One of six Argonaut Skills."
+
+[concepts.source]
+lang = "en"
+lemma = "Endurance"
+aliases = []
+patterns = ["Endurance"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Выносливость"
+allowed_surface_forms = ["Выносливость", "Выносливости", "Выносливостью"]
+
+[[concepts]]
+concept_id = "concept.will"
+kind = "mechanic"
+notes = "One of six Argonaut Skills."
+
+[concepts.source]
+lang = "en"
+lemma = "Will"
+aliases = []
+patterns = ["Will"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Воля"
+allowed_surface_forms = ["Воля", "Воли", "Воле", "Волю", "Волей"]
+
+[[concepts]]
+concept_id = "concept.wisdom"
+kind = "mechanic"
+notes = "One of six Argonaut Skills."
+
+[concepts.source]
+lang = "en"
+lemma = "Wisdom"
+aliases = []
+patterns = ["Wisdom"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Мудрость"
+allowed_surface_forms = ["Мудрость", "Мудрости", "Мудростью"]
 
 # =============================================================================
 # CAMPAIGN RESOURCES — Progress, Doom
@@ -291,13 +387,77 @@ lang = "ru"
 lemma = "Арго"
 allowed_surface_forms = ["Арго"]
 
+[[concepts]]
+concept_id = "concept.adversary"
+kind = "entity"
+notes = "Powerful Primordial actively hunting the Argo on the Voyage map."
+
+[concepts.source]
+lang = "en"
+lemma = "Adversary"
+aliases = ["Adversaries"]
+patterns = ["Adversary", "Adversaries", "the Adversary"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Противник"
+allowed_surface_forms = ["Противник", "Противника", "Противнику", "Противником", "Противнике", "Противники"]
+
+[[concepts]]
+concept_id = "concept.faction"
+kind = "entity"
+notes = "Major people groups encountered during voyages. Each Cycle has different Factions."
+
+[concepts.source]
+lang = "en"
+lemma = "Faction"
+aliases = ["Factions", "Local Faction"]
+patterns = ["Faction", "Factions", "Local Faction"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Фракция"
+allowed_surface_forms = ["Фракция", "Фракции", "Фракцию", "Фракцией", "Фракций"]
+
+[[concepts]]
+concept_id = "concept.named_titan"
+kind = "entity"
+notes = "A Titan given a name, usually with a Pattern assigned."
+
+[concepts.source]
+lang = "en"
+lemma = "Named Titan"
+aliases = ["Named Titans"]
+patterns = ["Named Titan", "Named Titans"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Именованный Титан"
+allowed_surface_forms = ["Именованный Титан", "Именованного Титана", "Именованному Титану", "Именованным Титаном", "Именованные Титаны"]
+
+[[concepts]]
+concept_id = "concept.dreamwalker"
+kind = "entity"
+notes = "Gaia-born Titan required as a component for Fusing."
+
+[concepts.source]
+lang = "en"
+lemma = "Dreamwalker"
+aliases = ["Gaia-born Titan"]
+patterns = ["Dreamwalker", "Gaia-born Titan"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Дремлющий"
+allowed_surface_forms = ["Дремлющий", "Дремлющего", "Дремлющему", "Дремлющим", "Дремлющие", "Дремлющих"]
+
 # =============================================================================
-# GAME PHASES AND MECHANICS
+# GAME PHASES — major game phases
 # =============================================================================
 
 [[concepts]]
 concept_id = "concept.voyage_phase"
-kind = "mechanic"
+kind = "phase"
 forbidden_targets = ["Фаза Вояжа", "Фаза Путешествия"]
 notes = "Major game phase. Странствие = odyssey/wandering, fits the Odyssey theme."
 
@@ -310,11 +470,11 @@ patterns = ["Voyage Phase", "during the Voyage"]
 [concepts.target]
 lang = "ru"
 lemma = "Фаза Странствия"
-allowed_surface_forms = ["Фаза Странствия", "Фазе Странствия", "Фазу Странствия", "Фазы Странствия", "Фазами Странствия", "Странствие", "Странствия"]
+allowed_surface_forms = ["Фаза Странствия", "Фазе Странствия", "Фазу Странствия", "Фазы Странствия", "Странствие", "Странствия"]
 
 [[concepts]]
 concept_id = "concept.battle_phase"
-kind = "mechanic"
+kind = "phase"
 notes = "Major game phase — Primordial combat."
 
 [concepts.source]
@@ -326,7 +486,367 @@ patterns = ["Battle Phase", "during the Battle", "in Battle"]
 [concepts.target]
 lang = "ru"
 lemma = "Фаза Битвы"
-allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу Битвы", "Фазы Битвы", "Фазами Битвы", "Битва", "Битвы", "Битве", "Битву", "Битв"]
+allowed_surface_forms = ["Фаза Битвы", "Фазе Битвы", "Фазу Битвы", "Фазы Битвы", "Битва", "Битвы", "Битве", "Битву", "Битв"]
+
+[[concepts]]
+concept_id = "concept.adventure_phase"
+kind = "phase"
+notes = "Unstructured phase triggered when resolving Storybook paragraphs."
+
+[concepts.source]
+lang = "en"
+lemma = "Adventure Phase"
+aliases = ["Adventure"]
+patterns = ["Adventure Phase", "during the Adventure Phase"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Фаза Приключений"
+allowed_surface_forms = ["Фаза Приключений", "Фазы Приключений", "Фазе Приключений", "Фазу Приключений"]
+
+# =============================================================================
+# CAMPAIGN ROUND STEPS — 9 steps of a Campaign Round
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.campaign_round"
+kind = "mechanic"
+notes = "One in-game day on the Timeline; consists of nine Steps resolved top-to-bottom."
+
+[concepts.source]
+lang = "en"
+lemma = "Campaign Round"
+aliases = []
+patterns = ["Campaign Round", "Campaign Rounds"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Раунд кампании"
+allowed_surface_forms = ["Раунд кампании", "Раунда кампании", "Раунду кампании", "Раунде кампании", "Раунды кампании"]
+
+[[concepts]]
+concept_id = "concept.movement_step"
+kind = "phase"
+notes = "Step 1 of Campaign Round: move the Argo onto a different tile."
+
+[concepts.source]
+lang = "en"
+lemma = "Movement Step"
+aliases = ["Movement"]
+patterns = ["Movement Step", "Movement"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Этап перемещения"
+allowed_surface_forms = ["Этап перемещения", "Этапа перемещения", "Этапе перемещения"]
+
+[[concepts]]
+concept_id = "concept.timeline"
+kind = "mechanic"
+notes = "Step 2 of Campaign Round and core campaign pacing track where events are placed."
+
+[concepts.source]
+lang = "en"
+lemma = "Timeline"
+aliases = ["Timeline Step"]
+patterns = ["Timeline", "on the Timeline", "Timeline Step"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Хронология"
+allowed_surface_forms = ["Хронология", "Хронологии", "Хронологию", "Хронологией"]
+
+[[concepts]]
+concept_id = "concept.expedition_step"
+kind = "phase"
+notes = "Step 4 of Campaign Round: resolve Hub and R&R adventure encounters."
+
+[concepts.source]
+lang = "en"
+lemma = "Expedition Step"
+aliases = ["Expedition"]
+patterns = ["Expedition Step", "Expedition"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Этап экспедиции"
+allowed_surface_forms = ["Этап экспедиции", "Этапа экспедиции", "Этапе экспедиции"]
+
+[[concepts]]
+concept_id = "concept.encounter_step"
+kind = "phase"
+notes = "Step 5 of Campaign Round: resolve Timeline Battles or Battle Events."
+
+[concepts.source]
+lang = "en"
+lemma = "Encounter Step"
+aliases = ["Encounter"]
+patterns = ["Encounter Step", "Encounter"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Этап столкновения"
+allowed_surface_forms = ["Этап столкновения", "Этапа столкновения", "Этапе столкновения"]
+
+[[concepts]]
+concept_id = "concept.advancement_step"
+kind = "phase"
+notes = "Step 6 of Campaign Round: craft Gear, develop Technologies, resolve Advancement Events."
+
+[concepts.source]
+lang = "en"
+lemma = "Advancement Step"
+aliases = ["Advancement"]
+patterns = ["Advancement Step", "Advancement"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Этап развития"
+allowed_surface_forms = ["Этап развития", "Этапа развития", "Этапе развития"]
+
+[[concepts]]
+concept_id = "concept.story_step"
+kind = "phase"
+notes = "Step 7 of Campaign Round: resolve Story Events and Mnemos Breakthroughs."
+
+[concepts.source]
+lang = "en"
+lemma = "Story Step"
+aliases = ["Story"]
+patterns = ["Story Step"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Этап сюжета"
+allowed_surface_forms = ["Этап сюжета", "Этапа сюжета", "Этапе сюжета"]
+
+[[concepts]]
+concept_id = "concept.doom_step"
+kind = "phase"
+notes = "Step 8 of Campaign Round: Doom progression resolved here."
+
+[concepts.source]
+lang = "en"
+lemma = "Doom Step"
+aliases = []
+patterns = ["Doom Step"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Этап рока"
+allowed_surface_forms = ["Этап рока", "Этапа рока", "Этапе рока"]
+
+[[concepts]]
+concept_id = "concept.end_step"
+kind = "phase"
+notes = "Step 9 of Campaign Round: Unexplored tiles become Explored."
+
+[concepts.source]
+lang = "en"
+lemma = "End Step"
+aliases = ["End"]
+patterns = ["End Step"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Завершение"
+allowed_surface_forms = ["Завершение", "Завершения", "Завершении"]
+
+# =============================================================================
+# CARD TYPES
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.ai_card"
+kind = "card_type"
+notes = "Primordial behavior cards controlling targeting, movement, attacks."
+
+[concepts.source]
+lang = "en"
+lemma = "AI Card"
+aliases = ["AI Cards", "AI deck"]
+patterns = ["AI card", "AI cards", "AI deck"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта ИИ"
+allowed_surface_forms = ["Карта ИИ", "Карты ИИ", "Карте ИИ", "Карту ИИ", "Картой ИИ", "Карт ИИ"]
+
+[[concepts]]
+concept_id = "concept.bp_card"
+kind = "card_type"
+notes = "Body Part cards representing Primordial anatomy. Three levels (I, II, III)."
+
+[concepts.source]
+lang = "en"
+lemma = "BP Card"
+aliases = ["BP Cards", "Body Part"]
+patterns = ["BP card", "BP cards", "BP deck", "BP I", "BP II", "BP III"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта части тела"
+allowed_surface_forms = ["Карта части тела", "Карты частей тела", "Карте части тела", "Карту части тела"]
+
+[[concepts]]
+concept_id = "concept.condition_card"
+kind = "card_type"
+notes = "Cards representing body/mind conditions applied to Titans or Argonauts."
+
+[concepts.source]
+lang = "en"
+lemma = "Condition Card"
+aliases = ["Condition Cards", "Condition"]
+patterns = ["Condition Card", "Condition Cards", "Condition"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта состояния"
+allowed_surface_forms = ["Карта состояния", "Карты состояния", "Карту состояния", "Карт состояний"]
+
+[[concepts]]
+concept_id = "concept.clue_card"
+kind = "card_type"
+notes = "Cycle-specific cards introducing new rules, mechanics, maps."
+
+[concepts.source]
+lang = "en"
+lemma = "Clue Card"
+aliases = ["Clue Cards"]
+patterns = ["Clue card", "Clue cards"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта улики"
+allowed_surface_forms = ["Карта улики", "Карты улики", "Карту улики", "Карт улик"]
+
+[[concepts]]
+concept_id = "concept.trauma_card"
+kind = "card_type"
+notes = "Cards representing Trauma effects. Severities: Minor, Major, Grave."
+
+[concepts.source]
+lang = "en"
+lemma = "Trauma Card"
+aliases = ["Trauma Cards", "Trauma"]
+patterns = ["Trauma Card", "Trauma Cards", "Trauma"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта травмы"
+allowed_surface_forms = ["Карта травмы", "Карты травмы", "Карту травмы", "Карт травм", "Травма", "Травмы"]
+
+[[concepts]]
+concept_id = "concept.pattern_card"
+kind = "card_type"
+notes = "Permanent Titan enhancements (Training or Strains) modifying Trauma/Kratos Tables."
+
+[concepts.source]
+lang = "en"
+lemma = "Pattern Card"
+aliases = ["Pattern Cards", "Pattern"]
+patterns = ["Pattern card", "Pattern cards", "Pattern"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта паттерна"
+allowed_surface_forms = ["Карта паттерна", "Карты паттерна", "Карту паттерна", "Карт паттернов", "Паттерн"]
+
+[[concepts]]
+concept_id = "concept.secret_card"
+kind = "card_type"
+notes = "Hidden/locked content revealed during gameplay."
+
+[concepts.source]
+lang = "en"
+lemma = "Secret Card"
+aliases = ["Secret Cards"]
+patterns = ["Secret Card", "Secret Cards"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Секретная карта"
+allowed_surface_forms = ["Секретная карта", "Секретной карты", "Секретную карту", "Секретные карты", "Секретных карт"]
+
+[[concepts]]
+concept_id = "concept.story_card"
+kind = "card_type"
+notes = "Card tracking main story progression. Requires Progress tokens."
+
+[concepts.source]
+lang = "en"
+lemma = "Story Card"
+aliases = ["Story Cards"]
+patterns = ["Story card", "Story cards", "current Story card"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта истории"
+allowed_surface_forms = ["Карта истории", "Карты истории", "Карту истории", "Карт историй"]
+
+[[concepts]]
+concept_id = "concept.doom_card"
+kind = "card_type"
+notes = "Card tracking villain's doom progression. Requires Doom tokens."
+
+[concepts.source]
+lang = "en"
+lemma = "Doom Card"
+aliases = ["Doom Cards"]
+patterns = ["Doom card", "Doom cards", "current Doom card"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта рока"
+allowed_surface_forms = ["Карта рока", "Карты рока", "Карту рока", "Карт рока"]
+
+[[concepts]]
+concept_id = "concept.summoning_card"
+kind = "card_type"
+notes = "Tarot-sized card representing a Nymph Summoning."
+
+[concepts.source]
+lang = "en"
+lemma = "Summoning Card"
+aliases = ["Summoning Cards"]
+patterns = ["Summoning card", "Summoning cards"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта призыва"
+allowed_surface_forms = ["Карта призыва", "Карты призыва", "Карту призыва", "Карт призыва"]
+
+[[concepts]]
+concept_id = "concept.kratos_card"
+kind = "card_type"
+notes = "Drawn when Titan loses control to rage. Second card kills the Titan."
+
+[concepts.source]
+lang = "en"
+lemma = "Kratos Card"
+aliases = ["Kratos Cards"]
+patterns = ["Kratos card", "Kratos cards", "Kratos deck"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта Кратоса"
+allowed_surface_forms = ["Карта Кратоса", "Карты Кратоса", "Карту Кратоса", "Карт Кратоса"]
+
+[[concepts]]
+concept_id = "concept.exploration_card"
+kind = "card_type"
+notes = "Cards drawn during the Exploration step; provide resources, events, encounters."
+
+[concepts.source]
+lang = "en"
+lemma = "Exploration Card"
+aliases = ["Exploration Cards", "Exploration deck"]
+patterns = ["Exploration Card", "Exploration Cards", "Exploration deck"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Карта исследования"
+allowed_surface_forms = ["Карта исследования", "Карты исследования", "Карту исследования", "Карт исследования"]
 
 [[concepts]]
 concept_id = "concept.evasion_roll"
@@ -343,12 +863,12 @@ patterns = ["Evasion Roll", "Evasion Rolls"]
 [concepts.target]
 lang = "ru"
 lemma = "Бросок Уклонения"
-allowed_surface_forms = ["Бросок Уклонения", "Броска Уклонения", "Броску Уклонения", "Броском Уклонения", "Броске Уклонения", "Броски Уклонения", "Бросков Уклонения", "Бросками Уклонения", "Бросках Уклонения"]
+allowed_surface_forms = ["Бросок Уклонения", "Броска Уклонения", "Броску Уклонения", "Броском Уклонения", "Броске Уклонения", "Броски Уклонения", "Бросков Уклонения"]
 
 [[concepts]]
 concept_id = "concept.exploration"
 kind = "mechanic"
-notes = "Voyage phase step."
+notes = "Step 3 of Campaign Round: draw Exploration cards."
 
 [concepts.source]
 lang = "en"
@@ -407,13 +927,13 @@ patterns = ["Cycle", "Cycle I", "Cycle II", "Cycle III"]
 [concepts.target]
 lang = "ru"
 lemma = "Цикл"
-allowed_surface_forms = ["Цикл", "Цикла", "Циклу", "Циклом", "Цикле", "Циклы", "Циклов", "Циклам", "Циклами"]
+allowed_surface_forms = ["Цикл", "Цикла", "Циклу", "Циклом", "Цикле", "Циклы", "Циклов"]
 
 [[concepts]]
 concept_id = "concept.obol_draw"
 kind = "mechanic"
 forbidden_targets = ["Обол Дро", "Вытягивание Обола"]
-notes = "Penalty mechanic — draw from the Obol bag. Жребий = lot/fortune, mythological weight."
+notes = "Penalty mechanic — draw from the Obol bag. Жребий = lot/fortune."
 
 [concepts.source]
 lang = "en"
@@ -424,7 +944,7 @@ patterns = ["Obol Draw"]
 [concepts.target]
 lang = "ru"
 lemma = "Жребий Обола"
-allowed_surface_forms = ["Жребий Обола", "Жребия Обола", "Жребию Обола", "Жребием Обола", "Жребии Обола"]
+allowed_surface_forms = ["Жребий Обола", "Жребия Обола", "Жребию Обола", "Жребием Обола"]
 
 [[concepts]]
 concept_id = "concept.moiros_card"
@@ -440,7 +960,7 @@ patterns = ["Moiros card", "Moiros"]
 [concepts.target]
 lang = "ru"
 lemma = "карта Мойрос"
-allowed_surface_forms = ["карта Мойрос", "карты Мойрос", "карту Мойрос", "картой Мойрос", "картами Мойрос", "карт Мойрос", "Мойрос"]
+allowed_surface_forms = ["карта Мойрос", "карты Мойрос", "карту Мойрос", "картой Мойрос", "Мойрос"]
 
 [[concepts]]
 concept_id = "concept.mnemos_card"
@@ -456,7 +976,7 @@ patterns = ["Mnemos card", "Mnemos cards", "Fated Mnemos"]
 [concepts.target]
 lang = "ru"
 lemma = "карта Мнемос"
-allowed_surface_forms = ["карта Мнемос", "карты Мнемос", "карту Мнемос", "картой Мнемос", "картами Мнемос", "карт Мнемос", "картам Мнемос", "Мнемос"]
+allowed_surface_forms = ["карта Мнемос", "карты Мнемос", "карту Мнемос", "картой Мнемос", "Мнемос"]
 
 [[concepts]]
 concept_id = "concept.fated_mnemos"
@@ -466,23 +986,23 @@ notes = "Special Mnemos cards marked as Fated. Судьбоносный = fatefu
 [concepts.source]
 lang = "en"
 lemma = "Fated Mnemos"
-aliases = ["Fated Mnemos card", "Fated Mnemos cards"]
+aliases = ["Fated Mnemos card"]
 patterns = ["Fated Mnemos"]
 
 [concepts.target]
 lang = "ru"
 lemma = "Судьбоносная Мнемос"
-allowed_surface_forms = ["Судьбоносная Мнемос", "Судьбоносные Мнемос", "Судьбоносных Мнемос", "Судьбоносную Мнемос", "Судьбоносной Мнемос", "карта Судьбоносных Мнемос", "карты Судьбоносных Мнемос", "карту Судьбоносных Мнемос", "карт Судьбоносных Мнемос", "Карта Судьбоносных Мнемос", "Карты Судьбоносных Мнемос"]
+allowed_surface_forms = ["Судьбоносная Мнемос", "Судьбоносные Мнемос", "Судьбоносных Мнемос", "Судьбоносную Мнемос"]
 
 [[concepts]]
 concept_id = "concept.mnemos_storage"
 kind = "mechanic"
-notes = "The storage/repository for Mnemos cards on Argonaut Sheet."
+notes = "Storage for Mnemos cards on Argonaut Sheet."
 
 [concepts.source]
 lang = "en"
 lemma = "Mnemos Storage"
-aliases = ["Mnemos storage"]
+aliases = []
 patterns = ["Mnemos Storage"]
 
 [concepts.target]
@@ -498,13 +1018,13 @@ notes = "Primordial health stat."
 [concepts.source]
 lang = "en"
 lemma = "Wounds"
-aliases = ["Wound", "Wounds value"]
+aliases = ["Wound"]
 patterns = ["Wounds", "Wound"]
 
 [concepts.target]
 lang = "ru"
 lemma = "Раны"
-allowed_surface_forms = ["Раны", "Ран", "Ранам", "Ранами", "Рана", "Рану", "Раной", "Ранены"]
+allowed_surface_forms = ["Раны", "Ран", "Ранам", "Ранами", "Рана", "Рану", "Раной"]
 
 [[concepts]]
 concept_id = "concept.retreat"
@@ -537,3 +1057,2143 @@ patterns = ["Escalation", "Escalations"]
 lang = "ru"
 lemma = "Эскалация"
 allowed_surface_forms = ["Эскалация", "Эскалации", "Эскалацию", "Эскалацией"]
+
+# =============================================================================
+# TOKENS AND RESOURCES
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.kratos"
+kind = "mechanic"
+notes = "Cooperative combat resource. Tokens placed in Kratos Pool to enhance attacks."
+
+[concepts.source]
+lang = "en"
+lemma = "Kratos"
+aliases = ["Kratos Token", "Kratos Tokens"]
+patterns = ["Kratos", "Kratos Token", "Kratos Tokens"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Кратос"
+allowed_surface_forms = ["Кратос", "Кратоса", "Кратосу", "Кратосом"]
+
+[[concepts]]
+concept_id = "concept.ambrosia"
+kind = "mechanic"
+notes = "Primordial lifeblood resource. Exceeding Ambrosia Limit kills the Titan."
+
+[concepts.source]
+lang = "en"
+lemma = "Ambrosia"
+aliases = ["Ambrosia token"]
+patterns = ["Ambrosia", "Ambrosia token"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Амброзия"
+allowed_surface_forms = ["Амброзия", "Амброзии", "Амброзию", "Амброзией"]
+
+[[concepts]]
+concept_id = "concept.despair"
+kind = "condition"
+notes = "Negative token. Having four while not adjacent to another Titan kills the Titan."
+
+[concepts.source]
+lang = "en"
+lemma = "Despair"
+aliases = ["Despair token"]
+patterns = ["Despair", "Despair token"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Отчаяние"
+allowed_surface_forms = ["Отчаяние", "Отчаяния", "Отчаянию", "Отчаянием"]
+
+[[concepts]]
+concept_id = "concept.fatigue"
+kind = "condition"
+notes = "Token preventing use of movement or combat action until discarded."
+
+[concepts.source]
+lang = "en"
+lemma = "Fatigue"
+aliases = ["Fatigue token"]
+patterns = ["Fatigue", "Fatigue token"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Усталость"
+allowed_surface_forms = ["Усталость", "Усталости", "Усталостью"]
+
+[[concepts]]
+concept_id = "concept.charge_token"
+kind = "mechanic"
+notes = "Token placed on Gear/Argo Ability cards at setup; spent to activate abilities."
+
+[concepts.source]
+lang = "en"
+lemma = "Charge"
+aliases = ["Charge token", "Charges"]
+patterns = ["Charge", "Charge token", "charges"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Заряд"
+allowed_surface_forms = ["Заряд", "Заряда", "Зарядом", "Заряды", "Зарядов"]
+
+[[concepts]]
+concept_id = "concept.trespass_token"
+kind = "mechanic"
+notes = "Tokens gained during Awakening."
+
+[concepts.source]
+lang = "en"
+lemma = "Trespass"
+aliases = ["Trespass token"]
+patterns = ["Trespass", "Trespass token"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Вторжение"
+allowed_surface_forms = ["Вторжение", "Вторжения", "Вторжением"]
+
+[[concepts]]
+concept_id = "concept.combo"
+kind = "mechanic"
+notes = "Token representing chained attack sequences."
+
+[concepts.source]
+lang = "en"
+lemma = "Combo"
+aliases = ["Combo token"]
+patterns = ["Combo", "Combo token"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Комбо"
+allowed_surface_forms = ["Комбо"]
+
+[[concepts]]
+concept_id = "concept.modifier_token"
+kind = "mechanic"
+notes = "Double-sided tokens (+1 blue / -1 red) modifying attributes."
+
+[concepts.source]
+lang = "en"
+lemma = "Modifier Token"
+aliases = ["Modifier Tokens"]
+patterns = ["Modifier token", "Modifier tokens"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Жетон модификатора"
+allowed_surface_forms = ["Жетон модификатора", "Жетона модификатора", "Жетоны модификаторов"]
+
+[[concepts]]
+concept_id = "concept.priority_target"
+kind = "mechanic"
+notes = "Token given to Titan with the highest Rage; Primordial focuses on it."
+
+[concepts.source]
+lang = "en"
+lemma = "Priority Target"
+aliases = ["Priority Target token"]
+patterns = ["Priority Target"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Приоритетная цель"
+allowed_surface_forms = ["Приоритетная цель", "Приоритетной цели", "Приоритетную цель"]
+
+[[concepts]]
+concept_id = "concept.opening_token"
+kind = "mechanic"
+notes = "Kratos Pool token adding +1 to each Attack die result."
+
+[concepts.source]
+lang = "en"
+lemma = "Opening Token"
+aliases = ["Opening"]
+patterns = ["Opening token", "Opening X"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Жетон бреши"
+allowed_surface_forms = ["Жетон бреши", "Жетона бреши", "Жетоны бреши"]
+
+[[concepts]]
+concept_id = "concept.break_token"
+kind = "mechanic"
+notes = "Kratos Pool token converting 1 Potential into 1 Power during Power Roll."
+
+[concepts.source]
+lang = "en"
+lemma = "Break Token"
+aliases = ["Break"]
+patterns = ["Break token", "Break X"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Жетон пролома"
+allowed_surface_forms = ["Жетон пролома", "Жетона пролома", "Жетоны пролома"]
+
+[[concepts]]
+concept_id = "concept.diversion_token"
+kind = "mechanic"
+notes = "Kratos Pool token allowing attacking Titan to ignore Fail Responses."
+
+[concepts.source]
+lang = "en"
+lemma = "Diversion Token"
+aliases = ["Diversion"]
+patterns = ["Diversion", "Diversion token"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Жетон отвлечения"
+allowed_surface_forms = ["Жетон отвлечения", "Жетона отвлечения", "Жетоны отвлечения"]
+
+# =============================================================================
+# BATTLE ZONES AND COMPONENTS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.battle_board"
+kind = "zone"
+notes = "Grid where Battles take place. Short and long Board Edges."
+
+[concepts.source]
+lang = "en"
+lemma = "Battle Board"
+aliases = []
+patterns = ["Battle Board"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Поле боя"
+allowed_surface_forms = ["Поле боя", "Поля боя", "Полю боя", "Полем боя"]
+
+[[concepts]]
+concept_id = "concept.kratos_pool"
+kind = "zone"
+notes = "Area where Opening, Break, and Diversion tokens are placed during combat."
+
+[concepts.source]
+lang = "en"
+lemma = "Kratos Pool"
+aliases = []
+patterns = ["Kratos Pool"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Пул Кратоса"
+allowed_surface_forms = ["Пул Кратоса", "Пула Кратоса", "Пуле Кратоса"]
+
+[[concepts]]
+concept_id = "concept.wound_stack"
+kind = "zone"
+notes = "Stack where wounded BP cards are placed. Tracks battle progress."
+
+[concepts.source]
+lang = "en"
+lemma = "Wound Stack"
+aliases = []
+patterns = ["Wound Stack"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Стопка ран"
+allowed_surface_forms = ["Стопка ран", "Стопки ран", "Стопке ран", "Стопку ран"]
+
+[[concepts]]
+concept_id = "concept.vantage_point"
+kind = "zone"
+notes = "Space on/inside a Primordial that Titans can climb."
+
+[concepts.source]
+lang = "en"
+lemma = "Vantage Point"
+aliases = ["VP", "Vantage Points"]
+patterns = ["Vantage Point", "Vantage Points", "VP"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Точка обзора"
+allowed_surface_forms = ["Точка обзора", "Точки обзора", "Точке обзора", "Точек обзора"]
+
+[[concepts]]
+concept_id = "concept.blindspot"
+kind = "zone"
+notes = "Space the Primordial cannot see. Titans there are excluded from targeting."
+
+[concepts.source]
+lang = "en"
+lemma = "Blindspot"
+aliases = ["Blindspots"]
+patterns = ["Blindspot", "Blindspots"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Слепая зона"
+allowed_surface_forms = ["Слепая зона", "Слепой зоны", "Слепую зону", "Слепые зоны"]
+
+[[concepts]]
+concept_id = "concept.weakspot"
+kind = "zone"
+notes = "Space on Primordial indicating exploitable weakness."
+
+[concepts.source]
+lang = "en"
+lemma = "Weakspot"
+aliases = ["Weakspots"]
+patterns = ["Weakspot", "Weakspots"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Уязвимое место"
+allowed_surface_forms = ["Уязвимое место", "Уязвимого места", "Уязвимые места"]
+
+[[concepts]]
+concept_id = "concept.board_edge"
+kind = "zone"
+notes = "Outer edge of the Battle Board."
+
+[concepts.source]
+lang = "en"
+lemma = "Board Edge"
+aliases = ["Board Edges"]
+patterns = ["Board Edge", "Board Edges"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Край поля"
+allowed_surface_forms = ["Край поля", "Края поля", "Краю поля", "Краями поля"]
+
+[[concepts]]
+concept_id = "concept.argo_sheet"
+kind = "mechanic"
+notes = "Main campaign tracking sheet for resources, diplomacy, Titans."
+
+[concepts.source]
+lang = "en"
+lemma = "Argo Sheet"
+aliases = []
+patterns = ["Argo Sheet"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Лист Арго"
+allowed_surface_forms = ["Лист Арго", "Листа Арго", "Листу Арго", "Листом Арго"]
+
+[[concepts]]
+concept_id = "concept.argonaut_sheet"
+kind = "mechanic"
+notes = "Per-character tracking sheet for Skills, Boons, Afflictions, Triskelion."
+
+[concepts.source]
+lang = "en"
+lemma = "Argonaut Sheet"
+aliases = ["Argonaut Sheets"]
+patterns = ["Argonaut Sheet", "Argonaut Sheets"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Лист аргонавта"
+allowed_surface_forms = ["Лист аргонавта", "Листа аргонавта", "Листы аргонавтов"]
+
+[[concepts]]
+concept_id = "concept.titan_sheet"
+kind = "mechanic"
+notes = "Sheet with Titan class info: Power die, Speed, abilities, Tables."
+
+[concepts.source]
+lang = "en"
+lemma = "Titan Sheet"
+aliases = []
+patterns = ["Titan Sheet"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Лист Титана"
+allowed_surface_forms = ["Лист Титана", "Листа Титана", "Листу Титана", "Листом Титана"]
+
+[[concepts]]
+concept_id = "concept.map_tile"
+kind = "mechanic"
+notes = "Square tiles making up the explorable Voyage map. Explored or Unexplored."
+
+[concepts.source]
+lang = "en"
+lemma = "Map Tile"
+aliases = ["Map tiles"]
+patterns = ["Map tile", "Map tiles"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Тайл карты"
+allowed_surface_forms = ["Тайл карты", "Тайла карты", "Тайлы карты", "Тайлов карты"]
+
+[[concepts]]
+concept_id = "concept.mnemos_vault"
+kind = "zone"
+notes = "Deck of unlocked Mnemos cards not currently assigned to any Argonaut."
+
+[concepts.source]
+lang = "en"
+lemma = "Mnemos Vault"
+aliases = []
+patterns = ["Mnemos Vault"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Хранилище Мнемосов"
+allowed_surface_forms = ["Хранилище Мнемосов", "Хранилища Мнемосов"]
+
+[[concepts]]
+concept_id = "concept.argo_armory"
+kind = "zone"
+notes = "Deck where gained Gear cards are added."
+
+[concepts.source]
+lang = "en"
+lemma = "Argo Armory"
+aliases = []
+patterns = ["Argo Armory"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Арсенал Арго"
+allowed_surface_forms = ["Арсенал Арго", "Арсенала Арго"]
+
+[[concepts]]
+concept_id = "concept.storybook"
+kind = "entity"
+notes = "Physical book with story paragraphs and Cycle-specific rules."
+
+[concepts.source]
+lang = "en"
+lemma = "Storybook"
+aliases = ["Storybooks"]
+patterns = ["Storybook", "Storybooks"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Книга историй"
+allowed_surface_forms = ["Книга историй", "Книги историй", "Книгу историй"]
+
+# =============================================================================
+# BATTLE FLOW — rounds, actions, sequence
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.primordial_round"
+kind = "phase"
+notes = "Alternating round where the Primordial acts via AI cards."
+
+[concepts.source]
+lang = "en"
+lemma = "Primordial Round"
+aliases = []
+patterns = ["Primordial Round"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Раунд Первозданного"
+allowed_surface_forms = ["Раунд Первозданного", "Раунда Первозданного", "Раунде Первозданного"]
+
+[[concepts]]
+concept_id = "concept.titan_round"
+kind = "phase"
+notes = "Alternating round where players activate Titans."
+
+[concepts.source]
+lang = "en"
+lemma = "Titan Round"
+aliases = ["Titan Turns"]
+patterns = ["Titan Round", "Titan Turns"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Раунд Титанов"
+allowed_surface_forms = ["Раунд Титанов", "Раунда Титанов", "Раунде Титанов"]
+
+[[concepts]]
+concept_id = "concept.combat_action"
+kind = "mechanic"
+notes = "One of two Titan actions per turn. Used to attack the Primordial."
+
+[concepts.source]
+lang = "en"
+lemma = "Combat Action"
+aliases = []
+patterns = ["combat action"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Боевое действие"
+allowed_surface_forms = ["Боевое действие", "Боевого действия", "Боевым действием"]
+
+[[concepts]]
+concept_id = "concept.movement_action"
+kind = "mechanic"
+notes = "One of two Titan actions per turn. Move up to Speed value."
+
+[concepts.source]
+lang = "en"
+lemma = "Movement Action"
+aliases = []
+patterns = ["movement action"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Действие перемещения"
+allowed_surface_forms = ["Действие перемещения", "Действия перемещения"]
+
+[[concepts]]
+concept_id = "concept.free_action"
+kind = "mechanic"
+notes = "Action performable without spending combat or movement action."
+
+[concepts.source]
+lang = "en"
+lemma = "Free Action"
+aliases = ["Free Actions"]
+patterns = ["free action", "free actions"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Свободное действие"
+allowed_surface_forms = ["Свободное действие", "Свободного действия", "Свободные действия"]
+
+[[concepts]]
+concept_id = "concept.reaction"
+kind = "mechanic"
+notes = "Ability usable outside your turn during Windows of Opportunity."
+
+[concepts.source]
+lang = "en"
+lemma = "Reaction"
+aliases = ["Reactions"]
+patterns = ["Reaction", "Reactions"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Реакция"
+allowed_surface_forms = ["Реакция", "Реакции", "Реакцию", "Реакцией"]
+
+[[concepts]]
+concept_id = "concept.window_of_opportunity"
+kind = "mechanic"
+notes = "Moments during AI resolution where players may activate Reaction abilities."
+
+[concepts.source]
+lang = "en"
+lemma = "Window of Opportunity"
+aliases = []
+patterns = ["Window of Opportunity"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Окно возможности"
+allowed_surface_forms = ["Окно возможности", "Окна возможности", "Окон возможностей"]
+
+[[concepts]]
+concept_id = "concept.battle_scenario"
+kind = "mechanic"
+notes = "Setup rules specific to a Battle against a particular Primordial."
+
+[concepts.source]
+lang = "en"
+lemma = "Battle Scenario"
+aliases = ["Scenario"]
+patterns = ["Battle Scenario"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Сценарий боя"
+allowed_surface_forms = ["Сценарий боя", "Сценария боя", "Сценарии боёв"]
+
+[[concepts]]
+concept_id = "concept.battle_aftermath"
+kind = "phase"
+notes = "Post-battle phase: gain resources from Wound Stack, tally Casualties."
+
+[concepts.source]
+lang = "en"
+lemma = "Aftermath"
+aliases = ["Battle Aftermath"]
+patterns = ["Aftermath", "Battle Aftermath"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Последствия"
+allowed_surface_forms = ["Последствия", "Последствий", "Последствиям"]
+
+[[concepts]]
+concept_id = "concept.casualties"
+kind = "mechanic"
+notes = "Post-battle step where Titan losses are noted."
+
+[concepts.source]
+lang = "en"
+lemma = "Casualties"
+aliases = []
+patterns = ["Casualties"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Потери"
+allowed_surface_forms = ["Потери", "Потерь", "Потерям"]
+
+[[concepts]]
+concept_id = "concept.tides_of_fate"
+kind = "mechanic"
+notes = "Post-battle: each Argonaut resets Triskelion to triple 0."
+
+[concepts.source]
+lang = "en"
+lemma = "Tides of Fate"
+aliases = []
+patterns = ["Tides of Fate"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Приливы Судьбы"
+allowed_surface_forms = ["Приливы Судьбы", "Приливов Судьбы"]
+
+[[concepts]]
+concept_id = "concept.mercy_rule"
+kind = "mechanic"
+notes = "When a Titan dies, offers players a partial reprieve."
+
+[concepts.source]
+lang = "en"
+lemma = "Mercy Rule"
+aliases = []
+patterns = ["Mercy Rule"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Правило милосердия"
+allowed_surface_forms = ["Правило милосердия", "Правила милосердия"]
+
+# =============================================================================
+# ATTACK MECHANICS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.attack_roll"
+kind = "mechanic"
+notes = "Roll d10 Attack dice; each die >= To Hit is a hit."
+
+[concepts.source]
+lang = "en"
+lemma = "Attack Roll"
+aliases = ["Attack dice"]
+patterns = ["Attack Roll", "Attack dice"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Бросок атаки"
+allowed_surface_forms = ["Бросок атаки", "Броска атаки", "Броском атаки"]
+
+[[concepts]]
+concept_id = "concept.power_roll"
+kind = "mechanic"
+notes = "Roll Power dice pool; total must exceed BP card's AT value to wound."
+
+[concepts.source]
+lang = "en"
+lemma = "Power Roll"
+aliases = ["Power Pool", "Power dice"]
+patterns = ["Power Roll", "Power Pool", "Total Power"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Бросок силы"
+allowed_surface_forms = ["Бросок силы", "Броска силы", "Броском силы", "Пул силы"]
+
+[[concepts]]
+concept_id = "concept.armor_roll"
+kind = "mechanic"
+notes = "Roll Armor dice to reduce Danger dealt by a Primordial Attack."
+
+[concepts.source]
+lang = "en"
+lemma = "Armor Roll"
+aliases = ["Armor dice"]
+patterns = ["Armor Roll", "Armor dice"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Бросок брони"
+allowed_surface_forms = ["Бросок брони", "Броска брони", "Броском брони"]
+
+[[concepts]]
+concept_id = "concept.crit_die"
+kind = "mechanic"
+notes = "White die always included in rolls. Natural 10 = Crit Chance, natural 1 = Crit Miss."
+
+[concepts.source]
+lang = "en"
+lemma = "Crit Die"
+aliases = ["Crit Chance", "Crit Miss"]
+patterns = ["Crit die", "Crit Chance", "Crit Miss"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Критический кубик"
+allowed_surface_forms = ["Критический кубик", "Критического кубика"]
+
+[[concepts]]
+concept_id = "concept.precision"
+kind = "mechanic"
+notes = "Bonus added to each Attack die result."
+
+[concepts.source]
+lang = "en"
+lemma = "Precision"
+aliases = ["Precision Bonus"]
+patterns = ["Precision", "Precision bonus"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Точность"
+allowed_surface_forms = ["Точность", "Точности", "Точностью"]
+
+[[concepts]]
+concept_id = "concept.to_hit"
+kind = "mechanic"
+notes = "Primordial stat — Attack dice >= this value score hits."
+
+[concepts.source]
+lang = "en"
+lemma = "To Hit"
+aliases = []
+patterns = ["To Hit"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Попадание"
+allowed_surface_forms = ["Попадание", "Попадания"]
+
+[[concepts]]
+concept_id = "concept.speed"
+kind = "mechanic"
+notes = "Movement attribute for Titans and Primordials."
+
+[concepts.source]
+lang = "en"
+lemma = "Speed"
+aliases = []
+patterns = ["Speed"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Скорость"
+allowed_surface_forms = ["Скорость", "Скорости", "Скоростью"]
+
+[[concepts]]
+concept_id = "concept.response"
+kind = "mechanic"
+notes = "Primordial reaction on BP cards: Wound, Fail, Instinct, or Critical."
+
+[concepts.source]
+lang = "en"
+lemma = "Response"
+aliases = ["Responses"]
+patterns = ["Response", "Responses", "Wound:", "Fail:", "Instinct:"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Ответ"
+allowed_surface_forms = ["Ответ", "Ответа", "Ответы", "Ответов"]
+
+[[concepts]]
+concept_id = "concept.chain_break"
+kind = "mechanic"
+notes = "Immediately ends the current Attack, invalidating remaining effects."
+
+[concepts.source]
+lang = "en"
+lemma = "Chain Break"
+aliases = []
+patterns = ["Chain Break"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Разрыв цепи"
+allowed_surface_forms = ["Разрыв цепи", "Разрыва цепи"]
+
+[[concepts]]
+concept_id = "concept.after_attack"
+kind = "mechanic"
+notes = "Effects on AI cards resolved after the main Attack."
+
+[concepts.source]
+lang = "en"
+lemma = "After Attack"
+aliases = ["After Final Attack"]
+patterns = ["After Attack", "After Final Attack"]
+
+[concepts.target]
+lang = "ru"
+lemma = "После атаки"
+allowed_surface_forms = ["После атаки"]
+
+[[concepts]]
+concept_id = "concept.full_evade"
+kind = "mechanic"
+notes = "All Evasion Roll dice succeed — skip Attack effects."
+
+[concepts.source]
+lang = "en"
+lemma = "Full Evade"
+aliases = []
+patterns = ["Full Evade", "full evade"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Полное уклонение"
+allowed_surface_forms = ["Полное уклонение", "Полного уклонения"]
+
+[[concepts]]
+concept_id = "concept.full_hit"
+kind = "mechanic"
+notes = "All Attack dice are hits."
+
+[concepts.source]
+lang = "en"
+lemma = "Full Hit"
+aliases = []
+patterns = ["full hit", "Full hit:"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Полное попадание"
+allowed_surface_forms = ["Полное попадание", "Полного попадания"]
+
+[[concepts]]
+concept_id = "concept.full_miss"
+kind = "mechanic"
+notes = "All Attack dice are misses."
+
+[concepts.source]
+lang = "en"
+lemma = "Full Miss"
+aliases = []
+patterns = ["full miss", "Full miss:"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Полный промах"
+allowed_surface_forms = ["Полный промах", "Полного промаха"]
+
+[[concepts]]
+concept_id = "concept.line_of_sight"
+kind = "mechanic"
+notes = "LoS check: draw imaginary line corner-to-corner. Blocked by obscuring Terrain."
+
+[concepts.source]
+lang = "en"
+lemma = "Line of Sight"
+aliases = ["LoS"]
+patterns = ["Line of Sight", "LoS"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Линия обзора"
+allowed_surface_forms = ["Линия обзора", "Линии обзора", "Линию обзора"]
+
+[[concepts]]
+concept_id = "concept.at_field"
+kind = "mechanic"
+notes = "Aeon Trespass field — supernatural Primordial resistance."
+
+[concepts.source]
+lang = "en"
+lemma = "AT Field"
+aliases = ["AT", "Aeon Trespass field"]
+patterns = ["AT field", "AT value"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Поле ЭТ"
+allowed_surface_forms = ["Поле ЭТ", "Поля ЭТ"]
+
+[[concepts]]
+concept_id = "concept.potential"
+kind = "mechanic"
+notes = "Power dice result convertible to Power via Break tokens."
+
+[concepts.source]
+lang = "en"
+lemma = "Potential"
+aliases = ["Potentials"]
+patterns = ["Potential", "Potentials"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Потенциал"
+allowed_surface_forms = ["Потенциал", "Потенциала", "Потенциалы"]
+
+[[concepts]]
+concept_id = "concept.signature"
+kind = "mechanic"
+notes = "Special card on Primordial Sheet — its unique attack."
+
+[concepts.source]
+lang = "en"
+lemma = "Signature"
+aliases = ["Signature Attack"]
+patterns = ["Signature"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Сигнатура"
+allowed_surface_forms = ["Сигнатура", "Сигнатуры", "Сигнатуру"]
+
+# =============================================================================
+# TRAUMA AND WOUNDS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.trauma_table"
+kind = "mechanic"
+notes = "Table mapping Danger levels to Trauma card severity thresholds."
+
+[concepts.source]
+lang = "en"
+lemma = "Trauma Table"
+aliases = []
+patterns = ["Trauma Table"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Таблица травм"
+allowed_surface_forms = ["Таблица травм", "Таблицы травм", "Таблице травм"]
+
+[[concepts]]
+concept_id = "concept.kratos_table"
+kind = "mechanic"
+notes = "Table mapping Rage levels to offensive bonuses."
+
+[concepts.source]
+lang = "en"
+lemma = "Kratos Table"
+aliases = []
+patterns = ["Kratos Table"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Таблица Кратоса"
+allowed_surface_forms = ["Таблица Кратоса", "Таблицы Кратоса", "Таблице Кратоса"]
+
+[[concepts]]
+concept_id = "concept.kratos_roll"
+kind = "mechanic"
+notes = "Roll d10 vs Rage value; fail draws a Kratos card."
+
+[concepts.source]
+lang = "en"
+lemma = "Kratos Roll"
+aliases = []
+patterns = ["Kratos Roll"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Бросок Кратоса"
+allowed_surface_forms = ["Бросок Кратоса", "Броска Кратоса"]
+
+[[concepts]]
+concept_id = "concept.massive_danger"
+kind = "mechanic"
+notes = "When Danger exceeds 14/18/21, additional death Obol cards added."
+
+[concepts.source]
+lang = "en"
+lemma = "Massive Danger"
+aliases = []
+patterns = ["Massive Danger"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Колоссальная опасность"
+allowed_surface_forms = ["Колоссальная опасность", "Колоссальной опасности"]
+
+[[concepts]]
+concept_id = "concept.critical_wound"
+kind = "mechanic"
+notes = "Wound dealt with Crit Chance. Ignores other Responses."
+
+[concepts.source]
+lang = "en"
+lemma = "Critical Wound"
+aliases = []
+patterns = ["Critical Wound", "critically wound"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Критическая рана"
+allowed_surface_forms = ["Критическая рана", "Критической раны", "Критическую рану"]
+
+[[concepts]]
+concept_id = "concept.death_blow"
+kind = "mechanic"
+notes = "Rare Critical effect that slays a Primordial before dealing all required Wounds."
+
+[concepts.source]
+lang = "en"
+lemma = "Death Blow"
+aliases = ["Death Blows"]
+patterns = ["Death Blow", "Death Blows"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Смертельный удар"
+allowed_surface_forms = ["Смертельный удар", "Смертельного удара", "Смертельных ударов"]
+
+[[concepts]]
+concept_id = "concept.instant_death"
+kind = "mechanic"
+notes = "Kills a Titan immediately, bypassing Obol/Trauma."
+
+[concepts.source]
+lang = "en"
+lemma = "Instant Death"
+aliases = []
+patterns = ["Instant Death"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Мгновенная смерть"
+allowed_surface_forms = ["Мгновенная смерть", "Мгновенной смерти"]
+
+# =============================================================================
+# BATTLE KEYWORDS — abilities and combat keywords
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.kw_deadly"
+kind = "trait"
+notes = "Replace one Attack die with a Crit die."
+
+[concepts.source]
+lang = "en"
+lemma = "Deadly"
+aliases = []
+patterns = ["Deadly"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Смертоносность"
+allowed_surface_forms = ["Смертоносность", "Смертоносности"]
+
+[[concepts]]
+concept_id = "concept.kw_knockback"
+kind = "trait"
+notes = "Move target X spaces directly away."
+
+[concepts.source]
+lang = "en"
+lemma = "Knockback"
+aliases = []
+patterns = ["Knockback", "Knockback X"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Отбрасывание"
+allowed_surface_forms = ["Отбрасывание", "Отбрасывания"]
+
+[[concepts]]
+concept_id = "concept.kw_knockdown"
+kind = "trait"
+notes = "Miniature placed on side, gains Knockdown card."
+
+[concepts.source]
+lang = "en"
+lemma = "Knockdown"
+aliases = []
+patterns = ["Knockdown"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Опрокидывание"
+allowed_surface_forms = ["Опрокидывание", "Опрокидывания"]
+
+[[concepts]]
+concept_id = "concept.kw_crash"
+kind = "trait"
+notes = "+1 Danger and Knockdown when Primordial moves through Titan space."
+
+[concepts.source]
+lang = "en"
+lemma = "Crash"
+aliases = []
+patterns = ["Crash"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Столкновение"
+allowed_surface_forms = ["Столкновение", "Столкновения"]
+
+[[concepts]]
+concept_id = "concept.kw_displace"
+kind = "trait"
+notes = "Move target to adjacent empty space."
+
+[concepts.source]
+lang = "en"
+lemma = "Displace"
+aliases = ["Displaced"]
+patterns = ["Displace", "Displaced"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Вытеснение"
+allowed_surface_forms = ["Вытеснение", "Вытеснения"]
+
+[[concepts]]
+concept_id = "concept.kw_pushback"
+kind = "trait"
+notes = "Push target X spaces while moving along with it."
+
+[concepts.source]
+lang = "en"
+lemma = "Pushback"
+aliases = []
+patterns = ["Pushback", "Pushback X"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Толчок"
+allowed_surface_forms = ["Толчок", "Толчка"]
+
+[[concepts]]
+concept_id = "concept.kw_pull"
+kind = "trait"
+notes = "Pull target X spaces toward source."
+
+[concepts.source]
+lang = "en"
+lemma = "Pull"
+aliases = []
+patterns = ["Pull", "Pull X"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Притягивание"
+allowed_surface_forms = ["Притягивание", "Притягивания"]
+
+[[concepts]]
+concept_id = "concept.kw_provoke"
+kind = "trait"
+notes = "Gain Priority Target token and turn Primordial to face you."
+
+[concepts.source]
+lang = "en"
+lemma = "Provoke"
+aliases = []
+patterns = ["Provoke"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Провокация"
+allowed_surface_forms = ["Провокация", "Провокации"]
+
+[[concepts]]
+concept_id = "concept.kw_rush"
+kind = "trait"
+notes = "Move with +1 Speed and Melee Attack with Auto-break 1."
+
+[concepts.source]
+lang = "en"
+lemma = "Rush"
+aliases = ["Improved Rush"]
+patterns = ["Rush", "Improved Rush"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Рывок"
+allowed_surface_forms = ["Рывок", "Рывка"]
+
+[[concepts]]
+concept_id = "concept.kw_vault"
+kind = "trait"
+notes = "If adjacent to Primordial, leap to opposite side."
+
+[concepts.source]
+lang = "en"
+lemma = "Vault"
+aliases = ["Forced Vault"]
+patterns = ["Vault", "Forced Vault"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Прыжок"
+allowed_surface_forms = ["Прыжок", "Прыжка"]
+
+[[concepts]]
+concept_id = "concept.kw_reflex"
+kind = "trait"
+notes = "Move up to 1 space. Subtypes: Advanced (2), Superior (3)."
+
+[concepts.source]
+lang = "en"
+lemma = "Reflex"
+aliases = ["Advanced Reflex", "Superior Reflex"]
+patterns = ["Reflex", "Advanced Reflex", "Superior Reflex"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Рефлекс"
+allowed_surface_forms = ["Рефлекс", "Рефлекса"]
+
+[[concepts]]
+concept_id = "concept.kw_reinforce"
+kind = "trait"
+notes = "Add X dice to Armor pool. Subtypes: Advanced, Superior."
+
+[concepts.source]
+lang = "en"
+lemma = "Reinforce"
+aliases = ["Advanced Reinforce", "Superior Reinforce"]
+patterns = ["Reinforce X", "Advanced Reinforce X", "Superior Reinforce X"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Укрепление"
+allowed_surface_forms = ["Укрепление", "Укрепления"]
+
+[[concepts]]
+concept_id = "concept.kw_hide"
+kind = "trait"
+notes = "Activate at end of turn if not facing Primordial; gain +1 Evasion/Precision."
+
+[concepts.source]
+lang = "en"
+lemma = "Hide"
+aliases = ["Hidden"]
+patterns = ["Hide", "Hidden"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Скрытность"
+allowed_surface_forms = ["Скрытность", "Скрытности"]
+
+[[concepts]]
+concept_id = "concept.kw_sacrifice"
+kind = "trait"
+notes = "Gain +1 Danger to place one Break token in Kratos Pool."
+
+[concepts.source]
+lang = "en"
+lemma = "Sacrifice"
+aliases = []
+patterns = ["Sacrifice"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Жертва"
+allowed_surface_forms = ["Жертва", "Жертвы"]
+
+[[concepts]]
+concept_id = "concept.kw_solace"
+kind = "trait"
+notes = "Discard a Mind Condition or Despair token from self or adjacent Titan."
+
+[concepts.source]
+lang = "en"
+lemma = "Solace"
+aliases = []
+patterns = ["Solace"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Утешение"
+allowed_surface_forms = ["Утешение", "Утешения"]
+
+[[concepts]]
+concept_id = "concept.kw_possession"
+kind = "trait"
+notes = "Keyword: must immediately equip upon gaining. Привязка = binding."
+
+[concepts.source]
+lang = "en"
+lemma = "Possession"
+aliases = []
+patterns = ["Possession"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Привязка"
+allowed_surface_forms = ["Привязка", "Привязки", "Привязку"]
+
+[[concepts]]
+concept_id = "concept.kw_peril"
+kind = "trait"
+notes = "Keyword: party leader must decide alone, no discussion. Наедине = alone/in private."
+
+[concepts.source]
+lang = "en"
+lemma = "Peril"
+aliases = []
+patterns = ["Peril"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Единолично"
+allowed_surface_forms = ["Единолично"]
+
+[[concepts]]
+concept_id = "concept.kw_cumbersome"
+kind = "trait"
+notes = "Weapon trait making Gear harder to use."
+
+[concepts.source]
+lang = "en"
+lemma = "Cumbersome"
+aliases = []
+patterns = ["Cumbersome"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Громоздкий"
+allowed_surface_forms = ["Громоздкий", "Громоздкого", "Громоздкое"]
+
+[[concepts]]
+concept_id = "concept.kw_judgement"
+kind = "trait"
+notes = "Mental assault forcing Skill test instead of Evasion Roll. Not an Attack. Кара = divine retribution."
+
+[concepts.source]
+lang = "en"
+lemma = "Judgement"
+aliases = ["Judgements"]
+patterns = ["Judgement", "Judgements"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Кара"
+allowed_surface_forms = ["Кара", "Кары", "Каре", "Кару", "Карой"]
+
+[[concepts]]
+concept_id = "concept.kw_lifeline"
+kind = "trait"
+notes = "Safety-net keyword ability. Нить жизни = thread of life (Moirai mythology)."
+
+[concepts.source]
+lang = "en"
+lemma = "Lifeline"
+aliases = []
+patterns = ["Lifeline"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Нить жизни"
+allowed_surface_forms = ["Нить жизни", "Нити жизни"]
+
+[[concepts]]
+concept_id = "concept.kw_lumbering"
+kind = "trait"
+notes = "Primordial Basic Trait: cannot suffer Pushback or involuntary movement."
+
+[concepts.source]
+lang = "en"
+lemma = "Lumbering"
+aliases = []
+patterns = ["Lumbering"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Неповоротливый"
+allowed_surface_forms = ["Неповоротливый", "Неповоротливого"]
+
+# =============================================================================
+# TERRAIN TRAITS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.terrain_obstacle"
+kind = "trait"
+notes = "Titans cannot move through. Knockback into Obstacle causes Crash."
+
+[concepts.source]
+lang = "en"
+lemma = "Obstacle"
+aliases = ["Obstacles"]
+patterns = ["Obstacle", "Obstacles"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Препятствие"
+allowed_surface_forms = ["Препятствие", "Препятствия", "Препятствий"]
+
+[[concepts]]
+concept_id = "concept.terrain_chasm"
+kind = "trait"
+notes = "Cannot voluntarily move through; ending movement on Chasm kills the Titan."
+
+[concepts.source]
+lang = "en"
+lemma = "Chasm"
+aliases = []
+patterns = ["Chasm"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Пропасть"
+allowed_surface_forms = ["Пропасть", "Пропасти"]
+
+[[concepts]]
+concept_id = "concept.terrain_cover"
+kind = "trait"
+notes = "+1 Evasion for Titans on this tile."
+
+[concepts.source]
+lang = "en"
+lemma = "Cover"
+aliases = []
+patterns = ["Cover"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Укрытие"
+allowed_surface_forms = ["Укрытие", "Укрытия"]
+
+[[concepts]]
+concept_id = "concept.terrain_destructible"
+kind = "trait"
+notes = "Destroyed when Titan involuntarily moved onto it."
+
+[concepts.source]
+lang = "en"
+lemma = "Destructible"
+aliases = ["Reinforced Destructible"]
+patterns = ["Destructible", "Reinforced Destructible"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Разрушаемый"
+allowed_surface_forms = ["Разрушаемый", "Разрушаемого"]
+
+[[concepts]]
+concept_id = "concept.terrain_indestructible"
+kind = "trait"
+notes = "Cannot be destroyed."
+
+[concepts.source]
+lang = "en"
+lemma = "Indestructible"
+aliases = []
+patterns = ["Indestructible"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Неразрушимый"
+allowed_surface_forms = ["Неразрушимый", "Неразрушимого"]
+
+[[concepts]]
+concept_id = "concept.terrain_boundless"
+kind = "trait"
+notes = "Cannot voluntarily move onto; forced movement onto/beyond kills the Titan. Бездна = abyss."
+
+[concepts.source]
+lang = "en"
+lemma = "Boundless"
+aliases = []
+patterns = ["Boundless"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Бездна"
+allowed_surface_forms = ["Бездна", "Бездны", "Бездну"]
+
+[[concepts]]
+concept_id = "concept.terrain_obscuring"
+kind = "trait"
+notes = "Blocks Line of Sight."
+
+[concepts.source]
+lang = "en"
+lemma = "Obscuring"
+aliases = []
+patterns = ["Obscuring"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Затемняющий"
+allowed_surface_forms = ["Затемняющий", "Затемняющего"]
+
+[[concepts]]
+concept_id = "concept.terrain_inhabited"
+kind = "trait"
+notes = "Bonuses/penalties based on Diplomacy Score. Destroying costs -1 Diplomacy."
+
+[concepts.source]
+lang = "en"
+lemma = "Inhabited"
+aliases = []
+patterns = ["Inhabited"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Обитаемый"
+allowed_surface_forms = ["Обитаемый", "Обитаемого"]
+
+# =============================================================================
+# AWAKENING AND DIVINE MECHANICS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.awakening"
+kind = "mechanic"
+notes = "Godform transformation — Titan assumes the form of a fallen Olympian."
+
+[concepts.source]
+lang = "en"
+lemma = "Awakening"
+aliases = ["Awaken"]
+patterns = ["Awakening", "Awaken"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Пробуждение"
+allowed_surface_forms = ["Пробуждение", "Пробуждения", "Пробуждений"]
+
+[[concepts]]
+concept_id = "concept.godform"
+kind = "entity"
+notes = "Form of a fallen Olympian assumed during Awakening."
+
+[concepts.source]
+lang = "en"
+lemma = "Godform"
+aliases = ["Godforms"]
+patterns = ["Godform", "Godforms"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Богоформа"
+allowed_surface_forms = ["Богоформа", "Богоформы", "Богоформу", "Богоформ"]
+
+[[concepts]]
+concept_id = "concept.nymph_summoning"
+kind = "mechanic"
+notes = "Summoning a Nymph ally. Uses Summon Charge, triggers Adversary movement."
+
+[concepts.source]
+lang = "en"
+lemma = "Nymph Summoning"
+aliases = ["Summoning"]
+patterns = ["Nymph Summoning", "perform a Summoning"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Призыв Нимфы"
+allowed_surface_forms = ["Призыв Нимфы", "Призыва Нимфы", "Призывы Нимф"]
+
+[[concepts]]
+concept_id = "concept.summon_charge"
+kind = "mechanic"
+notes = "Expendable resource; one consumed per Summoning."
+
+[concepts.source]
+lang = "en"
+lemma = "Summon Charge"
+aliases = ["Summon Charges"]
+patterns = ["Summon Charge", "Summon Charges"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Заряд призыва"
+allowed_surface_forms = ["Заряд призыва", "Заряда призыва", "Заряды призыва"]
+
+[[concepts]]
+concept_id = "concept.divine_surge"
+kind = "mechanic"
+notes = "Periodic event replenishing all Godforms, Summonings and Summon Charges."
+
+[concepts.source]
+lang = "en"
+lemma = "Divine Surge"
+aliases = ["Divine Surges"]
+patterns = ["Divine Surge"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Божественный всплеск"
+allowed_surface_forms = ["Божественный всплеск", "Божественного всплеска"]
+
+# =============================================================================
+# ADVENTURE TYPES AND MECHANICS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.story_adventure"
+kind = "mechanic"
+notes = "Main Story section Storybook passages."
+
+[concepts.source]
+lang = "en"
+lemma = "Story Adventure"
+aliases = ["Story Adventures"]
+patterns = ["Story Adventure"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Сюжетное приключение"
+allowed_surface_forms = ["Сюжетное приключение", "Сюжетного приключения", "Сюжетные приключения"]
+
+[[concepts]]
+concept_id = "concept.hub_adventure"
+kind = "mechanic"
+notes = "Themed adventure groups from Adventure Hubs table."
+
+[concepts.source]
+lang = "en"
+lemma = "Hub Adventure"
+aliases = ["Adventure Hub"]
+patterns = ["Hub Adventure", "Adventure Hub"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Приключение узла"
+allowed_surface_forms = ["Приключение узла", "Приключения узла"]
+
+[[concepts]]
+concept_id = "concept.rr_adventure"
+kind = "mechanic"
+notes = "Rest & recuperation — light-hearted slice-of-life stories."
+
+[concepts.source]
+lang = "en"
+lemma = "R&R Adventure"
+aliases = ["R&R"]
+patterns = ["R&R Adventure", "R&R"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Приключение отдыха"
+allowed_surface_forms = ["Приключение отдыха", "Приключения отдыха"]
+
+[[concepts]]
+concept_id = "concept.inward_odyssey"
+kind = "mechanic"
+notes = "Adventure chain tied to Argo Knowledge. 20 adventures per Cycle."
+
+[concepts.source]
+lang = "en"
+lemma = "Inward Odyssey"
+aliases = []
+patterns = ["Inward Odyssey"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Внутренняя одиссея"
+allowed_surface_forms = ["Внутренняя одиссея", "Внутренней одиссеи", "Внутреннюю одиссею"]
+
+[[concepts]]
+concept_id = "concept.mnemos_breakthrough"
+kind = "mechanic"
+notes = "Triggered when all Mnemos nodes left of a breakthrough symbol are marked."
+
+[concepts.source]
+lang = "en"
+lemma = "Mnemos Breakthrough"
+aliases = []
+patterns = ["Mnemos Breakthrough"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Прорыв Мнемоса"
+allowed_surface_forms = ["Прорыв Мнемоса", "Прорыва Мнемоса", "Прорывы Мнемосов"]
+
+[[concepts]]
+concept_id = "concept.dreams_of_pharos"
+kind = "mechanic"
+notes = "Special adventure set in Alexandria's library. Push-your-luck Pharos Delve mechanic."
+
+[concepts.source]
+lang = "en"
+lemma = "Dreams of Pharos"
+aliases = []
+patterns = ["Dreams of Pharos"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Сны Фароса"
+allowed_surface_forms = ["Сны Фароса", "Снов Фароса"]
+
+[[concepts]]
+concept_id = "concept.special_event"
+kind = "mechanic"
+notes = "Unique one-of-a-kind adventures. Found in Special Events chapter of Storybook."
+
+[concepts.source]
+lang = "en"
+lemma = "Special Event"
+aliases = ["Special Events"]
+patterns = ["Special Event", "Special Events"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Особое событие"
+allowed_surface_forms = ["Особое событие", "Особого события", "Особые события"]
+
+[[concepts]]
+concept_id = "concept.story_event"
+kind = "mechanic"
+notes = "Story-related Timeline events that start an adventure."
+
+[concepts.source]
+lang = "en"
+lemma = "Story Event"
+aliases = ["Story Events"]
+patterns = ["Story Event", "Story Events"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Сюжетное событие"
+allowed_surface_forms = ["Сюжетное событие", "Сюжетного события", "Сюжетные события"]
+
+[[concepts]]
+concept_id = "concept.advancement_event"
+kind = "mechanic"
+notes = "Timeline events from Technologies, resolved in the Advancement Step."
+
+[concepts.source]
+lang = "en"
+lemma = "Advancement Event"
+aliases = ["Advancement Events"]
+patterns = ["Advancement Event", "Advancement Events"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Событие развития"
+allowed_surface_forms = ["Событие развития", "События развития"]
+
+[[concepts]]
+concept_id = "concept.adventure_test"
+kind = "mechanic"
+notes = "Roll d10 vs difficulty; 10 always succeeds, 1 always fails."
+
+[concepts.source]
+lang = "en"
+lemma = "Adventure Test"
+aliases = ["Adventure Tests"]
+patterns = ["Adventure Test", "perform a test"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Испытание"
+allowed_surface_forms = ["Испытание", "Испытания", "Испытанию"]
+
+[[concepts]]
+concept_id = "concept.party_leader"
+kind = "mechanic"
+notes = "One Argonaut chosen per adventure. Breaks ties, most likely to be tested."
+
+[concepts.source]
+lang = "en"
+lemma = "Party Leader"
+aliases = []
+patterns = ["Party Leader", "party leader"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Лидер отряда"
+allowed_surface_forms = ["Лидер отряда", "Лидера отряда"]
+
+[[concepts]]
+concept_id = "concept.adventure_terrain"
+kind = "mechanic"
+notes = "Terrain tile added to upcoming Battle based on the Adventure Hub visited."
+
+[concepts.source]
+lang = "en"
+lemma = "Adventure Terrain"
+aliases = []
+patterns = ["Adventure Terrain"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Ландшафт приключения"
+allowed_surface_forms = ["Ландшафт приключения", "Ландшафта приключения"]
+
+# =============================================================================
+# TITAN MECHANICS — crafting, breeding, production
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.fusing"
+kind = "mechanic"
+notes = "Crafting a Titan by combining a Dreamwalker with a Primordial Core."
+
+[concepts.source]
+lang = "en"
+lemma = "Fusing"
+aliases = ["Fuse"]
+patterns = ["Fusing", "Fusing a Titan"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Слияние"
+allowed_surface_forms = ["Слияние", "Слияния", "Слиянием"]
+
+[[concepts]]
+concept_id = "concept.production_facility"
+kind = "mechanic"
+notes = "Technology-based facility for crafting Titans and cards."
+
+[concepts.source]
+lang = "en"
+lemma = "Production Facility"
+aliases = ["Production Facilities"]
+patterns = ["Production Facility"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Производственный объект"
+allowed_surface_forms = ["Производственный объект", "Производственного объекта", "Производственные объекты"]
+
+[[concepts]]
+concept_id = "concept.breeding"
+kind = "mechanic"
+notes = "Creating new Titan classes via Technology cards."
+
+[concepts.source]
+lang = "en"
+lemma = "Breeding"
+aliases = []
+patterns = ["Breeding"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Разведение"
+allowed_surface_forms = ["Разведение", "Разведения"]
+
+[[concepts]]
+concept_id = "concept.primordial_core"
+kind = "entity"
+notes = "Component harvested from defeated Primordial, used in Fusing."
+
+[concepts.source]
+lang = "en"
+lemma = "Primordial Core"
+aliases = ["Primordial Cores"]
+patterns = ["Primordial Core", "Primordial Cores"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Ядро Первозданного"
+allowed_surface_forms = ["Ядро Первозданного", "Ядра Первозданного", "Ядра Первозданных"]
+
+# =============================================================================
+# CONDITIONS AND STATUS
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.affliction"
+kind = "condition"
+notes = "Permanent negative effect on Argonaut Sheet. Only removable when told."
+
+[concepts.source]
+lang = "en"
+lemma = "Affliction"
+aliases = ["Afflictions"]
+patterns = ["Affliction", "Afflictions"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Недуг"
+allowed_surface_forms = ["Недуг", "Недуга", "Недуги", "Недугов"]
+
+[[concepts]]
+concept_id = "concept.boon"
+kind = "condition"
+notes = "Positive permanent effect on Argonaut Sheet."
+
+[concepts.source]
+lang = "en"
+lemma = "Boon"
+aliases = ["Boons"]
+patterns = ["Boon", "Boons"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Благо"
+allowed_surface_forms = ["Благо", "Блага", "Благ"]
+
+[[concepts]]
+concept_id = "concept.katharsis"
+kind = "mechanic"
+notes = "End-state when an Argonaut completes a Mnemos storyline."
+
+[concepts.source]
+lang = "en"
+lemma = "Katharsis"
+aliases = []
+patterns = ["Katharsis"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Катарсис"
+allowed_surface_forms = ["Катарсис", "Катарсиса"]
+
+[[concepts]]
+concept_id = "concept.sisyphus_tear"
+kind = "mechanic"
+notes = "Extremely rare Divine resource; spend to replay a battle without consequences."
+
+[concepts.source]
+lang = "en"
+lemma = "Sisyphus Tear"
+aliases = ["Sisyphus Tears"]
+patterns = ["Sisyphus Tear"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Слеза Сизифа"
+allowed_surface_forms = ["Слеза Сизифа", "Слезы Сизифа", "Слёз Сизифа"]
+
+[[concepts]]
+concept_id = "concept.save_test"
+kind = "mechanic"
+notes = "Technology-enabled test to avoid negative effects. Re-rollable with Argo Fate."
+
+[concepts.source]
+lang = "en"
+lemma = "Save Test"
+aliases = ["Save"]
+patterns = ["Save test", "save test"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Спасбросок"
+allowed_surface_forms = ["Спасбросок", "Спасброска", "Спасброски"]
+
+# =============================================================================
+# CAMPAIGN MANAGEMENT
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.diplomacy"
+kind = "mechanic"
+notes = "Standing with a Faction on -10 to +10 track."
+
+[concepts.source]
+lang = "en"
+lemma = "Diplomacy"
+aliases = ["Diplomacy Score"]
+patterns = ["Diplomacy", "Diplomacy Score"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Дипломатия"
+allowed_surface_forms = ["Дипломатия", "Дипломатии", "Дипломатию"]
+
+[[concepts]]
+concept_id = "concept.choice_matrix"
+kind = "mechanic"
+notes = "Grid on Argo Sheet tracking important story choices. Persists across Cycles."
+
+[concepts.source]
+lang = "en"
+lemma = "Choice Matrix"
+aliases = []
+patterns = ["Choice Matrix"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Матрица выбора"
+allowed_surface_forms = ["Матрица выбора", "Матрицы выбора", "Матрицу выбора"]
+
+[[concepts]]
+concept_id = "concept.fated_box"
+kind = "mechanic"
+notes = "Box marked next to adventure names to record encountered adventures."
+
+[concepts.source]
+lang = "en"
+lemma = "Fated Box"
+aliases = ["Fated Boxes"]
+patterns = ["Fated Box"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Ячейка судьбы"
+allowed_surface_forms = ["Ячейка судьбы", "Ячейки судьбы"]
+
+[[concepts]]
+concept_id = "concept.explored"
+kind = "mechanic"
+notes = "Map tile state. Unexplored tiles become Explored during End Step."
+
+[concepts.source]
+lang = "en"
+lemma = "Explored"
+aliases = ["Unexplored"]
+patterns = ["Explored", "Unexplored"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Исследованный"
+allowed_surface_forms = ["Исследованный", "Исследованного", "Неисследованный", "Неисследованного"]
+
+# =============================================================================
+# GAME ACTIONS — exhaust, discard, archive
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.exhaust"
+kind = "mechanic"
+notes = "Turn card 90 degrees; cannot use as active weapon or activate abilities."
+
+[concepts.source]
+lang = "en"
+lemma = "Exhaust"
+aliases = ["Exhausting", "Exhausted"]
+patterns = ["exhaust", "exhausted"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Истощение"
+allowed_surface_forms = ["Истощение", "Истощения", "Истощить", "Истощён"]
+
+[[concepts]]
+concept_id = "concept.discard"
+kind = "mechanic"
+notes = "Token → pool; card → flip facedown (unusable this Battle)."
+
+[concepts.source]
+lang = "en"
+lemma = "Discard"
+aliases = ["Discarding"]
+patterns = ["discard", "Discarding"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Сброс"
+allowed_surface_forms = ["Сброс", "Сброса", "Сбросить"]
+
+[[concepts]]
+concept_id = "concept.archive"
+kind = "mechanic"
+notes = "Permanently remove game element — return to game box."
+
+[concepts.source]
+lang = "en"
+lemma = "Archive"
+aliases = ["Archiving"]
+patterns = ["Archiving", "archive"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Архивирование"
+allowed_surface_forms = ["Архивирование", "Архивирования", "Архивировать"]
+
+# =============================================================================
+# MNESTIS THEATRE
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.mnestis_theatre"
+kind = "mechanic"
+notes = "Bonus game mode: theatre of memories, replay powerful Primordial variants."
+
+[concepts.source]
+lang = "en"
+lemma = "Mnestis Theatre"
+aliases = ["Mnestis"]
+patterns = ["Mnestis Theatre"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Театр Мнестис"
+allowed_surface_forms = ["Театр Мнестис", "Театра Мнестис", "Театре Мнестис"]
+
+[[concepts]]
+concept_id = "concept.tree_of_knowledge"
+kind = "mechanic"
+notes = "Branching inverted tower of Mnestis Battles."
+
+[concepts.source]
+lang = "en"
+lemma = "Tree of Knowledge"
+aliases = []
+patterns = ["Tree of Knowledge"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Древо Познания"
+allowed_surface_forms = ["Древо Познания", "Древа Познания"]
+
+# =============================================================================
+# ARGO ABILITIES
+# =============================================================================
+
+[[concepts]]
+concept_id = "concept.routine"
+kind = "mechanic"
+notes = "Special Primordial action triggered when no eligible AI target exists. Usually devastating."
+
+[concepts.source]
+lang = "en"
+lemma = "Routine"
+aliases = ["Routines"]
+patterns = ["Routine", "Routines"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Стандарт"
+allowed_surface_forms = ["Стандарт", "Стандарта", "Стандарту", "Стандартом"]
+
+[[concepts]]
+concept_id = "concept.argo_ability"
+kind = "mechanic"
+notes = "Technology cards usable during Battle. Limited by AA Limit."
+
+[concepts.source]
+lang = "en"
+lemma = "Argo Ability"
+aliases = ["AA", "Argo Abilities"]
+patterns = ["Argo Ability", "Argo Abilities", "AA Limit"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Способность Арго"
+allowed_surface_forms = ["Способность Арго", "Способности Арго", "Способностей Арго"]
+
+[[concepts]]
+concept_id = "concept.acclimation"
+kind = "mechanic"
+notes = "Sub-action during Exploration step."
+
+[concepts.source]
+lang = "en"
+lemma = "Acclimation"
+aliases = []
+patterns = ["Acclimation"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Акклиматизация"
+allowed_surface_forms = ["Акклиматизация", "Акклиматизации"]
+
+[[concepts]]
+concept_id = "concept.mnemos_node"
+kind = "mechanic"
+notes = "Experience points for Mnemos cards; track goes 1-10."
+
+[concepts.source]
+lang = "en"
+lemma = "Mnemos Node"
+aliases = ["Mnemos nodes"]
+patterns = ["Mnemos node", "Mnemos nodes"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Узел Мнемоса"
+allowed_surface_forms = ["Узел Мнемоса", "Узла Мнемоса", "Узлы Мнемосов"]
