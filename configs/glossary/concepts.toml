@@ -2315,6 +2315,22 @@ lemma = "Утешение"
 allowed_surface_forms = ["Утешение", "Утешения"]
 
 [[concepts]]
+concept_id = "concept.kw_possession"
+kind = "trait"
+notes = "Keyword: must immediately equip upon gaining. Привязка = binding."
+
+[concepts.source]
+lang = "en"
+lemma = "Possession"
+aliases = []
+patterns = ["Possession"]
+
+[concepts.target]
+lang = "ru"
+lemma = "Привязка"
+allowed_surface_forms = ["Привязка", "Привязки", "Привязку"]
+
+[[concepts]]
 concept_id = "concept.kw_peril"
 kind = "trait"
 notes = "Keyword: party leader must decide alone, no discussion. Наедине = alone/in private."
