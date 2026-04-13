@@ -44,13 +44,16 @@ _LABEL_TO_KIND: dict[str, str] = {
 }
 
 _converter_instance: Any = None  # lazy singleton; typed as Any to avoid import
+_docling_unavailable = False  # cached ImportError — avoids repeated import attempts
 
 
 def _get_converter() -> DocumentConverter | None:
     """Lazy-load the Docling DocumentConverter (heavy: loads ML models)."""
-    global _converter_instance
+    global _converter_instance, _docling_unavailable
     if _converter_instance is not None:
         return _converter_instance
+    if _docling_unavailable:
+        return None
     try:
         from docling.document_converter import DocumentConverter
 
@@ -58,6 +61,7 @@ def _get_converter() -> DocumentConverter | None:
         log.info("Docling converter initialized")
         return _converter_instance
     except ImportError:
+        _docling_unavailable = True
         log.warning("Docling not installed — pip install 'atr-pipeline[layout]'")
         return None
 
