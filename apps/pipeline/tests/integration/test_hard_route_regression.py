@@ -235,7 +235,7 @@ def test_fallback_records_default_route(tmp_path: Path) -> None:
 
     # Force primary extractor to fail so fallback is used
     with patch(
-        "atr_pipeline.stages.extract_layout.stage.extract_layout_stub",
+        "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
         side_effect=RuntimeError("docling unavailable"),
     ):
         ExtractLayoutStage().run(ctx, None)
