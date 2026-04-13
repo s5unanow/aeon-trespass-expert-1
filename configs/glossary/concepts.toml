@@ -448,8 +448,8 @@ patterns = ["Dreamwalker", "Gaia-born Titan"]
 
 [concepts.target]
 lang = "ru"
-lemma = "Сновидец"
-allowed_surface_forms = ["Сновидец", "Сновидца", "Сновидцу", "Сновидцем", "Сновидце", "Сновидцы"]
+lemma = "Дремлющий"
+allowed_surface_forms = ["Дремлющий", "Дремлющего", "Дремлющему", "Дремлющим", "Дремлющие", "Дремлющих"]
 
 # =============================================================================
 # GAME PHASES — major game phases
