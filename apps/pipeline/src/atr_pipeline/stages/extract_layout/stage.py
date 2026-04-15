@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
-from atr_pipeline.stages.extract_layout.docling_adapter import extract_layout_stub
+from atr_pipeline.stages.extract_layout.docling_adapter import extract_layout_docling
 from atr_pipeline.stages.extract_layout.fallback_stub import ocr_fallback_stub
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
@@ -101,7 +101,8 @@ class ExtractLayoutStage:
         """Run primary extractor, fall back on failure."""
         try:
             img = Path(raster_path) if raster_path else None
-            return extract_layout_stub(native, img)
+            dpi = ctx.config.extraction.layout.dpi
+            return extract_layout_docling(native, img, dpi=dpi)
         except Exception:
             ctx.logger.warning(
                 "Primary layout extraction failed for %s, using fallback",

@@ -18,6 +18,9 @@ llm = [
   "anthropic>=0.42",
   "google-genai>=1.0",
 ]
+layout = [
+  "docling>=2.0",
+]
 
 [tool.uv.sources]
 atr-schemas = { workspace = true }

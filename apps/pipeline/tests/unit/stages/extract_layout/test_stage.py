@@ -148,7 +148,7 @@ def test_stage_falls_back_on_primary_failure(tmp_path: Path) -> None:
     _write_native_page(ctx.artifact_store, "test_doc", "p0001")
 
     with patch(
-        "atr_pipeline.stages.extract_layout.stage.extract_layout_stub",
+        "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
         side_effect=RuntimeError("docling failed"),
     ):
         stage = ExtractLayoutStage()
