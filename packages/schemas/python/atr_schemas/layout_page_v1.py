@@ -5,6 +5,7 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from atr_schemas.common import Rect
+from atr_schemas.native_page_v1 import WordEvidence
 
 
 class LayoutZone(BaseModel):
@@ -37,3 +38,13 @@ class LayoutPageV1(BaseModel):
     zones: list[LayoutZone] = Field(default_factory=list)
     reading_order_candidates: list[list[str]] = Field(default_factory=list)
     difficulty: DifficultyScoreV1 | None = None
+    ocr_words: list[WordEvidence] = Field(
+        default_factory=list,
+        description=(
+            "OCR-derived text evidence populated by the hard-page fallback. "
+            "Each entry corresponds to a detected text *line* (PaddleOCR emits "
+            "line-level polygons, not per-word tokens). The field reuses "
+            "WordEvidence for coordinate/text typing; downstream consumers should "
+            "treat entries as line-level granularity."
+        ),
+    )

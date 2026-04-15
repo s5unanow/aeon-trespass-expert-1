@@ -102,6 +102,44 @@
       ],
       "title": "Rect",
       "type": "object"
+    },
+    "WordEvidence": {
+      "description": "A single word extracted from the PDF.",
+      "properties": {
+        "word_id": {
+          "title": "Word Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/Rect"
+        },
+        "font_name": {
+          "default": "",
+          "title": "Font Name",
+          "type": "string"
+        },
+        "font_size": {
+          "default": 0.0,
+          "title": "Font Size",
+          "type": "number"
+        },
+        "flags": {
+          "default": 0,
+          "title": "Flags",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "word_id",
+        "text",
+        "bbox"
+      ],
+      "title": "WordEvidence",
+      "type": "object"
     }
   },
   "description": "Secondary layout evidence for a single page.",
@@ -148,6 +186,14 @@
         }
       ],
       "default": null
+    },
+    "ocr_words": {
+      "description": "OCR-derived text evidence populated by the hard-page fallback. Each entry corresponds to a detected text *line* (PaddleOCR emits line-level polygons, not per-word tokens). The field reuses WordEvidence for coordinate/text typing; downstream consumers should treat entries as line-level granularity.",
+      "items": {
+        "$ref": "#/$defs/WordEvidence"
+      },
+      "title": "Ocr Words",
+      "type": "array"
     }
   },
   "required": [

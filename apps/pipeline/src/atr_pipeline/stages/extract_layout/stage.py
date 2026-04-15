@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
 from atr_pipeline.stages.extract_layout.docling_adapter import extract_layout_docling
-from atr_pipeline.stages.extract_layout.fallback_stub import ocr_fallback_stub
+from atr_pipeline.stages.extract_layout.paddleocr_adapter import extract_layout_ocr
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
@@ -98,18 +98,49 @@ class ExtractLayoutStage:
         native: NativePageV1,
         raster_path: str | None,
     ) -> LayoutPageV1:
-        """Run primary extractor, fall back on failure."""
+        """Run primary extractor; escalate to OCR on hard pages or primary failure."""
+        img = Path(raster_path) if raster_path else None
+        dpi = ctx.config.extraction.layout.dpi
+
+        primary: LayoutPageV1 | None = None
         try:
-            img = Path(raster_path) if raster_path else None
-            dpi = ctx.config.extraction.layout.dpi
-            return extract_layout_docling(native, img, dpi=dpi)
+            primary = extract_layout_docling(native, img, dpi=dpi)
         except Exception:
             ctx.logger.warning(
-                "Primary layout extraction failed for %s, using fallback",
+                "Primary layout extraction failed for %s, escalating to OCR",
                 native.page_id,
                 exc_info=True,
             )
-            return ocr_fallback_stub(native)
+
+        if not ExtractLayoutStage._needs_ocr(primary):
+            assert primary is not None  # _needs_ocr returns True when primary is None
+            return primary
+
+        try:
+            ocr = extract_layout_ocr(native, img, dpi=dpi)
+        except Exception:
+            ctx.logger.warning(
+                "OCR fallback failed for %s",
+                native.page_id,
+                exc_info=True,
+            )
+            ocr = None
+
+        if ocr is not None and ocr.zones:
+            ctx.logger.info("Using OCR layout for hard page %s", native.page_id)
+            return ocr
+
+        if primary is not None:
+            return primary
+
+        return LayoutPageV1(document_id=native.document_id, page_id=native.page_id)
+
+    @staticmethod
+    def _needs_ocr(primary: LayoutPageV1 | None) -> bool:
+        """True when the primary layout is missing or flagged as a hard page."""
+        if primary is None:
+            return True
+        return primary.difficulty is not None and primary.difficulty.hard_page
 
     @staticmethod
     def _resolve_page_ids(ctx: StageContext) -> list[str]:
