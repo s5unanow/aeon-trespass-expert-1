@@ -143,18 +143,199 @@ def test_stage_raises_without_native_pages(tmp_path: Path) -> None:
 
 
 def test_stage_falls_back_on_primary_failure(tmp_path: Path) -> None:
-    """When primary extractor raises, the OCR fallback is used."""
+    """When the primary extractor raises, OCR is invoked and its zones used."""
+    from atr_schemas.common import Rect as RectModel
+    from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
+    from atr_schemas.native_page_v1 import WordEvidence
+
     ctx = _make_ctx(tmp_path)
     _write_native_page(ctx.artifact_store, "test_doc", "p0001")
 
-    with patch(
-        "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
-        side_effect=RuntimeError("docling failed"),
+    ocr_layout = LayoutPageV1(
+        document_id="test_doc",
+        page_id="p0001",
+        zones=[
+            LayoutZone(
+                zone_id="ocr001",
+                kind="body",
+                bbox=RectModel(x0=10, y0=10, x1=100, y1=30),
+                confidence=0.9,
+            )
+        ],
+        difficulty=DifficultyScoreV1(page_id="p0001"),
+        ocr_words=[
+            WordEvidence(
+                word_id="ocr_w0001",
+                text="hello",
+                bbox=RectModel(x0=10, y0=10, x1=100, y1=30),
+            )
+        ],
+    )
+
+    with (
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
+            side_effect=RuntimeError("docling failed"),
+        ),
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_ocr",
+            return_value=ocr_layout,
+        ),
     ):
         stage = ExtractLayoutStage()
         result = stage.run(ctx, None)
 
     assert result.pages_processed == 1
-    # Fallback produces no zones
-    assert result.total_zones == 0
+    assert result.total_zones == 1
     ctx.logger.warning.assert_called()
+
+
+def test_stage_escalates_hard_page_to_ocr(tmp_path: Path) -> None:
+    """Hard pages from the primary path trigger the OCR fallback."""
+    from atr_schemas.common import Rect as RectModel
+    from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
+
+    ctx = _make_ctx(tmp_path)
+    _write_native_page(ctx.artifact_store, "test_doc", "p0001")
+
+    hard_primary = LayoutPageV1(
+        document_id="test_doc",
+        page_id="p0001",
+        zones=[
+            LayoutZone(
+                zone_id="z001",
+                kind="body",
+                bbox=RectModel(x0=50, y0=50, x1=560, y1=740),
+                confidence=1.0,
+            )
+        ],
+        difficulty=DifficultyScoreV1(
+            page_id="p0001",
+            native_text_coverage=0.05,
+            hard_page=True,
+            recommended_route="R2",
+        ),
+    )
+    ocr_layout = LayoutPageV1(
+        document_id="test_doc",
+        page_id="p0001",
+        zones=[
+            LayoutZone(
+                zone_id="ocr001",
+                kind="body",
+                bbox=RectModel(x0=10, y0=10, x1=600, y1=30),
+                confidence=0.85,
+            ),
+            LayoutZone(
+                zone_id="ocr002",
+                kind="body",
+                bbox=RectModel(x0=10, y0=40, x1=600, y1=60),
+                confidence=0.85,
+            ),
+        ],
+        difficulty=DifficultyScoreV1(page_id="p0001"),
+    )
+
+    with (
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
+            return_value=hard_primary,
+        ),
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_ocr",
+            return_value=ocr_layout,
+        ) as ocr_mock,
+    ):
+        stage = ExtractLayoutStage()
+        result = stage.run(ctx, None)
+
+    assert result.total_zones == 2
+    assert ocr_mock.call_count == 1
+
+
+def test_stage_keeps_primary_when_not_hard(tmp_path: Path) -> None:
+    """Non-hard primary results bypass the OCR fallback."""
+    from atr_schemas.common import Rect as RectModel
+    from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
+
+    ctx = _make_ctx(tmp_path)
+    _write_native_page(ctx.artifact_store, "test_doc", "p0001")
+
+    primary = LayoutPageV1(
+        document_id="test_doc",
+        page_id="p0001",
+        zones=[
+            LayoutZone(
+                zone_id="z001",
+                kind="body",
+                bbox=RectModel(x0=50, y0=50, x1=560, y1=740),
+                confidence=1.0,
+            )
+        ],
+        difficulty=DifficultyScoreV1(
+            page_id="p0001",
+            native_text_coverage=0.6,
+            hard_page=False,
+            recommended_route="R1",
+        ),
+    )
+
+    with (
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
+            return_value=primary,
+        ),
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_ocr",
+        ) as ocr_mock,
+    ):
+        stage = ExtractLayoutStage()
+        result = stage.run(ctx, None)
+
+    assert result.total_zones == 1
+    assert ocr_mock.call_count == 0
+
+
+def test_stage_keeps_primary_when_ocr_empty(tmp_path: Path) -> None:
+    """If OCR returns no zones, the primary hard-page result is kept."""
+    from atr_schemas.common import Rect as RectModel
+    from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
+
+    ctx = _make_ctx(tmp_path)
+    _write_native_page(ctx.artifact_store, "test_doc", "p0001")
+
+    hard_primary = LayoutPageV1(
+        document_id="test_doc",
+        page_id="p0001",
+        zones=[
+            LayoutZone(
+                zone_id="z001",
+                kind="body",
+                bbox=RectModel(x0=50, y0=50, x1=560, y1=740),
+                confidence=1.0,
+            )
+        ],
+        difficulty=DifficultyScoreV1(
+            page_id="p0001",
+            native_text_coverage=0.05,
+            hard_page=True,
+            recommended_route="R2",
+        ),
+    )
+    empty_ocr = LayoutPageV1(document_id="test_doc", page_id="p0001")
+
+    with (
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
+            return_value=hard_primary,
+        ),
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_ocr",
+            return_value=empty_ocr,
+        ),
+    ):
+        stage = ExtractLayoutStage()
+        result = stage.run(ctx, None)
+
+    assert result.total_zones == 1  # primary zone survives
+    assert result.hard_pages == 1

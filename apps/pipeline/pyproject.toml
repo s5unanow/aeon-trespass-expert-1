@@ -21,6 +21,9 @@ llm = [
 layout = [
   "docling>=2.0",
 ]
+ocr = [
+  "paddleocr>=2.7,<3.0",
+]
 
 [tool.uv.sources]
 atr-schemas = { workspace = true }

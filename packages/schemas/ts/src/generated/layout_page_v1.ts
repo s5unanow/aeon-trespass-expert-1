@@ -19,6 +19,15 @@ export type NativeTextCoverage = number;
 export type ExtractorAgreement = number;
 export type HardPage = boolean;
 export type RecommendedRoute = string;
+export type WordId = string;
+export type Text = string;
+export type FontName = string;
+export type FontSize = number;
+export type Flags = number;
+/**
+ * OCR-derived text evidence populated by the hard-page fallback. Each entry corresponds to a detected text *line* (PaddleOCR emits line-level polygons, not per-word tokens). The field reuses WordEvidence for coordinate/text typing; downstream consumers should treat entries as line-level granularity.
+ */
+export type OcrWords = WordEvidence[];
 
 /**
  * Secondary layout evidence for a single page.
@@ -30,6 +39,7 @@ export interface LayoutPageV1 {
   zones?: Zones;
   reading_order_candidates?: ReadingOrderCandidates;
   difficulty?: DifficultyScoreV1 | null;
+  ocr_words?: OcrWords;
 }
 /**
  * A detected layout zone on a page.
@@ -60,4 +70,15 @@ export interface DifficultyScoreV1 {
   extractor_agreement?: ExtractorAgreement;
   hard_page?: HardPage;
   recommended_route?: RecommendedRoute;
+}
+/**
+ * A single word extracted from the PDF.
+ */
+export interface WordEvidence {
+  word_id: WordId;
+  text: Text;
+  bbox: Rect;
+  font_name?: FontName;
+  font_size?: FontSize;
+  flags?: Flags;
 }
