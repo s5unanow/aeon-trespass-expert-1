@@ -38,7 +38,7 @@ make clean            # Remove caches and build artifacts
 
 Two tiers of checks run at different stages. Both must pass.
 
-### Local (pre-commit hook, 9 gates)
+### Local (pre-commit hook, 9 checks: 1 secret guard + 8 quality gates)
 
 Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`. Fast — targets < 60 s.
 

@@ -78,6 +78,23 @@ class TestPathReferences:
         findings = health_module.check_path_references(healthy_repo)
         assert findings == []
 
+    def test_existing_glob_prefix_passes(
+        self, health_module: ModuleType, healthy_repo: Path
+    ) -> None:
+        components = healthy_repo / "apps" / "web" / "src" / "components"
+        components.mkdir(parents=True)
+        (healthy_repo / "CLAUDE.md").write_text("Match `apps/web/src/components/**`\n")
+        findings = health_module.check_path_references(healthy_repo)
+        assert findings == []
+
+    def test_missing_glob_prefix_detected(
+        self, health_module: ModuleType, healthy_repo: Path
+    ) -> None:
+        (healthy_repo / "CLAUDE.md").write_text("Match `apps/web/src/missing/**`\n")
+        findings = health_module.check_path_references(healthy_repo)
+        assert len(findings) == 1
+        assert "apps/web/src/missing/**" in findings[0][2]
+
 
 # -- Gate consistency checks --
 
@@ -95,8 +112,8 @@ class TestGateConsistency:
         findings = health_module.check_gate_consistency(healthy_repo)
         assert len(findings) == 1
         assert "mismatch" in findings[0][2]
-        assert "CLAUDE.md: 3" in findings[0][2]
-        assert "pre-commit-check.sh: 2" in findings[0][2]
+        assert "CLAUDE.md total: 3" in findings[0][2]
+        assert "pre-commit-check.sh total: 2" in findings[0][2]
 
     def test_nested_subsections_counted(
         self, health_module: ModuleType, healthy_repo: Path
@@ -137,6 +154,50 @@ class TestGateConsistency:
         findings = health_module.check_gate_consistency(healthy_repo)
         # 3 gates in hook matches 3 in CLAUDE.md → pass
         assert findings == []
+
+    def test_secret_guard_counted_as_additional_local_check(
+        self, health_module: ModuleType, healthy_repo: Path
+    ) -> None:
+        (healthy_repo / "CLAUDE.md").write_text(
+            "## Quality gates\n\n"
+            "### Local (pre-commit hook, 3 checks)\n\n"
+            "0. secret guard\n"
+            "1. ruff check\n"
+            "2. mypy\n"
+        )
+        hooks_dir = healthy_repo / ".claude" / "hooks"
+        hooks_dir.mkdir(parents=True)
+        (hooks_dir / "pre-commit-check.sh").write_text(
+            "# -- Gate 0: Credential & secret guard --\n"
+            'echo "  ✓ [0/3] secret guard"\n'
+            'run_gate "a" cmd\n'
+            'run_gate "b" cmd\n'
+        )
+        preflight_dir = healthy_repo / ".claude" / "skills" / "preflight"
+        preflight_dir.mkdir(parents=True)
+        (preflight_dir / "SKILL.md").write_text(
+            "# Preflight\n\n## Gates\n\n1. ruff check\n2. mypy\n\n## Reporting\n"
+        )
+        findings = health_module.check_gate_consistency(healthy_repo)
+        assert findings == []
+
+    def test_missing_secret_guard_detected_when_documented(
+        self, health_module: ModuleType, healthy_repo: Path
+    ) -> None:
+        (healthy_repo / "CLAUDE.md").write_text(
+            "## Quality gates\n\n"
+            "### Local (pre-commit hook, 3 checks)\n\n"
+            "0. secret guard\n"
+            "1. ruff check\n"
+            "2. mypy\n"
+        )
+        hooks_dir = healthy_repo / ".claude" / "hooks"
+        hooks_dir.mkdir(parents=True)
+        (hooks_dir / "pre-commit-check.sh").write_text('run_gate "a" cmd\nrun_gate "b" cmd\n')
+        findings = health_module.check_gate_consistency(healthy_repo)
+        assert len(findings) == 1
+        assert "CLAUDE.md total: 3" in findings[0][2]
+        assert "pre-commit-check.sh total: 2" in findings[0][2]
 
 
 # -- Skill sync checks --
