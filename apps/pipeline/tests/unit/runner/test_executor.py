@@ -140,3 +140,58 @@ def test_different_input_hashes_miss_cache(tmp_path: Path) -> None:
     assert result1.cache_key != result2.cache_key
     assert not result1.cached
     assert not result2.cached
+
+
+class StageWithExtraInputs:
+    """A stage that contributes extra cache inputs via ``extra_cache_inputs``."""
+
+    def __init__(self, extras: list[str]) -> None:
+        self._extras = extras
+
+    @property
+    def name(self) -> str:
+        return "with_extras"
+
+    @property
+    def scope(self) -> StageScope:
+        return StageScope.DOCUMENT
+
+    @property
+    def version(self) -> str:
+        return "1.0"
+
+    def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
+        return list(self._extras)
+
+    def run(self, ctx: StageContext, input_data: BaseModel | None) -> BaseModel:
+        return DummyOutput(value=1)
+
+
+def test_extra_cache_inputs_change_key(tmp_path: Path) -> None:
+    """Stages may contribute extra inputs that invalidate the cache key.
+
+    Regression for S5U-583: the render stage reads concepts.toml outside
+    DocumentBuildConfig, so edits to that file must still flow through
+    into the cache key.
+    """
+    ctx = _make_ctx(tmp_path)
+
+    result_v1 = execute_stage(
+        StageWithExtraInputs(extras=["concepts:abc123"]),
+        ctx,
+        input_hashes=["fixed"],
+    )
+    result_v2 = execute_stage(
+        StageWithExtraInputs(extras=["concepts:def456"]),
+        ctx,
+        input_hashes=["fixed"],
+    )
+    result_v1_again = execute_stage(
+        StageWithExtraInputs(extras=["concepts:abc123"]),
+        ctx,
+        input_hashes=["fixed"],
+    )
+
+    assert result_v1.cache_key != result_v2.cache_key
+    assert result_v1.cache_key == result_v1_again.cache_key
+    assert result_v1_again.cached

@@ -12,6 +12,7 @@ from atr_pipeline.stages.render.annotation_builder import (
 )
 from atr_pipeline.stages.render.page_builder import build_render_page, is_garbage_title
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
+from atr_pipeline.utils.hashing import sha256_file
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.enums import StageScope
 from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1
@@ -52,6 +53,16 @@ class RenderStage:
     @property
     def version(self) -> str:
         return "1.0"
+
+    def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
+        # concepts.toml is read inside run() via load_concept_registry but is
+        # not part of DocumentBuildConfig, so its contents must be folded into
+        # the cache key directly — otherwise edits to the concept registry do
+        # not invalidate stale glossary_payload.v1 artifacts.
+        glossary_path = ctx.config.repo_root / "configs" / "glossary" / "concepts.toml"
+        if not glossary_path.exists():
+            return []
+        return [f"concepts:{sha256_file(glossary_path)[:12]}"]
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> RenderResult:
         from atr_pipeline.stages.glossary.registry_loader import load_concept_registry

@@ -38,6 +38,11 @@ def execute_stage(
         i_hashes = [content_hash(input_data.model_dump())]
     if ctx.page_filter:
         i_hashes.append("page_filter:" + "|".join(sorted(ctx.page_filter)))
+    # Stages may contribute extra cache inputs (e.g. external config files
+    # that are read by the stage but not part of DocumentBuildConfig).
+    extra_inputs_fn = getattr(stage, "extra_cache_inputs", None)
+    if callable(extra_inputs_fn):
+        i_hashes.extend(extra_inputs_fn(ctx))
 
     cache_key = build_cache_key(
         stage_name=stage.name,
