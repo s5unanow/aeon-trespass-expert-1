@@ -195,6 +195,62 @@ class TestPickLatest:
         assert result is None
 
 
+class TestExportGlossary:
+    def test_picks_most_recently_modified_payload(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """Regression for S5U-583: export must follow mtime, not alphabetical order.
+
+        ``export_glossary`` previously used ``sorted(...)[0]``, which picked
+        the alphabetically-first content hash. After concepts.toml grew from
+        30 to 192 entries, re-running the pipeline produced a fresh glossary
+        payload but the stale 30-entry one still won the alphabetical sort.
+        """
+        import os
+
+        glossary_src = tmp_path / "glossary_payload.v1" / "document" / "ato_core_v1_1"
+        glossary_src.mkdir(parents=True)
+
+        stale = glossary_src / "aaaa_stale.json"
+        stale.write_text(
+            json.dumps({"schema_version": "glossary_payload.v1", "entries": [{"id": "x"}]})
+        )
+        os.utime(stale, (1_000_000, 1_000_000))
+
+        fresh = glossary_src / "bbbb_fresh.json"
+        fresh.write_text(
+            json.dumps(
+                {
+                    "schema_version": "glossary_payload.v1",
+                    "entries": [{"id": f"c{i}"} for i in range(192)],
+                }
+            )
+        )
+        os.utime(fresh, (2_000_000, 2_000_000))
+
+        # Flip the alphabetical order so it would pick stale if sorted by name.
+        alpha_first = glossary_src / "0000_older.json"
+        alpha_first.write_text(json.dumps({"schema_version": "glossary_payload.v1", "entries": []}))
+        os.utime(alpha_first, (500_000, 500_000))
+
+        doc_public = tmp_path / "public" / "ato_core_v1_1"
+        (doc_public / "en" / "data").mkdir(parents=True)
+
+        export_module.export_glossary("ato_core_v1_1", "en", glossary_src, doc_public)
+
+        exported = json.loads((doc_public / "en" / "data" / "glossary.json").read_text())
+        assert len(exported["entries"]) == 192
+
+    def test_missing_artifact_skips_quietly(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        missing = tmp_path / "nope"
+        doc_public = tmp_path / "public"
+        (doc_public / "en" / "data").mkdir(parents=True)
+        export_module.export_glossary("doc", "en", missing, doc_public)
+        assert not (doc_public / "en" / "data" / "glossary.json").exists()
+
+
 class TestParseArgs:
     def test_defaults(self, export_module: ModuleType) -> None:
         args = export_module._parse_args([])

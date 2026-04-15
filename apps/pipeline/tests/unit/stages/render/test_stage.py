@@ -162,3 +162,43 @@ def test_render_resolve_page_ids_prefers_en_family_for_source_only(tmp_path: Pat
     page_ids = RenderStage._resolve_page_ids(ctx)
 
     assert page_ids == ["p0001"]
+
+
+def test_render_extra_cache_inputs_tracks_concepts_toml(tmp_path: Path) -> None:
+    """Regression for S5U-583: concepts.toml edits must invalidate render cache.
+
+    The render stage reads configs/glossary/concepts.toml outside
+    DocumentBuildConfig. Without ``extra_cache_inputs``, expanding the
+    concept registry does not change the cache key and stale glossary
+    payloads keep winning.
+    """
+    ctx = _make_ctx(tmp_path)
+    fake_root = tmp_path / "fake_repo"
+    (fake_root / "configs" / "glossary").mkdir(parents=True)
+    concepts_path = fake_root / "configs" / "glossary" / "concepts.toml"
+    ctx.config.repo_root = fake_root
+
+    concepts_path.write_text('version = "1"\nconcepts = []\n')
+    empty_key = RenderStage().extra_cache_inputs(ctx)
+
+    concepts_path.write_text(
+        'version = "1"\n'
+        "[[concepts]]\n"
+        'concept_id = "x"\n'
+        '[concepts.source]\nlemma = "x"\n'
+        '[concepts.target]\nlemma = "X"\n'
+    )
+    populated_key = RenderStage().extra_cache_inputs(ctx)
+
+    assert empty_key != populated_key
+    assert empty_key and populated_key  # both non-empty
+
+
+def test_render_extra_cache_inputs_missing_concepts_returns_empty(tmp_path: Path) -> None:
+    """When concepts.toml is absent, extra_cache_inputs returns no extras."""
+    ctx = _make_ctx(tmp_path)
+    fake_root = tmp_path / "no_concepts"
+    fake_root.mkdir()
+    ctx.config.repo_root = fake_root
+
+    assert RenderStage().extra_cache_inputs(ctx) == []

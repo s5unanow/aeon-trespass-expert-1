@@ -288,11 +288,13 @@ def export_pages(
 
 def export_glossary(doc_id: str, edition: str, glossary_src: Path, doc_public: Path) -> None:
     """Export glossary payload to web bundle (same glossary for all editions)."""
-    files = sorted(glossary_src.glob("*.json")) if glossary_src.exists() else []
+    files = list(glossary_src.glob("*.json")) if glossary_src.exists() else []
     if not files:
         print(f"  [{edition.upper()}] No glossary artifact found, skipping")
         return
-    data = json.loads(files[0].read_text())
+    # Pick the most recently written artifact so partial reruns propagate.
+    latest = max(files, key=lambda p: p.stat().st_mtime)
+    data = json.loads(latest.read_text())
     out = doc_public / edition / "data"
     out.mkdir(parents=True, exist_ok=True)
     (out / "glossary.json").write_text(json.dumps(data, ensure_ascii=False, indent=2))
