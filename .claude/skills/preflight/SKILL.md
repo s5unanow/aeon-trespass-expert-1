@@ -5,7 +5,7 @@ description: Run all quality gates before committing. Use when about to commit o
 
 # Preflight quality check
 
-Run all 8 gates from repo root. Collect ALL results before reporting — do not stop at first failure.
+Run all 8 executable quality gates from repo root. The staged secret guard is part of the pre-commit hook and is intentionally out of scope here. Collect ALL results before reporting — do not stop at first failure.
 
 ## Output rules
 
