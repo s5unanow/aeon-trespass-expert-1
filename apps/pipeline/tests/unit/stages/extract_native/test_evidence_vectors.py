@@ -194,7 +194,10 @@ def test_vector_cluster_bbox_stays_within_page() -> None:
 # --- image evidence bbox clamping ---
 
 
-def _make_image_page(rect: MagicMock, img_info: tuple[int, ...]) -> tuple[MagicMock, MagicMock]:
+def _make_image_page(
+    rect: MagicMock,
+    img_info: tuple[int | str, ...],
+) -> tuple[MagicMock, MagicMock]:
     page = MagicMock()
     page.get_images.return_value = [img_info]
     page.get_image_rects.return_value = [rect]
