@@ -214,12 +214,11 @@ class StructureStage:
                     evidence,
                     ctx.config.structure,
                 )
-                if order is not None:
-                    reordered = reorder_blocks_by_regions(
-                        sem.blocks, regions, order.main_flow_order
-                    )
-                else:
-                    reordered = sem.blocks
+                reordered = (
+                    reorder_blocks_by_regions(sem.blocks, regions, order.main_flow_order)
+                    if order is not None
+                    else sem.blocks
+                )
                 ir.blocks = reordered
                 ir.reading_order = [b.block_id for b in reordered]
 
@@ -231,6 +230,7 @@ class StructureStage:
                     order,
                     symbol_refs=sym_refs,
                     semantics=sem,
+                    main_flow_block_ids=ir.reading_order,
                 )
                 return ir
 
@@ -350,6 +350,7 @@ class StructureStage:
         *,
         symbol_refs: list[ResolvedSymbolRef] | None = None,
         semantics: SemanticResolution | None = None,
+        main_flow_block_ids: list[str] | None = None,
     ) -> None:
         refs = symbol_refs or []
         avg_conf = sum(r.confidence for r in refs) / len(refs) if refs else 1.0
@@ -368,7 +369,7 @@ class StructureStage:
             page_number=native.page_number,
             regions=regions,
             blocks=sem_blocks,
-            main_flow_order=order.main_flow_order if order else [],
+            main_flow_order=list(main_flow_block_ids) if main_flow_block_ids is not None else [],
             anchor_edges=all_edges,
             symbol_refs=refs,
             confidence=SemanticConfidence(

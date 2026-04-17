@@ -2,8 +2,10 @@
 
 Consumes :class:`ResolvedRegion` entries from region-graph segmentation and
 produces a deterministic reading order plus aside-to-main anchor edges.
-The output populates ``main_flow_order`` and ``anchor_edges`` on
-:class:`ResolvedPageV1`.
+``ReadingOrderResult.main_flow_order`` carries **region IDs** for internal
+consumption by the structure stage (e.g., ``reorder_blocks_by_regions``).
+The structure stage translates this into block IDs before populating
+:attr:`ResolvedPageV1.main_flow_order`.
 """
 
 from __future__ import annotations
@@ -70,8 +72,10 @@ def compute_reading_order(
 ) -> ReadingOrderResult:
     """Compute reading order from segmented regions.
 
-    Returns region IDs in main-flow reading order and aside-to-main
-    anchor edges for sidebar / callout / margin-note regions.
+    Returns **region IDs** in main-flow reading order and aside-to-main
+    anchor edges for sidebar / callout / margin-note regions. The
+    caller is responsible for translating region order to block order
+    before storing on ``ResolvedPageV1.main_flow_order``.
     """
     if not regions:
         return ReadingOrderResult()
