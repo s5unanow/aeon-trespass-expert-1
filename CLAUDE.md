@@ -143,6 +143,7 @@ Branch protection on `main` requires all CI checks to pass before merge. If a ge
 - **Config format**: TOML for all pipeline/document configuration
 - Path-specific conventions (Python, TypeScript, extraction, schemas) are in `.claude/rules/` — loaded automatically when touching matching paths
 - **Linear issue conventions**: read `.claude/prompts/linear-conventions.md` before creating or updating Linear issues
+- **Scripts before skills**: before invoking a slash-command skill for batch or multi-step work, check `scripts/` for a purpose-built tool (e.g., `scripts/run-issues.sh` for batch issue runs — use this instead of `/build-loop`)
 
 ## NEVER
 
