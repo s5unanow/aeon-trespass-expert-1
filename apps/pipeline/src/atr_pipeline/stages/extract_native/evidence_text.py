@@ -25,6 +25,24 @@ def normalize_rect(rect: Rect, dims: PageDimensions) -> NormRect:
     )
 
 
+def clamp_rect_to_page(rect: Rect, dims: PageDimensions) -> Rect:
+    """Clamp a PDF-point rect to page bounds.
+
+    PyMuPDF emits vector-path and image bboxes that can extend past the page
+    MediaBox (stroke widths, pre-clip geometry, sub-pixel overruns). Those
+    aren't real extraction defects, so we clamp evidence coordinates into
+    `[0, width] x [0, height]` before emitting. This keeps the
+    `BBOX_OUT_OF_PAGE` invariant usable as a real-defect signal rather than
+    coordinate noise.
+    """
+    return Rect(
+        x0=max(0.0, min(dims.width, rect.x0)),
+        y0=max(0.0, min(dims.height, rect.y0)),
+        x1=max(0.0, min(dims.width, rect.x1)),
+        y1=max(0.0, min(dims.height, rect.y1)),
+    )
+
+
 def extract_text_evidence(
     page: fitz.Page,
     dims: PageDimensions,
@@ -63,7 +81,9 @@ def extract_text_evidence(
 
                 for raw_char in raw_span.get("chars", []):
                     cb = raw_char.get("bbox", (0, 0, 0, 0))
-                    char_rect = Rect(x0=cb[0], y0=cb[1], x1=cb[2], y1=cb[3])
+                    char_rect = clamp_rect_to_page(
+                        Rect(x0=cb[0], y0=cb[1], x1=cb[2], y1=cb[3]), dims
+                    )
                     eid = f"e.char.{char_idx:03d}"
                     chars.append(
                         EvidenceChar(
