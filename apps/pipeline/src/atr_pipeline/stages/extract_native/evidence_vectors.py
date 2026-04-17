@@ -14,7 +14,7 @@ from atr_schemas.evidence_primitives_v1 import (
     EvidenceVectorPath,
 )
 
-from .evidence_text import normalize_rect
+from .evidence_text import clamp_rect_to_page, normalize_rect
 
 if TYPE_CHECKING:
     import fitz
@@ -36,7 +36,9 @@ def extract_image_evidence(
             if not rects:
                 continue
             r = rects[0]
-            rect = Rect(x0=r.x0, y0=r.y0, x1=r.x1, y1=r.y1)
+            rect = clamp_rect_to_page(Rect(x0=r.x0, y0=r.y0, x1=r.x1, y1=r.y1), dims)
+            if not _has_area(rect):
+                continue
 
             image_hash = ""
             try:
@@ -75,7 +77,9 @@ def extract_vector_evidence(
         r = d.get("rect")
         if r is None:
             continue
-        rect = Rect(x0=r.x0, y0=r.y0, x1=r.x1, y1=r.y1)
+        rect = clamp_rect_to_page(Rect(x0=r.x0, y0=r.y0, x1=r.x1, y1=r.y1), dims)
+        if _is_degenerate(rect):
+            continue
         ops = [str(item[0]) for item in d.get("items", [])]
 
         paths.append(
@@ -104,7 +108,9 @@ def extract_table_evidence(
         finder = page.find_tables()
         for i, table in enumerate(finder.tables):
             bbox = table.bbox
-            rect = Rect(x0=bbox[0], y0=bbox[1], x1=bbox[2], y1=bbox[3])
+            rect = clamp_rect_to_page(Rect(x0=bbox[0], y0=bbox[1], x1=bbox[2], y1=bbox[3]), dims)
+            if not _has_area(rect):
+                continue
             results.append(
                 EvidenceTableCandidate(
                     evidence_id=f"e.tbl.{i:03d}",
@@ -231,3 +237,27 @@ def _union_rect(a: Rect, b: Rect) -> Rect:
         x1=max(a.x1, b.x1),
         y1=max(a.y1, b.y1),
     )
+
+
+def _is_degenerate(rect: Rect) -> bool:
+    """True if the rect has no drawable extent left after clamping.
+
+    Dropped:
+      * inverted rects (x1<x0 or y1<y0) — only produced when the original sat
+        fully off-page and flipped on clamp
+      * a single point (both axes collapsed to zero) — an entirely off-page rect
+        that clamps to one corner of the page
+
+    Preserved:
+      * zero-width or zero-height rects along exactly one axis — PDF rule and
+        separator lines are drawn as them and are legitimate vector evidence
+    """
+    if rect.x1 < rect.x0 or rect.y1 < rect.y0:
+        return True
+    return rect.x1 == rect.x0 and rect.y1 == rect.y0
+
+
+def _has_area(rect: Rect) -> bool:
+    """True if the rect has non-zero width and height — used for entities like
+    images and tables where zero-extent evidence is meaningless."""
+    return rect.x1 > rect.x0 and rect.y1 > rect.y0
