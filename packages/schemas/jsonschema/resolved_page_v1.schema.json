@@ -437,7 +437,7 @@
       "type": "array"
     },
     "main_flow_order": {
-      "description": "Region or block IDs in main-flow reading order",
+      "description": "Block IDs in main-flow reading order",
       "items": {
         "type": "string"
       },
