@@ -19,6 +19,7 @@ from atr_pipeline.stages.extract_layout.stage import ExtractLayoutStage
 from atr_pipeline.stages.structure.stage import StructureStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.common import PageDimensions, Rect
+from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence, WordEvidence
 from atr_schemas.page_ir_v1 import PageIRV1
 
@@ -220,44 +221,104 @@ def test_multicolumn_page_routes_to_r2(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Test: fallback extraction records default route when no difficulty data
+# Test: both extractors failing → hard-route with low confidence (S5U-587)
 # ---------------------------------------------------------------------------
 
 
-def test_fallback_records_default_route(tmp_path: Path) -> None:
-    """When primary extractor fails, fallback produces no difficulty;
-    structure stage defaults to R1 with default confidence scores."""
+def test_extraction_failure_routes_hard_not_r1(tmp_path: Path) -> None:
+    """When both primary and OCR extraction fail, the page must not be
+    silently routed to R1 with ``page_confidence=1.0`` (S5U-587).
+
+    Instead it should land on the hard-page path (R2) with a populated
+    difficulty score that reflects missing evidence, so QA/review can
+    see the page as unhealthy.
+    """
     doc_id = "route_fallback"
     ctx = _make_ctx(tmp_path, doc_id)
 
     words = [_word(50, y * 15 + 50, 560, y * 15 + 62) for y in range(30)]
     _store_native(ctx.artifact_store, doc_id, "p0001", words)
 
-    # Force primary extractor to fail so fallback is used
-    with patch(
-        "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
-        side_effect=RuntimeError("docling unavailable"),
+    # Force BOTH primary and OCR extractors to fail so the final fallback
+    # branch is exercised unambiguously (otherwise OCR behaviour depends
+    # on whether a raster is present and on paddleocr availability).
+    with (
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
+            side_effect=RuntimeError("docling unavailable"),
+        ),
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_ocr",
+            side_effect=RuntimeError("ocr unavailable"),
+        ),
     ):
         ExtractLayoutStage().run(ctx, None)
 
-    # Fallback produces empty layout with no difficulty
+    # Layout carries an extraction-failure difficulty marker instead of None.
     layout = _read_layout(ctx.artifact_store, doc_id, "p0001")
-    assert layout["difficulty"] is None
+    diff = layout["difficulty"]
+    assert diff is not None, "extraction failure must not erase difficulty"
+    assert diff["hard_page"] is True
+    assert diff["recommended_route"] == "R2"
+    assert diff["native_text_coverage"] == 0.0
+    assert diff["extractor_agreement"] == 0.0
     assert layout["zones"] == []
 
     StructureStage().run(ctx, None)
 
     ir = _read_page_ir(ctx.artifact_store, doc_id, "p0001")
 
-    # No difficulty → default R1 route
+    # Route provenance is R2, not R1 — the core regression guard.
     prov = ir["provenance"]
     assert prov is not None
-    assert prov["evidence_ids"] == ["route:R1"]
+    assert prov["evidence_ids"] == ["route:R2"]
 
-    # No difficulty → scorer uses defaults (text_coverage=1.0)
+    # Confidence reflects missing evidence: strictly below the "primary"
+    # confidence band (≥0.85) so the page is not treated as healthy. The
+    # zero-coverage signal drives text_score to 0, so the aggregate cannot
+    # reach 1.0 even if downstream reading-order / symbol signals default
+    # to perfect.
     conf = ir["confidence"]
     assert conf is not None
-    assert conf["page_confidence"] == 1.0
+    assert conf["native_text_coverage"] == 0.0
+    assert conf["page_confidence"] < 0.85, (
+        f"failed-extraction page must land below primary band; got {conf['page_confidence']}"
+    )
+
+
+def test_extraction_failure_with_empty_ocr_routes_hard(tmp_path: Path) -> None:
+    """Primary fails and OCR returns a layout with no zones — still treated
+    as extraction failure, not as a silent R1 page (S5U-587)."""
+    doc_id = "route_fallback_empty_ocr"
+    ctx = _make_ctx(tmp_path, doc_id)
+
+    words = [_word(50, y * 15 + 50, 560, y * 15 + 62) for y in range(30)]
+    _store_native(ctx.artifact_store, doc_id, "p0001", words)
+
+    empty_ocr = LayoutPageV1(document_id=doc_id, page_id="p0001")
+
+    with (
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_docling",
+            side_effect=RuntimeError("docling unavailable"),
+        ),
+        patch(
+            "atr_pipeline.stages.extract_layout.stage.extract_layout_ocr",
+            return_value=empty_ocr,
+        ),
+    ):
+        ExtractLayoutStage().run(ctx, None)
+
+    layout = _read_layout(ctx.artifact_store, doc_id, "p0001")
+    diff = layout["difficulty"]
+    assert diff is not None
+    assert diff["hard_page"] is True
+    assert diff["recommended_route"] == "R2"
+
+    StructureStage().run(ctx, None)
+    ir = _read_page_ir(ctx.artifact_store, doc_id, "p0001")
+    assert ir["provenance"]["evidence_ids"] == ["route:R2"]
+    assert ir["confidence"]["page_confidence"] < 0.85
 
 
 # ---------------------------------------------------------------------------
