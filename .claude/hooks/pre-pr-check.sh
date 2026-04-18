@@ -46,6 +46,68 @@ if grep -qE '\*\*BLOCK\*\*' "$REVIEW_FILE"; then
   exit 1
 fi
 
+# --- S5U-613: structured verdict contract enforcement ---
+# The review prompt now requires a structured verdict block with Verdict: and
+# Probes run: fields. This guards against fabricated or template artifacts
+# (see plan-s5u-613.md scenario B) and confirms the reviewer actually ran
+# concrete checks rather than rubber-stamping.
+
+if ! grep -qE '^Verdict:[[:space:]]+(PASS|PASS WITH WARNINGS|BLOCK)' "$REVIEW_FILE"; then
+  echo "BLOCKED: Review artifact '$REVIEW_FILE' is missing the structured 'Verdict:' field."
+  echo ""
+  echo "The review must include a structured verdict block matching the"
+  echo "contract in .claude/prompts/review.md (## Verdict section with"
+  echo "'Verdict:', 'Probes run:', etc.)."
+  exit 1
+fi
+
+if ! grep -qE '^Probes run:' "$REVIEW_FILE"; then
+  echo "BLOCKED: Review artifact '$REVIEW_FILE' is missing the 'Probes run:' field."
+  echo ""
+  echo "The reviewer must enumerate the concrete probes they ran (files read,"
+  echo "commands executed, success criteria tested). An empty audit trail means"
+  echo "an unsubstantiated review — block it."
+  exit 1
+fi
+
+# Count probe bullets (lines starting with '- ' after the 'Probes run:' header).
+# Require at least 3 — fewer signals a perfunctory review.
+PROBE_COUNT=$(awk '
+  /^Probes run:/ { in_probes = 1; next }
+  in_probes && /^[A-Za-z].*:/ { in_probes = 0 }
+  in_probes && /^-[[:space:]]+[^[:space:]]/ { count++ }
+  END { print count + 0 }
+' "$REVIEW_FILE")
+
+if [ "$PROBE_COUNT" -lt 3 ]; then
+  echo "BLOCKED: Review artifact '$REVIEW_FILE' lists only $PROBE_COUNT probe(s) (need ≥3)."
+  echo ""
+  echo "The 'Probes run:' section must enumerate at least 3 concrete checks."
+  echo "This is the audit trail that distinguishes a real review from a stub."
+  exit 1
+fi
+
+# --- S5U-613: staleness check ---
+# Reject artifacts whose mtime predates the branch's HEAD commit. This guards
+# against reviews conducted at an earlier commit that no longer reflect the
+# shipped diff (see plan-s5u-613.md scenario C).
+
+HEAD_TIME=$(git log -1 --format=%ct HEAD 2>/dev/null || echo 0)
+# Portable mtime: Linux uses -c %Y, BSD/macOS uses -f %m.
+REVIEW_MTIME=$(stat -c %Y "$REVIEW_FILE" 2>/dev/null || stat -f %m "$REVIEW_FILE" 2>/dev/null || echo 0)
+
+if [ "$HEAD_TIME" -gt 0 ] && [ "$REVIEW_MTIME" -gt 0 ] && [ "$REVIEW_MTIME" -lt "$HEAD_TIME" ]; then
+  echo "BLOCKED: Review artifact '$REVIEW_FILE' is stale."
+  echo ""
+  echo "  Review mtime:  $REVIEW_MTIME"
+  echo "  HEAD commit:   $HEAD_TIME"
+  echo ""
+  echo "The review was written before the latest commit on this branch, which"
+  echo "means it did not inspect the code you are about to ship. Re-run the"
+  echo "review agent to regenerate the artifact at HEAD."
+  exit 1
+fi
+
 echo "Review artifact verified: $REVIEW_FILE"
 
 # --- Conditional Codex review enforcement ---

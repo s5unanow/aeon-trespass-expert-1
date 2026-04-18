@@ -112,11 +112,14 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] CI green after push (all 15 gates — local green alone is not sufficient)
 - [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 
-### 6. Sub-agent code review (MANDATORY before PR)
-- **You MUST spawn a review agent before creating a PR.** This is not optional.
+### 6. Independent fresh-eyes sub-agent review (MANDATORY before PR)
+- **You MUST spawn an independent review agent before creating a PR.** This is not optional.
 - Read `.claude/prompts/review.md` and use it as the Agent prompt
-- If the review agent says **BLOCK**, fix the issues before proceeding
-- If only warnings/nits, use judgement — fix warnings, nits are optional
+- **Brief the reviewer as a stranger.** Pass only: Linear issue ID, branch name, working directory, and the reminder that the worker is not them. Do **NOT** paste your rationale, deviations list, commit messages, or draft PR body into the sub-agent brief — these anchor the reviewer on your framing and defeat the point of independent review. The reviewer fetches the Linear issue and diff itself and forms its own read.
+- The reviewer must emit a **structured verdict block** (the `## Verdict` section contract in `.claude/prompts/review.md`) with `Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:`, and `Bug IDs filed:` fields. The pre-PR hook (`pre-pr-check.sh`) enforces this contract: missing fields, fewer than 3 probe bullets, a `BLOCK` verdict, or an artifact older than the branch's HEAD commit all cause `gh pr create` to fail.
+- If the review agent says **BLOCK**, fix the issues and re-run the review (delete the stale artifact first). Do **not** amend the old artifact.
+- If only warnings/nits, use judgement — fix warnings, nits are optional. Include unresolved warnings in the PR body.
+- Known carveout: the hook only intercepts local `gh pr create`. Opening a PR via the GitHub web UI or REST API bypasses the gate — do not do this to skip review.
 
 ### 7. Create PR
 - Push branch: `git push -u origin HEAD`

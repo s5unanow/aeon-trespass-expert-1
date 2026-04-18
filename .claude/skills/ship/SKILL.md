@@ -17,15 +17,23 @@ Extract `S5U-<NUMBER>` from branch pattern `s5unanow/s5u-<NUMBER>-<description>`
 
 Read `.claude/prompts/linear-conventions.md` for issue convention context (labels, milestones, must-not-break).
 
-## 1. Code review (MANDATORY)
+## 1. Independent fresh-eyes code review (MANDATORY)
 
-Read `.claude/prompts/review.md` and use it as the Agent prompt. The review agent will save its output to `tmp/review-s5u-<NUMBER>.md`.
+Spawn the review as an **independent** sub-agent. Read `.claude/prompts/review.md` and use it as the Agent prompt. Brief the reviewer with **only**:
 
-- **BLOCK** — stop, report issues, fix before proceeding. Delete the review artifact, fix issues, then re-run review.
+- The Linear issue ID (e.g., `S5U-123`)
+- The branch name and working directory
+- An explicit reminder: "You are not the worker. Do not read any tmp/ artifacts authored by the worker (plans, scratch notes, PR drafts). Form your read of the diff from the Linear issue and `git diff main...HEAD` alone."
+
+Do **NOT** paste into the brief: your own commit rationale, deviations list, PR draft body, summary of what you changed, or why a choice was made. Passing that framing anchors the reviewer on your interpretation and empirically produces false-PASS reviews (S5U-613). The reviewer reads the Linear issue and diff itself and probes the success criteria independently.
+
+The review agent will save its output to `tmp/review-s5u-<NUMBER>.md`, including a structured `## Verdict` section with `Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:`, and `Bug IDs filed:` fields.
+
+- **BLOCK** — stop, report issues, fix before proceeding. **Delete** the review artifact (it is now stale relative to the new HEAD), fix issues, then re-run review.
 - **PASS WITH WARNINGS** — proceed, include warnings in PR body
 - **PASS** — proceed
 
-A pre-PR hook will block `gh pr create` if the review artifact is missing or contains a BLOCK verdict.
+A pre-PR hook will block `gh pr create` if the review artifact is missing, lacks the structured `Verdict:` / `Probes run:` fields, lists fewer than 3 probe bullets, has a BLOCK verdict, or is older than the branch's HEAD commit (stale review).
 
 ## 1b. Codex review (conditional on label)
 
