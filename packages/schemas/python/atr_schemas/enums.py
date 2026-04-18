@@ -55,6 +55,7 @@ class QALayer(StrEnum):
     RENDER = "render"
     VISUAL = "visual"
     ACCESSIBILITY = "accessibility"
+    USER_FEEDBACK = "user_feedback"
 
 
 class StageScope(StrEnum):

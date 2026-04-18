@@ -10,7 +10,8 @@ export type QALayer =
   | 'asset_link'
   | 'render'
   | 'visual'
-  | 'accessibility';
+  | 'accessibility'
+  | 'user_feedback';
 export type Severity = 'info' | 'warning' | 'error' | 'critical';
 export type Code = string;
 export type DocumentId = string;
