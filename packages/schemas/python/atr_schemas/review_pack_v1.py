@@ -16,10 +16,13 @@ class ReviewFinding(BaseModel):
 
 
 class ReviewPackV1(BaseModel):
-    """Human-reviewable bundle of blocking/ambiguous QA findings.
+    """Human-reviewable bundle of QA findings that need attention.
 
-    Contains all unwaived blocking findings grouped by page,
-    plus pre-filled waiver templates that a reviewer can approve.
+    Contains all unwaived findings whose severity is in ``block_on`` plus
+    any unwaived ``QALayer.CONFIDENCE`` records with
+    ``code=CONFIDENCE_QA_REQUIRED`` (surfaced for triage even though they
+    do not by themselves block publishing). Each finding is paired with a
+    pre-filled waiver template a reviewer can approve.
     """
 
     schema_version: str = Field(

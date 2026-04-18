@@ -72,7 +72,8 @@
         "render",
         "visual",
         "accessibility",
-        "user_feedback"
+        "user_feedback",
+        "confidence"
       ],
       "title": "QALayer",
       "type": "string"

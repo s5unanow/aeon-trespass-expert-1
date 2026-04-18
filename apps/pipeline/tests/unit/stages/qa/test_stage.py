@@ -19,11 +19,14 @@ from atr_pipeline.stages.structure.stage import StructureStage
 from atr_pipeline.stages.symbols.stage import SymbolsStage
 from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_schemas.common import ConfidenceMetrics
 from atr_schemas.enums import QALayer, StageScope
 from atr_schemas.feedback_submission_v1 import FeedbackSubmissionV1
+from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_metrics_v1 import QAMetricsV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
+from atr_schemas.review_pack_v1 import ReviewPackV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 
@@ -81,9 +84,10 @@ def test_qa_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "qa"
     assert stage.scope == StageScope.DOCUMENT
-    # Bumped to "1.1" in S5U-640 to invalidate pre-S5U-597 cache entries
-    # and force qa_metrics.json re-emission. See test_stage_version.py.
-    assert stage.version == "1.1"
+    # 1.1 → 1.2 in S5U-588: confidence-band records + widened review-pack
+    # write are new observable side effects — version bump invalidates
+    # pre-S5U-588 cached QA events so they re-emit the new records.
+    assert stage.version == "1.2"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:
@@ -266,6 +270,86 @@ def test_qa_all_edition_run_loads_both_feedback_editions(tmp_path: Path) -> None
     user_feedback_records = [r for r in records if r.layer == QALayer.USER_FEEDBACK]
     codes = {r.code for r in user_feedback_records}
     assert codes == {"USER_FEEDBACK_TRANSLATION", "USER_FEEDBACK_EXTRACTION"}
+
+
+def _set_en_confidence(ctx: StageContext, page_id: str, confidence: float) -> None:
+    """Overwrite the EN IR for *page_id* with a forced page_confidence."""
+    data = ctx.artifact_store.load_latest_json(
+        document_id=ctx.document_id,
+        schema_family="page_ir.v1.en",
+        scope="page",
+        entity_id=page_id,
+    )
+    assert data is not None
+    ir = PageIRV1.model_validate(data)
+    ir.confidence = ConfidenceMetrics(
+        native_text_coverage=confidence,
+        reading_order_score=confidence,
+        symbol_score=confidence,
+        page_confidence=confidence,
+    )
+    ctx.artifact_store.put_json(
+        document_id=ctx.document_id,
+        schema_family="page_ir.v1.en",
+        scope="page",
+        entity_id=page_id,
+        data=ir,
+    )
+
+
+def _load_review_pack(ctx: StageContext, ref: str) -> ReviewPackV1:
+    path = ctx.artifact_store.root / ref
+    return ReviewPackV1.model_validate_json(path.read_text(encoding="utf-8"))
+
+
+def _first_en_page_id(ctx: StageContext) -> str:
+    ir_dir = ctx.artifact_store.root / ctx.document_id / "page_ir.v1.en" / "page"
+    return sorted(d.name for d in ir_dir.iterdir() if d.is_dir())[0]
+
+
+def test_qa_publish_blocking_band_blocks_release(tmp_path: Path) -> None:
+    """A publish_blocking band forces blocking=True and writes a review pack
+    containing a CRITICAL confidence record (S5U-588)."""
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+    page_id = _first_en_page_id(ctx)
+    _set_en_confidence(ctx, page_id, 0.10)
+
+    result = execute_stage(QAStage(), ctx)
+    assert result.success
+    assert result.artifact_ref is not None
+
+    summary = QASummaryV1.model_validate(ctx.artifact_store.get_json(result.artifact_ref))
+    assert summary.blocking is True
+    assert summary.counts.critical >= 1
+    assert summary.review_pack_ref != ""
+
+    pack = _load_review_pack(ctx, summary.review_pack_ref)
+    codes = [f.record.code for f in pack.findings]
+    assert "CONFIDENCE_PUBLISH_BLOCKING" in codes
+
+
+def test_qa_required_band_surfaces_without_blocking(tmp_path: Path) -> None:
+    """A qa_required band adds a WARNING review-pack finding without blocking
+    release (S5U-588)."""
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+    page_id = _first_en_page_id(ctx)
+    _set_en_confidence(ctx, page_id, 0.45)
+
+    result = execute_stage(QAStage(), ctx)
+    assert result.success
+    assert result.artifact_ref is not None
+
+    summary = QASummaryV1.model_validate(ctx.artifact_store.get_json(result.artifact_ref))
+    assert summary.blocking is False
+    assert summary.counts.warning >= 1
+    assert summary.review_pack_ref != ""
+
+    pack = _load_review_pack(ctx, summary.review_pack_ref)
+    codes = [f.record.code for f in pack.findings]
+    assert "CONFIDENCE_QA_REQUIRED" in codes
+    assert pack.blocking_findings == 0
 
 
 def _load_json(path: Path) -> dict[str, object]:

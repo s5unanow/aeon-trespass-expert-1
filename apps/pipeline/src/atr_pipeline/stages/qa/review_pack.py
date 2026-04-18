@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from atr_pipeline.stages.qa.rules.confidence_band_rule import CODE_QA_REQUIRED
+from atr_schemas.enums import QALayer
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.review_pack_v1 import ReviewFinding, ReviewPackV1
 from atr_schemas.waiver_v1 import WaiverV1
@@ -16,19 +18,30 @@ def build_review_pack(
 ) -> ReviewPackV1:
     """Build a review pack from QA records.
 
-    Includes all unwaived blocking findings with pre-filled waiver
-    templates that a human reviewer can approve.
+    Includes all unwaived blocking findings plus unwaived confidence-band
+    ``qa_required`` findings, each with a pre-filled waiver template that a
+    human reviewer can approve. ``qa_required`` findings are surfaced even
+    though their severity is below ``block_on`` — the confidence-band policy
+    routes these pages to manual review without blocking the release.
     """
     total = len(records)
     waived = sum(1 for r in records if r.waived)
     blocking_records = [r for r in records if r.severity.value in block_on and not r.waived]
+    qa_required_records = [
+        r
+        for r in records
+        if not r.waived
+        and r.layer is QALayer.CONFIDENCE
+        and r.code == CODE_QA_REQUIRED
+        and r.severity.value not in block_on
+    ]
 
     findings = [
         ReviewFinding(
             record=r,
             waiver_template=_make_waiver_template(r),
         )
-        for r in blocking_records
+        for r in (*blocking_records, *qa_required_records)
     ]
 
     return ReviewPackV1(

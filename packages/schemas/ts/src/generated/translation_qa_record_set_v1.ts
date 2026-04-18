@@ -14,7 +14,8 @@ export type QALayer =
   | 'render'
   | 'visual'
   | 'accessibility'
-  | 'user_feedback';
+  | 'user_feedback'
+  | 'confidence';
 export type Severity = 'info' | 'warning' | 'error' | 'critical';
 export type Code = string;
 export type DocumentId1 = string;

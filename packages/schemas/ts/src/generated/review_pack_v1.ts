@@ -17,7 +17,8 @@ export type QALayer =
   | 'render'
   | 'visual'
   | 'accessibility'
-  | 'user_feedback';
+  | 'user_feedback'
+  | 'confidence';
 export type Severity = 'info' | 'warning' | 'error' | 'critical';
 export type Code = string;
 export type DocumentId1 = string;
@@ -38,10 +39,13 @@ export type ApprovedAt = string;
 export type Findings = ReviewFinding[];
 
 /**
- * Human-reviewable bundle of blocking/ambiguous QA findings.
+ * Human-reviewable bundle of QA findings that need attention.
  *
- * Contains all unwaived blocking findings grouped by page,
- * plus pre-filled waiver templates that a reviewer can approve.
+ * Contains all unwaived findings whose severity is in ``block_on`` plus
+ * any unwaived ``QALayer.CONFIDENCE`` records with
+ * ``code=CONFIDENCE_QA_REQUIRED`` (surfaced for triage even though they
+ * do not by themselves block publishing). Each finding is paired with a
+ * pre-filled waiver template a reviewer can approve.
  */
 export interface ReviewPackV1 {
   schema_version?: SchemaVersion;

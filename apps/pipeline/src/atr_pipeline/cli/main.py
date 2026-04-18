@@ -95,7 +95,7 @@ def qa_cmd(
     review_pack: bool = typer.Option(
         False,
         "--review-pack",
-        help="Generate review pack JSON for blocking findings",
+        help="Generate review pack JSON for blocking and qa_required findings",
     ),
     auto_fix: bool = typer.Option(
         False,
