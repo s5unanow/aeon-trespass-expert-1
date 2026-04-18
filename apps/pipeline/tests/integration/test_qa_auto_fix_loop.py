@@ -31,6 +31,7 @@ from atr_schemas.render_page_v1 import (
     RenderSourceMap,
     RenderTextInline,
 )
+from atr_schemas.waiver_v1 import WaiverSetV1, WaiverV1
 
 DOC_ID = "qa_autofix_fixture"
 PAGE_ID = "p0001"
@@ -279,28 +280,68 @@ def test_waived_record_is_skipped_by_auto_fix(
     store_and_config: tuple[ArtifactStore, DocumentBuildConfig],
     tmp_path: Path,
 ) -> None:
-    """Records matching a waiver must not generate or apply patches."""
-    _, config = store_and_config
-    # Waive the decorative finding on b1
-    waiver = (
-        "- qa_code: DECORATIVE_ICON_LEAKED\n"
-        f"  page_id: {PAGE_ID}\n"
-        "  entity_ref: b1\n"
-        "  reason: fixture\n"
-        "  waived_by: test\n"
+    """Records matching a waiver must not generate or apply patches.
+
+    Waiver file format contract is defined by the consumer:
+    - ``apps/pipeline/src/atr_pipeline/stages/qa/waivers.py::load_waivers``
+      reads ``{waivers_dir}/{document_id}.json`` (JSON only).
+    - Schema: ``packages/schemas/python/atr_schemas/waiver_v1.py``
+      (``WaiverSetV1`` / ``WaiverV1``). Field is ``code`` — not ``qa_code``.
+    If either contract drifts, rewrite the fixture below via the Pydantic
+    models (do NOT hand-roll YAML) so this test cannot silently become a
+    no-op (see S5U-606 for the false-green regression).
+    """
+    store, config = store_and_config
+    # Waive the decorative finding on page PAGE_ID. Build via the Pydantic
+    # model so any schema drift (field rename, new required field, filename
+    # change) breaks this test loudly instead of silently disabling it.
+    waiver_set = WaiverSetV1(
+        document_id=DOC_ID,
+        waivers=[
+            WaiverV1(
+                waiver_id="w1",
+                code="DECORATIVE_ICON_LEAKED",
+                page_id=PAGE_ID,
+                reason="fixture",
+                approved_by="test",
+            )
+        ],
     )
-    waivers_file = tmp_path / "waivers" / f"{DOC_ID}.yaml"
-    waivers_file.write_text(waiver, encoding="utf-8")
+    waivers_file = tmp_path / "waivers" / f"{DOC_ID}.json"
+    waivers_file.write_text(waiver_set.model_dump_json(), encoding="utf-8")
 
     exit_code, out = _invoke(
         ["qa", "--doc", DOC_ID, "--auto-fix", "--apply"],
         config,
     )
     assert exit_code == 0, out
-    # Patch file should still exist for the non-waived duplicate, but the
-    # decorative op should not be present. Re-run QA and verify.
+    # Positive evidence that the waiver file was actually consumed.
+    assert "Loaded 1 waiver(s)" in out, out
+
+    # Waived decorative findings must NOT be auto-fixed: the AM0308 token
+    # must remain verbatim in b1's rendered text after --apply.
+    render_dir = store.root / DOC_ID / "render_page.v1" / "page" / PAGE_ID
+    latest_render_path = max(render_dir.glob("*.json"), key=lambda p: p.stat().st_mtime)
+    latest_render = RenderPageV1.model_validate_json(latest_render_path.read_text())
+    b1 = next(b for b in latest_render.blocks if b.id == "b1")
+    assert isinstance(b1, RenderParagraphBlock)
+    b1_text = " ".join(child.text for child in b1.children if isinstance(child, RenderTextInline))
+    assert "AM0308" in b1_text, (
+        f"Waived DECORATIVE_ICON_LEAKED must not be stripped; b1 text = {b1_text!r}"
+    )
+
+    # Re-run QA and verify the waiver is applied + observable in output.
     exit_code2, out2 = _invoke(["qa", "--doc", DOC_ID], config)
-    # Decorative finding remains (waived, still reported but not blocking)
-    # Duplicate finding is resolved by auto-fix.
+    assert exit_code2 == 0, out2
+    # Positive control: non-waived DUPLICATE_CONTENT was auto-fixed and is gone.
     assert "DUPLICATE_CONTENT" not in out2
-    assert exit_code2 == 0
+    # Waiver semantics: DECORATIVE_ICON_LEAKED is reported under the
+    # "Waived" section, not the active CODE table.
+    assert "Waived:" in out2, out2
+    waived_idx = out2.index("Waived:")
+    assert "DECORATIVE_ICON_LEAKED" in out2[waived_idx:], out2
+    # And must not appear as an active (non-waived) finding.
+    active_section = out2[:waived_idx]
+    assert "DECORATIVE_ICON_LEAKED" not in active_section, (
+        f"Waived finding leaked into active summary: {active_section!r}"
+    )
