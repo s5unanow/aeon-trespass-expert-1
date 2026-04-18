@@ -21,14 +21,18 @@
       "type": "string"
     },
     "document_id": {
+      "maxLength": 64,
+      "pattern": "^[a-z0-9_]+$",
       "title": "Document Id",
       "type": "string"
     },
     "edition": {
+      "pattern": "^[a-z]{2}$",
       "title": "Edition",
       "type": "string"
     },
     "page_id": {
+      "pattern": "^p\\d{4}$",
       "title": "Page Id",
       "type": "string"
     },
@@ -37,20 +41,24 @@
     },
     "note": {
       "default": "",
+      "maxLength": 4000,
       "title": "Note",
       "type": "string"
     },
     "url": {
       "default": "",
+      "maxLength": 2048,
       "title": "Url",
       "type": "string"
     },
     "user_agent": {
       "default": "",
+      "maxLength": 512,
       "title": "User Agent",
       "type": "string"
     },
     "timestamp": {
+      "maxLength": 64,
       "title": "Timestamp",
       "type": "string"
     }

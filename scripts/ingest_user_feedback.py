@@ -86,6 +86,23 @@ def _load_submission(path: Path) -> FeedbackSubmissionV1:
     return FeedbackSubmissionV1.model_validate(data)
 
 
+def _safe_output_path(output_dir: Path, qa_id: str) -> Path:
+    """Resolve ``output_dir/{qa_id}.json`` and reject path-escape attempts.
+
+    Every field that feeds ``qa_id`` is validated by ``FeedbackSubmissionV1``
+    already, so this is defence-in-depth: if a future model change (or a
+    sibling code path that mints a ``qa_id`` elsewhere) regresses the
+    invariant, we still refuse to write outside the intended directory.
+    """
+    base = output_dir.resolve()
+    candidate = (output_dir / f"{qa_id}.json").resolve()
+    try:
+        candidate.relative_to(base)
+    except ValueError as exc:
+        raise ValueError(f"resolved output path {candidate} escapes output dir {base}") from exc
+    return candidate
+
+
 def ingest_directory(feedback_dir: Path, output_dir: Path) -> list[Path]:
     """Read every ``*.json`` under *feedback_dir*, emit QA records to *output_dir*.
 
@@ -102,7 +119,11 @@ def ingest_directory(feedback_dir: Path, output_dir: Path) -> list[Path]:
             print(f"SKIP {src.name}: {exc}", file=sys.stderr)
             continue
         record = feedback_to_qa_record(submission, source_file=src.name)
-        out_path = output_dir / f"{record.qa_id}.json"
+        try:
+            out_path = _safe_output_path(output_dir, record.qa_id)
+        except ValueError as exc:
+            print(f"SKIP {src.name}: {exc}", file=sys.stderr)
+            continue
         out_path.write_text(record.model_dump_json(indent=2))
         written.append(out_path)
     return written
