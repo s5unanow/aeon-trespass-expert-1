@@ -20,6 +20,25 @@ const ISSUE_TYPES: readonly FeedbackIssueType[] = [
   'other',
 ];
 
+/**
+ * Selector for focusable elements within the dialog. Excludes elements that
+ * are explicitly taken out of the tab order via `tabindex="-1"` or `disabled`.
+ */
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
+
+function getFocusableElements(root: HTMLElement): HTMLElement[] {
+  return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (el) => !el.hasAttribute('disabled') && el.tabIndex !== -1,
+  );
+}
+
 export function FeedbackButton({
   documentId,
   edition,
@@ -31,6 +50,7 @@ export function FeedbackButton({
   const [issueType, setIssueType] = useState<FeedbackIssueType>('translation');
   const [note, setNote] = useState('');
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const titleId = useId();
   const download = onDownload ?? defaultDownloadFeedback;
   const clock = now ?? (() => new Date());
@@ -40,14 +60,54 @@ export function FeedbackButton({
     setNote('');
   }, []);
 
+  // On open: move focus into the dialog. On close: restore focus to the trigger.
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeDialog();
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const focusables = getFocusableElements(dialog);
+    const target = focusables[0] ?? dialog;
+    target.focus();
+    return () => {
+      // When the dialog closes, return focus to the element that opened it.
+      triggerRef.current?.focus();
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, closeDialog]);
+  }, [open]);
+
+  const handleDialogKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        closeDialog();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const focusables = getFocusableElements(dialog);
+      if (focusables.length === 0) {
+        // No focusable children — keep focus inside the dialog itself.
+        e.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey) {
+        if (active === first || !dialog.contains(active)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (active === last || !dialog.contains(active)) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    },
+    [closeDialog],
+  );
 
   const handleOpen = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     // Prevent the click from propagating to underlying reader content (links, blocks).
@@ -81,6 +141,7 @@ export function FeedbackButton({
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         className="feedback-button"
         aria-label="Report issue"
@@ -93,9 +154,6 @@ export function FeedbackButton({
           className="feedback-modal-backdrop"
           role="presentation"
           onClick={closeDialog}
-          onKeyDown={() => {
-            /* keyboard close is handled at window level via Escape */
-          }}
         >
           <div
             ref={dialogRef}
@@ -103,7 +161,9 @@ export function FeedbackButton({
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
+            tabIndex={-1}
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={handleDialogKeyDown}
           >
             <h2 id={titleId} className="feedback-modal-title">
               Report issue on this page
