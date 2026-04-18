@@ -1,4 +1,10 @@
-"""Tests for scripts/ingest_user_feedback.py."""
+"""Tests for scripts/ingest_user_feedback.py + the shared user-feedback helpers.
+
+After S5U-605 the ingest script routes records through ``ArtifactStore``
+instead of a flat ``artifacts/qa_records/user_feedback/`` directory, and the
+record conversion lives in ``atr_pipeline.stages.qa.user_feedback``. These
+tests pin both the shared helpers and the script's public behaviour.
+"""
 
 from __future__ import annotations
 
@@ -12,9 +18,17 @@ from types import ModuleType
 import pytest
 from pydantic import ValidationError
 
+from atr_pipeline.stages.qa.user_feedback import (
+    feedback_to_qa_record,
+    load_user_feedback_records,
+    persist_submissions,
+    schema_family_for,
+)
+from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import QALayer, Severity
 from atr_schemas.feedback_submission_v1 import FeedbackSubmissionV1
 from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.user_feedback_record_set_v1 import UserFeedbackRecordSetV1
 
 REPO = Path(__file__).resolve().parents[4]
 SCRIPT_PATH = REPO / "scripts" / "ingest_user_feedback.py"
@@ -48,9 +62,14 @@ def _submission(**overrides: object) -> dict[str, object]:
     return base
 
 
-def test_feedback_to_qa_record_shape(ingest_mod: ModuleType) -> None:
-    submission = ingest_mod.FeedbackSubmission.model_validate(_submission())
-    record = ingest_mod.feedback_to_qa_record(submission, source_file="foo.json")
+# ---------------------------------------------------------------------------
+# Helper-level behaviour
+# ---------------------------------------------------------------------------
+
+
+def test_feedback_to_qa_record_shape() -> None:
+    submission = FeedbackSubmissionV1.model_validate(_submission())
+    record = feedback_to_qa_record(submission, source_file="foo.json")
     assert isinstance(record, QARecordV1)
     assert record.layer == QALayer.USER_FEEDBACK
     assert record.severity == Severity.INFO
@@ -60,15 +79,88 @@ def test_feedback_to_qa_record_shape(ingest_mod: ModuleType) -> None:
     assert "Wrong term" in record.message
     assert record.actual is not None
     assert record.actual["source_file"] == "foo.json"
+    assert record.actual["edition"] == "ru"
 
 
-def test_feedback_to_qa_record_empty_note_allowed(ingest_mod: ModuleType) -> None:
-    submission = ingest_mod.FeedbackSubmission.model_validate(_submission(note=""))
-    record = ingest_mod.feedback_to_qa_record(submission, source_file="x.json")
+def test_feedback_to_qa_record_empty_note_allowed() -> None:
+    submission = FeedbackSubmissionV1.model_validate(_submission(note=""))
+    record = feedback_to_qa_record(submission, source_file="x.json")
     assert record.message == "Reader feedback (translation)"
 
 
-def test_ingest_directory_end_to_end(ingest_mod: ModuleType, tmp_path: Path) -> None:
+def test_schema_family_for_is_edition_suffixed() -> None:
+    assert schema_family_for("ru") == "user_feedback_record_set.v1.ru"
+    assert schema_family_for("en") == "user_feedback_record_set.v1.en"
+
+
+def test_persist_submissions_groups_and_roundtrips(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    submissions = [
+        (FeedbackSubmissionV1.model_validate(_submission()), "a.json"),
+        (
+            FeedbackSubmissionV1.model_validate(
+                _submission(
+                    issue_type="rendering",
+                    note="overlap",
+                    timestamp="2026-04-18T13:00:00.000Z",
+                )
+            ),
+            "b.json",
+        ),
+        # Different edition for the same page → must land in a separate set.
+        (
+            FeedbackSubmissionV1.model_validate(
+                _submission(edition="en", timestamp="2026-04-18T14:00:00.000Z")
+            ),
+            "c.json",
+        ),
+    ]
+
+    written = persist_submissions(store=store, submissions=submissions)
+    assert set(written) == {
+        ("ato_core_v1_1", "ru", "p0042"),
+        ("ato_core_v1_1", "en", "p0042"),
+    }
+
+    ru_records = load_user_feedback_records(
+        store=store,
+        document_id="ato_core_v1_1",
+        edition="ru",
+        page_id="p0042",
+    )
+    en_records = load_user_feedback_records(
+        store=store,
+        document_id="ato_core_v1_1",
+        edition="en",
+        page_id="p0042",
+    )
+    assert len(ru_records) == 2
+    assert len(en_records) == 1
+    # Confirm the artifact layout — proves we're using ArtifactStore, not
+    # a flat directory.
+    ru_dir = tmp_path / "ato_core_v1_1" / "user_feedback_record_set.v1.ru" / "page" / "p0042"
+    assert ru_dir.is_dir()
+    # Exactly one content-addressed JSON per (page, edition) group.
+    assert len(list(ru_dir.glob("*.json"))) == 1
+
+
+def test_load_user_feedback_records_missing_returns_empty(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    records = load_user_feedback_records(
+        store=store,
+        document_id="nope",
+        edition="ru",
+        page_id="p0001",
+    )
+    assert records == []
+
+
+# ---------------------------------------------------------------------------
+# Script-level behaviour
+# ---------------------------------------------------------------------------
+
+
+def test_ingest_directory_writes_via_artifact_store(ingest_mod: ModuleType, tmp_path: Path) -> None:
     feedback_dir = tmp_path / "feedback"
     feedback_dir.mkdir()
     (feedback_dir / "one.json").write_text(json.dumps(_submission()))
@@ -81,46 +173,61 @@ def test_ingest_directory_end_to_end(ingest_mod: ModuleType, tmp_path: Path) -> 
             )
         )
     )
-    output_dir = tmp_path / "out"
+    store = ArtifactStore(tmp_path / "artifacts")
 
-    written = ingest_mod.ingest_directory(feedback_dir, output_dir)
+    written = ingest_mod.ingest_directory(feedback_dir, store)
 
-    assert len(written) == 2
-    for path in written:
-        data = json.loads(path.read_text())
-        QARecordV1.model_validate(data)
-        assert data["layer"] == "user_feedback"
-        assert data["severity"] == "info"
+    assert set(written) == {
+        ("ato_core_v1_1", "ru", "p0042"),
+        ("ato_core_v1_1", "ru", "p0100"),
+    }
+    # The orphan flat directory the old script used must not be created.
+    legacy = tmp_path / "artifacts" / "qa_records" / "user_feedback"
+    assert not legacy.exists()
 
 
-def test_ingest_directory_skips_invalid_json(
-    ingest_mod: ModuleType, tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
+def test_ingest_directory_skips_invalid_json(ingest_mod: ModuleType, tmp_path: Path) -> None:
     feedback_dir = tmp_path / "feedback"
     feedback_dir.mkdir()
     (feedback_dir / "good.json").write_text(json.dumps(_submission()))
     (feedback_dir / "bad.json").write_text("{not valid json")
     (feedback_dir / "missing-fields.json").write_text(json.dumps({"document_id": "x"}))
 
-    output_dir = tmp_path / "out"
-    written = ingest_mod.ingest_directory(feedback_dir, output_dir)
-
+    store = ArtifactStore(tmp_path / "artifacts")
+    written = ingest_mod.ingest_directory(feedback_dir, store)
     assert len(written) == 1
-    err = capsys.readouterr().err
-    assert "SKIP bad.json" in err
-    assert "SKIP missing-fields.json" in err
 
 
 def test_ingest_is_idempotent(ingest_mod: ModuleType, tmp_path: Path) -> None:
     feedback_dir = tmp_path / "feedback"
     feedback_dir.mkdir()
     (feedback_dir / "one.json").write_text(json.dumps(_submission()))
-    output_dir = tmp_path / "out"
+    store = ArtifactStore(tmp_path / "artifacts")
 
-    first = ingest_mod.ingest_directory(feedback_dir, output_dir)
-    second = ingest_mod.ingest_directory(feedback_dir, output_dir)
-    assert first == second  # stable paths based on qa_id
-    assert len(list(output_dir.iterdir())) == 1
+    first = ingest_mod.ingest_directory(feedback_dir, store)
+    second = ingest_mod.ingest_directory(feedback_dir, store)
+    assert first == second
+
+    entity_dir = (
+        tmp_path
+        / "artifacts"
+        / "ato_core_v1_1"
+        / "user_feedback_record_set.v1.ru"
+        / "page"
+        / "p0042"
+    )
+    # ArtifactStore is content-addressed: identical content → single file.
+    assert len(list(entity_dir.glob("*.json"))) == 1
+
+
+def test_ingest_no_print_calls_remain(ingest_mod: ModuleType) -> None:
+    """S5U-602 regression: the script must not use bare ``print``.
+
+    Diagnostics flow through ``structlog`` so pipeline logging conventions
+    apply uniformly.
+    """
+    src = SCRIPT_PATH.read_text()
+    assert "print(" not in src
 
 
 # ---------------------------------------------------------------------------
@@ -191,27 +298,22 @@ def test_feedback_submission_caps_long_free_text_fields() -> None:
         FeedbackSubmissionV1.model_validate(payload)
 
 
-def test_s5u_607_path_traversal_repro_now_fails_cleanly(
-    ingest_mod: ModuleType,
-    tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
-) -> None:
-    """Regression for S5U-607: the exact repro from the Linear issue.
+def test_s5u_607_path_traversal_repro_still_blocked(ingest_mod: ModuleType, tmp_path: Path) -> None:
+    """Regression for S5U-607: path-traversal ``page_id`` is still rejected.
 
-    Before the fix, ``page_id="../escape/pwn"`` would either crash with
-    ``FileNotFoundError`` (pre-S5U-602) or — after atomic-write lands —
-    silently write outside ``--output-dir``. Now it must be rejected at
-    validation time with nothing written anywhere.
+    After S5U-605 the writer is ``ArtifactStore.put_json``, which refuses to
+    resolve outside its root anyway, but the primary defence is still the
+    ``FeedbackSubmissionV1`` pattern validation.
     """
     feedback_dir = tmp_path / "fb"
     feedback_dir.mkdir()
-    output_dir = tmp_path / "out"
+    store_root = tmp_path / "artifacts"
     escape_dir = tmp_path / "escape"
     (feedback_dir / "evil.json").write_text(
         json.dumps(
             {
                 "schema_version": "user_feedback.v1",
-                "document_id": "x",  # also invalid — but page_id fires first
+                "document_id": "ato_core_v1_1",
                 "edition": "ru",
                 "page_id": "../escape/pwn",
                 "issue_type": "translation",
@@ -223,20 +325,21 @@ def test_s5u_607_path_traversal_repro_now_fails_cleanly(
         )
     )
 
-    written = ingest_mod.ingest_directory(feedback_dir, output_dir)
+    store = ArtifactStore(store_root)
+    written = ingest_mod.ingest_directory(feedback_dir, store)
 
     assert written == []
-    assert not escape_dir.exists(), "path-traversal sink must not be reachable"
-    # output_dir is created by mkdir(parents=True) but must contain nothing.
-    assert list(output_dir.iterdir()) == []
-    err = capsys.readouterr().err
-    assert "SKIP evil.json" in err
+    assert not escape_dir.exists()
 
 
-def test_safe_output_path_rejects_escaping_qa_id(ingest_mod: ModuleType, tmp_path: Path) -> None:
-    """Belt-and-braces: even if a bad ``qa_id`` slips past validation,
-    ``_safe_output_path`` refuses to resolve outside the output dir."""
-    output_dir = tmp_path / "out"
-    output_dir.mkdir()
-    with pytest.raises(ValueError, match="escapes output dir"):
-        ingest_mod._safe_output_path(output_dir, "../pwn")
+def test_user_feedback_record_set_schema_rejects_bad_page_id() -> None:
+    """Belt-and-braces at the schema layer too."""
+    with pytest.raises(ValidationError):
+        UserFeedbackRecordSetV1.model_validate(
+            {
+                "document_id": "x",
+                "edition": "ru",
+                "page_id": "../pwn",
+                "records": [],
+            }
+        )

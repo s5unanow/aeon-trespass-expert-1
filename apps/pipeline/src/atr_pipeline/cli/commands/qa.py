@@ -15,6 +15,7 @@ from atr_pipeline.stages.qa.auto_fix_runner import (
 )
 from atr_pipeline.stages.qa.registry import QAPageContext, QARule, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
+from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.page_ir_v1 import PageIRV1
@@ -127,6 +128,19 @@ def _collect_records(
         ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
         for rule in rules:
             records.extend(rule.evaluate(ctx))
+
+        # User-feedback records are persisted per edition by the ingest
+        # script; the CLI surfaces both editions so triage can see the full
+        # picture regardless of which edition is currently being built.
+        for edition in ("en", "ru"):
+            records.extend(
+                load_user_feedback_records(
+                    store=store,
+                    document_id=doc,
+                    edition=edition,
+                    page_id=page_id,
+                )
+            )
 
         if auto_fix:
             ref = resolve_latest_render_ref(store, doc, page_id)

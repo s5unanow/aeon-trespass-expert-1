@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
+from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_schemas.enums import Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
@@ -60,6 +61,7 @@ class QAStage:
                 records.extend(rule.evaluate(page_ctx))
             if not source_only:
                 records.extend(self._load_translation_records(ctx, page_id))
+            records.extend(self._load_user_feedback_records(ctx, page_id))
             for r in records:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
@@ -162,6 +164,29 @@ class QAStage:
             return []
         record_set = TranslationQARecordSetV1.model_validate(data)
         return list(record_set.records)
+
+    @staticmethod
+    def _load_user_feedback_records(ctx: StageContext, page_id: str) -> list[QARecordV1]:
+        """Load reader-feedback QA records persisted by the ingest script.
+
+        When the QA stage runs edition-specific (``ctx.edition`` is ``"en"``
+        or ``"ru"``), only that edition's feedback is loaded. When the stage
+        runs with the default ``edition="all"`` — still common in mixed
+        builds — both editions' feedback is merged so the summary doesn't
+        silently drop reader-submitted findings.
+        """
+        editions = ("en", "ru") if ctx.edition == "all" else (ctx.edition,)
+        records: list[QARecordV1] = []
+        for edition in editions:
+            records.extend(
+                load_user_feedback_records(
+                    store=ctx.artifact_store,
+                    document_id=ctx.document_id,
+                    edition=edition,
+                    page_id=page_id,
+                )
+            )
+        return records
 
     @staticmethod
     def _load_render(ctx: StageContext, page_id: str) -> RenderPageV1 | None:
