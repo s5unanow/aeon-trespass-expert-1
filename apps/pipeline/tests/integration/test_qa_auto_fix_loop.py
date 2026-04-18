@@ -37,10 +37,20 @@ PAGE_ID = "p0001"
 
 
 def _seed_page_ir(store: ArtifactStore, family: str, language: LanguageCode) -> None:
+    _seed_page_ir_for(store, family, language, PAGE_ID, 1)
+
+
+def _seed_page_ir_for(
+    store: ArtifactStore,
+    family: str,
+    language: LanguageCode,
+    page_id: str,
+    page_number: int,
+) -> None:
     ir = PageIRV1(
         document_id=DOC_ID,
-        page_id=PAGE_ID,
-        page_number=1,
+        page_id=page_id,
+        page_number=page_number,
         language=language,
         blocks=[],
     )
@@ -48,7 +58,7 @@ def _seed_page_ir(store: ArtifactStore, family: str, language: LanguageCode) -> 
         document_id=DOC_ID,
         schema_family=family,
         scope="page",
-        entity_id=PAGE_ID,
+        entity_id=page_id,
         data=ir,
     )
 
@@ -179,6 +189,90 @@ def test_apply_without_auto_fix_is_rejected(
     )
     assert exit_code == 2
     assert "requires --auto-fix" in out
+
+
+def test_apply_exits_zero_when_auto_fix_clears_all_blockers(
+    store_and_config: tuple[ArtifactStore, DocumentBuildConfig],
+) -> None:
+    """Regression for S5U-604.
+
+    When ``block_publish_on`` is configured such that pre-fix findings
+    are blocking but auto-fix clears them, the CLI must exit 0 — i.e.
+    the exit-code decision must consult the POST-fix record set, not
+    the stale pre-fix set.
+
+    Before the fix: the final ``has_blocking`` check ran against
+    ``all_records`` (pre-fix), so exit was 1 even after a successful
+    apply. Verified red before fix, green after.
+    """
+    _, config = store_and_config
+    # Elevate the fixture's WARNING findings to blockers so the exit
+    # code is sensitive to whether pre- or post-fix records feed
+    # ``has_blocking``.
+    config.qa.block_publish_on = ["warning", "error", "critical"]
+
+    exit_code, out = _invoke(
+        ["qa", "--doc", DOC_ID, "--auto-fix", "--apply"],
+        config,
+    )
+
+    assert exit_code == 0, (
+        f"Expected exit 0 after auto-fix cleared all blockers, got exit {exit_code}:\n{out}"
+    )
+    # Bonus: post-fix summary shows the reduction was reported.
+    assert "BEFORE" in out and "AFTER" in out
+    assert "DECORATIVE_ICON_LEAKED" in out
+    assert "DUPLICATE_CONTENT" in out
+    # The TOTAL row ends "-2" (two findings, both cleared).
+    assert "-2" in out
+
+
+def test_apply_preserves_blockers_on_unmutated_pages(
+    store_and_config: tuple[ArtifactStore, DocumentBuildConfig],
+) -> None:
+    """Regression for S5U-604 (merge behaviour).
+
+    ``apply_patches_and_rerun`` only re-evaluates mutated pages. When
+    the apply loop succeeds on page 1 but an un-mutated page 2 still
+    carries an ERROR finding, the final exit code must remain 1 —
+    otherwise the fix would silently drop blockers on pages the
+    auto-fixer never touched.
+    """
+    store, config = store_and_config
+    # Page 2: seed a render containing a LEAKED_TECHNICAL_ID finding,
+    # which is ERROR-severity and *not* auto-fixable → stays in the
+    # pre-fix record set and never appears in post-fix records.
+    second_page = "p0002"
+    _seed_page_ir_for(store, "page_ir.v1.en", LanguageCode.EN, second_page, 2)
+    _seed_page_ir_for(store, "page_ir.v1.ru", LanguageCode.RU, second_page, 2)
+    unmutated_render = RenderPageV1(
+        page=RenderPageMeta(id=second_page, title="Fixture 2", source_page_number=2),
+        blocks=[
+            RenderParagraphBlock(
+                id="b1",
+                children=[RenderTextInline(text="See ato_core_v1_1 for details")],
+            ),
+        ],
+        source_map=RenderSourceMap(page_id=second_page, block_refs=[]),
+    )
+    store.put_json(
+        document_id=DOC_ID,
+        schema_family="render_page.v1",
+        scope="page",
+        entity_id=second_page,
+        data=unmutated_render,
+    )
+
+    exit_code, out = _invoke(
+        ["qa", "--doc", DOC_ID, "--auto-fix", "--apply"],
+        config,
+    )
+
+    # Page 1 blockers cleared by auto-fix, but page 2's ERROR remains.
+    assert exit_code == 1, (
+        f"Expected exit 1 — un-mutated page's ERROR should still block — got {exit_code}:\n{out}"
+    )
+    assert "LEAKED_TECHNICAL_ID" in out
 
 
 def test_waived_record_is_skipped_by_auto_fix(

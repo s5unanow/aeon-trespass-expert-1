@@ -77,9 +77,10 @@ def qa(
     if auto_fix:
         patches_written = write_patches(store, doc, all_records, bundles)
 
+    final_records = all_records
     if apply_fixes:
         typer.echo("\nApplying patches and re-running QA…")
-        apply_patches_and_rerun(
+        result = apply_patches_and_rerun(
             store=store,
             doc=doc,
             waivers_dir=waivers_dir,
@@ -87,8 +88,14 @@ def qa(
             patches=patches_written,
             pre_records=all_records,
         )
+        # `result.post_records` only covers pages the apply loop
+        # successfully refreshed. Keep pre-fix records for every other
+        # page so blockers outside the auto-fixer's scope still count
+        # toward the final exit code.
+        kept = [r for r in all_records if r.page_id not in result.refreshed_page_ids]
+        final_records = kept + result.post_records
 
-    has_blocking = any(r.severity.value in block_on and not r.waived for r in all_records)
+    has_blocking = any(r.severity.value in block_on and not r.waived for r in final_records)
     if has_blocking:
         raise typer.Exit(1)
 

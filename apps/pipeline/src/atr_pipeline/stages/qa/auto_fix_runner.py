@@ -108,6 +108,20 @@ def write_patches(
     return written
 
 
+@dataclass(frozen=True)
+class ApplyRerunResult:
+    """Outcome of applying patches + re-running QA.
+
+    ``post_records`` lists the post-waiver QA records from re-evaluating
+    the pages in ``refreshed_page_ids``. Pages whose patch application
+    failed are absent from both sets — callers must fall back to the
+    pre-fix records for those pages.
+    """
+
+    post_records: list[QARecordV1]
+    refreshed_page_ids: frozenset[str]
+
+
 def apply_patches_and_rerun(
     *,
     store: ArtifactStore,
@@ -116,15 +130,19 @@ def apply_patches_and_rerun(
     rules: list[QARule],
     patches: list[tuple[AutoFixPageBundle, PatchSetV1]],
     pre_records: list[QARecordV1],
-) -> list[QARecordV1]:
+) -> ApplyRerunResult:
     """Apply generated patches, re-run QA, and print a before/after diff.
 
     The original ``pre_records`` must be the post-waiver QA output from
     the initial pass; it's used as the "before" baseline for the diff.
+
+    Returns an :class:`ApplyRerunResult` pairing the post-fix records
+    with the set of page IDs that were actually refreshed, so callers
+    can merge those into the pre-fix record set for unmutated pages.
     """
     if not patches:
         typer.echo("No patches to apply.")
-        return pre_records
+        return ApplyRerunResult(post_records=[], refreshed_page_ids=frozenset())
 
     refreshed: dict[str, AutoFixPageBundle] = {}
     for bundle, patch_set in patches:
@@ -169,7 +187,10 @@ def apply_patches_and_rerun(
     post_counts = _count_by_code(r for r in post_records if not r.waived)
 
     _print_diff(pre_counts, post_counts)
-    return post_records
+    return ApplyRerunResult(
+        post_records=post_records,
+        refreshed_page_ids=frozenset(refreshed),
+    )
 
 
 def _count_by_code(records: Iterable[QARecordV1]) -> Counter[str]:
