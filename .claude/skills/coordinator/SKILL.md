@@ -48,7 +48,8 @@ If any check fails, fix or abort — do not proceed to review as if shipped.
   3. Probe each success criterion: is the behavior *actually* implemented, or just a file placeholder?
   4. Check NEVER-rule violations (handwritten TS, raw `print`, non-atomic writes, bare `except Exception`)
   5. Run targeted tests if cheap
-  6. Emit a **structured severity-tagged verdict** (see output contract below)
+  6. **Red-before evidence probe (S5U-615)** — if the diff adds any `def test_` (pytest) or `it(` / `test(` (vitest) function, grep commits + PR body for `red[- ]before` (case-insensitive). If absent, or if present as a bare phrase with no SHA / failure excerpt / explicit "N/A" carve-out, file it per the severity rules in `.claude/prompts/review.md` check #5. This probe must appear in `Probes run:`.
+  7. Emit a **structured severity-tagged verdict** (see output contract below)
 - On BUG: file each distinct gap as a Linear issue via `mcp__plugin_linear_linear__save_issue`:
   - `team="S5una"`, `project="ATE1"`, `priority=1` (Urgent), `state=Backlog`
   - Title: `S5U-XXX follow-up: <defect>`

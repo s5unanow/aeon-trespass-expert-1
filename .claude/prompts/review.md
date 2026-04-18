@@ -35,7 +35,14 @@ Checks 1–13 always run. Checks 14–18 are conditional — consult this trigge
 2. **Error handling** — bare `except Exception`, swallowed errors, missing error paths
 3. **Security** — OWASP top 10: injection, XSS, path traversal, secrets in code, unsafe deserialization
 4. **CLAUDE.md compliance** — commit prefixes, contract direction (Pydantic->TS), Linear workflow
-5. **Test coverage** — new code without tests, modified code with stale tests, untested error paths
+5. **Test coverage** — new code without tests, modified code with stale tests, untested error paths. **Red-before evidence for new tests (S5U-615)**: if the diff adds any new `def test_` (pytest) or `it(` / `test(` (vitest) function, grep the branch's commit messages and PR body (case-insensitive) for `red[- ]before`:
+    ```bash
+    { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } | grep -iE 'red[- ]before'
+    ```
+    - If no match: **CRITICAL** — `"New test(s) added without red-before confirmation — worker did not document that the test fails without the fix (see .claude/rules/hooks.md)"`
+    - If match is a bare phrase (e.g., "red-before: checked", "red-before: done") with no SHA, no failure excerpt, and no explicit "N/A — no production code change" carve-out: **WARNING** — `"Red-before confirmation present but lacks evidence (SHA or failure output) — reviewer cannot audit the claim"`
+    - If the confirmation cites "N/A — no production code change" but the diff does contain executable behavior changes (new/changed functions outside test files): **CRITICAL** — `"Red-before claims no code change but diff contains {path/to/file.py}"`
+    - The probe must appear as an explicit bullet in `Probes run:` (e.g., `- Red-before confirmation check: found "Red-before confirmation: commit abc123 shows test_foo failing" in commit 0a1b2c3`). A missing probe bullet when tests were added is itself a WARNING the reviewer should self-flag.
 6. **Code quality** — dead code, unnecessary complexity, duplicated logic, unclear naming
 7. **Type safety** — any/unknown types, missing type annotations on new code, Pydantic model misuse
 8. **Performance** — unnecessary loops, N+1 patterns, unbounded collections, missing pagination
