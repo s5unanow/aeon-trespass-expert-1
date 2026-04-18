@@ -26,6 +26,7 @@ from atr_schemas.page_ir_v1 import (
     ParagraphBlock,
     TableBlock,
 )
+from atr_schemas.translation_qa_record_set_v1 import TranslationQARecordSetV1
 
 _BLOCK_TYPE_MAP: dict[str, type[BaseModel]] = {
     "heading": HeadingBlock,
@@ -151,9 +152,33 @@ class TranslationStage:
             data=meta_data,
         )
 
-        errors = validate_translation(batch, result, concept_registry=concept_reg)
-        for e in errors:
-            ctx.logger.warning("Validation: %s", e)
+        qa_records = validate_translation(
+            batch,
+            result,
+            concept_registry=concept_reg,
+            document_id=ctx.document_id,
+            page_id=page_id,
+        )
+        for record in qa_records:
+            ctx.logger.warning(
+                "Translation QA %s [%s]: %s",
+                record.severity.value,
+                record.code,
+                record.message,
+            )
+
+        record_set = TranslationQARecordSetV1(
+            document_id=ctx.document_id,
+            page_id=page_id,
+            records=qa_records,
+        )
+        ctx.artifact_store.put_json(
+            document_id=ctx.document_id,
+            schema_family="translation_qa_record_set.v1",
+            scope="page",
+            entity_id=page_id,
+            data=record_set,
+        )
 
         ru_blocks: list[Block] = []
         for seg in result.segments:
@@ -195,7 +220,7 @@ class TranslationStage:
             entity_id=page_id,
             data=ru_ir,
         )
-        return len(errors)
+        return len(qa_records)
 
     @staticmethod
     def _resolve_page_ids(ctx: StageContext) -> list[str]:
