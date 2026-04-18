@@ -20,6 +20,7 @@ class QASummaryV1(BaseModel):
     schema_version: str = Field(default="qa_summary.v1", pattern=r"^qa_summary\.v\d+$")
     document_id: str
     run_id: str = ""
+    edition: str = ""
     counts: SeverityCounts = Field(default_factory=SeverityCounts)
     waived_counts: SeverityCounts = Field(default_factory=SeverityCounts)
     blocking: bool = False

@@ -1,18 +1,23 @@
 """Export QA artifacts (QASummaryV1 + QARecordV1 records) to the web bundle.
 
-Selects the latest `QASummaryV1` for a document (by mtime), resolves the
-referenced `QARecordV1` artifacts, and writes two JSON files into the
-edition-scoped bundle:
+Selects the latest `QASummaryV1` whose ``edition`` matches the requested
+edition, resolves the referenced `QARecordV1` artifacts, and writes two JSON
+files into the edition-scoped bundle:
 
 - ``<edition>/data/qa_summary.json`` — the `QASummaryV1` payload verbatim.
 - ``<edition>/data/qa_records.json`` — ``{"records": [QARecordV1, ...]}``
   (wrapped in an object so future metadata can be added without a breaking
   change).
 
-QA is document-level (not edition-scoped), but the files are published under
-each edition so the reader can fetch them with a uniform URL shape identical
-to ``glossary.json``. Re-running the export overwrites the files in place,
-preserving idempotency.
+The QA stage runs per edition (`ctx.edition`) — EN produces structural
+findings only, RU additionally emits translation QA — but both write into
+the same artifact directory keyed by ``schema_family=qa`` / ``entity_id=doc_id``.
+This module disambiguates them by reading the ``edition`` field embedded in
+each summary (populated by the QA stage). For backwards compatibility with
+summaries produced before the field was added, an untagged summary
+(``edition == ""``) is accepted only when *no* tagged summary exists —
+mirroring the render-page selection logic in ``export_to_web._pick_latest``.
+Re-running the export overwrites the files in place, preserving idempotency.
 """
 
 from __future__ import annotations
@@ -21,12 +26,50 @@ import json
 from pathlib import Path
 
 
-def _pick_latest_summary(summary_dir: Path) -> Path | None:
-    """Return the newest summary artifact in *summary_dir* or None if empty."""
+def _pick_summary_for_edition(summary_dir: Path, edition: str) -> Path | None:
+    """Return the newest summary artifact matching *edition*.
+
+    Selection rules (two tiers):
+
+    1. Prefer the newest summary whose payload contains ``edition == edition``.
+    2. Fall back to the newest untagged summary (``edition == ""``) *only*
+       when no tagged summaries are present in the directory. Once any
+       tagged summary exists the fallback is suppressed — this prevents a
+       stale pre-tagging summary from being picked up ahead of a tagged
+       summary for the *other* edition.
+    """
     files = list(summary_dir.glob("*.json"))
     if not files:
         return None
-    return max(files, key=lambda p: p.stat().st_mtime)
+
+    best_match: Path | None = None
+    best_match_mtime: float = 0.0
+    best_untagged: Path | None = None
+    best_untagged_mtime: float = 0.0
+    has_any_tagged = False
+
+    for path in files:
+        try:
+            data = json.loads(path.read_text())
+        except json.JSONDecodeError:
+            continue
+        payload_edition = data.get("edition", "")
+        mtime = path.stat().st_mtime
+        if payload_edition == edition:
+            if mtime > best_match_mtime:
+                best_match = path
+                best_match_mtime = mtime
+        elif payload_edition != "":
+            has_any_tagged = True
+        elif mtime > best_untagged_mtime:
+            best_untagged = path
+            best_untagged_mtime = mtime
+
+    if best_match is not None:
+        return best_match
+    if not has_any_tagged:
+        return best_untagged
+    return None
 
 
 def _load_records(artifact_root: Path, record_refs: list[str]) -> list[dict]:
@@ -62,9 +105,9 @@ def export_qa(
         print(f"  [{edition.upper()}] No QA summary dir at {summary_dir}, skipping")
         return 0
 
-    latest = _pick_latest_summary(summary_dir)
+    latest = _pick_summary_for_edition(summary_dir, edition)
     if latest is None:
-        print(f"  [{edition.upper()}] No QA summary artifacts, skipping")
+        print(f"  [{edition.upper()}] No QA summary artifacts for edition, skipping")
         return 0
 
     summary = json.loads(latest.read_text())

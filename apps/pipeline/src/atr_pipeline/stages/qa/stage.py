@@ -105,6 +105,7 @@ class QAStage:
         return QASummaryV1(
             document_id=ctx.document_id,
             run_id=ctx.run_id,
+            edition=ctx.edition,
             counts=counts,
             waived_counts=waived_counts,
             blocking=blocking,
