@@ -20,3 +20,13 @@ This applies to files matching:
 - `scripts/export_to_web.py`
 - `scripts/_export_blocks.py`
 - `apps/pipeline/src/atr_pipeline/stages/render/**`
+
+## Updating visual-regression baselines
+
+If your change legitimately alters the rendered output of a curated page covered by `apps/web/tests/e2e/__snapshots__/`, the CI `visual-regression` gate will fail until the baseline is refreshed. Regenerate locally and commit the diff:
+
+```
+pnpm --filter @atr/web run test:visual:update
+```
+
+Inspect the regenerated PNGs, commit them in a dedicated commit (`S5U-XXX: refresh visual baselines — <reason>`), and explain each refresh in the PR body. CI is blocked from regenerating baselines itself — see the "Visual regression gate (S5U-599)" section in `CLAUDE.md`.

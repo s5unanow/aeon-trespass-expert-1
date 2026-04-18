@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
