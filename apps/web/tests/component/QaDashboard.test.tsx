@@ -24,6 +24,7 @@ const records = {
       code: 'PARAGRAPH_TOO_LONG',
       document_id: 'test_doc',
       page_id: 'p0003',
+      entity_ref: 'p0003.b008',
       message: 'Block exceeds limit',
       waived: false,
     },
@@ -121,7 +122,7 @@ describe('QaDashboard', () => {
     expect(screen.getByText(/1 of 4 findings/)).toBeDefined();
   });
 
-  it('page_id cell renders a link to the reader page', async () => {
+  it('page_id cell renders a link to the reader page with entity_ref hash', async () => {
     mockQa();
     renderDashboard();
 
@@ -129,7 +130,18 @@ describe('QaDashboard', () => {
       expect(screen.getByText('Block exceeds limit')).toBeDefined();
     });
     const link = screen.getByText('p0003').closest('a');
-    expect(link?.getAttribute('href')).toBe('/documents/test_doc/ru/p0003');
+    expect(link?.getAttribute('href')).toBe('/documents/test_doc/ru/p0003#p0003.b008');
+  });
+
+  it('omits the hash when a finding has no entity_ref', async () => {
+    mockQa();
+    renderDashboard();
+
+    await waitFor(() => {
+      expect(screen.getByText('Untranslated segment')).toBeDefined();
+    });
+    const link = screen.getByText('p0004').closest('a');
+    expect(link?.getAttribute('href')).toBe('/documents/test_doc/ru/p0004');
   });
 
   it('can switch the waived filter to show waived records', async () => {

@@ -75,9 +75,7 @@ export function QaDashboard() {
 
   const filtered = useMemo(() => {
     const records = bundle?.records ?? [];
-    return records.filter((r) =>
-      matchesFilters(r, severity, layer, code, pageFilter, waived),
-    );
+    return records.filter((r) => matchesFilters(r, severity, layer, code, pageFilter, waived));
   }, [bundle, severity, layer, code, pageFilter, waived]);
 
   const updateParam = (key: string, value: string, fallback: string): void => {
@@ -200,7 +198,9 @@ export function QaDashboard() {
                 <td>
                   {r.page_id ? (
                     <Link
-                      to={`/documents/${documentId}/${edition}/${r.page_id}`}
+                      to={`/documents/${documentId}/${edition}/${r.page_id}${
+                        r.entity_ref ? `#${r.entity_ref}` : ''
+                      }`}
                       className="qa-page-link"
                     >
                       {r.page_id}
