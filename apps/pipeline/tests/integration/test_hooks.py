@@ -103,11 +103,15 @@ if [ ! -f "$REVIEW_FILE" ]; then
   exit 0
 fi
 
-if ! grep -qE '\\*\\*(BLOCK|PASS WITH WARNINGS|PASS)\\*\\*' "$REVIEW_FILE"; then
+# S5U-613: verdict is the last non-blank line (prevents backtick-quoted
+# references to **BLOCK**/**PASS** inside findings from flipping the gate).
+FINAL_LINE=$(grep -vE '^[[:space:]]*$' "$REVIEW_FILE" | tail -1)
+
+if ! echo "$FINAL_LINE" | grep -qE '^\\*\\*(BLOCK|PASS WITH WARNINGS|PASS)\\*\\*[[:space:]]*$'; then
   exit 1
 fi
 
-if grep -qE '\\*\\*BLOCK\\*\\*' "$REVIEW_FILE"; then
+if echo "$FINAL_LINE" | grep -qE '^\\*\\*BLOCK\\*\\*[[:space:]]*$'; then
   exit 1
 fi
 
@@ -151,14 +155,55 @@ class TestPrePrCheckVerdicts:
     def test_pass_header_block_verdict(self, tmp_path: Path) -> None:
         """PASS in section header + BLOCK as final verdict should block."""
         review = tmp_path / "review.md"
-        review.write_text("## Section: **PASS** on formatting\n\n### Final Verdict\n\n**BLOCK**\n")
+        review.write_text(
+            "## Section: **PASS** on formatting\n\n"
+            "## Verdict\n\n"
+            "Verdict: BLOCK\n"
+            "Probes run:\n- a\n- b\n- c\n\n"
+            "**BLOCK**\n"
+        )
         assert _run_pre_pr_check(review) != 0
 
-    def test_block_header_pass_verdict(self, tmp_path: Path) -> None:
-        """BLOCK anywhere in file must block, even if PASS also appears."""
+    def test_block_in_body_pass_final_line_passes(self, tmp_path: Path) -> None:
+        """S5U-613 scenario D: backtick-quoted **BLOCK** in findings must not flip the gate.
+
+        The old hook blocked on any `**BLOCK**` substring, which meant a
+        reviewer mentioning the word inside a quoted reference (e.g., when
+        explaining a regex in the audit trail) would self-sabotage their own
+        PASS review. The new hook anchors verdict detection to the final
+        non-blank line.
+        """
         review = tmp_path / "review.md"
         review.write_text(
-            "## Section: **BLOCK** on linting (resolved)\n\n### Final Verdict\n\n**PASS**\n"
+            "## Findings\n\n"
+            "- traced regex behavior: `**BLOCK**` in body no longer flips the gate\n\n"
+            "## Verdict\n\n"
+            "Verdict: PASS\n"
+            "Probes run:\n- a\n- b\n- c\n\n"
+            "**PASS**\n"
+        )
+        assert _run_pre_pr_check(review) == 0
+
+    def test_trailing_whitespace_final_line_still_recognised(self, tmp_path: Path) -> None:
+        """Trailing spaces on the verdict line must not break detection."""
+        review = tmp_path / "review.md"
+        review.write_text(
+            "## Verdict\n\nVerdict: PASS\nProbes run:\n- a\n- b\n- c\n\n**PASS**   \n"
+        )
+        assert _run_pre_pr_check(review) == 0
+
+    def test_verdict_not_on_final_line_blocks(self, tmp_path: Path) -> None:
+        """If the verdict is not the last non-blank line, the gate blocks.
+
+        This guards against trailing commentary appended after the verdict.
+        """
+        review = tmp_path / "review.md"
+        review.write_text(
+            "## Verdict\n\n"
+            "Verdict: PASS\n"
+            "Probes run:\n- a\n- b\n- c\n\n"
+            "**PASS**\n\n"
+            "trailing afterthought that invalidates placement\n"
         )
         assert _run_pre_pr_check(review) != 0
 

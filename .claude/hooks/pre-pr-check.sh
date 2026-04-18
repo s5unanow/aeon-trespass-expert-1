@@ -31,15 +31,26 @@ if [ ! -f "$REVIEW_FILE" ]; then
   exit 1
 fi
 
-# Verify the review contains a verdict (ensures it actually completed)
-if ! grep -qE '\*\*(BLOCK|PASS WITH WARNINGS|PASS)\*\*' "$REVIEW_FILE"; then
-  echo "BLOCKED: Review artifact '$REVIEW_FILE' exists but contains no verdict."
-  echo "The review must end with **BLOCK**, **PASS WITH WARNINGS**, or **PASS**."
+# S5U-613: verdict must be the last non-blank line of the file, not embedded
+# in prose. The review prompt explicitly requires the final-line placement;
+# locating the verdict this way prevents backtick-quoted or referenced
+# strings inside findings (e.g., `**BLOCK**` in a sentence) from flipping
+# the gate (plan-s5u-613.md scenario D).
+FINAL_LINE=$(grep -vE '^[[:space:]]*$' "$REVIEW_FILE" | tail -1)
+
+if ! echo "$FINAL_LINE" | grep -qE '^\*\*(BLOCK|PASS WITH WARNINGS|PASS)\*\*[[:space:]]*$'; then
+  echo "BLOCKED: Review artifact '$REVIEW_FILE' does not end with a valid verdict line."
+  echo ""
+  echo "The final non-blank line must be exactly one of:"
+  echo "  **PASS**"
+  echo "  **PASS WITH WARNINGS**"
+  echo "  **BLOCK**"
+  echo ""
+  echo "Found: $FINAL_LINE"
   exit 1
 fi
 
-# Block if the verdict is BLOCK
-if grep -qE '\*\*BLOCK\*\*' "$REVIEW_FILE"; then
+if echo "$FINAL_LINE" | grep -qE '^\*\*BLOCK\*\*[[:space:]]*$'; then
   echo "BLOCKED: Review verdict is BLOCK. Fix the issues before creating a PR."
   echo ""
   cat "$REVIEW_FILE"
@@ -80,7 +91,7 @@ PROBE_COUNT=$(awk '
 ' "$REVIEW_FILE")
 
 if [ "$PROBE_COUNT" -lt 3 ]; then
-  echo "BLOCKED: Review artifact '$REVIEW_FILE' lists only $PROBE_COUNT probe(s) (need ≥3)."
+  echo "BLOCKED: Review artifact '$REVIEW_FILE' lists only $PROBE_COUNT probe(s) (need >=3)."
   echo ""
   echo "The 'Probes run:' section must enumerate at least 3 concrete checks."
   echo "This is the audit trail that distinguishes a real review from a stub."
