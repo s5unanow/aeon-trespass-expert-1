@@ -28,6 +28,7 @@ const PRIMARY_TYPES = {
   asset_v1: 'AssetV1',
   build_manifest_v1: 'BuildManifestV1',
   concept_registry_v1: 'ConceptRegistryV1',
+  feedback_submission_v1: 'FeedbackSubmissionV1',
   glossary_payload_v1: 'GlossaryPayloadV1',
   layout_page_v1: 'LayoutPageV1',
   native_page_v1: 'NativePageV1',

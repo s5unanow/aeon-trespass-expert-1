@@ -34,32 +34,19 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import ValidationError
 
 from atr_schemas.enums import QALayer, Severity
+from atr_schemas.feedback_submission_v1 import FeedbackSubmissionV1
 from atr_schemas.qa_record_v1 import QARecordV1
 
-
-class FeedbackSubmission(BaseModel):
-    """Contract between the web reader and this ingest script.
-
-    Mirrors ``FeedbackSubmission`` in
-    ``apps/web/src/lib/feedback/schema.ts``. When adding fields, update both
-    sides and the component test.
-    """
-
-    schema_version: str = Field(default="user_feedback.v1")
-    document_id: str
-    edition: str
-    page_id: str
-    issue_type: str
-    note: str = ""
-    url: str = ""
-    user_agent: str = ""
-    timestamp: str
+# Re-export under the historic name so existing imports (and tests) keep
+# working. The canonical contract lives in ``atr_schemas``; this script is
+# now just the ingest glue on top of the shared Pydantic model.
+FeedbackSubmission = FeedbackSubmissionV1
 
 
-def feedback_to_qa_record(submission: FeedbackSubmission, source_file: str) -> QARecordV1:
+def feedback_to_qa_record(submission: FeedbackSubmissionV1, source_file: str) -> QARecordV1:
     """Build a ``QARecordV1`` from a reader feedback submission."""
     qa_id = _build_qa_id(submission)
     message_parts = [f"Reader feedback ({submission.issue_type})"]
@@ -88,15 +75,15 @@ def feedback_to_qa_record(submission: FeedbackSubmission, source_file: str) -> Q
     )
 
 
-def _build_qa_id(submission: FeedbackSubmission) -> str:
+def _build_qa_id(submission: FeedbackSubmissionV1) -> str:
     """Stable identifier so re-ingesting the same blob is idempotent."""
     safe_ts = submission.timestamp.replace(":", "-").replace(".", "-")
     return f"qa.{submission.page_id}.user_feedback.{safe_ts}"
 
 
-def _load_submission(path: Path) -> FeedbackSubmission:
+def _load_submission(path: Path) -> FeedbackSubmissionV1:
     data: Any = json.loads(path.read_text())
-    return FeedbackSubmission.model_validate(data)
+    return FeedbackSubmissionV1.model_validate(data)
 
 
 def ingest_directory(feedback_dir: Path, output_dir: Path) -> list[Path]:

@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "FeedbackIssueType": {
+      "description": "Coarse classification of reader-submitted page feedback.",
+      "enum": [
+        "translation",
+        "extraction",
+        "rendering",
+        "other"
+      ],
+      "title": "FeedbackIssueType",
+      "type": "string"
+    }
+  },
+  "description": "A single reader feedback submission.",
+  "properties": {
+    "schema_version": {
+      "default": "user_feedback.v1",
+      "pattern": "^user_feedback\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "edition": {
+      "title": "Edition",
+      "type": "string"
+    },
+    "page_id": {
+      "title": "Page Id",
+      "type": "string"
+    },
+    "issue_type": {
+      "$ref": "#/$defs/FeedbackIssueType"
+    },
+    "note": {
+      "default": "",
+      "title": "Note",
+      "type": "string"
+    },
+    "url": {
+      "default": "",
+      "title": "Url",
+      "type": "string"
+    },
+    "user_agent": {
+      "default": "",
+      "title": "User Agent",
+      "type": "string"
+    },
+    "timestamp": {
+      "title": "Timestamp",
+      "type": "string"
+    }
+  },
+  "required": [
+    "document_id",
+    "edition",
+    "page_id",
+    "issue_type",
+    "timestamp"
+  ],
+  "title": "FeedbackSubmissionV1",
+  "type": "object"
+}

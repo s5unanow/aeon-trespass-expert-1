@@ -16,6 +16,7 @@ from atr_schemas.assistant_citation_v1 import AssistantCitationV1
 from atr_schemas.assistant_pack_v1 import AssistantPackV1
 from atr_schemas.build_manifest_v1 import BuildManifestV1
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
+from atr_schemas.feedback_submission_v1 import FeedbackSubmissionV1
 from atr_schemas.glossary_payload_v1 import GlossaryPayloadV1
 from atr_schemas.layout_page_v1 import LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
@@ -50,6 +51,7 @@ MODELS = {
     "asset_v1": AssetV1,
     "build_manifest_v1": BuildManifestV1,
     "concept_registry_v1": ConceptRegistryV1,
+    "feedback_submission_v1": FeedbackSubmissionV1,
     "glossary_payload_v1": GlossaryPayloadV1,
     "layout_page_v1": LayoutPageV1,
     "native_page_v1": NativePageV1,

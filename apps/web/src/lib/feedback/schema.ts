@@ -1,26 +1,20 @@
 // Reader feedback submission shape.
 //
-// Kept deliberately small and stable: the pipeline-side ingest script
-// (scripts/ingest_user_feedback.py) reads this exact structure and turns
-// each blob into a QARecordV1 with layer=user_feedback, severity=info.
+// The canonical contract lives in Pydantic
+// (`packages/schemas/python/atr_schemas/feedback_submission_v1.py`) and the
+// TypeScript types are generated from the JSON Schema (see `make codegen`).
+// The pipeline-side ingest script (`scripts/ingest_user_feedback.py`)
+// consumes the same model, so both sides are kept in sync automatically.
 //
-// When changing these fields, update the ingest script and its tests.
+// This module only holds the filename helper and the schema-version literal
+// used by the web reader to produce a blob the ingest script accepts.
 
-export type FeedbackIssueType = 'translation' | 'extraction' | 'rendering' | 'other';
+import type { feedbackSubmissionV1, FeedbackSubmissionV1 } from '@atr/schemas';
+
+export type FeedbackSubmission = FeedbackSubmissionV1;
+export type FeedbackIssueType = feedbackSubmissionV1.FeedbackIssueType;
 
 export const FEEDBACK_SCHEMA_VERSION = 'user_feedback.v1' as const;
-
-export interface FeedbackSubmission {
-  schema_version: typeof FEEDBACK_SCHEMA_VERSION;
-  document_id: string;
-  edition: string;
-  page_id: string;
-  issue_type: FeedbackIssueType;
-  note: string;
-  url: string;
-  user_agent: string;
-  timestamp: string; // ISO-8601
-}
 
 export function buildFeedbackFilename(submission: FeedbackSubmission): string {
   const safeTs = submission.timestamp.replace(/[:.]/g, '-');
