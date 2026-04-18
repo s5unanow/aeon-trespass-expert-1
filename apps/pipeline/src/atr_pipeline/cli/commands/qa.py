@@ -7,12 +7,18 @@ from collections import Counter
 import typer
 
 from atr_pipeline.config import load_document_config
-from atr_pipeline.stages.qa.auto_fix import generate_patches_for_page
-from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
+from atr_pipeline.stages.qa.auto_fix_runner import (
+    AutoFixPageBundle,
+    apply_patches_and_rerun,
+    resolve_latest_render_ref,
+    write_patches,
+)
+from atr_pipeline.stages.qa.registry import QAPageContext, QARule, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.page_ir_v1 import PageIRV1
+from atr_schemas.patch_set_v1 import PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.render_page_v1 import RenderPageV1
 
@@ -29,8 +35,20 @@ def qa(
         "--auto-fix",
         help="Generate patch files for deterministic auto-fixes",
     ),
+    apply_fixes: bool = typer.Option(
+        False,
+        "--apply",
+        help=(
+            "Apply generated patches to render artifacts and re-run QA."
+            " Requires --auto-fix. Default is dry-run (writes patch files only)."
+        ),
+    ),
 ) -> None:
     """Run QA checks on existing artifacts for a document."""
+    if apply_fixes and not auto_fix:
+        typer.echo("--apply requires --auto-fix", err=True)
+        raise typer.Exit(2)
+
     config = load_document_config(doc)
     store = ArtifactStore(config.artifact_root)
 
@@ -40,23 +58,7 @@ def qa(
         raise typer.Exit(1)
 
     rules = get_all_rules()
-    all_records: list[QARecordV1] = []
-    page_renders: dict[str, RenderPageV1] = {}
-
-    for page_id in page_ids:
-        en_ir = _load_ir(store, doc, "page_ir.v1.en", page_id)
-        ru_ir = _load_ir(store, doc, "page_ir.v1.ru", page_id)
-        render = _load_render(store, doc, page_id)
-
-        if en_ir is None or ru_ir is None or render is None:
-            typer.echo(f"  SKIP {page_id}: missing artifacts", err=True)
-            continue
-
-        ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
-        for rule in rules:
-            all_records.extend(rule.evaluate(ctx))
-        if auto_fix:
-            page_renders[page_id] = render
+    all_records, bundles = _collect_records(store, doc, page_ids, rules, auto_fix)
 
     waivers_dir = config.repo_root / config.qa.waivers_dir
     waivers = load_waivers(waivers_dir, doc)
@@ -71,50 +73,66 @@ def qa(
     if review_pack:
         _write_review_pack(store, doc, all_records, block_on)
 
+    patches_written: list[tuple[AutoFixPageBundle, PatchSetV1]] = []
     if auto_fix:
-        _write_auto_fix_patches(store, doc, all_records, page_renders)
+        patches_written = write_patches(store, doc, all_records, bundles)
+
+    if apply_fixes:
+        typer.echo("\nApplying patches and re-running QA…")
+        apply_patches_and_rerun(
+            store=store,
+            doc=doc,
+            waivers_dir=waivers_dir,
+            rules=rules,
+            patches=patches_written,
+            pre_records=all_records,
+        )
 
     has_blocking = any(r.severity.value in block_on and not r.waived for r in all_records)
     if has_blocking:
         raise typer.Exit(1)
 
 
-def _write_auto_fix_patches(
+def _collect_records(
     store: ArtifactStore,
     doc: str,
-    records: list[QARecordV1],
-    page_renders: dict[str, RenderPageV1],
-) -> None:
-    """Generate and persist auto-fix patch sets grouped by page."""
-    fixable = [r for r in records if r.auto_fix and r.auto_fix.available and not r.waived]
-    if not fixable:
-        typer.echo("\nNo auto-fixable findings.")
-        return
+    page_ids: list[str],
+    rules: list[QARule],
+    auto_fix: bool,
+) -> tuple[list[QARecordV1], dict[str, AutoFixPageBundle]]:
+    """Load artifacts + evaluate rules across pages.
 
-    by_page: dict[str, list[QARecordV1]] = {}
-    for r in fixable:
-        pid = r.page_id or ""
-        by_page.setdefault(pid, []).append(r)
+    Returns the raw (pre-waiver) record list and, when *auto_fix* is
+    true, a map of page_id → bundle for the downstream patch writer.
+    """
+    records: list[QARecordV1] = []
+    bundles: dict[str, AutoFixPageBundle] = {}
 
-    written = 0
-    for page_id, page_records in sorted(by_page.items()):
-        render = page_renders.get(page_id)
-        if render is None:
+    for page_id in page_ids:
+        en_ir = _load_ir(store, doc, "page_ir.v1.en", page_id)
+        ru_ir = _load_ir(store, doc, "page_ir.v1.ru", page_id)
+        render = _load_render(store, doc, page_id)
+
+        if en_ir is None or ru_ir is None or render is None:
+            typer.echo(f"  SKIP {page_id}: missing artifacts", err=True)
             continue
-        patch_set = generate_patches_for_page(page_records, render)
-        if patch_set is None:
-            continue
-        ref = store.put_json(
-            document_id=doc,
-            schema_family="patch_set.v1",
-            scope="page",
-            entity_id=page_id,
-            data=patch_set,
-        )
-        typer.echo(f"  Patch: {ref.relative_path}")
-        written += 1
 
-    typer.echo(f"\nAuto-fix: {written} patch file(s) generated from {len(fixable)} finding(s)")
+        ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
+        for rule in rules:
+            records.extend(rule.evaluate(ctx))
+
+        if auto_fix:
+            ref = resolve_latest_render_ref(store, doc, page_id)
+            if ref is not None:
+                bundles[page_id] = AutoFixPageBundle(
+                    page_id=page_id,
+                    en_ir=en_ir,
+                    ru_ir=ru_ir,
+                    render=render,
+                    render_ref=ref,
+                )
+
+    return records, bundles
 
 
 def _write_review_pack(

@@ -111,7 +111,8 @@
         "page_ir",
         "resolved_page",
         "layout_page",
-        "page_evidence"
+        "page_evidence",
+        "render_page"
       ],
       "title": "PatchTargetKind",
       "type": "string"

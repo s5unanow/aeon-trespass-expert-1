@@ -107,6 +107,7 @@ class PatchTargetKind(StrEnum):
     RESOLVED_PAGE = "resolved_page"
     LAYOUT_PAGE = "layout_page"
     PAGE_EVIDENCE = "page_evidence"
+    RENDER_PAGE = "render_page"
 
 
 class PatchScope(StrEnum):

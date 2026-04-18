@@ -6,7 +6,7 @@ export type TargetArtifactRef = string;
 /**
  * Which artifact schema a patch set targets.
  */
-export type PatchTargetKind = 'page_ir' | 'resolved_page' | 'layout_page' | 'page_evidence';
+export type PatchTargetKind = 'page_ir' | 'resolved_page' | 'layout_page' | 'page_evidence' | 'render_page';
 export type Op = string;
 export type Path = string;
 /**
