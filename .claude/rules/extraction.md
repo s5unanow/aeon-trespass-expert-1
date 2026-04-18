@@ -1,6 +1,6 @@
 ---
 description: Extraction work rules — applies to extraction-related pipeline code
-globs: apps/pipeline/src/pipeline/extraction/**,apps/pipeline/tests/**/test_extract*
+globs: apps/pipeline/src/atr_pipeline/stages/extract_native/**,apps/pipeline/src/atr_pipeline/stages/extract_layout/**,apps/pipeline/tests/**/*extract*
 ---
 
 - All extraction work follows `docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md`
