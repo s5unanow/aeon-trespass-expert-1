@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router';
 import { EditionSwitcher } from '../nav/EditionSwitcher';
+import { QaPageBadge } from '../nav/QaPageBadge';
 
 interface AppHeaderProps {
   documentId: string;
@@ -24,6 +25,8 @@ export function AppHeader({
 }: AppHeaderProps) {
   const location = useLocation();
   const isGlossaryPage = location.pathname.endsWith('/glossary');
+  const isQaPage = location.pathname.endsWith('/qa');
+  const isSubPage = isGlossaryPage || isQaPage;
   const fromPageId = (location.state as { fromPageId?: string } | null)?.fromPageId;
 
   return (
@@ -54,7 +57,7 @@ export function AppHeader({
       </div>
 
       <div className="app-header-right">
-        {isGlossaryPage ? (
+        {isSubPage ? (
           <Link
             to={fromPageId ? `/documents/${documentId}/${edition}/${fromPageId}` : '/'}
             className="app-header-link"
@@ -62,13 +65,25 @@ export function AppHeader({
             {'\u2190'} Back
           </Link>
         ) : (
-          <Link
-            to={`/documents/${documentId}/${edition}/glossary`}
-            className="app-header-link"
-            state={pageId ? { fromPageId: pageId } : undefined}
-          >
-            Glossary
-          </Link>
+          <>
+            <Link
+              to={`/documents/${documentId}/${edition}/glossary`}
+              className="app-header-link"
+              state={pageId ? { fromPageId: pageId } : undefined}
+            >
+              Glossary
+            </Link>
+            <Link
+              to={`/documents/${documentId}/${edition}/qa`}
+              className="app-header-link"
+              state={pageId ? { fromPageId: pageId } : undefined}
+            >
+              QA
+            </Link>
+          </>
+        )}
+        {pageId && !isSubPage && (
+          <QaPageBadge documentId={documentId} edition={edition} pageId={pageId} />
         )}
         {pageId && (
           <EditionSwitcher documentId={documentId} pageId={pageId} currentEdition={edition} />

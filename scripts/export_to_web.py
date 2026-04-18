@@ -23,6 +23,7 @@ from _export_blocks import (  # noqa: E402
     rewrite_figure_urls,
     text_content,
 )
+from _export_qa import export_qa  # noqa: E402
 from _export_validation import run_export_validation  # noqa: E402
 
 ARTIFACT_ROOT = REPO / "artifacts"
@@ -374,6 +375,7 @@ def main(argv: list[str] | None = None) -> None:
         print(f"Exporting {edition.upper()} render pages...")
         export_pages(doc_id, edition, render_src, doc_public, page_images)
         export_glossary(doc_id, edition, glossary_src, doc_public)
+        export_qa(ARTIFACT_ROOT, doc_id, edition, doc_public)
 
         edition_dir = doc_public / edition
         manifest = json.loads((edition_dir / "manifest.json").read_text())
