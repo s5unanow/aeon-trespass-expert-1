@@ -26,7 +26,8 @@
         "asset_link",
         "render",
         "visual",
-        "accessibility"
+        "accessibility",
+        "user_feedback"
       ],
       "title": "QALayer",
       "type": "string"

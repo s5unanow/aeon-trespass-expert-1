@@ -4,6 +4,7 @@ import { loadRenderPage } from '../lib/api/loadRenderPage';
 import type { RenderPageData } from '../lib/render/types';
 import { BlockRenderer } from '../components/reader/BlockRenderer';
 import { FacsimilePage } from '../components/reader/FacsimilePage';
+import { FeedbackButton } from '../components/reader/FeedbackButton';
 import { SourcePageBadge } from '../components/nav/SourcePageBadge';
 import { GlossaryProvider } from '../contexts/GlossaryContext';
 
@@ -78,6 +79,7 @@ export function ReaderPage() {
             ))
           )}
         </section>
+        <FeedbackButton documentId={documentId!} edition={edition!} pageId={pageId!} />
       </article>
     </GlossaryProvider>
   );
