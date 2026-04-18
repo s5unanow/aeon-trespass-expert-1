@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+from typer.testing import CliRunner
+
 from atr_pipeline.cli.commands.qa import _print_summary
+from atr_pipeline.cli.main import app
 from atr_schemas.enums import QALayer, Severity
 from atr_schemas.qa_record_v1 import QARecordV1
 
@@ -76,3 +79,14 @@ def test_print_summary_all_waived(capsys: object) -> None:
     captured = capsys.readouterr()  # type: ignore[union-attr]
     assert "Waived: 1 finding(s)" in captured.out
     assert "TOTAL" not in captured.out
+
+
+def test_apply_without_auto_fix_errors() -> None:
+    """`--apply` without `--auto-fix` exits non-zero before touching the store."""
+    runner = CliRunner()
+    result = runner.invoke(app, ["qa", "--doc", "walking_skeleton", "--apply"])
+    # Exit code 2 (not 0, not "missing artifacts" 1) — this is the guard rejecting
+    # the flag combination *before* any config or artifact work.
+    assert result.exit_code == 2
+    combined = (result.stdout or "") + (result.stderr or "")
+    assert "requires --auto-fix" in combined

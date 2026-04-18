@@ -92,11 +92,31 @@ def patch_cmd(
 @app.command(name="qa")
 def qa_cmd(
     doc: str = typer.Option(..., "--doc", help="Document id"),
+    review_pack: bool = typer.Option(
+        False,
+        "--review-pack",
+        help="Generate review pack JSON for blocking findings",
+    ),
+    auto_fix: bool = typer.Option(
+        False,
+        "--auto-fix",
+        help="Generate patch files for deterministic auto-fixes (dry-run by default)",
+    ),
+    apply_fixes: bool = typer.Option(
+        False,
+        "--apply",
+        help="Apply generated patches and re-run QA. Requires --auto-fix.",
+    ),
 ) -> None:
     """Run QA checks on existing artifacts."""
     from atr_pipeline.cli.commands.qa import qa as _qa
 
-    _qa(doc=doc)
+    _qa(
+        doc=doc,
+        review_pack=review_pack,
+        auto_fix=auto_fix,
+        apply_fixes=apply_fixes,
+    )
 
 
 @app.command(name="verify-extraction")

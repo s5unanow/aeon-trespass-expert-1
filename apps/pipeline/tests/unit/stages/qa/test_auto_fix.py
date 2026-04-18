@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from atr_pipeline.stages.qa.auto_fix import generate_patches_for_page
-from atr_schemas.enums import QALayer, Severity
+from atr_pipeline.store.artifact_ref import ArtifactRef
+from atr_schemas.enums import PatchTargetKind, QALayer, Severity
 from atr_schemas.qa_record_v1 import AutoFix, QARecordV1
 from atr_schemas.render_page_v1 import (
     RenderPageMeta,
@@ -218,3 +219,56 @@ class TestMixedFixers:
         assert patch is not None
         assert patch.patch_id.startswith("auto-fix-p0001-")
         assert patch.author == "qa-auto-fix"
+        # No target_ref → empty string, but target_kind still set to render_page
+        assert patch.target_artifact_ref == ""
+        assert patch.target_kind == PatchTargetKind.RENDER_PAGE
+
+
+class TestTargetRef:
+    def test_stamps_target_artifact_ref_when_provided(self) -> None:
+        page = _page([_para("b1", "AM0308 here")])
+        records = [_record("DECORATIVE_ICON_LEAKED", "b1", "remove_decorative")]
+        ref = ArtifactRef(
+            document_id="doc",
+            schema_family="render_page.v1",
+            scope="page",
+            entity_id="p0001",
+            content_hash="abc123def456",
+        )
+
+        patch = generate_patches_for_page(records, page, target_ref=ref)
+
+        assert patch is not None
+        assert patch.target_artifact_ref == "doc/render_page.v1/page/p0001/abc123def456.json"
+        assert patch.target_kind == PatchTargetKind.RENDER_PAGE
+
+
+class TestWaivedSkipping:
+    def test_waived_records_produce_no_patch(self) -> None:
+        page = _page([_para("b1", "AM0308 here")])
+        record = _record("DECORATIVE_ICON_LEAKED", "b1", "remove_decorative")
+        record_waived = record.model_copy(update={"waived": True})
+
+        patch = generate_patches_for_page([record_waived], page)
+
+        assert patch is None
+
+    def test_waived_records_are_excluded_from_mixed_set(self) -> None:
+        page = _page(
+            [
+                _para("b1", "AM0308 here"),
+                _para("b2", "same text"),
+                _para("b3", "same text"),
+            ]
+        )
+        waived = _record("DECORATIVE_ICON_LEAKED", "b1", "remove_decorative").model_copy(
+            update={"waived": True},
+        )
+        active = _record("DUPLICATE_CONTENT", "b3", "delete_duplicate")
+
+        patch = generate_patches_for_page([waived, active], page)
+
+        assert patch is not None
+        # Only the duplicate delete op remains — the waived decorative fix is dropped.
+        assert len(patch.operations) == 1
+        assert patch.operations[0].op == "delete"
