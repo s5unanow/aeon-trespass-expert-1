@@ -45,6 +45,11 @@
       "title": "Run Id",
       "type": "string"
     },
+    "edition": {
+      "default": "",
+      "title": "Edition",
+      "type": "string"
+    },
     "counts": {
       "$ref": "#/$defs/SeverityCounts"
     },
