@@ -28,7 +28,24 @@ jobs:
       - name: Build
         run: pnpm --filter @atr/web run build
 
+      # Defense-in-depth: refuse to run if the resolved test script contains
+      # `--update-snapshots`. Regenerating baselines silently inside CI would
+      # mask regressions by overwriting the committed ground truth. Developers
+      # update baselines intentionally on their own machines via
+      # `pnpm --filter @atr/web run test:visual:update` and commit the diffs.
+      # See CLAUDE.md "Visual regression gate (S5U-599)" for the full flow.
+      - name: Guard against in-CI baseline regeneration
+        run: |
+          script=$(node -e "console.log(require('./apps/web/package.json').scripts['test:e2e'] || '')")
+          echo "Resolved test:e2e script: ${script}"
+          if printf '%s' "${script}" | grep -q -- '--update-snapshots'; then
+            echo "::error::CI test:e2e script contains --update-snapshots; this would silently overwrite committed baselines. Remove the flag."
+            exit 1
+          fi
+
       - name: Run e2e and visual regression tests
+        # CI=true (set by GitHub Actions automatically) makes Playwright fail
+        # when a baseline PNG is missing instead of silently creating one.
         run: pnpm --filter @atr/web run test:e2e
 
       - name: Upload test results

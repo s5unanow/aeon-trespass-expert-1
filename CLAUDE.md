@@ -52,7 +52,7 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 7. `tsc --noEmit` — frontend type check
 8. `pytest -x -q --timeout=60 -m "not slow"` — fast test subset only
 
-### CI (GitHub Actions, 9 + 4 extra)
+### CI (GitHub Actions, 9 + 5 extra)
 
 Runs on every push to `main` and on every PR. Includes all 9 local gates plus:
 
@@ -60,13 +60,23 @@ Runs on every push to `main` and on every PR. Includes all 9 local gates plus:
 10. `validate_fixture_manifest.py` — fixture integrity checks. *CI-only because it can be slow with large fixture sets.*
 11. `check_extraction_scope.py` — detects extraction-related changes in PRs. *CI-only because it compares against the PR base branch.*
 12. `check_golden_refresh.py` — validates golden file updates when extraction scope is detected. *CI-only because it requires base-branch comparison and only triggers conditionally.*
+13. `visual-regression / visual` — Playwright `toHaveScreenshot` assertions against committed baselines under `apps/web/tests/e2e/__snapshots__/`, enforced at `maxDiffPixelRatio: 0.005`. A missing or mismatched baseline fails the job and blocks merge. See "Visual regression gate (S5U-599)" below for the baseline-update flow. *CI-only because baseline rendering must happen on the pinned Linux runner; developers regenerate locally only when changing a curated component intentionally.*
 
 CI also runs `pytest --tb=short` (full suite — includes slow tests, no timeout), unlike the pre-commit fast subset.
+
+### Visual regression gate (S5U-599)
+
+- **Baselines** live at `apps/web/tests/e2e/__snapshots__/*.png` and are committed to git. They are the ground truth; every PR is diffed against them.
+- **Threshold**: `maxDiffPixelRatio: 0.005` (0.5% of pixels may differ). Configured centrally in `apps/web/playwright.config.ts`. Do not loosen without a linked issue explaining why. Avoid per-test overrides; if you need one, justify in the PR.
+- **Intentional baseline update** (legitimate UI change): run `pnpm --filter @atr/web run test:visual:update` locally, inspect the regenerated PNGs under `apps/web/tests/e2e/__snapshots__/`, and commit the diff in a dedicated commit (`S5U-XXX: refresh visual baselines — <why>`). The reviewer must confirm the visual delta is intentional.
+- **CI never regenerates baselines**: `.github/workflows/visual-regression.yml` includes a guard step that fails the job if the resolved `test:e2e` script contains `--update-snapshots`. Do not add that flag to the CI command under any circumstance.
+- **New curated pages**: add a `toHaveScreenshot('page-id.png')` assertion in `apps/web/tests/e2e/*.spec.ts`, generate the baseline locally via `test:visual:update`, and commit both the spec change and the PNG.
+- **Platform note**: baselines are captured on the Linux CI runner. On macOS/Windows dev machines, anti-aliasing and font hinting typically produce 2–4% pixel drift even without code changes, which will exceed the 0.005 threshold. This is expected. The authoritative run is CI. When you refresh baselines locally to push an intentional UI change, CI will re-verify them on Linux; if they fail on CI, pull the refreshed PNGs from the CI test-results artifact and commit those instead.
 
 ### What "passing" means
 
 - **Local green** = safe to commit and push, but not sufficient for merge.
-- **CI green** = all 13 gates pass — required for merge. "Definition of Done" means CI green.
+- **CI green** = all 14 gates pass — required for merge. "Definition of Done" means CI green.
 
 ## Development workflow (MANDATORY)
 
@@ -98,7 +108,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] New/changed code has tests (unless pure config/docs change)
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
-- [ ] CI green after push (all 13 gates — local green alone is not sufficient)
+- [ ] CI green after push (all 14 gates — local green alone is not sufficient)
 - [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 
 ### 6. Sub-agent code review (MANDATORY before PR)
@@ -115,7 +125,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 ### 8. Wait for CI
 - Check CI status: `gh pr checks <pr-number> --watch`
 - If CI fails, fix and push — do not merge with red CI
-- **Branch protection enforces this**: GitHub blocks merge if any required check (`python / test`, `web / test`, `visual-regression / visual`) is red
+- **Branch protection enforces this**: GitHub blocks merge if any required check (`python / test`, `web / test`, `visual-regression / visual`) is red. The visual-regression check is a hard gate — if it fails, either fix the regression or regenerate baselines per the "Visual regression gate (S5U-599)" section above
 
 ### 9. Merge and sync
 - Merge via: `gh pr merge <pr-number> --squash --delete-branch`

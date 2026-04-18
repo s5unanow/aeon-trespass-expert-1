@@ -8,7 +8,12 @@ export default defineConfig({
     reporter: 'list',
     snapshotPathTemplate: '{testDir}/{testFileDir}/__snapshots__/{arg}{ext}',
     expect: {
-        toHaveScreenshot: { maxDiffPixelRatio: 0.05 },
+        // Visual regression enforcement (S5U-599):
+        // 0.5% pixel-ratio tolerance — tight enough to catch layout/color/typography
+        // regressions while absorbing anti-aliasing / sub-pixel rounding noise across
+        // OS renderers. Do NOT loosen without a linked issue explaining why; per-test
+        // overrides should be reviewed carefully in PRs.
+        toHaveScreenshot: { maxDiffPixelRatio: 0.005 },
     },
     use: {
         baseURL: 'http://localhost:4173',
