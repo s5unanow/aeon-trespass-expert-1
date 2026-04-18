@@ -1,0 +1,24 @@
+name: Visual Gate Scope
+
+# Scans every workflow under .github/ and every apps/web/package.json scripts
+# entry for Playwright flags that would bypass the visual-regression baseline
+# gate. Runs as a required check so a PR that edits CI (rather than just
+# package.json) still trips the gate. See S5U-608 and
+# scripts/check_visual_gate_scope.py for the full list of vectors covered.
+
+on:
+  workflow_call:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run visual-gate scope scanner
+        run: python scripts/check_visual_gate_scope.py
