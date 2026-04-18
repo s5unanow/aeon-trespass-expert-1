@@ -13,5 +13,8 @@ jobs:
   web:
     uses: ./.github/workflows/web-tests.yml
 
+  visual-gate-scope:
+    uses: ./.github/workflows/visual-gate-scope.yml
+
   visual-regression:
     uses: ./.github/workflows/visual-regression.yml
