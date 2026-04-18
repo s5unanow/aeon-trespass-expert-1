@@ -92,3 +92,41 @@ When creating fix issues for post-ship audit findings:
 - Always include `Bug` label (or `Regression` if it broke prior behavior)
 - Reference the original issue in the description (e.g., "post-ship audit of S5U-XXX")
 - Set `blockedBy` if the fix depends on another fix landing first
+
+## Coverage table format (multi-bullet issues)
+
+When the Linear issue you are shipping has **≥3 explicit bullets across its "Fix" + "Success criteria" sections**, the PR body must include a **Coverage table** that maps each bullet to the commit or file that addresses it. This is a CLAUDE.md Definition-of-Done requirement (step 5) motivated by S5U-616 after repeated dropped-bullet regressions (S5U-594 → S5U-609, S5U-595 → S5U-601, S5U-605).
+
+**When the rule fires:** count bullets only in the "Fix" and "Success criteria" sections of the Linear issue. Bullets in "Problem," "Must not break," or "Out of scope" do **not** count. If the combined count is `< 3`, the table is optional (reviewer judgment). If the issue uses prose instead of bullets, the table is optional — reviewer falls back to qualitative judgment.
+
+**Table format** — put this in the PR body under a `## Coverage` heading:
+
+```markdown
+## Coverage
+
+| # | Bullet (verbatim from Linear)                                           | Addressed by                              |
+|---|-------------------------------------------------------------------------|-------------------------------------------|
+| F1 | (Fix bullet 1) Add field `X` to model                                  | `apps/pipeline/src/...model.py` (this PR) |
+| F2 | (Fix bullet 2) Export `X` in artifact bundle                           | `scripts/export_to_web.py` (this PR)      |
+| F3 | (Fix bullet 3) Render `X` as tooltip in reader                         | deferred to S5U-YYY (follow-up filed)     |
+| S1 | (Success criterion 1) p0036 shows tooltip on hover                     | `apps/web/tests/e2e/tooltip.spec.ts`      |
+| S2 | (Success criterion 2) EN export never includes RU content              | `tests/test_export_validation.py` (existing coverage preserved) |
+```
+
+- Prefix row IDs with `F` for Fix bullets and `S` for Success criteria (order matches the Linear issue).
+- Quote or paraphrase each bullet tightly enough that the reviewer can match it to the Linear source.
+- In the **Addressed by** column, cite one of:
+  - A file path in the PR diff (`path/to/file.ext`) — the reviewer will skim the diff to confirm.
+  - A commit SHA on this branch.
+  - An existing file (for preserved invariants) with a brief note.
+  - `deferred to S5U-YYY` with a real follow-up issue ID (the follow-up must exist in Linear and not be Canceled; reviewer will look it up).
+- If a single file/commit addresses multiple bullets, list it on each row — duplication is fine.
+- Do **not** merge rows or collapse bullets. One row per bullet, verbatim.
+
+**What the independent reviewer probes** (`.claude/prompts/review.md` check #19):
+- Counts the Linear issue's Fix + Success criteria bullets. If `≥ 3`, the Coverage table is mandatory.
+- Walks each row and confirms the cited file/commit actually implements the bullet (not just a plausible-looking path).
+- For deferred rows, calls `mcp__plugin_linear_linear__get_issue` on the cited follow-up ID and confirms it exists and is not Canceled.
+- Blocks (CRITICAL) on any unaddressed bullet, any missing table on a ≥3-bullet issue, or any fake/Canceled follow-up reference.
+
+**Worked example** — S5U-594 (reader feedback button) had 5 bullets: `role="dialog"`, `aria-modal="true"`, focus trap, focus restoration, initial focus. A compliant Coverage table would have listed all 5 rows. The actual PR #242 would have had rows only for #1–#2, making rows #3–#5 missing entries that the reviewer (per check #19) would have flagged as CRITICAL — catching the gap before merge rather than after (it shipped as S5U-609).
