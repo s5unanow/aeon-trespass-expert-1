@@ -73,8 +73,8 @@ def test_walking_skeleton_end_to_end(tmp_path: Path) -> None:  # noqa: PLR0915
     assert response.meta.provider == "mock"
 
     # 6. Validate translation
-    errors = validate_translation(batch, result)
-    assert errors == [], f"Translation validation failed: {errors}"
+    records = validate_translation(batch, result)
+    assert records == [], f"Translation validation failed: {records}"
 
     # 7. Build Russian PageIR from translation result
     ru_blocks = []

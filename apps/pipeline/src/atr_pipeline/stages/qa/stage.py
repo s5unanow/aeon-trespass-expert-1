@@ -13,6 +13,7 @@ from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1, SeverityCounts
 from atr_schemas.render_page_v1 import RenderPageV1
+from atr_schemas.translation_qa_record_set_v1 import TranslationQARecordSetV1
 
 
 class QAStage:
@@ -57,6 +58,8 @@ class QAStage:
             records: list[QARecordV1] = []
             for rule in rules:
                 records.extend(rule.evaluate(page_ctx))
+            if not source_only:
+                records.extend(self._load_translation_records(ctx, page_id))
             for r in records:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
@@ -144,6 +147,20 @@ class QAStage:
             entity_id=page_id,
         )
         return PageIRV1.model_validate(data) if data else None
+
+    @staticmethod
+    def _load_translation_records(ctx: StageContext, page_id: str) -> list[QARecordV1]:
+        """Load translation-validator QA records persisted by the translate stage."""
+        data = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family="translation_qa_record_set.v1",
+            scope="page",
+            entity_id=page_id,
+        )
+        if not data:
+            return []
+        record_set = TranslationQARecordSetV1.model_validate(data)
+        return list(record_set.records)
 
     @staticmethod
     def _load_render(ctx: StageContext, page_id: str) -> RenderPageV1 | None:

@@ -30,6 +30,7 @@ export * as sourceManifestV1 from './generated/source_manifest_v1';
 export * as symbolCatalogV1 from './generated/symbol_catalog_v1';
 export * as symbolMatchSetV1 from './generated/symbol_match_set_v1';
 export * as translationBatchV1 from './generated/translation_batch_v1';
+export * as translationQaRecordSetV1 from './generated/translation_qa_record_set_v1';
 export * as translationResultV1 from './generated/translation_result_v1';
 export * as waiverSetV1 from './generated/waiver_set_v1';
 
