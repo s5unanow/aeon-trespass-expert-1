@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext, useParams } from 'react-router';
+import { useLocation, useOutletContext, useParams } from 'react-router';
 import { loadRenderPage } from '../lib/api/loadRenderPage';
 import type { RenderPageData } from '../lib/render/types';
 import { BlockRenderer } from '../components/reader/BlockRenderer';
@@ -18,6 +18,7 @@ export function ReaderPage() {
   const pageOffset = outletContext?.pageOffset ?? 0;
   const [page, setPage] = useState<RenderPageData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     if (!documentId || !pageId || !edition) return;
@@ -37,6 +38,27 @@ export function ReaderPage() {
       controller.abort();
     };
   }, [documentId, edition, pageId]);
+
+  // Scroll to the hash target and activate the :target highlight once the page
+  // content has rendered. Two quirks handled here:
+  //   1. React Router pushes history via pushState, so the element often mounts
+  //      after the browser's native anchor scroll fired — we re-scroll.
+  //   2. pushState does NOT update the active fragment, so :target never
+  //      matches in an SPA navigation. If it doesn't, reassign location.hash
+  //      to force the browser to re-evaluate :target (after we've already
+  //      scrolled, so the user won't see a jump).
+  useEffect(() => {
+    if (!page) return;
+    const hash = location.hash.slice(1);
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (!el) return;
+    el.scrollIntoView({ block: 'start' });
+    if (!el.matches(':target')) {
+      window.location.hash = '';
+      window.location.hash = hash;
+    }
+  }, [page, location.hash]);
 
   if (error) {
     return <div role="alert">Error: {error}</div>;

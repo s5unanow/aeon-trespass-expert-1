@@ -21,6 +21,15 @@
   text-decoration-color: var(--color-link-hover);
 }
 
+/* Highlight the block matching the URL fragment (e.g. QA dashboard click-through). */
+.reader-content :target {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  border-radius: var(--radius-sm);
+  scroll-margin-top: calc(var(--header-height) + var(--space-4));
+}
+
 .reader-heading {
   margin-top: var(--space-6);
   margin-bottom: var(--space-3);
