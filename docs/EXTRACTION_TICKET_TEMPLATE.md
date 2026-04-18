@@ -38,6 +38,8 @@ _List all issues that must be Done before this can start._
 - [ ] All blockers verified as Done in Linear
 - [ ] Issue set to In Progress
 - [ ] Branch created from main: `s5unanow/s5u-XXX-<description>`
+- [ ] "Must Refuse" section populated (required for Bug/safety-gate/cross-system-review; see `.claude/prompts/linear-conventions.md`)
+- [ ] "Semantically-Equivalent Threats" section populated (required for safety-gate/cross-system-review/Bug that add enforcement logic)
 
 ### Schema Changes (if applicable)
 
@@ -94,8 +96,37 @@ _How will we know this issue is done correctly?_
 1. _Specific measurable outcome 1_
 2. _Specific measurable outcome 2_
 
+## Must Refuse
+
+_Adversarial inputs, invalid states, and out-of-contract callers this change must reject at runtime. See `.claude/prompts/linear-conventions.md` § Must refuse for the full drafting guide._
+
+_Required for `Bug` / `safety-gate` / `cross-system-review`; strongly recommended for any extraction change that touches filesystem paths, parses untrusted PDFs, or ingests fixture input derived from user identifiers._
+
+- `<input or condition>` → `<refusal behavior>`
+- _e.g._ Fixture `doc_id` containing `..` or absolute paths → reject during ingestion, log structured error, fail the pytest session
+- _e.g._ Schema version mismatch between stage output and downstream consumer → refuse to proceed, do not write partial artifacts
+- _e.g._ Page ID collision across editions → refuse to overwrite, surface as QA finding
+
+Write **"None — this change has no untrusted input surface."** if genuinely N/A. Do not omit the section.
+
+## Semantically-Equivalent Threats
+
+_For any validator, gate, or check this ticket adds or modifies, enumerate the equivalent invocation patterns that must also be covered. See `.claude/prompts/linear-conventions.md` § Semantically-equivalent threats, and `.claude/prompts/plan.md` §4b, for the full enumeration contract._
+
+_Required for `safety-gate` / `cross-system-review` / `Bug` that add enforcement logic; optional for pure extraction-algorithm changes with no enforcement surface._
+
+| Vector | Covered? |
+|--------|----------|
+| _e.g._ CLI short flag vs long flag | _Yes/No — how_ |
+| _e.g._ Env-var equivalent | _Yes/No — how_ |
+| _e.g._ Wrapper script / `pnpm` / `uv run` passthrough | _Yes/No — how_ |
+| _e.g._ Sibling flag with equivalent effect | _Yes/No — how_ |
+| _e.g._ Config-key alias (snake vs camel, deprecated spelling) | _Yes/No — how_ |
+
+Write **"N/A — this change adds no enforcement logic (<one-line justification>)"** if genuinely absent. Unjustified "N/A" on a required-label issue is a reviewer BLOCK cue.
+
 ## Non-Goals
 
-_What is explicitly out of scope?_
+_What is explicitly out of scope? (Distinct from "Must Refuse" — non-goals are what the change won't implement; must-refuse is what the implementation must actively reject at runtime.)_
 
 - _Non-goal 1_

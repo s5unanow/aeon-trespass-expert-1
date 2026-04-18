@@ -81,6 +81,76 @@ If there are genuinely no invariants at risk, write "None identified" — do not
 
 Skip this section only for `Feature` issues (net-new capabilities with no existing behavior to protect).
 
+## Must refuse (required for Bug, safety-gate, cross-system-review; recommended for Feature/Improvement/Refactor touching security-sensitive paths)
+
+Enumerate the **adversarial inputs, invalid states, and out-of-contract callers the change must reject at runtime**. This section exists because happy-path descriptions keep shipping bugs that an explicit refusal list would have caught: S5U-594 → S5U-607 (path traversal via unsanitized `page_id`), S5U-595 → S5U-610 (edition cross-contamination on a QA URL the pipeline never filtered by).
+
+**"Must refuse" ≠ "Out of scope".** "Out of scope" is what this change **won't implement**. "Must refuse" is what the implemented code **must actively reject at runtime**. Never merge the two. If the rejection is a non-goal ("we're not validating page_ids yet"), call it out in **both** sections — once as scope, once as a documented refusal gap.
+
+**When it fires:**
+- **Required** for issues labeled `Bug`, `safety-gate`, or `cross-system-review`.
+- **Strongly recommended** for `Feature` / `Improvement` / `Refactor` when the change touches **filesystem paths, user-supplied identifiers that flow into I/O, serialization, external process invocation, network boundaries, or authentication/authorization**.
+- **Optional** otherwise.
+
+**How to draft this section** — list concrete refusals, not abstract categories:
+
+1. **Input shape** — which fields come from untrusted callers? Name each, and for each list at least one invalid value the code must reject (out-of-range, wrong type, null, empty, oversized).
+2. **Filesystem and I/O** — if the code writes to paths derived from input: enumerate path-traversal vectors (`..`, absolute paths, symlinks, null bytes, encoded separators), forbidden characters, length limits, reserved names.
+3. **Cross-tenant / cross-edition isolation** — if the code filters by edition / language / document / user: enumerate what leaks if the filter is dropped or bypassed.
+4. **Concurrency** — if the code writes shared state: enumerate the race conditions it must refuse (lost updates, double-writes, partial state).
+5. **Contract violations** — inputs that are well-formed but out of contract for this caller (wrong IR version, mismatched schema, stale cache key).
+
+**Format:** bullet list. Each bullet: `"<input/condition> → <refusal behavior>"`.
+
+**Worked example (retrospective, drafted as if S5U-594 had carried this section):**
+
+> - `page_id` containing `..` / absolute paths / null bytes → reject with 400, do not touch filesystem
+> - `page_id` not matching `^[a-z0-9_-]{1,64}$` → reject with 400
+> - `issue_type` outside the enum `{rendering, translation, layout, other}` → reject with 400
+> - `timestamp` older than 24 h or in the future → reject with 400
+> - Request body > 10 KiB → reject with 413 before deserialization
+> - Any filesystem write path that resolves outside `artifacts/feedback/<edition>/<page_id>/` after `realpath` → refuse the write, log structured error
+
+If none of these apply (e.g., pure refactor with no input surface), write **"None — this change has no untrusted input surface."** Do not omit the section.
+
+A pre-ship reviewer can cite any specific "Must refuse" bullet to justify a BLOCK verdict when the diff fails to implement it.
+
+## Semantically-equivalent threats (required for safety-gate, cross-system-review, Bug; optional for Feature/Improvement/Refactor)
+
+For any **enforcement, validator, gate, or check** this change adds or modifies, enumerate the **semantically-equivalent ways the condition can be triggered or bypassed**. This section exists because S5U-599 enforced `--update-snapshots` but not the equivalent `-u`, `--ignore-snapshots`, workflow-level passthrough, or sibling-workflow invocation — shipping a gate with four bypasses (S5U-608).
+
+**When it fires:**
+- **Required** for issues labeled `safety-gate`, `cross-system-review`, or `Bug` where the fix adds/tightens a check.
+- **Optional but recommended** for `Feature` / `Improvement` / `Refactor` that add any kind of validator, guard, or filter.
+- Skip for pure refactors or docs changes with no enforcement logic.
+
+**How to draft this section** — enumerate the tool surface, not your mental model of it:
+
+1. **Short vs long flags** — if the gate reads a CLI flag, list every short/long/alias form the tool accepts (`<tool> --help` output is ground truth, not memory).
+2. **Environment variables** — does the tool honor env vars with the same effect as the flag? (`PW_UPDATE_SNAPSHOTS`, `CI`, `NO_COLOR`, etc.)
+3. **Wrapper scripts / passthrough** — `pnpm <script>` shortcuts, `npx <bin>`, direct `node_modules/.bin/<bin>`, workflow `run:` passthrough (`pnpm test -- -u`), composite-action inputs.
+4. **Sibling flags with equivalent effect** — different flag, same outcome (`--ignore-snapshots` disables the check instead of rewriting baselines).
+5. **Schema aliases / config keys** — if validating a config field, list every alias (`snake_case`, `camelCase`, deprecated spellings) the schema accepts.
+6. **Coverage locations** — every file, workflow, package.json script, composite action, and documentation page the threat can appear in.
+
+**Format:** table or bullet list. For each vector state **covered** (and how) or **out of scope** (and why).
+
+**Worked example (retrospective, drafted as if S5U-599 had carried this section):**
+
+> | Vector                                           | Covered? |
+> |--------------------------------------------------|----------|
+> | `--update-snapshots` in `package.json`           | Yes — grep rule in `visual-regression.yml` |
+> | `-u` short flag                                  | Yes — grep rule matches both forms |
+> | `--ignore-snapshots` (sibling flag, same effect) | Yes — grep rule includes this alias |
+> | `pnpm test -- -u` (workflow passthrough)         | Yes — scan covers all workflow `run:` lines |
+> | New sibling workflow invoking Playwright         | Yes — `visual-gate-scope / scan` walks every `.github/workflows/*.yml` |
+> | `PLAYWRIGHT_UPDATE_SNAPSHOTS=1` env var          | Out of scope — Playwright does not honor this env var (verified via `--help`); note as "re-audit if upstream adds env-var support" |
+> | Branch-protection required-check list            | Out of scope for this ticket — manual audit, tracked in follow-up |
+
+This enumeration feeds directly into `.claude/prompts/plan.md` §4b (equivalence classes) for the downstream planner. Populating it well at the Linear level saves the planner from re-deriving it badly.
+
+**"N/A" is allowed only with justification.** `"Semantically-equivalent threats: N/A — this change adds no enforcement logic (pure render refactor)"` is acceptable. `"Semantically-equivalent threats: N/A"` with no justification is a reviewer BLOCK cue on a required-label issue.
+
 ## Dependencies
 
 Set `blockedBy` when the issue genuinely cannot start until another is Done.
