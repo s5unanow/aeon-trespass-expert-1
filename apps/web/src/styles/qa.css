@@ -136,13 +136,7 @@
   padding: var(--space-8) 0;
 }
 
-/* --- Per-page badge shown in the reader header --- */
-
-.reader-page-header {
-  display: flex;
-  gap: var(--space-2);
-  align-items: center;
-}
+/* --- Per-page badge shown in the app header --- */
 
 .qa-page-badge {
   display: inline-flex;

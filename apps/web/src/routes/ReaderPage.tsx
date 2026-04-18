@@ -5,7 +5,6 @@ import type { RenderPageData } from '../lib/render/types';
 import { BlockRenderer } from '../components/reader/BlockRenderer';
 import { FacsimilePage } from '../components/reader/FacsimilePage';
 import { SourcePageBadge } from '../components/nav/SourcePageBadge';
-import { QaPageBadge } from '../components/nav/QaPageBadge';
 import { GlossaryProvider } from '../contexts/GlossaryContext';
 
 export function ReaderPage() {
@@ -58,11 +57,8 @@ export function ReaderPage() {
   return (
     <GlossaryProvider documentId={documentId!} edition={edition!}>
       <article className="reader-page fade-in">
-        <header className="reader-page-header">
+        <header>
           <SourcePageBadge pageNumber={page.page.source_page_number} />
-          {documentId && edition && pageId && (
-            <QaPageBadge documentId={documentId} edition={edition} pageId={pageId} />
-          )}
         </header>
         <section className="reader-content">
           {page.presentation_mode === 'facsimile' && page.facsimile ? (

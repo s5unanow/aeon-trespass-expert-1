@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router';
 import { EditionSwitcher } from '../nav/EditionSwitcher';
+import { QaPageBadge } from '../nav/QaPageBadge';
 
 interface AppHeaderProps {
   documentId: string;
@@ -80,6 +81,9 @@ export function AppHeader({
               QA
             </Link>
           </>
+        )}
+        {pageId && !isSubPage && (
+          <QaPageBadge documentId={documentId} edition={edition} pageId={pageId} />
         )}
         {pageId && (
           <EditionSwitcher documentId={documentId} pageId={pageId} currentEdition={edition} />
