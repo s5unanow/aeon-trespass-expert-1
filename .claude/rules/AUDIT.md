@@ -78,7 +78,8 @@ still correct and unchanged.
 
 Codegen direction (Pydantic → JSON Schema → TS) is enforced by
 `make codegen` + `make check-codegen` + `scripts/check_codegen_fresh.sh`.
-`packages/schemas/{python,jsonschema,ts}` match the described layout.
+`packages/schemas/python/`, `packages/schemas/jsonschema/`, and
+`packages/schemas/ts/` match the described layout.
 
 ### `web.md` — accurate
 
