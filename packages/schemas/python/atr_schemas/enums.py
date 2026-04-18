@@ -140,3 +140,12 @@ class OccurrenceContext(StrEnum):
     BLOCK_ATTACHED = "block_attached"
     DECORATION = "decoration"
     REGION_FLOAT = "region_float"
+
+
+class FeedbackIssueType(StrEnum):
+    """Coarse classification of reader-submitted page feedback."""
+
+    TRANSLATION = "translation"
+    EXTRACTION = "extraction"
+    RENDERING = "rendering"
+    OTHER = "other"
