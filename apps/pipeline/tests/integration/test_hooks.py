@@ -85,8 +85,12 @@ def _build_pr_check_script(
         # Inline a hardcoded HEAD_TIME instead of calling git — tests control it.
         staleness_block = f"""
 HEAD_TIME={head_time}
-REVIEW_MTIME=$(stat -c %Y "$REVIEW_FILE" 2>/dev/null || stat -f %m "$REVIEW_FILE" 2>/dev/null || echo 0)
-if [ "$HEAD_TIME" -gt 0 ] && [ "$REVIEW_MTIME" -gt 0 ] && [ "$REVIEW_MTIME" -lt "$HEAD_TIME" ]; then
+REVIEW_MTIME=$(stat -c %Y "$REVIEW_FILE" 2>/dev/null \\
+  || stat -f %m "$REVIEW_FILE" 2>/dev/null \\
+  || echo 0)
+if [ "$HEAD_TIME" -gt 0 ] \\
+  && [ "$REVIEW_MTIME" -gt 0 ] \\
+  && [ "$REVIEW_MTIME" -lt "$HEAD_TIME" ]; then
   exit 1
 fi
 """
