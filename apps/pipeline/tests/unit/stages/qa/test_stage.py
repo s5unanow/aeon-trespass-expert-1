@@ -170,7 +170,70 @@ def test_qa_picks_up_user_feedback_for_current_edition(tmp_path: Path) -> None:
     assert summary.counts.info >= 1
 
 
-def _load_json(path: Path) -> dict:
+def test_qa_all_edition_run_loads_both_feedback_editions(tmp_path: Path) -> None:
+    """``edition="all"`` must merge EN + RU feedback into the same run.
+
+    Guards against a regression where the loader silently looked up a
+    ``user_feedback_record_set.v1.all`` artifact that ingest never writes.
+    """
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+
+    en_dir = ctx.artifact_store.root / ctx.document_id / "page_ir.v1.en" / "page"
+    page_id = sorted(p.name for p in en_dir.iterdir() if p.is_dir())[0]
+
+    submissions = [
+        (
+            FeedbackSubmissionV1.model_validate(
+                {
+                    "document_id": ctx.document_id,
+                    "edition": "ru",
+                    "page_id": page_id,
+                    "issue_type": "translation",
+                    "note": "ru",
+                    "url": "",
+                    "user_agent": "",
+                    "timestamp": "2026-04-18T12:34:56.000Z",
+                }
+            ),
+            "ru.json",
+        ),
+        (
+            FeedbackSubmissionV1.model_validate(
+                {
+                    "document_id": ctx.document_id,
+                    "edition": "en",
+                    "page_id": page_id,
+                    "issue_type": "extraction",
+                    "note": "en",
+                    "url": "",
+                    "user_agent": "",
+                    "timestamp": "2026-04-18T13:00:00.000Z",
+                }
+            ),
+            "en.json",
+        ),
+    ]
+    persist_submissions(store=ctx.artifact_store, submissions=submissions)
+    # Default edition in StageContext is "all".
+    assert ctx.edition == "all"
+
+    result = execute_stage(QAStage(), ctx)
+    assert result.success
+    assert result.artifact_ref is not None
+
+    summary = QASummaryV1.model_validate(ctx.artifact_store.get_json(result.artifact_ref))
+    records: list[QARecordV1] = []
+    for ref in summary.record_refs:
+        record_path = ctx.artifact_store.root / ref
+        records.append(QARecordV1.model_validate(_load_json(record_path)))
+    user_feedback_records = [r for r in records if r.layer == QALayer.USER_FEEDBACK]
+    codes = {r.code for r in user_feedback_records}
+    assert codes == {"USER_FEEDBACK_TRANSLATION", "USER_FEEDBACK_EXTRACTION"}
+
+
+def _load_json(path: Path) -> dict[str, object]:
     import json
 
-    return json.loads(path.read_text())  # type: ignore[no-any-return]
+    data: dict[str, object] = json.loads(path.read_text())
+    return data

@@ -169,15 +169,24 @@ class QAStage:
     def _load_user_feedback_records(ctx: StageContext, page_id: str) -> list[QARecordV1]:
         """Load reader-feedback QA records persisted by the ingest script.
 
-        Uses the QA stage's current edition — feedback for the other edition
-        lives under a different schema family and is ignored here.
+        When the QA stage runs edition-specific (``ctx.edition`` is ``"en"``
+        or ``"ru"``), only that edition's feedback is loaded. When the stage
+        runs with the default ``edition="all"`` — still common in mixed
+        builds — both editions' feedback is merged so the summary doesn't
+        silently drop reader-submitted findings.
         """
-        return load_user_feedback_records(
-            store=ctx.artifact_store,
-            document_id=ctx.document_id,
-            edition=ctx.edition,
-            page_id=page_id,
-        )
+        editions = ("en", "ru") if ctx.edition == "all" else (ctx.edition,)
+        records: list[QARecordV1] = []
+        for edition in editions:
+            records.extend(
+                load_user_feedback_records(
+                    store=ctx.artifact_store,
+                    document_id=ctx.document_id,
+                    edition=edition,
+                    page_id=page_id,
+                )
+            )
+        return records
 
     @staticmethod
     def _load_render(ctx: StageContext, page_id: str) -> RenderPageV1 | None:
