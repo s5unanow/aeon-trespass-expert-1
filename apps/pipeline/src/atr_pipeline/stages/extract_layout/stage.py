@@ -11,7 +11,7 @@ from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
 from atr_pipeline.stages.extract_layout.docling_adapter import extract_layout_docling
 from atr_pipeline.stages.extract_layout.paddleocr_adapter import extract_layout_ocr
 from atr_schemas.enums import StageScope
-from atr_schemas.layout_page_v1 import LayoutPageV1
+from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1
 from atr_schemas.native_page_v1 import NativePageV1
 
 
@@ -133,7 +133,32 @@ class ExtractLayoutStage:
         if primary is not None:
             return primary
 
-        return LayoutPageV1(document_id=native.document_id, page_id=native.page_id)
+        ctx.logger.warning(
+            "Layout extraction failed for %s (no primary, no OCR zones); "
+            "marking as hard page with extraction-failure difficulty",
+            native.page_id,
+        )
+        return ExtractLayoutStage._failed_extraction_layout(native)
+
+    @staticmethod
+    def _failed_extraction_layout(native: NativePageV1) -> LayoutPageV1:
+        """Build a LayoutPageV1 marking that both primary and OCR extraction failed.
+
+        The difficulty is populated so the page is visible to QA/review as a
+        hard-routed, low-confidence page — never as a silent R1 with
+        ``page_confidence=1.0``.
+        """
+        return LayoutPageV1(
+            document_id=native.document_id,
+            page_id=native.page_id,
+            difficulty=DifficultyScoreV1(
+                page_id=native.page_id,
+                native_text_coverage=0.0,
+                extractor_agreement=0.0,
+                hard_page=True,
+                recommended_route="R2",
+            ),
+        )
 
     @staticmethod
     def _needs_ocr(primary: LayoutPageV1 | None) -> bool:
