@@ -318,10 +318,11 @@ test.describe('EN extraction: title quality (target_p0040)', () => {
     await page.goto('/documents/target_p0040/en/p0001');
     const content = page.locator('.reader-content');
     await expect(content.locator('h2.reader-heading')).toBeVisible();
-    // Mask the floating feedback button (fixed-positioned, overlays locator bbox).
-    await expect(content).toHaveScreenshot('target-p0040-en.png', {
-      mask: [page.locator('.feedback-button')],
-    });
+    // Hide the floating feedback button during snapshot — it overlays the
+    // .reader-content bounding box on short pages. The button has its own
+    // component tests under tests/component/FeedbackButton.test.tsx.
+    await page.addStyleTag({ content: '.feedback-button { display: none !important; }' });
+    await expect(content).toHaveScreenshot('target-p0040-en.png');
   });
 });
 
