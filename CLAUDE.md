@@ -107,6 +107,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 ### 5. Definition of done (all must be true before PR)
 - [ ] Code changes directly address the Linear issue description
 - [ ] New/changed code has tests (unless pure config/docs change)
+- [ ] **New/changed tests verified red-before** — for each new `def test_` (pytest) or `it(`/`test(` (vitest) the commit message or PR body contains a `Red-before confirmation:` line citing a pre-fix SHA, a failure-output excerpt, or an explicit "N/A — no production code change" carve-out. See `.claude/rules/hooks.md` § "Three-input test discipline" for the authoritative form. Motivated by S5U-615 after S5U-606 / S5U-604 false-greens.
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 15 gates — local green alone is not sufficient)
