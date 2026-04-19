@@ -98,6 +98,29 @@ if [ "$PROBE_COUNT" -lt 3 ]; then
   exit 1
 fi
 
+# --- S5U-619: structured Verdict: field must agree with final-line token ---
+# The hook previously validated the two verdict locations independently. An
+# artifact stating `Verdict: BLOCK` in the structured field with `**PASS**` as
+# its final non-blank line would pass the gate — either a copy-paste error
+# flipping BLOCK to PASS, or a deliberate bypass that looks innocent because
+# the structured block appears correct. Extract both tokens and require
+# byte-equality; disagreement is a hard block.
+FIELD_VERDICT=$(grep -E '^Verdict:[[:space:]]+(PASS|PASS WITH WARNINGS|BLOCK)' "$REVIEW_FILE" \
+  | head -1 \
+  | sed -E 's/^Verdict:[[:space:]]+//; s/[[:space:]]+$//')
+FINAL_VERDICT=$(echo "$FINAL_LINE" | sed -E 's/^\*\*(.*)\*\*[[:space:]]*$/\1/')
+if [ "$FIELD_VERDICT" != "$FINAL_VERDICT" ]; then
+  echo "BLOCKED: Review artifact '$REVIEW_FILE' has disagreeing verdicts."
+  echo ""
+  echo "  Structured 'Verdict:' field: $FIELD_VERDICT"
+  echo "  Final-line '**...**' token:  $FINAL_VERDICT"
+  echo ""
+  echo "The two locations must name the same verdict. Either the reviewer"
+  echo "typo'd one of them, or the artifact is a bypass attempt. Fix the"
+  echo "review artifact so both locations agree, then retry."
+  exit 1
+fi
+
 # --- S5U-613: staleness check ---
 # Reject artifacts whose mtime predates the branch's HEAD commit. This guards
 # against reviews conducted at an earlier commit that no longer reflect the
