@@ -9,6 +9,7 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field
 
+from atr_pipeline.store.atomic_write import atomic_write_text
 from atr_pipeline.utils.hashing import sha256_file, sha256_str
 from atr_schemas.build_manifest_v1 import BuildManifestV1, ReleaseFile
 
@@ -187,9 +188,9 @@ def build_release_bundle(
 
     # Write manifest into edition directory
     manifest_path = edition_dir / "manifest.json"
-    manifest_path.write_text(
+    atomic_write_text(
+        manifest_path,
         json.dumps(manifest.model_dump(), indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
     )
 
     return manifest
