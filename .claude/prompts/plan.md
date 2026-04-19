@@ -105,6 +105,7 @@ Common adversarial patterns to consider:
 - **Timing attack** — unexpected order or delays (e.g., CI dispatch latency, race between push and status check)
 - **Granularity mismatch** — file vs function, commit vs branch, run vs SHA
 - **Stale data** — cached/previous results satisfying the check (e.g., old CI run for wrong commit)
+- **Nested-structure gaming** — if the gate counts bullets, list items, schema fields, or any tree-shaped artifact, enumerate what happens when items are nested. A worker who addresses the parent and silently drops the children can satisfy a parent-only reading of the rule while leaving the children unaddressed. This is the S5U-594/595/605 → S5U-616 → S5U-622 failure mode: the Coverage-table gate shipped counting top-level bullets only, so a parent-row Coverage-table entry covered N silently-dropped nested sub-bullets. If your gate walks a tree, enumerate a scenario where the worker addresses the root and drops a leaf.
 
 Each scenario must conclude with: **"gate holds"** or **"gate defeated — fix needed."**
 
