@@ -21,6 +21,7 @@ from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import QALayer, StageScope
 from atr_schemas.feedback_submission_v1 import FeedbackSubmissionV1
+from atr_schemas.qa_metrics_v1 import QAMetricsV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
@@ -100,6 +101,39 @@ def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:
     assert summary.counts.error == 0
     assert summary.counts.critical == 0
     assert summary.record_refs == []
+
+
+def test_qa_persists_qa_metrics_artifact(tmp_path: Path) -> None:
+    """S5U-597: QA stage writes a QAMetricsV1 artifact alongside the summary.
+
+    The metrics file must live at ``<doc>/qa_metrics.v1/document/<doc>/`` with
+    ``pages_total`` matching the EN IR page count, and must validate against
+    the ``QAMetricsV1`` model.
+    """
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+
+    result = execute_stage(QAStage(), ctx)
+    assert result.success
+
+    metrics_dir = (
+        ctx.artifact_store.root / ctx.document_id / "qa_metrics.v1" / "document" / ctx.document_id
+    )
+    assert metrics_dir.is_dir(), "qa_metrics.v1 artifact dir missing"
+    files = list(metrics_dir.glob("*.json"))
+    assert len(files) == 1
+
+    import json
+
+    metrics = QAMetricsV1.model_validate(json.loads(files[0].read_text()))
+    en_dir = ctx.artifact_store.root / ctx.document_id / "page_ir.v1.en" / "page"
+    expected_pages = sum(1 for p in en_dir.iterdir() if p.is_dir())
+    assert metrics.pages_total == expected_pages
+    assert metrics.document_id == ctx.document_id
+    assert metrics.run_id == ctx.run_id
+    assert metrics.schema_version == "qa_metrics.v1"
+    # clean pipeline — no blocking findings expected
+    assert metrics.blocking_count == 0
 
 
 def test_qa_raises_without_en_ir(tmp_path: Path) -> None:

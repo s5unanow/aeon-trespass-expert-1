@@ -78,6 +78,7 @@ from atr_schemas.page_ir_v1 import (
     XrefInline,
 )
 from atr_schemas.patch_set_v1 import PatchOperation, PatchProvenance, PatchSetV1
+from atr_schemas.qa_metrics_v1 import FindingCodeCount, QAMetricsV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.raster_meta_v1 import RasterLevel, RasterMetaV1
@@ -154,6 +155,7 @@ __all__ = [
     "FallbackProvenance",
     "FigureBlock",
     "FigureRefInline",
+    "FindingCodeCount",
     "GlossaryConcept",
     "GlossaryEntryV1",
     "GlossaryPageRef",
@@ -186,6 +188,7 @@ __all__ = [
     "PatchTargetKind",
     "ProvenanceRef",
     "QALayer",
+    "QAMetricsV1",
     "QARecordV1",
     "QAState",
     "QASummaryV1",

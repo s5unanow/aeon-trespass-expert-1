@@ -13,6 +13,7 @@ from atr_pipeline.stages.qa.auto_fix_runner import (
     resolve_latest_render_ref,
     write_patches,
 )
+from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
 from atr_pipeline.stages.qa.registry import QAPageContext, QARule, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
@@ -70,6 +71,16 @@ def qa(
     _print_summary(all_records)
 
     block_on = set(config.qa.block_publish_on)
+
+    metrics = compute_qa_metrics(
+        document_id=doc,
+        run_id="cli",
+        edition="",
+        page_ids=page_ids,
+        records=all_records,
+        block_on=block_on,
+    )
+    typer.echo(format_metrics_digest(metrics))
 
     if review_pack:
         _write_review_pack(store, doc, all_records, block_on)

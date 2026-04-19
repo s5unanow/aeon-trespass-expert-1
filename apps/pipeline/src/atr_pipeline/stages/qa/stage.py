@@ -5,6 +5,7 @@ from __future__ import annotations
 from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
@@ -103,6 +104,24 @@ class QAStage:
             waived_counts.error + waived_counts.critical,
             blocking,
         )
+
+        metrics = compute_qa_metrics(
+            document_id=ctx.document_id,
+            run_id=ctx.run_id,
+            edition=ctx.edition,
+            page_ids=page_ids,
+            records=all_records,
+            block_on=block_on,
+        )
+        metrics_ref = ctx.artifact_store.put_json(
+            document_id=ctx.document_id,
+            schema_family="qa_metrics.v1",
+            scope="document",
+            entity_id=ctx.document_id,
+            data=metrics,
+        )
+        ctx.logger.info("QA metrics written: %s", metrics_ref.relative_path)
+        ctx.logger.info("%s", format_metrics_digest(metrics))
 
         return QASummaryV1(
             document_id=ctx.document_id,

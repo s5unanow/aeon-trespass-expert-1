@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "FindingCodeCount": {
+      "description": "Count of QA findings grouped by rule code.",
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "count": {
+          "default": 0,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "FindingCodeCount",
+      "type": "object"
+    },
+    "SeverityCounts": {
+      "description": "Counts by severity level.",
+      "properties": {
+        "info": {
+          "default": 0,
+          "title": "Info",
+          "type": "integer"
+        },
+        "warning": {
+          "default": 0,
+          "title": "Warning",
+          "type": "integer"
+        },
+        "error": {
+          "default": 0,
+          "title": "Error",
+          "type": "integer"
+        },
+        "critical": {
+          "default": 0,
+          "title": "Critical",
+          "type": "integer"
+        }
+      },
+      "title": "SeverityCounts",
+      "type": "object"
+    }
+  },
+  "description": "Per-run QA metrics artifact.\n\nAll distribution fields (by-severity / by-layer / by-code) reflect\n**active** (non-waived) records only. Waived records are tallied\nseparately in ``waived_count`` so health reporting isn't inflated by\nintentionally-suppressed findings.",
+  "properties": {
+    "schema_version": {
+      "default": "qa_metrics.v1",
+      "pattern": "^qa_metrics\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "edition": {
+      "default": "",
+      "title": "Edition",
+      "type": "string"
+    },
+    "timestamp": {
+      "default": "",
+      "title": "Timestamp",
+      "type": "string"
+    },
+    "pages_total": {
+      "default": 0,
+      "title": "Pages Total",
+      "type": "integer"
+    },
+    "pages_with_findings": {
+      "default": 0,
+      "title": "Pages With Findings",
+      "type": "integer"
+    },
+    "clean_page_rate": {
+      "default": 0.0,
+      "title": "Clean Page Rate",
+      "type": "number"
+    },
+    "findings_by_severity": {
+      "$ref": "#/$defs/SeverityCounts"
+    },
+    "findings_by_layer": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Findings By Layer",
+      "type": "object"
+    },
+    "findings_by_code_top10": {
+      "items": {
+        "$ref": "#/$defs/FindingCodeCount"
+      },
+      "title": "Findings By Code Top10",
+      "type": "array"
+    },
+    "waived_count": {
+      "default": 0,
+      "title": "Waived Count",
+      "type": "integer"
+    },
+    "blocking_count": {
+      "default": 0,
+      "title": "Blocking Count",
+      "type": "integer"
+    },
+    "avg_findings_per_page": {
+      "default": 0.0,
+      "title": "Avg Findings Per Page",
+      "type": "number"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "QAMetricsV1",
+  "type": "object"
+}

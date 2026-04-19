@@ -318,3 +318,71 @@ def test_export_qa_skips_missing_record_refs(qa_module: ModuleType, tmp_path: Pa
     assert count == 0
     records = json.loads((doc_public / "ru" / "data" / "qa_records.json").read_text())
     assert records == {"records": []}
+
+
+def _write_metrics(
+    artifact_root: Path,
+    doc_id: str,
+    filename: str,
+    *,
+    edition: str,
+    run_id: str,
+) -> Path:
+    """Seed one QAMetricsV1 artifact under the canonical layout (S5U-597)."""
+    metrics = {
+        "schema_version": "qa_metrics.v1",
+        "document_id": doc_id,
+        "run_id": run_id,
+        "edition": edition,
+        "timestamp": "2026-04-18T00:00:00+00:00",
+        "pages_total": 3,
+        "pages_with_findings": 1,
+        "clean_page_rate": 0.667,
+        "findings_by_severity": {"info": 0, "warning": 2, "error": 0, "critical": 0},
+        "findings_by_layer": {"structure": 2},
+        "findings_by_code_top10": [{"code": "PARAGRAPH_TOO_LONG", "count": 2}],
+        "waived_count": 0,
+        "blocking_count": 0,
+        "avg_findings_per_page": 0.67,
+    }
+    path = artifact_root / doc_id / "qa_metrics.v1" / "document" / doc_id / filename
+    _write(path, metrics)
+    return path
+
+
+def test_export_qa_emits_metrics_when_artifact_present(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """S5U-597: when a qa_metrics.v1 artifact matches the edition, copy it out."""
+    doc_id = "test_doc"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+    _seed_artifacts(artifact_root, doc_id)
+    # _seed_artifacts produces an untagged summary that export_qa accepts as a
+    # fallback for edition="ru"; pair it with a tagged metrics artifact.
+    _write_metrics(artifact_root, doc_id, "metrics.json", edition="ru", run_id="run_test")
+
+    qa_module.export_qa(artifact_root, doc_id, "ru", doc_public)
+    out = doc_public / "ru" / "data" / "qa_metrics.json"
+    assert out.is_file()
+    payload = json.loads(out.read_text())
+    assert payload["schema_version"] == "qa_metrics.v1"
+    assert payload["edition"] == "ru"
+    assert payload["pages_total"] == 3
+    assert payload["findings_by_code_top10"][0]["code"] == "PARAGRAPH_TOO_LONG"
+
+
+def test_export_qa_skips_metrics_when_artifact_absent(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """Older runs predating qa_metrics emission export everything else fine."""
+    doc_id = "legacy_doc"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+    _seed_artifacts(artifact_root, doc_id)
+
+    qa_module.export_qa(artifact_root, doc_id, "ru", doc_public)
+    # Summary + records must still be exported.
+    assert (doc_public / "ru" / "data" / "qa_summary.json").is_file()
+    # Metrics file must NOT be present (no qa_metrics.v1 artifact was seeded).
+    assert not (doc_public / "ru" / "data" / "qa_metrics.json").exists()
