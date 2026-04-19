@@ -1736,7 +1736,7 @@ real OpenAI / Anthropic adapters
 
 Docling full integration beyond contract stub
 
-Paddle/Tesseract fallback
+PaddleOCR fallback (Tesseract retired — see S5U-592 and ADR-013)
 
 multi-page section tree logic
 
