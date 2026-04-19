@@ -12,10 +12,20 @@ the expected/ page IR JSON sidecars, so page_confidence classification is
 driven by the fixture goldens rather than by re-running extraction.
 """
 
+import logging
 import math
+import sys
 from pathlib import Path
 
 import fitz  # PyMuPDF
+
+# Ensure the pipeline package is importable when this script is run directly
+# (scripts/ is not on PYTHONPATH by default but the pipeline src layout is).
+_PIPELINE_SRC = Path(__file__).resolve().parent.parent / "apps" / "pipeline" / "src"
+if str(_PIPELINE_SRC) not in sys.path:
+    sys.path.insert(0, str(_PIPELINE_SRC))
+
+from atr_pipeline.store.atomic_write import atomic_write_bytes  # noqa: E402
 
 FIXTURES_ROOT = (
     Path(__file__).resolve().parent.parent / "packages" / "fixtures" / "sample_documents"
@@ -23,6 +33,13 @@ FIXTURES_ROOT = (
 
 A4_W, A4_H = 595.2, 841.8
 HELV = fitz.Font("helv")
+
+logger = logging.getLogger(__name__)
+
+
+def _atomic_save_pdf(doc: fitz.Document, path: Path) -> None:
+    """Serialize a PyMuPDF document and write it atomically via the store helper."""
+    atomic_write_bytes(path, doc.tobytes())
 
 
 def _ensure_dirs(doc_id: str) -> Path:
@@ -80,7 +97,7 @@ def create_vector_heavy(src: Path) -> None:
         fontname="helv",
         color=(0.3, 0.3, 0.3),
     )
-    doc.save(str(src / "vector_heavy.pdf"))
+    _atomic_save_pdf(doc, src / "vector_heavy.pdf")
     doc.close()
 
 
@@ -128,7 +145,7 @@ def create_chapter_opener(src: Path) -> None:
         font=HELV,
     )
     tw2.write_text(page)
-    doc.save(str(src / "chapter_opener.pdf"))
+    _atomic_save_pdf(doc, src / "chapter_opener.pdf")
     doc.close()
 
 
@@ -156,11 +173,12 @@ def create_confidence_bands(src: Path) -> None:
             font=HELV,
         )
         tw.write_text(page)
-    doc.save(str(src / "confidence_bands.pdf"))
+    _atomic_save_pdf(doc, src / "confidence_bands.pdf")
     doc.close()
 
 
 def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     fixtures = [
         ("vector_heavy", create_vector_heavy),
         ("chapter_opener", create_chapter_opener),
@@ -169,8 +187,8 @@ def main() -> None:
     for name, builder in fixtures:
         src = _ensure_dirs(name)
         builder(src)
-        print(f"  generated {name}")
-    print("Done — extended golden fixtures generated.")
+        logger.info("  generated %s", name)
+    logger.info("Done — extended golden fixtures generated.")
 
 
 if __name__ == "__main__":
