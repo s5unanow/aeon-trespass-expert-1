@@ -66,3 +66,33 @@ document_id = "target_p0082"
 description = "Symbol legend page with multiple inline icon entries"
 failure_modes = ["symbol_loss_on_legend_page", "icon_inline_flattening"]
 eval_dimensions = ["symbols", "reading_order"]
+
+[vector_heavy]
+document_id = "vector_heavy"
+description = "Page whose figure is drawn entirely from vector primitives (no raster image)"
+failure_modes = [
+    "vector_primitive_density",
+    "non_raster_figure_detection",
+    "vector_clutter_block_suppression",
+]
+eval_dimensions = ["figures_captions", "reading_order"]
+
+[chapter_opener]
+document_id = "chapter_opener"
+description = "Full-width chapter-opener page that breaks the column grid with a banner heading"
+failure_modes = [
+    "full_width_interrupt",
+    "chapter_opener_title_detection",
+    "column_grid_break_handling",
+]
+eval_dimensions = ["reading_order"]
+
+[confidence_bands]
+document_id = "confidence_bands"
+description = "3-page fixture — one page each in primary, qa_required, publish_blocking bands"
+failure_modes = [
+    "confidence_band_primary_routing",
+    "confidence_band_qa_required_routing",
+    "confidence_band_publish_blocking_routing",
+]
+eval_dimensions = ["confidence_calibration", "reading_order"]

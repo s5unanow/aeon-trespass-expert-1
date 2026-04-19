@@ -1,0 +1,11 @@
+schema_version = "annotation_meta.v1"
+annotation_format_version = 1
+last_refresh_timestamp = "2026-04-19T00:00:00Z"
+last_refresh_issue = "S5U-590"
+last_refresh_commit = ""
+reviewer = "s5unanow"
+
+[checksums]
+"page_ir.en.p0001.json" = "8910d2bed2679aeab634c7c0fbaecdf7c070e50c86aeac302639b1e03f8c5089"
+"page_ir.en.p0002.json" = "63cad495a0f0ed9c1da6b94caef8f4271af85119a3825e6138cccae027d0392f"
+"page_ir.en.p0003.json" = "f0c8474efe5dd554f170dc8ddd36c37da1f8966c7278d93e782f64af45c840d7"

@@ -110,3 +110,60 @@ owner = "s5unanow"
 reviewer = "s5unanow"
 retirement_policy = "replace when real-page version available"
 notes = "3-page PDF with identical header/footer furniture"
+
+[[fixtures]]
+fixture_id = "vector_heavy"
+source_document = "Synthetic vector-heavy diagram page"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "eb2f0671ba06b11af5986c2b57bfac7f65f2a2bf713caf06ebcd033edc051ef8"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = [
+    "vector_primitive_density",
+    "non_raster_figure_detection",
+    "vector_clutter_block_suppression",
+]
+eval_dimensions = ["figures_captions", "reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "Diagram-heavy page with no raster figure (added in S5U-590)"
+
+[[fixtures]]
+fixture_id = "chapter_opener"
+source_document = "Synthetic chapter-opener / full-width interrupt page"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = "f4822355a35e357f934a1d0f928fb4c2aff2937b2cd4aeb4c78ea5667052beb7"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = [
+    "full_width_interrupt",
+    "chapter_opener_title_detection",
+    "column_grid_break_handling",
+]
+eval_dimensions = ["reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "Chapter opener with full-width banner heading (added in S5U-590)"
+
+[[fixtures]]
+fixture_id = "confidence_bands"
+source_document = "Synthetic confidence-bands fixture"
+source_edition = "synthetic_v1"
+source_pages = [1, 2, 3]
+source_checksum = "9944504efac0e12b16dbdbb46de0190fdc6ac60e8560cd887b0409c9c0883714"
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = [
+    "confidence_band_primary_routing",
+    "confidence_band_qa_required_routing",
+    "confidence_band_publish_blocking_routing",
+]
+eval_dimensions = ["confidence_calibration", "reading_order"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "replace when real-page version available"
+notes = "3-page fixture — goldens annotate primary/qa_required/publish_blocking bands (S5U-590)"

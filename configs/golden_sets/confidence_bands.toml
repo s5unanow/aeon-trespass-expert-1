@@ -1,0 +1,23 @@
+name = "confidence_bands"
+document_id = "confidence_bands"
+
+[[pages]]
+page_id = "p0001"
+block_count = 2
+block_types = ["heading", "paragraph"]
+symbol_count = 0
+reading_order = ["p0001.b001", "p0001.b002"]
+
+[[pages]]
+page_id = "p0002"
+block_count = 2
+block_types = ["heading", "paragraph"]
+symbol_count = 0
+reading_order = ["p0002.b001", "p0002.b002"]
+
+[[pages]]
+page_id = "p0003"
+block_count = 2
+block_types = ["heading", "paragraph"]
+symbol_count = 0
+reading_order = ["p0003.b001", "p0003.b002"]

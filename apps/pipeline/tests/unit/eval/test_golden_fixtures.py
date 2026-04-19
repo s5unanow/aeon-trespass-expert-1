@@ -24,7 +24,13 @@ from atr_schemas.page_ir_v1 import PageIRV1
 REPO_ROOT = Path(__file__).resolve().parents[5]
 FIXTURES = REPO_ROOT / "packages" / "fixtures" / "sample_documents"
 
-# All golden fixture document IDs (excluding walking_skeleton which has its own tests)
+# All golden fixture document IDs (excluding walking_skeleton which has its own tests).
+#
+# S5U-590 added vector_heavy, chapter_opener, and confidence_bands to expand
+# layout-class and confidence-band coverage. The new rows exercise the same
+# code branches as the existing parametrized tests (data-extension on existing
+# branch per the S5U-623 carve-out) — no new assertion shapes here. The
+# band-classification assertion lives in TestConfidenceBands below.
 GOLDEN_FIXTURE_IDS = [
     "multi_column",
     "icon_dense",
@@ -32,6 +38,9 @@ GOLDEN_FIXTURE_IDS = [
     "figure_caption",
     "hard_route",
     "furniture_repetition",
+    "vector_heavy",
+    "chapter_opener",
+    "confidence_bands",
 ]
 
 
@@ -169,3 +178,71 @@ class TestCoverageMatrix:
             assert "failure_modes" in entry
             assert "eval_dimensions" in entry
             assert len(entry["failure_modes"]) > 0
+
+
+class TestConfidenceBandsFixture:
+    """The confidence_bands fixture covers every band not already covered.
+
+    The existing hard_route fixture exercises the `hard_route` band
+    (0.60-0.85). This fixture adds live coverage for the remaining three
+    bands - primary / qa_required / publish_blocking - by pinning a
+    distinct `page_confidence` on each page's golden IR. Added in S5U-590.
+    """
+
+    def _expected(self, page_id: str) -> dict[str, object]:
+        path = FIXTURES / "confidence_bands" / "expected" / f"page_ir.en.{page_id}.json"
+        return json.loads(path.read_text())  # type: ignore[no-any-return]
+
+    @pytest.mark.parametrize(
+        ("page_id", "expected_value", "expected_band", "expected_action"),
+        [
+            ("p0001", 0.95, "primary", "primary"),
+            ("p0002", 0.45, "qa_required", "qa_required"),
+            ("p0003", 0.15, "publish_blocking", "publish_blocking"),
+        ],
+    )
+    def test_page_confidence_lands_in_expected_band(
+        self,
+        page_id: str,
+        expected_value: float,
+        expected_band: str,
+        expected_action: str,
+    ) -> None:
+        from atr_pipeline.eval.confidence_policy import (
+            evaluate_page_confidence,
+            load_confidence_bands,
+        )
+
+        ir = self._expected(page_id)
+        assert isinstance(ir, dict)
+        conf = ir.get("confidence")
+        assert isinstance(conf, dict), f"{page_id}: missing confidence block"
+        actual = conf.get("page_confidence")
+        assert actual == expected_value, (
+            f"{page_id}: expected page_confidence={expected_value}, got {actual}"
+        )
+
+        policy = load_confidence_bands(repo_root=REPO_ROOT)
+        result = evaluate_page_confidence(page_id, float(expected_value), policy)
+        assert result.band_name == expected_band
+        assert result.action.value == expected_action
+
+    def test_all_non_hard_route_bands_have_a_page(self) -> None:
+        """No regression on the S5U-590 gap: primary / qa_required /
+        publish_blocking bands must each be represented by at least one
+        page in the confidence_bands fixture."""
+        covered: set[str] = set()
+        for page_id in ("p0001", "p0002", "p0003"):
+            ir = self._expected(page_id)
+            conf = ir.get("confidence")
+            assert isinstance(conf, dict)
+            val = conf.get("page_confidence")
+            assert isinstance(val, (int, float))
+            from atr_pipeline.eval.confidence_policy import (
+                evaluate_page_confidence,
+                load_confidence_bands,
+            )
+
+            policy = load_confidence_bands(repo_root=REPO_ROOT)
+            covered.add(evaluate_page_confidence(page_id, float(val), policy).band_name)
+        assert {"primary", "qa_required", "publish_blocking"}.issubset(covered)

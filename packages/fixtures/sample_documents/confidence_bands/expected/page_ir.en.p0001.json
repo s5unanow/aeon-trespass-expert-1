@@ -1,0 +1,52 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "confidence_bands",
+  "page_id": "p0001",
+  "page_number": 1,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0001.b001",
+      "bbox": null,
+      "level": 2,
+      "children": [
+        {"type": "text", "text": "Clear Rule", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b002",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "A clean, easily extracted rule with no ambiguity.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    }
+  ],
+  "assets": [],
+  "reading_order": [
+    "p0001.b001",
+    "p0001.b002"
+  ],
+  "confidence": {
+    "native_text_coverage": 0.98,
+    "reading_order_score": 0.97,
+    "symbol_score": 1.0,
+    "page_confidence": 0.95
+  },
+  "qa_state": null,
+  "provenance": null
+}

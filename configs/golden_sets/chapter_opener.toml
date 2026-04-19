@@ -1,0 +1,9 @@
+name = "chapter_opener"
+document_id = "chapter_opener"
+
+[[pages]]
+page_id = "p0001"
+block_count = 3
+block_types = ["heading", "paragraph", "paragraph"]
+symbol_count = 0
+reading_order = ["p0001.b001", "p0001.b002", "p0001.b003"]

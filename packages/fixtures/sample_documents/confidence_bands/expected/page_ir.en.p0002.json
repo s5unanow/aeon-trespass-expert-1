@@ -1,0 +1,52 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "confidence_bands",
+  "page_id": "p0002",
+  "page_number": 2,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0002.b001",
+      "bbox": null,
+      "level": 2,
+      "children": [
+        {"type": "text", "text": "Messy Scan Region", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0002.b002",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Portions of this page have degraded text quality.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    }
+  ],
+  "assets": [],
+  "reading_order": [
+    "p0002.b001",
+    "p0002.b002"
+  ],
+  "confidence": {
+    "native_text_coverage": 0.55,
+    "reading_order_score": 0.5,
+    "symbol_score": 0.8,
+    "page_confidence": 0.45
+  },
+  "qa_state": null,
+  "provenance": null
+}
