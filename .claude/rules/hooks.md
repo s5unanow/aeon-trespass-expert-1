@@ -49,6 +49,18 @@ That would have surfaced the three defects (wrong filename `.yaml` vs `.json`, Y
 
 The review prompt (`.claude/prompts/review.md`) now includes a mandatory probe for this anchor on any diff adding a new test function. Reviewers grep for `red[- ]before` (case-insensitive) and require either a cited commit SHA or a pasted failure excerpt. A bare "Red-before: checked" bullet with no evidence is a WARNING.
 
+### SHA-resolution tripwire (S5U-624)
+
+Reviewers now mechanically resolve every hex SHA cited in a `red[- ]before` block via `git cat-file -e <sha>^{commit}`. If the SHA does not exist in the local working tree, the reviewer returns **CRITICAL** — the citation is treated as fabrication, typo, or a sibling-repo reference, regardless of how plausible it looks. This is the cheap mechanical check that closes the "fabricated `abc1234`" bypass S5U-615 left open.
+
+Practical consequences for workers:
+
+- **Cite full SHAs you can paste-verify.** `git cat-file -e <sha>^{commit}` resolves both 7-char short SHAs and full 40-char SHAs, so either form is fine — but the SHA must exist in the branch you push.
+- **Tags, PR numbers, branch names, and commit ranges are not the documented form.** The accepted form remains `commit <sha> shows <test_name> failing with "<excerpt>"`. A `red[- ]before` block that contains no hex SHA and is not the literal "N/A — no production code change" carve-out is a **WARNING** (reviewer cannot mechanically resolve it).
+- **GitHub permalinks work** because the SHA inside the URL is extracted by the reviewer's regex; but only if that SHA is reachable in the local clone.
+- **Do not cite the current `HEAD` to game the tripwire.** A SHA that already contains the fix trivially resolves but defeats the spirit of red-before. Reviewers spot-check that the cited SHA is *prior to* the fix; a HEAD-or-later citation with no failure excerpt is a WARNING.
+- **The tripwire validates SHA existence, not excerpt content.** Pasting a fake assertion excerpt against a real-but-unrelated SHA still passes the mechanical check; the deeper `git show <sha>` cross-check is the replay harness explicitly deferred by S5U-615 and applied by reviewers only on high-stakes diffs.
+
 ### Scope / carve-outs
 
 - **In scope**: any diff that adds a new `def test_` (pytest) or `it(` / `test(` (vitest) function.
