@@ -637,8 +637,6 @@ Docling as the structured layout/document evidence engine
 
 PaddleOCR layout/OCR as the hard-page fallback
 
-Tesseract as tertiary OCR fallback for structured hOCR/ALTO evidence
-
 OpenCV template matching for symbol anchoring
 
 Why
@@ -649,7 +647,7 @@ Docling adds advanced PDF understanding, reading order, tables, and a unified lo
 
 PaddleOCR’s layout module explicitly detects document elements and sorts them into reading order with a pointer network, which makes it the right hard-page fallback for multi-column and complex regions.
 
-Tesseract remains valuable as a deterministic tertiary OCR layer because it can emit hOCR, ALTO, PAGE, TSV, and plain text.
+A tertiary Tesseract-based OCR layer was considered (to emit hOCR/ALTO/PAGE structural evidence) but has been retired. The pipeline ships PaddleOCR as the single OCR fallback; see ADR-003 and S5U-592 for the retirement rationale. If a future hard page defeats PaddleOCR, file a fresh ADR rather than reopening the retired Tesseract path.
 
 Rejected
 
@@ -657,7 +655,7 @@ Docling-only extraction: not enough low-level control and traceability.
 
 PyMuPDF-only extraction: insufficient on multi-column and stylized pages.
 
-Surya as primary: I would avoid introducing a GPL-3 primary dependency when Docling/Paddle/Tesseract cover the use case.
+Surya as primary: I would avoid introducing a GPL-3 primary dependency when Docling and PaddleOCR cover the use case.
 
 LLM providers / models by task
 
@@ -1789,7 +1787,7 @@ page_confidence = 0.30 native_text_coverage + 0.20 extractor_agreement + 0.20 re
 Route	Trigger	Tools	Rule
 R1 Standard	single-column, high native coverage, high agreement	PyMuPDF + Docling hints	native text is truth; layout only organizes
 R2 Complex layout	multi-column, sidebar, callout-heavy, moderate disagreement	PyMuPDF + Docling + Paddle layout	zone-level reading order resolution
-R3 OCR-assisted	low native coverage or image-backed regions	PaddleOCR or Tesseract on affected regions	OCR only fills missing text regions
+R3 OCR-assisted	low native coverage or image-backed regions	PaddleOCR on affected regions	OCR only fills missing text regions
 R4 Symbol-dense	many small inline image candidates	native image objects + template matching	icons recovered independently of text
 R5 Table/callout specialized	high table/cell geometry or callout signals	Docling/Paddle table regions	preserve typed table/callout blocks
 R6 Human review	page_confidence < 0.80 or blocking ambiguity	review pack + typed patch	no publish without patch/waiver
@@ -3383,9 +3381,7 @@ Keep the IR-first modular monolith
 
 Use PyMuPDF + Docling only
 
-Use Tesseract as the only OCR fallback
-
-Skip PaddleOCR initially
+Use PaddleOCR as the OCR fallback (Tesseract retired — see S5U-592)
 
 Skip separate review app; generate static HTML review reports instead
 
