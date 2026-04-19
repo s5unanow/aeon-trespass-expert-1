@@ -1,37 +1,18 @@
 #!/usr/bin/env python3
 """Block CI paths that would bypass the visual-regression baseline gate.
 
-Background (see S5U-608): the original guard only inspected
-`apps/web/package.json` `scripts['test:e2e']` and grepped literally for
-`--update-snapshots`. Multiple minimum-diff edits bypassed it:
+See S5U-608 for the original four-vector threat model and S5U-611 for the
+Gap 1/2/3 follow-up hardening (allow-marker path allowlist, bare-pnpm
+shortcut closure, shell-guard workflow YAML coverage).
 
-1. Short flag `-u` (Playwright's documented short form of update-snapshots).
-2. `--ignore-snapshots` (skips screenshot assertions entirely).
-3. Flags passed at the workflow `run:` line (e.g. `test:e2e -- -u`),
-   leaving `package.json` untouched.
-4. New workflows or jobs that invoke Playwright directly (e.g.
-   `pnpm exec playwright test --update-snapshots`) and never touch
-   `visual-regression.yml`.
-
-This scanner widens both the pattern and the scope:
-
-- It scans every YAML under `.github/workflows/` and `.github/actions/`
-  as plain text, so it catches flags embedded in `run:` strings, `env:`
-  values, composite actions, quoted wrappers, and any future workflow
-  file anywhere in the repo.
-- It scans every `scripts` entry in `apps/web/package.json`, not just
-  `test:e2e`.
-- It forbids workflow `run:` lines that invoke any package.json script
-  whose resolved command contains a forbidden flag, and any workflow
-  reference to a local-only update script by name.
+Scans:
+- every YAML under `.github/workflows/` and `.github/actions/` as plain
+  text (catches `run:` strings, `env:` values, composite actions, quoted
+  wrappers, any future workflow file);
+- every `scripts` entry in `apps/web/package.json`.
 
 Forbidden token regex (word-boundary bounded):
     (^|[\\s"'`])(-u|--update-snapshots|--ignore-snapshots)([\\s=]|$)
-
-Lines that legitimately need to reference the forbidden tokens (this
-scanner's own error messages, defense-in-depth guards in CI shell scripts)
-can opt out by appending `# visual-gate-scope: allow` on the same line
-in workflow YAMLs. This is intentionally visible in diff review.
 
 Exit 0 if clean, 1 on any violation. Fail-closed on unexpected errors.
 
@@ -52,9 +33,30 @@ FORBIDDEN_TOKEN_RE = re.compile(
     r"""(^|[\s"'`])(-u|--update-snapshots|--ignore-snapshots)([\s="'`]|$)""",
 )
 
-# Escape hatch for legitimate references inside gate infrastructure. The
-# marker must appear literally on the same line to take effect.
+# `ALLOW_MARKER` is the legacy escape hatch used by gate infrastructure
+# scripts (this scanner, the shell guard) when their source text must
+# mention the forbidden flag tokens literally. The scanner walks ONLY
+# `.github/**` YAML files (see `GITHUB_SCAN_SUBDIRS`), never the Python /
+# bash source files that contain legitimate references — so in practice
+# the marker's only job inside scanned content would be to silence a real
+# violation.
+#
+# S5U-611 hardening: any appearance of `ALLOW_MARKER` inside a scanned
+# workflow/action YAML is itself a violation
+# (`allow-marker-not-permitted`), regardless of whether the rest of the
+# line carries a forbidden flag. That closes Gap 2 (unrestricted
+# single-PR bypass). The `ALLOW_MARKER_PATHS` allowlist below names the
+# small set of files that are permitted to contain the literal string; it
+# exists to make the policy explicit and to fail closed if the scanner is
+# ever repointed at a wider path tree.
 ALLOW_MARKER = "# visual-gate-scope: allow"
+ALLOW_MARKER_PATHS: frozenset[str] = frozenset(
+    {
+        "scripts/check_visual_gate_scope.py",
+        "scripts/check_test_e2e_flags.sh",
+        "apps/pipeline/tests/unit/test_check_visual_gate_scope.py",
+    }
+)
 
 # Files/dirs this scanner covers. The whole `.github/` subtree is searched
 # to catch composite actions and any future workflow file.
@@ -117,10 +119,30 @@ def _scan_github_file(path: Path, repo_root: Path) -> list[Violation]:
             )
         ]
     rel = _rel(path, repo_root)
+    marker_permitted = rel in ALLOW_MARKER_PATHS
     for i, line in enumerate(text.splitlines(), start=1):
-        if ALLOW_MARKER in line:
-            continue
+        has_marker = ALLOW_MARKER in line
+        if has_marker and not marker_permitted:
+            # S5U-611 Gap 2: the marker is not a valid exemption anywhere
+            # inside `.github/**` YAML. Emit a dedicated violation so the
+            # adversarial scenario ("plant marker now, reintroduce flag
+            # later") cannot establish a silent baseline.
+            violations.append(
+                Violation(
+                    path=rel,
+                    line=i,
+                    excerpt=line,
+                    reason="allow-marker-not-permitted",
+                )
+            )
+            # Do NOT `continue`: we still want the forbidden-flag scan to
+            # surface its own violation on the same line, so reviewers see
+            # both issues at once.
         if _contains_forbidden_flag(line):
+            # If the marker is present AND permitted (would never happen
+            # inside `.github/**`, but retained for defence in depth), skip.
+            if has_marker and marker_permitted:
+                continue
             violations.append(
                 Violation(
                     path=rel,
@@ -214,16 +236,49 @@ def _extract_script_names(run_text: str) -> set[str]:
     return {m.group("name") for m in _SCRIPT_REF_RE.finditer(run_text)}
 
 
+def _local_only_token_patterns() -> dict[str, re.Pattern[str]]:
+    """Compile a word-boundary regex for each LOCAL_ONLY_SCRIPTS entry.
+
+    S5U-611 Gap 3: `_SCRIPT_REF_RE` requires the canonical
+    `(pnpm|npm|yarn) (run|run-script) <name>` form, which misses pnpm's
+    bare shortcut (`pnpm <name>` / `pnpm --filter <pkg> <name>`). The
+    simplest bypass-resistant closure (per the issue's "OR" fix sketch)
+    is: reject any workflow line that names a local-only script as a
+    word-bounded token, regardless of surrounding syntax. The only
+    legitimate references to these names live in the scanner's own source
+    (this file) and comments/docs outside `.github/**`, none of which
+    are scanned.
+    """
+    patterns: dict[str, re.Pattern[str]] = {}
+    for name in LOCAL_ONLY_SCRIPTS:
+        # Bound by non-identifier chars so `test-visual-update-lib` (hyphens)
+        # does not match `test:visual:update` (colons) and vice versa.
+        patterns[name] = re.compile(
+            r"""(^|[\s"'`])""" + re.escape(name) + r"""([\s"'`]|$)""",
+        )
+    return patterns
+
+
 def _scan_workflow_script_refs(
     workflow_files: list[Path],
     scripts: dict[str, str],
     repo_root: Path,
 ) -> list[Violation]:
-    """Block workflow `run:` lines that invoke a forbidden or local-only script."""
+    """Block workflow `run:` lines that invoke a forbidden or local-only script.
+
+    Two layers:
+
+    1. Canonical form (`pnpm run <name>`, `npm run-script <name>`, …) for
+       *tainted* scripts (any package.json script whose resolved command
+       contains a forbidden flag). This is the original S5U-608 check.
+    2. Word-bounded name match for *local-only* scripts, independent of
+       syntax — closes the bare-`pnpm <name>` shortcut (Gap 3) and any
+       other surface that names the script.
+    """
     violations: list[Violation] = []
     tainted = frozenset(name for name, cmd in scripts.items() if _contains_forbidden_flag(cmd))
-    forbidden_script_names = tainted | LOCAL_ONLY_SCRIPTS
-    if not forbidden_script_names:
+    local_only_patterns = _local_only_token_patterns()
+    if not tainted and not local_only_patterns:
         return violations
     for path in workflow_files:
         try:
@@ -231,12 +286,30 @@ def _scan_workflow_script_refs(
         except OSError:
             continue  # already reported by _scan_github_file
         rel = _rel(path, repo_root)
+        # Marker handling identical to `_scan_github_file`: the marker is
+        # not a valid exemption inside `.github/**`. We do not skip the
+        # line on its basis.
         for i, line in enumerate(text.splitlines(), start=1):
-            if ALLOW_MARKER in line:
-                continue
-            hit = _extract_script_names(line) & forbidden_script_names
-            if hit:
-                names = ", ".join(sorted(hit))
+            # Layer 1: canonical `(pnpm|npm|yarn) run <name>` referencing a
+            # tainted script (S5U-608).
+            if tainted:
+                canonical_hits = _extract_script_names(line) & tainted
+                if canonical_hits:
+                    names = ", ".join(sorted(canonical_hits))
+                    violations.append(
+                        Violation(
+                            path=rel,
+                            line=i,
+                            excerpt=line,
+                            reason=f"workflow-invokes-tainted-script ({names})",
+                        )
+                    )
+            # Layer 2: bare name appears on the line — local-only scripts.
+            local_only_hits = sorted(
+                name for name, pat in local_only_patterns.items() if pat.search(line)
+            )
+            if local_only_hits:
+                names = ", ".join(local_only_hits)
                 violations.append(
                     Violation(
                         path=rel,
