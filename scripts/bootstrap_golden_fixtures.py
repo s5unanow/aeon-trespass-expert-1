@@ -11,6 +11,10 @@ Layout classes generated:
 - figure_caption: page with figure and caption
 - hard_route: complex mixed-layout page
 - furniture_repetition: 3-page PDF with consistent headers/footers
+
+Additional layout classes — vector_heavy, chapter_opener, confidence_bands
+(S5U-590) — live in scripts/bootstrap_extended_fixtures.py to keep this
+file within the 400-line length budget.
 """
 
 from pathlib import Path
