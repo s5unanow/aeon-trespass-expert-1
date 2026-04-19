@@ -8,6 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # S5U-642: full history is required for the threshold-loosening
+          # guard and the extraction-scope detector to diff against the PR
+          # base branch. Shallow checkouts cause `git diff` and `git show`
+          # against `origin/<base_ref>` to silently return empty, which
+          # made the threshold guard fail-open for real loosening PRs.
+          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -63,14 +70,18 @@ jobs:
           uv run python scripts/check_golden_refresh.py \
             --base origin/${{ github.base_ref || 'main' }} --head HEAD
 
-      # S5U-591: block silent threshold loosening. Runs only when the
-      # extraction-scope detector flagged a change to configs/qa/thresholds*.
+      # S5U-591: block silent threshold loosening. Runs on every PR
+      # unconditionally (S5U-642 decoupled this from the extraction-scope
+      # detector — relying on `threshold_change_detected` created a
+      # fail-open path when a shallow checkout caused the detector to see
+      # zero changed files). The guard itself short-circuits cleanly when
+      # thresholds.toml is unchanged or absent on both sides.
       # The PR body is passed so a `## Threshold loosening justification`
       # section can unblock the check without requiring a commit-message
       # sentinel. Fails CI if loosening is detected without either form
       # of justification. See docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §8.3.
       - name: Threshold loosening guard
-        if: github.event_name == 'pull_request' && steps.extraction-scope.outputs.threshold_change_detected == 'true'
+        if: github.event_name == 'pull_request'
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |

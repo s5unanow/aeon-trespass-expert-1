@@ -108,6 +108,66 @@ class TestParseThresholds:
         with pytest.raises(SystemExit):
             guard._parse_thresholds("this is {{{ not valid TOML")
 
+    # S5U-644: Pydantic-boundary mismatch. The runtime model requires a
+    # bool; accepting Python-truthy values in the guard creates a PR
+    # that would be approved by the gate but rejected at runtime.
+    def test_blocking_string_false_rejected(self, guard: ModuleType) -> None:
+        """S5U-644: TOML string 'false' is Python-truthy but not a bool.
+
+        Red-before confirmation: ran against pre-fix baseline (snapshot of
+        c10957b /tmp/s5u-642-redbefore/check_threshold_changes_baseline.py);
+        DID NOT RAISE <class 'SystemExit'>, blocking parsed as True.
+        """
+        toml = textwrap.dedent(
+            """
+            [[metric_thresholds]]
+            name = "x"
+            min = 0.5
+            blocking = "false"
+            """
+        )
+        with pytest.raises(SystemExit, match="must be a TOML boolean"):
+            guard._parse_thresholds(toml)
+
+    def test_blocking_string_true_rejected(self, guard: ModuleType) -> None:
+        """S5U-644: TOML string 'true' is Python-truthy but not a bool."""
+        toml = textwrap.dedent(
+            """
+            [[metric_thresholds]]
+            name = "x"
+            min = 0.5
+            blocking = "true"
+            """
+        )
+        with pytest.raises(SystemExit, match="must be a TOML boolean"):
+            guard._parse_thresholds(toml)
+
+    def test_blocking_int_one_rejected(self, guard: ModuleType) -> None:
+        """S5U-644: int 1 is bool-compatible in Python but not in Pydantic bool."""
+        toml = textwrap.dedent(
+            """
+            [[metric_thresholds]]
+            name = "x"
+            min = 0.5
+            blocking = 1
+            """
+        )
+        with pytest.raises(SystemExit, match="must be a TOML boolean"):
+            guard._parse_thresholds(toml)
+
+    def test_blocking_int_zero_rejected(self, guard: ModuleType) -> None:
+        """S5U-644: int 0 coerces to False silently under old bool() — must reject."""
+        toml = textwrap.dedent(
+            """
+            [[metric_thresholds]]
+            name = "x"
+            min = 0.5
+            blocking = 0
+            """
+        )
+        with pytest.raises(SystemExit, match="must be a TOML boolean"):
+            guard._parse_thresholds(toml)
+
 
 class TestDetectLoosening:
     def test_identical_no_findings(self, guard: ModuleType) -> None:
@@ -559,3 +619,67 @@ def test_base_had_file_head_deleted(tmp_path: Path) -> None:
     proc = _invoke_script(repo)
     assert proc.returncode == 1
     assert "deleted" in proc.stdout
+
+
+def test_missing_base_ref_hard_errors(tmp_path: Path) -> None:
+    """S5U-642 Layer 2: unresolvable base ref must fail closed.
+
+    A shallow CI checkout (`fetch-depth: 1`) leaves the base branch
+    unreachable. Before S5U-642, the guard treated this the same as
+    "file absent at base" — every head threshold was net-new, no
+    loosening was detected, and the guard silently approved real
+    loosening PRs. Now the guard must refuse to continue.
+
+    Red-before confirmation: ran against pre-fix baseline (snapshot of
+    c10957b at /tmp/s5u-642-redbefore/check_threshold_changes_baseline.py)
+    with a nonexistent base ref — exit 0, stdout "Thresholds file
+    changed, but no loosening detected. Guard passes." Post-fix: exit 1
+    with "cannot resolve ref" error pointing at fetch-depth: 0.
+    """
+    repo = tmp_path / "repo"
+    _init_repo_with_base(repo, TOML_SIMPLE)
+    # Head commit with a threshold change — the loosening kind doesn't
+    # matter; we want to prove the guard won't even reach the loosening
+    # analysis when the base ref is unresolvable.
+    loosened = TOML_SIMPLE.replace("min = 0.98", "min = 0.50")
+    _make_head_commit(repo, loosened, message="loosen with bad base ref")
+    # Invoke with a ref that does not exist in this repo.
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT_PATH),
+            "--base",
+            "origin/nonexistent_base",
+            "--head",
+            "HEAD",
+        ],
+        cwd=repo,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode != 0, proc.stdout + proc.stderr
+    combined = proc.stdout + proc.stderr
+    assert "cannot resolve ref" in combined.lower() or "fetch-depth" in combined, combined
+
+
+def test_missing_head_ref_hard_errors(tmp_path: Path) -> None:
+    """S5U-642 Layer 2: unresolvable head ref also hard-errors (symmetry)."""
+    repo = tmp_path / "repo"
+    _init_repo_with_base(repo, TOML_SIMPLE)
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT_PATH),
+            "--base",
+            "HEAD",
+            "--head",
+            "nonexistent_head_ref",
+        ],
+        cwd=repo,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode != 0, proc.stdout + proc.stderr
+    assert "cannot resolve ref" in (proc.stdout + proc.stderr).lower()
