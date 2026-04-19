@@ -19,6 +19,12 @@ Read `.claude/prompts/linear-conventions.md` for issue convention context (label
 
 ## 1. Independent fresh-eyes code review (MANDATORY)
 
+**Safety-gate scope warning (S5U-628):** before choosing the review path, check whether the diff touches safety-gate scope (hooks under `.claude/hooks/`, review prompts/gates under `.claude/prompts/review.md`, CI workflow YAML under `.github/workflows/`, merge guards, branch-protection-adjacent scripts, `scripts/check_*.*`, or this SKILL set). If yes, **`/ship` alone is not sufficient** — per CLAUDE.md step 6, safety-gate PRs MUST be shipped via `/coordinator`, which spawns an authoritative post-ship fresh-eyes reviewer in a new sub-agent context. Warn the user, pause, and recommend switching to `/coordinator` before creating the PR. The user may explicitly override, in which case disclose the override in the PR body.
+
+Review-path selection is driven by whether the `Agent` tool is in your direct tool list (see CLAUDE.md step 6 for the full rule):
+
+### Path A — `Agent` tool available (top-level)
+
 Spawn the review as an **independent** sub-agent. Read `.claude/prompts/review.md` and use it as the Agent prompt. Brief the reviewer with **only**:
 
 - The Linear issue ID (e.g., `S5U-123`)
@@ -27,7 +33,13 @@ Spawn the review as an **independent** sub-agent. Read `.claude/prompts/review.m
 
 Do **NOT** paste into the brief: your own commit rationale, deviations list, PR draft body, summary of what you changed, or why a choice was made. Passing that framing anchors the reviewer on your interpretation and empirically produces false-PASS reviews (S5U-613). The reviewer reads the Linear issue and diff itself and probes the success criteria independently.
 
-The review agent will save its output to `tmp/review-s5u-<NUMBER>.md`, including a structured `## Verdict` section with `Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:`, and `Bug IDs filed:` fields.
+### Path B — `Agent` tool unavailable (sub-agent fallback, S5U-628)
+
+Follow the maximum-independence inline self-review checklist in CLAUDE.md step 6: close draft notes, re-fetch the Linear issue, re-read the diff unanchored, walk all 21 checks in `.claude/prompts/review.md`, and write the same structured verdict artifact. Disclose the fallback in both the artifact and PR body. Do not use Path B if `Agent` is actually available; do not use Path B to bypass `/coordinator` escalation on safety-gate changes.
+
+### Artifact + verdict (both paths)
+
+The review output is saved to `tmp/review-s5u-<NUMBER>.md` with a structured `## Verdict` section containing `Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:`, and `Bug IDs filed:` fields.
 
 - **BLOCK** — stop, report issues, fix before proceeding. **Delete** the review artifact (it is now stale relative to the new HEAD), fix issues, then re-run review.
 - **PASS WITH WARNINGS** — proceed, include warnings in PR body

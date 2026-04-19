@@ -103,3 +103,9 @@ At end of run:
 - Never delegate synthesis: you decide what's shipped, what's blocked, what to tell the user
 - Keep task list (`TaskCreate`/`TaskUpdate`) accurate so progress is visible
 - Match review depth to change class: safety-gate > correctness > feature > polish
+
+## Coordinator is the authoritative gate for safety-critical work (S5U-628)
+
+Under the current harness, sub-agents spawned by `/build-loop`, `/next`, and `/ship` do NOT have the `Agent` tool available, so their pre-PR review is a lone-worker inline self-review (CLAUDE.md step 6 Path B). That fallback is acceptable for feature/polish changes but **not** for safety-gate scope (hooks, review prompts/gates, CI checks, merge guards, branch-protection-adjacent scripts, `.claude/skills/` SKILL.md edits).
+
+Per CLAUDE.md step 6, safety-gate PRs MUST be shipped via `/coordinator`. The coordinator's step-3 reviewer subagent — spawned *after* merge, with only evidence (merge SHA, PR URL, Linear ID) and an explicit "you are not the worker" reminder — is the authoritative fresh-eyes gate for this class of change. Treat any safety-gate issue that arrives here as a high-priority candidate for the second-pass Opus review option.

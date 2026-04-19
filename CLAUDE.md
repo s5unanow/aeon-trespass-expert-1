@@ -115,7 +115,16 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] CI green after push (all 16 gates — local green alone is not sufficient)
 - [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 
-### 6. Independent fresh-eyes sub-agent review (MANDATORY before PR)
+### 6. Independent fresh-eyes review (MANDATORY before PR)
+
+Review-path selection is **determined by whether the `Agent` tool is available in your direct tool list**, not by preference. Check your own tool list before choosing a path.
+
+**Harness reality (verified 2026-04-19, S5U-628):** sub-agents spawned by `/build-loop`, `/coordinator`, `/next`, and `/ship` do **NOT** have the `Agent` tool available. The top-level coordinator context (the user's direct Claude session) does. The agent-type catalog's "Tools: *" description for general-purpose sub-agents is misleading under the current harness. Treat "Agent not in my direct tool list" as the detection signal.
+
+#### Path A — `Agent` tool available (top-level coordinator context)
+
+This is the canonical path and applies whenever you *can* spawn sub-agents:
+
 - **You MUST spawn an independent review agent before creating a PR.** This is not optional.
 - Read `.claude/prompts/review.md` and use it as the Agent prompt
 - **Brief the reviewer as a stranger.** Pass only: Linear issue ID, branch name, working directory, and the reminder that the worker is not them. Do **NOT** paste your rationale, deviations list, commit messages, or draft PR body into the sub-agent brief — these anchor the reviewer on your framing and defeat the point of independent review. The reviewer fetches the Linear issue and diff itself and forms its own read.
@@ -123,6 +132,28 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - If the review agent says **BLOCK**, fix the issues and re-run the review (delete the stale artifact first). Do **not** amend the old artifact.
 - If only warnings/nits, use judgement — fix warnings, nits are optional. Include unresolved warnings in the PR body.
 - Known carveout: the hook only intercepts local `gh pr create`. Opening a PR via the GitHub web UI or REST API bypasses the gate — do not do this to skip review.
+
+#### Path B — `Agent` tool NOT available (sub-agent fallback, S5U-628)
+
+When a worker running inside `/build-loop`, `/coordinator`, `/next`, or `/ship` cannot spawn a sub-agent, Path A is structurally unsatisfiable. In that case, perform **maximum-independence inline self-review** following this strict checklist:
+
+1. Close every draft note, scratch pad, and in-progress PR body open in your working memory. Do not re-read `tmp/plan-s5u-<N>.md` during the review.
+2. Re-fetch the Linear issue via `mcp__plugin_linear_linear__get_issue` — treat its text as the sole source of truth for success criteria. Do **not** consult your own rationale or commit messages for "what the issue meant".
+3. Run `git diff main...HEAD` and read the diff unanchored. Form your verdict *before* writing anything.
+4. Walk `.claude/prompts/review.md` check-by-check (checks 1–21) and apply each one honestly to the diff. Triggers (label-based, content-based) are the same; the difference is that you are the reviewer.
+5. Produce `tmp/review-s5u-<NUMBER>.md` with the same structured `## Verdict` contract (`Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:` with ≥3 bullets, `Bug IDs filed:`). The pre-PR hook validates the artifact identically to Path A.
+6. In both the review artifact and the PR body, **disclose the fallback explicitly**: `"Reviewed under Path B (Agent tool unavailable in this sub-agent context, per CLAUDE.md step 6 / S5U-628). Authoritative post-ship review is the top-level coordinator's responsibility."`
+
+Honesty constraint: the fallback is **only** valid when `Agent` is genuinely missing from your tool list. If you are the top-level coordinator and claim Path B to avoid the sub-agent spawn, that is a safety-gate violation.
+
+**Safety-gate scope escalation (MUST):** any PR touching safety-gate scope (hooks, pre-commit checks, review gates, CI checks, merge guards, branch-protection-adjacent scripts) MUST additionally be shipped via `/coordinator`, not via `/ship` / `/next` / `/build-loop` run as a lone worker. The top-level coordinator spawns a separate post-ship fresh-eyes reviewer (which *does* have fresh context, by virtue of being a new sub-agent briefed only with evidence), and that post-ship reviewer is the authoritative gate for safety-critical work. A lone-worker Path B self-review is not sufficient for safety-gate changes. The `/ship`, `/next`, and `/build-loop` skills surface this requirement as a warning at invocation time when the branch diff looks safety-gate-adjacent.
+
+**Bypass clauses (must-refuse, S5U-614):**
+
+- Safety-gate changes MUST NOT be shipped via `/ship` / `/next` / `/build-loop` without a subsequent coordinator-style fresh-eyes review. The coordinator's post-ship reviewer is the authoritative gate.
+- Path B MUST NOT be invoked when `Agent` is actually available. "Agent was slow" or "I skimmed the diff" is not a valid reason to downgrade.
+- Path B MUST NOT substitute for Codex review on `cross-system-review`-labeled issues.
+- The fallback MUST NOT be satisfied by calling the Anthropic Agent API from a custom script, opening a separate Claude terminal / web chat, or prompting a local LLM — those paths skip the harness artifact contract and are semantically equivalent to no review.
 
 ### 7. Create PR
 - Push branch: `git push -u origin HEAD`

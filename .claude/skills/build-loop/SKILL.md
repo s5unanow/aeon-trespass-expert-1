@@ -33,3 +33,7 @@ Repeat:
 - Never skip review, force-push, or force-merge
 - Commit specific files, not `git add .`
 - Ask the user at each checkpoint — don't run indefinitely
+
+## Safety-gate scope warning (S5U-628)
+
+`/build-loop` loops `/next`, which invokes `/ship` — all three run as lone workers without a coordinator-style fresh-eyes post-ship reviewer. Per CLAUDE.md step 6, safety-gate PRs (hooks, review prompts, CI workflows, merge guards, branch-protection-adjacent scripts, SKILL.md files) MUST be shipped via `/coordinator`, not `/build-loop`. If the next backlog issue is safety-gate-scoped, stop, warn the user, and recommend switching to `/coordinator` for that issue before resuming the loop.
