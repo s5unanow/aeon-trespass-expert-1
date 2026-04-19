@@ -63,6 +63,22 @@ jobs:
           uv run python scripts/check_golden_refresh.py \
             --base origin/${{ github.base_ref || 'main' }} --head HEAD
 
+      # S5U-591: block silent threshold loosening. Runs only when the
+      # extraction-scope detector flagged a change to configs/qa/thresholds*.
+      # The PR body is passed so a `## Threshold loosening justification`
+      # section can unblock the check without requiring a commit-message
+      # sentinel. Fails CI if loosening is detected without either form
+      # of justification. See docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §8.3.
+      - name: Threshold loosening guard
+        if: github.event_name == 'pull_request' && steps.extraction-scope.outputs.threshold_change_detected == 'true'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s' "$PR_BODY" > /tmp/pr_body.md
+          uv run python scripts/check_threshold_changes.py \
+            --base origin/${{ github.base_ref || 'main' }} --head HEAD \
+            --pr-body-file /tmp/pr_body.md
+
       - name: Test
         run: uv run pytest --tb=short
 
