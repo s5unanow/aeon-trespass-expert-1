@@ -85,8 +85,38 @@ class ThresholdEntry:
 # ---------------------------------------------------------------------------
 
 
+def _verify_ref_exists(ref: str) -> None:
+    """Raise SystemExit if `ref` cannot be resolved to a commit (S5U-642).
+
+    Shallow CI checkouts (`fetch-depth: 1`) silently leave the base branch
+    unreachable. Without this check, `_git_show` would return None and the
+    guard would treat every head threshold as net-new, passing the PR
+    silently. Fail-closed with a clear message pointing the operator at
+    the workflow fix.
+    """
+    result = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise SystemExit(
+            f"ERROR: cannot resolve ref '{ref}' to a commit.\n"
+            "  This usually means the CI checkout is shallow and the base\n"
+            "  branch is unreachable. Set `fetch-depth: 0` on the\n"
+            "  actions/checkout step (see .github/workflows/python-tests.yml).\n"
+            f"  git rev-parse stderr: {result.stderr.strip()}"
+        )
+
+
 def _git_show(ref: str, path: str) -> str | None:
-    """Return file contents at `ref`, or None if the file doesn't exist there."""
+    """Return file contents at `ref`, or None if the file doesn't exist there.
+
+    The caller must have already verified that `ref` resolves via
+    `_verify_ref_exists`, so a non-zero return code here means the path
+    is absent at that commit (not that the ref itself is bad).
+    """
     result = subprocess.run(
         ["git", "show", f"{ref}:{path}"],
         capture_output=True,
@@ -141,10 +171,24 @@ def _parse_thresholds(toml_text: str | None) -> dict[str, ThresholdEntry]:
         if not isinstance(name, str):
             continue
         min_val = raw.get("min")
-        if not isinstance(min_val, (int, float)):
+        # bool is a subclass of int in Python; reject it explicitly so a
+        # TOML `min = true` doesn't silently parse as 1.0.
+        if not isinstance(min_val, (int, float)) or isinstance(min_val, bool):
             continue
-        blocking = bool(raw.get("blocking", True))
-        entries[name] = ThresholdEntry(name=name, min=float(min_val), blocking=blocking)
+        # S5U-644: mirror the Pydantic `bool` field boundary. A TOML string
+        # `blocking = "false"` is Python-truthy and would have slipped past
+        # the old `bool(raw.get(...))` coercion, approving a PR the runtime
+        # would reject. Fail closed on any non-bool type, including int
+        # (the `blocking = 1` / `blocking = 0` cases).
+        raw_blocking = raw.get("blocking", True)
+        if not isinstance(raw_blocking, bool):
+            raise SystemExit(
+                f"ERROR: [metric_thresholds.{name}].blocking must be a TOML "
+                f"boolean (true/false), got {type(raw_blocking).__name__} "
+                f"{raw_blocking!r}. See apps/pipeline/src/atr_pipeline/eval/"
+                "thresholds.py — the runtime model requires bool."
+            )
+        entries[name] = ThresholdEntry(name=name, min=float(min_val), blocking=raw_blocking)
     return entries
 
 
@@ -263,6 +307,13 @@ def main() -> int:
         help="Optional path to a file containing the PR body (CI passes this).",
     )
     args = parser.parse_args()
+
+    # S5U-642: verify both refs resolve BEFORE attempting `git show`. A
+    # shallow CI checkout leaves the base ref unresolvable; without this
+    # check, the guard would treat every head threshold as net-new and
+    # approve real loosening.
+    _verify_ref_exists(args.base)
+    _verify_ref_exists(args.head)
 
     base_text = _git_show(args.base, THRESHOLDS_PATH)
     head_text = _git_show(args.head, THRESHOLDS_PATH)
