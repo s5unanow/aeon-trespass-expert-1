@@ -1,13 +1,16 @@
-"""Export QA artifacts (QASummaryV1 + QARecordV1 records) to the web bundle.
+"""Export QA artifacts (QASummaryV1 + QARecordV1 records + QAMetricsV1) to the web bundle.
 
 Selects the latest `QASummaryV1` whose ``edition`` matches the requested
-edition, resolves the referenced `QARecordV1` artifacts, and writes two JSON
+edition, resolves the referenced `QARecordV1` artifacts, and writes three JSON
 files into the edition-scoped bundle:
 
 - ``<edition>/data/qa_summary.json`` — the `QASummaryV1` payload verbatim.
 - ``<edition>/data/qa_records.json`` — ``{"records": [QARecordV1, ...]}``
   (wrapped in an object so future metadata can be added without a breaking
   change).
+- ``<edition>/data/qa_metrics.json`` — the latest edition-matched
+  `QAMetricsV1` payload verbatim (S5U-597). Written only when a metrics
+  artifact exists; older runs predating metrics emission silently skip.
 
 The QA stage runs per edition (`ctx.edition`) — EN produces structural
 findings only, RU additionally emits translation QA — but both write into
@@ -120,5 +123,29 @@ def export_qa(
         json.dumps({"records": records}, ensure_ascii=False, indent=2)
     )
 
-    print(f"  [{edition.upper()}] Exported QA summary + {len(records)} records")
+    metrics_exported = _export_metrics(artifact_root, doc_id, edition, out_dir)
+    metrics_note = " + metrics" if metrics_exported else ""
+    print(f"  [{edition.upper()}] Exported QA summary + {len(records)} records{metrics_note}")
     return len(records)
+
+
+def _export_metrics(
+    artifact_root: Path,
+    doc_id: str,
+    edition: str,
+    out_dir: Path,
+) -> bool:
+    """Write qa_metrics.json if an edition-matched metrics artifact exists.
+
+    Returns ``True`` when a metrics artifact was written, ``False`` otherwise
+    (older runs emit no metrics; that's not an error).
+    """
+    metrics_dir = artifact_root / doc_id / "qa_metrics.v1" / "document" / doc_id
+    if not metrics_dir.is_dir():
+        return False
+    latest = _pick_summary_for_edition(metrics_dir, edition)
+    if latest is None:
+        return False
+    payload = json.loads(latest.read_text())
+    (out_dir / "qa_metrics.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2))
+    return True

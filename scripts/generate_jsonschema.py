@@ -24,6 +24,7 @@ from atr_schemas.nav_payload_v1 import NavPayloadV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.patch_set_v1 import PatchSetV1
+from atr_schemas.qa_metrics_v1 import QAMetricsV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.raster_meta_v1 import RasterMetaV1
@@ -60,6 +61,7 @@ MODELS = {
     "page_evidence_v1": PageEvidenceV1,
     "page_ir_v1": PageIRV1,
     "patch_set_v1": PatchSetV1,
+    "qa_metrics_v1": QAMetricsV1,
     "qa_record_v1": QARecordV1,
     "qa_summary_v1": QASummaryV1,
     "raster_meta_v1": RasterMetaV1,
