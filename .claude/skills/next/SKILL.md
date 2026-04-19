@@ -59,3 +59,7 @@ Complete the current issue fully before returning. The scope of `/next` is a sin
 4. Run `/ship` to complete the workflow
 
 If any step fails after reasonable retries, log the error and stop — do not loop indefinitely.
+
+## Safety-gate scope warning (S5U-628)
+
+Before invoking `/ship`, check whether the issue scope or the diff touches safety-gate surfaces (hooks under `.claude/hooks/`, review prompts/gates, CI workflow YAML, merge guards, branch-protection-adjacent scripts, SKILL.md files in `.claude/skills/`). If yes, `/next` is **not sufficient** on its own: CLAUDE.md step 6 requires safety-gate PRs to be shipped via `/coordinator` so a fresh-eyes post-ship reviewer runs in a new sub-agent context. Warn the user and recommend switching to `/coordinator` before continuing.
