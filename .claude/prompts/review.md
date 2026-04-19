@@ -47,6 +47,26 @@ Checks 1–13 always run. Checks 14–21 are conditional — consult this trigge
     - If the confirmation cites "N/A — no production code change" but the diff does contain executable behavior changes (new/changed functions outside test files): **CRITICAL** — `"Red-before claims no code change but diff contains {path/to/file.py}"`
     - The probe must appear as an explicit bullet in `Probes run:` (e.g., `- Red-before confirmation check: found "Red-before confirmation: commit abc123 shows test_foo failing" in commit 0a1b2c3`). A missing probe bullet when tests were added is itself a WARNING the reviewer should self-flag.
 
+    **SHA-resolution tripwire (S5U-624)**: a worker can fabricate a plausible SHA (`abc1234`) and a plausible-looking assertion excerpt and pass the anchor grep silently. To close that bypass, **every hex SHA cited in a `red[- ]before` block must resolve in the local working tree**. Extract every SHA-shaped token from every red-before block (commit messages **and** PR body; the worker may cite in either per `.claude/rules/hooks.md`) and verify each one with `git cat-file -e <sha>^{commit}`:
+    ```bash
+    # Concatenate commit messages + PR body, isolate red-before blocks (anchor + 5 lines after),
+    # extract hex SHA candidates (7-40 chars), and resolve each.
+    { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
+      | grep -iE -A 5 'red[- ]before' \
+      | grep -oE '\b[0-9a-f]{7,40}\b' \
+      | sort -u \
+      | while read -r sha; do
+          git cat-file -e "${sha}^{commit}" 2>/dev/null \
+            || echo "UNRESOLVED: ${sha}"
+        done
+    ```
+    Grading:
+    - If the loop emits any `UNRESOLVED:` line: **CRITICAL** — `"Red-before SHA <sha> does not resolve in local history — fabrication, typo, or sibling-repo SHA (S5U-624)"`. This is non-negotiable; do not downgrade to WARNING on the premise that the SHA "looks plausible". The whole point of the tripwire is that plausibility is exactly the failure mode.
+    - If a red-before block has **no** SHA, no failure excerpt, **and** is not the literal "N/A — no production code change" carve-out (e.g., the worker cited a tag like `v1.2.3`, a PR link like `#258`, or a bare phrase): **WARNING** — `"Red-before block lacks a hex SHA and is not the N/A carve-out — reviewer cannot mechanically resolve the citation"`. Tags and PR links are not the documented form per `hooks.md`.
+    - **Note on excerpt content**: the tripwire validates SHA *existence* only. It does **not** validate that `git show <sha>` actually contains the cited test name or failure excerpt. That deeper check is the replay harness explicitly deferred by S5U-615. If the diff is high-stakes (safety-gate, security, data-loss-adjacent), spot-check `git show <sha> -- <test_file>` manually for the cited test name. Reviewers are not required to do this on every PR.
+    - **Note on HEAD-SHA gaming**: a worker who cites the current `HEAD` (or any commit that already contains the fix) trivially passes the tripwire. The tripwire cannot distinguish "real red-before run" from "pointed at a committed fix." Reviewer judgment: if the cited SHA is reachable from `HEAD` and the cited test is *passing* at that SHA, the citation is suspicious — flag as **WARNING** unless the worker also pasted a failure excerpt that matches.
+    - The probe must appear as an explicit bullet in `Probes run:` of the form `"Red-before SHA tripwire: extracted {N} SHA(s) from red-before blocks ({sha1, sha2, ...}); all resolve via git cat-file -e <sha>^{commit}"` — or `"... ; UNRESOLVED: <sha> → CRITICAL filed"`. If the diff added no new test functions, note `"Red-before SHA tripwire: skipped — no new test functions in diff"`. If the only red-before block is the literal "N/A — no production code change" carve-out, note `"Red-before SHA tripwire: skipped — N/A carve-out, no SHA cited"`.
+
     **Parametrize-row sub-probe (S5U-623)**: the rule above also applies when the diff adds a row to an existing `@pytest.mark.parametrize` block, **or to any semantically-equivalent parametrization vector** (vitest `test.each` / `it.each` / `describe.each`, class-level `@pytest.mark.parametrize`, `@pytest.fixture(params=[...])`, `pytest_generate_tests`, `hypothesis @given(...)` widening). Identify added rows with:
     ```bash
     git diff main...HEAD -- '**/*.py' '**/*.ts' '**/*.tsx' | grep -E '^\+' | grep -E '(parametrize|\.each\(|@given|fixture\(.*params)'
