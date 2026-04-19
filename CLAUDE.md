@@ -202,6 +202,7 @@ Branch protection on `main` requires all CI checks to pass before merge. If a ge
 - Never skip the sub-agent review before creating a PR
 - Never commit directly to main (use feature branches)
 - Never merge with failing CI
+- **Never skip pre-commit hooks without disclosure** (S5U-629). This covers `git commit --no-verify` / `-n`, `git commit --amend --no-verify`, `HUSKY=0`, `LEFTHOOK=0`, `SKIP=<hook>`, `HOOK_BYPASS=`, `NO_VERIFY=`, direct hook-file modification (`chmod -x .git/hooks/pre-commit`, `rm .git/hooks/pre-commit`, no-op hook replacement), and `core.hooksPath` redirection (`git config core.hooksPath …`, `git -c core.hooksPath=…`). If you used any of these — **even if the commit was rolled back before reaching `origin`** — you must add a `## Hook bypass disclosure` heading to the PR body naming the commit SHA (or rollback SHA + `git reset` command used), the reason the hook was bypassed, and what you did to verify the skipped check(s) independently. Concealment of any hook-skip attempt is a **stronger violation than the bypass itself** and will be flagged as CRITICAL by the reviewer regardless of whether the bypass reached origin. The reviewer's probe greps commit messages and PR body for bypass tokens — a match without a disclosure heading is CRITICAL. See `.claude/prompts/review.md` check #22 for the probe definition and rationale (reflog inspection is explicitly NOT a valid detection path for independent reviewers on a fresh checkout).
 
 ## Compact Instructions
 

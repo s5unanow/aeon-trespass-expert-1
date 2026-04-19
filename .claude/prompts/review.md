@@ -33,6 +33,7 @@ Checks 1–13 always run. Checks 14–21 are conditional — consult this trigge
 | 19 | Bullet coverage                | Linear issue has ≥3 explicit bullets (counting nested) across its "Fix" + "Success criteria" sections | CRITICAL |
 | 20 | Must-refuse bullet coverage    | Issue labels ∈ {Bug, safety-gate, cross-system-review} OR diff contains any of the 4 boundary shapes (user-input entry / filesystem write / subprocess / schema deserialization) | CRITICAL (label trigger) / WARNING (content trigger only) |
 | 21 | Semantically-equivalent threats| Issue labels ∈ {safety-gate, cross-system-review} OR (Bug AND diff adds a new gate/validator) OR diff contains any of the 4 boundary shapes | CRITICAL (label trigger) / WARNING (content trigger only) |
+| 22 | Hook-bypass disclosure         | Always run (probe is cheap; does not require label or diff-shape trigger)                | CRITICAL (undisclosed match) / WARNING (disclosed match) |
 
 1. **Logic bugs** — off-by-one errors, wrong conditions, missing edge cases, None/null handling
 2. **Error handling** — bare `except Exception`, swallowed errors, missing error paths
@@ -149,6 +150,35 @@ Checks 1–13 always run. Checks 14–21 are conditional — consult this trigge
         - **If the section is missing entirely**: **WARNING** — `"Diff contains {matched_shape} (boundary shape: {category}) but issue S5U-XXX has no safety-gate trigger label and lacks Semantically-equivalent threats section. Per linear-conventions.md (S5U-627), the section is required regardless of label so the worker enumerates the equivalence class for the new shape (e.g., for a new `subprocess.run`, list `os.system`, `shell=True`, `os.exec*`, etc.) and the reviewer can verify the runtime guard covers all of them."` Severity is WARNING, not CRITICAL, for the same false-positive reason as check #20. Reviewers retain judgment to escalate when the boundary shape is plainly adversarial.
         - **If the section is present** (worker pre-empted): cross-check against the diff per the label-trigger rules above.
     - **Mandatory probe bullet**: the `Probes run:` section must include `"Semantically-equivalent threats: issue S5U-XXX label-trigger=<yes|no>, boundary-shape match=<shape | none>; section <enumerates K vectors verified #1 by <file>, #2 by <file>, ... + audited upstream surface | missing — {CRITICAL on label trigger | WARNING on content trigger only | n/a if neither trigger fires}>"`. A generic "Semantically-equivalent: checked" is a **WARNING** for reviewer self-discipline; the rule is the reviewer audits the upstream surface, not just the issue's enumeration. Non-triggering diffs note `"Semantically-equivalent threats: skipped — issue has no safety-gate label, diff adds no new enforcement logic, and contains none of the 4 boundary shapes"`.
+22. **Hook-bypass disclosure (S5U-629) — always run** — CLAUDE.md's NEVER list forbids skipping pre-commit hooks without a `## Hook bypass disclosure` heading in the PR body. This probe grades **concealment as a stronger violation than the bypass itself**: an undisclosed match is CRITICAL, a disclosed match is WARNING. The probe exists to create an audit surface on the commit-message + PR-body side-channel; it cannot detect bypasses that the worker conceals (neutral commit message, no disclosure, hook-skip already rolled back) — that failure mode is a documented residual risk, explicitly deferred in S5U-629 (see `tmp/plan-s5u-629.md` §4d Scenario 4).
+    - **Probe corpus**: commit messages on this branch **and** the PR body. Do **not** grep the diff (this very probe's rule text contains `--no-verify` as documentation — false positives would be guaranteed). Do **not** grep `git reflog` — the independent reviewer has a fresh checkout and no access to the worker's local reflog. Claiming reflog evidence violates S5U-613 fresh-eyes independence; **reflog MUST NOT be used as evidence for this probe**.
+    - **Bypass token grep**:
+        ```bash
+        { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
+          | grep -inE '(\-\-no\-verify|no\-verify|HOOK_BYPASS=|HUSKY=0|LEFTHOOK=0|SKIP=|NO_VERIFY=|core\.hooksPath|chmod[[:space:]]+-x[[:space:]]+\.git/hooks|rm[[:space:]]+\.git/hooks)'
+        ```
+        Separate short-form `-n` probe — anchored to avoid false positives on `git log -n`, `echo -n`, etc. (the unanchored `\-n\b` would be unusable):
+        ```bash
+        { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
+          | grep -inE '\bgit[[:space:]]+commit\b[^\n]*[[:space:]]-n\b'
+        ```
+        A match on either probe means "the worker at some point referenced a hook-skip vector in their own commit messages or PR body." That is not automatically bad — it can mean the worker **disclosed**.
+    - **Disclosure heading check**: if either probe matched, verify the PR body contains a `## Hook bypass disclosure` heading with non-empty body (at least a commit SHA and a rationale sentence — an empty heading counts as missing for grading purposes):
+        ```bash
+        gh pr view --json body -q .body 2>/dev/null \
+          | awk '/^##[[:space:]]+Hook[[:space:]]+bypass[[:space:]]+disclosure/{flag=1; next} /^##[[:space:]]/{flag=0} flag'
+        ```
+    - **Grading**:
+        - **No bypass-token match in corpus**: pass silently. Probe bullet: `"Hook-bypass disclosure: no bypass tokens in commit messages or PR body"`. This is the expected case for the vast majority of PRs.
+        - **Bypass-token match AND disclosure heading present with non-empty body**: **WARNING** — `"Hook bypass disclosed: worker referenced {matched_token} in {commit_sha | PR body} and PR body contains '## Hook bypass disclosure' section. Disclosure is the legitimate path; flagging as audit-trail WARNING per CLAUDE.md NEVER list. Reviewer should spot-check the bypassed commit's diff for the content the skipped check would have caught."`
+        - **Bypass-token match AND disclosure heading absent (or empty)**: **CRITICAL** — `"Detected hook-bypass token {matched_token} in {commit_sha | PR body line N} but PR body lacks '## Hook bypass disclosure' section (or section is empty). Undisclosed concealment is a stronger violation than the bypass itself per CLAUDE.md NEVER list and the S5U-629 rule text. Request worker to add disclosure or explain the false positive."`
+        - **False-positive context**: if the match is a narrative reference (e.g., a commit message like `"S5U-XXX: document --no-verify rule"` in a docs-only diff where the literal string appears because the worker is editing CLAUDE.md or this very check) — use judgment. The disclosure requirement applies to **actual hook-skip attempts**, not to edits that cite the rule text. Note the false-positive judgment in the probe bullet so the audit trail is honest.
+    - **Mandatory probe bullet**: the `Probes run:` section must include an explicit line of one of the following forms:
+        - `"Hook-bypass disclosure: no bypass tokens in commit messages or PR body"`
+        - `"Hook-bypass disclosure: matched '<token>' in <commit_sha | PR-body line N>; disclosure heading present with body '<excerpt>' — WARNING filed"`
+        - `"Hook-bypass disclosure: matched '<token>' in <commit_sha | PR-body line N>; disclosure heading absent — CRITICAL filed"`
+        - `"Hook-bypass disclosure: matched '<token>' in <commit_sha | PR-body line N>; false-positive judgment — this PR edits the rule text itself and the match is a narrative citation, not a hook-skip"`
+    - **This probe does NOT detect**: (a) bypasses concealed via neutral commit message + no disclosure, (b) bypasses via direct hook-file modification (`chmod -x`, `rm`, no-op replacement, `core.hooksPath` redirect) that leave no commit-message trace, (c) rolled-back bypass commits that never reach origin and are not self-reported. Those are acknowledged residual risks; the gate is worker honesty backed by the CLAUDE.md NEVER-list framing of concealment as the stronger violation. See `tmp/plan-s5u-629.md` §4d Scenarios 4 and 5 for the documented limits of this probe.
 
 ## How to review
 
