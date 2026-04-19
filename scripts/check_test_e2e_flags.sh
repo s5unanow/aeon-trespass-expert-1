@@ -74,11 +74,11 @@ scan_dir() {
   fi
   # NUL-delimited find + while-read to survive spaces in paths.
   while IFS= read -r -d '' f; do
-    # `-H` prefixes hits with the filename. We pipe through grep -v to drop
-    # lines bearing the legacy ALLOW_MARKER if they appear in one of the
-    # allowlisted source files; the python scanner is the one that enforces
-    # marker policy for `.github/**`. Here we simply refuse to silence
-    # based on the marker — every hit fails.
+    # `-H` prefixes hits with the filename, `-n` adds line numbers.
+    # We deliberately do NOT honour the legacy `# visual-gate-scope:
+    # allow` marker here: any forbidden flag on any line of workflow /
+    # action YAML is a hard failure, mirroring the Python scanner's
+    # S5U-611 Gap 2 rule.
     if matches=$(grep -HEn -- "${pattern}" "${f}" 2>/dev/null); then
       echo "::error::workflow YAML ${f} contains a Playwright update/ignore flag:"
       printf '%s\n' "${matches}" | sed 's/^/  /'
