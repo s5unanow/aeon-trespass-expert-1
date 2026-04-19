@@ -26,3 +26,13 @@ class QASummaryV1(BaseModel):
     blocking: bool = False
     record_refs: list[str] = Field(default_factory=list)
     review_pack_ref: str = ""
+    qa_metrics_ref: str = ""
+    """Relative artifact-store path to the `QAMetricsV1` emitted by this run.
+
+    Populated by ``QAStage`` (S5U-641) so the export layer can copy the
+    exact metrics artifact paired with this summary instead of selecting a
+    metrics file independently by mtime, which could pair a summary with
+    a stale metrics artifact from an interrupted prior run. Legacy
+    summaries predating S5U-641 have an empty string; exporters fall back
+    to latest-match selection for those.
+    """

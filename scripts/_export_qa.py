@@ -123,7 +123,7 @@ def export_qa(
         json.dumps({"records": records}, ensure_ascii=False, indent=2)
     )
 
-    metrics_exported = _export_metrics(artifact_root, doc_id, edition, out_dir)
+    metrics_exported = _export_metrics(artifact_root, doc_id, edition, out_dir, summary)
     metrics_note = " + metrics" if metrics_exported else ""
     print(f"  [{edition.upper()}] Exported QA summary + {len(records)} records{metrics_note}")
     return len(records)
@@ -134,12 +134,38 @@ def _export_metrics(
     doc_id: str,
     edition: str,
     out_dir: Path,
+    summary: dict,
 ) -> bool:
-    """Write qa_metrics.json if an edition-matched metrics artifact exists.
+    """Write qa_metrics.json for the metrics artifact paired with *summary*.
+
+    Selection (S5U-641):
+
+    1. Prefer ``summary["qa_metrics_ref"]`` — the exact metrics artifact
+       bound to this summary by the QA stage. This prevents pairing an
+       authoritative summary with a stray metrics file from an interrupted
+       prior run.
+    2. Fall back to latest-by-mtime edition-matched selection **only** for
+       legacy summaries (pre-S5U-641) that have no ``qa_metrics_ref``.
+       This preserves export behavior for older artifact stores.
 
     Returns ``True`` when a metrics artifact was written, ``False`` otherwise
-    (older runs emit no metrics; that's not an error).
+    (older runs emit no metrics, or the ref points at a missing file; both
+    are non-fatal — export continues without metrics).
     """
+    ref = summary.get("qa_metrics_ref", "") or ""
+    if ref:
+        target = artifact_root / ref
+        if not target.is_file():
+            # The summary claims a specific artifact but it's gone — log and
+            # skip rather than silently substituting a stray. This is an
+            # artifact-store corruption case, not a legacy-data case.
+            print(f"  [{edition.upper()}] qa_metrics_ref={ref!r} missing; skipping metrics")
+            return False
+        payload = json.loads(target.read_text())
+        (out_dir / "qa_metrics.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2))
+        return True
+
+    # Legacy fallback (summary has no ref field — pre-S5U-641 artifact).
     metrics_dir = artifact_root / doc_id / "qa_metrics.v1" / "document" / doc_id
     if not metrics_dir.is_dir():
         return False

@@ -72,6 +72,11 @@
       "default": "",
       "title": "Review Pack Ref",
       "type": "string"
+    },
+    "qa_metrics_ref": {
+      "default": "",
+      "title": "Qa Metrics Ref",
+      "type": "string"
     }
   },
   "required": [

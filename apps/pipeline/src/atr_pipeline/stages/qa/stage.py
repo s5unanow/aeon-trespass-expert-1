@@ -36,7 +36,13 @@ class QAStage:
 
     @property
     def version(self) -> str:
-        return "1.0"
+        # Bumped to "1.1" by S5U-640 to invalidate pre-S5U-597 cache entries
+        # so cached QA events re-run and emit the qa_metrics.json artifact
+        # that S5U-597 declared as a success criterion. The executor's cache
+        # key includes this version string; bumping it makes every existing
+        # cached event miss exactly once, then re-cache under the new key
+        # with metrics on disk.
+        return "1.1"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
@@ -132,6 +138,11 @@ class QAStage:
             blocking=blocking,
             record_refs=record_refs,
             review_pack_ref=review_pack_ref,
+            # S5U-641: bind the specific metrics artifact to this summary so
+            # the export layer can pick the ref-bound file instead of the
+            # latest-by-mtime metrics, which could be a stray from an
+            # interrupted prior run.
+            qa_metrics_ref=metrics_ref.relative_path,
         )
 
     @staticmethod
