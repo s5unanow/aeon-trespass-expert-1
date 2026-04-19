@@ -222,3 +222,95 @@ def test_generate_overlays_default_dpi_is_none() -> None:
         _generate_overlays(store, "doc1", report)
 
     mock_provider_cls.assert_called_once_with(store=store, document_id="doc1", pyramid_dpi=None)
+
+
+def test_run_all_golden_sets_uses_atomic_write_for_output_json(tmp_path: Path) -> None:
+    """S5U-625: combined eval report JSON must be written via atomic_write_text.
+
+    Without the fix, ``Path(output_json).write_text(...)`` is called and the
+    patched ``atomic_write_text`` is never invoked, so the assertion fails.
+    """
+    artifacts = tmp_path / "artifacts"
+    _write_golden_ir(artifacts, "walking_skeleton", "p0001")
+
+    real_config = load_document_config("walking_skeleton", repo_root=_repo_root())
+    patched_config = real_config.model_copy(update={"artifact_root": artifacts})
+    output_json = tmp_path / "combined.json"
+
+    with (
+        patch(
+            "atr_pipeline.cli.commands.eval_cmd.load_document_config",
+            return_value=patched_config,
+        ),
+        patch(
+            "atr_pipeline.cli.commands.eval_cmd.discover_golden_sets",
+            return_value=["core"],
+        ),
+        patch("atr_pipeline.cli.commands.eval_cmd.atomic_write_text") as mock_atomic,
+    ):
+        result = runner.invoke(
+            app,
+            ["eval", "--golden-set", "all", "--output-json", str(output_json)],
+        )
+
+    assert result.exit_code == 0, result.output
+    assert mock_atomic.call_count == 1, (
+        f"Expected combined report to route through atomic_write_text; "
+        f"called {mock_atomic.call_count} times"
+    )
+    called_path = mock_atomic.call_args.args[0]
+    assert Path(called_path) == output_json
+    # Body is valid JSON list of reports
+    body = mock_atomic.call_args.args[1]
+    parsed = json.loads(body)
+    assert isinstance(parsed, list) and len(parsed) == 1
+
+
+def test_generate_overlays_uses_atomic_write_for_png() -> None:
+    """S5U-625: overlay PNGs must be written via atomic_write_bytes.
+
+    Without the fix, ``out_path.write_bytes(png_bytes)`` is called and the
+    patched ``atomic_write_bytes`` is never invoked.
+    """
+    from atr_pipeline.cli.commands.eval_cmd import _generate_overlays
+    from atr_pipeline.eval.models import EvalReport
+
+    page_result = MagicMock()
+    page_result.page_id = "p0001"
+    report = MagicMock(spec=EvalReport)
+    report.pages = [page_result]
+
+    store = MagicMock()
+    store.root = Path("/fake/artifacts")
+
+    provider_instance = MagicMock()
+    provider_instance.get_raster.return_value = Path("/fake/raster.png")
+
+    with (
+        patch(
+            "atr_pipeline.services.pdf.raster_provider.PageRasterProvider",
+            return_value=provider_instance,
+        ),
+        patch(
+            "atr_pipeline.cli.commands.eval_cmd.load_page_ir",
+            return_value=MagicMock(),
+        ),
+        patch(
+            "atr_pipeline.eval.overlay.draw_ir_overlay",
+            return_value=b"\x89PNG fake overlay bytes",
+        ),
+        patch(
+            "pathlib.Path.mkdir",
+        ),
+        patch("atr_pipeline.cli.commands.eval_cmd.atomic_write_bytes") as mock_atomic,
+    ):
+        _generate_overlays(store, "doc1", report)
+
+    assert mock_atomic.call_count == 1, (
+        f"Expected overlay PNG to route through atomic_write_bytes; "
+        f"called {mock_atomic.call_count} times"
+    )
+    out_path = mock_atomic.call_args.args[0]
+    data = mock_atomic.call_args.args[1]
+    assert out_path.name == "overlay.png"
+    assert data == b"\x89PNG fake overlay bytes"

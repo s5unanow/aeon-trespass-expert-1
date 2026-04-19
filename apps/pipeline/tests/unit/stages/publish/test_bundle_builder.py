@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from unittest.mock import patch
 
 from atr_pipeline.stages.publish.bundle_builder import BundleRefs, build_release_bundle
 
@@ -231,6 +232,40 @@ def test_raster_refs_copied_to_bundle(tmp_path: Path) -> None:
     data_files = [f.path for f in manifest.files]
     assert "rasters/p0007__150dpi.png" in data_files
     assert (output_dir / "rasters" / "p0007__150dpi.png").exists()
+
+
+def test_manifest_written_atomically(tmp_path: Path) -> None:
+    """S5U-625: manifest.json must be written via atomic_write_text.
+
+    This verifies the fix routes the manifest write through
+    ``atr_pipeline.store.atomic_write.atomic_write_text`` rather than plain
+    ``Path.write_text``. Without the fix, the patched helper is never called
+    and the assertion fails.
+    """
+    artifact_root = tmp_path / "artifacts"
+    ref_p1 = _write_render_page(artifact_root, "doc1", "p1")
+
+    with patch("atr_pipeline.stages.publish.bundle_builder.atomic_write_text") as mock_atomic:
+        build_release_bundle(
+            document_id="doc1",
+            artifact_root=artifact_root,
+            output_dir=tmp_path / "release",
+            refs=BundleRefs(render_pages={"p1": ref_p1}),
+        )
+
+    # atomic_write_text must be invoked once for the manifest
+    assert mock_atomic.call_count == 1, (
+        f"Expected manifest write to route through atomic_write_text, "
+        f"but it was called {mock_atomic.call_count} times"
+    )
+    call_args = mock_atomic.call_args
+    manifest_path = call_args.args[0]
+    manifest_body = call_args.args[1]
+    assert manifest_path.name == "manifest.json"
+    # Body is valid JSON with content-addressed build_id
+    parsed = json.loads(manifest_body)
+    assert parsed["document_id"] == "doc1"
+    assert parsed["build_id"].startswith("build_")
 
 
 def test_raster_refs_affect_build_id(tmp_path: Path) -> None:

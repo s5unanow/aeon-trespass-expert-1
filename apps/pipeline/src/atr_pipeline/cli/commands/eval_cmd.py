@@ -14,6 +14,7 @@ from atr_pipeline.eval.report import print_summary, write_report_json
 from atr_pipeline.eval.runner import load_page_ir, run_evaluation
 from atr_pipeline.eval.thresholds import ThresholdConfig, load_thresholds
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.store.atomic_write import atomic_write_bytes, atomic_write_text
 
 
 def eval_command(
@@ -101,7 +102,7 @@ def _run_all_golden_sets(*, output_json: str, fail_on_threshold: bool) -> None:
 
     if output_json and all_reports:
         combined = [r.model_dump(mode="json") for r in all_reports]
-        Path(output_json).write_text(json.dumps(combined, indent=2))
+        atomic_write_text(Path(output_json), json.dumps(combined, indent=2))
 
     if any_failed:
         raise typer.Exit(1)
@@ -148,5 +149,5 @@ def _generate_overlays(
         out_dir = store.root / document_id / "eval_overlay" / "ir" / page_id
         out_dir.mkdir(parents=True, exist_ok=True)
         out_path = out_dir / "overlay.png"
-        out_path.write_bytes(png_bytes)
+        atomic_write_bytes(out_path, png_bytes)
         typer.echo(f"  Overlay: {out_path}")
