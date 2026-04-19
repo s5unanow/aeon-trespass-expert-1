@@ -1,0 +1,60 @@
+{
+  "schema_version": "page_ir.v1",
+  "document_id": "chapter_opener",
+  "page_id": "p0001",
+  "page_number": 1,
+  "language": "en",
+  "dimensions_pt": {
+    "width": 595.2,
+    "height": 841.8
+  },
+  "section_hint": null,
+  "blocks": [
+    {
+      "type": "heading",
+      "block_id": "p0001.b001",
+      "bbox": null,
+      "level": 1,
+      "children": [
+        {"type": "text", "text": "Chapter 3 — The Mist Wars", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b002",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "Long before the Titans fell, the mists curled across the high passes and concealed both prey and predator alike. This chapter recounts the earliest skirmishes of that era.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    },
+    {
+      "type": "paragraph",
+      "block_id": "p0001.b003",
+      "bbox": null,
+      "children": [
+        {"type": "text", "text": "The first recorded clash took place at the edge of the Shattered Reach, where vanguard scouts engaged a lone Titan in a narrow gorge.", "marks": [], "lang": "en", "source_word_ids": []}
+      ],
+      "translatable": true,
+      "style_hint": null,
+      "source_ref": null,
+      "annotations": null
+    }
+  ],
+  "assets": [],
+  "reading_order": [
+    "p0001.b001",
+    "p0001.b002",
+    "p0001.b003"
+  ],
+  "confidence": null,
+  "qa_state": null,
+  "provenance": null
+}
