@@ -167,7 +167,7 @@ When creating fix issues for post-ship audit findings:
 
 When the Linear issue you are shipping has **≥3 explicit bullets across its "Fix" + "Success criteria" sections**, the PR body must include a **Coverage table** that maps each bullet to the commit or file that addresses it. This is a CLAUDE.md Definition-of-Done requirement (step 5) motivated by S5U-616 after repeated dropped-bullet regressions (S5U-594 → S5U-609, S5U-595 → S5U-601, S5U-605).
 
-**When the rule fires:** count bullets only in the "Fix" and "Success criteria" sections of the Linear issue. Bullets in "Problem," "Must not break," or "Out of scope" do **not** count. If the combined count is `< 3`, the table is optional (reviewer judgment). If the issue uses prose instead of bullets, the table is optional — reviewer falls back to qualitative judgment.
+**When the rule fires:** count every list marker (`-`, `*`, numbered) at any indent level in the "Fix" and "Success criteria" sections of the Linear issue — **nested sub-bullets count**. A parent with 5 children is 6 bullets, not 1. Bullets in "Problem," "Must not break," or "Out of scope" do **not** count. If the combined count is `< 3`, the table is optional (reviewer judgment). If the issue uses prose instead of bullets, the table is optional — reviewer falls back to qualitative judgment.
 
 **Table format** — put this in the PR body under a `## Coverage` heading:
 
@@ -191,12 +191,15 @@ When the Linear issue you are shipping has **≥3 explicit bullets across its "F
   - An existing file (for preserved invariants) with a brief note.
   - `deferred to S5U-YYY` with a real follow-up issue ID (the follow-up must exist in Linear and not be Canceled; reviewer will look it up).
 - If a single file/commit addresses multiple bullets, list it on each row — duplication is fine.
-- Do **not** merge rows or collapse bullets. One row per bullet, verbatim.
+- Do **not** merge rows or collapse bullets. **One row per bullet, verbatim** — including nested sub-bullets. If a parent bullet has N nested sub-bullets, the table must have N+1 rows (parent + each child), not a single row citing the parent. This is the S5U-622 correction: earlier prompt versions left nested-counting semantics ambiguous, which let single-row parent entries silently hide dropped sub-bullets.
 
 **What the independent reviewer probes** (`.claude/prompts/review.md` check #19):
-- Counts the Linear issue's Fix + Success criteria bullets. If `≥ 3`, the Coverage table is mandatory.
+- Counts the Linear issue's Fix + Success criteria bullets at every indent level. If `≥ 3`, the Coverage table is mandatory.
 - Walks each row and confirms the cited file/commit actually implements the bullet (not just a plausible-looking path).
+- **Samples at least one nested sub-bullet by name** when the issue has nested structure, and verifies it has its own row and independent mapping — a parent-only spot-check is not enough.
 - For deferred rows, calls `mcp__plugin_linear_linear__get_issue` on the cited follow-up ID and confirms it exists and is not Canceled.
-- Blocks (CRITICAL) on any unaddressed bullet, any missing table on a ≥3-bullet issue, or any fake/Canceled follow-up reference.
+- Blocks (CRITICAL) on any unaddressed bullet, any missing table on a ≥3-bullet issue, any nested sub-bullet collapsed under a parent row without its own row, or any fake/Canceled follow-up reference.
 
-**Worked example** — S5U-594 (reader feedback button) had 5 bullets: `role="dialog"`, `aria-modal="true"`, focus trap, focus restoration, initial focus. A compliant Coverage table would have listed all 5 rows. The actual PR #242 would have had rows only for #1–#2, making rows #3–#5 missing entries that the reviewer (per check #19) would have flagged as CRITICAL — catching the gap before merge rather than after (it shipped as S5U-609).
+**Worked example (honest framing, S5U-621)** — earlier prompt versions cited S5U-594 as a 5-bullet case with `role="dialog"`, `aria-modal="true"`, focus trap, focus restoration, and initial focus. That example was fabricated: S5U-594's actual Linear description has 3 numbered Fix items (Reader UI / Submission path / Intake) with nested sub-bullets about the floating button, form fields, and intake path. ARIA attributes, focus trap, focus restoration, and initial focus appear nowhere as verbatim bullets — they were implicit a11y requirements the worker failed to derive. **The Coverage-table gate catches verbatim-bullet drops, not implicit-requirement gaps.** S5U-594's focus-trap regression (S5U-609) is an implicit-a11y drift failure mode, which is a separate concern this gate does not address.
+
+A real worked example that the gate **does** catch, once the S5U-622 nested-bullet rule is applied: S5U-595's "Reader route" Fix bullet has 4 verbatim nested sub-bullets (including the `block_id` highlight that silently dropped in the original ship as S5U-601). A compliant Coverage table for S5U-595 would have one row for the `Reader route` parent plus four rows for each nested sub-bullet; collapsing the four children into the parent row is now a CRITICAL per check #19 ("Nested sub-bullet collapsed under parent row — verbatim one-row-per-bullet rule violated").
