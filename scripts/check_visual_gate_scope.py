@@ -33,22 +33,13 @@ FORBIDDEN_TOKEN_RE = re.compile(
     r"""(^|[\s"'`])(-u|--update-snapshots|--ignore-snapshots)([\s="'`]|$)""",
 )
 
-# `ALLOW_MARKER` is the legacy escape hatch used by gate infrastructure
-# scripts (this scanner, the shell guard) when their source text must
-# mention the forbidden flag tokens literally. The scanner walks ONLY
-# `.github/**` YAML files (see `GITHUB_SCAN_SUBDIRS`), never the Python /
-# bash source files that contain legitimate references — so in practice
-# the marker's only job inside scanned content would be to silence a real
-# violation.
-#
-# S5U-611 hardening: any appearance of `ALLOW_MARKER` inside a scanned
-# workflow/action YAML is itself a violation
-# (`allow-marker-not-permitted`), regardless of whether the rest of the
-# line carries a forbidden flag. That closes Gap 2 (unrestricted
-# single-PR bypass). The `ALLOW_MARKER_PATHS` allowlist below names the
-# small set of files that are permitted to contain the literal string; it
-# exists to make the policy explicit and to fail closed if the scanner is
-# ever repointed at a wider path tree.
+# `ALLOW_MARKER` is the legacy escape hatch used by this scanner and the
+# shell guard when their source text must mention forbidden tokens
+# literally. S5U-611: any appearance of the marker inside scanned YAML
+# is itself a violation (`allow-marker-not-permitted`), regardless of
+# whether the rest of the line carries a forbidden flag — closes the
+# unrestricted single-PR bypass (Gap 2). `ALLOW_MARKER_PATHS` names the
+# fixed set of files permitted to contain the literal string.
 ALLOW_MARKER = "# visual-gate-scope: allow"
 ALLOW_MARKER_PATHS: frozenset[str] = frozenset(
     {
@@ -71,6 +62,16 @@ LOCAL_ONLY_SCRIPTS = frozenset(
         "test:visual:update",
     }
 )
+
+# S5U-637: fixed allowlist of package.json script *names* permitted to
+# carry a forbidden Playwright flag in their body. `test:e2e` is NOT in
+# this allowlist — it has its own stricter rule (must be fully clean).
+# Any OTHER script carrying a forbidden flag produces
+# `package-json-introduces-tainted-script`, turning the rename-bypass
+# from S5U-611 into a reviewer-visible diff failure at package.json
+# scan time, on top of the primary workflow-side closure in
+# `_scan_workflow_script_refs`.
+ALLOWED_TAINTED_SCRIPTS: frozenset[str] = frozenset({"test:visual:update"})
 
 
 @dataclass(frozen=True)
@@ -123,26 +124,15 @@ def _scan_github_file(path: Path, repo_root: Path) -> list[Violation]:
     for i, line in enumerate(text.splitlines(), start=1):
         has_marker = ALLOW_MARKER in line
         if has_marker and not marker_permitted:
-            # S5U-611 Gap 2: the marker is not a valid exemption anywhere
-            # inside `.github/**` YAML. Emit a dedicated violation so the
-            # adversarial scenario ("plant marker now, reintroduce flag
-            # later") cannot establish a silent baseline.
+            # S5U-611 Gap 2: marker never valid in scanned YAML. Do NOT
+            # `continue` — still run the forbidden-flag check below so
+            # reviewers see both issues at once if applicable.
             violations.append(
-                Violation(
-                    path=rel,
-                    line=i,
-                    excerpt=line,
-                    reason="allow-marker-not-permitted",
-                )
+                Violation(path=rel, line=i, excerpt=line, reason="allow-marker-not-permitted")
             )
-            # Do NOT `continue`: we still want the forbidden-flag scan to
-            # surface its own violation on the same line, so reviewers see
-            # both issues at once.
         if _contains_forbidden_flag(line):
-            # If the marker is present AND permitted (would never happen
-            # inside `.github/**`, but retained for defence in depth), skip.
             if has_marker and marker_permitted:
-                continue
+                continue  # defense in depth; permitted paths are outside scanned tree
             violations.append(
                 Violation(
                     path=rel,
@@ -173,12 +163,11 @@ def _scan_package_json(
     package_json: Path,
     repo_root: Path,
 ) -> tuple[list[Violation], dict[str, str]]:
-    """Scan package.json scripts. Return (violations, scripts_map).
+    """Scan package.json scripts; return (violations, scripts_map).
 
-    `test:e2e` is the only script CI invokes directly; if it contains a
-    forbidden flag that is a blocking violation. Any *other* script that
-    contains a forbidden flag (e.g. `test:visual:update`) is allowed to
-    exist — but no workflow may invoke it (enforced separately).
+    `test:e2e` must be fully clean (blocking if tainted). Any other
+    script carrying a forbidden flag must be in `ALLOWED_TAINTED_SCRIPTS`
+    or it is itself a violation (S5U-637).
     """
     violations: list[Violation] = []
     pkg = _load_package_json(package_json)
@@ -209,17 +198,29 @@ def _scan_package_json(
                 reason="test-e2e-contains-forbidden-flag",
             )
         )
+    # S5U-637 secondary fix: any tainted script name outside
+    # `ALLOWED_TAINTED_SCRIPTS` (and not `test:e2e`, handled above with
+    # a stricter rule) is itself a violation, turning the S5U-611
+    # rename bypass into a reviewer-visible package.json diff failure.
+    for name, cmd in scripts.items():
+        if name == "test:e2e" or name in ALLOWED_TAINTED_SCRIPTS:
+            continue
+        if _contains_forbidden_flag(cmd):
+            violations.append(
+                Violation(
+                    path=rel,
+                    line=0,
+                    excerpt=f'"{name}": "{cmd}"',
+                    reason=f"package-json-introduces-tainted-script ({name})",
+                )
+            )
     return violations, scripts
 
 
-# Patterns for "this workflow line invokes a package.json script by name".
-# Canonical forms:
-#   pnpm run <name>
-#   pnpm -r run <name> / pnpm --recursive run <name>
-#   pnpm --filter <pkg> run <name> / pnpm -F <pkg> run <name>
-#   npm run <name> / npm run-script <name>
-#   yarn run <name>
-# Bare `yarn <name>` is ambiguous and not matched.
+# Canonical forms matched: `pnpm run <name>`, `pnpm [-r|-F|--filter
+# <pkg>] run <name>`, `npm run[-script] <name>`, `yarn run <name>`.
+# Bare `pnpm <name>` / `yarn <name>` is caught separately by
+# `_local_only_token_patterns`.
 _SCRIPT_REF_RE = re.compile(
     r"""(?:pnpm|npm|yarn)
         (?:\s+
@@ -236,27 +237,78 @@ def _extract_script_names(run_text: str) -> set[str]:
     return {m.group("name") for m in _SCRIPT_REF_RE.finditer(run_text)}
 
 
-def _local_only_token_patterns() -> dict[str, re.Pattern[str]]:
-    """Compile a word-boundary regex for each LOCAL_ONLY_SCRIPTS entry.
+def _local_only_token_patterns(
+    names: frozenset[str] | set[str] | None = None,
+) -> dict[str, re.Pattern[str]]:
+    """Word-boundary regex per script name (closes pnpm bare-shortcut form).
 
-    S5U-611 Gap 3: `_SCRIPT_REF_RE` requires the canonical
-    `(pnpm|npm|yarn) (run|run-script) <name>` form, which misses pnpm's
-    bare shortcut (`pnpm <name>` / `pnpm --filter <pkg> <name>`). The
-    simplest bypass-resistant closure (per the issue's "OR" fix sketch)
-    is: reject any workflow line that names a local-only script as a
-    word-bounded token, regardless of surrounding syntax. The only
-    legitimate references to these names live in the scanner's own source
-    (this file) and comments/docs outside `.github/**`, none of which
-    are scanned.
+    S5U-611 Gap 3 closed bare `pnpm <name>`. S5U-637: `names` widens the
+    set to `LOCAL_ONLY_SCRIPTS | tainted` at the caller, catching
+    renamed tainted scripts. Defaults to `LOCAL_ONLY_SCRIPTS`.
     """
+    effective = LOCAL_ONLY_SCRIPTS if names is None else names
     patterns: dict[str, re.Pattern[str]] = {}
-    for name in LOCAL_ONLY_SCRIPTS:
-        # Bound by non-identifier chars so `test-visual-update-lib` (hyphens)
-        # does not match `test:visual:update` (colons) and vice versa.
+    for name in effective:
+        # Bounded: `test-visual-update-lib` must not match `test:visual:update`.
         patterns[name] = re.compile(
             r"""(^|[\s"'`])""" + re.escape(name) + r"""([\s"'`]|$)""",
         )
     return patterns
+
+
+def _scan_line_for_script_refs(
+    line: str,
+    rel: str,
+    line_no: int,
+    tainted: frozenset[str],
+    token_patterns: dict[str, re.Pattern[str]],
+) -> list[Violation]:
+    """Two-layer script-ref scan for one line.
+
+    L1: canonical `(pnpm|npm|yarn) run[-script] <name>` ∩ tainted (S5U-608).
+    L2: word-bounded name over `LOCAL_ONLY_SCRIPTS | tainted` (S5U-611/637);
+    L2 tainted hits are dedup'd against L1 canonical hits on the same line.
+    """
+    out: list[Violation] = []
+    canonical_hits = _extract_script_names(line) & tainted if tainted else set()
+    if canonical_hits:
+        names = ", ".join(sorted(canonical_hits))
+        out.append(
+            Violation(
+                path=rel,
+                line=line_no,
+                excerpt=line,
+                reason=f"workflow-invokes-tainted-script ({names})",
+            )
+        )
+    hits = sorted(n for n, pat in token_patterns.items() if pat.search(line))
+    if not hits:
+        return out
+    local_only = [n for n in hits if n in LOCAL_ONLY_SCRIPTS]
+    tainted_only = [n for n in hits if n in tainted and n not in LOCAL_ONLY_SCRIPTS]
+    if local_only:
+        names = ", ".join(local_only)
+        out.append(
+            Violation(
+                path=rel,
+                line=line_no,
+                excerpt=line,
+                reason=f"workflow-invokes-local-only-script ({names})",
+            )
+        )
+    # Dedup tainted layer-2 against layer-1 canonical hits on same line.
+    layer2_new = [n for n in tainted_only if n not in canonical_hits]
+    if layer2_new:
+        names = ", ".join(layer2_new)
+        out.append(
+            Violation(
+                path=rel,
+                line=line_no,
+                excerpt=line,
+                reason=f"workflow-invokes-tainted-script ({names})",
+            )
+        )
+    return out
 
 
 def _scan_workflow_script_refs(
@@ -264,21 +316,15 @@ def _scan_workflow_script_refs(
     scripts: dict[str, str],
     repo_root: Path,
 ) -> list[Violation]:
-    """Block workflow `run:` lines that invoke a forbidden or local-only script.
+    """Block workflow `run:` lines invoking a forbidden or local-only script.
 
-    Two layers:
-
-    1. Canonical form (`pnpm run <name>`, `npm run-script <name>`, …) for
-       *tainted* scripts (any package.json script whose resolved command
-       contains a forbidden flag). This is the original S5U-608 check.
-    2. Word-bounded name match for *local-only* scripts, independent of
-       syntax — closes the bare-`pnpm <name>` shortcut (Gap 3) and any
-       other surface that names the script.
+    S5U-637: token-pattern set is `LOCAL_ONLY_SCRIPTS | tainted`, so a
+    renamed tainted script invoked via `pnpm <name>` is caught.
     """
     violations: list[Violation] = []
     tainted = frozenset(name for name, cmd in scripts.items() if _contains_forbidden_flag(cmd))
-    local_only_patterns = _local_only_token_patterns()
-    if not tainted and not local_only_patterns:
+    token_patterns = _local_only_token_patterns(LOCAL_ONLY_SCRIPTS | tainted)
+    if not tainted and not token_patterns:
         return violations
     for path in workflow_files:
         try:
@@ -286,38 +332,8 @@ def _scan_workflow_script_refs(
         except OSError:
             continue  # already reported by _scan_github_file
         rel = _rel(path, repo_root)
-        # Marker handling identical to `_scan_github_file`: the marker is
-        # not a valid exemption inside `.github/**`. We do not skip the
-        # line on its basis.
         for i, line in enumerate(text.splitlines(), start=1):
-            # Layer 1: canonical `(pnpm|npm|yarn) run <name>` referencing a
-            # tainted script (S5U-608).
-            if tainted:
-                canonical_hits = _extract_script_names(line) & tainted
-                if canonical_hits:
-                    names = ", ".join(sorted(canonical_hits))
-                    violations.append(
-                        Violation(
-                            path=rel,
-                            line=i,
-                            excerpt=line,
-                            reason=f"workflow-invokes-tainted-script ({names})",
-                        )
-                    )
-            # Layer 2: bare name appears on the line — local-only scripts.
-            local_only_hits = sorted(
-                name for name, pat in local_only_patterns.items() if pat.search(line)
-            )
-            if local_only_hits:
-                names = ", ".join(local_only_hits)
-                violations.append(
-                    Violation(
-                        path=rel,
-                        line=i,
-                        excerpt=line,
-                        reason=f"workflow-invokes-local-only-script ({names})",
-                    )
-                )
+            violations.extend(_scan_line_for_script_refs(line, rel, i, tainted, token_patterns))
     return violations
 
 
