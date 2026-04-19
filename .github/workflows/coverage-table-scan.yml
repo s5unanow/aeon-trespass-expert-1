@@ -1,0 +1,60 @@
+name: Coverage Table Scan
+
+# Closes the S5U-620 bypass: after `gh pr create`, the worker could
+# `gh pr edit --body <stripped>` to remove the `## Coverage` section
+# and still merge. This CI gate re-reads the PR body at every
+# pull_request event that can mutate the body and re-validates it
+# against the Linear issue's bullet count.
+#
+# Triggers:
+#   - opened:      PR created
+#   - synchronize: new commits pushed (body could be force-rewritten via gh)
+#   - edited:      title/body edited (gh pr edit, REST PATCH, web UI)
+#   - reopened:    close + reopen could re-stage a stripped body
+#
+# Secret: LINEAR_API_KEY must be configured in the repo Actions secrets.
+# Without it, the script fails CLOSED (required-check red). See
+# `tmp/plan-s5u-620.md` § "Secret-provisioning decision".
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited, reopened]
+    branches: [main]
+
+# If multiple body edits / pushes race, only the last one's result should
+# set the required-check status. Matches visual-regression.yml pattern.
+concurrency:
+  group: coverage-table-scan-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # The script is pure stdlib (urllib.request, json, re). No uv/pip
+      # install needed — keeps the job fast (~10 s end-to-end).
+
+      - name: Write PR body to file
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          # Avoid shell-expansion / quoting issues by using an env var
+          # and printing it directly. The PR body can contain arbitrary
+          # markdown including quotes, backticks, and HTML comments.
+          printf '%s' "$PR_BODY" > pr_body.md
+          echo "--- PR body length: $(wc -c < pr_body.md) bytes ---"
+
+      - name: Scan Coverage table
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          python scripts/check_coverage_table.py \
+            --branch "${{ github.head_ref }}" \
+            --pr-body-file pr_body.md
