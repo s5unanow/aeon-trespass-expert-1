@@ -81,7 +81,9 @@ def test_qa_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "qa"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.0"
+    # Bumped to "1.1" in S5U-640 to invalidate pre-S5U-597 cache entries
+    # and force qa_metrics.json re-emission. See test_stage_version.py.
+    assert stage.version == "1.1"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:

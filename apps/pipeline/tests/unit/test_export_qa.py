@@ -386,3 +386,140 @@ def test_export_qa_skips_metrics_when_artifact_absent(
     assert (doc_public / "ru" / "data" / "qa_summary.json").is_file()
     # Metrics file must NOT be present (no qa_metrics.v1 artifact was seeded).
     assert not (doc_public / "ru" / "data" / "qa_metrics.json").exists()
+
+
+def _write_summary_with_metrics_ref(
+    artifact_root: Path,
+    doc_id: str,
+    filename: str,
+    *,
+    edition: str,
+    run_id: str,
+    qa_metrics_ref: str,
+) -> Path:
+    """Seed one QASummaryV1 artifact with a qa_metrics_ref (S5U-641)."""
+    summary = {
+        "schema_version": "qa_summary.v1",
+        "document_id": doc_id,
+        "run_id": run_id,
+        "edition": edition,
+        "counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+        "waived_counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+        "blocking": False,
+        "record_refs": [],
+        "review_pack_ref": "",
+        "qa_metrics_ref": qa_metrics_ref,
+    }
+    path = artifact_root / doc_id / "qa" / "document" / doc_id / filename
+    _write(path, summary)
+    return path
+
+
+def test_export_qa_picks_ref_bound_metrics_over_newer_stray(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """Regression for S5U-641.
+
+    Seed two qa_metrics.v1 artifacts: one bound to the current summary via
+    ``qa_metrics_ref`` (older mtime, run_id="run_authoritative"), and a
+    stray one with newer mtime + different run_id ("run_stray"). Export
+    must pick the ref-bound artifact — not the mtime-newest — so the
+    exported qa_metrics.json is paired with the selected summary.
+
+    Pre-fix (S5U-641) behavior: ``_export_metrics`` called
+    ``_pick_summary_for_edition(metrics_dir, edition)`` which selects by
+    mtime, returning the stray. Test would fail with ``run_id == "run_stray"``.
+    """
+    doc_id = "pair_doc"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+
+    # Seed two metrics artifacts, both tagged edition="ru".
+    authoritative_path = _write_metrics(
+        artifact_root,
+        doc_id,
+        "authoritative_metrics.json",
+        edition="ru",
+        run_id="run_authoritative",
+    )
+    stray_path = _write_metrics(
+        artifact_root, doc_id, "stray_metrics.json", edition="ru", run_id="run_stray"
+    )
+    # Force the stray to be NEWER than the authoritative one, so mtime-only
+    # selection (pre-S5U-641) would pick the stray.
+    import os
+
+    os.utime(authoritative_path, (1_700_000_000, 1_700_000_000))
+    os.utime(stray_path, (1_900_000_000, 1_900_000_000))
+
+    # Summary binds to the authoritative artifact by relative path.
+    authoritative_rel = f"{doc_id}/qa_metrics.v1/document/{doc_id}/authoritative_metrics.json"
+    _write_summary_with_metrics_ref(
+        artifact_root,
+        doc_id,
+        "summary.json",
+        edition="ru",
+        run_id="run_authoritative",
+        qa_metrics_ref=authoritative_rel,
+    )
+
+    count = qa_module.export_qa(artifact_root, doc_id, "ru", doc_public)
+    assert count == 0  # summary has no record_refs
+
+    metrics_out = doc_public / "ru" / "data" / "qa_metrics.json"
+    assert metrics_out.is_file(), "qa_metrics.json must be exported when ref resolves"
+    payload = json.loads(metrics_out.read_text())
+    assert payload["run_id"] == "run_authoritative", (
+        f"ref-bound selection required; got run_id={payload['run_id']!r} "
+        f"(pre-S5U-641 mtime selection would return 'run_stray')"
+    )
+
+
+def test_export_qa_legacy_summary_without_ref_falls_back_to_latest_match(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """Backward compatibility: summaries predating S5U-641 have qa_metrics_ref="".
+
+    For those, _export_metrics must fall back to the existing
+    latest-edition-match selection so older artifact stores still export
+    metrics into the web bundle.
+    """
+    doc_id = "legacy_doc"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+    _seed_artifacts(artifact_root, doc_id)
+    # _seed_artifacts writes an untagged summary (no edition, no qa_metrics_ref).
+    _write_metrics(artifact_root, doc_id, "metrics.json", edition="ru", run_id="legacy_run")
+
+    qa_module.export_qa(artifact_root, doc_id, "ru", doc_public)
+    metrics_out = doc_public / "ru" / "data" / "qa_metrics.json"
+    assert metrics_out.is_file()
+    payload = json.loads(metrics_out.read_text())
+    assert payload["run_id"] == "legacy_run"
+
+
+def test_export_qa_missing_ref_target_is_non_fatal(qa_module: ModuleType, tmp_path: Path) -> None:
+    """If the summary's qa_metrics_ref points at a missing artifact, export
+    must continue without crashing — summary + records still get written,
+    but qa_metrics.json is skipped (artifact-store corruption case).
+    """
+    doc_id = "corrupt_doc"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+
+    ghost_ref = f"{doc_id}/qa_metrics.v1/document/{doc_id}/ghost.json"
+    _write_summary_with_metrics_ref(
+        artifact_root,
+        doc_id,
+        "summary.json",
+        edition="ru",
+        run_id="run_x",
+        qa_metrics_ref=ghost_ref,
+    )
+
+    count = qa_module.export_qa(artifact_root, doc_id, "ru", doc_public)
+    assert count == 0  # no record refs
+    # qa_summary.json must exist even though metrics file is missing.
+    assert (doc_public / "ru" / "data" / "qa_summary.json").is_file()
+    # qa_metrics.json must NOT exist.
+    assert not (doc_public / "ru" / "data" / "qa_metrics.json").exists()
