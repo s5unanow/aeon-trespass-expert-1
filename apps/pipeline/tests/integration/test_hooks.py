@@ -134,6 +134,18 @@ PROBE_COUNT=$(awk '
 if [ "$PROBE_COUNT" -lt 3 ]; then
   exit 1
 fi
+
+# S5U-619: structured Verdict: field must agree with final-line token.
+# Both locations are already validated above; extract the tokens and require
+# byte-equality. Without this, `Verdict: BLOCK` + `**PASS**` would pass the
+# gate because each check independently saw a valid verdict token.
+FIELD_VERDICT=$(grep -E '^Verdict:[[:space:]]+(PASS|PASS WITH WARNINGS|BLOCK)' "$REVIEW_FILE" \\
+  | head -1 \\
+  | sed -E 's/^Verdict:[[:space:]]+//; s/[[:space:]]+$//')
+FINAL_VERDICT=$(echo "$FINAL_LINE" | sed -E 's/^\\*\\*(.*)\\*\\*[[:space:]]*$/\\1/')
+if [ "$FIELD_VERDICT" != "$FINAL_VERDICT" ]; then
+  exit 1
+fi
 {staleness_block}
 exit 0
 """
@@ -284,6 +296,51 @@ class TestPrePrCheckStructuredContract:
         """Three probes is the minimum that satisfies the audit-trail floor."""
         review = tmp_path / "review.md"
         review.write_text(CANONICAL_STRUCTURED_BODY)
+        assert _run_pre_pr_check(review) == 0
+
+    def test_structured_verdict_disagrees_with_final_line_blocks(self, tmp_path: Path) -> None:
+        """S5U-619: `Verdict: BLOCK` + `**PASS**` final line must block.
+
+        The hook reads two verdict locations but historically did not require
+        them to agree. A review artifact stating `Verdict: BLOCK` in the
+        structured field with `**PASS**` as its final non-blank line would pass
+        the gate — either a copy-paste error silently flipping a BLOCK to a
+        PASS, or a deliberate bypass that looks innocent in the artifact.
+        """
+        review = tmp_path / "review.md"
+        review.write_text(
+            "## Verdict\n\n"
+            "Verdict: BLOCK\n"
+            "Critical:\n- genuine critical issue\n"
+            "Probes run:\n- a\n- b\n- c\n\n"
+            "**PASS**\n"
+        )
+        assert _run_pre_pr_check(review) != 0
+
+    def test_structured_verdict_pass_with_warnings_vs_pass_blocks(self, tmp_path: Path) -> None:
+        """S5U-619 adversarial: `Verdict: PASS WITH WARNINGS` + `**PASS**` blocks.
+
+        A typo across the two verdict locations — the structured field and the
+        final-line token must be byte-equal tokens, not merely non-BLOCK.
+        """
+        review = tmp_path / "review.md"
+        review.write_text(
+            "## Verdict\n\nVerdict: PASS WITH WARNINGS\nProbes run:\n- a\n- b\n- c\n\n**PASS**\n"
+        )
+        assert _run_pre_pr_check(review) != 0
+
+    def test_structured_verdict_agreement_passes(self, tmp_path: Path) -> None:
+        """S5U-619 happy-path: agreeing tokens still pass.
+
+        Guards against the equality check over-rejecting well-formed artifacts.
+        """
+        review = tmp_path / "review.md"
+        review.write_text(
+            "## Verdict\n\n"
+            "Verdict: PASS WITH WARNINGS\n"
+            "Probes run:\n- a\n- b\n- c\n\n"
+            "**PASS WITH WARNINGS**\n"
+        )
         assert _run_pre_pr_check(review) == 0
 
     def test_probe_bullets_after_next_section_do_not_count(self, tmp_path: Path) -> None:
