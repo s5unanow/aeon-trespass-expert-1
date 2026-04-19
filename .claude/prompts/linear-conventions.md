@@ -81,7 +81,7 @@ If there are genuinely no invariants at risk, write "None identified" — do not
 
 Skip this section only for `Feature` issues (net-new capabilities with no existing behavior to protect).
 
-## Must refuse (required for Bug, safety-gate, cross-system-review; recommended for Feature/Improvement/Refactor touching security-sensitive paths)
+## Must refuse (required for Bug, safety-gate, cross-system-review, or any diff containing one of the 4 boundary shapes)
 
 Enumerate the **adversarial inputs, invalid states, and out-of-contract callers the change must reject at runtime**. This section exists because happy-path descriptions keep shipping bugs that an explicit refusal list would have caught: S5U-594 → S5U-607 (path traversal via unsanitized `page_id`), S5U-595 → S5U-610 (edition cross-contamination on a QA URL the pipeline never filtered by).
 
@@ -89,8 +89,32 @@ Enumerate the **adversarial inputs, invalid states, and out-of-contract callers 
 
 **When it fires:**
 - **Required** for issues labeled `Bug`, `safety-gate`, or `cross-system-review`.
-- **Strongly recommended** for `Feature` / `Improvement` / `Refactor` when the change touches **filesystem paths, user-supplied identifiers that flow into I/O, serialization, external process invocation, network boundaries, or authentication/authorization**.
+- **Required** (regardless of label) for any PR whose diff contains one of the **four boundary shapes** below. This was escalated from "strongly recommended" in S5U-627 after audit found the soft phrasing was bypassable by mis-classification (`Feature` issue adds a `subprocess.run` path-traversal vector; reviewer probe never fires). The label may still be `Feature` / `Improvement` / `Refactor` — the requirement is on the **diff content**, not the label.
 - **Optional** otherwise.
+
+### The four boundary shapes (content trigger)
+
+If the diff introduces a new occurrence of any of these shapes, the Must-refuse section is required regardless of the issue's label. The reviewer (`review.md` check #20) runs the equivalent regex against `git diff main...HEAD` and emits a WARNING when the section is missing.
+
+1. **User-input boundary entry** — code that newly accepts data from an untrusted source:
+   - FastAPI / starlette route handler: `@router.{get,post,put,delete,patch}(...)`, `@app.{get,post,put,delete,patch}(...)`
+   - CLI argument: `typer.Argument`, `typer.Option`, `click.argument`, `click.option`, `argparse.ArgumentParser().add_argument(...)`, direct `sys.argv[...]` indexing
+   - Network sockets, WebSocket / webhook handlers — out of scope today (none in this codebase); re-audit if added.
+2. **Filesystem write boundary** — code that newly writes to disk where the path or content is influenced by untrusted input:
+   - Project helper: `atomic_write_bytes`, `atomic_write_text`
+   - Stdlib: `Path(...).write_text`, `Path(...).write_bytes`, `open(path, 'w'|'wb'|'a')`, `os.rename`, `os.replace`, `os.symlink`, `os.link`
+   - High-level: `shutil.copy`, `shutil.copytree`, `shutil.move`, `shutil.rmtree`
+3. **Subprocess boundary** — code that newly invokes another process:
+   - `subprocess.run`, `subprocess.Popen`, `subprocess.call`, `subprocess.check_output`
+   - `shell=True` keyword anywhere
+   - `os.system(...)`, `os.exec*` family (`execv`, `execvp`, etc.)
+4. **Schema deserialization boundary** — code that newly parses externally-sourced bytes/strings into Python objects:
+   - Pydantic: `Model.model_validate_json(...)`, `Model.model_validate(...)`, plus the v1 holdovers `Model.parse_obj(...)` / `Model.parse_raw(...)`
+   - Untyped: `json.loads(...)` followed by direct field access (no schema), `tomllib.loads(...)` / `tomli.loads(...)`
+   - YAML / pickle / XML: `pickle.loads(...)` / `pickle.load(...)`, `yaml.load(...)` / `yaml.unsafe_load(...)`, even `yaml.safe_load(...)` over untrusted input, `xml.etree.ElementTree.fromstring(...)` / `lxml` (XXE)
+   - Code-as-data: `eval(...)` / `exec(...)` on string input
+
+**Aliased / disguised forms** (`from subprocess import run as r; r(...)`, `exec("subprocess.run(...)")`) defeat the regex and are caught only by reviewer judgment when reading the diff narratively. Workers attempting to evade the gate via aliasing are a CRITICAL finding when discovered.
 
 **How to draft this section** — list concrete refusals, not abstract categories:
 
@@ -115,14 +139,15 @@ If none of these apply (e.g., pure refactor with no input surface), write **"Non
 
 A pre-ship reviewer can cite any specific "Must refuse" bullet to justify a BLOCK verdict when the diff fails to implement it.
 
-## Semantically-equivalent threats (required for safety-gate, cross-system-review, Bug; optional for Feature/Improvement/Refactor)
+## Semantically-equivalent threats (required for safety-gate, cross-system-review, Bug-with-new-check, or any diff containing one of the 4 boundary shapes)
 
 For any **enforcement, validator, gate, or check** this change adds or modifies, enumerate the **semantically-equivalent ways the condition can be triggered or bypassed**. This section exists because S5U-599 enforced `--update-snapshots` but not the equivalent `-u`, `--ignore-snapshots`, workflow-level passthrough, or sibling-workflow invocation — shipping a gate with four bypasses (S5U-608).
 
 **When it fires:**
 - **Required** for issues labeled `safety-gate`, `cross-system-review`, or `Bug` where the fix adds/tightens a check.
-- **Optional but recommended** for `Feature` / `Improvement` / `Refactor` that add any kind of validator, guard, or filter.
-- Skip for pure refactors or docs changes with no enforcement logic.
+- **Required** (regardless of label) for any PR whose diff contains one of the **four boundary shapes** enumerated in the "Must refuse" section above. A boundary shape is itself a check surface — a new `subprocess.run` is a new attack vector whose equivalence class (`os.system`, `shell=True`, `os.exec*`, etc.) the worker must enumerate so the reviewer can verify the rejection covers all of them. Escalated from "optional but recommended" in S5U-627.
+- **Optional but recommended** for `Feature` / `Improvement` / `Refactor` that add any kind of validator, guard, or filter without one of the 4 shapes.
+- Skip for pure refactors or docs changes with no enforcement logic and no boundary shape.
 
 **How to draft this section** — enumerate the tool surface, not your mental model of it:
 
