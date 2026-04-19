@@ -647,7 +647,7 @@ Docling adds advanced PDF understanding, reading order, tables, and a unified lo
 
 PaddleOCR’s layout module explicitly detects document elements and sorts them into reading order with a pointer network, which makes it the right hard-page fallback for multi-column and complex regions.
 
-A tertiary Tesseract-based OCR layer was considered (to emit hOCR/ALTO/PAGE structural evidence) but has been retired. The pipeline ships PaddleOCR as the single OCR fallback; see ADR-003 and S5U-592 for the retirement rationale. If a future hard page defeats PaddleOCR, file a fresh ADR rather than reopening the retired Tesseract path.
+A tertiary Tesseract-based OCR layer was considered (to emit hOCR/ALTO/PAGE structural evidence) but has been retired. The pipeline ships PaddleOCR as the single OCR fallback; see ADR-013 and S5U-592 for the retirement rationale. If a future hard page defeats PaddleOCR, file a fresh ADR rather than reopening the retired Tesseract path.
 
 Rejected
 
