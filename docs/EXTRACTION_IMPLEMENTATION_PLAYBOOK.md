@@ -235,11 +235,24 @@ dedicated commits and that annotation metadata is updated.
 
 ### 8.3 Threshold Loosening Guard
 
-**Script**: `scripts/check_threshold_changes.py` (not yet implemented)
+**Script**: `scripts/check_threshold_changes.py`
 
-Will prevent silent threshold loosening in `configs/qa/thresholds.toml`.
-When implemented, it should verify that loosened thresholds include a
-justification comment or linked calibration report.
+Prevents silent threshold loosening in `configs/qa/thresholds.toml`.
+Loosening is defined as: `min` lowered for an existing entry, `blocking`
+flipped from `true` to `false`, or an entry deleted outright (rename is
+delete+add). Tightening and net-new entries pass freely.
+
+Loosening blocks CI unless justified by **either**:
+
+1. A `LOOSEN-THRESHOLD: <reason>` line (case-insensitive, non-empty
+   reason) in a commit message that touches the thresholds file. This is
+   the primary mechanism because it survives in git history.
+2. A `## Threshold loosening justification` heading in the PR body
+   followed by at least one non-blank line of explanation.
+
+Runs conditionally when `check_extraction_scope.py` flags
+`threshold_change_detected=true`, and fails the `python / test` required
+status check on violation. See S5U-591.
 
 ### 8.4 Fixture Manifest Validator
 
