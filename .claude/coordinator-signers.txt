@@ -1,0 +1,26 @@
+# Coordinator-ack signer allowlist (S5U-670)
+#
+# One GitHub login per line. Lines starting with `#` and blank lines are
+# ignored. The hook in .claude/hooks/pre-pr-check.sh queries
+# `gh api repos/<owner>/<repo>/commits/<sha>/statuses` and requires a status
+# with:
+#
+#   context       = "coordinator-ack"
+#   state         = "success"
+#   creator.login = <one of the logins below>
+#
+# Workers cannot post a status with `creator.login` they do not own — GitHub
+# stamps the field from the authenticated OAuth token. So the only way a
+# `coordinator-ack` status arrives on a commit with `creator.login=s5unanow`
+# is for `s5unanow`'s authenticated `gh` session to have posted it — which is
+# exactly what the coordinator skill does before spawning the worker.
+#
+# Expanding this allowlist is a safety-gate edit (the file path is inside
+# .claude/, which is covered by the hook's safety-gate regex). Treat a PR
+# that adds a name here as coordinator-scope review.
+#
+# Motivated by S5U-670: the prior file-marker mechanism (tmp/.coordinator-ack-*)
+# was worker-forgeable. See tmp/plan-s5u-670.md §4f for the allowlist-source
+# decision rationale.
+
+s5unanow
