@@ -47,7 +47,7 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 2. `ruff format --check` — format violations
 3. `mypy --strict` — type errors
 4. `lint-imports` — import layer contracts (no cyclic dependencies)
-5. `check_file_length.py` — max 400 lines per source file
+5. `check_file_length.py` — max 400 lines per source **and test** file (S5U-663 unified the ceiling across `apps/pipeline/src`, `packages/schemas/python`, `scripts/`, `apps/web/src`, `apps/pipeline/tests`, and `apps/web/tests`; pre-existing over-limit test files are grandfathered in `KNOWN_VIOLATORS` and must not grow)
 6. `oxlint` — frontend lint (`import/no-cycle`, `max-lines: 400`)
 7. `tsc --noEmit` — frontend type check
 8. `pytest -x -q --timeout=60 -m "not slow"` — fast test subset only
