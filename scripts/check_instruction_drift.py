@@ -1,41 +1,32 @@
 #!/usr/bin/env python3
-"""Instruction/config drift scanner (S5U-658).
+"""Instruction/config drift scanner (S5U-658 + S5U-667 + S5U-668).
 
 Fails CI when repo instruction files (CLAUDE.md, skill SKILL.mds, prompt
 .mds) drift from their authoritative source. Three fail-closed rule classes
 plus one advisory class:
 
-Rule A — check-count claim drift
-    The authoritative count of review checks is derived from top-level
-    numbered items in `.claude/prompts/review.md` (pattern `^\\d+\\. \\*\\*`).
-    Every markdown file under the repo is scanned for claim forms like
-    "checks 1-22" or "all 22 checks"; each must match the authoritative
-    count. En-dash and hyphen both match.
+* Rule A — check-count claim drift. Authoritative count = max of top-level
+  numbered items in `.claude/prompts/review.md`. Every `*.md` under the repo
+  is scanned for claims like "checks 1-22" / "all 22 checks". Exemption is
+  structural (S5U-667): a line matching `Checks? <N>[-<en-dash>]<M> ... (are
+  /always) (run/conditional)` is exempt; prose containing those keywords
+  somewhere else is NOT exempt.
+* Rule B — retired-term references (e.g., "tesseract") fail unless the
+  file is grandfathered (`docs/adrs/**`, `CHANGELOG*`, this scanner, its
+  tests) OR a retirement scoping marker appears within +/-2 lines.
+* Rule C — safety-gate scope enumeration in `.claude/skills/**/SKILL.md` +
+  `.claude/prompts/**.md` must match CLAUDE.md canonically OR defer with
+  "per CLAUDE.md" on the same line.
+* Rule D — required-check advisory (warning-only, S5U-668). Walks every
+  `.github/workflows/*.yml`, enumerates top-level jobs, and prints a stdout
+  advisory for any job whose name/key does not appear in CLAUDE.md §
+  Quality gates. Never changes exit code. Malformed YAML emits a stderr
+  warning and continues. Implementation in `_instruction_drift_rule_d.py`.
 
-Rule B — retired-term references
-    Word-boundary-bounded matches of terms like "tesseract" fail unless
-    the file is grandfathered (`docs/adrs/**`, `CHANGELOG*`, the scanner
-    itself, its tests) OR the term is scoped by a nearby retirement
-    marker ("retired" / "retire" / "retirement" within +/-2 lines).
+Exit codes: 0 = no drift; 1 = a fail-closed rule violated OR authoritative
+source missing/unparseable.
 
-Rule C — safety-gate scope enumeration consistency
-    Files under `.claude/skills/**/SKILL.md` and `.claude/prompts/**.md`
-    that spell `safety-gate scope (...)` must either match the canonical
-    parenthetical in CLAUDE.md byte-for-byte OR defer to CLAUDE.md with
-    a literal "per CLAUDE.md" on the same line.
-
-Rule D — required-check advisory (warning-only)
-    Prints diagnostics when a workflow job in `.github/workflows/ci.yml`
-    is not mentioned in CLAUDE.md quality-gates or vice versa. Does NOT
-    change exit code — loose match, narrow failure-mode by design.
-
-Exit codes:
-    0 — no drift
-    1 — one or more fail-closed rules violated OR authoritative source
-        missing/unparseable (fail-closed on any unexpected state)
-
-Usage:
-    python scripts/check_instruction_drift.py [--repo-root PATH]
+Usage: `python scripts/check_instruction_drift.py [--repo-root PATH]`
 """
 
 from __future__ import annotations
@@ -44,6 +35,11 @@ import argparse
 import re
 import sys
 from pathlib import Path
+
+# Rule D helpers live in a sibling module so both files stay under the
+# 400-line file-length ceiling.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _instruction_drift_rule_d import rule_d_advisory
 
 # --- Paths ---------------------------------------------------------------
 
@@ -143,14 +139,23 @@ CLAIM_SCAN_SKIP_PATHS: frozenset[str] = frozenset(
     }
 )
 
-# Phrases that signal the range is a *sub-range* (not a total-count claim)
-# and should be exempt from the claim-drift rule. Example:
-#     "Checks 1-13 and 22 always run. Checks 14-21 are conditional."
-# Both numeric ranges on that line are sub-ranges and legitimately != 22.
-_SUBRANGE_CONTEXT_TOKENS: tuple[str, ...] = (
-    "always run",
-    "conditional",
-    "trigger",
+# Structural sub-range exemption (S5U-667). A line is exempt from Rule A
+# only if its structural form matches the template
+# `Checks? <N>[-<en-dash>]<M>(, <K>)* (and <K>)? (are|always) (run|conditional)`.
+# Prose lines that merely contain "trigger" / "conditional" / "always run"
+# somewhere else are NOT exempt (pre-S5U-667 substring match was the bypass).
+# See `tmp/plan-s5u-667-s5u-668.md` §4b for the equivalence-class matrix.
+_STRUCTURAL_SUBRANGE_RE = re.compile(
+    r"""
+    ^\s*                              # leading whitespace
+    (?:[-*+]\s+)?                     # optional bullet marker + whitespace
+    Checks?\s+                        # "Check" or "Checks"
+    \d+\s*[-\u2013]\s*\d+             # N-M (hyphen-minus or en-dash)
+    (?:\s*,\s*\d+)*                   # optional ", K" repeats
+    (?:\s*,?\s*and\s+\d+)?            # optional "and K" / ", and K"
+    \s+(?:are|always)\s+(?:run|conditional)
+    """,
+    re.IGNORECASE | re.VERBOSE,
 )
 
 
@@ -167,13 +172,28 @@ def _is_inside_backticks_or_quotes(line: str, start: int, end: int) -> bool:
     return False
 
 
+def _line_is_structural_subrange(line: str) -> bool:
+    """Return True if `line` (or any of its sentence-like segments) matches
+    the structural sub-range template. Segments are split on `.`, `;`, and
+    `:` so a line like `"Checks 1-13 always run. Checks 14-21 are conditional."`
+    matches via both halves. The regex is anchored at the start of each
+    segment (after leading whitespace + optional bullet), so prose prefixes
+    like `"When a trigger fires, walk checks 1-21"` do NOT match.
+    """
+    if _STRUCTURAL_SUBRANGE_RE.match(line):
+        return True
+    return any(_STRUCTURAL_SUBRANGE_RE.match(seg) for seg in re.split(r"[.;:]", line))
+
+
 def _claim_scan_file(path: Path, text: str, expected: int) -> list[str]:
     """Return a list of drift messages for the file, empty if clean."""
     msgs: list[str] = []
     for lineno, line in enumerate(text.splitlines(), start=1):
-        # Sub-range context: line is describing a subdivision, not a total.
-        lower = line.lower()
-        if any(tok in lower for tok in _SUBRANGE_CONTEXT_TOKENS):
+        # Sub-range context (S5U-667): line matches the structural sub-range
+        # template. Exempt only when the line's form is "Checks N-M ...
+        # are/always run/conditional"; prose that merely contains those
+        # keywords does not match.
+        if _line_is_structural_subrange(line):
             continue
         for regex in (_CLAIM_RANGE_RE, _CLAIM_ALL_RE):
             for m in regex.finditer(line):
@@ -274,6 +294,11 @@ def _safety_gate_scan_file(
     return msgs
 
 
+# Rule D (required-check advisory) lives in scripts/_instruction_drift_rule_d.py
+# so both files stay under the 400-line file-length ceiling. It is warning-
+# only and imported above. See that module's docstring for semantics.
+
+
 # --- Repo traversal -------------------------------------------------------
 
 
@@ -329,6 +354,20 @@ def run(repo_root: Path) -> int:
         # Rule C — only applies to skill/prompt files.
         if rel.startswith(".claude/skills/") or rel.startswith(".claude/prompts/"):
             errors.extend(_safety_gate_scan_file(rel, text, canonical_safety_gate))
+
+    # Rule D — warning-only advisory. Runs even when rules A/B/C have
+    # errors, but never changes the exit code; its output always goes to
+    # stdout (advisories) or stderr (warnings) so reviewers can inspect.
+    claude_md_path = repo_root / CLAUDE_MD
+    try:
+        claude_md_text = claude_md_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        claude_md_text = ""
+    advisories, rule_d_warnings = rule_d_advisory(repo_root, claude_md_text)
+    for warning in rule_d_warnings:
+        print(f"check_instruction_drift: {warning}", file=sys.stderr)
+    for advisory in advisories:
+        print(f"check_instruction_drift: {advisory}")
 
     if errors:
         print(

@@ -4,7 +4,7 @@ S5U-667 — the original S5U-658 `_SUBRANGE_CONTEXT_TOKENS` exemption was an
 unbounded substring match, allowing any prose containing `trigger`,
 `conditional`, or `always run` to silently exempt a stale check-count claim on
 the same line. These tests pin the fix: the exemption must be *structural* —
-only lines matching `^[\\s]*(bullet)? *Checks? \\d+[-–]\\d+ (and \\d+)?
+only lines matching `^[\\s]*(bullet)? *Checks? \\d+[-<en-dash>]\\d+ (and \\d+)?
 (are|always) (run|conditional)` are exempt.
 
 S5U-668 — the scanner docstring advertised a Rule D (required-check advisory)
@@ -94,8 +94,7 @@ class TestS5U667StructuralSubrange:
         _seed_repo(tmp_path, checks=22)
         _write(
             tmp_path / "DOC.md",
-            "When the review prompt gets a new trigger, walk checks 1-21 and "
-            "note any mismatch.\n",
+            "When the review prompt gets a new trigger, walk checks 1-21 and note any mismatch.\n",
         )
         assert scanner.run(tmp_path) == 1
         assert "says 21, authoritative count is 22" in capsys.readouterr().err
