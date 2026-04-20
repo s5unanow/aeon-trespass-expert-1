@@ -31,26 +31,33 @@ from pathlib import Path
 # invariant — the file must not grow further. The long-term fix is the
 # sibling split issues (S5U-655 for visual_gate_scope, S5U-656 for
 # threshold_changes); the remaining 12 entries are tracked under the
-# S5U-663 follow-up umbrella (or opened as-needed).
+# S5U-663 follow-up umbrella S5U-677 (re-keyed in S5U-669 after S5U-663
+# itself shipped Done — a Done issue cannot function as an open tracker).
+#
+# S5U-669: an advisory CI check (`scripts/check_file_length_violators_live.py`,
+# `.github/workflows/check-file-length-violators.yml`) validates that every
+# value here resolves to a non-Done / non-Canceled Linear issue.
 KNOWN_VIOLATORS: dict[str, str] = {
     # Source-side (pre-existing)
     "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py": "S5U-144",
     "scripts/generate_golden_fixtures.py": "S5U-211",
-    # Test-side grandfather (S5U-663)
-    "apps/pipeline/tests/unit/test_export_to_web.py": "S5U-663",
+    # Test-side grandfather (S5U-663, umbrella-tracked by S5U-677 post-S5U-669)
+    "apps/pipeline/tests/unit/test_export_to_web.py": "S5U-677",  # 919 lines
     "apps/pipeline/tests/unit/test_check_visual_gate_scope.py": "S5U-655",
-    "apps/pipeline/tests/unit/stages/render/test_page_builder.py": "S5U-663",
-    "apps/pipeline/tests/unit/stages/render/test_annotation_builder.py": "S5U-663",
+    "apps/pipeline/tests/unit/stages/render/test_page_builder.py": "S5U-677",  # 769 lines
+    "apps/pipeline/tests/unit/stages/render/test_annotation_builder.py": "S5U-677",  # 728 lines
     "apps/pipeline/tests/unit/test_check_threshold_changes.py": "S5U-656",
-    "apps/pipeline/tests/unit/stages/structure/test_real_block_builder.py": "S5U-663",
-    "apps/pipeline/tests/unit/stages/structure/test_structure_regressions.py": "S5U-663",
-    "apps/pipeline/tests/unit/test_export_qa.py": "S5U-663",
-    "apps/pipeline/tests/unit/test_check_code_erosion.py": "S5U-663",
-    "apps/pipeline/tests/contract/test_schema_roundtrip.py": "S5U-663",
-    "apps/pipeline/tests/integration/test_hooks.py": "S5U-663",
-    "apps/pipeline/tests/unit/eval/test_cross_stage_refs.py": "S5U-663",
-    "apps/pipeline/tests/unit/services/llm/test_adapters.py": "S5U-663",
-    "apps/pipeline/tests/unit/stages/structure/test_semantic_resolver.py": "S5U-663",
+    # 666 lines
+    "apps/pipeline/tests/unit/stages/structure/test_real_block_builder.py": "S5U-677",
+    # 577 lines
+    "apps/pipeline/tests/unit/stages/structure/test_structure_regressions.py": "S5U-677",
+    "apps/pipeline/tests/unit/test_export_qa.py": "S5U-677",  # 525 lines
+    "apps/pipeline/tests/unit/test_check_code_erosion.py": "S5U-677",  # 493 lines
+    "apps/pipeline/tests/contract/test_schema_roundtrip.py": "S5U-677",  # 450 lines
+    "apps/pipeline/tests/integration/test_hooks.py": "S5U-677",  # 449 lines
+    "apps/pipeline/tests/unit/eval/test_cross_stage_refs.py": "S5U-677",  # 447 lines
+    "apps/pipeline/tests/unit/services/llm/test_adapters.py": "S5U-677",  # 409 lines
+    "apps/pipeline/tests/unit/stages/structure/test_semantic_resolver.py": "S5U-677",  # 407 lines
 }
 
 DEFAULT_DIRS = [
