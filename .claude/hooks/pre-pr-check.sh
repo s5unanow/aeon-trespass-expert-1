@@ -144,49 +144,209 @@ fi
 
 echo "Review artifact verified: $REVIEW_FILE"
 
-# --- S5U-647: safety-gate scope refusal ---
-# Per CLAUDE.md step 6 "Safety-gate scope escalation (MUST)" and the must-refuse
-# bypass clause at CLAUDE.md:154, any PR touching safety-gate scope MUST be
-# shipped via /coordinator (which spawns a post-ship fresh-eyes reviewer in a
-# new sub-agent context), not via /ship / /next / /build-loop run as a lone
-# worker. The skill-level warnings in those skills are advisory; this is the
-# machine-enforced layer. The hook refuses the PR unless
-# tmp/.coordinator-ack-<issue> exists — that marker is the coordinator's
-# explicit commitment to run the post-ship reviewer, written by the coordinator
-# skill before spawning the worker.
+# --- S5U-666: fail-closed base-ref resolution ---
+# Prior implementation ran `git diff main...HEAD 2>/dev/null | ... || true`,
+# which silently produced an empty diff if the local `main` branch did not
+# exist (fresh clone, worktree from origin/main, branch renamed, etc.). The
+# empty diff caused the safety-gate probe to skip entirely, reproducing the
+# exact bypass S5U-647 was filed to close.
 #
-# The authoritative safety-gate path list is defined in the ship/next/build-loop
-# SKILL.md files and mirrored here. Keep these in sync if you extend either.
+# Per .claude/rules/guards.md Rule G1 (fail-closed defaults): a guard without
+# the state it needs must exit non-zero, never silently pass. Resolve the base
+# ref explicitly, fall through to origin/main, and BLOCK if neither resolves.
+resolve_base_ref() {
+  if git rev-parse --verify main^{commit} >/dev/null 2>&1; then
+    echo main
+    return 0
+  fi
+  if git rev-parse --verify origin/main^{commit} >/dev/null 2>&1; then
+    echo origin/main
+    return 0
+  fi
+  return 1
+}
+
+if ! BASE_REF=$(resolve_base_ref); then
+  echo "BLOCKED: pre-pr-check.sh cannot resolve a base ref."
+  echo ""
+  echo "Tried 'main' and 'origin/main'; neither is present in this working"
+  echo "tree. This usually means a shallow checkout, a detached worktree,"
+  echo "or a clone without the main branch fetched. The safety-gate scope"
+  echo "probe cannot run without a base ref."
+  echo ""
+  echo "Per .claude/rules/guards.md Rule G1, a guard without the state it"
+  echo "needs fails closed. Re-run after fetching origin/main:"
+  echo "  git fetch origin main:main"
+  echo ""
+  echo "Failing closed per S5U-666 (supersedes the silent-empty behavior"
+  echo "that reproduced the S5U-647 bypass)."
+  exit 1
+fi
+
+# --- S5U-647 (updated S5U-666 / S5U-670): safety-gate scope refusal ---
+# Per CLAUDE.md step 6 "Safety-gate scope escalation (MUST)" and the must-refuse
+# bypass clause, any PR touching safety-gate scope MUST be shipped via
+# /coordinator (which spawns a post-ship fresh-eyes reviewer in a new sub-agent
+# context), not via /ship / /next / /build-loop run as a lone worker.
+#
+# Coordinator-ack evidence: the coordinator posts a commit status with
+# `context=coordinator-ack, state=success` on the branch HEAD before spawning
+# the worker. This hook queries the GitHub API for that status and requires
+# the posting identity (`creator.login`) to match .claude/coordinator-signers.txt.
+#
+# S5U-670 (clean break from S5U-647): the prior file-marker mechanism
+# (`tmp/.coordinator-ack-s5u-<N>`) was worker-forgeable. It is no longer
+# consulted. Workers cannot post a commit status under `s5unanow`'s identity
+# without the coordinator's authenticated `gh` session — GitHub stamps
+# `creator.login` from the authenticated token.
 #
 # Three-input test coverage lives in scripts/test_pre_pr_safety_gate.sh.
 
-SAFETY_GATE_DIFF=$(git diff --name-only main...HEAD 2>/dev/null \
-  | grep -E '^(\.claude/hooks/|\.claude/prompts/review\.md$|\.claude/prompts/codex-review\.md$|\.github/workflows/|\.github/actions/|\.claude/skills/.+/SKILL\.md$|scripts/check_[^/]+\.(sh|py)$|scripts/pre-[^/]+\.(sh|py)$|CLAUDE\.md$)' \
+# `BASE_REF` resolved above. Drop `2>/dev/null` here — per G1, `git diff`
+# errors should propagate and fail the gate, not silently empty the match set.
+SAFETY_GATE_DIFF=$(git diff --name-only "$BASE_REF"...HEAD \
+  | grep -E '^(\.claude/hooks/|\.claude/prompts/review\.md$|\.claude/prompts/codex-review\.md$|\.claude/coordinator-signers\.txt$|\.github/workflows/|\.github/actions/|\.claude/skills/.+/SKILL\.md$|scripts/check_[^/]+\.(sh|py)$|scripts/pre-[^/]+\.(sh|py)$|scripts/test_pre_pr_safety_gate\.sh$|CLAUDE\.md$)' \
   || true)
 
 if [ -n "$SAFETY_GATE_DIFF" ]; then
-  COORDINATOR_MARKER="tmp/.coordinator-ack-${ISSUE_NUM}"
-  if [ ! -f "$COORDINATOR_MARKER" ]; then
-    echo "BLOCKED: Safety-gate scope detected but no coordinator-ack marker at '$COORDINATOR_MARKER'."
+  # --- S5U-670: fetch coordinator-ack commit status from GitHub API ---
+  # The hook queries statuses on the commit we are about to push (git HEAD)
+  # and requires at least one to have:
+  #   context       = "coordinator-ack"
+  #   state         = "success"
+  #   creator.login ∈ allowlist (.claude/coordinator-signers.txt)
+  #
+  # Workers cannot post a status with creator.login they do not own — GitHub
+  # authenticates the field from the OAuth token on the POST. A worker
+  # self-posting produces a status stamped with the worker's login, which
+  # fails the allowlist check.
+  #
+  # TEST-ONLY bypass: COORDINATOR_ACK_STATUS_SOURCE=<path-to-json> short-circuits
+  # the gh api call and reads the file instead. This is reviewer-visible (the
+  # var name is searchable and any occurrence in commit messages / PR bodies /
+  # shell history is a hook-bypass event per CLAUDE.md NEVER-list S5U-629).
+  # The env var exists so scripts/test_pre_pr_safety_gate.sh can exercise the
+  # three-input discipline without hitting live GitHub — see that file for
+  # the fixture shape. Production use is a disclosable bypass.
+
+  HEAD_SHA=$(git rev-parse HEAD)
+  ALLOWLIST_FILE=".claude/coordinator-signers.txt"
+
+  if [ ! -f "$ALLOWLIST_FILE" ]; then
+    echo "BLOCKED: Coordinator signer allowlist '$ALLOWLIST_FILE' is missing."
     echo ""
-    echo "Per CLAUDE.md step 6 and the must-refuse clause at CLAUDE.md:154,"
-    echo "safety-gate PRs MUST be shipped via /coordinator, not /ship, /next,"
-    echo "or /build-loop run as a lone worker. The coordinator spawns a"
-    echo "post-ship fresh-eyes reviewer in a new sub-agent context — that"
-    echo "reviewer is the authoritative gate for safety-critical changes."
+    echo "Per .claude/rules/guards.md Rule G1, a guard without its allowlist"
+    echo "fails closed. Restore the file (or fix the path) and retry."
+    exit 1
+  fi
+
+  # Parse allowlist: strip comments + blanks, one login per line.
+  ALLOWLIST=$(grep -vE '^[[:space:]]*(#|$)' "$ALLOWLIST_FILE" | awk '{print $1}')
+  if [ -z "$ALLOWLIST" ]; then
+    echo "BLOCKED: Coordinator signer allowlist '$ALLOWLIST_FILE' is empty."
+    echo ""
+    echo "Per .claude/rules/guards.md Rule G1, an empty allowlist cannot"
+    echo "authorize any signer. Add at least one GitHub login."
+    exit 1
+  fi
+
+  # Fetch status list. Env-var override for test fixtures; live gh api otherwise.
+  STATUS_JSON=""
+  if [ -n "${COORDINATOR_ACK_STATUS_SOURCE:-}" ]; then
+    echo "TEST OVERRIDE: reading coordinator-ack status from \$COORDINATOR_ACK_STATUS_SOURCE='$COORDINATOR_ACK_STATUS_SOURCE'"
+    echo "  (this env var is for test fixtures only — use in production is a hook-bypass event per CLAUDE.md NEVER list)"
+    if [ ! -f "$COORDINATOR_ACK_STATUS_SOURCE" ]; then
+      echo "BLOCKED: COORDINATOR_ACK_STATUS_SOURCE points to missing file '$COORDINATOR_ACK_STATUS_SOURCE'."
+      exit 1
+    fi
+    STATUS_JSON=$(cat "$COORDINATOR_ACK_STATUS_SOURCE")
+  else
+    if ! command -v gh >/dev/null 2>&1; then
+      echo "BLOCKED: 'gh' CLI not found; cannot query coordinator-ack status on $HEAD_SHA."
+      echo "Per .claude/rules/guards.md Rule G1, failing closed."
+      exit 1
+    fi
+    # `gh api` exits non-zero on API errors; we capture both stdout and exit status.
+    if ! STATUS_JSON=$(gh api "repos/s5unanow/aeon-trespass-expert-1/commits/$HEAD_SHA/statuses" 2>&1); then
+      echo "BLOCKED: gh api failed while querying coordinator-ack statuses for $HEAD_SHA."
+      echo ""
+      echo "Response (may contain error from GitHub):"
+      echo "$STATUS_JSON" | sed 's/^/  /'
+      echo ""
+      echo "Per .claude/rules/guards.md Rule G1, API failures fail closed."
+      echo "Common causes: gh not authenticated, rate limit, network down,"
+      echo "commit not yet pushed (GH API resolves against origin — push HEAD"
+      echo "to a branch on origin before running gh pr create)."
+      exit 1
+    fi
+  fi
+
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "BLOCKED: jq not found; cannot parse coordinator-ack status response."
+    echo "Install jq (brew install jq) and retry. Per G1, failing closed."
+    exit 1
+  fi
+
+  # Validate JSON parses at all. A malformed response is G1 fail-closed.
+  if ! echo "$STATUS_JSON" | jq -e . >/dev/null 2>&1; then
+    echo "BLOCKED: coordinator-ack status response is not valid JSON."
+    echo ""
+    echo "Raw response:"
+    echo "$STATUS_JSON" | head -20 | sed 's/^/  /'
+    echo ""
+    echo "Per .claude/rules/guards.md Rule G1, parse errors fail closed."
+    exit 1
+  fi
+
+  # Find any coordinator-ack status with state=success.
+  # The response shape is a JSON array of status objects.
+  MATCHING_CREATOR=$(echo "$STATUS_JSON" \
+    | jq -r '[.[] | select(.context == "coordinator-ack" and .state == "success") | .creator.login] | .[0] // empty' 2>/dev/null \
+    || true)
+
+  if [ -z "$MATCHING_CREATOR" ]; then
+    echo "BLOCKED: No coordinator-ack status found on commit $HEAD_SHA."
     echo ""
     echo "Safety-gate paths in this diff:"
     echo "$SAFETY_GATE_DIFF" | sed 's/^/  /'
     echo ""
-    echo "Resolution: re-invoke this issue via /coordinator. The coordinator"
-    echo "skill writes the ack marker before spawning the worker."
+    echo "Per CLAUDE.md step 6 and the must-refuse bypass clauses, safety-gate"
+    echo "PRs MUST be shipped via /coordinator, not /ship, /next, or /build-loop"
+    echo "run as a lone worker. The coordinator spawns a post-ship fresh-eyes"
+    echo "reviewer in a new sub-agent context — that reviewer is the authoritative"
+    echo "gate for safety-critical changes."
     echo ""
-    echo "Do NOT forge the marker (\`touch tmp/.coordinator-ack-...\`) without"
-    echo "actually routing through /coordinator — per the CLAUDE.md NEVER-list"
-    echo "hook-bypass rule (S5U-629), that is a disclosable bypass event."
+    echo "Resolution: re-invoke this issue via /coordinator. The coordinator"
+    echo "skill posts a 'coordinator-ack' commit status via 'gh api' before"
+    echo "spawning the worker — that status is what this hook is checking for."
+    echo ""
+    echo "S5U-670 note: the prior 'tmp/.coordinator-ack-<issue>' file-marker"
+    echo "mechanism was worker-forgeable and has been removed. A worker"
+    echo "touching that file (or any other local file) will not satisfy this"
+    echo "gate. Only a commit status posted by an allowlisted signer counts."
     exit 1
   fi
-  echo "Coordinator-ack marker verified: $COORDINATOR_MARKER"
+
+  # Check creator.login against the allowlist.
+  if ! echo "$ALLOWLIST" | grep -qxF "$MATCHING_CREATOR"; then
+    echo "BLOCKED: coordinator-ack status on $HEAD_SHA was posted by '$MATCHING_CREATOR',"
+    echo "who is NOT in .claude/coordinator-signers.txt."
+    echo ""
+    echo "Allowlist contents:"
+    echo "$ALLOWLIST" | sed 's/^/  /'
+    echo ""
+    echo "This usually means a worker self-posted the status to forge the gate."
+    echo "GitHub stamps creator.login from the authenticated OAuth token, so"
+    echo "the login above is the identity that posted. If the identity is"
+    echo "correct and the allowlist is wrong, update .claude/coordinator-signers.txt"
+    echo "in a separate PR (that edit is itself safety-gate-scoped — expect"
+    echo "coordinator-flow review)."
+    echo ""
+    echo "Per S5U-670, the hook fails closed on non-allowlisted signers."
+    exit 1
+  fi
+
+  echo "Coordinator-ack verified: context=coordinator-ack, state=success, creator=$MATCHING_CREATOR"
 fi
 
 # --- Conditional Codex review enforcement ---
@@ -267,8 +427,9 @@ fi
 # --- Advisory visual verification check ---
 # If the branch touches rendering paths (components, styles, render stages),
 # check for recent screenshot artifacts in tmp/. Advisory only — exit 0 regardless.
+# Uses the same BASE_REF resolved above for S5U-666 consistency.
 
-RENDER_PATHS=$(git diff --name-only main...HEAD -- \
+RENDER_PATHS=$(git diff --name-only "$BASE_REF"...HEAD -- \
   'apps/web/src/components/' \
   'apps/web/src/routes/' \
   'apps/web/src/styles/' \
@@ -294,8 +455,9 @@ fi
 # Runs check_extraction_scope.py to detect extraction-related changes.
 # If extraction scope is detected but no golden refresh commit is found, warns the user.
 # Advisory only — never blocks PR creation.
+# Uses "$BASE_REF" (resolved above for S5U-666 consistency).
 
-SCOPE_JSON=$(cd /Users/s5una/projects/aeon-trespass-expert-1 && uv run python scripts/check_extraction_scope.py --base main --head HEAD 2>/dev/null || true)
+SCOPE_JSON=$(cd /Users/s5una/projects/aeon-trespass-expert-1 && uv run python scripts/check_extraction_scope.py --base "$BASE_REF" --head HEAD 2>/dev/null || true)
 
 if [ -n "$SCOPE_JSON" ]; then
   # check_extraction_scope.py outputs indented JSON — "areas": [] means no extraction scope
@@ -306,7 +468,7 @@ if [ -n "$SCOPE_JSON" ]; then
 
     if [ "$GOLDEN_DETECTED" -eq 0 ]; then
       # Check if any commit on this branch has "refresh goldens" in its message
-      HAS_REFRESH=$(git log main..HEAD --format='%s' | grep -ic 'refresh goldens' || true)
+      HAS_REFRESH=$(git log "$BASE_REF"..HEAD --format='%s' | grep -ic 'refresh goldens' || true)
 
       if [ "$HAS_REFRESH" -eq 0 ]; then
         echo ""

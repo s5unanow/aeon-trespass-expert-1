@@ -29,8 +29,19 @@ For each issue in the queue:
 
 ### 1. Spawn worker subagent
 - `subagent_type: "general-purpose"`, `model: <worker_model>`
-- **Write the coordinator-ack marker before spawning (S5U-647):** `mkdir -p tmp && touch tmp/.coordinator-ack-s5u-<NUMBER>`. The pre-PR hook (`pre-pr-check.sh`) refuses `gh pr create` on safety-gate-scoped PRs unless this marker exists. Writing it here is the coordinator's explicit commitment to run the step-3 post-ship reviewer against the merged diff. Do **not** forget to write it before the worker attempts to push — the worker's `/ship` / `/next` path hard-stops on safety-gate scope and would otherwise never reach PR creation.
-- Brief it with: Linear issue ID, working directory, full CLAUDE.md workflow obligations (plan if cross-system or safety-gate, branch, implement, local gates, mandatory sub-agent review per `.claude/prompts/review.md`, PR, CI, main-SHA verification, merge, sync, Linear → Done)
+- **Post the coordinator-ack commit status before spawning (S5U-670 supersedes the S5U-647 file marker):** after the worker has created its branch and pushed at least one commit, run:
+  ```bash
+  HEAD_SHA=$(git rev-parse HEAD)  # or the worker's pushed HEAD
+  gh api -X POST "repos/s5unanow/aeon-trespass-expert-1/statuses/$HEAD_SHA" \
+    -f state=success \
+    -f context=coordinator-ack \
+    -f "description=S5U-<NUMBER> coordinator-ack"
+  ```
+  The pre-PR hook (`pre-pr-check.sh`) queries `gh api .../commits/<sha>/statuses`, filters for `context=coordinator-ack AND state=success`, and requires `creator.login` to match `.claude/coordinator-signers.txt`. GitHub stamps `creator.login` from the authenticated token — a worker cannot forge a status under your identity without access to your `gh auth` session. Posting the status here is the coordinator's explicit commitment to run the step-3 post-ship reviewer against the merged diff.
+- **The prior file-marker mechanism (`tmp/.coordinator-ack-s5u-<N>`) is removed.** Do not `touch` local markers — they are no longer consulted by the hook (S5U-670 clean break). The only valid coordinator-ack evidence is a GH commit status.
+- **If the worker has not yet pushed a commit**, you can post the status after the worker's first push. Or, in orchestrator-first flows where the coordinator creates the branch: push an empty commit on the branch first, post the status on that SHA, and pass the SHA to the worker as "your base". The simplest flow is: worker branches + commits + pushes, then reports back with `git rev-parse HEAD`, and you post the status before asking the worker to run `gh pr create`.
+- **Re-posting after an amend**: if the worker amends commits after you post, the branch HEAD SHA changes and the old status no longer applies. Re-run the `gh api -X POST` against the new HEAD before the worker retries `gh pr create`. This is the intended behavior — an amend after ack should require a fresh ack.
+- Brief the worker with: Linear issue ID, working directory, full CLAUDE.md workflow obligations (plan if cross-system or safety-gate, branch, implement, local gates, mandatory sub-agent review per `.claude/prompts/review.md`, PR, CI, main-SHA verification, merge, sync, Linear → Done)
 - Ask for a report ≤300 words: PR URL, merge SHA, CI pass summary, Linear confirmation, deviations, and — on failure — exact stop point + resume instructions
 
 ### 2. Verify inline (coordinator, no subagent)
@@ -111,4 +122,4 @@ Under the current harness, sub-agents spawned by `/build-loop`, `/next`, and `/s
 
 Per CLAUDE.md step 6, safety-gate PRs MUST be shipped via `/coordinator`. The coordinator's step-3 reviewer subagent — spawned *after* merge, with only evidence (merge SHA, PR URL, Linear ID) and an explicit "you are not the worker" reminder — is the authoritative fresh-eyes gate for this class of change. Treat any safety-gate issue that arrives here as a high-priority candidate for the second-pass Opus review option.
 
-**Coordinator-ack marker (S5U-647):** in step 1 above, the coordinator writes `tmp/.coordinator-ack-s5u-<NUMBER>` before spawning the worker. This is the machine-enforced signal that the coordinator flow is in play — `pre-pr-check.sh` refuses `gh pr create` on safety-gate-scoped branches without this marker, closing the lone-worker bypass that the former user-override clause in `/ship` enabled. The marker is the coordinator's *commitment* to run the step-3 reviewer; failing to run the reviewer after the worker merges is a coordinator-level safety-gate violation.
+**Coordinator-ack signal (S5U-647 → S5U-670):** in step 1 above, the coordinator posts a `coordinator-ack` commit status to GitHub on the branch HEAD before the worker runs `gh pr create`. This is the machine-enforced signal that the coordinator flow is in play — `pre-pr-check.sh` refuses `gh pr create` on safety-gate-scoped branches unless the GH API returns a `coordinator-ack` status with `state=success` and `creator.login` ∈ `.claude/coordinator-signers.txt`, closing the lone-worker bypass that the former user-override clause in `/ship` enabled. The status is the coordinator's *commitment* to run the step-3 reviewer; failing to run the reviewer after the worker merges is a coordinator-level safety-gate violation. The prior file-marker mechanism (`tmp/.coordinator-ack-s5u-<N>`) was worker-forgeable (S5U-670 retrospective: 7 of 7 PRs in the 2026-04-20 coordinator run had worker-written markers) and has been removed — only GH-API-authenticated commit statuses count.
