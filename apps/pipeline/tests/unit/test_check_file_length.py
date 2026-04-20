@@ -190,6 +190,35 @@ def test_nonexistent_file_raises(cfl: ModuleType, tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# S5U-669: re-key pin — no entry may cite S5U-663 (Done) as its tracker
+# ---------------------------------------------------------------------------
+
+
+def test_no_entries_reference_s5u_663(cfl: ModuleType) -> None:
+    """No ``KNOWN_VIOLATORS`` value cites ``S5U-663`` (Done) as a tracker.
+
+    S5U-663 is Done (merged 2026-04-20, PR #288 SHA 661451a). Its citation
+    as the open tracker for 12 test files is semantically dangling — S5U-669
+    re-keyed those entries to the open umbrella S5U-677. This test pins the
+    re-key so a future developer accidentally re-adding ``"S5U-663"`` is
+    caught.
+
+    Red-before confirmation: commit bb8502f9e8b1ce7f6058b0e620553ac3ec259814
+    (pre-fix main HEAD) — the same assertion fails with 12 paths still
+    mapping to ``"S5U-663"`` (see ``scripts/check_file_length.py`` lines
+    40-53 in that commit). Post-fix, all 12 entries map to ``"S5U-677"``
+    (the umbrella issue) and this test passes.
+    """
+    stale = {
+        path: issue_id for path, issue_id in cfl.KNOWN_VIOLATORS.items() if issue_id == "S5U-663"
+    }
+    assert stale == {}, (
+        "S5U-669 regression — the following paths still cite S5U-663 (Done) "
+        "as their tracker; re-key to the open umbrella (S5U-677): " + "; ".join(stale.keys())
+    )
+
+
 def test_new_oversized_test_file_is_rejected(cfl: ModuleType, tmp_path: Path) -> None:
     """A freshly-added test file over the ceiling that is NOT in
     ``KNOWN_VIOLATORS`` must fail the scan.

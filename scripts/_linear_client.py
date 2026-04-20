@@ -20,11 +20,22 @@ LINEAR_RETRY_BACKOFF_SECONDS = 2.0
 
 @dataclass(frozen=True)
 class LinearIssue:
-    """Subset of Linear issue fields CI gates care about."""
+    """Subset of Linear issue fields CI gates care about.
+
+    `state_type` is Linear's stable machine-readable state enum — one of
+    ``{"triage", "backlog", "unstarted", "started", "completed", "canceled"}``
+    per https://developers.linear.app/docs/graphql/working-with-the-graphql-api.
+    Gates that need to distinguish "open tracker" from "closed tracker" should
+    check ``state_type in {"completed", "canceled"}`` rather than matching on
+    the team-custom ``state_name`` (which can be "Done" / "Shipped" / "Closed"
+    / "Abandoned" depending on workspace settings). Defaults to ``"unknown"``
+    so pre-S5U-669 call-sites that only inspect ``state_name`` remain valid.
+    """
 
     identifier: str
     description: str
     state_name: str
+    state_type: str = "unknown"
 
 
 class LinearAPIError(RuntimeError):
@@ -43,7 +54,7 @@ def fetch_linear_issue(issue_number: str, api_key: str) -> LinearIssue:
           id
           identifier
           description
-          state { name }
+          state { name type }
         }
       }
     }
@@ -98,10 +109,12 @@ def fetch_linear_issue(issue_number: str, api_key: str) -> LinearIssue:
         description = node.get("description") or ""
         state = node.get("state") or {}
         state_name = state.get("name") or "Unknown"
+        state_type = state.get("type") or "unknown"
         return LinearIssue(
             identifier=identifier,
             description=description,
             state_name=state_name,
+            state_type=state_type,
         )
 
     raise LinearAPIError(f"Linear fetch failed: {last_error}")
