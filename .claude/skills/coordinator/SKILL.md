@@ -29,6 +29,7 @@ For each issue in the queue:
 
 ### 1. Spawn worker subagent
 - `subagent_type: "general-purpose"`, `model: <worker_model>`
+- **Write the coordinator-ack marker before spawning (S5U-647):** `mkdir -p tmp && touch tmp/.coordinator-ack-s5u-<NUMBER>`. The pre-PR hook (`pre-pr-check.sh`) refuses `gh pr create` on safety-gate-scoped PRs unless this marker exists. Writing it here is the coordinator's explicit commitment to run the step-3 post-ship reviewer against the merged diff. Do **not** forget to write it before the worker attempts to push — the worker's `/ship` / `/next` path hard-stops on safety-gate scope and would otherwise never reach PR creation.
 - Brief it with: Linear issue ID, working directory, full CLAUDE.md workflow obligations (plan if cross-system or safety-gate, branch, implement, local gates, mandatory sub-agent review per `.claude/prompts/review.md`, PR, CI, main-SHA verification, merge, sync, Linear → Done)
 - Ask for a report ≤300 words: PR URL, merge SHA, CI pass summary, Linear confirmation, deviations, and — on failure — exact stop point + resume instructions
 
@@ -109,3 +110,5 @@ At end of run:
 Under the current harness, sub-agents spawned by `/build-loop`, `/next`, and `/ship` do NOT have the `Agent` tool available, so their pre-PR review is a lone-worker inline self-review (CLAUDE.md step 6 Path B). That fallback is acceptable for feature/polish changes but **not** for safety-gate scope (hooks, review prompts/gates, CI checks, merge guards, branch-protection-adjacent scripts, `.claude/skills/` SKILL.md edits).
 
 Per CLAUDE.md step 6, safety-gate PRs MUST be shipped via `/coordinator`. The coordinator's step-3 reviewer subagent — spawned *after* merge, with only evidence (merge SHA, PR URL, Linear ID) and an explicit "you are not the worker" reminder — is the authoritative fresh-eyes gate for this class of change. Treat any safety-gate issue that arrives here as a high-priority candidate for the second-pass Opus review option.
+
+**Coordinator-ack marker (S5U-647):** in step 1 above, the coordinator writes `tmp/.coordinator-ack-s5u-<NUMBER>` before spawning the worker. This is the machine-enforced signal that the coordinator flow is in play — `pre-pr-check.sh` refuses `gh pr create` on safety-gate-scoped branches without this marker, closing the lone-worker bypass that the former user-override clause in `/ship` enabled. The marker is the coordinator's *commitment* to run the step-3 reviewer; failing to run the reviewer after the worker merges is a coordinator-level safety-gate violation.

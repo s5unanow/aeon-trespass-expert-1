@@ -34,6 +34,13 @@ Repeat:
 - Commit specific files, not `git add .`
 - Ask the user at each checkpoint — don't run indefinitely
 
-## Safety-gate scope warning (S5U-628)
+## Safety-gate scope hard-stop (S5U-628 / S5U-647)
 
-`/build-loop` loops `/next`, which invokes `/ship` — all three run as lone workers without a coordinator-style fresh-eyes post-ship reviewer. Per CLAUDE.md step 6, safety-gate PRs (hooks, review prompts, CI workflows, merge guards, branch-protection-adjacent scripts, SKILL.md files) MUST be shipped via `/coordinator`, not `/build-loop`. If the next backlog issue is safety-gate-scoped, stop, warn the user, and recommend switching to `/coordinator` for that issue before resuming the loop.
+`/build-loop` loops `/next`, which invokes `/ship` — all three run as lone workers without a coordinator-style fresh-eyes post-ship reviewer. Per CLAUDE.md step 6 and the must-refuse bypass clause at CLAUDE.md:154, safety-gate PRs (`.claude/hooks/**`, `.claude/prompts/review.md`, `.claude/prompts/codex-review.md`, `.github/workflows/**`, `.github/actions/**`, `.claude/skills/**/SKILL.md`, `scripts/check_*.{sh,py}`, `scripts/pre-*.{sh,py}`, `CLAUDE.md`) MUST be shipped via `/coordinator`, not `/build-loop`.
+
+Before beginning each loop iteration, inspect the picked-up issue for safety-gate scope by:
+
+1. Reading the Linear description for obvious safety-gate keywords (hooks, review gates, CI workflows, merge guards, SKILL.md, CLAUDE.md).
+2. After branching + any exploratory edits, running `git diff --name-only main...HEAD` to catch diffs that landed on safety-gate paths.
+
+If safety-gate scope is detected at either point, **stop the loop**. Tell the user: *"Next backlog issue is safety-gate-scoped — re-invoke via `/coordinator` for that issue."* Exit the loop cleanly. **There is no user-override clause** (removed in S5U-647). Also, `/next` and `/ship` each independently hard-stop, and the pre-PR hook (`pre-pr-check.sh`) blocks `gh pr create` if safety-gate scope is present without a `tmp/.coordinator-ack-<issue>` marker.

@@ -144,6 +144,51 @@ fi
 
 echo "Review artifact verified: $REVIEW_FILE"
 
+# --- S5U-647: safety-gate scope refusal ---
+# Per CLAUDE.md step 6 "Safety-gate scope escalation (MUST)" and the must-refuse
+# bypass clause at CLAUDE.md:154, any PR touching safety-gate scope MUST be
+# shipped via /coordinator (which spawns a post-ship fresh-eyes reviewer in a
+# new sub-agent context), not via /ship / /next / /build-loop run as a lone
+# worker. The skill-level warnings in those skills are advisory; this is the
+# machine-enforced layer. The hook refuses the PR unless
+# tmp/.coordinator-ack-<issue> exists — that marker is the coordinator's
+# explicit commitment to run the post-ship reviewer, written by the coordinator
+# skill before spawning the worker.
+#
+# The authoritative safety-gate path list is defined in the ship/next/build-loop
+# SKILL.md files and mirrored here. Keep these in sync if you extend either.
+#
+# Three-input test coverage lives in scripts/test_pre_pr_safety_gate.sh.
+
+SAFETY_GATE_DIFF=$(git diff --name-only main...HEAD 2>/dev/null \
+  | grep -E '^(\.claude/hooks/|\.claude/prompts/review\.md$|\.claude/prompts/codex-review\.md$|\.github/workflows/|\.github/actions/|\.claude/skills/.+/SKILL\.md$|scripts/check_[^/]+\.(sh|py)$|scripts/pre-[^/]+\.(sh|py)$|CLAUDE\.md$)' \
+  || true)
+
+if [ -n "$SAFETY_GATE_DIFF" ]; then
+  COORDINATOR_MARKER="tmp/.coordinator-ack-${ISSUE_NUM}"
+  if [ ! -f "$COORDINATOR_MARKER" ]; then
+    echo "BLOCKED: Safety-gate scope detected but no coordinator-ack marker at '$COORDINATOR_MARKER'."
+    echo ""
+    echo "Per CLAUDE.md step 6 and the must-refuse clause at CLAUDE.md:154,"
+    echo "safety-gate PRs MUST be shipped via /coordinator, not /ship, /next,"
+    echo "or /build-loop run as a lone worker. The coordinator spawns a"
+    echo "post-ship fresh-eyes reviewer in a new sub-agent context — that"
+    echo "reviewer is the authoritative gate for safety-critical changes."
+    echo ""
+    echo "Safety-gate paths in this diff:"
+    echo "$SAFETY_GATE_DIFF" | sed 's/^/  /'
+    echo ""
+    echo "Resolution: re-invoke this issue via /coordinator. The coordinator"
+    echo "skill writes the ack marker before spawning the worker."
+    echo ""
+    echo "Do NOT forge the marker (\`touch tmp/.coordinator-ack-...\`) without"
+    echo "actually routing through /coordinator — per the CLAUDE.md NEVER-list"
+    echo "hook-bypass rule (S5U-629), that is a disclosable bypass event."
+    exit 1
+  fi
+  echo "Coordinator-ack marker verified: $COORDINATOR_MARKER"
+fi
+
 # --- Conditional Codex review enforcement ---
 # Primary: marker file (written by /ship or /codex-review skills).
 # Fallback: query Linear API directly for cross-system-review label.
