@@ -29,6 +29,15 @@ concurrency:
 
 jobs:
   scan:
+    # Must match the branch-protection required context verbatim.
+    # Unlike the other required checks (python/test, web/test,
+    # visual-regression/visual, visual-gate-scope/scan), this workflow
+    # is triggered directly by pull_request events, not via
+    # workflow_call from ci.yml — so GitHub does NOT auto-prefix the
+    # caller's job id. Without this explicit name, the check-run emits
+    # as bare "scan", never satisfying the "coverage-table-scan / scan"
+    # context and forcing --admin on every merge. See S5U-664.
+    name: "coverage-table-scan / scan"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
