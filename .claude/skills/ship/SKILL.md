@@ -19,7 +19,15 @@ Read `.claude/prompts/linear-conventions.md` for issue convention context (label
 
 ## 1. Independent fresh-eyes code review (MANDATORY)
 
-**Safety-gate scope warning (S5U-628):** before choosing the review path, check whether the diff touches safety-gate scope (hooks under `.claude/hooks/`, review prompts/gates under `.claude/prompts/review.md`, CI workflow YAML under `.github/workflows/`, merge guards, branch-protection-adjacent scripts, `scripts/check_*.*`, or this SKILL set). If yes, **`/ship` alone is not sufficient** — per CLAUDE.md step 6, safety-gate PRs MUST be shipped via `/coordinator`, which spawns an authoritative post-ship fresh-eyes reviewer in a new sub-agent context. Warn the user, pause, and recommend switching to `/coordinator` before creating the PR. The user may explicitly override, in which case disclose the override in the PR body.
+**Safety-gate scope hard-stop (S5U-628 / S5U-647):** before choosing the review path, run:
+
+```bash
+git diff --name-only main...HEAD
+```
+
+If any changed path matches safety-gate scope (`.claude/hooks/**`, `.claude/prompts/review.md`, `.claude/prompts/codex-review.md`, `.github/workflows/**`, `.github/actions/**`, `.claude/skills/**/SKILL.md`, `scripts/check_*.{sh,py}`, `scripts/pre-*.{sh,py}`, or `CLAUDE.md` itself), **STOP `/ship` immediately**. Per CLAUDE.md step 6 ("Safety-gate scope escalation (MUST)") and the must-refuse bypass clause at CLAUDE.md:154, safety-gate PRs MUST be shipped via `/coordinator`, not `/ship`. Tell the user: *"Safety-gate scope detected (paths: ...). `/ship` cannot carry this safely because it has no post-ship fresh-eyes reviewer. Re-invoke via `/coordinator` so the coordinator spawns an independent reviewer sub-agent against the merged diff."* Then exit the skill. **There is no user-override clause at the skill level** — the previous override path (removed in S5U-647) reproduced the exact bypass S5U-628 was filed to close.
+
+The pre-PR hook (`pre-pr-check.sh`) independently enforces this: it refuses `gh pr create` if the diff touches safety-gate scope and no `tmp/.coordinator-ack-<issue>` marker exists. Do not attempt to forge the marker — doing so is a hook-bypass-class event and must be disclosed in the PR body per the CLAUDE.md NEVER-list hook-bypass rule.
 
 Review-path selection is driven by whether the `Agent` tool is in your direct tool list (see CLAUDE.md step 6 for the full rule):
 

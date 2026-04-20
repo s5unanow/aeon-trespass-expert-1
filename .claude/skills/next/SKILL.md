@@ -60,6 +60,16 @@ Complete the current issue fully before returning. The scope of `/next` is a sin
 
 If any step fails after reasonable retries, log the error and stop — do not loop indefinitely.
 
-## Safety-gate scope warning (S5U-628)
+## Safety-gate scope hard-stop (S5U-628 / S5U-647)
 
-Before invoking `/ship`, check whether the issue scope or the diff touches safety-gate surfaces (hooks under `.claude/hooks/`, review prompts/gates, CI workflow YAML, merge guards, branch-protection-adjacent scripts, SKILL.md files in `.claude/skills/`). If yes, `/next` is **not sufficient** on its own: CLAUDE.md step 6 requires safety-gate PRs to be shipped via `/coordinator` so a fresh-eyes post-ship reviewer runs in a new sub-agent context. Warn the user and recommend switching to `/coordinator` before continuing.
+Before invoking `/ship`, run:
+
+```bash
+git diff --name-only main...HEAD
+```
+
+If any changed path matches safety-gate scope (`.claude/hooks/**`, `.claude/prompts/review.md`, `.claude/prompts/codex-review.md`, `.github/workflows/**`, `.github/actions/**`, `.claude/skills/**/SKILL.md`, `scripts/check_*.{sh,py}`, `scripts/pre-*.{sh,py}`, or `CLAUDE.md` itself), **stop the skill immediately**. Do **not** proceed to `/ship`. Per CLAUDE.md step 6 and the must-refuse bypass clause at CLAUDE.md:154, safety-gate PRs MUST be shipped via `/coordinator`, which spawns a post-ship fresh-eyes reviewer in a new sub-agent context.
+
+Tell the user: *"Safety-gate scope detected. `/next` cannot complete this issue safely — re-invoke via `/coordinator` so an independent reviewer runs against the merged diff."* Then exit.
+
+**There is no user-override clause** (removed in S5U-647). The pre-PR hook (`pre-pr-check.sh`) also enforces this independently at `gh pr create` time.
