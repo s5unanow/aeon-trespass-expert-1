@@ -8,6 +8,11 @@ These rules exist because workers spawning in-conversation sub-agents have empir
 2. **Do not read worker-authored artifacts under `tmp/`.** That includes `tmp/plan-s5u-*.md`, `tmp/codex-review-*.md`, scratch notes, and any file mentioning the worker's rationale. The only `tmp/` file you may write is your own review output (`tmp/review-s5u-<NUMBER>.md`). The only `tmp/` file you may *read* is `tmp/erosion-report.json` if check #17 generates it during this review.
 3. **The Linear issue is the contract.** Probe the success criteria yourself. Do not assume the worker's interpretation is correct — re-derive it from the issue text.
 4. **No conversation inheritance.** If you find yourself with prior context about why the worker made a choice, treat it as adversarial — that context is exactly the framing you must not anchor on.
+5. **Anti-anchoring discipline (S5U-659) — record initial verdict before reading worker framing.** The review artifact **must** include, before any PR-body-specific citation, these two auditable sections:
+    - **Initial verdict** (`### Initial verdict (from Linear + git show only)`) — a 2–6 line preliminary reading formed **only** from the Linear issue text (fetched via `mcp__plugin_linear_linear__get_issue`) and `git show <HEAD>` / `git diff main...HEAD`. Do not reference the PR body, commit messages beyond the subject line, or any worker artifact under `tmp/` when writing this section. Record the verdict word (PASS / PASS WITH WARNINGS / BLOCK) as it stands at this stage, along with which success criteria are (from your independent reading) met vs unmet.
+    - **Claim classification** (`### Claims: verified vs asserted`) — a two-column list separating (a) claims the worker asserted in the PR body / commit messages that you **independently verified** (re-ran the command, re-read the cited code, re-computed the value) vs (b) claims you only saw asserted without independent verification. The second list is not a failure mode per se — some claims are not worth spot-checking — but the *separation* is the audit trail that proves you did not rubber-stamp worker framing.
+
+    An LLM reviewer holds all inputs in context simultaneously, so these sections are a discipline reminder, not a strict read-ordering guarantee. What they audit is whether the reviewer *distinguished* their own read from the worker's framing. Artifacts that collapse the two views (final verdict only, no initial verdict; no "verified vs asserted" separation) are themselves a **WARNING** on anti-anchoring discipline — the coordinator's post-ship reviewer will grade this on safety-gate PRs. Known residual: a reviewer could fake both sections to match the final verdict; that failure is the same class as the HEAD-SHA-gaming residual on red-before (S5U-624) — worker/reviewer honesty is the gate, and post-ship review is the second-pass check.
 
 ## Save review artifact
 
@@ -98,6 +103,12 @@ Checks 1–13 always run. Checks 14–21 are conditional — consult this trigge
       1. **Read upstream CLI docs** for the tool being guarded (e.g., `<tool> --help`, or the vendor doc page for CI actions / workflow syntax). Search the output for flags, env vars, or config paths with effects equivalent to the one the gate blocks. If you find one the plan did not enumerate: **CRITICAL**.
       2. **Grep for sibling invocation patterns** — if the plan covers one `package.json` script or one workflow file, search for others in the repo that could invoke the same tool directly (`rg -l <tool>` across `package.json`, `.github/workflows/**`, `.github/actions/**`, `scripts/**`). If a sibling exists outside the gate's coverage: **CRITICAL**.
       3. **Test at least one out-of-plan attack vector** — construct a hypothetical bypass that the plan did *not* enumerate (e.g., short-flag alias, env var, new sibling workflow, allow-marker abuse) and reason through whether the guard blocks it. If the guard does not block: **CRITICAL**.
+    - **Mandatory adversarial question (S5U-659) — safety-gate PRs only**: the `Probes run:` block must explicitly answer the following question, in prose:
+
+      > "What attacker-controlled names, paths, flags, labels, or workflow locations does this implementation assume are stable? For each, is the stability enforced or assumed?"
+
+      The answer must enumerate **at least 2 attacker-controlled surfaces** (e.g., `package.json` script names, `.github/workflows/*.yml` filenames, label strings on the issue, branch names, tag names, test-function names, assertion strings, issue statuses, Linear project IDs, env var names, regex anchors). For each, name the mitigation (enforced vs assumed). Stub answers like "none known" or "N/A — no attacker" are themselves a failure: the rule is "if the diff touches safety-gate scope, adversarial surfaces exist by definition — the question is which ones". If the reviewer cannot enumerate two concrete surfaces, they have not done the audit. Probe bullet form: `"Adversarial-surface enumeration (S5U-659): (1) <surface> — <enforced|assumed> via <mitigation>; (2) <surface> — <enforced|assumed> via <mitigation>"`. A missing or stubbed answer is itself **CRITICAL** under the same rule that grades missing adversarial scenarios.
+    - **Novel-variant requirement (S5U-659) — safety-gate PRs only**: the reviewer must construct **at least one adversarial variant not enumerated in the Linear issue**, reason through whether the guard blocks it, and record the result in the `Probes run:` block. "Re-verified the issue's enumerated repros" alone is **insufficient adversarial effort** — the issue's repros are the worker's framing, and by the time the issue is filed the worker has already mentally reduced the threat surface. Reviewer independence (rules 1 and 4 above) means re-deriving at least one variant the issue did not describe. **If the reviewer only re-verifies the issue's documented repros, the verdict defaults to WARNING** (insufficient adversarial effort). Note: a "novel variant" must exercise a different code path, input vector, or invocation equivalence class than the enumerated repros — string permutations (case folding, whitespace rewording) do not qualify. Probe bullet form: `"Novel-variant probe (S5U-659): constructed <variant description>; guard <blocks|does not block> via <file:line or rule text>. Variant is novel because <reason — e.g., 'issue enumerated short-flag -n; this variant uses core.hooksPath env-file redirection which is a different config surface'>"`.
     - Any scenario where the mechanism can be defeated — even if unlikely — is **CRITICAL**, not NIT or WARNING. Evaluate against the adversarial case the gate is designed to prevent, not the common case. Ask: "Can a determined sequence of events bypass this gate?"
 17. **Hotspot drift surfacing** — if the branch touches any file listed in `configs/qa/hotspot_budgets.toml`:
     - Run: `uv run python scripts/check_code_erosion.py --base main --head HEAD --output-json tmp/erosion-report.json`
@@ -152,33 +163,74 @@ Checks 1–13 always run. Checks 14–21 are conditional — consult this trigge
     - **Mandatory probe bullet**: the `Probes run:` section must include `"Semantically-equivalent threats: issue S5U-XXX label-trigger=<yes|no>, boundary-shape match=<shape | none>; section <enumerates K vectors verified #1 by <file>, #2 by <file>, ... + audited upstream surface | missing — {CRITICAL on label trigger | WARNING on content trigger only | n/a if neither trigger fires}>"`. A generic "Semantically-equivalent: checked" is a **WARNING** for reviewer self-discipline; the rule is the reviewer audits the upstream surface, not just the issue's enumeration. Non-triggering diffs note `"Semantically-equivalent threats: skipped — issue has no safety-gate label, diff adds no new enforcement logic, and contains none of the 4 boundary shapes"`.
 22. **Hook-bypass disclosure (S5U-629) — always run** — CLAUDE.md's NEVER list forbids skipping pre-commit hooks without a `## Hook bypass disclosure` heading in the PR body. This probe grades **concealment as a stronger violation than the bypass itself**: an undisclosed match is CRITICAL, a disclosed match is WARNING. The probe exists to create an audit surface on the commit-message + PR-body side-channel; it cannot detect bypasses that the worker conceals (neutral commit message, no disclosure, hook-skip already rolled back) — that failure mode is a documented residual risk, explicitly deferred in S5U-629 (see `tmp/plan-s5u-629.md` §4d Scenario 4).
     - **Probe corpus**: commit messages on this branch **and** the PR body. Do **not** grep the diff (this very probe's rule text contains `--no-verify` as documentation — false positives would be guaranteed). Do **not** grep `git reflog` — the independent reviewer has a fresh checkout and no access to the worker's local reflog. Claiming reflog evidence violates S5U-613 fresh-eyes independence; **reflog MUST NOT be used as evidence for this probe**.
-    - **Bypass token grep**:
+    - **Bypass token grep** — CRITICAL-severity probes (catch the primary hook-skip vectors from CLAUDE.md:206):
         ```bash
         { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
           | grep -inE '(\-\-no\-verify|no\-verify|HOOK_BYPASS=|HUSKY=0|LEFTHOOK=0|SKIP=|NO_VERIFY=|core\.hooksPath|chmod[[:space:]]+-x[[:space:]]+\.git/hooks|rm[[:space:]]+\.git/hooks)'
         ```
-        Separate short-form `-n` probe — anchored to avoid false positives on `git log -n`, `echo -n`, etc. (the unanchored `\-n\b` would be unusable):
+        `core\.hooksPath` covers the CLAUDE.md-enumerated `git config core.hooksPath …` and `git -c core.hooksPath=…` redirection forms as a literal substring — matches both `git config core.hooksPath /tmp/empty` and `git -c core.hooksPath=/tmp/empty commit`. (Bracketed gitconfig-file form `[core]\n  hooksPath = …` is out of scope: the probe corpus is commit messages + PR body, not on-disk `.git/config` inspection.)
+
+        Separate short-form `-n` probe (S5U-648) — word-proximity to `commit|merge|rebase`. The previous anchored form required `git commit` on the same line as `-n`, which missed cross-line prose ("the hook hung so I passed `-n` to `git commit`\n\non the second attempt"). This proximity form uses an 80-char `[\s\S]` window so multi-line prose is caught:
         ```bash
         { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
-          | grep -inE '\bgit[[:space:]]+commit\b[^\n]*[[:space:]]-n\b'
+          | perl -0777 -ne 'while (/\b(commit|merge|rebase)\b[\s\S]{0,80}(?<![A-Za-z0-9])-n(?![A-Za-z0-9])|(?<![A-Za-z0-9])-n(?![A-Za-z0-9])[\s\S]{0,80}\b(commit|merge|rebase)\b/g) { print "MATCH: $&\n"; }'
         ```
-        A match on either probe means "the worker at some point referenced a hook-skip vector in their own commit messages or PR body." That is not automatically bad — it can mean the worker **disclosed**.
+        The lookbehinds/aheads `(?<![A-Za-z0-9])-n(?![A-Za-z0-9])` are the Perl equivalents of word boundaries around a flag; plain `\b-n\b` on some BSD grep variants is unreliable because `-` is not a word character. This catches `git commit -n`, `git merge --no-ff -n`, `git rebase -i -n HEAD~3`, and cross-line prose referring to `-n` within 80 chars of any of the three verbs. Known false-negatives: `git-commit -n` (hyphenated, matches because `commit` is still a word inside the compound); English-inflected forms like "committed" (does NOT match, because `\bcommit\b` requires the exact word) — acceptable since CLAUDE.md's canonical form is `git commit -n` and the probe's job is to surface documented vectors, not English paraphrases. If `perl` is unavailable, fall back to the legacy anchored grep and note the coverage gap in the probe bullet.
+
+        Separate prose probes (S5U-648) — WARNING-severity, catch PR-body or commit-message prose describing direct hook mutation:
+        ```bash
+        { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
+          | grep -inE '(replaced|overwrote|swapped).{0,40}(pre-commit|hooks/)'
+        { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
+          | grep -inE 'no[- ]op.{0,40}(hook|pre-commit)'
+        ```
+        These catch "replaced `.git/hooks/pre-commit` with a no-op", "overwrote the pre-commit hook", "installed a no-op pre-commit script", etc. — the CLAUDE.md NEVER-list vector for no-op hook replacement that the original probe missed. Grade these as WARNING (not CRITICAL), because the 40-char `.{0,40}` window is narrower than `[\s\S]{0,80}` and prose-style matches have a higher false-positive rate than canonical-CLI matches. Cross-line paraphrases (e.g., `"replaced .git/hooks/pre-commit\n\nwith a stub"`) will not match — `.` in POSIX ERE does not cross newlines; accepted as a residual risk, same class as the HEAD-SHA-gaming residual on red-before (S5U-624). If a reviewer spots such a cross-line paraphrase narratively while reading the PR body, they should flag it as CRITICAL ("evasive cross-line hook-mutation prose") per the same rule applied to boundary-shape aliasing in check #20.
+
+        A match on any of the four probes means "the worker at some point referenced a hook-skip vector in their own commit messages or PR body." That is not automatically bad — it can mean the worker **disclosed**.
     - **Disclosure heading check**: if either probe matched, verify the PR body contains a `## Hook bypass disclosure` heading with non-empty body (at least a commit SHA and a rationale sentence — an empty heading counts as missing for grading purposes):
         ```bash
         gh pr view --json body -q .body 2>/dev/null \
           | awk '/^##[[:space:]]+Hook[[:space:]]+bypass[[:space:]]+disclosure/{flag=1; next} /^##[[:space:]]/{flag=0} flag'
         ```
     - **Grading**:
-        - **No bypass-token match in corpus**: pass silently. Probe bullet: `"Hook-bypass disclosure: no bypass tokens in commit messages or PR body"`. This is the expected case for the vast majority of PRs.
-        - **Bypass-token match AND disclosure heading present with non-empty body**: **WARNING** — `"Hook bypass disclosed: worker referenced {matched_token} in {commit_sha | PR body} and PR body contains '## Hook bypass disclosure' section. Disclosure is the legitimate path; flagging as audit-trail WARNING per CLAUDE.md NEVER list. Reviewer should spot-check the bypassed commit's diff for the content the skipped check would have caught."`
-        - **Bypass-token match AND disclosure heading absent (or empty)**: **CRITICAL** — `"Detected hook-bypass token {matched_token} in {commit_sha | PR body line N} but PR body lacks '## Hook bypass disclosure' section (or section is empty). Undisclosed concealment is a stronger violation than the bypass itself per CLAUDE.md NEVER list and the S5U-629 rule text. Request worker to add disclosure or explain the false positive."`
+        - **No match on any of the four probes**: pass silently. Probe bullet: `"Hook-bypass disclosure: no bypass tokens in commit messages or PR body (ran: main bypass-token grep, -n word-proximity, replaced/overwrote/swapped prose, no-op prose)"`. This is the expected case for the vast majority of PRs.
+        - **Match on the main bypass-token grep OR the `-n` word-proximity probe (CRITICAL-severity probes) AND disclosure heading present with non-empty body**: **WARNING** — `"Hook bypass disclosed: worker referenced {matched_token} in {commit_sha | PR body} and PR body contains '## Hook bypass disclosure' section. Disclosure is the legitimate path; flagging as audit-trail WARNING per CLAUDE.md NEVER list. Reviewer should spot-check the bypassed commit's diff for the content the skipped check would have caught."`
+        - **Match on the main bypass-token grep OR the `-n` word-proximity probe (CRITICAL-severity probes) AND disclosure heading absent (or empty)**: **CRITICAL** — `"Detected hook-bypass token {matched_token} in {commit_sha | PR body line N} but PR body lacks '## Hook bypass disclosure' section (or section is empty). Undisclosed concealment is a stronger violation than the bypass itself per CLAUDE.md NEVER list and the S5U-629 rule text. Request worker to add disclosure or explain the false positive."`
+        - **Match on a prose probe only (replaced/overwrote/swapped OR no-op) with no disclosure heading**: **WARNING** (not CRITICAL) — `"Prose-probe hook-bypass match: '{matched_phrase}' in {commit_sha | PR body line N} with no '## Hook bypass disclosure' section. Grading at WARNING because prose-probe false-positive rate is higher than canonical-CLI probes (e.g., 'replaced the pre-commit hook ordering in a script' is not a skip). Reviewer should read the surrounding context; escalate to CRITICAL if the prose describes an actual hook-mutation event."`
+        - **Match on a prose probe only (replaced/overwrote/swapped OR no-op) WITH disclosure heading present**: **NIT** — `"Prose-probe match disclosed: worker disclosed the mutation in the PR body. No further action."`
+        - **Mixed match (CRITICAL probe + prose probe on the same event)**: grade by the CRITICAL-probe rule — the canonical-CLI token dominates.
         - **False-positive context**: if the match is a narrative reference (e.g., a commit message like `"S5U-XXX: document --no-verify rule"` in a docs-only diff where the literal string appears because the worker is editing CLAUDE.md or this very check) — use judgment. The disclosure requirement applies to **actual hook-skip attempts**, not to edits that cite the rule text. Note the false-positive judgment in the probe bullet so the audit trail is honest.
-    - **Mandatory probe bullet**: the `Probes run:` section must include an explicit line of one of the following forms:
-        - `"Hook-bypass disclosure: no bypass tokens in commit messages or PR body"`
-        - `"Hook-bypass disclosure: matched '<token>' in <commit_sha | PR-body line N>; disclosure heading present with body '<excerpt>' — WARNING filed"`
-        - `"Hook-bypass disclosure: matched '<token>' in <commit_sha | PR-body line N>; disclosure heading absent — CRITICAL filed"`
+    - **Mandatory probe bullet**: the `Probes run:` section must include an explicit line of one of the following forms (the probe set is now four probes: main bypass-token grep, `-n` word-proximity, replaced/overwrote/swapped prose, no-op prose — name all four as run, per S5U-648):
+        - `"Hook-bypass disclosure: no bypass tokens in commit messages or PR body (ran: main bypass-token grep, -n word-proximity, replaced/overwrote/swapped prose, no-op prose)"`
+        - `"Hook-bypass disclosure: matched '<token>' on <probe_name> in <commit_sha | PR-body line N>; disclosure heading present with body '<excerpt>' — WARNING filed"`
+        - `"Hook-bypass disclosure: matched '<token>' on <probe_name> in <commit_sha | PR-body line N>; disclosure heading absent — CRITICAL filed"`
+        - `"Hook-bypass disclosure: matched '<phrase>' on prose probe (replaced/no-op) in <commit_sha | PR-body line N>; no disclosure — WARNING filed (prose-probe FPR higher than canonical-CLI)"`
         - `"Hook-bypass disclosure: matched '<token>' in <commit_sha | PR-body line N>; false-positive judgment — this PR edits the rule text itself and the match is a narrative citation, not a hook-skip"`
-    - **This probe does NOT detect**: (a) bypasses concealed via neutral commit message + no disclosure, (b) bypasses via direct hook-file modification (`chmod -x`, `rm`, no-op replacement, `core.hooksPath` redirect) that leave no commit-message trace, (c) rolled-back bypass commits that never reach origin and are not self-reported. Those are acknowledged residual risks; the gate is worker honesty backed by the CLAUDE.md NEVER-list framing of concealment as the stronger violation. See `tmp/plan-s5u-629.md` §4d Scenarios 4 and 5 for the documented limits of this probe.
+    - **This probe does NOT detect**: (a) bypasses concealed via neutral commit message + no disclosure, (b) bypasses via direct hook-file modification that leave no commit-message trace *and* no prose trace (e.g., the worker runs `chmod -x .git/hooks/pre-commit` silently and never writes about it — the S5U-648 prose probes close the prose-trace case but cannot reach the silent case), (c) rolled-back bypass commits that never reach origin and are not self-reported, (d) cross-line paraphrases of hook mutation that fall outside the prose probes' 40-char window. Those are acknowledged residual risks; the gate is worker honesty backed by the CLAUDE.md NEVER-list framing of concealment as the stronger violation. See `tmp/plan-s5u-629.md` §4d Scenarios 4 and 5 for the documented limits of this probe; `tmp/plan-s5u-659-648.md` §4d documents the S5U-648-specific residuals.
+
+## Follow-up-relation verdict rule (S5U-659)
+
+This section applies **only when the reviewer is auditing a shipped parent** — i.e., a post-ship second-pass review of a merged PR whose Linear issue has open or resolved follow-ups. Pre-merge reviewers of a fresh diff skip this rule; it is for the coordinator's step-3 fresh-eyes reviewer and for standalone audits.
+
+Three verdict states are defined when the reviewer encounters one or more follow-up relations on the parent issue. The reviewer **must** classify the parent into exactly one of these states and record the classification in the `Probes run:` block:
+
+- **partial** — the parent has at least one **open** follow-up whose Linear issue body documents **an unmet acceptance criterion from the parent** *or* **a new bypass / leaky gate introduced by the parent's shipped implementation**. Example: S5U-629 (parent) shipped a hook-bypass probe whose regex set missed documented vectors; S5U-648 (follow-up) filed against the parent to document the gap. Auditing S5U-629 today, while S5U-648 is open, yields `partial`.
+- **complete with tracked hardening** — the parent has a follow-up that was deliberately scoped as *optional* hardening at ship time (the parent's "Out of scope" section or PR body explicitly flagged it as future work, and the follow-up was filed to track that future work, not to repair an unmet AC). Example: a parent that ships a working gate but defers performance optimization to a follow-up. This is a **completed** parent with tracked hardening, not a partial close.
+- **complete** — no open follow-ups, or the only follow-ups are duplicate filings / body-hygiene fixes / CLAUDE.md-reference updates that have already been resolved.
+
+**CRITICAL grading rule**: returning `complete` while an open follow-up documents an unmet AC of the parent is **CRITICAL** — `"Incorrect closure: parent S5U-XXX graded 'complete' but open follow-up S5U-YYY documents unmet AC '<quoted AC bullet from parent>'. Correct verdict is 'partial'."`. Do not treat "an open follow-up exists" as mitigation — a follow-up is a *filing*, not a *fix*; it moves the defect to a tracked queue but does not close the gap on the parent.
+
+**How to classify**:
+
+1. Fetch the parent via `mcp__plugin_linear_linear__get_issue(id="S5U-XXX")`.
+2. Fetch each follow-up via the same tool (follow-up IDs are typically in the parent body as `<issue id="...">S5U-YYY</issue>` tags, or discoverable via Linear's "related" / "blocks" / "blocked by" relations — the `includeRelations: true` parameter retrieves them).
+3. For each follow-up, read its description. If the follow-up's description quotes or paraphrases an AC from the parent's "Fix" / "Success criteria" section and describes a gap in the parent's shipped implementation, the relation is **unmet AC**. If the follow-up describes work the parent explicitly deferred to future, the relation is **tracked hardening**. If the follow-up is a pure duplicate, body-hygiene, or Canceled, the relation is **none**.
+4. Aggregate: `partial` if any follow-up is unmet AC. `complete with tracked hardening` if all follow-ups are tracked hardening. `complete` if no follow-ups or all are none.
+
+**Mandatory probe bullet form**:
+
+- `"Follow-up-relation verdict: parent S5U-XXX has N follow-ups (S5U-YYY, S5U-ZZZ); classified '<partial | complete with tracked hardening | complete>' because <per-followup reasoning, e.g., 'S5U-YYY state=<state>, relation=<unmet AC | tracked hardening | none>; S5U-ZZZ state=<state>, relation=<...>'>"`
+- If the review is not a post-ship audit (fresh diff, first-pass review), the probe bullet is `"Follow-up-relation verdict: skipped — this is a pre-merge review of a fresh diff, not a shipped-parent audit"`.
 
 ## How to review
 
@@ -225,9 +277,23 @@ Report issues as a numbered list:
 
 ## Structured verdict (REQUIRED)
 
-After the numbered findings list, emit a structured verdict block matching the `/coordinator` skill's reviewer contract. The pre-PR hook parses this section; missing or malformed fields will block PR creation.
+After the numbered findings list — and **after** the anti-anchoring sections required by Independence rule 5 (S5U-659): `### Initial verdict (from Linear + git show only)` and `### Claims: verified vs asserted` — emit a structured verdict block matching the `/coordinator` skill's reviewer contract. The pre-PR hook parses this section; missing or malformed fields will block PR creation.
 
 ```
+### Initial verdict (from Linear + git show only)
+
+<2–6 lines: preliminary PASS / PASS WITH WARNINGS / BLOCK formed *only* from the Linear issue and the diff, no PR body, no worker artifacts. This is your pre-anchoring read.>
+
+### Claims: verified vs asserted
+
+Verified (re-ran or re-computed):
+- <claim worker made — how you verified>
+- <claim worker made — how you verified>
+
+Asserted (seen but not independently verified):
+- <claim worker made — not spot-checked>
+- <claim worker made — not spot-checked>
+
 ## Verdict
 
 Verdict: <PASS | PASS WITH WARNINGS | BLOCK>
@@ -245,3 +311,5 @@ Bug IDs filed: <flat list of any Linear issues you opened — empty list if none
 The final line of the file MUST be exactly one of `**PASS**`, `**PASS WITH WARNINGS**`, or `**BLOCK**` — the hook keys on this verdict word. Do not embed those strings in the prose above; reserve them for the section header position and final line.
 
 The `Probes run:` list is your audit trail — leaving it empty or with a single token like "read diff" indicates a lazy review and the hook will block the PR.
+
+The `### Initial verdict` and `### Claims: verified vs asserted` sections are the anti-anchoring audit trail (S5U-659). A reviewer who collapses these into the final `## Verdict` block without separating them earns a WARNING from the coordinator's post-ship reviewer on safety-gate PRs. The sections being identical in outcome is fine — the discipline is the *separation*, not a requirement to disagree with yourself.
