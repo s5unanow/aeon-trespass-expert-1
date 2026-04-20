@@ -1,49 +1,15 @@
 #!/usr/bin/env python3
 """CI guard: prevent silent loosening of extraction thresholds.
 
-Blocks a PR when `configs/qa/thresholds.toml` is loosened without
-justification. See docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §8.3 and
-`tmp/plan-s5u-591.md` for the full design rationale.
-
-A change is considered LOOSENING when any of the following is true for
-an entry keyed by `name`:
-
-  * post-change `min` is numerically less than pre-change `min`
-  * post-change `blocking` is False and pre-change `blocking` was True
-  * the entry is deleted (no matching `name` on the head side)
-
-A change is considered TIGHTENING (or neutral) when:
-
-  * `min` is raised or unchanged
-  * `blocking` is added or left True
-  * net-new entries are added
-  * only `description` / ordering / whitespace / comments change
-
-Justification mechanisms — either is sufficient:
-
-  1. Commit-message sentinel: a line matching `LOOSEN-THRESHOLD: <reason>`
-     (case-insensitive) with non-empty reason text, present in at least one
-     commit in `base..head` that touches the thresholds file. This is the
-     primary mechanism because it survives in git history.
-
-  2. PR-body sentinel: a `## Threshold loosening justification` heading
-     (exactly that text, case-insensitive, level H1-H6) followed by a
-     non-blank body line, in the file passed via `--pr-body-file`. CI
-     passes the live PR body to this path.
+S5U-643: per-finding justification. Each loosening in
+`configs/qa/thresholds.toml` must be covered by EITHER a sentinel on the
+responsible commit (`LOOSEN-THRESHOLD: <name>[, ...] <sep> <reason>`)
+or a PR-body bullet (`- <name>: <reason>` under `## Threshold loosening
+justification`). See docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §8.3.
 
 Usage:
-
     uv run python scripts/check_threshold_changes.py \\
         --base origin/main --head HEAD [--pr-body-file pr_body.md]
-
-Exit 0: no loosening, or loosening is justified.
-Exit 1: loosening detected without justification.
-
-Design note: this script uses `tomllib` directly rather than importing
-`atr_pipeline.eval.thresholds.ThresholdConfig` to keep the CI step
-dependency-free (no `uv sync` needed to invoke it, matching the
-coverage-table scan pattern). Parsing mirrors the Pydantic model's
-field names; if the schema drifts, update `_parse_thresholds`.
 """
 
 from __future__ import annotations
@@ -58,48 +24,48 @@ from pathlib import Path
 
 THRESHOLDS_PATH = "configs/qa/thresholds.toml"
 
-# Commit-message sentinel. Require non-empty reason after the colon.
-# Match anywhere on a line so "  LOOSEN-THRESHOLD: recalibrated" inside
-# a multi-line body still counts.
+# S5U-643: per-finding commit-message sentinel.
+# Matches e.g.:
+#   LOOSEN-THRESHOLD: foo_pass_rate — dataset refresh
+#   LOOSEN-THRESHOLD: foo, bar -- recalibrated
+#   loosen-threshold: foo: see audit
+# Rejects: no names, no separator, or empty reason.
 _COMMIT_SENTINEL_RE = re.compile(
-    r"(?im)^[\s>]*loosen[-_]threshold\s*:\s*(\S.*)$",
+    r"(?im)^[\s>]*loosen[-_]threshold\s*:\s*"
+    r"(?P<names>[^\n—:]+?)"
+    r"\s*(?:—|--|-|:)\s*"
+    r"(?P<reason>\S.*)$",
 )
 
-# PR-body heading: "## Threshold loosening justification" (H1-H6, any case).
 _PR_HEADING_RE = re.compile(
     r"(?im)^\s*#{1,6}\s*threshold\s+loosening\s+justification\b.*$",
 )
 
+# Per-finding bullet under the heading: `- <name>: <reason>`.
+_PR_BULLET_RE = re.compile(
+    r"(?im)^\s*[-*+]\s+"
+    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)"
+    r"\s*:\s*"
+    r"(?P<reason>\S.*)$",
+)
+
+_PR_ANY_HEADING_RE = re.compile(r"(?m)^\s*#{1,6}\s+")
+
 
 @dataclass(frozen=True)
 class ThresholdEntry:
-    """One [[metric_thresholds]] entry, keyed by name."""
-
     name: str
     min: float
     blocking: bool
 
 
-# ---------------------------------------------------------------------------
-# Git / IO helpers
-# ---------------------------------------------------------------------------
+def _run_git(*args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(["git", *args], capture_output=True, text=True, check=False)
 
 
 def _verify_ref_exists(ref: str) -> None:
-    """Raise SystemExit if `ref` cannot be resolved to a commit (S5U-642).
-
-    Shallow CI checkouts (`fetch-depth: 1`) silently leave the base branch
-    unreachable. Without this check, `_git_show` would return None and the
-    guard would treat every head threshold as net-new, passing the PR
-    silently. Fail-closed with a clear message pointing the operator at
-    the workflow fix.
-    """
-    result = subprocess.run(
-        ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    """S5U-642: fail-closed if `ref` doesn't resolve (shallow-checkout guard)."""
+    result = _run_git("rev-parse", "--verify", f"{ref}^{{commit}}")
     if result.returncode != 0:
         raise SystemExit(
             f"ERROR: cannot resolve ref '{ref}' to a commit.\n"
@@ -111,58 +77,42 @@ def _verify_ref_exists(ref: str) -> None:
 
 
 def _git_show(ref: str, path: str) -> str | None:
-    """Return file contents at `ref`, or None if the file doesn't exist there.
+    """Return file contents at `ref`, or None if path is absent at that commit."""
+    result = _run_git("show", f"{ref}:{path}")
+    return None if result.returncode != 0 else result.stdout
 
-    The caller must have already verified that `ref` resolves via
-    `_verify_ref_exists`, so a non-zero return code here means the path
-    is absent at that commit (not that the ref itself is bad).
-    """
-    result = subprocess.run(
-        ["git", "show", f"{ref}:{path}"],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+
+def _get_commit_message(sha: str) -> str:
+    """Return full commit message for `sha`. Fails closed on git error."""
+    result = _run_git("log", "-1", "--format=%B", sha)
     if result.returncode != 0:
-        return None
+        raise SystemExit(f"ERROR: git log -1 --format=%B {sha} failed: {result.stderr.strip()}")
     return result.stdout
 
 
 def _get_commits_touching(base: str, head: str, path: str) -> list[str]:
-    """Return full commit messages (subject+body) for commits in base..head touching path."""
-    # %B = raw body (subject + body). %x00 separator because commit messages can
-    # contain any other character including newlines.
-    result = subprocess.run(
-        ["git", "log", f"{base}..{head}", "--format=%B%x00", "--", path],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    """Return SHAs (newest→oldest) in base..head that touch `path`. Fails closed."""
+    result = _run_git("log", f"{base}..{head}", "--format=%H", "--", path)
     if result.returncode != 0:
-        return []
-    return [msg for msg in result.stdout.split("\x00") if msg.strip()]
+        raise SystemExit(f"ERROR: git log {base}..{head} -- {path} failed: {result.stderr.strip()}")
+    return [sha for sha in result.stdout.splitlines() if sha.strip()]
 
 
-# ---------------------------------------------------------------------------
-# Threshold parsing
-# ---------------------------------------------------------------------------
+def _commit_parent(sha: str) -> str | None:
+    """First-parent SHA of `sha`, or None for root commit."""
+    result = _run_git("rev-parse", f"{sha}^")
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip() or None
 
 
 def _parse_thresholds(toml_text: str | None) -> dict[str, ThresholdEntry]:
-    """Parse TOML text and return {name: ThresholdEntry}.
-
-    Missing file returns empty dict. Malformed entries (missing name, missing
-    min) are skipped — the pipeline's own Pydantic loader will reject those at
-    runtime; here we don't want to block the CI gate on an unrelated schema
-    error.
-    """
+    """Parse TOML → {name: ThresholdEntry}. Missing file → empty dict."""
     if toml_text is None:
         return {}
     try:
         data = tomllib.loads(toml_text)
     except tomllib.TOMLDecodeError as exc:
-        # A malformed head-side file is a hard block: we can't verify that
-        # thresholds haven't been loosened if we can't parse them.
         raise SystemExit(f"ERROR: failed to parse thresholds TOML: {exc}") from exc
 
     entries: dict[str, ThresholdEntry] = {}
@@ -171,15 +121,11 @@ def _parse_thresholds(toml_text: str | None) -> dict[str, ThresholdEntry]:
         if not isinstance(name, str):
             continue
         min_val = raw.get("min")
-        # bool is a subclass of int in Python; reject it explicitly so a
-        # TOML `min = true` doesn't silently parse as 1.0.
+        # Reject bool (subclass of int) so `min = true` doesn't parse as 1.0.
         if not isinstance(min_val, (int, float)) or isinstance(min_val, bool):
             continue
-        # S5U-644: mirror the Pydantic `bool` field boundary. A TOML string
-        # `blocking = "false"` is Python-truthy and would have slipped past
-        # the old `bool(raw.get(...))` coercion, approving a PR the runtime
-        # would reject. Fail closed on any non-bool type, including int
-        # (the `blocking = 1` / `blocking = 0` cases).
+        # S5U-644: match runtime Pydantic bool boundary. Reject non-bool
+        # including strings ("false" is Python-truthy) and ints.
         raw_blocking = raw.get("blocking", True)
         if not isinstance(raw_blocking, bool):
             raise SystemExit(
@@ -192,15 +138,17 @@ def _parse_thresholds(toml_text: str | None) -> dict[str, ThresholdEntry]:
     return entries
 
 
-# ---------------------------------------------------------------------------
-# Loosening detection
-# ---------------------------------------------------------------------------
+def _parse_thresholds_at(ref: str) -> dict[str, ThresholdEntry]:
+    """Parse thresholds.toml at `ref`. Adds commit context on parse failure."""
+    text = _git_show(ref, THRESHOLDS_PATH)
+    try:
+        return _parse_thresholds(text)
+    except SystemExit as exc:
+        raise SystemExit(f"ERROR: parsing {THRESHOLDS_PATH} at {ref} failed: {exc}") from exc
 
 
 @dataclass(frozen=True)
 class LooseningFinding:
-    """Describes one loosening event between base and head."""
-
     name: str
     kind: str  # "min_lowered" | "blocking_disabled" | "deleted"
     before: str
@@ -214,7 +162,6 @@ def detect_loosening(
     base: dict[str, ThresholdEntry],
     head: dict[str, ThresholdEntry],
 ) -> list[LooseningFinding]:
-    """Return all loosening findings. Empty list means no loosening."""
     findings: list[LooseningFinding] = []
     for name, base_entry in base.items():
         head_entry = head.get(name)
@@ -249,51 +196,135 @@ def detect_loosening(
     return findings
 
 
-# ---------------------------------------------------------------------------
-# Justification detection
-# ---------------------------------------------------------------------------
+# --- Responsible-commit resolution (S5U-643) ---
 
 
-def has_commit_sentinel(commit_messages: list[str]) -> tuple[bool, str]:
-    """Return (found, reason) for first non-empty LOOSEN-THRESHOLD sentinel."""
-    for msg in commit_messages:
-        match = _COMMIT_SENTINEL_RE.search(msg)
-        if match is None:
+def _finding_applies_at_transition(
+    finding: LooseningFinding,
+    pre: dict[str, ThresholdEntry],
+    post: dict[str, ThresholdEntry],
+) -> bool:
+    """True iff `finding`'s loosening manifests at this commit's pre→post boundary."""
+    pre_entry = pre.get(finding.name)
+    post_entry = post.get(finding.name)
+    if finding.kind == "deleted":
+        return pre_entry is not None and post_entry is None
+    if finding.kind == "min_lowered":
+        if pre_entry is None or post_entry is None:
+            return False
+        return post_entry.min < pre_entry.min
+    if finding.kind == "blocking_disabled":
+        if pre_entry is None or post_entry is None:
+            return False
+        return pre_entry.blocking and not post_entry.blocking
+    return False
+
+
+def find_responsible_commit(
+    finding: LooseningFinding,
+    base: str,
+    head: str,
+) -> str:
+    """Identify the commit in base..head that introduced `finding`. Fails closed."""
+    shas = _get_commits_touching(base, head, THRESHOLDS_PATH)
+    if not shas:
+        raise SystemExit(
+            f"ERROR: no commit in {base}..{head} touches {THRESHOLDS_PATH}, "
+            f"yet a loosening was detected for '{finding.name}'. This usually "
+            "means --base is stale or points outside the PR's commit range. "
+            "Cannot attribute the loosening to a responsible commit; failing "
+            "closed."
+        )
+    for sha in shas:
+        parent = _commit_parent(sha)
+        pre = _parse_thresholds_at(parent) if parent else {}
+        post = _parse_thresholds_at(sha)
+        if _finding_applies_at_transition(finding, pre, post):
+            return sha
+    raise SystemExit(
+        f"ERROR: could not identify the commit in {base}..{head} that "
+        f"introduced loosening for '{finding.name}' ({finding.kind}: "
+        f"{finding.before} -> {finding.after}). Likely cause: the change "
+        "crosses multiple commits that partially offset, or --base is "
+        "misconfigured. Squash into one commit and re-run."
+    )
+
+
+# --- Per-finding justification ---
+
+
+def _normalize_names(raw_names: str) -> list[str]:
+    """Split a names list into lowercased, stripped identifiers."""
+    return [n.strip().lower() for n in raw_names.split(",") if n.strip()]
+
+
+def commit_sentinel_covers(finding_name: str, commit_message: str) -> tuple[bool, str]:
+    """True iff a `LOOSEN-THRESHOLD:` sentinel in `commit_message` names `finding_name`."""
+    target = finding_name.lower()
+    for match in _COMMIT_SENTINEL_RE.finditer(commit_message):
+        reason = match.group("reason").strip()
+        if not reason:
             continue
-        reason = match.group(1).strip()
-        if reason:
+        if target in _normalize_names(match.group("names")):
             return True, reason
     return False, ""
 
 
-def has_pr_body_sentinel(pr_body_path: Path | None) -> tuple[bool, str]:
-    """Return (found, excerpt) if a non-empty justification section is present.
-
-    We require the heading to be followed by at least one non-blank,
-    non-heading line — a bare heading is not a justification.
-    """
+def pr_body_covers(finding_name: str, pr_body_path: Path | None) -> tuple[bool, str]:
+    """True iff PR body has a `- <finding_name>: <reason>` bullet under the heading."""
     if pr_body_path is None or not pr_body_path.exists():
         return False, ""
-    text = pr_body_path.read_text(encoding="utf-8")
-    match = _PR_HEADING_RE.search(text)
-    if match is None:
+    try:
+        text = pr_body_path.read_text(encoding="utf-8")
+    except OSError:
         return False, ""
-    # Walk lines after the heading, looking for non-empty, non-heading content.
-    after = text[match.end() :]
-    for line in after.splitlines():
-        stripped = line.strip()
-        if not stripped:
-            continue
-        if stripped.startswith("#"):
-            # Next heading without any body content between — no justification.
-            return False, ""
-        return True, stripped[:120]
+    heading = _PR_HEADING_RE.search(text)
+    if heading is None:
+        return False, ""
+    after = text[heading.end() :]
+    next_heading = _PR_ANY_HEADING_RE.search(after)
+    section = after[: next_heading.start()] if next_heading else after
+    target = finding_name.lower()
+    for bullet in _PR_BULLET_RE.finditer(section):
+        if bullet.group("name").strip().lower() == target:
+            reason = bullet.group("reason").strip()
+            if reason:
+                return True, reason
     return False, ""
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+def _justify_findings(
+    findings: list[LooseningFinding],
+    base: str,
+    head: str,
+    pr_body_path: Path | None,
+) -> list[tuple[LooseningFinding, str]]:
+    """Return [(finding, miss_reason), ...] for findings lacking justification."""
+    missing: list[tuple[LooseningFinding, str]] = []
+    for finding in findings:
+        responsible_sha = find_responsible_commit(finding, base, head)
+        commit_msg = _get_commit_message(responsible_sha)
+        ok, reason = commit_sentinel_covers(finding.name, commit_msg)
+        if ok:
+            print(
+                f"  * {finding.name}: justified by commit {responsible_sha[:12]} "
+                f'sentinel — "{reason[:80]}"'
+            )
+            continue
+        ok, reason = pr_body_covers(finding.name, pr_body_path)
+        if ok:
+            print(f'  * {finding.name}: justified by PR body bullet — "{reason[:80]}"')
+            continue
+        missing.append(
+            (
+                finding,
+                f"responsible commit {responsible_sha[:12]} has no "
+                f"'LOOSEN-THRESHOLD: {finding.name} ...' sentinel, and PR body "
+                f"has no '- {finding.name}: ...' bullet under '## Threshold "
+                "loosening justification'",
+            )
+        )
+    return missing
 
 
 def main() -> int:
@@ -308,10 +339,8 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    # S5U-642: verify both refs resolve BEFORE attempting `git show`. A
-    # shallow CI checkout leaves the base ref unresolvable; without this
-    # check, the guard would treat every head threshold as net-new and
-    # approve real loosening.
+    # S5U-642: resolve both refs BEFORE attempting `git show`; shallow
+    # checkouts otherwise present as "every threshold is net-new."
     _verify_ref_exists(args.base)
     _verify_ref_exists(args.head)
 
@@ -339,28 +368,23 @@ def main() -> int:
     for finding in findings:
         print(finding.render())
 
-    commit_messages = _get_commits_touching(args.base, args.head, THRESHOLDS_PATH)
-    commit_ok, commit_reason = has_commit_sentinel(commit_messages)
-    if commit_ok:
-        print(f"\nJustification found in commit message: {commit_reason}")
-        print("Guard passes.")
+    print("\nChecking per-finding justification:")
+    missing = _justify_findings(findings, args.base, args.head, args.pr_body_file)
+
+    if not missing:
+        print("\nAll loosenings justified. Guard passes.")
         return 0
 
-    body_ok, body_excerpt = has_pr_body_sentinel(args.pr_body_file)
-    if body_ok:
-        print(f"\nJustification found in PR body: {body_excerpt}")
-        print("Guard passes.")
-        return 0
-
+    print("\nBLOCK: threshold loosening detected without per-finding justification.")
+    for finding, why in missing:
+        print(f"  - {finding.name} ({finding.kind}): {why}")
     print(
-        "\nBLOCK: threshold loosening detected without justification.\n"
-        "To unblock, add ONE of:\n"
-        "  * A line 'LOOSEN-THRESHOLD: <reason>' in a commit that touches\n"
-        "    configs/qa/thresholds.toml (case-insensitive; reason must be\n"
-        "    non-empty).\n"
-        "  * A '## Threshold loosening justification' heading in the PR\n"
-        "    body, followed by at least one non-blank line explaining the\n"
-        "    change and linking any calibration data.\n"
+        "\nTo unblock, for EACH unjustified finding provide ONE of:\n"
+        "  * 'LOOSEN-THRESHOLD: <name>[, ...] <sep> <reason>' in the commit\n"
+        "    that introduced the loosening. <sep> is '—', '--', '-', or ':'.\n"
+        "    Names must include the loosened threshold (case-insensitive).\n"
+        "  * A '- <name>: <reason>' bullet under a '## Threshold loosening\n"
+        "    justification' heading in the PR body.\n"
         "See docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §8.3."
     )
     return 1
