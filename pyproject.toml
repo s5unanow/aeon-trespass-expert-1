@@ -70,6 +70,7 @@ module = [
     "openai", "openai.*",
     "anthropic", "anthropic.*",
     "google", "google.genai", "google.genai.*",
+    "yaml", "yaml.*",
 ]
 ignore_missing_imports = true
 
