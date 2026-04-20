@@ -142,7 +142,7 @@ When a worker running inside `/build-loop`, `/coordinator`, `/next`, or `/ship` 
 1. Close every draft note, scratch pad, and in-progress PR body open in your working memory. Do not re-read `tmp/plan-s5u-<N>.md` during the review.
 2. Re-fetch the Linear issue via `mcp__plugin_linear_linear__get_issue` — treat its text as the sole source of truth for success criteria. Do **not** consult your own rationale or commit messages for "what the issue meant".
 3. Run `git diff main...HEAD` and read the diff unanchored. Form your verdict *before* writing anything.
-4. Walk `.claude/prompts/review.md` check-by-check (checks 1–22) and apply each one honestly to the diff. Triggers (label-based, content-based) are the same; the difference is that you are the reviewer.
+4. Walk `.claude/prompts/review.md` check-by-check (checks 1–23) and apply each one honestly to the diff. Triggers (label-based, content-based) are the same; the difference is that you are the reviewer.
 5. Produce `tmp/review-s5u-<NUMBER>.md` with the same structured `## Verdict` contract (`Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:` with ≥3 bullets, `Bug IDs filed:`). The pre-PR hook validates the artifact identically to Path A.
 6. In both the review artifact and the PR body, **disclose the fallback explicitly**: `"Reviewed under Path B (Agent tool unavailable in this sub-agent context, per CLAUDE.md step 6 / S5U-628). Authoritative post-ship review is the top-level coordinator's responsibility."`
 
