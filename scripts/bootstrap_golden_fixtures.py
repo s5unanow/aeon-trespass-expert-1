@@ -17,9 +17,19 @@ Additional layout classes — vector_heavy, chapter_opener, confidence_bands
 file within the 400-line length budget.
 """
 
+import logging
+import sys
 from pathlib import Path
 
 import fitz  # PyMuPDF
+
+# Ensure the pipeline package is importable when this script is run directly
+# (scripts/ is not on PYTHONPATH by default but the pipeline src layout is).
+_PIPELINE_SRC = Path(__file__).resolve().parent.parent / "apps" / "pipeline" / "src"
+if str(_PIPELINE_SRC) not in sys.path:
+    sys.path.insert(0, str(_PIPELINE_SRC))
+
+from atr_pipeline.store.atomic_write import atomic_write_bytes  # noqa: E402
 
 FIXTURES_ROOT = (
     Path(__file__).resolve().parent.parent / "packages" / "fixtures" / "sample_documents"
@@ -28,6 +38,13 @@ FIXTURES_ROOT = (
 # A4 dimensions in points
 A4_W, A4_H = 595.2, 841.8
 HELV = fitz.Font("helv")
+
+logger = logging.getLogger(__name__)
+
+
+def _atomic_save_pdf(doc: fitz.Document, path: Path) -> None:
+    """Serialize a PyMuPDF document and write it atomically via the store helper."""
+    atomic_write_bytes(path, doc.tobytes())
 
 
 def _ensure_dirs(doc_id: str) -> Path:
@@ -78,7 +95,7 @@ def create_multi_column(src: Path) -> None:
             y = 110
         else:
             y += 70
-    doc.save(str(src / "multi_column.pdf"))
+    _atomic_save_pdf(doc, src / "multi_column.pdf")
     doc.close()
 
 
@@ -102,7 +119,7 @@ def create_icon_dense(src: Path, icon_path: Path) -> None:
                 page.insert_image(fitz.Rect(x, y - 12, x + 16, y + 4), filename=str(icon_path))
                 x += 18
         y += 30
-    doc.save(str(src / "icon_dense.pdf"))
+    _atomic_save_pdf(doc, src / "icon_dense.pdf")
     doc.close()
 
 
@@ -150,7 +167,7 @@ def create_table_callout(src: Path) -> None:
     page.insert_text(
         fitz.Point(58, 300), "See appendix for full item catalog.", fontsize=10, fontname="helv"
     )
-    doc.save(str(src / "table_callout.pdf"))
+    _atomic_save_pdf(doc, src / "table_callout.pdf")
     doc.close()
 
 
@@ -181,7 +198,7 @@ def create_figure_caption(src: Path) -> None:
         fontname="helv",
         color=(0.3, 0.3, 0.3),
     )
-    doc.save(str(src / "figure_caption.pdf"))
+    _atomic_save_pdf(doc, src / "figure_caption.pdf")
     doc.close()
 
 
@@ -235,7 +252,7 @@ def create_hard_route(src: Path, icon_path: Path) -> None:
         fontname="helv",
         color=(0.5, 0.5, 0.5),
     )
-    doc.save(str(src / "hard_route.pdf"))
+    _atomic_save_pdf(doc, src / "hard_route.pdf")
     doc.close()
 
 
@@ -272,11 +289,12 @@ def create_furniture_repetition(src: Path) -> None:
             fontname="helv",
             color=(0.4, 0.4, 0.4),
         )
-    doc.save(str(src / "furniture_repetition.pdf"))
+    _atomic_save_pdf(doc, src / "furniture_repetition.pdf")
     doc.close()
 
 
 def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     # Shared icon for icon-dependent fixtures
     icon_dir = FIXTURES_ROOT / "walking_skeleton" / "source"
     icon_path = icon_dir / "symbol_progress.png"
@@ -295,7 +313,7 @@ def main() -> None:
     for name, builder in fixtures:
         src = _ensure_dirs(name)
         builder(src)
-        print(f"  generated {name}")
+        logger.info("  generated %s", name)
 
     # Copy icon to icon_dense and hard_route catalogs
     for doc_id in ("icon_dense", "hard_route"):
@@ -303,7 +321,7 @@ def main() -> None:
         if not dst.exists():
             dst.write_bytes(icon_path.read_bytes())
 
-    print("Done — all golden fixtures generated.")
+    logger.info("Done — all golden fixtures generated.")
 
 
 if __name__ == "__main__":
