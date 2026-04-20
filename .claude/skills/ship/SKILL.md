@@ -43,7 +43,7 @@ Do **NOT** paste into the brief: your own commit rationale, deviations list, PR 
 
 ### Path B — `Agent` tool unavailable (sub-agent fallback, S5U-628)
 
-Follow the maximum-independence inline self-review checklist in CLAUDE.md step 6: close draft notes, re-fetch the Linear issue, re-read the diff unanchored, walk all 23 checks in `.claude/prompts/review.md`, and write the same structured verdict artifact. Disclose the fallback in both the artifact and PR body. Do not use Path B if `Agent` is actually available; do not use Path B to bypass `/coordinator` escalation on safety-gate changes.
+Follow the maximum-independence inline self-review checklist in CLAUDE.md step 6: close draft notes, re-fetch the Linear issue, re-read the diff unanchored, walk all 24 checks in `.claude/prompts/review.md`, and write the same structured verdict artifact. Disclose the fallback in both the artifact and PR body. Do not use Path B if `Agent` is actually available; do not use Path B to bypass `/coordinator` escalation on safety-gate changes.
 
 ### Artifact + verdict (both paths)
 
