@@ -242,17 +242,37 @@ Loosening is defined as: `min` lowered for an existing entry, `blocking`
 flipped from `true` to `false`, or an entry deleted outright (rename is
 delete+add). Tightening and net-new entries pass freely.
 
-Loosening blocks CI unless justified by **either**:
+**S5U-643: per-finding justification.** Each detected loosening must be
+justified individually. Blanket sentinels no longer cover multiple
+loosenings — every loosened threshold name must appear in at least one
+justification mechanism below. Loosening blocks CI unless justified by
+**either**:
 
-1. A `LOOSEN-THRESHOLD: <reason>` line (case-insensitive, non-empty
-   reason) in a commit message that touches the thresholds file. This is
-   the primary mechanism because it survives in git history.
-2. A `## Threshold loosening justification` heading in the PR body
-   followed by at least one non-blank line of explanation.
+1. **Commit-message sentinel on the responsible commit** —
+   `LOOSEN-THRESHOLD: <name>[, <name>...] <sep> <reason>` (case-insensitive,
+   non-empty reason). `<sep>` is one of `—`, `--`, `-`, or `:`. The names
+   list must include the loosened threshold's name. The guard identifies
+   the "responsible commit" by comparing parsed TOML values at each
+   commit's pre/post image — a decoy sentinel on an unrelated commit no
+   longer suffices. This is the primary mechanism because it survives in
+   git history.
+2. **PR-body bullet list** — a `## Threshold loosening justification`
+   heading followed by one bullet per loosened threshold:
+   `- <name>: <reason>`. Every loosened threshold must have its own bullet;
+   partial coverage blocks.
 
-Runs conditionally when `check_extraction_scope.py` flags
-`threshold_change_detected=true`, and fails the `python / test` required
-status check on violation. See S5U-591.
+Example (multi-threshold refresh in one commit):
+
+```
+S5U-XXX: joint dataset refresh
+
+LOOSEN-THRESHOLD: reading_order_accuracy_pass_rate, symbol_count_pass_rate — 2026-04 recalibration, audit in docs/eval/2026-04-audit.md
+```
+
+Runs on every pull request and fails the `python / test` required status
+check on violation. See S5U-591 (original guard), S5U-642 (fail-closed on
+shallow checkout), S5U-643 (per-finding binding), S5U-644 (Pydantic bool
+boundary).
 
 ### 8.4 Fixture Manifest Validator
 
