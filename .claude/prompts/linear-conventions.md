@@ -228,3 +228,69 @@ When the Linear issue you are shipping has **≥3 explicit bullets across its "F
 **Worked example (honest framing, S5U-621)** — earlier prompt versions cited S5U-594 as a 5-bullet case with `role="dialog"`, `aria-modal="true"`, focus trap, focus restoration, and initial focus. That example was fabricated: S5U-594's actual Linear description has 3 numbered Fix items (Reader UI / Submission path / Intake) with nested sub-bullets about the floating button, form fields, and intake path. ARIA attributes, focus trap, focus restoration, and initial focus appear nowhere as verbatim bullets — they were implicit a11y requirements the worker failed to derive. **The Coverage-table gate catches verbatim-bullet drops, not implicit-requirement gaps.** S5U-594's focus-trap regression (S5U-609) is an implicit-a11y drift failure mode, which is a separate concern this gate does not address.
 
 A real worked example that the gate **does** catch, once the S5U-622 nested-bullet rule is applied: S5U-595's "Reader route" Fix bullet has 4 verbatim nested sub-bullets (including the `block_id` highlight that silently dropped in the original ship as S5U-601). A compliant Coverage table for S5U-595 would have one row for the `Reader route` parent plus four rows for each nested sub-bullet; collapsing the four children into the parent row is now a CRITICAL per check #19 ("Nested sub-bullet collapsed under parent row — verbatim one-row-per-bullet rule violated").
+
+## Retire/rename verification (required for retire / rename / remove / drop / deprecate / decommission / sunset issues)
+
+When a Linear issue's **title** or **"Scope" section** contains any of the keywords `retire`, `rename`, `remove`, `drop`, `deprecate`, `decommission`, `sunset` (case-insensitive, word-boundary-bounded — matched against `\b(retire|rename|remove|drop|deprecate|decommission|sunset)\b`), the PR body **must** contain a `## Retire/rename verification` section populated with an unscoped repo-wide grep run *after the implementation lands*.
+
+This section exists because S5U-592 (retire Tesseract) updated `docs/PROJECT_ARCHITECTURE.md` but missed the parallel `PROJECT_ARCHITECTURE_TO_AGENTIC.md:1739`. The worker's scoped grep ("tesseract in the architecture doc I remember") and the reviewer's trust in that result were the proximate cause; the fix is a mechanical repo-wide grep the reviewer can re-run (see `.claude/prompts/review.md` check #24).
+
+**When it fires:**
+
+- **Required** when the keyword regex matches the issue title or Scope section.
+- **Optional N/A with justification** when the keyword match is incidental and the change does not remove/rename any term repo-wide (e.g., title "Fix: remove a typo in CHANGELOG", "Drop the dev container sidecar that never landed"). The worker writes a one-line justification; the reviewer accepts N/A when the justification visibly rules out a retirement (see "N/A form" below).
+
+**Format** — put this in the PR body under a `## Retire/rename verification` heading:
+
+```markdown
+## Retire/rename verification
+
+Command: `rg -i "<old-term>" -g '!dist-node' -g '!tmp'`
+Exit code: <0 = matches, 1 = no matches, paste verbatim>
+Matches (or "no matches — retirement complete"):
+  docs/adrs/ADR-013-retire-tesseract.md:42 — historical reference, intentionally preserved
+  CHANGELOG.md:87 — version history, out of scope
+  tests/unit/test_check_instruction_drift.py:158 — scanner test fixture, retired-term reference required for the test to match
+Explanation: no live references remain; all matches are grandfathered history, test fixtures, or ADRs per .claude/rules/AUDIT.md.
+```
+
+**Rules the verification command must satisfy:**
+
+1. **Unscoped repo-wide** — the grep must run from the repo root with no positive path argument narrowing it to a subdirectory. `rg -i "<term>" docs/` is the S5U-592 failure mode. Negated globs (`-g '!dist-node'`, `-g '!tmp'`, `-g '!node_modules'`) are acceptable scoping — they exclude known-noisy paths without hiding evidence.
+2. **Show match content, not just paths** — do **not** use `-l` / `--files-with-matches` alone. The reviewer must be able to read each matched line to confirm it is a legitimate historical/ADR/test-fixture reference. A bare file list stripped of line content hides whether the match is live code or a grandfathered mention.
+3. **Case-insensitive** — `-i`. Retired terms often appear capitalized in docs and lowercase in code.
+4. **Explain every match** — each line in the "Matches" block must have a one-line justification (grandfathered ADR, CHANGELOG, test fixture, scanner self-reference, etc.). Unexplained matches are a reviewer BLOCK cue: the whole point of the section is that the worker has read every match and confirmed none are live.
+
+**N/A form** (for false-positive keyword matches):
+
+```markdown
+## Retire/rename verification
+
+N/A — the issue title matches keyword `remove` in the innocuous sense of "remove a typo in `CHANGELOG.md`"; this PR does not retire, rename, or remove any term from the codebase. No repo-wide grep is meaningful.
+```
+
+The N/A justification must be specific enough that the reviewer can confirm the keyword is incidental (e.g., "remove a typo", "drop the dev container that was never added"). A bare `N/A` with no justification is a reviewer BLOCK.
+
+**What the independent reviewer probes** (`.claude/prompts/review.md` check #24):
+
+- Fetches the Linear issue, greps its title + Scope section for the keyword regex.
+- If triggered: greps the PR body for `## Retire/rename verification`. Missing: CRITICAL. Scoped (positive path argument narrowing to a subdirectory, or `-l` with no line content): WARNING. N/A without justification: WARNING.
+- If present with an unscoped `rg` invocation and an explained matches block: pass.
+
+**Worked example (retrospective, drafted as if S5U-592 had carried this section):**
+
+```markdown
+## Retire/rename verification
+
+Command: `rg -i "tesseract" -g '!dist-node' -g '!tmp'`
+Exit code: 0
+Matches:
+  docs/adrs/ADR-013-retire-tesseract.md:1 — ADR title, historical record
+  docs/adrs/ADR-013-retire-tesseract.md:42 — ADR body, rationale for retirement
+  CHANGELOG.md:87 — version note "removed Tesseract from pipeline"
+  scripts/check_instruction_drift.py:87 — scanner retired-term list (required for rule B to fire)
+  apps/pipeline/tests/unit/test_check_instruction_drift.py:158 — test fixture proving scanner catches bare mentions
+Explanation: all 5 matches are grandfathered (ADR / CHANGELOG / scanner self-reference / test fixture). Had any live reference in `apps/pipeline/src/` or `docs/PROJECT_ARCHITECTURE_TO_AGENTIC.md` appeared, this PR would not have been shipped. The parallel-doc gap found in S5U-638 would have been visible here.
+```
+
+**Interplay with check #19 Coverage table**: the two sections are orthogonal. A ≥3-bullet retirement issue owes both a Coverage table and a Retire/rename verification block; the Coverage table maps bullets to files, the verification block audits the repo-wide state after implementation.

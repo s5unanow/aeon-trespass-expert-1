@@ -26,7 +26,7 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 
 ## What to check
 
-Checks 1–13 and 22 always run. Checks 14–21 and 23 are conditional — consult this trigger table first and skip any check whose trigger is not met. The per-check prose below is the authority; the table is the index.
+Checks 1–13 and 22 always run. Checks 14–21, 23, and 24 are conditional — consult this trigger table first and skip any check whose trigger is not met. The per-check prose below is the authority; the table is the index.
 
 | #  | Check                          | Trigger                                                                 | Max severity |
 |----|--------------------------------|-------------------------------------------------------------------------|--------------|
@@ -40,6 +40,7 @@ Checks 1–13 and 22 always run. Checks 14–21 and 23 are conditional — consu
 | 21 | Semantically-equivalent threats| Issue labels ∈ {safety-gate, cross-system-review} OR (Bug AND diff adds a new gate/validator) OR diff contains any of the 4 boundary shapes | CRITICAL (label trigger) / WARNING (content trigger only) |
 | 22 | Hook-bypass disclosure         | Always run (probe is cheap; does not require label or diff-shape trigger)                | CRITICAL (undisclosed match) / WARNING (disclosed match) |
 | 23 | Stage-output cache invalidation | Diff modifies a file matching `apps/pipeline/src/**/stages/**/stage.py` | WARNING      |
+| 24 | Retire/rename verification     | Linear issue title OR Scope section matches `\b(retire\|rename\|remove\|drop\|deprecate\|decommission\|sunset)\b` (case-insensitive, word-boundary) | CRITICAL     |
 
 1. **Logic bugs** — off-by-one errors, wrong conditions, missing edge cases, None/null handling
 2. **Error handling** — bare `except Exception`, swallowed errors, missing error paths
@@ -239,6 +240,45 @@ Checks 1–13 and 22 always run. Checks 14–21 and 23 are conditional — consu
         - `"Stage-output cache invalidation: stage.py files modified (<files>) but no new artifact-write signature in added lines — skipped"`
         - `"Stage-output cache invalidation: <file> adds <signature>; version bumped (<old> → <new>) — invariant preserved"`
         - `"Stage-output cache invalidation: <file> adds <signature>; version unchanged — WARNING filed; worker justification required in PR body"`
+24. **Retire/rename verification (S5U-660) — retire/rename/remove-class issues only** — when the linked Linear issue's **title** OR **"Scope" section** contains any of the keywords `retire`, `rename`, `remove`, `drop`, `deprecate`, `decommission`, `sunset` (matched as `\b(retire|rename|remove|drop|deprecate|decommission|sunset)\b`, case-insensitive), the PR body must contain a `## Retire/rename verification` section populated with an unscoped repo-wide grep per `.claude/prompts/linear-conventions.md` § "Retire/rename verification". This exists because S5U-592 (retire Tesseract) missed a parallel doc (`PROJECT_ARCHITECTURE_TO_AGENTIC.md:1739`); the worker ran a scoped grep and the reviewer trusted the scoped result. A mechanical unscoped grep that the reviewer can re-run closes that class of failure.
+    - **Trigger probe**: fetch the issue via `mcp__plugin_linear_linear__get_issue`, concatenate its `title` and the contents of its `## Scope` section (if present; if no explicit `## Scope` heading, use the full description as a fallback), and run the word-boundary regex:
+        ```bash
+        python3 -c '
+        import re, sys
+        text = sys.stdin.read()
+        m = re.search(r"\b(retire|rename|remove|drop|deprecate|decommission|sunset)\b", text, re.IGNORECASE)
+        print("TRIGGER:", m.group(1) if m else "none")
+        '
+        ```
+        Three-input discipline per `.claude/rules/hooks.md`:
+        1. **Happy-path** (keyword present): `"Retire Tesseract"` → `TRIGGER: retire`. Probe fires.
+        2. **Failure** (keyword absent): `"Add new IR field glossary_mentions"` → `TRIGGER: none`. Probe skipped.
+        3. **Adversarial partial-word** (keyword embedded in unrelated prose): `"Remove the drop-shadow CSS"` → `TRIGGER: Remove` (and also `drop`). Probe fires; worker owes a section or an N/A with justification. The word-boundary anchor `\b` keeps `remove_edition` (underscore is a word char) from triggering falsely on code-span identifiers; past-tense `"Retired Tesseract docs"` (trailing `d` keeps it a single word) does **not** trigger — acceptable residual, caught by narrative reviewer read of the diff.
+    - **PR-body section probe** (runs only if trigger fired):
+        ```bash
+        gh pr view --json body -q .body 2>/dev/null \
+          | awk '/^##[[:space:]]+Retire\/rename[[:space:]]+verification/{flag=1; next} /^##[[:space:]]/{flag=0} flag'
+        ```
+        If the awk block emits nothing, the heading is absent. If it emits a block, inspect the body for:
+        - An `rg` / `grep` invocation line (typically `Command: ...`). Absent: treat as empty section.
+        - An "unscoped repo-wide" command shape: no positive path argument narrowing to a subdirectory (`rg -i "X" docs/`, `rg -i "X" apps/pipeline/src/`), and no bare `-l` / `--files-with-matches` output (which hides match context).
+        - A matches block with line content (not just paths) and a per-match explanation OR `"no matches — retirement complete"`.
+        - OR an explicit `N/A — <justification>` covering why the keyword match is incidental (e.g., "remove a typo", "drop a dev container that never landed").
+    - **Grading**:
+        - **Trigger regex did not match title or Scope**: skip check. Probe bullet: `"Retire/rename verification: skipped — issue title + Scope contain no retire/rename/remove/drop/deprecate/decommission/sunset keyword"`.
+        - **Trigger matched AND section present with unscoped `rg` invocation AND explained matches block (or "no matches")**: pass. Probe bullet: `"Retire/rename verification: trigger=<keyword>; PR body contains unscoped '<rg command>'; <N matches explained | no matches — retirement complete>"`.
+        - **Trigger matched AND section present with explicit N/A + justification**: pass. Probe bullet: `"Retire/rename verification: trigger=<keyword>; PR body contains N/A with justification '<excerpt>'; judgment: keyword match is incidental (<why>)"`.
+        - **Trigger matched AND section absent entirely**: **CRITICAL** — `"Retire/rename verification: issue <S5U-XXX> title/Scope matches keyword '<keyword>' but PR body lacks '## Retire/rename verification' section. Per linear-conventions.md § 'Retire/rename verification', an unscoped repo-wide grep is required to prove the old term is gone (or to document grandfathered references). This is the S5U-592 → S5U-638 failure mode."`.
+        - **Trigger matched AND section present BUT grep command is scoped to a subdirectory** (e.g., `rg -i "term" docs/PROJECT_ARCHITECTURE.md`, `rg -i "term" apps/pipeline/`): **WARNING** — `"Retire/rename verification: section present but grep is scoped ('<command>'). Unscoped repo-wide grep required — scoped greps are exactly the S5U-592 failure mode the rule exists to prevent. Re-run with the positive path argument removed."`.
+        - **Trigger matched AND section present BUT uses `-l` / `--files-with-matches` alone (no line content)**: **WARNING** — `"Retire/rename verification: grep uses -l / --files-with-matches; matches block shows paths only, no line content. Reviewer cannot confirm each match is grandfathered without reading the matched line. Re-run without -l, or paste match context alongside the file list."`.
+        - **Trigger matched AND section present BUT N/A has no justification** (bare "N/A" or one-word dismissal): **WARNING** — `"Retire/rename verification: section says N/A with no justification. Write a one-sentence explanation of why the keyword match is incidental (e.g., 'title uses "remove" in the sense of "remove a typo"')."`.
+    - **Mandatory probe bullet**: the `Probes run:` section must include one of:
+        - `"Retire/rename verification: trigger regex matched '<keyword>' in issue title/Scope; PR body <has unscoped section with N matches | has N/A with justification | is missing section — CRITICAL filed | has scoped grep — WARNING filed | has bare -l output — WARNING filed>"`
+        - `"Retire/rename verification: skipped — issue title + Scope contain no retire/rename/remove/drop/deprecate/decommission/sunset keyword"`
+    - **Known residuals** (not probe-detectable):
+        - **Evasive issue title** — a worker titles an actual retirement issue as "Clean up X refs" to evade the regex. The probe does not fire; caught only by reviewer narrative read of the diff (if the diff deletes references to an old term, the reviewer should eyeball the repo-wide state regardless of probe status). Same class of worker-honesty-backed gate as the S5U-629 hook-bypass probe.
+        - **Fabricated grep output** — a worker pastes an `rg` command and a fabricated "no matches" line without actually running it. The reviewer can re-run the grep themselves to verify; this is a cheap cross-check and should be done on high-stakes retirement PRs (security-sensitive, API-surface-changing). Pure docs renames do not warrant the re-run.
+        - **Past-tense title** — `"Retired Tesseract"` does not match `\bretire\b` (trailing `d` keeps it a single word). Acceptable residual given the manual re-trigger (worker can add "retirement" to the Scope section).
 
 ## Follow-up-relation verdict rule (S5U-659)
 
