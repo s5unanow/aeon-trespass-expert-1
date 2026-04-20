@@ -1,7 +1,7 @@
 # `.claude/rules/` drift audit
 
-**Last reviewed:** 2026-04-18 (S5U-617)
-**Next review due:** 2026-07-18 (quarterly; manual)
+**Last reviewed:** 2026-04-20 (S5U-661; `guards.md` added)
+**Next review due:** 2026-07-18 (quarterly; manual — cadence unchanged)
 
 This file tracks whether each `.claude/rules/*.md` still matches the codebase.
 The rule files are loaded into worker-agent context on path match, so drift
@@ -23,16 +23,17 @@ to be a false positive), re-run the audit:
 No automated checker exists; out of scope for S5U-617. If drift recurs faster
 than quarterly review catches it, file a follow-up to build one.
 
-## Current verdicts (2026-04-18)
+## Current verdicts (2026-04-20)
 
-| Rule file         | Verdict                    | Action in S5U-617                                           |
+| Rule file         | Verdict                    | Action                                                      |
 |-------------------|----------------------------|-------------------------------------------------------------|
-| `pipeline.md`     | **Stale** (two bullets)    | Soften `structlog` + `orjson` claims to match reality       |
+| `pipeline.md`     | **Accurate** (post-S5U-617)| No change (softened in S5U-617; verified still current)     |
 | `schemas.md`      | **Accurate**               | No change                                                   |
 | `web.md`          | **Accurate**               | No change                                                   |
-| `extraction.md`   | **Dead globs**             | Fix `globs:` to match real paths (`atr_pipeline/stages/...`)|
+| `extraction.md`   | **Accurate** (post-S5U-617)| No change (globs fixed in S5U-617; verified still current)  |
 | `hooks.md`        | **Accurate**               | No change                                                   |
 | `visual-verify.md`| **Accurate**               | No change                                                   |
+| `guards.md`       | **New (S5U-661)**          | Added; codifies G1 fail-closed + G2 content-derived sets    |
 
 ### `pipeline.md` — stale bullets
 
@@ -117,3 +118,16 @@ agree.
 - 2026-04-18 (S5U-617): initial audit; reconciled `pipeline.md` (structlog,
   orjson bullets) and `extraction.md` (dead globs). All other rule files
   verified accurate.
+- 2026-04-20 (S5U-661): added `guards.md` codifying CI-guard discipline
+  (Rule G1 fail-closed defaults; Rule G2 content-derived sets over
+  hardcoded name lists). The rule is wired as a sub-bullet of
+  `.claude/prompts/review.md` check #16 (safety gate bypass), so any diff
+  touching `scripts/check_*.py`, `scripts/check_*.sh`, or workflow `run:`
+  guard steps triggers an explicit G1/G2 audit. This is not a retroactive
+  fix of existing guards — instance fixes S5U-637 (G2, visual-gate-scope)
+  and S5U-642 (G1, threshold-guard shallow checkout) shipped separately
+  and stand as precedents cited in the rule retrospectives. Did not
+  re-verify other rule files this cycle; the S5U-617 accuracy findings
+  for `pipeline.md` / `extraction.md` / `schemas.md` / `web.md` /
+  `hooks.md` / `visual-verify.md` are carried forward. Next full audit
+  due 2026-07-18 on the original quarterly cadence.

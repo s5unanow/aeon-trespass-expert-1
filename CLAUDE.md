@@ -190,7 +190,7 @@ Branch protection on `main` requires all CI checks to pass before merge. If a ge
 
 - **Commit prefixes**: `S5U-XXX:` referencing the Linear issue
 - **Config format**: TOML for all pipeline/document configuration
-- Path-specific conventions (Python, TypeScript, extraction, schemas) are in `.claude/rules/` — loaded automatically when touching matching paths
+- Path-specific conventions (Python, TypeScript, extraction, schemas, CI guards) are in `.claude/rules/` — loaded automatically when touching matching paths. `.claude/rules/guards.md` (S5U-661) codifies CI-guard discipline (fail-closed defaults on missing base ref / diff failure / parse error / empty baseline; content-derived blocked sets over hardcoded name lists) and auto-loads when editing `scripts/check_*.{py,sh}` or workflow YAML.
 - **Linear issue conventions**: read `.claude/prompts/linear-conventions.md` before creating or updating Linear issues
 - **Scripts before skills**: before invoking a slash-command skill for batch or multi-step work, check `scripts/` for a purpose-built tool (e.g., `scripts/run-issues.sh` for batch issue runs — use this instead of `/build-loop`)
 
