@@ -1,6 +1,6 @@
 # `.claude/rules/` drift audit
 
-**Last reviewed:** 2026-04-20 (S5U-661; `guards.md` added)
+**Last reviewed:** 2026-04-20 (S5U-662; `pipeline.md` stage-cache-invalidation bullet added)
 **Next review due:** 2026-07-18 (quarterly; manual — cadence unchanged)
 
 This file tracks whether each `.claude/rules/*.md` still matches the codebase.
@@ -27,7 +27,7 @@ than quarterly review catches it, file a follow-up to build one.
 
 | Rule file         | Verdict                    | Action                                                      |
 |-------------------|----------------------------|-------------------------------------------------------------|
-| `pipeline.md`     | **Accurate** (post-S5U-617)| No change (softened in S5U-617; verified still current)     |
+| `pipeline.md`     | **Accurate** (post-S5U-662)| Added stage-cache-invalidation bullet in S5U-662; verified other bullets still current (logging, atomic writes, file-length, import layers, inline-word-boundary) |
 | `schemas.md`      | **Accurate**               | No change                                                   |
 | `web.md`          | **Accurate**               | No change                                                   |
 | `extraction.md`   | **Accurate** (post-S5U-617)| No change (globs fixed in S5U-617; verified still current)  |
@@ -131,3 +131,17 @@ agree.
   for `pipeline.md` / `extraction.md` / `schemas.md` / `web.md` /
   `hooks.md` / `visual-verify.md` are carried forward. Next full audit
   due 2026-07-18 on the original quarterly cadence.
+- 2026-04-20 (S5U-662): added the **Stage-output cache invalidation**
+  bullet to `pipeline.md` codifying the rule that a new artifact write
+  or persisted record in a stage's `run()` requires (1) bumping the
+  stage class's `version` field in the same PR and (2) a regression
+  test exercising the executor's cache-hit path. The rule is backed by
+  a new reviewer probe — `.claude/prompts/review.md` check #23 — that
+  fires a WARNING when a stage.py diff adds `put_json` / `put_binary`
+  / `atomic_write_*` without a visible `version = "x.y"` change.
+  Motivated by the S5U-597 → S5U-640 retrospective, where the
+  `qa_metrics.json` artifact added in S5U-597 was silently omitted on
+  cached runs until the version was bumped in S5U-640. Not a retroactive
+  fix — S5U-640 shipped separately; this PR codifies the meta-rule.
+  Did not re-verify other rule files this cycle; carry-forward applies.
+  Next full audit due 2026-07-18.

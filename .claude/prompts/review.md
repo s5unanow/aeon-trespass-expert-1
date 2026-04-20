@@ -26,7 +26,7 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 
 ## What to check
 
-Checks 1–13 and 22 always run. Checks 14–21 are conditional — consult this trigger table first and skip any check whose trigger is not met. The per-check prose below is the authority; the table is the index.
+Checks 1–13 and 22 always run. Checks 14–21 and 23 are conditional — consult this trigger table first and skip any check whose trigger is not met. The per-check prose below is the authority; the table is the index.
 
 | #  | Check                          | Trigger                                                                 | Max severity |
 |----|--------------------------------|-------------------------------------------------------------------------|--------------|
@@ -39,6 +39,7 @@ Checks 1–13 and 22 always run. Checks 14–21 are conditional — consult this
 | 20 | Must-refuse bullet coverage    | Issue labels ∈ {Bug, safety-gate, cross-system-review} OR diff contains any of the 4 boundary shapes (user-input entry / filesystem write / subprocess / schema deserialization) | CRITICAL (label trigger) / WARNING (content trigger only) |
 | 21 | Semantically-equivalent threats| Issue labels ∈ {safety-gate, cross-system-review} OR (Bug AND diff adds a new gate/validator) OR diff contains any of the 4 boundary shapes | CRITICAL (label trigger) / WARNING (content trigger only) |
 | 22 | Hook-bypass disclosure         | Always run (probe is cheap; does not require label or diff-shape trigger)                | CRITICAL (undisclosed match) / WARNING (disclosed match) |
+| 23 | Stage-output cache invalidation | Diff modifies a file matching `apps/pipeline/src/**/stages/**/stage.py` | WARNING      |
 
 1. **Logic bugs** — off-by-one errors, wrong conditions, missing edge cases, None/null handling
 2. **Error handling** — bare `except Exception`, swallowed errors, missing error paths
@@ -211,6 +212,33 @@ Checks 1–13 and 22 always run. Checks 14–21 are conditional — consult this
         - `"Hook-bypass disclosure: matched '<phrase>' on prose probe (replaced/no-op) in <commit_sha | PR-body line N>; no disclosure — WARNING filed (prose-probe FPR higher than canonical-CLI)"`
         - `"Hook-bypass disclosure: matched '<token>' in <commit_sha | PR-body line N>; false-positive judgment — this PR edits the rule text itself and the match is a narrative citation, not a hook-skip"`
     - **This probe does NOT detect**: (a) bypasses concealed via neutral commit message + no disclosure, (b) bypasses via direct hook-file modification that leave no commit-message trace *and* no prose trace (e.g., the worker runs `chmod -x .git/hooks/pre-commit` silently and never writes about it — the S5U-648 prose probes close the prose-trace case but cannot reach the silent case), (c) rolled-back bypass commits that never reach origin and are not self-reported, (d) cross-line paraphrases of hook mutation that fall outside the prose probes' 40-char window. Those are acknowledged residual risks; the gate is worker honesty backed by the CLAUDE.md NEVER-list framing of concealment as the stronger violation. See `tmp/plan-s5u-629.md` §4d Scenarios 4 and 5 for the documented limits of this probe; `tmp/plan-s5u-659-648.md` §4d documents the S5U-648-specific residuals.
+23. **Stage-output cache invalidation (S5U-662) — stage.py diffs only** — if the diff modifies any file matching `apps/pipeline/src/**/stages/**/stage.py`, verify that any growth in the stage's output surface is accompanied by a bump of the stage class's `version` field. The executor cache key (`runner/cache_keys.py::build_cache_key`) includes `stage_v={stage_version}`; an unchanged version on a stage whose `run()` method gained a new artifact write causes cached events to silently skip the new side-effect. See S5U-597 → S5U-640 retrospective and `.claude/rules/pipeline.md` for the rule text and the worked test pattern.
+    - **Output-surface growth probe**: grep the diff for added lines signalling a new artifact write in a `stage.py` file. Two signatures must be covered:
+        ```bash
+        git diff main...HEAD -- 'apps/pipeline/src/**/stages/**/stage.py' \
+          | grep -nE '^\+[[:space:]]*[^#]*(\.put_json\(|\.put_binary\(|atomic_write_bytes\(|atomic_write_text\()'
+        ```
+        This catches `ctx.artifact_store.put_json(...)`, `ctx.artifact_store.put_binary(...)`, and direct `atomic_write_bytes` / `atomic_write_text` calls added in the diff. Comment-only additions (`^+\s*#`) are filtered via `[^#]*`.
+    - **Version-bump probe**: grep the diff for a changed `version = "x.y"` line on the same stage file:
+        ```bash
+        git diff main...HEAD -- 'apps/pipeline/src/**/stages/**/stage.py' \
+          | grep -nE '^[+-][[:space:]]*return "[0-9]+\.[0-9]+"'
+        ```
+        A version bump appears as paired `-` / `+` lines for `return "x.y"` inside the `version` property. The presence of both a `-` line and a `+` line returning a version string in the same stage.py is the signal.
+    - **Grading**:
+        - **Output-surface probe empty** (no new put_json / atomic_write added): skip check — no surface growth, nothing to enforce. Probe bullet: `"Stage-output cache invalidation: no new artifact-write signature added to any stage.py in diff — skipped"`.
+        - **Output-surface probe matched AND version-bump probe matched on same file**: pass. Probe bullet: `"Stage-output cache invalidation: stage.py <file> adds <signature>; version bumped from <old> to <new>; invariant preserved"`.
+        - **Output-surface probe matched AND version-bump probe empty on that file**: **WARNING** — `"Stage-output cache invalidation: <file> adds <signature> to the stage's output surface but version field was not bumped in the same diff. Cached runs will short-circuit run() and silently omit the new side-effect (S5U-597 → S5U-640 pattern). Either bump the stage's version property and add a cache-hit regression test, or justify in the PR body why the new write is already covered by an existing cache-key input. See .claude/rules/pipeline.md § Stage-output cache invalidation."`. Severity is WARNING (not CRITICAL) because benign refactors (net-zero put_json relocation across stages, helper extraction that preserves existing output) exist; the worker's PR-body justification is the resolution path.
+    - **False-negatives explicitly acknowledged**:
+        - Helper-mediated writes: `stage.py` calls `metrics_module.persist(...)` and the write lives in `stages/qa/metrics.py`. The pathspec `**/stage.py` excludes the helper; probe does not fire. Reviewer narrative read of the diff catches.
+        - Stage file renamed away from `stage.py`: pathspec misses. All 10 current stages conform to the naming convention; rename would be a visible structural refactor.
+        - New persisted record via existing `put_json` call (same schema, new content): not caught. Rule text says "new persisted record" but the probe greps for new call sites, not payload shape changes.
+        These residuals are documented in `tmp/plan-s5u-662.md` §2 and are acceptable at WARNING severity.
+    - **Mandatory probe bullet**: the `Probes run:` section must include one of:
+        - `"Stage-output cache invalidation: no stage.py files modified in diff — skipped"`
+        - `"Stage-output cache invalidation: stage.py files modified (<files>) but no new artifact-write signature in added lines — skipped"`
+        - `"Stage-output cache invalidation: <file> adds <signature>; version bumped (<old> → <new>) — invariant preserved"`
+        - `"Stage-output cache invalidation: <file> adds <signature>; version unchanged — WARNING filed; worker justification required in PR body"`
 
 ## Follow-up-relation verdict rule (S5U-659)
 
