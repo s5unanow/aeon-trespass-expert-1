@@ -26,7 +26,7 @@ This artifact is required — a pre-PR hook will block `gh pr create` unless it 
 
 ## What to check
 
-Checks 1–13 always run. Checks 14–21 are conditional — consult this trigger table first and skip any check whose trigger is not met. The per-check prose below is the authority; the table is the index.
+Checks 1–13 and 22 always run. Checks 14–21 are conditional — consult this trigger table first and skip any check whose trigger is not met. The per-check prose below is the authority; the table is the index.
 
 | #  | Check                          | Trigger                                                                 | Max severity |
 |----|--------------------------------|-------------------------------------------------------------------------|--------------|
