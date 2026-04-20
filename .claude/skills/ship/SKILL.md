@@ -25,7 +25,7 @@ Read `.claude/prompts/linear-conventions.md` for issue convention context (label
 git diff --name-only main...HEAD
 ```
 
-If any changed path matches safety-gate scope (`.claude/hooks/**`, `.claude/prompts/review.md`, `.claude/prompts/codex-review.md`, `.github/workflows/**`, `.github/actions/**`, `.claude/skills/**/SKILL.md`, `scripts/check_*.{sh,py}`, `scripts/pre-*.{sh,py}`, or `CLAUDE.md` itself), **STOP `/ship` immediately**. Per CLAUDE.md step 6 ("Safety-gate scope escalation (MUST)") and the must-refuse bypass clause at CLAUDE.md:154, safety-gate PRs MUST be shipped via `/coordinator`, not `/ship`. Tell the user: *"Safety-gate scope detected (paths: ...). `/ship` cannot carry this safely because it has no post-ship fresh-eyes reviewer. Re-invoke via `/coordinator` so the coordinator spawns an independent reviewer sub-agent against the merged diff."* Then exit the skill. **There is no user-override clause at the skill level** — the previous override path (removed in S5U-647) reproduced the exact bypass S5U-628 was filed to close.
+If any changed path matches safety-gate scope per CLAUDE.md (concrete paths: `.claude/hooks/**`, `.claude/prompts/review.md`, `.claude/prompts/codex-review.md`, `.github/workflows/**`, `.github/actions/**`, `.claude/skills/**/SKILL.md`, `scripts/check_*.{sh,py}`, `scripts/pre-*.{sh,py}`, or `CLAUDE.md` itself), **STOP `/ship` immediately**. Per CLAUDE.md step 6 ("Safety-gate scope escalation (MUST)") and the must-refuse bypass clause at CLAUDE.md:154, safety-gate PRs MUST be shipped via `/coordinator`, not `/ship`. Tell the user: *"Safety-gate scope detected (paths: ...). `/ship` cannot carry this safely because it has no post-ship fresh-eyes reviewer. Re-invoke via `/coordinator` so the coordinator spawns an independent reviewer sub-agent against the merged diff."* Then exit the skill. **There is no user-override clause at the skill level** — the previous override path (removed in S5U-647) reproduced the exact bypass S5U-628 was filed to close.
 
 The pre-PR hook (`pre-pr-check.sh`) independently enforces this: it refuses `gh pr create` if the diff touches safety-gate scope and no `tmp/.coordinator-ack-<issue>` marker exists. Do not attempt to forge the marker — doing so is a hook-bypass-class event and must be disclosed in the PR body per the CLAUDE.md NEVER-list hook-bypass rule.
 
@@ -43,7 +43,7 @@ Do **NOT** paste into the brief: your own commit rationale, deviations list, PR 
 
 ### Path B — `Agent` tool unavailable (sub-agent fallback, S5U-628)
 
-Follow the maximum-independence inline self-review checklist in CLAUDE.md step 6: close draft notes, re-fetch the Linear issue, re-read the diff unanchored, walk all 21 checks in `.claude/prompts/review.md`, and write the same structured verdict artifact. Disclose the fallback in both the artifact and PR body. Do not use Path B if `Agent` is actually available; do not use Path B to bypass `/coordinator` escalation on safety-gate changes.
+Follow the maximum-independence inline self-review checklist in CLAUDE.md step 6: close draft notes, re-fetch the Linear issue, re-read the diff unanchored, walk all 22 checks in `.claude/prompts/review.md`, and write the same structured verdict artifact. Disclose the fallback in both the artifact and PR body. Do not use Path B if `Agent` is actually available; do not use Path B to bypass `/coordinator` escalation on safety-gate changes.
 
 ### Artifact + verdict (both paths)
 

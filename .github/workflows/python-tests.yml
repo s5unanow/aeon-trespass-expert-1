@@ -42,6 +42,13 @@ jobs:
       - name: File length check
         run: uv run python scripts/check_file_length.py
 
+      # S5U-658: scan *.md for stale check-count claims, retired-term
+      # references, and duplicated safety-gate-scope enumerations. Wired
+      # as a step inside `python / test` (no new branch-protection
+      # context) — fail-closed on missing authoritative sources.
+      - name: Instruction drift check
+        run: uv run python scripts/check_instruction_drift.py
+
       - name: Install Node (for TS codegen check)
         uses: actions/setup-node@v4
         with:
