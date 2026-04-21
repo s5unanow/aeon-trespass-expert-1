@@ -1,4 +1,5 @@
 import type { RenderPageData } from '../render/types';
+import { normalizeRenderPage } from '../render/normalize';
 
 export async function loadRenderPage(
   documentId: string,
@@ -20,9 +21,6 @@ export async function loadRenderPage(
   if (!res.ok) {
     throw new Error(`Failed to load render page: ${res.status} ${rootUrl}`);
   }
-  const data: RenderPageData = await res.json();
-  if (!data.schema_version || !data.page) {
-    throw new Error(`Invalid render page data for ${pageId}`);
-  }
-  return data;
+  const raw: unknown = await res.json();
+  return normalizeRenderPage(raw);
 }
