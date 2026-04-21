@@ -83,6 +83,30 @@ export type RenderBlock =
   | RenderDividerBlock;
 
 // ---------------------------------------------------------------------------
+// Compile-time coverage guard — additive schema evolution
+// ---------------------------------------------------------------------------
+
+/**
+ * Resolves to `true` when every `kind` discriminator in `Generated` is also
+ * present on `Narrowed`, and to `never` otherwise. When a new block or
+ * inline kind lands in the generated schema and is not yet mirrored in
+ * `RenderBlock` / `RenderInlineNode` below, the assignments at the bottom of
+ * this file fail to typecheck — forcing the worker to extend the reader
+ * surface in the same change. This is the compile-time half of the
+ * "additive schema change fails fast" invariant documented in S5U-685.
+ */
+type UnionHasAllKinds<Generated extends { kind?: string }, Narrowed extends { kind: string }> =
+  Exclude<NonNullable<Generated['kind']>, Narrowed['kind']> extends never ? true : never;
+
+// The two constants below are the tripwire. Do not delete them; regenerating
+// `render_page_v1.ts` with a new kind flips the corresponding alias to `never`,
+// which breaks compilation here and nowhere else obvious.
+const _blockKindsCovered: UnionHasAllKinds<renderPageV1.Blocks[number], RenderBlock> = true;
+const _inlineKindsCovered: UnionHasAllKinds<renderPageV1.Children[number], RenderInlineNode> = true;
+void _blockKindsCovered;
+void _inlineKindsCovered;
+
+// ---------------------------------------------------------------------------
 // Page-level types — projected from renderPageV1
 // ---------------------------------------------------------------------------
 
