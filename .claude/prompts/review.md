@@ -175,9 +175,11 @@ Checks 1–13, 22, and 25 always run. Checks 14–21, 23, and 24 are conditional
     - **Bypass token grep** — CRITICAL-severity probes (catch the primary hook-skip vectors from CLAUDE.md:206):
         ```bash
         { git log main..HEAD --format='%B'; gh pr view --json body -q .body 2>/dev/null || true; } \
-          | grep -inE '(\-\-no\-verify|no\-verify|HOOK_BYPASS=|HUSKY=0|LEFTHOOK=0|SKIP=|NO_VERIFY=|core\.hooksPath|chmod[[:space:]]+-x[[:space:]]+\.git/hooks|rm[[:space:]]+\.git/hooks)'
+          | grep -inE '(\-\-no\-verify|no\-verify|HOOK_BYPASS=|HUSKY=0|LEFTHOOK=0|SKIP=|NO_VERIFY=|COORDINATOR_ACK_STATUS_SOURCE|core\.hooksPath|chmod[[:space:]]+-x[[:space:]]+\.git/hooks|rm[[:space:]]+\.git/hooks)'
         ```
         `core\.hooksPath` covers the CLAUDE.md-enumerated `git config core.hooksPath …` and `git -c core.hooksPath=…` redirection forms as a literal substring — matches both `git config core.hooksPath /tmp/empty` and `git -c core.hooksPath=/tmp/empty commit`. (Bracketed gitconfig-file form `[core]\n  hooksPath = …` is out of scope: the probe corpus is commit messages + PR body, not on-disk `.git/config` inspection.)
+
+        `COORDINATOR_ACK_STATUS_SOURCE` (S5U-672) matches the S5U-670 test-only env-var override of the pre-PR coordinator-ack gate. The hook no longer honors this var — it was removed because a worker could set it at `gh pr create` time to inject forged status JSON and defeat the gate. Any reference to this identifier in commit messages or PR body is an attempted-bypass event regardless of whether the current hook honors it: the probe's job is to surface intent, not hook state. **False-positive carve-out**: the legitimate citations are (a) this very review.md line, (b) the matching CLAUDE.md NEVER-list bullet, and (c) the S5U-672 tracking-issue diff that removes the var — if the match is on any of these documentation surfaces and the PR is not itself the mention-introducing diff, the reviewer uses judgment (same carve-out pattern as the existing `--no-verify` token when it appears in docs edits). Document the false-positive judgment in the probe bullet.
 
         Separate short-form `-n` probe (S5U-648) — word-proximity to `commit|merge|rebase`. The previous anchored form required `git commit` on the same line as `-n`, which missed cross-line prose ("the hook hung so I passed `-n` to `git commit`\n\non the second attempt"). This proximity form uses an 80-char `[\s\S]` window so multi-line prose is caught:
         ```bash

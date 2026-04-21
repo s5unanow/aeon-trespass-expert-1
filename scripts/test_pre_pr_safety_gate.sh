@@ -226,17 +226,21 @@ rm -rf "$TMPDIR_14"
 echo "OK   [14 S5U-666 origin/main fallback]: BASE=origin/main as expected"
 
 # =========================================================================
-# Layer 3 (S5U-670): coordinator-ack commit status validation
+# Layer 3 (S5U-670 / S5U-672): coordinator-ack commit status validation
 # =========================================================================
 #
 # Production hook queries `gh api repos/.../commits/<sha>/statuses`. We don't
-# want tests to hit live GitHub, so the hook honors COORDINATOR_ACK_STATUS_SOURCE
-# (documented test-only env var). The checks below exercise the same filter +
-# allowlist logic the hook runs — replicated here verbatim so a divergence
-# between test + hook surfaces as a FAIL.
+# want tests to hit live GitHub. S5U-672 removed the
+# COORDINATOR_ACK_STATUS_SOURCE env-var override from the hook (it was a
+# worker-controllable forgery surface), so these tests cannot and must not
+# invoke the hook directly. Instead they replicate the hook's filter +
+# allowlist logic verbatim in `validate_coordinator_ack()` below and exercise
+# it against fixture JSON files. The hook/test divergence this introduces is
+# tracked as a separate issue (S5U-673) — the authoritative structural fix is
+# to spawn the hook with a mocked `gh` shell function, deferred there.
 #
 # See .claude/hooks/pre-pr-check.sh "S5U-670: fetch coordinator-ack commit
-# status from GitHub API" for the authoritative block.
+# status from GitHub API" for the authoritative hook block.
 
 FIXTURE_DIR=$(mktemp -d)
 trap 'rm -rf "$FIXTURE_DIR"' EXIT
@@ -425,6 +429,70 @@ assert_ack "20 S5U-670 near-miss (wrong context)" "$FIXTURE_DIR/wrong_context.js
 # A failed status is not a pass. Manual revocation or accidental overwrite
 # with state=failure must not satisfy the gate.
 assert_ack "21 S5U-670 near-miss (state=failure)" "$FIXTURE_DIR/failed_state.json" "$ALLOWLIST_FILE" "block"
+
+# =========================================================================
+# Layer 4 (S5U-672): COORDINATOR_ACK_STATUS_SOURCE env-var surface must be absent
+# =========================================================================
+#
+# S5U-670 shipped the clean break from tmp/.coordinator-ack-<issue> to a
+# GH-API-authenticated commit status. To make the gate testable it added an
+# env var COORDINATOR_ACK_STATUS_SOURCE that short-circuited the gh api call
+# and read fixture JSON from a worker-supplied path. That env var is
+# production-accessible: any worker can run
+#
+#   COORDINATOR_ACK_STATUS_SOURCE=/tmp/forged.json gh pr create ...
+#
+# and defeat the gate without ever invoking the coordinator. S5U-672 removes
+# the env-var branch entirely.
+#
+# These tests are structural: they grep the hook source for the forbidden
+# token. They run without invoking the hook (the hook `cd`s to a hardcoded
+# absolute path and expects real git + real gh, neither of which we can
+# sandbox cheaply). A structural absence check is sufficient because the
+# surface we are closing IS the presence of this specific identifier in the
+# hook — no other vector grants the same bypass.
+#
+# Red-before confirmation: on main (SHA 0bb1344) inputs 22 and 23 both FAIL
+# because the env-var branch exists (grep returns non-zero line counts, plus
+# the line-count assertion fails). After the S5U-672 fix lands, both pass.
+
+# -------------------------------------------------------------------------
+# Input 22 (S5U-672): hook source must not mention COORDINATOR_ACK_STATUS_SOURCE
+# -------------------------------------------------------------------------
+# Any match on the identifier — the `if` guard, the `cat` read, or even a
+# comment that implies the var is honored — re-opens the forgery surface.
+# This test asserts total removal: zero occurrences in the hook.
+#
+# Rationale: a comment-only reference is not by itself a runtime bypass, but
+# it signals to future workers that the var was once honored and may be
+# reintroduced. Total removal + a reviewer probe on the token (review.md
+# check #22) is cleaner than partial removal with a lingering comment.
+
+ENV_VAR_HITS=$(grep -c 'COORDINATOR_ACK_STATUS_SOURCE' "$HOOK_SCRIPT" || true)
+if [ "$ENV_VAR_HITS" -ne 0 ]; then
+  echo "FAIL [22 S5U-672 env-var surface absent]: hook still references COORDINATOR_ACK_STATUS_SOURCE ($ENV_VAR_HITS hits)"
+  grep -n 'COORDINATOR_ACK_STATUS_SOURCE' "$HOOK_SCRIPT" | sed 's/^/       /'
+  echo "       This env var was the worker-controllable forgery surface — see tmp/plan-s5u-672.md."
+  exit 1
+fi
+echo "OK   [22 S5U-672 env-var surface absent]: hook source has zero references to COORDINATOR_ACK_STATUS_SOURCE"
+
+# -------------------------------------------------------------------------
+# Input 23 (S5U-672): no TEST OVERRIDE branch remains in the hook
+# -------------------------------------------------------------------------
+# Defensive belt-and-suspenders: the original env-var branch printed a
+# distinctive "TEST OVERRIDE" banner. If a future edit reintroduces a
+# similar short-circuit under a different identifier, the banner language
+# would likely survive. Grep for it.
+
+TEST_OVERRIDE_HITS=$(grep -c 'TEST OVERRIDE' "$HOOK_SCRIPT" || true)
+if [ "$TEST_OVERRIDE_HITS" -ne 0 ]; then
+  echo "FAIL [23 S5U-672 no test-override banner]: hook still prints 'TEST OVERRIDE' ($TEST_OVERRIDE_HITS hits)"
+  grep -n 'TEST OVERRIDE' "$HOOK_SCRIPT" | sed 's/^/       /'
+  echo "       The test-override code path was removed in S5U-672; re-adding it is a safety-gate regression."
+  exit 1
+fi
+echo "OK   [23 S5U-672 no test-override banner]: hook does not print 'TEST OVERRIDE'"
 
 echo ""
 echo "ALL TESTS PASSED"
