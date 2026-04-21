@@ -78,6 +78,8 @@ from atr_schemas.page_ir_v1 import (
     XrefInline,
 )
 from atr_schemas.patch_set_v1 import PatchOperation, PatchProvenance, PatchSetV1
+from atr_schemas.public_qa_record_set_v1 import PublicQARecordSetV1, PublicQARecordV1
+from atr_schemas.public_qa_summary_v1 import PublicQASummaryV1
 from atr_schemas.qa_metrics_v1 import FindingCodeCount, QAMetricsV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
@@ -187,6 +189,9 @@ __all__ = [
     "PatchSetV1",
     "PatchTargetKind",
     "ProvenanceRef",
+    "PublicQARecordSetV1",
+    "PublicQARecordV1",
+    "PublicQASummaryV1",
     "QALayer",
     "QAMetricsV1",
     "QARecordV1",

@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "PublicQARecordV1": {
+      "additionalProperties": false,
+      "description": "Public-facing single QA finding.",
+      "properties": {
+        "qa_id": {
+          "title": "Qa Id",
+          "type": "string"
+        },
+        "layer": {
+          "$ref": "#/$defs/QALayer"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "message": {
+          "default": "",
+          "title": "Message",
+          "type": "string"
+        },
+        "waived": {
+          "default": false,
+          "title": "Waived",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "qa_id",
+        "layer",
+        "severity",
+        "code"
+      ],
+      "title": "PublicQARecordV1",
+      "type": "object"
+    },
+    "QALayer": {
+      "enum": [
+        "extraction",
+        "structure",
+        "terminology",
+        "icon_symbol",
+        "asset_link",
+        "render",
+        "visual",
+        "accessibility",
+        "user_feedback"
+      ],
+      "title": "QALayer",
+      "type": "string"
+    },
+    "Severity": {
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Public-facing QA record list written to ``<edition>/data/qa_records.json``.",
+  "properties": {
+    "schema_version": {
+      "default": "public_qa_record_set.v1",
+      "pattern": "^public_qa_record_set\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/PublicQARecordV1"
+      },
+      "title": "Records",
+      "type": "array"
+    }
+  },
+  "title": "PublicQARecordSetV1",
+  "type": "object"
+}

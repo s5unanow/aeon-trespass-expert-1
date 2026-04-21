@@ -1,0 +1,66 @@
+{
+  "$defs": {
+    "SeverityCounts": {
+      "description": "Counts by severity level.",
+      "properties": {
+        "info": {
+          "default": 0,
+          "title": "Info",
+          "type": "integer"
+        },
+        "warning": {
+          "default": 0,
+          "title": "Warning",
+          "type": "integer"
+        },
+        "error": {
+          "default": 0,
+          "title": "Error",
+          "type": "integer"
+        },
+        "critical": {
+          "default": 0,
+          "title": "Critical",
+          "type": "integer"
+        }
+      },
+      "title": "SeverityCounts",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Public-facing QA summary written to ``<edition>/data/qa_summary.json``.",
+  "properties": {
+    "schema_version": {
+      "default": "public_qa_summary.v1",
+      "pattern": "^public_qa_summary\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "edition": {
+      "default": "",
+      "title": "Edition",
+      "type": "string"
+    },
+    "counts": {
+      "$ref": "#/$defs/SeverityCounts"
+    },
+    "waived_counts": {
+      "$ref": "#/$defs/SeverityCounts"
+    },
+    "blocking": {
+      "default": false,
+      "title": "Blocking",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "document_id"
+  ],
+  "title": "PublicQASummaryV1",
+  "type": "object"
+}

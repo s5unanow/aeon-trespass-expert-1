@@ -90,6 +90,8 @@ def test_export_qa_writes_summary_and_records(qa_module: ModuleType, tmp_path: P
 
     assert summary["document_id"] == doc_id
     assert summary["counts"]["error"] == 1
+    assert summary["schema_version"] == "public_qa_summary.v1"  # S5U-689
+    assert records_payload["schema_version"] == "public_qa_record_set.v1"
     assert len(records_payload["records"]) == 2
     codes = {r["code"] for r in records_payload["records"]}
     assert codes == {"PARAGRAPH_TOO_LONG", "UNTRANSLATED"}
@@ -210,12 +212,11 @@ def test_export_qa_selects_summary_matching_edition(qa_module: ModuleType, tmp_p
     os.utime(en_summary_path, (1_700_000_000, 1_700_000_000))
     os.utime(ru_summary_path, (1_800_000_000, 1_800_000_000))
 
-    # Export EN — must pick the EN summary despite RU being newer.
+    # S5U-689: edition correctness via record codes since run_id no longer ships.
     count_en = qa_module.export_qa(artifact_root, doc_id, "en", doc_public)
     assert count_en == 1
     en_out = json.loads((doc_public / "en" / "data" / "qa_summary.json").read_text())
     en_records = json.loads((doc_public / "en" / "data" / "qa_records.json").read_text())
-    assert en_out["run_id"] == "run_en"
     assert en_out["edition"] == "en"
     assert {r["code"] for r in en_records["records"]} == {"PARAGRAPH_TOO_LONG"}
 
@@ -224,7 +225,6 @@ def test_export_qa_selects_summary_matching_edition(qa_module: ModuleType, tmp_p
     assert count_ru == 1
     ru_out = json.loads((doc_public / "ru" / "data" / "qa_summary.json").read_text())
     ru_records = json.loads((doc_public / "ru" / "data" / "qa_records.json").read_text())
-    assert ru_out["run_id"] == "run_ru"
     assert ru_out["edition"] == "ru"
     assert {r["code"] for r in ru_records["records"]} == {"UNTRANSLATED"}
 
@@ -317,7 +317,7 @@ def test_export_qa_skips_missing_record_refs(qa_module: ModuleType, tmp_path: Pa
 
     assert count == 0
     records = json.loads((doc_public / "ru" / "data" / "qa_records.json").read_text())
-    assert records == {"records": []}
+    assert records == {"schema_version": "public_qa_record_set.v1", "records": []}  # S5U-689
 
 
 def _write_metrics(
