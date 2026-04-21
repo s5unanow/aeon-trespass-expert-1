@@ -95,8 +95,10 @@ included, reviewer discretion. `--` = not applicable.
   dangling refs, no duplicate IDs, bboxes within page bounds.
 - **Golden eval**: `atr eval --golden-set core` must pass — compares output
   against expected fixtures.
-- **Browser E2E**: Manual browser smoke test for render-affecting changes.
-  Playwright CI integration is planned.
+- **Browser E2E**: Playwright visual-regression is a required CI gate
+  (`visual-regression / visual`, enforced at `maxDiffPixelRatio: 0.005` against
+  baselines in `apps/web/tests/e2e/__snapshots__/`). See CLAUDE.md §
+  "Visual regression gate (S5U-599)" for the baseline-update flow.
 - **Audit report**: Run extraction on at least 5 representative pages and
   report any regressions in the PR description. Full-document audit
   (`atr audit`) provides confidence scores and non-blocking diagnostics.
@@ -134,26 +136,23 @@ are prohibited.
 
 ## 5. PR Definition of Done for Extraction Tickets
 
-An extraction PR is ready for merge when all of the following are true:
+Shared workflow requirements — branch naming, commit prefix, local + CI gates,
+file-length limit, sub-agent review, coverage-table / red-before anchors —
+live in CLAUDE.md § "Development workflow (MANDATORY)" and "Definition of done".
+**CLAUDE.md is canonical.** This section lists only the extraction-specific
+additions on top of that baseline.
 
-- [ ] Code changes directly address the Linear issue description
-- [ ] Branch follows naming convention: `s5unanow/s5u-<number>-<description>`
-- [ ] Commit messages use prefix: `S5U-XXX: description`
-- [ ] All blockers for this issue are in Done state
+Extraction-specific requirements:
+
+- [ ] All `blockedBy` relations on the Linear issue are in Done state
 - [ ] New/changed code has tests per the check matrix (Section 3)
 - [ ] Fixtures added or updated per fixture requirements (Section 2)
-- [ ] Golden refreshes (if any) are in separate commits with diffs
-- [ ] No new `except Exception` without structured logging
-- [ ] No hardcoded thresholds (use config)
+- [ ] Golden refreshes (if any) are in separate commits with before/after
+      metric diffs (Section 4)
+- [ ] No hardcoded thresholds — values live in `configs/qa/thresholds.toml`
 - [ ] No silent weakening of any evaluation gate
-- [ ] `make lint && make typecheck && make test` passes
-- [ ] File length limit respected (max 400 lines per source file)
-- [ ] Schema changes run through `make codegen` and generated files committed
-- [ ] Sub-agent code review completed (per CLAUDE.md workflow)
 - [ ] PR description includes:
-  - Link to Linear issue
-  - Before/after metrics for extraction-quality-affecting changes
-  - Test plan with specific commands to verify
+  - Before/after metrics for extraction-quality-affecting changes (Section 6)
   - List of affected golden pages (if any)
 
 ## 6. Before/After Metric Reporting
