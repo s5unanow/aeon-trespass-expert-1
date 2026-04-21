@@ -7,6 +7,7 @@ from collections import Counter
 import typer
 
 from atr_pipeline.config import load_document_config
+from atr_pipeline.eval.confidence_policy import ConfidenceBandPolicy, load_confidence_bands
 from atr_pipeline.stages.qa.auto_fix_runner import (
     AutoFixPageBundle,
     apply_patches_and_rerun,
@@ -16,6 +17,7 @@ from atr_pipeline.stages.qa.auto_fix_runner import (
 from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
 from atr_pipeline.stages.qa.registry import QAPageContext, QARule, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
+from atr_pipeline.stages.qa.rules.confidence_band_rule import evaluate_confidence_band
 from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_pipeline.store.artifact_store import ArtifactStore
@@ -30,7 +32,7 @@ def qa(
     review_pack: bool = typer.Option(
         False,
         "--review-pack",
-        help="Generate review pack JSON for blocking findings",
+        help="Generate review pack JSON for blocking and qa_required findings",
     ),
     auto_fix: bool = typer.Option(
         False,
@@ -60,7 +62,10 @@ def qa(
         raise typer.Exit(1)
 
     rules = get_all_rules()
-    all_records, bundles = _collect_records(store, doc, page_ids, rules, auto_fix)
+    confidence_policy = load_confidence_bands(repo_root=config.repo_root)
+    all_records, bundles = _collect_records(
+        store, doc, page_ids, rules, confidence_policy, auto_fix
+    )
 
     waivers_dir = config.repo_root / config.qa.waivers_dir
     waivers = load_waivers(waivers_dir, doc)
@@ -117,6 +122,7 @@ def _collect_records(
     doc: str,
     page_ids: list[str],
     rules: list[QARule],
+    confidence_policy: ConfidenceBandPolicy,
     auto_fix: bool,
 ) -> tuple[list[QARecordV1], dict[str, AutoFixPageBundle]]:
     """Load artifacts + evaluate rules across pages.
@@ -139,6 +145,11 @@ def _collect_records(
         ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
         for rule in rules:
             records.extend(rule.evaluate(ctx))
+
+        # Confidence-band records: same semantics as QAStage.run so the CLI
+        # entrypoint and the stage entrypoint produce identical record sets
+        # for the same artifacts.
+        records.extend(evaluate_confidence_band(en_ir, confidence_policy))
 
         # User-feedback records are persisted per edition by the ingest
         # script; the CLI surfaces both editions so triage can see the full

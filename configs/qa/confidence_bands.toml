@@ -6,9 +6,9 @@
 #
 # Actions:
 #   primary          — normal processing, no extra review
-#   hard_route       — route to hard-page extraction pipeline
-#   qa_required      — must appear in QA review pack for human review
-#   publish_blocking — blocks publishing until explicitly waived
+#   hard_route       — route to hard-page extraction pipeline (observational)
+#   qa_required      — surface in QA review pack for human triage (non-blocking)
+#   publish_blocking — blocks publishing via QASummaryV1.blocking=True until waived
 #
 # Governance rules (see docs/EXTRACTION_IMPLEMENTATION_PLAYBOOK.md §4):
 #   - Loosening (lowering min_confidence for a less restrictive action)
@@ -39,7 +39,7 @@ name = "qa_required"
 min_confidence = 0.30
 max_confidence = 0.60
 action = "qa_required"
-description = "Low confidence — requires QA review before release"
+description = "Low confidence — surfaced in QA review pack for triage (non-blocking)"
 
 [[bands]]
 name = "publish_blocking"

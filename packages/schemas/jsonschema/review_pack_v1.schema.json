@@ -27,7 +27,8 @@
         "render",
         "visual",
         "accessibility",
-        "user_feedback"
+        "user_feedback",
+        "confidence"
       ],
       "title": "QALayer",
       "type": "string"
@@ -216,7 +217,7 @@
       "type": "object"
     }
   },
-  "description": "Human-reviewable bundle of blocking/ambiguous QA findings.\n\nContains all unwaived blocking findings grouped by page,\nplus pre-filled waiver templates that a reviewer can approve.",
+  "description": "Human-reviewable bundle of QA findings that need attention.\n\nContains all unwaived findings whose severity is in ``block_on`` plus\nany unwaived ``QALayer.CONFIDENCE`` records with\n``code=CONFIDENCE_QA_REQUIRED`` (surfaced for triage even though they\ndo not by themselves block publishing). Each finding is paired with a\npre-filled waiver template a reviewer can approve.",
   "properties": {
     "schema_version": {
       "default": "review_pack.v1",

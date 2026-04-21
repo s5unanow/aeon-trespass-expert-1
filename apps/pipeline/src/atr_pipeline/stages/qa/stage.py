@@ -4,13 +4,18 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
+from atr_pipeline.eval.confidence_policy import load_confidence_bands
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
+from atr_pipeline.stages.qa.rules.confidence_band_rule import (
+    CODE_QA_REQUIRED,
+    evaluate_confidence_band,
+)
 from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
-from atr_schemas.enums import Severity, StageScope
+from atr_schemas.enums import QALayer, Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1, SeverityCounts
@@ -36,18 +41,21 @@ class QAStage:
 
     @property
     def version(self) -> str:
-        # Bumped to "1.1" by S5U-640 to invalidate pre-S5U-597 cache entries
-        # so cached QA events re-run and emit the qa_metrics.json artifact
-        # that S5U-597 declared as a success criterion. The executor's cache
-        # key includes this version string; bumping it makes every existing
-        # cached event miss exactly once, then re-cache under the new key
-        # with metrics on disk.
-        return "1.1"
+        # 1.1 → 1.2 (S5U-588): invalidates pre-S5U-588 cache entries so
+        # cached QA runs re-execute and emit confidence-band QA records
+        # plus review packs widened for qa_required findings.
+        return "1.2"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
         all_records: list[QARecordV1] = []
         rules = get_all_rules()
+        confidence_policy = load_confidence_bands(repo_root=ctx.config.repo_root)
+        ctx.logger.info(
+            "Loaded confidence-band policy v%d with %d bands",
+            confidence_policy.version,
+            len(confidence_policy.bands),
+        )
 
         source_only = ctx.edition == "en"
         if source_only:
@@ -69,6 +77,7 @@ class QAStage:
             if not source_only:
                 records.extend(self._load_translation_records(ctx, page_id))
             records.extend(self._load_user_feedback_records(ctx, page_id))
+            records.extend(evaluate_confidence_band(en_ir, confidence_policy))
             for r in records:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
@@ -84,10 +93,14 @@ class QAStage:
         waived_counts = _tally_severities([r for r in all_records if r.waived])
         block_on = set(ctx.config.qa.block_publish_on)
         blocking = any(r.severity.value in block_on and not r.waived for r in all_records)
+        has_qa_required = any(
+            r.layer is QALayer.CONFIDENCE and r.code == CODE_QA_REQUIRED and not r.waived
+            for r in all_records
+        )
         total = counts.info + counts.warning + counts.error + counts.critical
 
         review_pack_ref = ""
-        if blocking:
+        if blocking or has_qa_required:
             pack = build_review_pack(
                 document_id=ctx.document_id,
                 run_id=ctx.run_id,

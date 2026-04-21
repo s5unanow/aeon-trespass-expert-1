@@ -12,10 +12,11 @@ def _record(
     severity: Severity = Severity.ERROR,
     page_id: str = "p0001",
     waived: bool = False,
+    layer: QALayer = QALayer.RENDER,
 ) -> QARecordV1:
     return QARecordV1(
         qa_id=f"qa.{page_id}.{code}",
-        layer=QALayer.RENDER,
+        layer=layer,
         severity=severity,
         code=code,
         document_id="test",
@@ -90,3 +91,77 @@ class TestBuildReviewPack:
             block_on={"error"},
         )
         assert pack.run_id == "test-run-123"
+
+    def test_qa_required_confidence_findings_included(self) -> None:
+        """Confidence-band qa_required findings surface even though warning
+        severity is not in block_on (S5U-588)."""
+        records = [
+            _record(
+                "CONFIDENCE_QA_REQUIRED",
+                severity=Severity.WARNING,
+                layer=QALayer.CONFIDENCE,
+            ),
+        ]
+        pack = build_review_pack(
+            document_id="doc1",
+            run_id="run1",
+            records=records,
+            block_on={"error", "critical"},
+        )
+        assert pack.blocking_findings == 0
+        assert len(pack.findings) == 1
+        assert pack.findings[0].record.code == "CONFIDENCE_QA_REQUIRED"
+
+    def test_qa_required_waived_excluded(self) -> None:
+        records = [
+            _record(
+                "CONFIDENCE_QA_REQUIRED",
+                severity=Severity.WARNING,
+                layer=QALayer.CONFIDENCE,
+                waived=True,
+            ),
+        ]
+        pack = build_review_pack(
+            document_id="doc1",
+            run_id="run1",
+            records=records,
+            block_on={"error", "critical"},
+        )
+        assert pack.findings == []
+
+    def test_confidence_hard_route_not_in_pack(self) -> None:
+        """Hard-route band records are informational; they do not enter the pack."""
+        records = [
+            _record(
+                "CONFIDENCE_HARD_ROUTE",
+                severity=Severity.INFO,
+                layer=QALayer.CONFIDENCE,
+            ),
+        ]
+        pack = build_review_pack(
+            document_id="doc1",
+            run_id="run1",
+            records=records,
+            block_on={"error", "critical"},
+        )
+        assert pack.findings == []
+
+    def test_publish_blocking_goes_through_severity_gate(self) -> None:
+        """Critical-severity confidence records land in the pack via the
+        normal block_on path — not double-counted as qa_required."""
+        records = [
+            _record(
+                "CONFIDENCE_PUBLISH_BLOCKING",
+                severity=Severity.CRITICAL,
+                layer=QALayer.CONFIDENCE,
+            ),
+        ]
+        pack = build_review_pack(
+            document_id="doc1",
+            run_id="run1",
+            records=records,
+            block_on={"error", "critical"},
+        )
+        assert pack.blocking_findings == 1
+        assert len(pack.findings) == 1
+        assert pack.findings[0].record.code == "CONFIDENCE_PUBLISH_BLOCKING"
