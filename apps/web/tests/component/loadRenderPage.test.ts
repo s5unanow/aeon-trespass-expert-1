@@ -8,12 +8,19 @@ describe('loadRenderPage', () => {
     fetchSpy.mockReset();
   });
 
-  it('returns page data from edition path', async () => {
+  it('returns normalized page data from edition path', async () => {
     const data = { schema_version: 'render_page.v1', page: { id: 'p0001' }, blocks: [] };
     fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
 
     const result = await loadRenderPage('doc1', 'p0001');
-    expect(result).toEqual(data);
+    // Normalizer materializes defaulted fields.
+    expect(result.schema_version).toBe('render_page.v1');
+    expect(result.page.id).toBe('p0001');
+    expect(result.page.title).toBe('');
+    expect(result.page.section_path).toEqual([]);
+    expect(result.page.source_page_number).toBe(0);
+    expect(result.blocks).toEqual([]);
+    expect(result.nav).toEqual({ prev: null, next: null, parent_section: '' });
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/data/render_page.p0001.json', {
       signal: undefined,
     });
@@ -26,7 +33,7 @@ describe('loadRenderPage', () => {
       .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(data) } as Response);
 
     const result = await loadRenderPage('doc1', 'p0001');
-    expect(result).toEqual(data);
+    expect(result.page.id).toBe('p0001');
     expect(fetchSpy).toHaveBeenCalledWith('/documents/doc1/ru/data/render_page.p0001.json', {
       signal: undefined,
     });
@@ -70,21 +77,62 @@ describe('loadRenderPage', () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('throws on missing schema_version', async () => {
-    const data = { page: { id: 'p0001' }, blocks: [] };
+  it('rejects unsupported schema_version at the fetch boundary', async () => {
+    const data = { schema_version: 'render_page.v99', page: { id: 'p0001' }, blocks: [] };
     fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
 
     await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
-      'Invalid render page data for p0001',
+      /Invalid render_page payload at schema_version:.*render_page\.v99/,
     );
   });
 
-  it('throws on missing page field', async () => {
+  it('rejects payload missing page.id', async () => {
+    const data = { schema_version: 'render_page.v1', page: {}, blocks: [] };
+    fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
+
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      /Invalid render_page payload at page\.id: missing required string/,
+    );
+  });
+
+  it('rejects payload whose page field is missing entirely', async () => {
     const data = { schema_version: 'render_page.v1', blocks: [] };
     fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
 
     await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
-      'Invalid render page data for p0001',
+      /Invalid render_page payload at page: expected object/,
+    );
+  });
+
+  it('rejects payload carrying an unknown block kind', async () => {
+    const data = {
+      schema_version: 'render_page.v1',
+      page: { id: 'p0001' },
+      blocks: [{ kind: 'mystery', id: 'p0001.b001' }],
+    };
+    fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
+
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      /Invalid render_page payload at blocks\[0\]\.kind: unsupported block kind "mystery"/,
+    );
+  });
+
+  it('rejects payload carrying an unknown inline kind', async () => {
+    const data = {
+      schema_version: 'render_page.v1',
+      page: { id: 'p0001' },
+      blocks: [
+        {
+          kind: 'paragraph',
+          id: 'p0001.b001',
+          children: [{ kind: 'hologram', text: '…' }],
+        },
+      ],
+    };
+    fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(data) } as Response);
+
+    await expect(loadRenderPage('doc1', 'p0001')).rejects.toThrow(
+      /blocks\[0\]\.children\[0\]\.kind: unsupported inline kind "hologram"/,
     );
   });
 
