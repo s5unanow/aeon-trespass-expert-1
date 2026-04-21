@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router';
-import type { QARecordV1, qaRecordV1 } from '@atr/schemas';
+import type { publicQaRecordSetV1 } from '@atr/schemas';
 import { loadQa, type QaBundle } from '../lib/api/loadQa';
 
-const SEVERITIES: qaRecordV1.Severity[] = ['info', 'warning', 'error', 'critical'];
+type PublicQARecordV1 = publicQaRecordSetV1.PublicQARecordV1;
+
+const SEVERITIES: publicQaRecordSetV1.Severity[] = ['info', 'warning', 'error', 'critical'];
 
 type WaivedFilter = 'all' | 'unwaived' | 'waived';
 
 function matchesFilters(
-  record: QARecordV1,
+  record: PublicQARecordV1,
   severity: string,
   layer: string,
   code: string,

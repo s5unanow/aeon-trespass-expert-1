@@ -3,60 +3,56 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { QaDashboard } from '../../src/routes/QaDashboard';
 
+// Mocks match the public DTO shapes written by scripts/_export_qa.py
+// (PublicQASummaryV1 / PublicQARecordSetV1). Internal fields such as
+// run_id, record_refs, review_pack_ref, per-record schema_version, and
+// per-record document_id are intentionally absent — if the reader code ever
+// starts depending on them, that is itself a regression of S5U-689.
 const summary = {
-  schema_version: 'qa_summary.v1',
+  schema_version: 'public_qa_summary.v1',
   document_id: 'test_doc',
-  run_id: 'r',
+  edition: 'ru',
   counts: { info: 1, warning: 2, error: 1, critical: 0 },
   waived_counts: { info: 0, warning: 0, error: 0, critical: 0 },
   blocking: false,
-  record_refs: [],
-  review_pack_ref: '',
 };
 
 const records = {
+  schema_version: 'public_qa_record_set.v1',
   records: [
     {
-      schema_version: 'qa_record.v1',
       qa_id: 'qa.1',
       layer: 'structure',
       severity: 'error',
       code: 'PARAGRAPH_TOO_LONG',
-      document_id: 'test_doc',
       page_id: 'p0003',
       entity_ref: 'p0003.b008',
       message: 'Block exceeds limit',
       waived: false,
     },
     {
-      schema_version: 'qa_record.v1',
       qa_id: 'qa.2',
       layer: 'terminology',
       severity: 'warning',
       code: 'UNTRANSLATED',
-      document_id: 'test_doc',
       page_id: 'p0004',
       message: 'Untranslated segment',
       waived: false,
     },
     {
-      schema_version: 'qa_record.v1',
       qa_id: 'qa.3',
       layer: 'terminology',
       severity: 'warning',
       code: 'UNTRANSLATED',
-      document_id: 'test_doc',
       page_id: 'p0005',
       message: 'Another untranslated',
       waived: true,
     },
     {
-      schema_version: 'qa_record.v1',
       qa_id: 'qa.4',
       layer: 'structure',
       severity: 'info',
       code: 'INFO_ONLY',
-      document_id: 'test_doc',
       page_id: null,
       message: 'No page',
       waived: false,

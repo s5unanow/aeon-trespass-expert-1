@@ -1,13 +1,17 @@
-import type { QARecordV1, QASummaryV1 } from '@atr/schemas';
+import type { PublicQARecordSetV1, PublicQASummaryV1, publicQaRecordSetV1 } from '@atr/schemas';
 
-/** Wrapper around the exported ``qa_records.json`` bundle. */
-export interface QaRecordsFile {
-  records: QARecordV1[];
-}
+/**
+ * Wrapper around the exported ``qa_records.json`` bundle.
+ *
+ * The public projection (S5U-689) ships ``PublicQARecordSetV1`` shape;
+ * this alias keeps downstream callers happy while the types are generated
+ * directly from the Pydantic public DTO.
+ */
+export type QaRecordsFile = PublicQARecordSetV1;
 
 export interface QaBundle {
-  summary: QASummaryV1;
-  records: QARecordV1[];
+  summary: PublicQASummaryV1;
+  records: publicQaRecordSetV1.PublicQARecordV1[];
 }
 
 /**
@@ -30,7 +34,7 @@ export async function loadQa(
   if (!recordsRes.ok) {
     throw new Error(`Failed to load QA records: ${recordsRes.status}`);
   }
-  const summary: QASummaryV1 = await summaryRes.json();
+  const summary: PublicQASummaryV1 = await summaryRes.json();
   const recordsFile: QaRecordsFile = await recordsRes.json();
   return { summary, records: recordsFile.records ?? [] };
 }

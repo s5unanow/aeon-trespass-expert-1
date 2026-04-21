@@ -4,10 +4,14 @@ Selects the latest `QASummaryV1` whose ``edition`` matches the requested
 edition, resolves the referenced `QARecordV1` artifacts, and writes three JSON
 files into the edition-scoped bundle:
 
-- ``<edition>/data/qa_summary.json`` — the `QASummaryV1` payload verbatim.
-- ``<edition>/data/qa_records.json`` — ``{"records": [QARecordV1, ...]}``
-  (wrapped in an object so future metadata can be added without a breaking
-  change).
+- ``<edition>/data/qa_summary.json`` — a `PublicQASummaryV1` projection of
+  the internal summary. Internal fields (``run_id``, ``record_refs``,
+  ``review_pack_ref``, ``qa_metrics_ref``) are stripped at the export
+  boundary — the reader only needs counts + blocking flag.
+- ``<edition>/data/qa_records.json`` — a `PublicQARecordSetV1` projection
+  wrapping the records. Internal provenance/fixer fields (``auto_fix``,
+  ``evidence_refs``, ``waiver_ref``, ``expected``, ``actual``, record-level
+  ``schema_version``, ``document_id``) are stripped.
 - ``<edition>/data/qa_metrics.json`` — the latest edition-matched
   `QAMetricsV1` payload verbatim (S5U-597). Written only when a metrics
   artifact exists; older runs predating metrics emission silently skip.
@@ -21,12 +25,23 @@ summaries produced before the field was added, an untagged summary
 (``edition == ""``) is accepted only when *no* tagged summary exists —
 mirroring the render-page selection logic in ``export_to_web._pick_latest``.
 Re-running the export overwrites the files in place, preserving idempotency.
+
+Public-DTO projection (S5U-689): the pipeline artifact store continues to
+hold the full internal ``QASummaryV1`` / ``QARecordV1``; only the bundle
+published under ``apps/web/public`` is narrowed. Regression test
+``test_public_bundle_omits_internal_fields`` asserts the blocked-key set
+is absent from the on-disk public JSON.
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
+
+from atr_schemas.public_qa_record_set_v1 import PublicQARecordSetV1
+from atr_schemas.public_qa_summary_v1 import PublicQASummaryV1
+from atr_schemas.qa_record_v1 import QARecordV1
+from atr_schemas.qa_summary_v1 import QASummaryV1
 
 
 def _pick_summary_for_edition(summary_dir: Path, edition: str) -> Path | None:
@@ -117,10 +132,20 @@ def export_qa(
     record_refs: list[str] = summary.get("record_refs", [])
     records = _load_records(artifact_root, record_refs)
 
+    # Project to public DTOs (S5U-689): the pipeline artifact store keeps the
+    # full internal shape, but the published bundle must omit run identifiers
+    # and artifact-store refs.
+    internal_summary = QASummaryV1.model_validate(summary)
+    internal_records = [QARecordV1.model_validate(r) for r in records]
+    public_summary = PublicQASummaryV1.from_internal(internal_summary)
+    public_records = PublicQARecordSetV1.from_internal(internal_records)
+
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "qa_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2))
+    (out_dir / "qa_summary.json").write_text(
+        json.dumps(public_summary.model_dump(mode="json"), ensure_ascii=False, indent=2)
+    )
     (out_dir / "qa_records.json").write_text(
-        json.dumps({"records": records}, ensure_ascii=False, indent=2)
+        json.dumps(public_records.model_dump(mode="json"), ensure_ascii=False, indent=2)
     )
 
     metrics_exported = _export_metrics(artifact_root, doc_id, edition, out_dir, summary)

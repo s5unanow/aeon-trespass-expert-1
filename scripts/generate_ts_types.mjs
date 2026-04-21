@@ -36,6 +36,8 @@ const PRIMARY_TYPES = {
   page_evidence_v1: 'PageEvidenceV1',
   page_ir_v1: 'PageIRV1',
   patch_set_v1: 'PatchSetV1',
+  public_qa_record_set_v1: 'PublicQARecordSetV1',
+  public_qa_summary_v1: 'PublicQASummaryV1',
   qa_metrics_v1: 'QAMetricsV1',
   qa_record_v1: 'QARecordV1',
   qa_summary_v1: 'QASummaryV1',
