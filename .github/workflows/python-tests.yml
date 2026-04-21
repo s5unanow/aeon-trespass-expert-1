@@ -115,10 +115,27 @@ jobs:
       # For push events, github.head_ref is empty and the harness falls back
       # to `git rev-parse --abbrev-ref HEAD` (which on main is 'main',
       # triggering the no-safety-gate-diff skip branch).
+      # S5U-691: pipe through `tee` and assert `ALL TESTS PASSED` is present.
+      # The previous invocation (`run: bash scripts/test_pre_pr_safety_gate.sh`)
+      # conflated silent-crash ("process completed with exit code 1" with no
+      # output) with an actual test failure. Adding the `grep -q "ALL TESTS
+      # PASSED"` postcondition surfaces silent exits immediately.
+      # `set -o pipefail` preserves the harness's exit code through `tee`.
       - name: Pre-PR safety gate harness
         env:
           HARNESS_BRANCH_OVERRIDE: ${{ github.head_ref }}
-        run: bash scripts/test_pre_pr_safety_gate.sh
+        run: |
+          set -o pipefail
+          bash scripts/test_pre_pr_safety_gate.sh 2>&1 | tee /tmp/harness.log
+          grep -q "ALL TESTS PASSED" /tmp/harness.log
+
+      # S5U-691: regression test simulating main-branch post-merge CI. Clones
+      # the repo to an ephemeral worktree, checks out main, runs the harness,
+      # and asserts the SKIP banner + `ALL TESTS PASSED`. Per
+      # .claude/rules/guards.md Rule G1, this is the shallow-checkout /
+      # missing-state coverage the harness lacked in S5U-673.
+      - name: Pre-PR safety gate harness — main-branch skip regression
+        run: bash scripts/test_harness_skip_on_main.sh
 
       - name: Code erosion report (advisory)
         if: github.event_name == 'pull_request'
