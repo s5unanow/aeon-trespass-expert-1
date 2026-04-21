@@ -289,10 +289,15 @@ if [ -n "$SAFETY_GATE_DIFF" ]; then
     exit 1
   fi
 
-  # Find any coordinator-ack status with state=success.
-  # The response shape is a JSON array of status objects.
+  # Find the LATEST coordinator-ack status and require it to be state=success.
+  # The /commits/<sha>/statuses endpoint returns ALL statuses on the ref, not
+  # just the latest per context. S5U-673 replaced a filter-first / take-first
+  # expression that would accept a stale success even after a later revocation:
+  # if a coordinator posts success then later posts failure for the same
+  # context, the gate must honor the revocation. Sort coordinator-ack statuses
+  # by created_at, take the most recent, and require it to be success.
   MATCHING_CREATOR=$(echo "$STATUS_JSON" \
-    | jq -r '[.[] | select(.context == "coordinator-ack" and .state == "success") | .creator.login] | .[0] // empty' 2>/dev/null \
+    | jq -r '[.[] | select(.context == "coordinator-ack")] | sort_by(.created_at) | .[-1] | select(.state == "success") | .creator.login // empty' 2>/dev/null \
     || true)
 
   if [ -z "$MATCHING_CREATOR" ]; then

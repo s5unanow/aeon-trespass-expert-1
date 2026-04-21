@@ -1,23 +1,33 @@
 #!/usr/bin/env bash
-# S5U-647 / S5U-666 / S5U-670: smoke tests for the safety-gate scope probe
-# in .claude/hooks/pre-pr-check.sh. Exercises three gate layers:
+# S5U-647 / S5U-666 / S5U-670 / S5U-672 / S5U-673: smoke tests for the safety-gate
+# scope probe in .claude/hooks/pre-pr-check.sh. Exercises three gate layers:
 #
 #   Layer 1 (S5U-647): regex over changed-file paths decides whether the probe fires
-#     Inputs 1-12: happy / failure / adversarial regex coverage
+#     Inputs 1-12: happy / failure / adversarial regex coverage (pure-function)
 #
 #   Layer 2 (S5U-666): base-ref resolution (main vs origin/main vs fail-closed)
 #     Inputs 13-14: missing-main-fails-closed, origin-main-fallback-succeeds
+#                   (pure-function on a synthetic repo)
 #
-#   Layer 3 (S5U-670): coordinator-ack commit status (vs worker-forgeable file marker)
-#     Inputs 15-19: happy, empty status list, wrong creator, malformed JSON,
-#                   missing allowlist
+#   Layer 3 (S5U-670 / S5U-672 / S5U-673): coordinator-ack commit status.
+#     Inputs 15-23: HARNESS spawns the REAL hook with `gh` shadowed via PATH
+#                   and drives it against a throwaway branch in this repo.
 #
 # Run: bash scripts/test_pre_pr_safety_gate.sh
 # Expected: "ALL TESTS PASSED" and exit 0.
 #
-# Not wired to CI — worker-discipline test, run manually before PR. If the
-# hook's regex / logic shifts, update both places. See tmp/plan-s5u-670.md
-# §5 for the test-strategy rationale.
+# CI-wired under `python / test` (S5U-673 Gap 3). Local runs are still
+# supported; the harness operates on the real repo root but isolates state
+# via a namespaced throwaway branch and strict EXIT trap cleanup.
+#
+# S5U-673 changes (supersedes inline-replica approach from S5U-670):
+#   - Coordinator-ack cases 15-23 now spawn the real hook under a mocked `gh`
+#     instead of a replicated `validate_coordinator_ack()` function body.
+#   - New input 22 (revocation: success-then-failure) validates the updated
+#     "latest status wins" jq filter in the hook.
+#   - New input 23 (re-affirmation: failure-then-success) exercises the
+#     sort-latest branch in the PASS direction.
+#   - Wired to CI: failure fails `python / test`.
 
 set -euo pipefail
 
@@ -73,9 +83,6 @@ run_case() {
 # Layer 1 (S5U-647): regex tests
 # =========================================================================
 
-# -------------------------------------------------------------------------
-# Input 1 (happy path): no safety-gate paths
-# -------------------------------------------------------------------------
 HAPPY_PATHS="apps/pipeline/src/atr_pipeline/cli/run.py
 apps/web/src/components/Foo.tsx
 packages/schemas/python/models.py
@@ -83,9 +90,6 @@ docs/README.md"
 
 run_case "happy path (pipeline + web + schemas + docs)" "$HAPPY_PATHS" "no"
 
-# -------------------------------------------------------------------------
-# Input 2 (failure input): safety-gate paths present
-# -------------------------------------------------------------------------
 FAILURE_PATHS=".claude/hooks/pre-commit-check.sh
 apps/pipeline/src/atr_pipeline/cli/run.py"
 
@@ -106,56 +110,38 @@ run_case "check_*.sh script edit" "$FAILURE_PATHS_5" "yes"
 FAILURE_PATHS_6=".claude/prompts/review.md"
 run_case "review prompt edit" "$FAILURE_PATHS_6" "yes"
 
-# S5U-670: .claude/coordinator-signers.txt edits are safety-gate-scoped
 FAILURE_PATHS_7=".claude/coordinator-signers.txt"
 run_case "coordinator-signers.txt edit (S5U-670)" "$FAILURE_PATHS_7" "yes"
 
-# S5U-670: this test script itself is safety-gate-scoped (it is the three-input
-# smoke test for the hook; silently weakening it is itself a safety-gate event)
 FAILURE_PATHS_8="scripts/test_pre_pr_safety_gate.sh"
 run_case "test_pre_pr_safety_gate.sh edit (S5U-670)" "$FAILURE_PATHS_8" "yes"
 
-# -------------------------------------------------------------------------
-# Input 3 (adversarial / false-positive surface): near-misses that must NOT match
-# -------------------------------------------------------------------------
-# A file under docs/ that happens to mention safety-gate text — not a real diff hit.
 ADV_PATHS_1="docs/hooks-overview.md
 docs/safety-gate-policy.md"
 run_case "docs about hooks (must NOT match)" "$ADV_PATHS_1" "no"
 
-# A file under scripts/ that is not named check_* or pre-*.
 ADV_PATHS_2="scripts/export_to_web.py
 scripts/bootstrap_extended_fixtures.py"
 run_case "scripts/ non-check_*, non-pre-*" "$ADV_PATHS_2" "no"
 
-# A file under .claude/ that is neither hooks, prompts/review.md, nor SKILL.md.
 ADV_PATHS_3=".claude/rules/pipeline.md
 .claude/rules/web.md"
 run_case ".claude/rules/ edits (must NOT match)" "$ADV_PATHS_3" "no"
 
-# README inside a skill directory — must not match (only SKILL.md is gated).
 ADV_PATHS_4=".claude/skills/ship/README.md"
 run_case "non-SKILL.md file inside a skill dir" "$ADV_PATHS_4" "no"
 
-# A filename like CLAUDE.md.bak should NOT match (anchor is end-of-string).
 ADV_PATHS_5="CLAUDE.md.bak"
 run_case "CLAUDE.md.bak (not CLAUDE.md)" "$ADV_PATHS_5" "no"
 
-# -------------------------------------------------------------------------
-# Input 4 (mixed): safety-gate + unrelated in same diff
-# -------------------------------------------------------------------------
 MIXED_PATHS="apps/web/src/App.tsx
 .claude/hooks/pre-commit-check.sh
 apps/pipeline/src/foo.py"
 run_case "mixed diff (triggers on hook)" "$MIXED_PATHS" "yes"
 
 # =========================================================================
-# Layer 2 (S5U-666): base-ref resolution
+# Layer 2 (S5U-666): base-ref resolution (pure-function, synthetic repo)
 # =========================================================================
-#
-# The hook resolves its base ref via a small function (inlined below for
-# testability). We replicate the production logic verbatim and exercise it
-# against synthetic repos. If the hook's logic diverges, update both places.
 
 resolve_base_ref() {
   if git rev-parse --verify main^{commit} >/dev/null 2>&1; then
@@ -169,9 +155,6 @@ resolve_base_ref() {
   return 1
 }
 
-# -------------------------------------------------------------------------
-# Input 13 (S5U-666 failure input): neither main nor origin/main → BLOCK
-# -------------------------------------------------------------------------
 TMPDIR_13=$(mktemp -d)
 (
   cd "$TMPDIR_13"
@@ -179,24 +162,18 @@ TMPDIR_13=$(mktemp -d)
   git config user.email "test@example.com"
   git config user.name "Test"
   git commit --allow-empty -q -m "initial"
-  # Port the function; do not rely on the parent shell's environment.
   if resolve_base_ref >/dev/null 2>&1; then
     echo "FAIL [13 S5U-666 missing main+origin/main]: resolve_base_ref succeeded, expected failure"
     exit 1
   fi
 )
-# shellcheck disable=SC2181
 if [ $? -ne 0 ]; then exit 1; fi
 rm -rf "$TMPDIR_13"
 echo "OK   [13 S5U-666 missing main+origin/main]: resolve_base_ref exits non-zero as expected"
 
-# -------------------------------------------------------------------------
-# Input 14 (S5U-666 happy fallback): no local main, but origin/main present
-# -------------------------------------------------------------------------
 TMPDIR_14=$(mktemp -d)
 (
   cd "$TMPDIR_14"
-  # Stand up a bare "origin" repo with a main branch.
   git init -q --bare origin.git
   git init -q --initial-branch=main work
   cd work
@@ -205,11 +182,9 @@ TMPDIR_14=$(mktemp -d)
   git commit --allow-empty -q -m "base"
   git remote add origin ../origin.git
   git push -q origin main
-  # Create a feature branch and delete local `main`, leaving only origin/main.
   git checkout -q -b feature
   git branch -q -D main
   git fetch -q origin
-  # Now: local `main` is gone; `origin/main` remote-tracking ref survives.
   if ! resolve_base_ref >/dev/null 2>&1; then
     echo "FAIL [14 S5U-666 origin/main fallback]: resolve_base_ref failed, expected success"
     exit 1
@@ -220,32 +195,89 @@ TMPDIR_14=$(mktemp -d)
     exit 1
   fi
 )
-# shellcheck disable=SC2181
 if [ $? -ne 0 ]; then exit 1; fi
 rm -rf "$TMPDIR_14"
 echo "OK   [14 S5U-666 origin/main fallback]: BASE=origin/main as expected"
 
 # =========================================================================
-# Layer 3 (S5U-670 / S5U-672): coordinator-ack commit status validation
+# Layer 3 (S5U-670 / S5U-672 / S5U-673): coordinator-ack via REAL hook
 # =========================================================================
 #
-# Production hook queries `gh api repos/.../commits/<sha>/statuses`. We don't
-# want tests to hit live GitHub. S5U-672 removed the
-# COORDINATOR_ACK_STATUS_SOURCE env-var override from the hook (it was a
-# worker-controllable forgery surface), so these tests cannot and must not
-# invoke the hook directly. Instead they replicate the hook's filter +
-# allowlist logic verbatim in `validate_coordinator_ack()` below and exercise
-# it against fixture JSON files. The hook/test divergence this introduces is
-# tracked as a separate issue (S5U-673) — the authoritative structural fix is
-# to spawn the hook with a mocked `gh` shell function, deferred there.
+# The harness spawns the real .claude/hooks/pre-pr-check.sh against a namespaced
+# throwaway branch off main in THIS repo, with `gh` shadowed via PATH so the
+# `gh api repos/.../commits/<sha>/statuses` call returns fixture JSON.
 #
-# See .claude/hooks/pre-pr-check.sh "S5U-670: fetch coordinator-ack commit
-# status from GitHub API" for the authoritative hook block.
+# Cleanup invariant (trap EXIT): original branch restored, throwaway branch
+# deleted, probe file unlinked, stub tmp review artifact unlinked. The harness
+# refuses to run if stash/switch operations fail.
 
+HARNESS_PID=$$
+FAKE_ISSUE="s5u-999${HARNESS_PID}"
+THROWAWAY_BRANCH="s5unanow/${FAKE_ISSUE}-harness-probe"
+PROBE_FILE=".claude/hooks/__harness_probe_${HARNESS_PID}.tmp"
+REVIEW_FILE="tmp/review-${FAKE_ISSUE}.md"
+MOCK_BIN=$(mktemp -d)
 FIXTURE_DIR=$(mktemp -d)
-trap 'rm -rf "$FIXTURE_DIR"' EXIT
+ORIGINAL_BRANCH=$(cd "$REPO_ROOT" && git rev-parse --abbrev-ref HEAD)
 
-# Happy fixture: single success status, signed by s5unanow
+# Guard: working tree must be clean before we fabricate state. If the user has
+# uncommitted changes, auto-stashing would mask real work on failure.
+if ! (cd "$REPO_ROOT" && git diff --quiet && git diff --cached --quiet); then
+  echo "FAIL [layer 3 harness]: working tree is dirty. Commit, stash, or discard"
+  echo "  before running the coordinator-ack harness. The harness fabricates"
+  echo "  state on a throwaway branch and refuses to run against a dirty tree."
+  exit 1
+fi
+
+cleanup_harness() {
+  local rc=$?
+  set +e
+  cd "$REPO_ROOT" 2>/dev/null || true
+  # Restore original branch if we left it.
+  local cur
+  cur=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+  if [ "$cur" != "$ORIGINAL_BRANCH" ] && [ -n "$ORIGINAL_BRANCH" ]; then
+    git switch "$ORIGINAL_BRANCH" >/dev/null 2>&1 || true
+  fi
+  # Delete throwaway branch if it exists.
+  if git show-ref --verify --quiet "refs/heads/$THROWAWAY_BRANCH"; then
+    git branch -D "$THROWAWAY_BRANCH" >/dev/null 2>&1 || true
+  fi
+  # Remove fabricated artifacts (on original branch).
+  rm -f "$REPO_ROOT/$PROBE_FILE" 2>/dev/null || true
+  rm -f "$REPO_ROOT/$REVIEW_FILE" 2>/dev/null || true
+  rm -rf "$MOCK_BIN" "$FIXTURE_DIR" 2>/dev/null || true
+  set -e
+  exit "$rc"
+}
+trap cleanup_harness EXIT
+
+# Write the gh stub: for `gh api repos/.../commits/*/statuses`, read fixture
+# from $MOCK_GH_FIXTURE and cat it. For any other invocation, fail with a
+# diagnostic so we catch unexpected gh-use regressions (G1 fail-closed).
+cat > "$MOCK_BIN/gh" <<'STUB_EOF'
+#!/usr/bin/env bash
+# Harness-mock gh for test_pre_pr_safety_gate.sh. Only the
+# `api repos/.../commits/<sha>/statuses` form is supported; anything else
+# is an unexpected call and is treated as a harness regression (exit 1).
+if [ "${1:-}" = "api" ] && echo "${2:-}" | grep -qE '^repos/[^/]+/[^/]+/commits/[^/]+/statuses$'; then
+  if [ -z "${MOCK_GH_FIXTURE:-}" ]; then
+    echo "mock-gh: MOCK_GH_FIXTURE env var not set" >&2
+    exit 1
+  fi
+  if [ ! -f "$MOCK_GH_FIXTURE" ]; then
+    echo "mock-gh: fixture not found: $MOCK_GH_FIXTURE" >&2
+    exit 1
+  fi
+  cat "$MOCK_GH_FIXTURE"
+  exit 0
+fi
+echo "mock-gh: unsupported invocation: $*" >&2
+exit 1
+STUB_EOF
+chmod +x "$MOCK_BIN/gh"
+
+# Fixtures (mirror the inline ones from prior inputs 15-21 + new 22-23).
 cat > "$FIXTURE_DIR/happy.json" <<'EOF'
 [
   {
@@ -256,11 +288,7 @@ cat > "$FIXTURE_DIR/happy.json" <<'EOF'
   }
 ]
 EOF
-
-# Empty fixture: no statuses at all
 echo '[]' > "$FIXTURE_DIR/empty.json"
-
-# Wrong-creator fixture: worker self-posted with a different login
 cat > "$FIXTURE_DIR/wrong_creator.json" <<'EOF'
 [
   {
@@ -271,11 +299,7 @@ cat > "$FIXTURE_DIR/wrong_creator.json" <<'EOF'
   }
 ]
 EOF
-
-# Malformed JSON fixture
 echo 'not valid json {' > "$FIXTURE_DIR/malformed.json"
-
-# Near-miss: status exists but for a different context (e.g., CI)
 cat > "$FIXTURE_DIR/wrong_context.json" <<'EOF'
 [
   {
@@ -286,8 +310,6 @@ cat > "$FIXTURE_DIR/wrong_context.json" <<'EOF'
   }
 ]
 EOF
-
-# Near-miss: coordinator-ack context but state=failure (e.g., manual revocation)
 cat > "$FIXTURE_DIR/failed_state.json" <<'EOF'
 [
   {
@@ -298,201 +320,190 @@ cat > "$FIXTURE_DIR/failed_state.json" <<'EOF'
   }
 ]
 EOF
-
-# Allowlist file used by the logic below — replicated from the real
-# .claude/coordinator-signers.txt but without coupling the test to the live
-# file contents (we want these tests to be hermetic).
-ALLOWLIST_FILE="$FIXTURE_DIR/signers.txt"
-cat > "$ALLOWLIST_FILE" <<'EOF'
-# Test allowlist — mirrors .claude/coordinator-signers.txt shape
-s5unanow
+# S5U-673: revocation — earlier success, later failure. New jq filter must
+# select the LATEST by created_at and block.
+cat > "$FIXTURE_DIR/revocation.json" <<'EOF'
+[
+  {
+    "state": "success",
+    "context": "coordinator-ack",
+    "creator": { "login": "s5unanow", "type": "User" },
+    "created_at": "2026-04-20T12:00:00Z"
+  },
+  {
+    "state": "failure",
+    "context": "coordinator-ack",
+    "creator": { "login": "s5unanow", "type": "User" },
+    "created_at": "2026-04-20T12:10:00Z"
+  }
+]
+EOF
+# S5U-673: re-affirmation — earlier failure, later success. New filter must
+# select the latest (success) and pass.
+cat > "$FIXTURE_DIR/reaffirm.json" <<'EOF'
+[
+  {
+    "state": "failure",
+    "context": "coordinator-ack",
+    "creator": { "login": "s5unanow", "type": "User" },
+    "created_at": "2026-04-20T12:00:00Z"
+  },
+  {
+    "state": "success",
+    "context": "coordinator-ack",
+    "creator": { "login": "s5unanow", "type": "User" },
+    "created_at": "2026-04-20T12:10:00Z"
+  }
+]
 EOF
 
-# Replicated filter logic — keep in sync with pre-pr-check.sh S5U-670 block.
-#
-# Returns exit 0 if a valid coordinator-ack status is present and signed by
-# an allowlisted creator; exit 1 otherwise. Logs the reason.
-validate_coordinator_ack() {
-  local status_source="$1"
-  local allowlist_file="$2"
+# Fabricate a throwaway branch off main with a safety-gate-scoped probe file,
+# so the hook's SAFETY_GATE_DIFF is non-empty and the coordinator-ack path fires.
+cd "$REPO_ROOT"
+# If main is not present locally (fresh clone edge case), fail cleanly.
+if ! git rev-parse --verify main^{commit} >/dev/null 2>&1; then
+  echo "FAIL [layer 3 harness]: local 'main' branch not present; cannot create"
+  echo "  a throwaway branch. Run \`git fetch origin main:main\` first."
+  exit 1
+fi
+# If the throwaway branch somehow exists, delete it defensively.
+if git show-ref --verify --quiet "refs/heads/$THROWAWAY_BRANCH"; then
+  git branch -D "$THROWAWAY_BRANCH" >/dev/null 2>&1
+fi
+git switch -c "$THROWAWAY_BRANCH" main >/dev/null 2>&1
+echo "harness probe file for S5U-673 test harness (auto-cleaned)" > "$PROBE_FILE"
+git add "$PROBE_FILE" >/dev/null
+git -c user.email=harness@local -c user.name=harness commit -q -m "harness: probe for S5U-673 layer-3 tests"
 
-  if [ ! -f "$allowlist_file" ]; then
-    echo "  (reason: allowlist missing at $allowlist_file)"
-    return 1
-  fi
-  local allowlist
-  allowlist=$(grep -vE '^[[:space:]]*(#|$)' "$allowlist_file" | awk '{print $1}')
-  if [ -z "$allowlist" ]; then
-    echo "  (reason: allowlist empty)"
-    return 1
-  fi
+# Write the review artifact that the hook reads. Must end with a valid verdict
+# line and include structured fields. Must be newer than HEAD (touch to now).
+mkdir -p "$REPO_ROOT/tmp"
+cat > "$REPO_ROOT/$REVIEW_FILE" <<'EOF'
+# Review artifact for harness self-test
 
-  if [ ! -f "$status_source" ]; then
-    echo "  (reason: status fixture missing at $status_source)"
-    return 1
-  fi
-  local status_json
-  status_json=$(cat "$status_source")
+This is a stub review artifact synthesized by scripts/test_pre_pr_safety_gate.sh
+to exercise the pre-PR hook end-to-end. Do not commit.
 
-  if ! echo "$status_json" | jq -e . >/dev/null 2>&1; then
-    echo "  (reason: status response is not valid JSON)"
-    return 1
-  fi
+## Verdict
 
-  local matching_creator
-  matching_creator=$(echo "$status_json" \
-    | jq -r '[.[] | select(.context == "coordinator-ack" and .state == "success") | .creator.login] | .[0] // empty' 2>/dev/null \
-    || true)
+Verdict: PASS
 
-  if [ -z "$matching_creator" ]; then
-    echo "  (reason: no coordinator-ack/success status found)"
-    return 1
-  fi
+Critical: none
+Warning: none
+Suggestion: none
+Probes run:
+- harness probe 1
+- harness probe 2
+- harness probe 3
+Bug IDs filed: none
 
-  if ! echo "$allowlist" | grep -qxF "$matching_creator"; then
-    echo "  (reason: creator '$matching_creator' not in allowlist)"
-    return 1
-  fi
+**PASS**
+EOF
+# Ensure mtime is strictly newer than the throwaway HEAD commit timestamp.
+# (The hook's staleness check is REVIEW_MTIME < HEAD_TIME; equality passes.)
+touch "$REPO_ROOT/$REVIEW_FILE"
 
-  echo "  (matched: creator=$matching_creator)"
-  return 0
+# invoke_hook: runs pre-pr-check.sh with $CLAUDE_TOOL_INPUT set + gh shadowed
+# + fixture env var + a controlled PATH. Captures exit code + combined output.
+# Echoes the exit code as the sole line on stdout (caller reads via $(...)),
+# full output goes to $HARNESS_LOG.
+HARNESS_LOG=$(mktemp)
+
+invoke_hook() {
+  local fixture="$1"
+  local -; set +e
+  MOCK_GH_FIXTURE="$fixture" \
+  CLAUDE_TOOL_INPUT="gh pr create --title harness --body harness" \
+  PATH="$MOCK_BIN:$PATH" \
+    bash "$HOOK_SCRIPT" >"$HARNESS_LOG" 2>&1
+  local rc=$?
+  echo "$rc"
 }
 
-assert_ack() {
+assert_hook() {
   local label="$1"
-  local source="$2"
-  local allow="$3"
-  local expect="$4"  # "pass" or "block"
+  local fixture="$2"
+  local expect="$3"  # "pass" (exit 0) or "block" (exit non-zero)
 
-  if validate_coordinator_ack "$source" "$allow" >/tmp/_ack_log.$$ 2>&1; then
+  local rc
+  rc=$(invoke_hook "$fixture")
+
+  if [ "$rc" = "0" ]; then
     if [ "$expect" = "pass" ]; then
-      echo "OK   [$label]: validated as expected"
-      cat /tmp/_ack_log.$$ | sed 's/^/       /'
+      echo "OK   [$label]: hook exited 0 as expected"
+      grep -E '^(Review artifact verified|Coordinator-ack verified)' "$HARNESS_LOG" | sed 's/^/       /' || true
     else
-      echo "FAIL [$label]: expected BLOCK, got PASS"
-      cat /tmp/_ack_log.$$ | sed 's/^/       /'
-      rm -f /tmp/_ack_log.$$
+      echo "FAIL [$label]: expected BLOCK (exit non-zero), got PASS (exit 0)"
+      sed 's/^/       /' "$HARNESS_LOG"
       return 1
     fi
   else
     if [ "$expect" = "block" ]; then
-      echo "OK   [$label]: blocked as expected"
-      cat /tmp/_ack_log.$$ | sed 's/^/       /'
+      echo "OK   [$label]: hook exited $rc as expected"
+      grep -E '^BLOCKED' "$HARNESS_LOG" | head -1 | sed 's/^/       /' || true
     else
-      echo "FAIL [$label]: expected PASS, got BLOCK"
-      cat /tmp/_ack_log.$$ | sed 's/^/       /'
-      rm -f /tmp/_ack_log.$$
+      echo "FAIL [$label]: expected PASS (exit 0), got BLOCK (exit $rc)"
+      sed 's/^/       /' "$HARNESS_LOG"
       return 1
     fi
   fi
-  rm -f /tmp/_ack_log.$$
 }
 
-# -------------------------------------------------------------------------
-# Input 15 (S5U-670 happy path): coordinator posted a signed status → PASS
-# -------------------------------------------------------------------------
-assert_ack "15 S5U-670 happy (signed status)" "$FIXTURE_DIR/happy.json" "$ALLOWLIST_FILE" "pass"
+echo ""
+echo "Layer 3 harness: driving real hook against throwaway branch $THROWAWAY_BRANCH"
+echo ""
 
-# -------------------------------------------------------------------------
-# Input 16 (S5U-670 failure input): no status present → BLOCK
-# -------------------------------------------------------------------------
-assert_ack "16 S5U-670 empty status list" "$FIXTURE_DIR/empty.json" "$ALLOWLIST_FILE" "block"
+# Input 15: happy — signed status → PASS
+assert_hook "15 S5U-670 happy (signed status)" "$FIXTURE_DIR/happy.json" "pass"
 
-# -------------------------------------------------------------------------
-# Input 17 (S5U-670 adversarial): worker self-posted with different login → BLOCK
-# -------------------------------------------------------------------------
-# This is the core S5U-670 invariant: a forgery attempt by the worker posting
-# the status themselves fails because GitHub stamps creator.login from the
-# authenticated OAuth token — not a worker-controlled input.
-assert_ack "17 S5U-670 adversarial (worker self-post)" "$FIXTURE_DIR/wrong_creator.json" "$ALLOWLIST_FILE" "block"
+# Input 16: empty status list → BLOCK
+assert_hook "16 S5U-670 empty status list" "$FIXTURE_DIR/empty.json" "block"
 
-# -------------------------------------------------------------------------
-# Input 18 (S5U-670 G1): malformed JSON → BLOCK (fail closed on parse error)
-# -------------------------------------------------------------------------
-assert_ack "18 S5U-670 G1 malformed JSON" "$FIXTURE_DIR/malformed.json" "$ALLOWLIST_FILE" "block"
+# Input 17: worker self-posted → BLOCK
+assert_hook "17 S5U-670 adversarial (worker self-post)" "$FIXTURE_DIR/wrong_creator.json" "block"
 
-# -------------------------------------------------------------------------
-# Input 19 (S5U-670 G1): missing allowlist → BLOCK (fail closed)
-# -------------------------------------------------------------------------
-assert_ack "19 S5U-670 G1 missing allowlist" "$FIXTURE_DIR/happy.json" "$FIXTURE_DIR/nonexistent.txt" "block"
+# Input 18: malformed JSON → BLOCK (G1)
+assert_hook "18 S5U-670 G1 malformed JSON" "$FIXTURE_DIR/malformed.json" "block"
 
-# -------------------------------------------------------------------------
-# Input 20 (S5U-670 near-miss): wrong context (ci/check-run) → BLOCK
-# -------------------------------------------------------------------------
-# Structural check: context must equal "coordinator-ack" exactly, not just
-# any success status on the commit. CI statuses are not gate evidence.
-assert_ack "20 S5U-670 near-miss (wrong context)" "$FIXTURE_DIR/wrong_context.json" "$ALLOWLIST_FILE" "block"
+# Input 19: missing fixture file (simulates gh api failure: 404 / rate limit) → BLOCK
+assert_hook "19 S5U-670 G1 gh api failure (missing fixture)" "$FIXTURE_DIR/nonexistent.json" "block"
 
-# -------------------------------------------------------------------------
-# Input 21 (S5U-670 near-miss): coordinator-ack context but state=failure → BLOCK
-# -------------------------------------------------------------------------
-# A failed status is not a pass. Manual revocation or accidental overwrite
-# with state=failure must not satisfy the gate.
-assert_ack "21 S5U-670 near-miss (state=failure)" "$FIXTURE_DIR/failed_state.json" "$ALLOWLIST_FILE" "block"
+# Input 20: wrong context (ci/check-run) → BLOCK
+assert_hook "20 S5U-670 near-miss (wrong context)" "$FIXTURE_DIR/wrong_context.json" "block"
+
+# Input 21: state=failure (single entry) → BLOCK
+assert_hook "21 S5U-670 near-miss (state=failure)" "$FIXTURE_DIR/failed_state.json" "block"
+
+# Input 22 (S5U-673 NEW): revocation — earlier success, later failure → BLOCK.
+# Validates the updated jq filter that sorts by created_at and takes the latest.
+assert_hook "22 S5U-673 revocation (success then failure)" "$FIXTURE_DIR/revocation.json" "block"
+
+# Input 23 (S5U-673 NEW): re-affirmation — earlier failure, later success → PASS.
+# Validates the sort-latest branch in the PASS direction.
+assert_hook "23 S5U-673 re-affirmation (failure then success)" "$FIXTURE_DIR/reaffirm.json" "pass"
+
+rm -f "$HARNESS_LOG"
 
 # =========================================================================
 # Layer 4 (S5U-672): COORDINATOR_ACK_STATUS_SOURCE env-var surface must be absent
 # =========================================================================
-#
-# S5U-670 shipped the clean break from tmp/.coordinator-ack-<issue> to a
-# GH-API-authenticated commit status. To make the gate testable it added an
-# env var COORDINATOR_ACK_STATUS_SOURCE that short-circuited the gh api call
-# and read fixture JSON from a worker-supplied path. That env var is
-# production-accessible: any worker can run
-#
-#   COORDINATOR_ACK_STATUS_SOURCE=/tmp/forged.json gh pr create ...
-#
-# and defeat the gate without ever invoking the coordinator. S5U-672 removes
-# the env-var branch entirely.
-#
-# These tests are structural: they grep the hook source for the forbidden
-# token. They run without invoking the hook (the hook `cd`s to a hardcoded
-# absolute path and expects real git + real gh, neither of which we can
-# sandbox cheaply). A structural absence check is sufficient because the
-# surface we are closing IS the presence of this specific identifier in the
-# hook — no other vector grants the same bypass.
-#
-# Red-before confirmation: on main (SHA 0bb1344) inputs 22 and 23 both FAIL
-# because the env-var branch exists (grep returns non-zero line counts, plus
-# the line-count assertion fails). After the S5U-672 fix lands, both pass.
-
-# -------------------------------------------------------------------------
-# Input 22 (S5U-672): hook source must not mention COORDINATOR_ACK_STATUS_SOURCE
-# -------------------------------------------------------------------------
-# Any match on the identifier — the `if` guard, the `cat` read, or even a
-# comment that implies the var is honored — re-opens the forgery surface.
-# This test asserts total removal: zero occurrences in the hook.
-#
-# Rationale: a comment-only reference is not by itself a runtime bypass, but
-# it signals to future workers that the var was once honored and may be
-# reintroduced. Total removal + a reviewer probe on the token (review.md
-# check #22) is cleaner than partial removal with a lingering comment.
-
 ENV_VAR_HITS=$(grep -c 'COORDINATOR_ACK_STATUS_SOURCE' "$HOOK_SCRIPT" || true)
 if [ "$ENV_VAR_HITS" -ne 0 ]; then
-  echo "FAIL [22 S5U-672 env-var surface absent]: hook still references COORDINATOR_ACK_STATUS_SOURCE ($ENV_VAR_HITS hits)"
+  echo "FAIL [24 S5U-672 env-var surface absent]: hook still references COORDINATOR_ACK_STATUS_SOURCE ($ENV_VAR_HITS hits)"
   grep -n 'COORDINATOR_ACK_STATUS_SOURCE' "$HOOK_SCRIPT" | sed 's/^/       /'
   echo "       This env var was the worker-controllable forgery surface — see tmp/plan-s5u-672.md."
   exit 1
 fi
-echo "OK   [22 S5U-672 env-var surface absent]: hook source has zero references to COORDINATOR_ACK_STATUS_SOURCE"
-
-# -------------------------------------------------------------------------
-# Input 23 (S5U-672): no TEST OVERRIDE branch remains in the hook
-# -------------------------------------------------------------------------
-# Defensive belt-and-suspenders: the original env-var branch printed a
-# distinctive "TEST OVERRIDE" banner. If a future edit reintroduces a
-# similar short-circuit under a different identifier, the banner language
-# would likely survive. Grep for it.
+echo "OK   [24 S5U-672 env-var surface absent]: hook source has zero references to COORDINATOR_ACK_STATUS_SOURCE"
 
 TEST_OVERRIDE_HITS=$(grep -c 'TEST OVERRIDE' "$HOOK_SCRIPT" || true)
 if [ "$TEST_OVERRIDE_HITS" -ne 0 ]; then
-  echo "FAIL [23 S5U-672 no test-override banner]: hook still prints 'TEST OVERRIDE' ($TEST_OVERRIDE_HITS hits)"
+  echo "FAIL [25 S5U-672 no test-override banner]: hook still prints 'TEST OVERRIDE' ($TEST_OVERRIDE_HITS hits)"
   grep -n 'TEST OVERRIDE' "$HOOK_SCRIPT" | sed 's/^/       /'
   echo "       The test-override code path was removed in S5U-672; re-adding it is a safety-gate regression."
   exit 1
 fi
-echo "OK   [23 S5U-672 no test-override banner]: hook does not print 'TEST OVERRIDE'"
+echo "OK   [25 S5U-672 no test-override banner]: hook does not print 'TEST OVERRIDE'"
 
 echo ""
 echo "ALL TESTS PASSED"
