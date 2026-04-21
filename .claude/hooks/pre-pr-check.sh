@@ -7,7 +7,23 @@ if ! echo "$CLAUDE_TOOL_INPUT" | grep -q 'gh pr create'; then
   exit 0
 fi
 
-cd /Users/s5una/projects/aeon-trespass-expert-1
+# Resolve the repo root dynamically so the hook is portable. When Claude Code
+# invokes this hook locally, the CWD is typically the worker's repo root
+# already; `git rev-parse --show-toplevel` gives us the authoritative answer.
+# S5U-673 made this dynamic because the CI harness
+# (scripts/test_pre_pr_safety_gate.sh) needs to spawn this hook on GitHub
+# Actions runners where /Users/s5una/... obviously does not exist. The
+# previous hardcoded path was a portability bug; we fall back to it only as
+# a last resort for worker environments without a git CWD.
+if REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); then
+  cd "$REPO_ROOT"
+elif [ -d /Users/s5una/projects/aeon-trespass-expert-1 ]; then
+  cd /Users/s5una/projects/aeon-trespass-expert-1
+else
+  echo "BLOCKED: pre-pr-check.sh cannot locate the repo root."
+  echo "  Not a git repo (CWD=$(pwd)) and no fallback path available."
+  exit 1
+fi
 
 BRANCH=$(git branch --show-current)
 
