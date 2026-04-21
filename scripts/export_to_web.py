@@ -23,11 +23,15 @@ from _export_blocks import (  # noqa: E402
     rewrite_figure_urls,
     text_content,
 )
+from _export_images import extract_images, resolve_source_pdf  # noqa: E402
 from _export_qa import export_qa  # noqa: E402
 from _export_validation import run_export_validation  # noqa: E402
 
+# Re-exports for S5U-688 regression tests and downstream callers that want to
+# import the helpers from the main entry script.
+__all__ = ["extract_images", "resolve_source_pdf"]
+
 ARTIFACT_ROOT = REPO / "artifacts"
-PDF_PATH = REPO / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
 
 def _pick_latest(jsons: list[Path], edition: str = "") -> dict | None:
@@ -84,44 +88,6 @@ def _pick_latest(jsons: list[Path], edition: str = "") -> dict | None:
         return best_untagged
 
     return None
-
-
-def extract_images(doc_id: str, doc_public: Path) -> dict[str, list[dict]]:
-    """Extract images from PDF and save to web public dir."""
-    if not PDF_PATH.exists():
-        print(f"  PDF not found at {PDF_PATH}, skipping image extraction")
-        return {}
-    from atr_pipeline.services.pdf.image_extractor import extract_page_images
-
-    img_dir = doc_public / "images"
-    img_dir.mkdir(parents=True, exist_ok=True)
-    page_images: dict[str, list[dict]] = {}
-    total = 0
-    for pnum in range(1, 84):
-        pid = f"p{pnum:04d}"
-        try:
-            images = extract_page_images(PDF_PATH, page_number=pnum, min_width=100, min_height=100)
-        except Exception as e:
-            print(f"  WARN: image extraction failed for {pid}: {e}")
-            continue
-        if not images:
-            continue
-        page_images[pid] = []
-        for img in images:
-            fname = f"{img.image_id}{img.extension}"
-            (img_dir / fname).write_bytes(img.image_bytes)
-            page_images[pid].append(
-                {
-                    "asset_id": img.image_id,
-                    "src": f"/documents/{doc_id}/images/{fname}",
-                    "alt": img.image_id,
-                    "width": img.width_px,
-                    "height": img.height_px,
-                }
-            )
-            total += 1
-    print(f"  Extracted {total} images across {len(page_images)} pages")
-    return page_images
 
 
 _TOC_ENTRY_RE = re.compile(r"(.+?)\.{3,}\s*(\d+)")
@@ -351,7 +317,7 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(1)
 
     print("Extracting images from PDF...")
-    page_images = extract_images(doc_id, doc_public)
+    page_images = extract_images(doc_id, doc_public, repo_root=REPO)
 
     # Collect facsimile page IDs from render artifacts
     facsimile_pids: list[str] = []
