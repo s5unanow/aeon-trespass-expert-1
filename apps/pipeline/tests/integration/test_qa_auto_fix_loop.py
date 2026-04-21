@@ -113,6 +113,15 @@ def store_and_config(tmp_path: Path) -> tuple[ArtifactStore, DocumentBuildConfig
         artifact_root=artifact_root,
     )
     (tmp_path / "waivers").mkdir(exist_ok=True)
+
+    # The CLI now loads the confidence-band policy during QA runs; seed the
+    # real repo policy into the hermetic tmp_path so `load_confidence_bands`
+    # finds it without reaching outside the fixture's filesystem.
+    real_bands = Path(__file__).resolve().parents[4] / "configs" / "qa" / "confidence_bands.toml"
+    bands_dir = tmp_path / "configs" / "qa"
+    bands_dir.mkdir(parents=True, exist_ok=True)
+    (bands_dir / "confidence_bands.toml").write_text(real_bands.read_text())
+
     return store, config
 
 
