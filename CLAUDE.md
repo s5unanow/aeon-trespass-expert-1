@@ -24,7 +24,7 @@ docs/                Architecture docs (read on demand, not memorized)
 
 ```bash
 make bootstrap        # Install all deps (uv sync + pnpm install)
-make lint             # ruff check + mypy + import-linter + file-length + codegen freshness + pnpm lint
+make lint             # ruff check + ruff format --check + mypy + import-linter + file-length + fixture-manifest + make/doc parity + codegen freshness + pnpm lint
 make typecheck        # mypy + tsc
 make test             # All tests (pytest + pnpm test)
 make codegen          # Regenerate JSON Schema + TS types from Pydantic models
@@ -57,7 +57,7 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 Runs on every push to `main` and on every PR. Includes all 9 local gates plus:
 
 9. `check_codegen_fresh.sh` — verifies generated JSON Schema + TS types match Pydantic sources. *Also available locally via `make check-codegen` and included in `make lint`.*
-10. `validate_fixture_manifest.py` — fixture integrity checks. *CI-only because it can be slow with large fixture sets.*
+10. `validate_fixture_manifest.py` — fixture integrity checks. *Also available locally via `make validate-fixtures` and included in `make lint`.*
 11. `check_extraction_scope.py` — detects extraction-related changes in PRs. *CI-only because it compares against the PR base branch.*
 12. `check_golden_refresh.py` — validates golden file updates when extraction scope is detected. *CI-only because it requires base-branch comparison and only triggers conditionally.*
 13. `visual-regression / visual` — Playwright `toHaveScreenshot` assertions against committed baselines under `apps/web/tests/e2e/__snapshots__/`, enforced at `maxDiffPixelRatio: 0.005`. A missing or mismatched baseline fails the job and blocks merge. See "Visual regression gate (S5U-599)" below for the baseline-update flow. *CI-only because baseline rendering must happen on the pinned Linux runner; developers regenerate locally only when changing a curated component intentionally.*

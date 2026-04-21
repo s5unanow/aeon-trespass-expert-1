@@ -49,6 +49,13 @@ jobs:
       - name: Instruction drift check
         run: uv run python scripts/check_instruction_drift.py
 
+      # S5U-690: fail CI when the `make lint` recipe in Makefile drifts
+      # from the one-line summary documented in CLAUDE.md and load-bearing
+      # templates. Wired inside `python / test` (no new branch-protection
+      # context) — fail-closed on missing Makefile/CLAUDE.md/template.
+      - name: Make/doc parity check
+        run: uv run python scripts/check_make_doc_parity.py
+
       - name: Install Node (for TS codegen check)
         uses: actions/setup-node@v4
         with:
