@@ -203,29 +203,66 @@ echo "OK   [14 S5U-666 origin/main fallback]: BASE=origin/main as expected"
 # Layer 3 (S5U-670 / S5U-672 / S5U-673): coordinator-ack via REAL hook
 # =========================================================================
 #
-# The harness spawns the real .claude/hooks/pre-pr-check.sh against a namespaced
-# throwaway branch off main in THIS repo, with `gh` shadowed via PATH so the
-# `gh api repos/.../commits/<sha>/statuses` call returns fixture JSON.
+# Design (S5U-673): the harness spawns the real
+# .claude/hooks/pre-pr-check.sh AGAINST THE CURRENT BRANCH without switching
+# branches. The hook reads .claude/hooks/pre-pr-check.sh itself from disk; a
+# `git switch` would revert the on-disk hook to the base branch's version,
+# which is exactly the divergence the refactor is meant to expose. Staying
+# on the current branch keeps the hook-under-test loaded with the pending
+# changes.
 #
-# Cleanup invariant (trap EXIT): original branch restored, throwaway branch
-# deleted, probe file unlinked, stub tmp review artifact unlinked. The harness
-# refuses to run if stash/switch operations fail.
+# The current branch (s5unanow/s5u-<N>-…) typically already produces a
+# non-empty `git diff --name-only main...HEAD` that matches the hook's
+# safety-gate regex (hook edits, workflow edits, SKILL.md edits, etc.). On a
+# branch whose diff is NOT safety-gate-scoped, the coordinator-ack branch of
+# the hook never fires — the harness fails closed with a clear message rather
+# than silently pass as "everything OK" (G1).
+#
+# `gh` is shadowed via PATH so `gh api …/statuses` returns fixture JSON. The
+# harness temporarily relocates any real tmp/review-<issue>.md (to avoid
+# interfering with an in-flight Path B review) and restores it on EXIT.
 
 HARNESS_PID=$$
-FAKE_ISSUE="s5u-999${HARNESS_PID}"
-THROWAWAY_BRANCH="s5unanow/${FAKE_ISSUE}-harness-probe"
-PROBE_FILE=".claude/hooks/__harness_probe_${HARNESS_PID}.tmp"
-REVIEW_FILE="tmp/review-${FAKE_ISSUE}.md"
+CUR_BRANCH=$(cd "$REPO_ROOT" && git rev-parse --abbrev-ref HEAD)
+CUR_ISSUE_NUM=$(echo "$CUR_BRANCH" | grep -oiE 's5u-[0-9]+' | head -1 | tr '[:upper:]' '[:lower:]')
+REVIEW_FILE="tmp/review-${CUR_ISSUE_NUM}.md"
+REVIEW_BACKUP="tmp/review-${CUR_ISSUE_NUM}.md.harness_backup_${HARNESS_PID}"
 MOCK_BIN=$(mktemp -d)
 FIXTURE_DIR=$(mktemp -d)
-ORIGINAL_BRANCH=$(cd "$REPO_ROOT" && git rev-parse --abbrev-ref HEAD)
 
-# Guard: working tree must be clean before we fabricate state. If the user has
-# uncommitted changes, auto-stashing would mask real work on failure.
+# Guard: working tree must be clean. The harness writes a stub review file
+# and relies on deterministic mtime comparisons; uncommitted edits would
+# interleave with the stub unpredictably.
 if ! (cd "$REPO_ROOT" && git diff --quiet && git diff --cached --quiet); then
   echo "FAIL [layer 3 harness]: working tree is dirty. Commit, stash, or discard"
-  echo "  before running the coordinator-ack harness. The harness fabricates"
-  echo "  state on a throwaway branch and refuses to run against a dirty tree."
+  echo "  before running the coordinator-ack harness. The harness writes a stub"
+  echo "  tmp/review-<issue>.md in place (backing up any pre-existing file); a"
+  echo "  dirty tree would make the backup/restore non-deterministic."
+  exit 1
+fi
+
+# Guard: harness needs an issue number in the branch name for the review-file lookup.
+if [ -z "$CUR_ISSUE_NUM" ]; then
+  echo "FAIL [layer 3 harness]: current branch '$CUR_BRANCH' does not contain an"
+  echo "  S5U-<N> issue number. The harness runs on the current branch so the"
+  echo "  on-disk hook is the version under test; a non-namespaced branch cannot"
+  echo "  drive the hook's review-file lookup deterministically."
+  exit 1
+fi
+
+# Guard: current branch must have a safety-gate-scoped diff vs main — otherwise
+# the coordinator-ack branch of the hook never fires and inputs 15-23 are no-ops.
+if ! (cd "$REPO_ROOT" && git rev-parse --verify main^{commit} >/dev/null 2>&1); then
+  echo "FAIL [layer 3 harness]: local 'main' is missing; cannot compute safety-gate diff."
+  exit 1
+fi
+SAFETY_DIFF_CHECK=$(cd "$REPO_ROOT" && git diff --name-only main...HEAD \
+  | grep -E "$SAFETY_REGEX" || true)
+if [ -z "$SAFETY_DIFF_CHECK" ]; then
+  echo "FAIL [layer 3 harness]: current branch '$CUR_BRANCH' has no safety-gate"
+  echo "  paths in main...HEAD. The coordinator-ack branch of the hook only"
+  echo "  fires on a safety-gate diff. Run this harness from a branch that"
+  echo "  touches a hook / workflow / coordinator-signers / SKILL.md / CLAUDE.md."
   exit 1
 fi
 
@@ -233,19 +270,13 @@ cleanup_harness() {
   local rc=$?
   set +e
   cd "$REPO_ROOT" 2>/dev/null || true
-  # Restore original branch if we left it.
-  local cur
-  cur=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
-  if [ "$cur" != "$ORIGINAL_BRANCH" ] && [ -n "$ORIGINAL_BRANCH" ]; then
-    git switch "$ORIGINAL_BRANCH" >/dev/null 2>&1 || true
+  # Restore the pre-existing review file if we backed it up. Otherwise we
+  # wrote a net-new stub; remove it.
+  if [ -f "$REPO_ROOT/$REVIEW_BACKUP" ]; then
+    mv "$REPO_ROOT/$REVIEW_BACKUP" "$REPO_ROOT/$REVIEW_FILE" 2>/dev/null || true
+  else
+    rm -f "$REPO_ROOT/$REVIEW_FILE" 2>/dev/null || true
   fi
-  # Delete throwaway branch if it exists.
-  if git show-ref --verify --quiet "refs/heads/$THROWAWAY_BRANCH"; then
-    git branch -D "$THROWAWAY_BRANCH" >/dev/null 2>&1 || true
-  fi
-  # Remove fabricated artifacts (on original branch).
-  rm -f "$REPO_ROOT/$PROBE_FILE" 2>/dev/null || true
-  rm -f "$REPO_ROOT/$REVIEW_FILE" 2>/dev/null || true
   rm -rf "$MOCK_BIN" "$FIXTURE_DIR" 2>/dev/null || true
   set -e
   exit "$rc"
@@ -357,32 +388,24 @@ cat > "$FIXTURE_DIR/reaffirm.json" <<'EOF'
 ]
 EOF
 
-# Fabricate a throwaway branch off main with a safety-gate-scoped probe file,
-# so the hook's SAFETY_GATE_DIFF is non-empty and the coordinator-ack path fires.
 cd "$REPO_ROOT"
-# If main is not present locally (fresh clone edge case), fail cleanly.
-if ! git rev-parse --verify main^{commit} >/dev/null 2>&1; then
-  echo "FAIL [layer 3 harness]: local 'main' branch not present; cannot create"
-  echo "  a throwaway branch. Run \`git fetch origin main:main\` first."
-  exit 1
-fi
-# If the throwaway branch somehow exists, delete it defensively.
-if git show-ref --verify --quiet "refs/heads/$THROWAWAY_BRANCH"; then
-  git branch -D "$THROWAWAY_BRANCH" >/dev/null 2>&1
-fi
-git switch -c "$THROWAWAY_BRANCH" main >/dev/null 2>&1
-echo "harness probe file for S5U-673 test harness (auto-cleaned)" > "$PROBE_FILE"
-git add "$PROBE_FILE" >/dev/null
-git -c user.email=harness@local -c user.name=harness commit -q -m "harness: probe for S5U-673 layer-3 tests"
 
-# Write the review artifact that the hook reads. Must end with a valid verdict
-# line and include structured fields. Must be newer than HEAD (touch to now).
+# Back up an in-flight Path B review artifact for this branch, if present.
+# The harness writes a stub of its own; we restore the original on EXIT.
 mkdir -p "$REPO_ROOT/tmp"
+if [ -f "$REPO_ROOT/$REVIEW_FILE" ]; then
+  mv "$REPO_ROOT/$REVIEW_FILE" "$REPO_ROOT/$REVIEW_BACKUP"
+fi
+
+# Write the stub review artifact. Must end with a valid verdict line and
+# include the structured `Verdict:` / `Probes run:` fields. Must be newer
+# than HEAD (`touch` to current time).
 cat > "$REPO_ROOT/$REVIEW_FILE" <<'EOF'
 # Review artifact for harness self-test
 
 This is a stub review artifact synthesized by scripts/test_pre_pr_safety_gate.sh
-to exercise the pre-PR hook end-to-end. Do not commit.
+to exercise the pre-PR hook end-to-end. Do not commit; the EXIT trap restores
+any pre-existing review file and removes this stub.
 
 ## Verdict
 
@@ -399,8 +422,8 @@ Bug IDs filed: none
 
 **PASS**
 EOF
-# Ensure mtime is strictly newer than the throwaway HEAD commit timestamp.
-# (The hook's staleness check is REVIEW_MTIME < HEAD_TIME; equality passes.)
+# The hook's staleness check is REVIEW_MTIME < HEAD_TIME; `touch` now ensures
+# mtime >= HEAD timestamp.
 touch "$REPO_ROOT/$REVIEW_FILE"
 
 # invoke_hook: runs pre-pr-check.sh with $CLAUDE_TOOL_INPUT set + gh shadowed
@@ -450,7 +473,7 @@ assert_hook() {
 }
 
 echo ""
-echo "Layer 3 harness: driving real hook against throwaway branch $THROWAWAY_BRANCH"
+echo "Layer 3 harness: driving real hook on current branch $CUR_BRANCH (issue=$CUR_ISSUE_NUM)"
 echo ""
 
 # Input 15: happy — signed status → PASS
