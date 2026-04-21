@@ -294,11 +294,19 @@ fi
 #   - In CI on a push to main (no diff against self), SKIP with exit 0 —
 #     there is no pending safety-gate change to exercise; the gate was
 #     already evaluated on the PR that produced the merge.
-if ! (cd "$REPO_ROOT" && git rev-parse --verify main^{commit} >/dev/null 2>&1); then
-  echo "FAIL [layer 3 harness]: local 'main' is missing; cannot compute safety-gate diff."
+# Resolve a base ref — prefer local `main`, fall back to `origin/main` so CI
+# runs on detached HEAD (where actions/checkout doesn't create a local main)
+# also work. Fail closed if neither is present (G1).
+HARNESS_BASE_REF=""
+if (cd "$REPO_ROOT" && git rev-parse --verify main^{commit} >/dev/null 2>&1); then
+  HARNESS_BASE_REF=main
+elif (cd "$REPO_ROOT" && git rev-parse --verify origin/main^{commit} >/dev/null 2>&1); then
+  HARNESS_BASE_REF=origin/main
+else
+  echo "FAIL [layer 3 harness]: neither 'main' nor 'origin/main' is resolvable; cannot compute safety-gate diff."
   exit 1
 fi
-SAFETY_DIFF_CHECK=$(cd "$REPO_ROOT" && git diff --name-only main...HEAD \
+SAFETY_DIFF_CHECK=$(cd "$REPO_ROOT" && git diff --name-only "$HARNESS_BASE_REF...HEAD" \
   | grep -E "$SAFETY_REGEX" || true)
 if [ -z "$SAFETY_DIFF_CHECK" ]; then
   if [ "$CUR_BRANCH" = "main" ]; then
