@@ -9,12 +9,19 @@ describe('loadQa', () => {
   });
 
   it('fetches summary and records and returns a bundle', async () => {
+    // Mocks match the public DTO shapes (PublicQASummaryV1 / PublicQARecordSetV1)
+    // written by scripts/_export_qa.py. The web boundary no longer sees
+    // run_id / record_refs / per-record schema_version / document_id.
     const summary = {
-      schema_version: 'qa_summary.v1',
+      schema_version: 'public_qa_summary.v1',
       document_id: 'test_doc',
+      edition: 'ru',
       counts: { info: 0, warning: 1, error: 0, critical: 0 },
+      waived_counts: { info: 0, warning: 0, error: 0, critical: 0 },
+      blocking: false,
     };
     const records = {
+      schema_version: 'public_qa_record_set.v1',
       records: [
         {
           qa_id: 'qa.a',
