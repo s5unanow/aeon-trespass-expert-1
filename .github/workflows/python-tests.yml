@@ -100,6 +100,26 @@ jobs:
       - name: Test
         run: uv run pytest --tb=short
 
+      # S5U-673: exercise the pre-PR safety-gate hook end-to-end. Hermetic
+      # (no network, no secrets): mocks `gh` via PATH and drives the real
+      # .claude/hooks/pre-pr-check.sh against the current branch. Failure
+      # of any fixture case (regex / base-ref resolution / coordinator-ack
+      # filter / env-var-surface structural checks) fails this job. The
+      # test auto-stashes a pre-existing tmp/review-<issue>.md and
+      # restores it on exit so it does not interfere with reviewer state.
+      # Piggybacks on `python / test` rather than adding a new required
+      # context — see tmp/plan-s5u-673.md §6.
+      #
+      # HARNESS_BRANCH_OVERRIDE is passed so the harness resolves the PR
+      # source branch correctly when actions/checkout leaves HEAD detached.
+      # For push events, github.head_ref is empty and the harness falls back
+      # to `git rev-parse --abbrev-ref HEAD` (which on main is 'main',
+      # triggering the no-safety-gate-diff skip branch).
+      - name: Pre-PR safety gate harness
+        env:
+          HARNESS_BRANCH_OVERRIDE: ${{ github.head_ref }}
+        run: bash scripts/test_pre_pr_safety_gate.sh
+
       - name: Code erosion report (advisory)
         if: github.event_name == 'pull_request'
         continue-on-error: true

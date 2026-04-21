@@ -7,7 +7,23 @@ if ! echo "$CLAUDE_TOOL_INPUT" | grep -q 'gh pr create'; then
   exit 0
 fi
 
-cd /Users/s5una/projects/aeon-trespass-expert-1
+# Resolve the repo root dynamically so the hook is portable. When Claude Code
+# invokes this hook locally, the CWD is typically the worker's repo root
+# already; `git rev-parse --show-toplevel` gives us the authoritative answer.
+# S5U-673 made this dynamic because the CI harness
+# (scripts/test_pre_pr_safety_gate.sh) needs to spawn this hook on GitHub
+# Actions runners where /Users/s5una/... obviously does not exist. The
+# previous hardcoded path was a portability bug; we fall back to it only as
+# a last resort for worker environments without a git CWD.
+if REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); then
+  cd "$REPO_ROOT"
+elif [ -d /Users/s5una/projects/aeon-trespass-expert-1 ]; then
+  cd /Users/s5una/projects/aeon-trespass-expert-1
+else
+  echo "BLOCKED: pre-pr-check.sh cannot locate the repo root."
+  echo "  Not a git repo (CWD=$(pwd)) and no fallback path available."
+  exit 1
+fi
 
 BRANCH=$(git branch --show-current)
 
@@ -289,10 +305,15 @@ if [ -n "$SAFETY_GATE_DIFF" ]; then
     exit 1
   fi
 
-  # Find any coordinator-ack status with state=success.
-  # The response shape is a JSON array of status objects.
+  # Find the LATEST coordinator-ack status and require it to be state=success.
+  # The /commits/<sha>/statuses endpoint returns ALL statuses on the ref, not
+  # just the latest per context. S5U-673 replaced a filter-first / take-first
+  # expression that would accept a stale success even after a later revocation:
+  # if a coordinator posts success then later posts failure for the same
+  # context, the gate must honor the revocation. Sort coordinator-ack statuses
+  # by created_at, take the most recent, and require it to be success.
   MATCHING_CREATOR=$(echo "$STATUS_JSON" \
-    | jq -r '[.[] | select(.context == "coordinator-ack" and .state == "success") | .creator.login] | .[0] // empty' 2>/dev/null \
+    | jq -r '[.[] | select(.context == "coordinator-ack")] | sort_by(.created_at) | .[-1] | select(.state == "success") | .creator.login // empty' 2>/dev/null \
     || true)
 
   if [ -z "$MATCHING_CREATOR" ]; then
