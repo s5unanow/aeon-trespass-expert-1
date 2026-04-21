@@ -221,13 +221,15 @@ if [ -n "$SAFETY_GATE_DIFF" ]; then
   # self-posting produces a status stamped with the worker's login, which
   # fails the allowlist check.
   #
-  # TEST-ONLY bypass: COORDINATOR_ACK_STATUS_SOURCE=<path-to-json> short-circuits
-  # the gh api call and reads the file instead. This is reviewer-visible (the
-  # var name is searchable and any occurrence in commit messages / PR bodies /
-  # shell history is a hook-bypass event per CLAUDE.md NEVER-list S5U-629).
-  # The env var exists so scripts/test_pre_pr_safety_gate.sh can exercise the
-  # three-input discipline without hitting live GitHub — see that file for
-  # the fixture shape. Production use is a disclosable bypass.
+  # S5U-672 (supersedes the S5U-670 test-only env-var override): there is
+  # NO env-var short-circuit. A prior revision honored a path-to-JSON env
+  # var so scripts/test_pre_pr_safety_gate.sh could exercise the filter
+  # without live GitHub, but that env var was a production-accessible
+  # forgery surface — a worker running `<var>=/tmp/forged.json gh pr create`
+  # could inject arbitrary status JSON and defeat the gate. The env var has
+  # been removed. The test script replicates the filter logic inline
+  # (see its `validate_coordinator_ack()` function) and does not invoke
+  # this hook with any override.
 
   HEAD_SHA=$(git rev-parse HEAD)
   ALLOWLIST_FILE=".claude/coordinator-signers.txt"
@@ -250,35 +252,24 @@ if [ -n "$SAFETY_GATE_DIFF" ]; then
     exit 1
   fi
 
-  # Fetch status list. Env-var override for test fixtures; live gh api otherwise.
-  STATUS_JSON=""
-  if [ -n "${COORDINATOR_ACK_STATUS_SOURCE:-}" ]; then
-    echo "TEST OVERRIDE: reading coordinator-ack status from \$COORDINATOR_ACK_STATUS_SOURCE='$COORDINATOR_ACK_STATUS_SOURCE'"
-    echo "  (this env var is for test fixtures only — use in production is a hook-bypass event per CLAUDE.md NEVER list)"
-    if [ ! -f "$COORDINATOR_ACK_STATUS_SOURCE" ]; then
-      echo "BLOCKED: COORDINATOR_ACK_STATUS_SOURCE points to missing file '$COORDINATOR_ACK_STATUS_SOURCE'."
-      exit 1
-    fi
-    STATUS_JSON=$(cat "$COORDINATOR_ACK_STATUS_SOURCE")
-  else
-    if ! command -v gh >/dev/null 2>&1; then
-      echo "BLOCKED: 'gh' CLI not found; cannot query coordinator-ack status on $HEAD_SHA."
-      echo "Per .claude/rules/guards.md Rule G1, failing closed."
-      exit 1
-    fi
-    # `gh api` exits non-zero on API errors; we capture both stdout and exit status.
-    if ! STATUS_JSON=$(gh api "repos/s5unanow/aeon-trespass-expert-1/commits/$HEAD_SHA/statuses" 2>&1); then
-      echo "BLOCKED: gh api failed while querying coordinator-ack statuses for $HEAD_SHA."
-      echo ""
-      echo "Response (may contain error from GitHub):"
-      echo "$STATUS_JSON" | sed 's/^/  /'
-      echo ""
-      echo "Per .claude/rules/guards.md Rule G1, API failures fail closed."
-      echo "Common causes: gh not authenticated, rate limit, network down,"
-      echo "commit not yet pushed (GH API resolves against origin — push HEAD"
-      echo "to a branch on origin before running gh pr create)."
-      exit 1
-    fi
+  # Fetch status list via live `gh api` — no override surface.
+  if ! command -v gh >/dev/null 2>&1; then
+    echo "BLOCKED: 'gh' CLI not found; cannot query coordinator-ack status on $HEAD_SHA."
+    echo "Per .claude/rules/guards.md Rule G1, failing closed."
+    exit 1
+  fi
+  # `gh api` exits non-zero on API errors; we capture both stdout and exit status.
+  if ! STATUS_JSON=$(gh api "repos/s5unanow/aeon-trespass-expert-1/commits/$HEAD_SHA/statuses" 2>&1); then
+    echo "BLOCKED: gh api failed while querying coordinator-ack statuses for $HEAD_SHA."
+    echo ""
+    echo "Response (may contain error from GitHub):"
+    echo "$STATUS_JSON" | sed 's/^/  /'
+    echo ""
+    echo "Per .claude/rules/guards.md Rule G1, API failures fail closed."
+    echo "Common causes: gh not authenticated, rate limit, network down,"
+    echo "commit not yet pushed (GH API resolves against origin — push HEAD"
+    echo "to a branch on origin before running gh pr create)."
+    exit 1
   fi
 
   if ! command -v jq >/dev/null 2>&1; then
