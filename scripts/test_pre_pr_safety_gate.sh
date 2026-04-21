@@ -223,7 +223,44 @@ echo "OK   [14 S5U-666 origin/main fallback]: BASE=origin/main as expected"
 # interfering with an in-flight Path B review) and restores it on EXIT.
 
 HARNESS_PID=$$
-CUR_BRANCH=$(cd "$REPO_ROOT" && git rev-parse --abbrev-ref HEAD)
+# `actions/checkout@v4` leaves HEAD detached on pull_request events (it checks
+# out refs/pull/N/merge). The hook itself calls `git branch --show-current`,
+# which returns empty in detached mode — so on CI we must materialize a local
+# branch pointing at HEAD, named after the PR's source branch, so the hook can
+# derive ISSUE_NUM from it.
+#
+# Resolution order:
+#   1. $HARNESS_BRANCH_OVERRIDE (CI workflow passes github.head_ref)
+#   2. `git rev-parse --abbrev-ref HEAD` (local dev branch)
+DETECTED_BRANCH=$(cd "$REPO_ROOT" && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+if [ -n "${HARNESS_BRANCH_OVERRIDE:-}" ]; then
+  CUR_BRANCH="$HARNESS_BRANCH_OVERRIDE"
+elif [ -n "$DETECTED_BRANCH" ] && [ "$DETECTED_BRANCH" != "HEAD" ]; then
+  CUR_BRANCH="$DETECTED_BRANCH"
+else
+  # Detached HEAD with no override — cannot proceed.
+  echo "FAIL [layer 3 harness]: detached HEAD with no HARNESS_BRANCH_OVERRIDE."
+  echo "  Set HARNESS_BRANCH_OVERRIDE=<branch-name> or run from a named branch."
+  exit 1
+fi
+
+# If we are in detached HEAD but have an override (CI pull_request case),
+# create a local branch pointing at HEAD so the hook's `git branch --show-current`
+# returns the expected name. Track for cleanup.
+DETACHED_BRANCH_CREATED=""
+if [ "$DETECTED_BRANCH" = "HEAD" ] || [ -z "$DETECTED_BRANCH" ]; then
+  # We're in detached HEAD. Create a branch named $CUR_BRANCH at HEAD (if the
+  # name is free). If the name already exists (shouldn't, on a fresh CI
+  # checkout), point it at HEAD.
+  if (cd "$REPO_ROOT" && git show-ref --verify --quiet "refs/heads/$CUR_BRANCH"); then
+    (cd "$REPO_ROOT" && git branch -f "$CUR_BRANCH" HEAD)
+  else
+    (cd "$REPO_ROOT" && git branch "$CUR_BRANCH" HEAD)
+  fi
+  (cd "$REPO_ROOT" && git switch "$CUR_BRANCH" >/dev/null 2>&1)
+  DETACHED_BRANCH_CREATED="$CUR_BRANCH"
+fi
+
 CUR_ISSUE_NUM=$(echo "$CUR_BRANCH" | grep -oiE 's5u-[0-9]+' | head -1 | tr '[:upper:]' '[:lower:]')
 REVIEW_FILE="tmp/review-${CUR_ISSUE_NUM}.md"
 REVIEW_BACKUP="tmp/review-${CUR_ISSUE_NUM}.md.harness_backup_${HARNESS_PID}"
@@ -250,8 +287,13 @@ if [ -z "$CUR_ISSUE_NUM" ]; then
   exit 1
 fi
 
-# Guard: current branch must have a safety-gate-scoped diff vs main — otherwise
-# the coordinator-ack branch of the hook never fires and inputs 15-23 are no-ops.
+# Layer 3 requires the current branch to have a safety-gate-scoped diff vs
+# main so the coordinator-ack branch of the hook fires. If not:
+#   - On a worker's local dev branch, fail closed — the harness was invoked
+#     but cannot exercise its target. Silent skip would give a false green.
+#   - In CI on a push to main (no diff against self), SKIP with exit 0 —
+#     there is no pending safety-gate change to exercise; the gate was
+#     already evaluated on the PR that produced the merge.
 if ! (cd "$REPO_ROOT" && git rev-parse --verify main^{commit} >/dev/null 2>&1); then
   echo "FAIL [layer 3 harness]: local 'main' is missing; cannot compute safety-gate diff."
   exit 1
@@ -259,6 +301,14 @@ fi
 SAFETY_DIFF_CHECK=$(cd "$REPO_ROOT" && git diff --name-only main...HEAD \
   | grep -E "$SAFETY_REGEX" || true)
 if [ -z "$SAFETY_DIFF_CHECK" ]; then
+  if [ "$CUR_BRANCH" = "main" ]; then
+    echo "SKIP [layer 3 harness]: on 'main' with no pending safety-gate diff."
+    echo "  Post-merge CI runs have nothing to exercise here — the gate was"
+    echo "  evaluated on the PR. Layers 1 and 2 already passed above."
+    echo ""
+    echo "ALL TESTS PASSED"
+    exit 0
+  fi
   echo "FAIL [layer 3 harness]: current branch '$CUR_BRANCH' has no safety-gate"
   echo "  paths in main...HEAD. The coordinator-ack branch of the hook only"
   echo "  fires on a safety-gate diff. Run this harness from a branch that"
@@ -276,6 +326,13 @@ cleanup_harness() {
     mv "$REPO_ROOT/$REVIEW_BACKUP" "$REPO_ROOT/$REVIEW_FILE" 2>/dev/null || true
   else
     rm -f "$REPO_ROOT/$REVIEW_FILE" 2>/dev/null || true
+  fi
+  # Detach + delete the ad-hoc branch we created for detached-HEAD CI runs.
+  # `git switch --detach HEAD` puts us back into detached HEAD at the same
+  # commit so `git branch -D` on the current branch succeeds.
+  if [ -n "${DETACHED_BRANCH_CREATED:-}" ]; then
+    git switch --detach HEAD >/dev/null 2>&1 || true
+    git branch -D "$DETACHED_BRANCH_CREATED" >/dev/null 2>&1 || true
   fi
   rm -rf "$MOCK_BIN" "$FIXTURE_DIR" 2>/dev/null || true
   set -e
