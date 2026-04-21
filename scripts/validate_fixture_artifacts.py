@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 
-from atr_schemas import PageIRV1, QASummaryV1, RenderPageV1
+from atr_schemas import PageIRV1, PublicQASummaryV1, RenderPageV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1
 from atr_schemas.translation_result_v1 import TranslationResultV1
 
@@ -25,7 +25,9 @@ VALIDATABLE = {
     "render_page.p0001.json": RenderPageV1,
     "translation_batch.p0001.json": TranslationBatchV1,
     "translation_result.p0001.json": TranslationResultV1,
-    "qa_summary.json": QASummaryV1,
+    # qa_summary.json fixture represents the PUBLIC web-bundle projection
+    # (S5U-689). Validate against the public DTO, not the internal QASummaryV1.
+    "qa_summary.json": PublicQASummaryV1,
 }
 
 

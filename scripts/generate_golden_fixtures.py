@@ -415,15 +415,20 @@ def main() -> None:
     )
 
     # --- qa_summary.json ---
+    # The fixture represents the PUBLIC web bundle (PublicQASummaryV1 shape),
+    # not the internal QASummaryV1 artifact written to the pipeline store.
+    # Internal fields (run_id, record_refs, review_pack_ref, qa_metrics_ref)
+    # are deliberately absent per S5U-689 — their presence here would mean
+    # the fixture was blessing the pre-projection contract.
     write_json(
         "qa_summary.json",
         {
-            "schema_version": "qa_summary.v1",
+            "schema_version": "public_qa_summary.v1",
             "document_id": "walking_skeleton",
-            "run_id": "",
+            "edition": "",
             "counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+            "waived_counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
             "blocking": False,
-            "record_refs": [],
         },
     )
 
