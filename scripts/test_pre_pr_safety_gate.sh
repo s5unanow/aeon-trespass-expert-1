@@ -261,7 +261,11 @@ if [ "$DETECTED_BRANCH" = "HEAD" ] || [ -z "$DETECTED_BRANCH" ]; then
   DETACHED_BRANCH_CREATED="$CUR_BRANCH"
 fi
 
-CUR_ISSUE_NUM=$(echo "$CUR_BRANCH" | grep -oiE 's5u-[0-9]+' | head -1 | tr '[:upper:]' '[:lower:]')
+# S5U-691: grep pipeline must tolerate no-match (|| true). On main post-merge
+# CI, CUR_BRANCH="main" contains no 's5u-<N>' substring; without `|| true`,
+# `pipefail + set -e` would kill the script here before the skip-on-main
+# branch below can fire. Option 1 of S5U-691 Fix sketch.
+CUR_ISSUE_NUM=$(echo "$CUR_BRANCH" | grep -oiE 's5u-[0-9]+' | head -1 | tr '[:upper:]' '[:lower:]' || true)
 REVIEW_FILE="tmp/review-${CUR_ISSUE_NUM}.md"
 REVIEW_BACKUP="tmp/review-${CUR_ISSUE_NUM}.md.harness_backup_${HARNESS_PID}"
 MOCK_BIN=$(mktemp -d)
@@ -278,22 +282,20 @@ if ! (cd "$REPO_ROOT" && git diff --quiet && git diff --cached --quiet); then
   exit 1
 fi
 
-# Guard: harness needs an issue number in the branch name for the review-file lookup.
-if [ -z "$CUR_ISSUE_NUM" ]; then
-  echo "FAIL [layer 3 harness]: current branch '$CUR_BRANCH' does not contain an"
-  echo "  S5U-<N> issue number. The harness runs on the current branch so the"
-  echo "  on-disk hook is the version under test; a non-namespaced branch cannot"
-  echo "  drive the hook's review-file lookup deterministically."
-  exit 1
-fi
-
-# Layer 3 requires the current branch to have a safety-gate-scoped diff vs
-# main so the coordinator-ack branch of the hook fires. If not:
+# S5U-691: skip-on-main check runs BEFORE the issue-number guard (option 2 of
+# the Fix sketch). Layer 3 requires a safety-gate-scoped diff vs main so the
+# coordinator-ack branch of the hook fires. If not:
 #   - On a worker's local dev branch, fail closed — the harness was invoked
 #     but cannot exercise its target. Silent skip would give a false green.
 #   - In CI on a push to main (no diff against self), SKIP with exit 0 —
 #     there is no pending safety-gate change to exercise; the gate was
 #     already evaluated on the PR that produced the merge.
+#
+# Reorder rationale: before S5U-691, the issue-number guard ran first, which
+# short-circuited BEFORE we had a chance to detect "running on main with
+# nothing to do". Option 2 puts the skip decision first so main-post-merge
+# CI correctly exits 0 regardless of whether the branch name matches
+# s5u-<N> (it doesn't — it's literally 'main').
 # Resolve a base ref — prefer local `main`, fall back to `origin/main` so CI
 # runs on detached HEAD (where actions/checkout doesn't create a local main)
 # also work. Fail closed if neither is present (G1).
@@ -321,6 +323,17 @@ if [ -z "$SAFETY_DIFF_CHECK" ]; then
   echo "  paths in main...HEAD. The coordinator-ack branch of the hook only"
   echo "  fires on a safety-gate diff. Run this harness from a branch that"
   echo "  touches a hook / workflow / coordinator-signers / SKILL.md / CLAUDE.md."
+  exit 1
+fi
+
+# Guard: harness needs an issue number in the branch name for the review-file
+# lookup. Moved AFTER the skip-on-main branch (S5U-691 option 2) so main
+# post-merge CI exits cleanly before reaching this guard.
+if [ -z "$CUR_ISSUE_NUM" ]; then
+  echo "FAIL [layer 3 harness]: current branch '$CUR_BRANCH' does not contain an"
+  echo "  S5U-<N> issue number. The harness runs on the current branch so the"
+  echo "  on-disk hook is the version under test; a non-namespaced branch cannot"
+  echo "  drive the hook's review-file lookup deterministically."
   exit 1
 fi
 
