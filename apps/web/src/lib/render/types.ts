@@ -118,6 +118,27 @@ export type FacsimileAnnotation = renderPageV1.FacsimileAnnotation;
 export type RenderSourceMap = Required<renderPageV1.RenderSourceMap>;
 export type RenderBuildMeta = renderPageV1.RenderBuildMeta;
 
+/** `RenderPageV1.presentation_mode` enum, projected from the generated schema. */
+export type PresentationMode = NonNullable<renderPageV1.RenderPageV1['presentation_mode']>;
+
+/** `FacsimileAnnotation.kind` enum, projected from the generated schema. */
+export type FacsimileAnnotationKind = NonNullable<renderPageV1.FacsimileAnnotation['kind']>;
+
+// ---------------------------------------------------------------------------
+// Compile-time coverage guard — enum-valued schema fields
+// ---------------------------------------------------------------------------
+
+/**
+ * Resolves to `true` when `Covered` is a superset of `Enum`, and to `never`
+ * otherwise. Used to force the runtime tables in `normalize.ts` to list
+ * every enum literal the generated schema admits. Adding a new literal to
+ * Pydantic (e.g. a new `FacsimileAnnotation.kind` value or a new
+ * `presentation_mode`) regenerates the TS enum, which flips this alias to
+ * `never` until the runtime table is extended.
+ */
+export type AssertEnumCovered<Enum extends string, Covered extends Enum> =
+  Exclude<Enum, Covered> extends never ? true : never;
+
 /**
  * Reader-local projection of `RenderPageV1` with all defaulted fields
  * materialized. Produced only by `normalizeRenderPage`.

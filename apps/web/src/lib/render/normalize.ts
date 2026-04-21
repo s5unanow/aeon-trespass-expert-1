@@ -16,16 +16,19 @@
  */
 
 import type {
+  AssertEnumCovered,
+  FacsimileAnnotation,
+  FacsimileAnnotationKind,
+  PresentationMode,
   RenderBlock,
+  RenderBuildMeta,
+  RenderFacsimile,
   RenderFigure,
   RenderInlineNode,
+  RenderNav,
   RenderPageData,
   RenderPageMeta,
-  RenderNav,
-  RenderFacsimile,
-  FacsimileAnnotation,
   RenderSourceMap,
-  RenderBuildMeta,
 } from './types';
 
 /** Thrown when a `render_page.v1` payload cannot be normalized to `RenderPageData`. */
@@ -39,6 +42,37 @@ export class InvalidRenderPageError extends Error {
 }
 
 const SUPPORTED_SCHEMA_VERSION = 'render_page.v1';
+
+// ---------------------------------------------------------------------------
+// Enum tables — compile-time checked against the generated schema.
+//
+// The `EnumValues<E, T>` helper flips the tuple's type to `never` if `T`
+// does not cover every literal admitted by `E`. Regenerating the TS types
+// after a Pydantic enum extension breaks compilation here until the tuple
+// is updated — this is the compile-time half of Codex's review feedback.
+// ---------------------------------------------------------------------------
+
+const PRESENTATION_MODES = ['article', 'facsimile'] as const;
+const FACSIMILE_ANNOTATION_KINDS = ['title', 'body', 'caption', 'callout', 'label'] as const;
+
+// Compile-time coverage tripwires. These assignments flip to `never` and fail
+// to typecheck if the generated schema admits a literal not present in the
+// tuples above. Touch these only by extending the tuple.
+const _presentationCovered: AssertEnumCovered<
+  PresentationMode,
+  (typeof PRESENTATION_MODES)[number]
+> = true;
+const _annotationKindCovered: AssertEnumCovered<
+  FacsimileAnnotationKind,
+  (typeof FACSIMILE_ANNOTATION_KINDS)[number]
+> = true;
+void _presentationCovered;
+void _annotationKindCovered;
+
+const PRESENTATION_MODE_SET: ReadonlySet<PresentationMode> = new Set(PRESENTATION_MODES);
+const FACSIMILE_ANNOTATION_KIND_SET: ReadonlySet<FacsimileAnnotationKind> = new Set(
+  FACSIMILE_ANNOTATION_KINDS,
+);
 
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -233,16 +267,11 @@ function normalizeFacsimileAnnotation(raw: unknown, path: string): FacsimileAnno
     throw new InvalidRenderPageError(`${path}.bbox`, `expected object, got ${typeof bboxRaw}`);
   }
   const kindRaw = raw.kind;
-  const kind = kindRaw === undefined ? 'body' : asString(kindRaw, `${path}.kind`);
-  if (
-    kind !== 'title' &&
-    kind !== 'body' &&
-    kind !== 'caption' &&
-    kind !== 'callout' &&
-    kind !== 'label'
-  ) {
-    throw new InvalidRenderPageError(`${path}.kind`, `unsupported annotation kind "${kind}"`);
+  const kindStr = kindRaw === undefined ? 'body' : asString(kindRaw, `${path}.kind`);
+  if (!FACSIMILE_ANNOTATION_KIND_SET.has(kindStr as FacsimileAnnotationKind)) {
+    throw new InvalidRenderPageError(`${path}.kind`, `unsupported annotation kind "${kindStr}"`);
   }
+  const kind = kindStr as FacsimileAnnotationKind;
   return {
     text: asString(raw.text, `${path}.text`),
     translated_text: asString(raw.translated_text, `${path}.translated_text`, ''),
@@ -333,14 +362,15 @@ export function normalizeRenderPage(raw: unknown): RenderPageData {
     );
   }
   const presentationRaw = raw.presentation_mode;
-  const presentation_mode =
+  const presentation_mode_str =
     presentationRaw === undefined ? 'article' : asString(presentationRaw, 'presentation_mode');
-  if (presentation_mode !== 'article' && presentation_mode !== 'facsimile') {
+  if (!PRESENTATION_MODE_SET.has(presentation_mode_str as PresentationMode)) {
     throw new InvalidRenderPageError(
       'presentation_mode',
-      `unsupported "${presentation_mode}"; expected "article" | "facsimile"`,
+      `unsupported "${presentation_mode_str}"; expected one of ${PRESENTATION_MODES.join(', ')}`,
     );
   }
+  const presentation_mode = presentation_mode_str as PresentationMode;
 
   const blocksRaw = asArray(raw.blocks ?? [], 'blocks');
   const blocks = blocksRaw.map((b, i) => normalizeBlock(b, `blocks[${i}]`));
