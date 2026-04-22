@@ -15,6 +15,12 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from atr_pipeline.stages.render.annotation_safeguards import (
+    bbox_area,
+    is_bbox_valid,
+    strip_implausible_pairings,
+    suppress_fully_occluded,
+)
 from atr_schemas.common import NormRect
 from atr_schemas.page_ir_v1 import (
     Block,
@@ -26,30 +32,6 @@ from atr_schemas.page_ir_v1 import (
 from atr_schemas.render_page_v1 import FacsimileAnnotation
 
 AnnotationKind = Literal["title", "body", "caption", "callout", "label"]
-
-# S5U-697 pairing-stability thresholds. A stale RU IR produces `block_id`
-# matches whose translated text has wildly different length from the English
-# source; real translations cluster within a factor of ~2x. These bounds are
-# intentionally generous (5x / 0.2x) so that abbreviation-heavy pairs
-# (e.g. "HP" -> "zdorove") still pass, but multi-paragraph leakage is caught.
-_PAIRING_MAX_LENGTH_RATIO = 5.0
-_PAIRING_MIN_LENGTH_RATIO = 0.2
-_PAIRING_MIN_EN_LENGTH = 4  # below this we don't have enough signal to judge
-
-# S5U-697 page-level staleness threshold. If >=30% of paired EN/RU blocks on
-# a page fail the per-annotation length-ratio plausibility check, the entire
-# RU IR is treated as stale (generated from a different extraction run than
-# the current EN IR). In that case every translated_text on the page is
-# cleared — the reader will show EN-only tooltips rather than ship confident
-# but wrong pairings. This is the "fail closed" escape hatch the issue asks
-# for when tooltip mappings reference stale content.
-_PAGE_STALENESS_RATIO = 0.30
-
-# Bbox overlap suppression threshold. A bbox is "fully contained" if >=90% of
-# its area lies inside another bbox; the *outer* (less-specific) annotation
-# is dropped so the inner hotspot stays reachable. 90% rather than 100% to
-# tolerate 1-pixel extractor jitter.
-_FULL_CONTAINMENT_RATIO = 0.9
 
 # Block type → (annotation kind, base priority)
 _BLOCK_KIND_MAP: dict[str, tuple[AnnotationKind, int]] = {
@@ -99,16 +81,24 @@ def build_facsimile_annotations(
     # S5U-697: strip translations that look like stale-IR leakage *before*
     # running the quality filters so the length-ratio check does not have to
     # reason about a filter pipeline that may already have dropped context.
-    candidates = _strip_implausible_pairings(candidates)
+    candidates = strip_implausible_pairings(candidates)
     filtered = _filter_annotations(candidates, cfg, curated=curated)
     # S5U-697: after per-annotation filtering, drop outer hotspots that fully
     # occlude an inner one. Applied late so we do not waste a containment pass
     # on annotations that were going to be filtered for unrelated reasons.
     # Skipped in curated mode — the operator has explicitly listed which
     # captions to surface and is expected to resolve overlaps manually.
+    pre_occlusion = filtered
     if not curated:
-        filtered = _suppress_fully_occluded(filtered)
-    if not curated and not _page_quality_ok(filtered, cfg, candidate_count=len(candidates)):
+        filtered = suppress_fully_occluded(filtered)
+    # S5U-697 Codex round-2: the drop-ratio gate compares against candidates
+    # *minus* any drops that were purely occlusion-suppression (which are
+    # legitimate deduplications, not quality rejections). Otherwise a page
+    # with several nested hotspots hits the drop-ratio gate and ships []
+    # even though the surviving overlay is clean.
+    occlusion_drops = len(pre_occlusion) - len(filtered)
+    effective_candidates = max(0, len(candidates) - occlusion_drops)
+    if not curated and not _page_quality_ok(filtered, cfg, candidate_count=effective_candidates):
         return []
     filtered.sort(key=lambda a: a.priority, reverse=True)
     return filtered
@@ -165,7 +155,7 @@ def _build_candidates(
         # normalization). Non-finite coords are already rejected above on
         # the raw values; this belt-and-suspenders also catches bboxes
         # that collapsed because x1 == x0 on the raw side.
-        if not _is_bbox_valid(bbox):
+        if not is_bbox_valid(bbox):
             continue
 
         annotations.append(
@@ -195,7 +185,7 @@ def _filter_annotations(
     for ann in candidates:
         if _is_identical_translation(ann.text, ann.translated_text):
             continue
-        if not curated and _bbox_area(ann.bbox) > cfg.max_bbox_area:
+        if not curated and bbox_area(ann.bbox) > cfg.max_bbox_area:
             continue
         if _is_garbled(ann.text, cfg.min_letter_ratio):
             continue
@@ -214,7 +204,7 @@ def _page_quality_ok(
         return True  # empty is fine — nothing to suppress
     if len(annotations) > cfg.max_annotation_count:
         return False
-    total_area = sum(_bbox_area(a.bbox) for a in annotations)
+    total_area = sum(bbox_area(a.bbox) for a in annotations)
     if total_area > cfg.max_total_area:
         return False
     if candidate_count > 0:
@@ -257,13 +247,6 @@ def _is_identical_translation(en: str, ru: str) -> bool:
     return _normalize_for_compare(en) == _normalize_for_compare(ru)
 
 
-def _bbox_area(bbox: NormRect) -> float:
-    """Compute normalized area of a bounding box."""
-    w = max(0.0, bbox.x1 - bbox.x0)
-    h = max(0.0, bbox.y1 - bbox.y0)
-    return w * h
-
-
 def _is_garbled(text: str, min_letter_ratio: float) -> bool:
     """Return True if text is mostly non-letter characters (OCR noise)."""
     stripped = text.replace(" ", "")
@@ -271,148 +254,3 @@ def _is_garbled(text: str, min_letter_ratio: float) -> bool:
         return False  # single chars are fine (game labels like "I", "?")
     alphanumeric = sum(1 for c in stripped if c.isalnum())
     return (alphanumeric / len(stripped)) < min_letter_ratio
-
-
-# ---------------------------------------------------------------------------
-# S5U-697 — pairing-stability + occlusion-suppression helpers
-# ---------------------------------------------------------------------------
-
-
-def _is_bbox_valid(bbox: NormRect) -> bool:
-    """Return True iff bbox coordinates are finite and area is positive.
-
-    Zero-width or zero-height bboxes cannot host a clickable marker
-    meaningfully, and non-finite coordinates would break every downstream
-    overlap / area calculation silently.
-    """
-    coords = (bbox.x0, bbox.y0, bbox.x1, bbox.y1)
-    if not all(math.isfinite(c) for c in coords):
-        return False
-    return not (bbox.x1 <= bbox.x0 or bbox.y1 <= bbox.y0)
-
-
-def _is_plausible_pair(en_text: str, ru_text: str) -> bool:
-    """Return True when EN/RU texts could plausibly be translations of each other.
-
-    Uses a length-ratio heuristic: real translations cluster around 1x (a bit
-    higher for Cyrillic expansion, lower for very terse RU labels). Pairs that
-    exceed ``_PAIRING_MAX_LENGTH_RATIO`` or fall below
-    ``_PAIRING_MIN_LENGTH_RATIO`` are treated as stale-IR leakage.
-
-    Short EN texts (``< _PAIRING_MIN_EN_LENGTH`` chars) are always considered
-    plausible — with so little signal, a length check produces more false
-    positives than it catches true mismatches.
-    """
-    en_stripped = en_text.strip()
-    ru_stripped = ru_text.strip()
-    if not en_stripped or not ru_stripped:
-        return True  # caller handles the empty-translation case separately
-    if len(en_stripped) < _PAIRING_MIN_EN_LENGTH:
-        return True
-    ratio = len(ru_stripped) / len(en_stripped)
-    return _PAIRING_MIN_LENGTH_RATIO <= ratio <= _PAIRING_MAX_LENGTH_RATIO
-
-
-def _strip_implausible_pairings(
-    annotations: list[FacsimileAnnotation],
-) -> list[FacsimileAnnotation]:
-    """Rewrite annotations whose RU translation fails the plausibility check.
-
-    The annotation itself is preserved (so the EN caption still renders) but
-    ``translated_text`` is cleared. Dropping the pair outright would hide a
-    legitimate EN-only hotspot; keeping the stale translation would ship the
-    user-visible wrong-tooltip defect. Clearing it yields the least-surprising
-    behaviour and is also what ``_is_identical_translation`` already does when
-    the translator returns the source text unchanged.
-
-    Page-level escalation: when the implausible-pair rate on a page is high
-    (``>= _PAGE_STALENESS_RATIO``), assume the RU IR is stale relative to the
-    current EN IR and clear every translation on the page. Per-annotation
-    length ratios that individually pass the plausibility check may still be
-    wrong pairings (see S5U-697 for the motivating case where a 1.8x ratio
-    slipped through the per-annotation check but came from a shuffled
-    block_id map), so an aggregate signal is the only way to catch them
-    without running a full content-based EN/RU alignment.
-    """
-    paired = [ann for ann in annotations if ann.translated_text]
-    if paired:
-        bad = sum(1 for ann in paired if not _is_plausible_pair(ann.text, ann.translated_text))
-        if (bad / len(paired)) >= _PAGE_STALENESS_RATIO:
-            return [
-                ann.model_copy(update={"translated_text": ""}) if ann.translated_text else ann
-                for ann in annotations
-            ]
-
-    result: list[FacsimileAnnotation] = []
-    for ann in annotations:
-        if ann.translated_text and not _is_plausible_pair(ann.text, ann.translated_text):
-            result.append(ann.model_copy(update={"translated_text": ""}))
-        else:
-            result.append(ann)
-    return result
-
-
-def _contains_bbox(outer: NormRect, inner: NormRect) -> bool:
-    """Return True when ``inner`` is (approximately) fully contained in ``outer``.
-
-    Uses the intersection-over-inner-area ratio so that a small 1px extraction
-    jitter on the boundary does not defeat the containment test.
-    """
-    inner_area = _bbox_area(inner)
-    if inner_area <= 0:
-        return False
-    ix0 = max(outer.x0, inner.x0)
-    iy0 = max(outer.y0, inner.y0)
-    ix1 = min(outer.x1, inner.x1)
-    iy1 = min(outer.y1, inner.y1)
-    if ix1 <= ix0 or iy1 <= iy0:
-        return False
-    intersection = (ix1 - ix0) * (iy1 - iy0)
-    return (intersection / inner_area) >= _FULL_CONTAINMENT_RATIO
-
-
-def _suppress_fully_occluded(
-    annotations: list[FacsimileAnnotation],
-) -> list[FacsimileAnnotation]:
-    """Drop outer annotations that fully contain another annotation.
-
-    Iterates pairwise; when A contains B (and A != B), A is dropped because
-    B is the more specific, still-reachable hotspot. If A and B are
-    mutually containing (near-identical bboxes — can happen when the 0.9
-    containment threshold triggers in both directions on boxes that differ
-    only by 1-pixel extraction jitter), drop the larger-area one; ties
-    break on priority then on index order for determinism.
-    """
-    if len(annotations) < 2:
-        return list(annotations)
-    dropped: set[int] = set()
-    for i, outer in enumerate(annotations):
-        if i in dropped:
-            continue
-        for j, inner in enumerate(annotations):
-            if i == j or j in dropped:
-                continue
-            if not _contains_bbox(outer.bbox, inner.bbox):
-                continue
-            # If inner also contains outer, they are near-identical. Keep
-            # the smaller-area annotation (or higher priority on area tie,
-            # or lower-index on priority tie) so the user-visible hotspot
-            # is the most-specific one.
-            if _contains_bbox(inner.bbox, outer.bbox):
-                outer_area = _bbox_area(outer.bbox)
-                inner_area = _bbox_area(inner.bbox)
-                if outer_area > inner_area or (
-                    outer_area == inner_area
-                    and (
-                        inner.priority > outer.priority
-                        or (inner.priority == outer.priority and j < i)
-                    )
-                ):
-                    dropped.add(i)
-                    break
-                dropped.add(j)
-                continue
-            # Strict containment: drop the outer (less specific).
-            dropped.add(i)
-            break
-    return [a for idx, a in enumerate(annotations) if idx not in dropped]

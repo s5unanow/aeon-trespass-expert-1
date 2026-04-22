@@ -304,6 +304,35 @@ def test_partial_overlap_does_not_trigger_suppression() -> None:
     assert len(result) == 2
 
 
+def test_multi_occlusion_does_not_trip_drop_ratio_gate() -> None:
+    """Multiple legitimately-redundant nested hotspots must not blow the
+    drop-ratio gate to []: occlusion suppression is a deduplication, not a
+    quality rejection. Codex round-2 review finding.
+    """
+    # 4 concentric-ish outer blocks around one small inner block. Each
+    # outer strictly contains the inner, so _suppress_fully_occluded drops
+    # all 4 outers. With default max_drop_ratio=0.5, a naive candidate
+    # count of 5 would see 4 drops / 5 = 80% → page suppressed.
+    en = _mk_en(
+        [
+            _para("p0007.b001", Rect(x0=0, y0=0, x1=200, y1=200), "Huge outer"),
+            _para("p0007.b002", Rect(x0=20, y0=20, x1=180, y1=180), "Less huge outer"),
+            _para("p0007.b003", Rect(x0=40, y0=40, x1=160, y1=160), "Medium outer"),
+            _para("p0007.b004", Rect(x0=60, y0=60, x1=140, y1=140), "Small outer"),
+            _para("p0007.b005", Rect(x0=90, y0=90, x1=110, y1=110), "Inner target"),
+        ]
+    )
+    # Permissive bbox area so the outer blocks are not already dropped by
+    # the per-annotation area filter; the drop-ratio gate is the one the
+    # test is exercising.
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0, max_drop_ratio=0.5)
+    result = build_facsimile_annotations(en, quality=cfg)
+    texts = {a.text for a in result}
+    assert "Inner target" in texts, (
+        f"Inner hotspot should survive occlusion deduplication; got {texts}"
+    )
+
+
 # ---------------------------------------------------------------------------
 # Bbox validity (issue: "non-finite bbox coordinates")
 # ---------------------------------------------------------------------------

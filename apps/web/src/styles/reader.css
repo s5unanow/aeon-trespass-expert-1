@@ -200,7 +200,12 @@ h2.reader-heading {
   width: max-content;
   white-space: normal;
   pointer-events: auto;
-  z-index: 10;
+  /* Must stay above any inactive marker (zIndex: 1 + stackRank, up to
+     25 per AnnotationQualityConfig.max_annotation_count) and below the
+     active marker's zIndex: 1000 boost (so the active marker still
+     owns its click target). 100 leaves headroom for the max_count cap
+     if it is ever raised. S5U-697 round-2 Codex review. */
+  z-index: 100;
 }
 
 .facsimile-tooltip-original {
