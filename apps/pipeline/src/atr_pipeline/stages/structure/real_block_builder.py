@@ -156,6 +156,32 @@ _WORD_GAP_THRESHOLD = 1.5
 _NUMBERED_STEP_RE = re.compile(r"^\d{1,3}[.):]*$")
 
 
+def _split_spans_by_x_gap(
+    spans: list[SpanEvidence],
+    gap_threshold_pt: float,
+) -> list[list[SpanEvidence]]:
+    """Split spans on the same y-baseline into cell groups by horizontal gap.
+
+    S5U-698 — a heading-classified line composed of multiple spans with
+    gaps wider than ``gap_threshold_pt`` is almost certainly a multi-column
+    table-header row rather than a single heading. Returning a list of
+    length > 1 is the signal that the structure layer must refuse to emit
+    one joined heading.
+    """
+    if not spans:
+        return []
+    ordered = sorted(spans, key=lambda s: s.bbox.x0)
+    groups: list[list[SpanEvidence]] = [[ordered[0]]]
+    for span in ordered[1:]:
+        prev = groups[-1][-1]
+        gap = span.bbox.x0 - prev.bbox.x1
+        if gap > gap_threshold_pt:
+            groups.append([span])
+        else:
+            groups[-1].append(span)
+    return groups
+
+
 def _significant_image_blocks(
     native: NativePageV1,
     cfg: StructureConfig,
@@ -374,6 +400,40 @@ def build_page_ir_real(
         # Heading line
         if roles & {"heading", "subheading"} and "body" not in roles:
             flush_paragraph()
+            # S5U-698: refuse to merge heading spans that sit across multiple
+            # cells of a table-header row. When the line splits into ≥2 cell
+            # groups at ``heading_cell_split_gap_pt``, emit the line as its
+            # own standalone TableBlock (one cell per group, separated by
+            # LineBreakInline) *immediately* — not buffered into the regular
+            # table accumulator. Emitting in place (rather than buffering)
+            # keeps reading order intact when the split header is followed
+            # by non-table content, and avoids synthetic-region-index
+            # collisions when the next line belongs to a real table region
+            # with a different ``tbl_idx`` (Codex round 1 findings).
+            non_decorative = [s for _, s in line if _classify_span(s, cfg) != "decorative"]
+            cell_groups = _split_spans_by_x_gap(
+                non_decorative,
+                cfg.heading_cell_split_gap_pt,
+            )
+            if len(cell_groups) >= 2:
+                flush_table()  # close any open real-region table first
+                block_idx += 1
+                block_id = f"{native.page_id}.b{block_idx:03d}"
+                header_inlines: list[TextInline | IconInline | LineBreakInline] = []
+                for gi, grp in enumerate(cell_groups):
+                    if gi > 0:
+                        header_inlines.append(LineBreakInline())
+                    header_inlines.extend(_spans_to_text_inline(grp, cfg))
+                if header_inlines:
+                    blocks.append(
+                        TableBlock(
+                            block_id=block_id,
+                            bbox=_bbox_from_spans(non_decorative),
+                            children=header_inlines,  # type: ignore[arg-type]
+                        )
+                    )
+                continue
+
             text = "".join(s.text for _, s in line if _classify_span(s, cfg) != "decorative")
             text = normalize_text(text.strip())
             if text:

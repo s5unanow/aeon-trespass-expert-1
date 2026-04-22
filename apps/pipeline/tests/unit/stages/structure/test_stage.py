@@ -63,7 +63,7 @@ def test_structure_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "structure"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.1"
+    assert stage.version == "1.2"
 
 
 def test_structure_builds_ir(tmp_path: Path) -> None:
@@ -94,3 +94,32 @@ def test_structure_raises_without_native_pages(tmp_path: Path) -> None:
     result = execute_stage(StructureStage(), ctx)
     assert not result.success
     assert "Run extract_native first" in (result.error or "")
+
+
+def test_structure_cache_hit_preserves_page_ir_artifact(tmp_path: Path) -> None:
+    """Cache-hit regression (S5U-662 discipline).
+
+    After a successful structure run, a second run with unchanged inputs
+    hits the executor cache and skips ``StructureStage.run``. The page_ir.v1
+    artifact on disk must still be present after the cache hit, so that
+    downstream stages reading the latest page IR see the refuse-to-merge
+    behaviour from version 1.2 rather than a stale payload.
+    """
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+
+    # First run — miss — stage.run() executes and writes the artifact.
+    result = execute_stage(StructureStage(), ctx)
+    assert result.success
+    ir_dir = tmp_path / "artifacts" / "walking_skeleton" / "page_ir.v1.en" / "page" / "p0001"
+    first_pass = set(ir_dir.glob("*.json"))
+    assert len(first_pass) == 1
+
+    # Second run — hit — stage.run() short-circuits. The artifact on disk
+    # must still be present and reflect the same version.
+    result2 = execute_stage(StructureStage(), ctx)
+    assert result2.success
+    second_pass = set(ir_dir.glob("*.json"))
+    assert second_pass == first_pass, (
+        f"cache hit must not remove page_ir artifacts; first={first_pass} second={second_pass}"
+    )

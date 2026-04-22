@@ -673,6 +673,21 @@ def _make_ir(*, page_id: str, page_number: int) -> PageIRV1:
         ("Main Attributes:", False),
         ("Hekaton level 8+:", False),
         ("co-op", False),
+        # S5U-698: glued-cell refusal. These rows exercise new code branches
+        # in ``is_garbage_title`` (``_COLON_GLUE_RE``, ``_CASE_GLUE_RE``). Each
+        # has red-before on SHA f23e6c7 (the pre-fix tree) where the old
+        # ``is_garbage_title`` returned ``False`` for every one of them. After
+        # the fix they are refused.
+        ("Wounded card:BP deckAI deck", True),
+        ("card:BP", True),
+        ("deckAI", True),
+        # Adversarial — legitimate CamelCase and colon-plus-space cases
+        # must NOT be refused. These complement the new branch rows above
+        # to ensure the refusal is targeted.
+        ("Chapter 1: Setup", False),
+        ("Section 2: Combat", False),
+        ("iPhone 11", False),
+        ("McDonald", False),
     ],
     ids=[
         "empty",
@@ -690,6 +705,13 @@ def _make_ir(*, page_id: str, page_number: int) -> PageIRV1:
         "valid_with_colon",
         "valid_with_plus",
         "valid_compound",
+        "s5u698_glued_p0054_title",
+        "s5u698_glued_colon_short",
+        "s5u698_glued_case_only",
+        "s5u698_adversarial_chapter_colon_space",
+        "s5u698_adversarial_section_colon_space",
+        "s5u698_adversarial_camelcase_iphone",
+        "s5u698_adversarial_camelcase_mcdonald",
     ],
 )
 def test_is_garbage_title(text: str, expected: bool) -> None:

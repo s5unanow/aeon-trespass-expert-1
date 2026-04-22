@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
+from atr_pipeline.stages.qa.rules.chart_title_merge_rule import evaluate_chart_title_merge
 from atr_pipeline.stages.qa.rules.dead_page_ref_rule import evaluate_dead_page_refs
 from atr_pipeline.stages.qa.rules.decorative_icon_rule import evaluate_decorative_icons
 from atr_pipeline.stages.qa.rules.duplicate_rule import evaluate_duplicate_content
@@ -160,6 +161,21 @@ class LeakedIdentifierRule:
         return evaluate_leaked_identifiers(ctx.render_page)
 
 
+class ChartTitleMergeRule:
+    """Detect headings that look like concatenated table-header cells (S5U-698)."""
+
+    @property
+    def name(self) -> str:
+        return "chart_title_merge"
+
+    @property
+    def layer(self) -> QALayer:
+        return QALayer.STRUCTURE
+
+    def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
+        return evaluate_chart_title_merge(ctx.render_page)
+
+
 def get_all_rules() -> list[QARule]:
     """Return all registered QA rules."""
     return [
@@ -171,4 +187,5 @@ def get_all_rules() -> list[QARule]:
         DeadPageRefRule(),
         DuplicateContentRule(),
         LeakedIdentifierRule(),
+        ChartTitleMergeRule(),
     ]

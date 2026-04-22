@@ -34,12 +34,27 @@ from atr_schemas.render_page_v1 import (
 
 _LONE_MARKER_RE = re.compile(r"^\d+[\.\):]?\s*$")
 
+# S5U-698 — glued-cell patterns. When the structure layer concatenates
+# multiple table cells into a single heading, the result almost always shows
+# one of these glue signatures:
+#   "Wounded card:BP deck"  — colon directly followed by an uppercase letter,
+#                             no whitespace. Distinguishes from "Chapter 1: Setup".
+#   "deckAI"                — lowercase ASCII letter immediately followed by
+#                             two or more uppercase ASCII letters. Distinguishes
+#                             from legitimate CamelCase ("iPhone", "McDonald").
+# These run *in addition* to the existing alpha-count check; any match means
+# the text is refused as a page-title candidate (must-refuse bullet).
+_COLON_GLUE_RE = re.compile(r":[A-Z]")
+_CASE_GLUE_RE = re.compile(r"[a-z][A-Z]{2,}")
+
 
 def is_garbage_title(text: str) -> bool:
     """Return True if *text* is unsuitable as a page title.
 
     Catches empty strings, lone list markers, standalone digits,
-    and strings with fewer than 2 alphabetic characters.
+    strings with fewer than 2 alphabetic characters, and strings
+    that carry glued-cell signatures from collapsed table headers
+    (S5U-698 — "Wounded card:BP deckAI deck" class of failures).
     """
     stripped = text.strip()
     if not stripped:
@@ -47,7 +62,11 @@ def is_garbage_title(text: str) -> bool:
     if _LONE_MARKER_RE.match(stripped):
         return True
     alpha_count = sum(1 for c in stripped if c.isalpha())
-    return alpha_count < 2
+    if alpha_count < 2:
+        return True
+    if _COLON_GLUE_RE.search(stripped):
+        return True
+    return bool(_CASE_GLUE_RE.search(stripped))
 
 
 def build_render_page(
