@@ -66,8 +66,17 @@ class TestCaptionFolding:
         assert "p0042.fig.p0042.img0000" in block_ids
         assert "p0042.b002" in block_ids
 
-    def test_caption_without_figure_kept_as_paragraph(self) -> None:
-        """Orphan CaptionBlock (figure_block_id matches nothing) survives as prose."""
+    def test_orphan_caption_is_refused(self) -> None:
+        """S5U-700 Must-refuse M2: a CaptionBlock whose ``figure_block_id``
+        does not point at any FigureBlock on the page is dropped from the
+        render output instead of rendered as detached prose.
+
+        Red-before confirmation: at commit 403920e the orphan CaptionBlock
+        was emitted as a RenderParagraphBlock via the shared
+        ``block.type in ("paragraph", "caption")`` branch; this test
+        asserted that branch was exercised and passed for the wrong
+        reason.
+        """
         orphan = CaptionBlock(
             block_id="p0042.b009",
             bbox=_rect(50, 310, 400, 325),
@@ -82,8 +91,30 @@ class TestCaptionFolding:
             blocks=[orphan],
         )
         render = build_render_page(ir)
-        # Caption block survived as a paragraph — text not lost.
-        assert any(b.id == "p0042.b009" and b.kind == "paragraph" for b in render.blocks)
+        assert all(b.id != "p0042.b009" for b in render.blocks)
+
+    def test_caption_with_empty_figure_block_id_is_refused(self) -> None:
+        """A CaptionBlock whose ``figure_block_id`` is the empty default
+        is also orphan per the schema (``figure_block_id: str = ""``).
+
+        Adversarial input: rather than a dangling pointer the block
+        simply has the default unset value — the refusal must apply
+        in both shapes.
+        """
+        orphan = CaptionBlock(
+            block_id="p0042.b009",
+            bbox=_rect(50, 310, 400, 325),
+            children=[TextInline(text="Floating caption")],
+        )
+        ir = PageIRV1(
+            document_id="ato_core_v1_1",
+            page_id="p0042",
+            page_number=42,
+            language="en",
+            blocks=[orphan],
+        )
+        render = build_render_page(ir)
+        assert all(b.id != "p0042.b009" for b in render.blocks)
 
     def test_figure_without_caption_has_empty_caption_field(self) -> None:
         """Regression: figures without a CaptionBlock still emit with caption=""."""

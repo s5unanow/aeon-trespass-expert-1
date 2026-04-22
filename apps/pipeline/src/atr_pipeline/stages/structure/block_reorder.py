@@ -53,9 +53,7 @@ def reorder_blocks_by_regions(
 
     # Compute per-region column splits for wide regions only. Keyed by
     # region_id; value is a gutter x-coordinate or None (no split needed).
-    gutter_by_region = _compute_column_gutters(
-        blocks, region_map, region_by_id
-    )
+    gutter_by_region = _compute_column_gutters(blocks, region_map, region_by_id)
 
     def _block_x_center(block: Block) -> float:
         bbox = getattr(block, "bbox", None)
@@ -68,10 +66,7 @@ def reorder_blocks_by_regions(
             return (sentinel, 0, 0.0, orig_idx)
         pos = region_pos.get(rid, aside_pos.get(rid, sentinel))
         gutter = gutter_by_region.get(rid)
-        if gutter is not None:
-            column = 0 if _block_x_center(block) < gutter else 1
-        else:
-            column = 0
+        column = (0 if _block_x_center(block) < gutter else 1) if gutter is not None else 0
         bbox = getattr(block, "bbox", None)
         y0 = bbox.y0 if bbox is not None else 0.0
         return (pos, column, y0, orig_idx)
@@ -81,9 +76,7 @@ def reorder_blocks_by_regions(
     return [block for _, block in indexed]
 
 
-def _map_aside_to_main(
-    regions: list[ResolvedRegion], region_pos: dict[str, int]
-) -> dict[str, int]:
+def _map_aside_to_main(regions: list[ResolvedRegion], region_pos: dict[str, int]) -> dict[str, int]:
     """Map non-main-flow region IDs to nearest main-flow region position."""
     main = [r for r in regions if r.region_id in region_pos]
     if not main:
@@ -161,9 +154,7 @@ def _column_eligible_kinds() -> frozenset[RegionKind]:
     )
 
 
-def _detect_block_gutter(
-    blocks: list[Block], region: ResolvedRegion
-) -> float | None:
+def _detect_block_gutter(blocks: list[Block], region: ResolvedRegion) -> float | None:
     """Find the x-coordinate of a gutter between two block columns.
 
     Uses the blocks' own x-centres rather than the evidence spans that
@@ -172,9 +163,7 @@ def _detect_block_gutter(
 
     Returns ``None`` if the blocks show a single-column distribution.
     """
-    centres = sorted(
-        ((b.bbox.x0 + b.bbox.x1) / 2 for b in blocks if b.bbox is not None)
-    )
+    centres = sorted((b.bbox.x0 + b.bbox.x1) / 2 for b in blocks if b.bbox is not None)
     if len(centres) < 2:
         return None
 

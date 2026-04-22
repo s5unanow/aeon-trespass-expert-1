@@ -13,6 +13,7 @@ from atr_pipeline.services.assets.resolver import (
     resolve_symbols,
 )
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
+from atr_pipeline.stages.structure.block_reorder import reorder_blocks_by_regions
 from atr_pipeline.stages.structure.furniture import FurnitureMap, detect_furniture
 from atr_pipeline.stages.structure.reading_order import (
     ReadingOrderResult,
@@ -22,7 +23,6 @@ from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_pipeline.stages.structure.region_graph import segment_regions
 from atr_pipeline.stages.structure.semantic_resolver import (
     SemanticResolution,
-    reorder_blocks_by_regions,
     resolve_semantics,
 )
 from atr_schemas.common import ProvenanceRef
@@ -69,7 +69,7 @@ class StructureStage:
 
     @property
     def version(self) -> str:
-        return "1.3"  # S5U-700 best-fit + column-aware reorder (S5U-662 bump)
+        return "1.4"  # S5U-700 drop decorative FULL_WIDTH from main flow
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> StructureResult:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))

@@ -64,7 +64,7 @@ def _is_blank_crop(image_bytes: bytes) -> bool:
             # Compute variance via a single pass on the byte buffer.
             sq_total = sum(p * p for p in pixels)
             variance = sq_total / n - mean * mean
-    except Exception as exc:  # noqa: BLE001 — decode errors include many types
+    except Exception as exc:
         _logger.debug("blank-crop gate decode failed: %s", exc)
         return False
     return mean >= _BLANK_MEAN_THRESHOLD and variance < _BLANK_VARIANCE_THRESHOLD

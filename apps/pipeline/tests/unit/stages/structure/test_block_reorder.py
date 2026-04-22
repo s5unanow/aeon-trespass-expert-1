@@ -36,12 +36,12 @@ def _norm(r: Rect, w: float = 595.0, h: float = 842.0) -> NormRect:
 
 
 def _para(bid: str, x0: float, y0: float, x1: float, y1: float) -> ParagraphBlock:
-    return ParagraphBlock(
-        block_id=bid, bbox=_rect(x0, y0, x1, y1), children=[TextInline(text="x")]
-    )
+    return ParagraphBlock(block_id=bid, bbox=_rect(x0, y0, x1, y1), children=[TextInline(text="x")])
 
 
-def _region(rid: str, kind: RegionKind, x0: float, y0: float, x1: float, y1: float) -> ResolvedRegion:
+def _region(
+    rid: str, kind: RegionKind, x0: float, y0: float, x1: float, y1: float
+) -> ResolvedRegion:
     bbox = _rect(x0, y0, x1, y1)
     return ResolvedRegion(region_id=rid, kind=kind, bbox=bbox, norm_bbox=_norm(bbox))
 
@@ -147,9 +147,7 @@ class TestDetectBlockGutter:
     def test_single_stray_outlier_does_not_split(self) -> None:
         """One far-right block should not count as a second column."""
         region = _region("r001", RegionKind.BODY, 0, 0, 595, 842)
-        blocks = [
-            _para(f"b{i}", 50, 100 + i * 30, 280, 120 + i * 30) for i in range(4)
-        ]
+        blocks = [_para(f"b{i}", 50, 100 + i * 30, 280, 120 + i * 30) for i in range(4)]
         blocks.append(_para("outlier", 500, 100, 560, 120))
         gutter = _detect_block_gutter(blocks, region)
         # Right side only has 1 block — gutter rejected.

@@ -52,6 +52,10 @@ class RenderStage:
 
     @property
     def version(self) -> str:
+        # 1.3 (S5U-700 Must-refuse M2): page_builder now drops orphan
+        #   CaptionBlocks entirely instead of emitting them as floating
+        #   paragraphs. Attached captions still fold into
+        #   RenderFigure.caption unchanged.
         # 1.2 (S5U-700): page_builder now folds CaptionBlocks into the
         #   owning RenderFigure.caption instead of emitting floating
         #   paragraphs. This changes the shape of render_page.v1 payloads
@@ -60,7 +64,7 @@ class RenderStage:
         # 1.1 (S5U-697): annotation filtering semantics changed — stale-IR
         #   pairings are now rewritten to EN-only and fully-occluded outer
         #   hotspots are suppressed.
-        return "1.2"
+        return "1.3"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is

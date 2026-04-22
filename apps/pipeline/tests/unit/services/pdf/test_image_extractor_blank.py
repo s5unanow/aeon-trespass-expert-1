@@ -1,7 +1,7 @@
 """Tests for the blank-crop gate in ``image_extractor`` (S5U-700).
 
 Red-before confirmation: at main @ bdb4b1b the gate ``_is_blank_crop``
-did not exist. The 122×105 crop of p0046.img0000 (mean luminance 243.8,
+did not exist. The 122x105 crop of p0046.img0000 (mean luminance 243.8,
 variance 32.1) shipped to the reader as a near-empty white rectangle.
 These tests fail to import ``_is_blank_crop`` at that commit.
 """
@@ -30,7 +30,7 @@ def _gradient(size: tuple[int, int]) -> bytes:
     w, h = size
     img = Image.new("RGB", size, color=(255, 255, 255))
     pixels = img.load()
-    assert pixels is not None  # noqa: S101 — test helper
+    assert pixels is not None
     for y in range(h):
         for x in range(w):
             v = int((x + y) / (w + h) * 255)

@@ -74,7 +74,7 @@ def test_render_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "render"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.2"
+    assert stage.version == "1.3"
 
 
 def test_render_builds_pages(tmp_path: Path) -> None:
