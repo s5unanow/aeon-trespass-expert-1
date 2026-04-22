@@ -127,7 +127,11 @@ if ! grep -q "ALL TESTS PASSED" "$HARNESS_LOG"; then
   FAILED=1
 fi
 
-if ! grep -q "SKIP \[layer 3 harness\]: on 'main' with no pending safety-gate diff" "$HARNESS_LOG"; then
+# S5U-696 broadened the SKIP banner from "on 'main' with no pending safety-gate
+# diff" to a branch-name-agnostic form. On the main-branch post-merge CI case,
+# CUR_BRANCH is literally 'main' so the banner reads
+# "branch 'main' has no safety-gate diff in main...HEAD."
+if ! grep -q "SKIP \[layer 3 harness\]: branch 'main' has no safety-gate diff in main\.\.\.HEAD\." "$HARNESS_LOG"; then
   echo "FAIL [regression]: harness output lacks the expected SKIP banner"
   FAILED=1
 fi
