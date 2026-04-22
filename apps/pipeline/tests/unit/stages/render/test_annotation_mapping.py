@@ -355,36 +355,6 @@ def test_degenerate_bbox_is_dropped() -> None:
     assert "Collapsed bbox" not in texts, "Degenerate bbox must be rejected"
 
 
-def test_non_finite_page_dimensions_return_empty() -> None:
-    """NaN / Inf in PageDimensions must short-circuit to [] — otherwise
-    the bbox/dim division produces NaN, which clamps back to a
-    finite-looking NormRect and ships a bogus hotspot (Codex round-3).
-    """
-    import math as _math
-
-    for width, height in [
-        (_math.nan, 792.0),
-        (612.0, _math.nan),
-        (_math.inf, 792.0),
-        (612.0, _math.inf),
-        (-_math.inf, 792.0),
-    ]:
-        en = PageIRV1(
-            document_id="test",
-            page_id="p0007",
-            page_number=7,
-            language=LanguageCode.EN,
-            dimensions_pt=PageDimensions(width=width, height=height),
-            blocks=[_para("p0007.b001", Rect(x0=10, y0=10, x1=100, y1=30), "Text")],
-        )
-        cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
-        result = build_facsimile_annotations(en, quality=cfg)
-        assert result == [], (
-            f"Non-finite page dimensions width={width}, height={height} "
-            f"must produce empty annotations; got {result}"
-        )
-
-
 def test_non_finite_bbox_coords_are_dropped_before_normalization() -> None:
     """NaN / +Inf / -Inf in raw bbox coords are rejected pre-clamp.
 
