@@ -145,6 +145,114 @@ def test_legitimate_translation_pair_is_preserved() -> None:
     assert result[0].translated_text.startswith("На этой странице")
 
 
+def test_page_level_staleness_clears_all_translations() -> None:
+    """When >=30% of paired EN/RU blocks fail the length ratio check, every
+    translation on the page is cleared — the RU IR is treated as stale.
+
+    Captures the ``199 BP Cards`` ↔ ``12 Первозданных Листов`` p0007 case
+    where individual pairs pass the per-annotation length check yet the
+    page as a whole is clearly mis-aligned because many block_ids pair
+    with wildly disproportionate RU text from a shuffled index.
+    """
+    en = _mk_en(
+        [
+            _para("p0007.b001", Rect(x0=10, y0=10, x1=100, y1=30), "199 BP Cards"),
+            _para("p0007.b002", Rect(x0=10, y0=40, x1=100, y1=60), "170 Secret Cards"),
+            _para("p0007.b003", Rect(x0=10, y0=70, x1=100, y1=90), "20 Divider Cards"),
+            _para("p0007.b004", Rect(x0=10, y0=100, x1=100, y1=120), "8 Moiros Cards"),
+        ]
+    )
+    # 2 of 4 pairings are egregiously wrong (>5x ratio); the other 2 are
+    # length-plausible but still from a shuffled RU IR. The page-level
+    # staleness escalation must clear *all* translated_text values.
+    ru = _mk_ru(
+        [
+            _para(
+                "p0007.b001",
+                Rect(x0=10, y0=10, x1=100, y1=30),
+                "Отбрасывание 2. Вы уничтожили слабую опорную руку, изрешеченную "
+                "осколками сиреневой раковины. Монстр остался полностью открытым!",
+            ),  # huge — fails per-ann check
+            _para("p0007.b002", Rect(x0=10, y0=40, x1=100, y1=60), "7-9"),  # tiny — fails
+            _para(
+                "p0007.b003", Rect(x0=10, y0=70, x1=100, y1=90), "199 БП Карт 10 Карт Черты"
+            ),  # length-plausible but semantically wrong
+            _para(
+                "p0007.b004",
+                Rect(x0=10, y0=100, x1=100, y1=120),
+                "27 Карт Шаблонов 1-3",
+            ),  # length-plausible but semantically wrong
+        ]
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0, max_drop_ratio=1.0)
+    result = build_facsimile_annotations(en, ru, quality=cfg)
+
+    assert len(result) == 4, "All EN annotations should survive (empty RU)"
+    for ann in result:
+        assert ann.translated_text == "", (
+            f"Page-level staleness should have cleared translated_text, got {ann.translated_text!r}"
+        )
+
+
+def test_page_without_staleness_keeps_translations() -> None:
+    """Regression: when most pairings are plausible, individual translations
+    are preserved even if one is implausible."""
+    en = _mk_en(
+        [
+            _para(
+                "p0007.b001",
+                Rect(x0=10, y0=10, x1=200, y1=30),
+                "This page shows game components.",
+            ),
+            _para(
+                "p0007.b002",
+                Rect(x0=10, y0=40, x1=200, y1=60),
+                "Figure 1: Token layout",
+            ),
+            _para(
+                "p0007.b003",
+                Rect(x0=10, y0=70, x1=200, y1=90),
+                "Real text number three",
+            ),
+            _para("p0007.b004", Rect(x0=10, y0=100, x1=200, y1=120), "Short"),
+        ]
+    )
+    ru = _mk_ru(
+        [
+            _para(
+                "p0007.b001",
+                Rect(x0=10, y0=10, x1=200, y1=30),
+                "На этой странице показаны игровые компоненты.",
+            ),
+            _para(
+                "p0007.b002",
+                Rect(x0=10, y0=40, x1=200, y1=60),
+                "Рисунок 1: жетоны",
+            ),
+            _para(
+                "p0007.b003",
+                Rect(x0=10, y0=70, x1=200, y1=90),
+                "Реальный текст номер три",
+            ),
+            # Only this one is implausible (>5x) — 1 of 4 pairs = 25% < 30%
+            _para(
+                "p0007.b004",
+                Rect(x0=10, y0=100, x1=200, y1=120),
+                "Сильно большая строка которая намного длиннее исходника",
+            ),
+        ]
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    result = build_facsimile_annotations(en, ru, quality=cfg)
+
+    by_text = {a.text: a.translated_text for a in result}
+    # Plausible pairs keep their translations
+    assert by_text["This page shows game components."].startswith("На этой странице")
+    assert by_text["Figure 1: Token layout"].startswith("Рисунок")
+    # The individually-bad pair has its translation cleared
+    assert by_text["Short"] == ""
+
+
 # ---------------------------------------------------------------------------
 # Overlay collision suppression (issue: "fully occludes another hotspot")
 # ---------------------------------------------------------------------------

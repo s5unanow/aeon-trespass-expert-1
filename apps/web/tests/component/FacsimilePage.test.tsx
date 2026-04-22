@@ -174,4 +174,83 @@ describe('FacsimilePage', () => {
     expect(screen.queryAllByRole('button', { name: /^Annotation \d+:/ })).toHaveLength(0);
     expect(screen.queryByRole('tooltip')).toBeNull();
   });
+
+  // S5U-697: stacking-rank defence against residual hotspot occlusion.
+  // Even if the pipeline-side occlusion filter misses a near-miss pair, the
+  // reader must never let a larger bbox paint on top of a smaller one — the
+  // smaller marker is always the more-specific hotspot.
+  it('assigns higher z-index to smaller-bbox annotations', () => {
+    const facsimile: RenderFacsimile = {
+      raster_src: '/test.png',
+      width_px: 800,
+      height_px: 1200,
+      annotations: [
+        // Large bbox (area 0.04): should paint beneath the small one.
+        {
+          text: 'Large enclosing region',
+          translated_text: 'Большой регион',
+          bbox: { x0: 0.2, y0: 0.2, x1: 0.4, y1: 0.4 },
+          kind: 'body',
+          priority: 0,
+        },
+        // Small bbox (area 0.0025): must paint on top.
+        {
+          text: 'Small inner hotspot',
+          translated_text: 'Малый',
+          bbox: { x0: 0.28, y0: 0.28, x1: 0.33, y1: 0.33 },
+          kind: 'body',
+          priority: 0,
+        },
+      ],
+    };
+    render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);
+    const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
+    const smallMarker = markers.find((m) => m.getAttribute('aria-label')?.includes('Малый'));
+    const largeMarker = markers.find((m) =>
+      m.getAttribute('aria-label')?.includes('Большой регион'),
+    );
+    expect(smallMarker).toBeTruthy();
+    expect(largeMarker).toBeTruthy();
+    // Inline style uses numeric z-index; read as string and parse.
+    const smallZ = Number(smallMarker!.style.zIndex);
+    const largeZ = Number(largeMarker!.style.zIndex);
+    expect(Number.isFinite(smallZ)).toBe(true);
+    expect(Number.isFinite(largeZ)).toBe(true);
+    expect(smallZ).toBeGreaterThan(largeZ);
+  });
+
+  it('promotes the active marker above every other marker', () => {
+    const facsimile: RenderFacsimile = {
+      raster_src: '/test.png',
+      width_px: 800,
+      height_px: 1200,
+      annotations: [
+        // Small bbox at top (rank 1).
+        {
+          text: 'Small',
+          translated_text: 'Малый',
+          bbox: { x0: 0.1, y0: 0.1, x1: 0.15, y1: 0.15 },
+          kind: 'body',
+          priority: 0,
+        },
+        // Large bbox at bottom (rank 0).
+        {
+          text: 'Large',
+          translated_text: 'Большой',
+          bbox: { x0: 0.1, y0: 0.5, x1: 0.5, y1: 0.9 },
+          kind: 'body',
+          priority: 0,
+        },
+      ],
+    };
+    render(<FacsimilePage facsimile={facsimile} pageTitle="Test" pageNumber={1} />);
+    const markers = screen.getAllByRole('button', { name: /^Annotation \d+:/ });
+    const largeMarker = markers.find((m) => m.getAttribute('aria-label')?.includes('Большой'))!;
+    const smallMarker = markers.find((m) => m.getAttribute('aria-label')?.includes('Малый'))!;
+    // Before activation: small > large.
+    expect(Number(smallMarker.style.zIndex)).toBeGreaterThan(Number(largeMarker.style.zIndex));
+    // Activate the larger one; it should jump above every other rank.
+    fireEvent.click(largeMarker);
+    expect(Number(largeMarker.style.zIndex)).toBeGreaterThan(Number(smallMarker.style.zIndex));
+  });
 });

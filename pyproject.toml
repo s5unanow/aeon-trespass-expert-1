@@ -53,6 +53,11 @@ max-statements = 50
 "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py" = ["C901", "PLR0912", "PLR0915"]
 # Tracked by S5U-143 (Epic 2: Expand QA — translation planner complexity)
 "apps/pipeline/src/atr_pipeline/stages/translation/planner.py" = ["C901", "PLR0912"]
+# S5U-697: bilingual EN/RU test fixtures necessarily contain Cyrillic
+# letters that visually collide with ASCII (H/Н, B/В, a/а, o/о). Allowing
+# RUF001 in this test module lets the test data match the production
+# p0007 pairings verbatim.
+"apps/pipeline/tests/unit/stages/render/test_annotation_mapping.py" = ["RUF001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["atr_pipeline", "atr_schemas"]
