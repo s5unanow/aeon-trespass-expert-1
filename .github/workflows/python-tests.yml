@@ -144,6 +144,19 @@ jobs:
       - name: Pre-PR safety gate harness — main-branch skip regression
         run: bash scripts/test_harness_skip_on_main.sh
 
+      # S5U-696: regression test simulating a non-safety-gate feature PR.
+      # Clones the repo to an ephemeral worktree, creates a synthetic feature
+      # branch whose main...HEAD diff touches only README.md, runs the harness
+      # from that branch, and asserts the broadened SKIP banner + exit 0.
+      # Complements the main-branch skip regression above by pinning the
+      # second branch of the empty-safety-gate-diff SKIP path. Without this
+      # test, the fix's feature-branch case would have no CI coverage and
+      # could silently regress on a future harness edit (the same failure
+      # mode that let S5U-691 ship with a broken feature-branch path and
+      # required S5U-696 as a follow-up).
+      - name: Pre-PR safety gate harness — feature-branch skip regression
+        run: bash scripts/test_harness_skip_on_feature_branch.sh
+
       - name: Code erosion report (advisory)
         if: github.event_name == 'pull_request'
         continue-on-error: true

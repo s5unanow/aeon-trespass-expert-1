@@ -282,20 +282,21 @@ if ! (cd "$REPO_ROOT" && git diff --quiet && git diff --cached --quiet); then
   exit 1
 fi
 
-# S5U-691: skip-on-main check runs BEFORE the issue-number guard (option 2 of
-# the Fix sketch). Layer 3 requires a safety-gate-scoped diff vs main so the
-# coordinator-ack branch of the hook fires. If not:
-#   - On a worker's local dev branch, fail closed — the harness was invoked
-#     but cannot exercise its target. Silent skip would give a false green.
-#   - In CI on a push to main (no diff against self), SKIP with exit 0 —
-#     there is no pending safety-gate change to exercise; the gate was
-#     already evaluated on the PR that produced the merge.
+# S5U-691 + S5U-696: empty-safety-gate-diff SKIP runs BEFORE the issue-number
+# guard. Layer 3 requires a safety-gate-scoped diff vs main so the
+# coordinator-ack branch of the hook fires. If the diff is empty of
+# safety-gate paths, SKIP with exit 0 regardless of branch name:
+#   - Post-merge CI on main: no diff against self; the gate was evaluated on
+#     the PR that produced the merge (S5U-691).
+#   - Non-safety-gate feature PR (pipeline-only, web-only, schemas-only,
+#     docs-only): the coordinator-ack branch of the hook never fires on this
+#     PR's own safety-gate review; there is nothing meaningful for layer 3
+#     to exercise (S5U-696).
 #
-# Reorder rationale: before S5U-691, the issue-number guard ran first, which
-# short-circuited BEFORE we had a chance to detect "running on main with
-# nothing to do". Option 2 puts the skip decision first so main-post-merge
-# CI correctly exits 0 regardless of whether the branch name matches
-# s5u-<N> (it doesn't — it's literally 'main').
+# Reorder rationale (S5U-691): the issue-number guard below used to run
+# first, short-circuiting before the skip decision could fire. Putting the
+# skip decision first makes both the main-post-merge and feature-branch
+# cases exit 0 without depending on branch name matching s5u-<N>.
 # Resolve a base ref — prefer local `main`, fall back to `origin/main` so CI
 # runs on detached HEAD (where actions/checkout doesn't create a local main)
 # also work. Fail closed if neither is present (G1).
@@ -310,20 +311,27 @@ else
 fi
 SAFETY_DIFF_CHECK=$(cd "$REPO_ROOT" && git diff --name-only "$HARNESS_BASE_REF...HEAD" \
   | grep -E "$SAFETY_REGEX" || true)
+# S5U-696: broaden the SKIP branch to any branch with no safety-gate diff,
+# not just 'main'. The harness's job is to validate the coordinator-ack
+# branch of the real pre-PR hook; a diff with no safety-gate paths has
+# nothing for layer 3 to exercise regardless of branch name. Pre-S5U-696
+# the SKIP was gated on CUR_BRANCH == 'main', which caused `python / test`
+# to fail on every non-safety-gate feature PR (the overwhelming majority).
+# See the S5U-588 CI-in-the-wild failure and the S5U-691 retrospective in
+# tmp/plan-s5u-696.md §3.
+#
+# G1 invariants preserved: the upstream HARNESS_BASE_REF resolution fails
+# closed on unresolvable main+origin/main, so a shallow-checkout
+# environment cannot reach this SKIP; SAFETY_REGEX extraction fails closed
+# at lines 47-50. The SKIP fires only when the diff against a resolvable
+# base is genuinely empty of safety-gate paths.
 if [ -z "$SAFETY_DIFF_CHECK" ]; then
-  if [ "$CUR_BRANCH" = "main" ]; then
-    echo "SKIP [layer 3 harness]: on 'main' with no pending safety-gate diff."
-    echo "  Post-merge CI runs have nothing to exercise here — the gate was"
-    echo "  evaluated on the PR. Layers 1 and 2 already passed above."
-    echo ""
-    echo "ALL TESTS PASSED"
-    exit 0
-  fi
-  echo "FAIL [layer 3 harness]: current branch '$CUR_BRANCH' has no safety-gate"
-  echo "  paths in main...HEAD. The coordinator-ack branch of the hook only"
-  echo "  fires on a safety-gate diff. Run this harness from a branch that"
-  echo "  touches a hook / workflow / coordinator-signers / SKILL.md / CLAUDE.md."
-  exit 1
+  echo "SKIP [layer 3 harness]: branch '$CUR_BRANCH' has no safety-gate diff in main...HEAD."
+  echo "  Nothing for the layer 3 harness to exercise — gate will be evaluated"
+  echo "  on safety-gate PRs only. Layers 1 and 2 already passed above."
+  echo ""
+  echo "ALL TESTS PASSED"
+  exit 0
 fi
 
 # Guard: harness needs an issue number in the branch name for the review-file
