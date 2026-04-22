@@ -7,7 +7,6 @@ import argparse
 import json
 import re
 import sys
-import tomllib
 from pathlib import Path
 
 _SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -27,6 +26,8 @@ from _export_blocks import (  # noqa: E402
 from _export_images import extract_images, resolve_source_pdf  # noqa: E402
 from _export_qa import export_qa  # noqa: E402
 from _export_validation import run_export_validation  # noqa: E402
+
+from atr_pipeline.config import load_document_config  # noqa: E402
 
 # Re-exports for S5U-688 regression tests and downstream callers that want to
 # import the helpers from the main entry script.
@@ -169,19 +170,20 @@ def _load_facsimile_override_pids(doc_id: str) -> list[str]:
     advertises facsimile mode while carrying many structured blocks are
     rejected at publish time.
 
-    Returns a sorted list for deterministic logging. Returns an empty
-    list if the config file or the render section is missing.
+    The allowlist is derived from the **same merged/validated
+    ``DocumentBuildConfig``** the render stage consumes (base.toml + env
+    overlay + document TOML, validated by pydantic) so the export gate
+    cannot drift from the pipeline's classification contract. See the
+    S5U-699 Codex review for the contract-split regression this guards
+    against.
+
+    Returns a sorted list for deterministic logging.
     """
-    config_path = REPO / "configs" / "documents" / f"{doc_id}.toml"
-    if not config_path.exists():
-        return []
-    with config_path.open("rb") as f:
-        cfg = tomllib.load(f)
-    overrides = cfg.get("render", {}).get("page_overrides", {}) or {}
+    config = load_document_config(doc_id)
     return sorted(
         pid
-        for pid, entry in overrides.items()
-        if isinstance(entry, dict) and entry.get("presentation_mode") == "facsimile"
+        for pid, override in config.render.page_overrides.items()
+        if override.presentation_mode == "facsimile"
     )
 
 

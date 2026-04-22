@@ -163,11 +163,24 @@ def validate_presentation_mode_payload_consistency(
             errors.append(f"{pid}: presentation-mode guard could not read render file: {exc}")
             continue
 
+        # Fail-closed at the schema boundary (S5U-699 Codex review #2):
+        # a non-object root or a non-list `blocks` field must surface a
+        # publish error, not bypass the guard. Guarding against both
+        # silently-truthy shapes (e.g. lists, strings) and the falsy
+        # `blocks == ""` / `blocks == 0` short-circuit that the previous
+        # `or []` fallback would have swallowed.
+        if not isinstance(page_data, dict):
+            errors.append(
+                f"{pid}: presentation-mode guard expected object-shaped "
+                f"render payload, got {type(page_data).__name__}"
+            )
+            continue
+
         mode = page_data.get("presentation_mode")
         if mode != "facsimile":
             continue
 
-        blocks = page_data.get("blocks") or []
+        blocks = page_data.get("blocks", [])
         if not isinstance(blocks, list):
             errors.append(
                 f"{pid}: presentation_mode=facsimile but blocks payload is "
