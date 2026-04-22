@@ -419,17 +419,17 @@ def build_page_ir_real(
                 flush_table()  # close any open real-region table first
                 block_idx += 1
                 block_id = f"{native.page_id}.b{block_idx:03d}"
-                inlines: list[TextInline | IconInline | LineBreakInline] = []
+                header_inlines: list[TextInline | IconInline | LineBreakInline] = []
                 for gi, grp in enumerate(cell_groups):
                     if gi > 0:
-                        inlines.append(LineBreakInline())
-                    inlines.extend(_spans_to_text_inline(grp, cfg))
-                if inlines:
+                        header_inlines.append(LineBreakInline())
+                    header_inlines.extend(_spans_to_text_inline(grp, cfg))
+                if header_inlines:
                     blocks.append(
                         TableBlock(
                             block_id=block_id,
                             bbox=_bbox_from_spans(non_decorative),
-                            children=inlines,  # type: ignore[arg-type]
+                            children=header_inlines,  # type: ignore[arg-type]
                         )
                     )
                 continue
