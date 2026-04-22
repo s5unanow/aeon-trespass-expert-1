@@ -402,26 +402,36 @@ def build_page_ir_real(
             flush_paragraph()
             # S5U-698: refuse to merge heading spans that sit across multiple
             # cells of a table-header row. When the line splits into ≥2 cell
-            # groups at ``heading_cell_split_gap_pt``, emit the spans as a
-            # TableBlock header row (one row per cell group joined by
-            # LineBreakInline), *not* a single HeadingBlock. This prevents
-            # garbage titles like "Wounded card:BP deckAI deck".
+            # groups at ``heading_cell_split_gap_pt``, emit the line as its
+            # own standalone TableBlock (one cell per group, separated by
+            # LineBreakInline) *immediately* — not buffered into the regular
+            # table accumulator. Emitting in place (rather than buffering)
+            # keeps reading order intact when the split header is followed
+            # by non-table content, and avoids synthetic-region-index
+            # collisions when the next line belongs to a real table region
+            # with a different ``tbl_idx`` (Codex round 1 findings).
             non_decorative = [s for _, s in line if _classify_span(s, cfg) != "decorative"]
             cell_groups = _split_spans_by_x_gap(
                 non_decorative,
                 cfg.heading_cell_split_gap_pt,
             )
             if len(cell_groups) >= 2:
-                # Multi-cell header row — record as table rows and continue.
-                # The upcoming table-region body lines will join this row via
-                # ``current_table_rows``. If no subsequent table body is
-                # found, ``flush_table`` still emits a TableBlock with just
-                # these header rows, which is correct: each cell stays as a
-                # separate TextInline segment.
-                for grp in cell_groups:
-                    current_table_rows.append(list(grp))
-                if current_table_idx < 0:
-                    current_table_idx = 0
+                flush_table()  # close any open real-region table first
+                block_idx += 1
+                block_id = f"{native.page_id}.b{block_idx:03d}"
+                inlines: list[TextInline | IconInline | LineBreakInline] = []
+                for gi, grp in enumerate(cell_groups):
+                    if gi > 0:
+                        inlines.append(LineBreakInline())
+                    inlines.extend(_spans_to_text_inline(grp, cfg))
+                if inlines:
+                    blocks.append(
+                        TableBlock(
+                            block_id=block_id,
+                            bbox=_bbox_from_spans(non_decorative),
+                            children=inlines,  # type: ignore[arg-type]
+                        )
+                    )
                 continue
 
             text = "".join(s.text for _, s in line if _classify_span(s, cfg) != "decorative")

@@ -121,6 +121,118 @@ def test_single_cell_heading_is_preserved() -> None:
     assert "Chapter 1: Setup" in text
 
 
+def test_multi_cell_heading_emits_standalone_table_block_before_later_blocks() -> None:
+    """Codex round 1 regression — a multi-cell heading followed by a normal
+    paragraph must emit the resulting TableBlock BEFORE the paragraph
+    (reading order preserved). Prior to this guard the split rows were
+    buffered in the table accumulator and only flushed at end-of-page, so
+    later body blocks appeared ahead of the header in ``PageIR.blocks``.
+    """
+    cfg = StructureConfig()
+    # Multi-cell heading on y=75
+    heading_spans = [
+        _span(
+            "s1",
+            "A",
+            (60.0, 75.0, 80.0, 90.0),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
+        _span(
+            "s2",
+            "B",
+            (300.0, 75.0, 320.0, 90.0),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
+    ]
+    # Normal body paragraph on y=120 (far enough below to be a new block,
+    # and in the Adonis-Regular body font so it does not trigger heading)
+    body_spans = [
+        _span(
+            "s3",
+            "Body paragraph text.",
+            (60.0, 120.0, 240.0, 132.0),
+            font_name="Adonis-Regular",
+            font_size=9.0,
+        ),
+    ]
+    native = _native_page(heading_spans + body_spans)
+    ir = build_page_ir_real(native, config=cfg)
+
+    block_types = [b.type for b in ir.blocks]
+    # The split-header TableBlock must come before the body paragraph.
+    assert block_types[0] == "table", (
+        f"expected first block to be the split-header TableBlock; got {block_types}"
+    )
+    assert "paragraph" in block_types, f"body paragraph must still be emitted; got {block_types}"
+    assert block_types.index("table") < block_types.index("paragraph"), (
+        f"split-header TableBlock must precede the body paragraph in reading "
+        f"order; got {block_types}"
+    )
+
+
+def test_multi_cell_heading_does_not_collide_with_real_table_region() -> None:
+    """Codex round 1 regression — a multi-cell split heading emitted when
+    ``table_regions`` are configured must NOT cause the subsequent real
+    table-region body to be attached as a second, disjoint table. The split
+    heading emits in place as its own TableBlock; the real-region body then
+    opens a separate fresh table accumulator.
+    """
+    cfg = StructureConfig()
+    # Split heading at y=75 (no table region contains this y)
+    heading_spans = [
+        _span(
+            "h1",
+            "A",
+            (60.0, 75.0, 80.0, 90.0),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
+        _span(
+            "h2",
+            "B",
+            (300.0, 75.0, 320.0, 90.0),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
+    ]
+    # Body span inside a declared table region (y=200..300, x=50..500)
+    body_spans = [
+        _span(
+            "b1",
+            "cell one",
+            (60.0, 220.0, 120.0, 232.0),
+            font_name="Adonis-Regular",
+            font_size=9.0,
+        ),
+    ]
+    table_region = Rect(x0=50.0, y0=200.0, x1=500.0, y1=300.0)
+    native = _native_page(heading_spans + body_spans)
+
+    ir = build_page_ir_real(native, config=cfg, table_regions=[table_region])
+
+    tables = [b for b in ir.blocks if b.type == "table"]
+    # Expect TWO tables: the split-header TableBlock, and the real-region
+    # TableBlock. They are distinct blocks and must not share children.
+    assert len(tables) == 2, (
+        f"expected separate TableBlocks for split header and real region; "
+        f"got {len(tables)} tables in {[b.type for b in ir.blocks]}"
+    )
+    first_texts = "".join(c.text for c in tables[0].children if hasattr(c, "text"))
+    second_texts = "".join(c.text for c in tables[1].children if hasattr(c, "text"))
+    # The split-header TableBlock must carry the header cell text.
+    assert "A" in first_texts and "B" in first_texts, (
+        f"split-header table lost its cell text: first_texts={first_texts!r}"
+    )
+    # The real-region TableBlock must carry the body cell text, not mixed
+    # with the header.
+    assert "cell one" in second_texts, (
+        f"real-region table lost its body text: second_texts={second_texts!r}"
+    )
+    assert "cell one" not in first_texts, "header and body must not be merged into one table"
+
+
 def test_heading_spans_with_small_gap_still_merge() -> None:
     """Adversarial — two heading-font spans separated only by a narrow
     word-gap (~5pt) should remain a single heading. The multi-cell split
