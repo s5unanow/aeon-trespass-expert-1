@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+from collections.abc import Iterable
 from pathlib import Path
 
 _SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -13,6 +14,17 @@ sys.path.insert(0, str(_REPO / "apps" / "pipeline" / "src"))
 from _export_blocks import validate_figure_refs  # noqa: E402
 
 from atr_pipeline.stages.render.page_builder import is_garbage_title  # noqa: E402
+
+# S5U-699 — thresholds for the "facsimile mode but structured-payload exists"
+# gate. Must refuse publishing a page that advertises presentation_mode=facsimile
+# while the bundle still carries a substantial blocks list, unless an explicit
+# config override has whitelisted the page (e.g. a truly image-dominant card
+# reference where the fragments are noise). Chosen below the p0075/p0076 values
+# (44/37 non-figure blocks, 943/1312 text chars) and above the quieter
+# already-override-controlled facsimile pages (p0001=0 blocks, p0083=0 blocks).
+# Using strict `>` so the boundary values themselves are documented as "OK".
+_FACSIMILE_PAYLOAD_MAX_NON_FIGURE_BLOCKS = 10
+_FACSIMILE_PAYLOAD_MAX_TEXT_CHARS = 400
 
 
 def validate_export_completeness(
@@ -90,6 +102,105 @@ def validate_asset_existence(data_dir: Path) -> list[str]:
     return errors
 
 
+def _count_text_chars(node: dict) -> int:
+    """Count characters of all text leaves in a block subtree.
+
+    Walks nested ``children`` arrays so that table / list / heading content
+    whose text sits below the top level is still counted.
+    """
+    total = 0
+    stack: list[dict] = [node]
+    while stack:
+        n = stack.pop()
+        if not isinstance(n, dict):
+            continue
+        if n.get("kind") == "text":
+            total += len(n.get("text", ""))
+        for c in n.get("children", []):
+            if isinstance(c, dict):
+                stack.append(c)
+    return total
+
+
+def validate_presentation_mode_payload_consistency(
+    data_dir: Path,
+    facsimile_override_pids: Iterable[str],
+) -> list[str]:
+    """Refuse pages whose presentation_mode disagrees with their blocks payload.
+
+    S5U-699 — enforces the Linear must-refuse bullets:
+      * structured blocks exist but the page is forced to facsimile-only
+      * the readable representation is only tiny raster text with no article
+        mode
+      * facsimile flag disagrees with the actual block payload
+
+    A page is flagged when:
+      * ``presentation_mode == "facsimile"``, AND
+      * its blocks payload has *either* more than
+        ``_FACSIMILE_PAYLOAD_MAX_NON_FIGURE_BLOCKS`` non-figure blocks OR
+        more than ``_FACSIMILE_PAYLOAD_MAX_TEXT_CHARS`` characters of text
+        across all blocks, AND
+      * the page is not in the ``facsimile_override_pids`` allowlist.
+
+    The allowlist is the set of page IDs that the document's TOML config has
+    explicitly marked as ``presentation_mode = "facsimile"`` — a reviewer-
+    visible, name-based list of genuine facsimile pages (G2 legitimate-
+    override allowlist per ``.claude/rules/guards.md``). The block-payload
+    signature is content-derived: any page matching it without an explicit
+    override is blocked, so renames or new mis-classifications are caught
+    without editing this file.
+
+    Returns a list of error messages (empty = valid).
+    """
+    errors: list[str] = []
+    allowed: set[str] = set(facsimile_override_pids)
+
+    for render_file in sorted(data_dir.glob("render_page.*.json")):
+        pid = render_file.stem.removeprefix("render_page.")
+        try:
+            page_data = json.loads(render_file.read_text())
+        except (json.JSONDecodeError, OSError) as exc:
+            errors.append(f"{pid}: presentation-mode guard could not read render file: {exc}")
+            continue
+
+        mode = page_data.get("presentation_mode")
+        if mode != "facsimile":
+            continue
+
+        blocks = page_data.get("blocks") or []
+        if not isinstance(blocks, list):
+            errors.append(
+                f"{pid}: presentation_mode=facsimile but blocks payload is "
+                f"not a list (got {type(blocks).__name__})"
+            )
+            continue
+
+        non_figure_count = sum(
+            1 for b in blocks if isinstance(b, dict) and b.get("kind") != "figure"
+        )
+        text_chars = sum(_count_text_chars(b) for b in blocks if isinstance(b, dict))
+
+        exceeds_blocks = non_figure_count > _FACSIMILE_PAYLOAD_MAX_NON_FIGURE_BLOCKS
+        exceeds_chars = text_chars > _FACSIMILE_PAYLOAD_MAX_TEXT_CHARS
+        if not (exceeds_blocks or exceeds_chars):
+            continue
+
+        if pid in allowed:
+            continue
+
+        errors.append(
+            f"{pid}: presentation_mode=facsimile but payload has "
+            f"{non_figure_count} non-figure blocks / {text_chars} text chars "
+            f"(thresholds: >{_FACSIMILE_PAYLOAD_MAX_NON_FIGURE_BLOCKS} blocks "
+            f"or >{_FACSIMILE_PAYLOAD_MAX_TEXT_CHARS} chars). Flip the page "
+            f"to article mode, or add [render.page_overrides.{pid}] "
+            f'presentation_mode = "facsimile" to the document config to '
+            f"confirm the page is genuinely image-dominant."
+        )
+
+    return errors
+
+
 def validate_title_quality(pages_meta: list[dict]) -> list[str]:
     """Warn on any remaining garbage titles in the manifest.
 
@@ -106,8 +217,14 @@ def validate_title_quality(pages_meta: list[dict]) -> list[str]:
 def run_export_validation(
     edition_dir: Path,
     pages_meta: list[dict],
+    facsimile_override_pids: Iterable[str] = (),
 ) -> bool:
-    """Run all export validation checks. Returns True if no errors found."""
+    """Run all export validation checks. Returns True if no errors found.
+
+    ``facsimile_override_pids`` is the set of page IDs explicitly marked as
+    ``presentation_mode = "facsimile"`` by the document TOML config; it is
+    consumed by the S5U-699 presentation-mode / payload consistency guard.
+    """
     data_dir = edition_dir / "data"
     edition = edition_dir.name.upper()
     ok = True
@@ -122,6 +239,14 @@ def run_export_validation(
     for err in asset_errors:
         print(f"  ERROR [{edition}]: {err}")
     if asset_errors:
+        ok = False
+
+    presentation_errors = validate_presentation_mode_payload_consistency(
+        data_dir, facsimile_override_pids
+    )
+    for err in presentation_errors:
+        print(f"  ERROR [{edition}]: {err}")
+    if presentation_errors:
         ok = False
 
     title_warnings = validate_title_quality(pages_meta)
