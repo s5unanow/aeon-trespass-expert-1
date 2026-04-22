@@ -1,12 +1,26 @@
-"""Build facsimile annotations from PageIRV1 blocks with bounding boxes."""
+"""Build facsimile annotations from PageIRV1 blocks with bounding boxes.
+
+See S5U-697 for the pairing-stability and occlusion-suppression rules added
+to this module: the render stage feeds this with whichever EN / RU IR it can
+find on disk, so the builder cannot assume the two IRs came from the same
+extraction run. Mis-matched ``block_id`` lookups, degenerate bboxes, and
+overlapping hotspots are all rejected here so they never reach the reader.
+"""
 
 from __future__ import annotations
 
+import math
 import unicodedata
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from atr_pipeline.stages.render.annotation_safeguards import (
+    bbox_area,
+    is_bbox_valid,
+    strip_implausible_pairings,
+    suppress_fully_occluded,
+)
 from atr_schemas.common import NormRect
 from atr_schemas.page_ir_v1 import (
     Block,
@@ -64,8 +78,27 @@ def build_facsimile_annotations(
     curated = keep_texts is not None
     if keep_texts is not None:
         candidates = [c for c in candidates if any(kt in c.text for kt in keep_texts)]
+    # S5U-697: strip translations that look like stale-IR leakage *before*
+    # running the quality filters so the length-ratio check does not have to
+    # reason about a filter pipeline that may already have dropped context.
+    candidates = strip_implausible_pairings(candidates)
     filtered = _filter_annotations(candidates, cfg, curated=curated)
-    if not curated and not _page_quality_ok(filtered, cfg, candidate_count=len(candidates)):
+    # S5U-697: after per-annotation filtering, drop outer hotspots that fully
+    # occlude an inner one. Applied late so we do not waste a containment pass
+    # on annotations that were going to be filtered for unrelated reasons.
+    # Skipped in curated mode — the operator has explicitly listed which
+    # captions to surface and is expected to resolve overlaps manually.
+    pre_occlusion = filtered
+    if not curated:
+        filtered = suppress_fully_occluded(filtered)
+    # S5U-697 Codex round-2: the drop-ratio gate compares against candidates
+    # *minus* any drops that were purely occlusion-suppression (which are
+    # legitimate deduplications, not quality rejections). Otherwise a page
+    # with several nested hotspots hits the drop-ratio gate and ships []
+    # even though the surviving overlay is clean.
+    occlusion_drops = len(pre_occlusion) - len(filtered)
+    effective_candidates = max(0, len(candidates) - occlusion_drops)
+    if not curated and not _page_quality_ok(filtered, cfg, candidate_count=effective_candidates):
         return []
     filtered.sort(key=lambda a: a.priority, reverse=True)
     return filtered
@@ -77,7 +110,18 @@ def _build_candidates(
 ) -> list[FacsimileAnnotation]:
     """Extract raw annotation candidates from IR blocks."""
     dims = en_ir.dimensions_pt
-    if dims is None or dims.width <= 0 or dims.height <= 0:
+    # S5U-697 Codex round-3: validate page dimensions against nan/inf *before*
+    # using them as divisors. `dims.width <= 0` is False for NaN (every
+    # comparison with NaN returns False), so a NaN dimension would slip past
+    # the original guard, propagate through `block.bbox.x0 / dims.width`, and
+    # be clamped back to a finite-looking NormRect by the min/max ladder.
+    if (
+        dims is None
+        or not math.isfinite(dims.width)
+        or not math.isfinite(dims.height)
+        or dims.width <= 0
+        or dims.height <= 0
+    ):
         return []
 
     ru_blocks: dict[str, Block] = {}
@@ -103,12 +147,27 @@ def _build_candidates(
         if ru_block is not None:
             ru_text = _extract_block_text(ru_block)
 
+        # S5U-697: reject non-finite raw bbox coords *before* clamping into
+        # [0,1]. Codex review caught that `min/max` coerce NaN to finite
+        # boundary values (nan -> 1.0, inf -> 1.0, -inf -> 0.0) in Python,
+        # so a post-normalization `math.isfinite` check runs too late — a
+        # corrupted extractor bbox would emerge as a valid-looking hotspot.
+        raw_coords = (block.bbox.x0, block.bbox.y0, block.bbox.x1, block.bbox.y1)
+        if not all(math.isfinite(c) for c in raw_coords):
+            continue
+
         bbox = NormRect(
             x0=max(0.0, min(1.0, block.bbox.x0 / dims.width)),
             y0=max(0.0, min(1.0, block.bbox.y0 / dims.height)),
             x1=max(0.0, min(1.0, block.bbox.x1 / dims.width)),
             y1=max(0.0, min(1.0, block.bbox.y1 / dims.height)),
         )
+        # S5U-697: reject degenerate bboxes (zero width/height after
+        # normalization). Non-finite coords are already rejected above on
+        # the raw values; this belt-and-suspenders also catches bboxes
+        # that collapsed because x1 == x0 on the raw side.
+        if not is_bbox_valid(bbox):
+            continue
 
         annotations.append(
             FacsimileAnnotation(
@@ -137,7 +196,7 @@ def _filter_annotations(
     for ann in candidates:
         if _is_identical_translation(ann.text, ann.translated_text):
             continue
-        if not curated and _bbox_area(ann.bbox) > cfg.max_bbox_area:
+        if not curated and bbox_area(ann.bbox) > cfg.max_bbox_area:
             continue
         if _is_garbled(ann.text, cfg.min_letter_ratio):
             continue
@@ -156,7 +215,7 @@ def _page_quality_ok(
         return True  # empty is fine — nothing to suppress
     if len(annotations) > cfg.max_annotation_count:
         return False
-    total_area = sum(_bbox_area(a.bbox) for a in annotations)
+    total_area = sum(bbox_area(a.bbox) for a in annotations)
     if total_area > cfg.max_total_area:
         return False
     if candidate_count > 0:
@@ -197,13 +256,6 @@ def _is_identical_translation(en: str, ru: str) -> bool:
     if not ru:
         return False  # no translation available — keep the annotation
     return _normalize_for_compare(en) == _normalize_for_compare(ru)
-
-
-def _bbox_area(bbox: NormRect) -> float:
-    """Compute normalized area of a bounding box."""
-    w = max(0.0, bbox.x1 - bbox.x0)
-    h = max(0.0, bbox.y1 - bbox.y0)
-    return w * h
 
 
 def _is_garbled(text: str, min_letter_ratio: float) -> bool:

@@ -167,7 +167,11 @@ class RenderConfig(BaseModel):
     facsimile_coverage_threshold: float = Field(default=0.15, ge=0.0, le=1.0)
     annotation_max_bbox_area: float = Field(default=0.10, ge=0.0, le=1.0)
     annotation_max_total_area: float = Field(default=0.30, ge=0.0)
-    annotation_max_count: int = Field(default=25, ge=0)
+    # S5U-697 Codex round-3: cap at 99 so inactive-marker z-index (1 + stackRank)
+    # never collides with the reader's tooltip layer (z-index 100). If a future
+    # page genuinely needs more hotspots, raise the cap AND bump the tooltip
+    # z-index in apps/web/src/styles/reader.css to preserve the invariant.
+    annotation_max_count: int = Field(default=25, ge=0, le=99)
     annotation_min_letter_ratio: float = Field(default=0.3, ge=0.0, le=1.0)
     annotation_max_drop_ratio: float = Field(default=0.5, ge=0.0, le=1.0)
     page_overrides: dict[str, PageOverride] = Field(default_factory=dict)

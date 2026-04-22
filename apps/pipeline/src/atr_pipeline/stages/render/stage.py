@@ -52,7 +52,12 @@ class RenderStage:
 
     @property
     def version(self) -> str:
-        return "1.0"
+        # 1.1 (S5U-697): annotation filtering semantics changed — stale-IR
+        # pairings are now rewritten to EN-only and fully-occluded outer
+        # hotspots are suppressed. Bumping forces a cache miss so that
+        # previously-built render pages re-emerge with the new filters
+        # applied instead of replaying the corrupt p0007 payload from cache.
+        return "1.1"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is
