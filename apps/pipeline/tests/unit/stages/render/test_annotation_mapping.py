@@ -324,3 +324,41 @@ def test_degenerate_bbox_is_dropped() -> None:
     texts = {a.text for a in result}
     assert "Valid bbox" in texts
     assert "Collapsed bbox" not in texts, "Degenerate bbox must be rejected"
+
+
+def test_non_finite_bbox_coords_are_dropped_before_normalization() -> None:
+    """NaN / +Inf / -Inf in raw bbox coords are rejected pre-clamp.
+
+    Closes the defect Codex caught in the first review pass: Python's
+    `min(1.0, nan)` is 1.0, so a post-normalization finite-check would
+    let a corrupted extractor bbox through as a valid-looking [0,1]
+    rectangle.
+    """
+    import math as _math
+
+    en_blocks = []
+    for i, (x0, y0, x1, y1) in enumerate(
+        [
+            (_math.nan, 10, 100, 30),
+            (10, _math.inf, 100, 30),
+            (-_math.inf, 10, 100, 30),
+            (10, 10, _math.nan, 30),
+            (10, 10, 100, _math.inf),
+        ]
+    ):
+        en_blocks.append(_para(f"p0007.b{i:03d}", Rect(x0=x0, y0=y0, x1=x1, y1=y1), f"Corrupt {i}"))
+    # One valid block to prove the rest of the pipeline still produces output.
+    en_blocks.append(_para("p0007.b999", Rect(x0=10, y0=10, x1=100, y1=30), "Valid control"))
+    en = _mk_en(en_blocks)
+    # Permissive max_drop_ratio so the page is not suppressed for dropping
+    # the 5 corrupted blocks — the assertion is on the *set* of survivors.
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0, max_drop_ratio=1.0)
+    result = build_facsimile_annotations(en, quality=cfg)
+
+    texts = {a.text for a in result}
+    assert texts == {"Valid control"}, (
+        f"Only the valid control block should survive non-finite rejection, got {texts}"
+    )
+    # Belt-and-suspenders: every surviving bbox has finite coords.
+    for ann in result:
+        assert all(_math.isfinite(c) for c in (ann.bbox.x0, ann.bbox.y0, ann.bbox.x1, ann.bbox.y1))

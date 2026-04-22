@@ -146,16 +146,25 @@ def _build_candidates(
         if ru_block is not None:
             ru_text = _extract_block_text(ru_block)
 
+        # S5U-697: reject non-finite raw bbox coords *before* clamping into
+        # [0,1]. Codex review caught that `min/max` coerce NaN to finite
+        # boundary values (nan -> 1.0, inf -> 1.0, -inf -> 0.0) in Python,
+        # so a post-normalization `math.isfinite` check runs too late — a
+        # corrupted extractor bbox would emerge as a valid-looking hotspot.
+        raw_coords = (block.bbox.x0, block.bbox.y0, block.bbox.x1, block.bbox.y1)
+        if not all(math.isfinite(c) for c in raw_coords):
+            continue
+
         bbox = NormRect(
             x0=max(0.0, min(1.0, block.bbox.x0 / dims.width)),
             y0=max(0.0, min(1.0, block.bbox.y0 / dims.height)),
             x1=max(0.0, min(1.0, block.bbox.x1 / dims.width)),
             y1=max(0.0, min(1.0, block.bbox.y1 / dims.height)),
         )
-        # S5U-697: reject degenerate bboxes (zero width/height, NaN, inf).
-        # A marker on a collapsed rect renders a centroid the user can see
-        # but cannot interact with in a predictable way, and a non-finite
-        # bbox bypasses the downstream area math entirely.
+        # S5U-697: reject degenerate bboxes (zero width/height after
+        # normalization). Non-finite coords are already rejected above on
+        # the raw values; this belt-and-suspenders also catches bboxes
+        # that collapsed because x1 == x0 on the raw side.
         if not _is_bbox_valid(bbox):
             continue
 
@@ -369,8 +378,10 @@ def _suppress_fully_occluded(
 
     Iterates pairwise; when A contains B (and A != B), A is dropped because
     B is the more specific, still-reachable hotspot. If A and B are
-    mutually containing (same bbox), keep the one with higher priority as a
-    stable tiebreak — this is a rare edge case from duplicate extraction.
+    mutually containing (near-identical bboxes — can happen when the 0.9
+    containment threshold triggers in both directions on boxes that differ
+    only by 1-pixel extraction jitter), drop the larger-area one; ties
+    break on priority then on index order for determinism.
     """
     if len(annotations) < 2:
         return list(annotations)
@@ -383,13 +394,24 @@ def _suppress_fully_occluded(
                 continue
             if not _contains_bbox(outer.bbox, inner.bbox):
                 continue
-            # If inner also contains outer, keep the higher-priority one.
+            # If inner also contains outer, they are near-identical. Keep
+            # the smaller-area annotation (or higher priority on area tie,
+            # or lower-index on priority tie) so the user-visible hotspot
+            # is the most-specific one.
             if _contains_bbox(inner.bbox, outer.bbox):
-                if outer.priority >= inner.priority:
-                    dropped.add(j)
-                    continue
-                dropped.add(i)
-                break
+                outer_area = _bbox_area(outer.bbox)
+                inner_area = _bbox_area(inner.bbox)
+                if outer_area > inner_area or (
+                    outer_area == inner_area
+                    and (
+                        inner.priority > outer.priority
+                        or (inner.priority == outer.priority and j < i)
+                    )
+                ):
+                    dropped.add(i)
+                    break
+                dropped.add(j)
+                continue
             # Strict containment: drop the outer (less specific).
             dropped.add(i)
             break
