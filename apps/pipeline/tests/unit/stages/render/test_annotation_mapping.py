@@ -1,0 +1,218 @@
+"""Tests for facsimile annotation mapping & overlay collision safeguards.
+
+Covers the S5U-697 fix class: wrong EN↔RU pairings caused by stale RU IR,
+fully-occluded hotspots, and non-finite bboxes. These checks live alongside
+the pre-existing quality filters in ``annotation_builder.py`` and are kept
+in a separate test module so the grandfathered
+``test_annotation_builder.py`` does not grow past its frozen line count.
+"""
+
+from __future__ import annotations
+
+from atr_pipeline.stages.render.annotation_builder import (
+    AnnotationQualityConfig,
+    build_facsimile_annotations,
+)
+from atr_schemas.common import PageDimensions, Rect
+from atr_schemas.enums import LanguageCode
+from atr_schemas.page_ir_v1 import PageIRV1, ParagraphBlock, TextInline
+
+
+def _mk_en(blocks: list) -> PageIRV1:
+    return PageIRV1(
+        document_id="test_doc",
+        page_id="p0007",
+        page_number=7,
+        language=LanguageCode.EN,
+        dimensions_pt=PageDimensions(width=612.0, height=792.0),
+        blocks=blocks,
+    )
+
+
+def _mk_ru(blocks: list) -> PageIRV1:
+    return PageIRV1(
+        document_id="test_doc",
+        page_id="p0007",
+        page_number=7,
+        language=LanguageCode.RU,
+        dimensions_pt=PageDimensions(width=612.0, height=792.0),
+        blocks=blocks,
+    )
+
+
+def _para(bid: str, bbox: Rect, text: str) -> ParagraphBlock:
+    return ParagraphBlock(
+        block_id=bid,
+        bbox=bbox,
+        children=[TextInline(text=text)],
+    )
+
+
+# ---------------------------------------------------------------------------
+# Stale-pairing detection (issue: "stale cached annotation payloads")
+# ---------------------------------------------------------------------------
+
+
+def test_drops_ru_translation_when_length_is_implausibly_large() -> None:
+    """RU text whose character length is >5x the EN text is rejected as a bad pairing.
+
+    Mirrors the observed p0007 failure mode where block_id
+    `p0007.b016` (EN "170 Secret Cards", 16 chars) was paired with a
+    multi-paragraph RU blob of ~200+ chars due to a stale RU IR.
+    """
+    en = _mk_en(
+        [
+            _para("p0007.b001", Rect(x0=10, y0=10, x1=100, y1=30), "170 Secret Cards"),
+        ]
+    )
+    long_ru_blob = (
+        "Отбрасывание 2. Вы уничтожили слабую опорную руку, изрешеченную "
+        "осколками сиреневой раковины. Монстр остался полностью открытым! "
+        "Во время второго окна способностей поместите 2 дополнительных жетона "
+        "Открытия или Прорыва в пул Кратоса."
+    )
+    ru = _mk_ru(
+        [
+            _para("p0007.b001", Rect(x0=10, y0=10, x1=100, y1=30), long_ru_blob),
+        ]
+    )
+    # Permissive quality config so only the new pairing filter matters here.
+    cfg = AnnotationQualityConfig(
+        max_bbox_area=1.0,
+        max_total_area=2.0,
+        max_drop_ratio=1.0,
+        min_letter_ratio=0.1,
+    )
+    result = build_facsimile_annotations(en, ru, quality=cfg)
+
+    assert len(result) == 1, "EN annotation should survive without the stale RU translation"
+    assert result[0].text == "170 Secret Cards"
+    assert result[0].translated_text == "", (
+        "Stale RU translation must be dropped; tooltip should fall back to EN text only"
+    )
+
+
+def test_drops_ru_translation_when_length_is_implausibly_small() -> None:
+    """RU text whose character length is <0.2x the EN text is rejected.
+
+    Mirrors the observed p0007 failure where EN "20 Divider Cards" was
+    paired with RU "?".
+    """
+    en = _mk_en(
+        [
+            _para(
+                "p0007.b001",
+                Rect(x0=10, y0=10, x1=200, y1=30),
+                "This is a fairly long English paragraph about components.",
+            ),
+        ]
+    )
+    ru = _mk_ru([_para("p0007.b001", Rect(x0=10, y0=10, x1=200, y1=30), "?")])
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    result = build_facsimile_annotations(en, ru, quality=cfg)
+
+    assert len(result) == 1
+    assert result[0].translated_text == ""
+
+
+def test_legitimate_translation_pair_is_preserved() -> None:
+    """Clean EN→RU pair with plausible length ratio stays intact.
+
+    Regression check against over-filtering.
+    """
+    en = _mk_en(
+        [
+            _para(
+                "p0007.b001",
+                Rect(x0=10, y0=10, x1=200, y1=30),
+                "This page shows game components.",
+            ),
+        ]
+    )
+    ru = _mk_ru(
+        [
+            _para(
+                "p0007.b001",
+                Rect(x0=10, y0=10, x1=200, y1=30),
+                "На этой странице показаны игровые компоненты.",
+            ),
+        ]
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    result = build_facsimile_annotations(en, ru, quality=cfg)
+
+    assert len(result) == 1
+    assert result[0].translated_text.startswith("На этой странице")
+
+
+# ---------------------------------------------------------------------------
+# Overlay collision suppression (issue: "fully occludes another hotspot")
+# ---------------------------------------------------------------------------
+
+
+def test_drops_outer_annotation_when_one_fully_contains_another() -> None:
+    """When bbox A fully contains bbox B, only B survives (inner is specific)."""
+    en = _mk_en(
+        [
+            _para("p0007.b001", Rect(x0=0, y0=0, x1=300, y1=300), "Outer large block"),
+            _para("p0007.b002", Rect(x0=50, y0=50, x1=100, y1=100), "Inner small block"),
+        ]
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    result = build_facsimile_annotations(en, quality=cfg)
+
+    texts = {a.text for a in result}
+    assert "Inner small block" in texts, "Inner hotspot must remain reachable"
+    assert "Outer large block" not in texts, (
+        "Outer hotspot that fully occludes another must be suppressed"
+    )
+
+
+def test_sibling_annotations_with_disjoint_bboxes_both_survive() -> None:
+    """Regression: disjoint bboxes are not affected by the occlusion filter."""
+    en = _mk_en(
+        [
+            _para("p0007.b001", Rect(x0=10, y0=10, x1=100, y1=50), "Left block"),
+            _para("p0007.b002", Rect(x0=200, y0=200, x1=300, y1=240), "Right block"),
+        ]
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    result = build_facsimile_annotations(en, quality=cfg)
+
+    assert len(result) == 2
+
+
+def test_partial_overlap_does_not_trigger_suppression() -> None:
+    """Overlapping but not-containing bboxes are both kept."""
+    en = _mk_en(
+        [
+            _para("p0007.b001", Rect(x0=10, y0=10, x1=100, y1=50), "A"),
+            _para("p0007.b002", Rect(x0=80, y0=30, x1=150, y1=70), "B"),
+        ]
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    result = build_facsimile_annotations(en, quality=cfg)
+
+    assert len(result) == 2
+
+
+# ---------------------------------------------------------------------------
+# Bbox validity (issue: "non-finite bbox coordinates")
+# ---------------------------------------------------------------------------
+
+
+def test_degenerate_bbox_is_dropped() -> None:
+    """Zero-area bboxes (x1<=x0 or y1<=y0 after normalization) are dropped."""
+    en = _mk_en(
+        [
+            # Collapsed-width bbox: x1 == x0 after normalization → zero area
+            _para("p0007.b001", Rect(x0=50, y0=10, x1=50, y1=50), "Collapsed bbox"),
+            _para("p0007.b002", Rect(x0=10, y0=100, x1=100, y1=140), "Valid bbox"),
+        ]
+    )
+    cfg = AnnotationQualityConfig(max_bbox_area=1.0, max_total_area=2.0)
+    result = build_facsimile_annotations(en, quality=cfg)
+
+    texts = {a.text for a in result}
+    assert "Valid bbox" in texts
+    assert "Collapsed bbox" not in texts, "Degenerate bbox must be rejected"
