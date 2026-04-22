@@ -110,7 +110,18 @@ def _build_candidates(
 ) -> list[FacsimileAnnotation]:
     """Extract raw annotation candidates from IR blocks."""
     dims = en_ir.dimensions_pt
-    if dims is None or dims.width <= 0 or dims.height <= 0:
+    # S5U-697 Codex round-3: validate page dimensions against nan/inf *before*
+    # using them as divisors. `dims.width <= 0` is False for NaN (every
+    # comparison with NaN returns False), so a NaN dimension would slip past
+    # the original guard, propagate through `block.bbox.x0 / dims.width`, and
+    # be clamped back to a finite-looking NormRect by the min/max ladder.
+    if (
+        dims is None
+        or not math.isfinite(dims.width)
+        or not math.isfinite(dims.height)
+        or dims.width <= 0
+        or dims.height <= 0
+    ):
         return []
 
     ru_blocks: dict[str, Block] = {}
