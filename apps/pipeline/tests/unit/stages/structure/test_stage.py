@@ -63,7 +63,7 @@ def test_structure_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "structure"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.2"
+    assert stage.version == "1.4"
 
 
 def test_structure_builds_ir(tmp_path: Path) -> None:

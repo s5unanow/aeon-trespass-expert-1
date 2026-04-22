@@ -16,7 +16,13 @@
       "bbox": null,
       "level": 2,
       "children": [
-        {"type": "text", "text": "Titan Anatomy", "marks": [], "lang": "en", "source_word_ids": []}
+        {
+          "type": "text",
+          "text": "Titan Anatomy",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
       ],
       "translatable": true,
       "style_hint": null,
@@ -28,7 +34,13 @@
       "block_id": "p0001.b002",
       "bbox": null,
       "children": [
-        {"type": "text", "text": "The diagram below shows vulnerable regions.", "marks": [], "lang": "en", "source_word_ids": []}
+        {
+          "type": "text",
+          "text": "The diagram below shows vulnerable regions.",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
       ],
       "translatable": true,
       "style_hint": null,
@@ -49,13 +61,22 @@
       "block_id": "p0001.b004",
       "bbox": null,
       "children": [
-        {"type": "text", "text": "Figure 1: Titan weak points and armor zones.", "marks": [], "lang": "en", "source_word_ids": []}
+        {
+          "type": "text",
+          "text": "Figure 1: Titan weak points and armor zones.",
+          "marks": [],
+          "lang": "en",
+          "source_word_ids": []
+        }
       ],
       "translatable": true,
-      "source_ref": null
+      "source_ref": null,
+      "figure_block_id": "p0001.b003"
     }
   ],
-  "assets": ["asset.fig.p0001.01"],
+  "assets": [
+    "asset.fig.p0001.01"
+  ],
   "reading_order": [
     "p0001.b001",
     "p0001.b002",

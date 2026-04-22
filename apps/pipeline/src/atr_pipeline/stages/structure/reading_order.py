@@ -112,7 +112,40 @@ def _partition_regions(
         else:
             # Unknown future kinds default to main flow
             main.append(r)
+    main = _drop_decorative_full_width(main)
     return main, aside
+
+
+def _drop_decorative_full_width(main: list[ResolvedRegion]) -> list[ResolvedRegion]:
+    """S5U-700: drop FULL_WIDTH regions that enclose a smaller BODY region.
+
+    A FULL_WIDTH region that spatially contains a BODY region is almost
+    always a page-spanning decorative vector cluster; keeping it in the
+    main-flow order makes it the anchor for every bottom-of-page sidebar
+    (via nearest-center mapping), which pulls bottom-of-page content to
+    the top of reading order. Dropping it leaves the BODY regions as the
+    sole main-flow anchors. If no BODY region is present, the
+    FULL_WIDTH survives (legitimate full-bleed content page).
+    """
+    body_regions = [r for r in main if r.kind == RegionKind.BODY]
+    if not body_regions:
+        return main
+
+    def encloses_body(fw: ResolvedRegion) -> bool:
+        fb = fw.bbox
+        for b in body_regions:
+            bb = b.bbox
+            if (
+                fb.x0 <= bb.x0
+                and fb.x1 >= bb.x1
+                and fb.y0 <= bb.y0
+                and fb.y1 >= bb.y1
+                and (fb.x1 - fb.x0) * (fb.y1 - fb.y0) > (bb.x1 - bb.x0) * (bb.y1 - bb.y0)
+            ):
+                return True
+        return False
+
+    return [r for r in main if not (r.kind == RegionKind.FULL_WIDTH and encloses_body(r))]
 
 
 def _regions_overlap_vertically(

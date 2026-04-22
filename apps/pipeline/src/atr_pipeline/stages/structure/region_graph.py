@@ -103,9 +103,10 @@ def segment_regions(
         if not band.items:
             continue
         columns = _detect_columns_in_band(band, dims, cfg)
+        sibling_count = len(columns)
         for col_items in columns:
             region_idx += 1
-            kind = _classify_column(col_items, dims, cfg)
+            kind = _classify_column(col_items, dims, cfg, sibling_count=sibling_count)
             bbox = _union_items(col_items)
             eids = [it.evidence_id for it in col_items]
             confidence = _column_confidence(col_items)
@@ -267,8 +268,17 @@ def _classify_column(
     items: list[_SpatialItem],
     dims: PageDimensions,
     cfg: StructureConfig,
+    *,
+    sibling_count: int = 1,
 ) -> RegionKind:
-    """Classify a column region by its content composition."""
+    """Classify a column region by its content composition.
+
+    ``sibling_count`` is the number of column slices the band was split
+    into. When a band produces ≥2 similar-width siblings that each contain
+    text, each slice represents a body column — so the callout/sidebar
+    downgrade must NOT fire for them (S5U-700, p0048). The downgrade
+    remains valid for a single narrow column sitting alone in its band.
+    """
     if not items:
         return RegionKind.UNKNOWN
     text_count = sum(1 for it in items if it.category == "text")
@@ -295,6 +305,15 @@ def _classify_column(
         and (at_left_edge or at_right_edge)
     ):
         return RegionKind.MARGIN_NOTE
+
+    # S5U-700: a multi-column band where this slice is body-width-ish
+    # (>= 35% of page) and carries real text is a body column — not a
+    # callout. Preempt the callout downgrade below so two ~45%-width
+    # siblings both stay BODY. Narrow slices (< 35%) still fall through
+    # to SIDEBAR / MARGIN_NOTE classification below (the legitimate
+    # aside case).
+    if sibling_count >= 2 and text_count >= 3 and width_fraction >= 0.35:
+        return RegionKind.BODY
 
     # Callout: narrow-ish column with mixed content (text + visual elements)
     visual_count = image_count + vector_count

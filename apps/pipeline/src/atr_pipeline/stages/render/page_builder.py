@@ -6,6 +6,7 @@ import re
 
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.page_ir_v1 import (
+    CaptionBlock,
     DividerBlock,
     FigureBlock,
     HeadingBlock,
@@ -92,29 +93,30 @@ def build_render_page(
     figures: dict[str, RenderFigure] = {}
     title = ""
 
+    caption_for_figure = _resolve_caption_attachments(page_ir)
+
     for block in page_ir.blocks:
         block_refs.append(block.block_id)
         if isinstance(block, (DividerBlock, UnknownBlock)):
             continue
+        if isinstance(block, CaptionBlock):
+            # S5U-700 Must-refuse M2: captions without a resolvable owning
+            # figure are refused instead of rendered as detached prose.
+            # Attached captions (block_id in consumed_caption_ids) are
+            # folded into RenderFigure.caption by _emit_figure_block, so
+            # they are also dropped from the top-level block stream.
+            continue
 
         # FigureBlock does not have translatable text children — handle separately
         if isinstance(block, FigureBlock):
-            asset_id = block.asset_id
-            render_blocks.append(
-                RenderFigureBlock(
-                    id=block.block_id,
-                    asset_id=asset_id,
-                    children=_convert_inline_nodes(list(block.children)),
-                )
+            _emit_figure_block(
+                block,
+                render_blocks,
+                figures,
+                image_base_path=image_base_path,
+                image_sources=image_sources,
+                caption_for_figure=caption_for_figure,
             )
-            # Populate the figures lookup so the frontend can resolve src
-            if image_sources and asset_id in image_sources:
-                src = image_sources[asset_id]
-            elif image_base_path:
-                src = f"{image_base_path}/{asset_id}"
-            else:
-                src = asset_id
-            figures[asset_id] = RenderFigure(src=src, alt=asset_id)
             continue
 
         children = _convert_inline_nodes(list(block.children))
@@ -152,6 +154,64 @@ def build_render_page(
             block_refs=block_refs,
         ),
     )
+
+
+def _emit_figure_block(
+    block: FigureBlock,
+    render_blocks: list[RenderBlock],
+    figures: dict[str, RenderFigure],
+    *,
+    image_base_path: str,
+    image_sources: dict[str, str] | None,
+    caption_for_figure: dict[str, str],
+) -> None:
+    """Append a RenderFigureBlock and register its RenderFigure entry."""
+    asset_id = block.asset_id
+    render_blocks.append(
+        RenderFigureBlock(
+            id=block.block_id,
+            asset_id=asset_id,
+            children=_convert_inline_nodes(list(block.children)),
+        )
+    )
+    if image_sources and asset_id in image_sources:
+        src = image_sources[asset_id]
+    elif image_base_path:
+        src = f"{image_base_path}/{asset_id}"
+    else:
+        src = asset_id
+    figures[asset_id] = RenderFigure(
+        src=src,
+        alt=asset_id,
+        caption=caption_for_figure.get(asset_id, ""),
+    )
+
+
+def _resolve_caption_attachments(page_ir: PageIRV1) -> dict[str, str]:
+    """S5U-700: fold each attached CaptionBlock into its owning figure.
+
+    Returns a mapping of figure asset_id → caption text, consumed by
+    ``_emit_figure_block`` to populate ``RenderFigure.caption``. Orphan
+    CaptionBlocks (no ``figure_block_id`` or pointer does not resolve to
+    a FigureBlock on the page) are skipped; the caller drops every
+    CaptionBlock from the render output per Must-refuse M2.
+    """
+    caption_for_figure: dict[str, str] = {}
+    figure_id_to_asset: dict[str, str] = {
+        b.block_id: b.asset_id for b in page_ir.blocks if isinstance(b, FigureBlock)
+    }
+    for block in page_ir.blocks:
+        if not (isinstance(block, CaptionBlock) and block.figure_block_id):
+            continue
+        target_asset = figure_id_to_asset.get(block.figure_block_id)
+        if target_asset is None:
+            continue
+        text = " ".join(
+            c.text for c in block.children if isinstance(c, TextInline) and c.text.strip()
+        ).strip()
+        if text:
+            caption_for_figure[target_asset] = text
+    return caption_for_figure
 
 
 def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:

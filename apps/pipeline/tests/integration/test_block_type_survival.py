@@ -64,7 +64,11 @@ INTENTIONALLY_DROPPED: dict[str, str] = {
     "unknown": "Pre-publish placeholder that must be resolved before render",
     "list": "Container block — individual ListItemBlocks are rendered instead",
     "callout": "Render mapping not yet implemented (tracked for future work)",
-    "caption": "Render mapping not yet implemented (tracked for future work)",
+    "caption": (
+        "Captions never render as standalone blocks: attached captions are "
+        "folded into RenderFigure.caption, and orphan captions are refused "
+        "per S5U-700 Must-refuse M2."
+    ),
 }
 
 # ---------------------------------------------------------------------------

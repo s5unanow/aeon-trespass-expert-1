@@ -76,22 +76,55 @@ def _block_center(block: Block) -> tuple[float, float] | None:
     return ((bbox.x0 + bbox.x1) / 2, (bbox.y0 + bbox.y1) / 2) if bbox else None
 
 
+# Regions that must never claim content blocks as a primary assignment —
+# page furniture / decoration that typically spans the entire page. A
+# page-background vector cluster commonly becomes a FULL_WIDTH region
+# covering the whole canvas; treating it as content scrambles two-column
+# reading order (S5U-700). Header/footer regions never hold body content.
+_NON_CONTENT_REGION_KINDS: frozenset[RegionKind] = frozenset(
+    {RegionKind.HEADER, RegionKind.FOOTER, RegionKind.FULL_WIDTH}
+)
+
+
+def _region_area(region: ResolvedRegion) -> float:
+    rb = region.bbox
+    return max(0.0, rb.x1 - rb.x0) * max(0.0, rb.y1 - rb.y0)
+
+
 def _assign_blocks_to_regions(
     blocks: list[Block],
     regions: list[ResolvedRegion],
 ) -> dict[str, str]:
-    """Map block_id -> region_id by center-point containment."""
+    """Map block_id -> region_id by smallest-area containment.
+
+    S5U-700: prefer the smallest containing region (not list-order first
+    match). Content-bearing regions always win over HEADER/FOOTER/
+    FULL_WIDTH when both contain the block centre; the non-content kinds
+    only apply as fallback. This prevents a page-spanning FULL_WIDTH
+    decorative region from capturing every block and collapsing two-column
+    layouts into a single wide bucket.
+    """
     result: dict[str, str] = {}
     for block in blocks:
         center = _block_center(block)
         if center is None:
             continue
         cx, cy = center
+        content_pick: ResolvedRegion | None = None
+        fallback_pick: ResolvedRegion | None = None
         for region in regions:
             rb = region.bbox
-            if rb.x0 <= cx <= rb.x1 and rb.y0 <= cy <= rb.y1:
-                result[block.block_id] = region.region_id
-                break
+            if not (rb.x0 <= cx <= rb.x1 and rb.y0 <= cy <= rb.y1):
+                continue
+            is_fallback = region.kind in _NON_CONTENT_REGION_KINDS
+            if is_fallback:
+                if fallback_pick is None or _region_area(region) < _region_area(fallback_pick):
+                    fallback_pick = region
+            elif content_pick is None or _region_area(region) < _region_area(content_pick):
+                content_pick = region
+        chosen = content_pick or fallback_pick
+        if chosen is not None:
+            result[block.block_id] = chosen.region_id
     return result
 
 
@@ -342,46 +375,14 @@ def _resolve_region_id(block: Block, region_map: dict[str, str]) -> str:
     return region_map.get(block.block_id, "")
 
 
-def reorder_blocks_by_regions(
-    blocks: list[Block],
-    regions: list[ResolvedRegion],
-    main_flow_order: list[str],
-) -> list[Block]:
-    """Reorder blocks to match region-based spatial reading order."""
-    if not main_flow_order or not blocks:
-        return blocks
-
-    region_map = _assign_blocks_to_regions(blocks, regions)
-    region_pos = {rid: i for i, rid in enumerate(main_flow_order)}
-    aside_pos = _map_aside_to_main(regions, region_pos)
-    sentinel = len(main_flow_order)
-
-    def _sort_key(item: tuple[int, Block]) -> tuple[int, float, int]:
-        orig_idx, block = item
-        rid = region_map.get(block.block_id)
-        pos = region_pos.get(rid, aside_pos.get(rid, sentinel)) if rid is not None else sentinel
-        bbox = getattr(block, "bbox", None)
-        y0 = bbox.y0 if bbox is not None else 0.0
-        return (pos, y0, orig_idx)
-
-    indexed = list(enumerate(blocks))
-    indexed.sort(key=_sort_key)
-    return [block for _, block in indexed]
-
-
-def _map_aside_to_main(regions: list[ResolvedRegion], region_pos: dict[str, int]) -> dict[str, int]:
-    """Map non-main-flow region IDs to nearest main-flow region position."""
-    main = [r for r in regions if r.region_id in region_pos]
-    if not main:
-        return {}
-    result: dict[str, int] = {}
-    for r in regions:
-        if r.region_id in region_pos:
-            continue
-        cy = (r.bbox.y0 + r.bbox.y1) / 2
-        best = min(main, key=lambda m: abs(cy - (m.bbox.y0 + m.bbox.y1) / 2))
-        result[r.region_id] = region_pos[best.region_id]
-    return result
+# Public API: reorder_blocks_by_regions lives in block_reorder.py so the
+# column-aware fallback (S5U-700) could land without pushing this file past
+# the 400-line ceiling. Re-exported here so existing callers don't need to
+# re-import.
+from atr_pipeline.stages.structure.block_reorder import (  # noqa: E402, F401
+    _map_aside_to_main,
+    reorder_blocks_by_regions,
+)
 
 
 def _build_resolved_blocks(

@@ -282,3 +282,66 @@ class TestOnlyAsideRegions:
         result = compute_reading_order(regions)
         assert result.main_flow_order == []
         assert result.confidence == 0.5
+
+
+class TestDecorativeFullWidthFilter:
+    """S5U-700: FULL_WIDTH regions enclosing BODY regions are decorative.
+
+    Red-before confirmation: at main @ 7fee026 p0042's main_flow_order
+    puts r003 (FULL_WIDTH y=0-842) first because it encloses r004/r006
+    BODY regions. Bottom-of-page SIDEBAR r007 (y=747) then maps aside→
+    main via nearest-centre to r003 (centre y=421 is closer than r006's
+    y=404 when the sidebar is deep-bottom), pulling b021 ("Crit Evade")
+    to position 0. Dropping r003 leaves r006 as the sole wide main
+    region and the sidebar anchors after r006's content.
+    """
+
+    def test_full_width_enclosing_body_is_dropped(self) -> None:
+        """FULL_WIDTH region containing a BODY region drops from main flow."""
+        regions = [
+            _region("r001", RegionKind.FULL_WIDTH, 0, 0, 612, 792),
+            _region("r002", RegionKind.BODY, 40, 60, 572, 740),
+        ]
+        result = compute_reading_order(regions)
+        assert "r001" not in result.main_flow_order
+        assert "r002" in result.main_flow_order
+
+    def test_full_width_alone_survives(self) -> None:
+        """With no BODY region, a FULL_WIDTH region stays in main flow."""
+        regions = [
+            _region("r001", RegionKind.FULL_WIDTH, 0, 0, 612, 792),
+        ]
+        result = compute_reading_order(regions)
+        assert result.main_flow_order == ["r001"]
+
+    def test_full_width_not_enclosing_body_survives(self) -> None:
+        """A FULL_WIDTH region that does NOT spatially enclose a BODY region
+        (e.g., a narrower vector banner) stays in main flow.
+
+        Adversarial: prevents over-filtering of legitimate full-bleed
+        banners on pages where BODY regions extend beyond them.
+        """
+        regions = [
+            _region("r001", RegionKind.FULL_WIDTH, 40, 60, 572, 200),
+            _region("r002", RegionKind.BODY, 0, 0, 612, 792),
+        ]
+        result = compute_reading_order(regions)
+        # r001 does NOT enclose r002 (r002 is wider and taller), so r001
+        # survives.
+        assert "r001" in result.main_flow_order
+        assert "r002" in result.main_flow_order
+
+    def test_sidebar_anchors_to_body_after_filter(self) -> None:
+        """After filtering, a bottom-of-page SIDEBAR anchors to the BODY
+        region instead of the enclosing FULL_WIDTH — fixing p0042's
+        b021 ordering."""
+        regions = [
+            _region("r001", RegionKind.FULL_WIDTH, 0, 0, 612, 792),
+            _region("r002", RegionKind.BODY, 40, 60, 572, 740),
+            _region("r003", RegionKind.SIDEBAR, 300, 745, 360, 770),
+        ]
+        result = compute_reading_order(regions)
+        assert result.main_flow_order == ["r002"]
+        edges_for_sidebar = [e for e in result.anchor_edges if e.source_id == "r003"]
+        assert len(edges_for_sidebar) == 1
+        assert edges_for_sidebar[0].target_id == "r002"
