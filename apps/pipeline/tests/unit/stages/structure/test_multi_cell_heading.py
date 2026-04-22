@@ -7,6 +7,8 @@ single heading ``"Wounded card:BP deckAI deck"``.
 
 from __future__ import annotations
 
+import re
+
 from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import PageDimensions, Rect
@@ -16,13 +18,12 @@ from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
 def _span(
     span_id: str,
     text: str,
-    x0: float,
-    x1: float,
-    y0: float,
-    y1: float,
+    bbox: tuple[float, float, float, float],
+    *,
     font_name: str,
     font_size: float,
 ) -> SpanEvidence:
+    x0, y0, x1, y1 = bbox
     return SpanEvidence(
         span_id=span_id,
         text=text,
@@ -56,9 +57,27 @@ def test_multi_cell_heading_line_is_not_joined_into_one_heading() -> None:
     """
     cfg = StructureConfig()
     spans = [
-        _span("s1", "Wounded card:", 57.9, 140.1, 75.8, 90.1, "GreenleafLightPro", 11.0),
-        _span("s2", "BP deck", 167.3, 208.0, 75.8, 90.1, "GreenleafLightPro", 11.0),
-        _span("s3", "AI deck", 369.2, 406.5, 75.8, 90.1, "GreenleafLightPro", 11.0),
+        _span(
+            "s1",
+            "Wounded card:",
+            (57.9, 75.8, 140.1, 90.1),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
+        _span(
+            "s2",
+            "BP deck",
+            (167.3, 75.8, 208.0, 90.1),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
+        _span(
+            "s3",
+            "AI deck",
+            (369.2, 75.8, 406.5, 90.1),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
     ]
     native = _native_page(spans)
     ir = build_page_ir_real(native, config=cfg)
@@ -71,8 +90,10 @@ def test_multi_cell_heading_line_is_not_joined_into_one_heading() -> None:
             f"heading text must not be the cell-joined garbage form; got {text!r}"
         )
         # More generally: a heading with the glued cell-boundary pattern
-        # (colon directly followed by capital letter, no space) is refused.
-        assert ":B" not in text and ":A" not in text or " " in text.split(":", 1)[-1][:1], (
+        # (colon directly followed by an uppercase letter with no whitespace
+        # between them) is refused — it is the marker that two table-header
+        # cells were concatenated across a cell boundary.
+        assert not re.search(r":[A-Z]", text), (
             f"heading text looks like glued table cells: {text!r}"
         )
 
@@ -83,7 +104,13 @@ def test_single_cell_heading_is_preserved() -> None:
     """
     cfg = StructureConfig()
     spans = [
-        _span("s1", "Chapter 1: Setup", 57.9, 240.0, 75.8, 90.1, "GreenleafLightPro", 11.0),
+        _span(
+            "s1",
+            "Chapter 1: Setup",
+            (57.9, 75.8, 240.0, 90.1),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
     ]
     native = _native_page(spans)
     ir = build_page_ir_real(native, config=cfg)
@@ -102,8 +129,20 @@ def test_heading_spans_with_small_gap_still_merge() -> None:
     """
     cfg = StructureConfig()
     spans = [
-        _span("s1", "Wounded", 57.9, 100.0, 75.8, 90.1, "GreenleafLightPro", 11.0),
-        _span("s2", "Escalation", 105.0, 170.0, 75.8, 90.1, "GreenleafLightPro", 11.0),
+        _span(
+            "s1",
+            "Wounded",
+            (57.9, 75.8, 100.0, 90.1),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
+        _span(
+            "s2",
+            "Escalation",
+            (105.0, 75.8, 170.0, 90.1),
+            font_name="GreenleafLightPro",
+            font_size=11.0,
+        ),
     ]
     native = _native_page(spans)
     ir = build_page_ir_real(native, config=cfg)

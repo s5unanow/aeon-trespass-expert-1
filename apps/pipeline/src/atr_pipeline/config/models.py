@@ -138,6 +138,15 @@ class StructureConfig(BaseModel):
     caption_max_text_length: int = Field(default=200, ge=1)
     table_min_confidence: float = Field(default=0.6, ge=0.0, le=1.0)
 
+    # S5U-698 — refuse multi-cell heading merges. When three or more
+    # heading-classified spans sit on the same y-baseline separated by gaps
+    # wider than this threshold, the line is treated as a multi-column table
+    # header row (e.g. p0054 "Wounded card: | BP deck | AI deck") rather than
+    # a single HeadingBlock. The default is chosen well above typical word-gap
+    # sizes (<10pt) and above heading kerning (~20pt), so legitimate
+    # single-column headings are preserved.
+    heading_cell_split_gap_pt: float = Field(default=40.0, gt=0.0)
+
     # Per-page structure overrides
     page_overrides: dict[str, StructurePageOverride] = Field(default_factory=dict)
 

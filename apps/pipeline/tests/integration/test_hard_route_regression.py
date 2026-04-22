@@ -381,7 +381,9 @@ def test_route_provenance_roundtrip(tmp_path: Path) -> None:
 
     assert ir.provenance is not None
     assert ir.provenance.extractor == "structure"
-    assert ir.provenance.version == "1.1"
+    # S5U-698 bumped StructureStage.version 1.1 → 1.2 to invalidate caches
+    # after multi-cell heading refusal landed.
+    assert ir.provenance.version == "1.2"
     assert "route:R2" in ir.provenance.evidence_ids
 
     assert ir.confidence is not None

@@ -156,6 +156,32 @@ _WORD_GAP_THRESHOLD = 1.5
 _NUMBERED_STEP_RE = re.compile(r"^\d{1,3}[.):]*$")
 
 
+def _split_spans_by_x_gap(
+    spans: list[SpanEvidence],
+    gap_threshold_pt: float,
+) -> list[list[SpanEvidence]]:
+    """Split spans on the same y-baseline into cell groups by horizontal gap.
+
+    S5U-698 — a heading-classified line composed of multiple spans with
+    gaps wider than ``gap_threshold_pt`` is almost certainly a multi-column
+    table-header row rather than a single heading. Returning a list of
+    length > 1 is the signal that the structure layer must refuse to emit
+    one joined heading.
+    """
+    if not spans:
+        return []
+    ordered = sorted(spans, key=lambda s: s.bbox.x0)
+    groups: list[list[SpanEvidence]] = [[ordered[0]]]
+    for span in ordered[1:]:
+        prev = groups[-1][-1]
+        gap = span.bbox.x0 - prev.bbox.x1
+        if gap > gap_threshold_pt:
+            groups.append([span])
+        else:
+            groups[-1].append(span)
+    return groups
+
+
 def _significant_image_blocks(
     native: NativePageV1,
     cfg: StructureConfig,
@@ -374,6 +400,30 @@ def build_page_ir_real(
         # Heading line
         if roles & {"heading", "subheading"} and "body" not in roles:
             flush_paragraph()
+            # S5U-698: refuse to merge heading spans that sit across multiple
+            # cells of a table-header row. When the line splits into ≥2 cell
+            # groups at ``heading_cell_split_gap_pt``, emit the spans as a
+            # TableBlock header row (one row per cell group joined by
+            # LineBreakInline), *not* a single HeadingBlock. This prevents
+            # garbage titles like "Wounded card:BP deckAI deck".
+            non_decorative = [s for _, s in line if _classify_span(s, cfg) != "decorative"]
+            cell_groups = _split_spans_by_x_gap(
+                non_decorative,
+                cfg.heading_cell_split_gap_pt,
+            )
+            if len(cell_groups) >= 2:
+                # Multi-cell header row — record as table rows and continue.
+                # The upcoming table-region body lines will join this row via
+                # ``current_table_rows``. If no subsequent table body is
+                # found, ``flush_table`` still emits a TableBlock with just
+                # these header rows, which is correct: each cell stays as a
+                # separate TextInline segment.
+                for grp in cell_groups:
+                    current_table_rows.append(list(grp))
+                if current_table_idx < 0:
+                    current_table_idx = 0
+                continue
+
             text = "".join(s.text for _, s in line if _classify_span(s, cfg) != "decorative")
             text = normalize_text(text.strip())
             if text:
