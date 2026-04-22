@@ -6,6 +6,7 @@ import re
 
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.page_ir_v1 import (
+    CaptionBlock,
     DividerBlock,
     FigureBlock,
     HeadingBlock,
@@ -92,9 +93,33 @@ def build_render_page(
     figures: dict[str, RenderFigure] = {}
     title = ""
 
+    # S5U-700: resolve caption → figure attachment before emitting render
+    # blocks. CaptionBlocks carry a figure_block_id pointing at the owning
+    # figure; collapse them into ``RenderFigure.caption`` so the reader
+    # shows the caption inline with the figure instead of as a floating
+    # paragraph. Captions with no resolvable figure are kept as paragraphs.
+    caption_for_figure: dict[str, str] = {}
+    consumed_caption_ids: set[str] = set()
+    figure_id_to_asset: dict[str, str] = {
+        b.block_id: b.asset_id for b in page_ir.blocks if isinstance(b, FigureBlock)
+    }
+    for block in page_ir.blocks:
+        if isinstance(block, CaptionBlock) and block.figure_block_id:
+            target_asset = figure_id_to_asset.get(block.figure_block_id)
+            if target_asset:
+                text = " ".join(
+                    c.text for c in block.children if isinstance(c, TextInline) and c.text.strip()
+                ).strip()
+                if text:
+                    caption_for_figure[target_asset] = text
+                    consumed_caption_ids.add(block.block_id)
+
     for block in page_ir.blocks:
         block_refs.append(block.block_id)
         if isinstance(block, (DividerBlock, UnknownBlock)):
+            continue
+        if isinstance(block, CaptionBlock) and block.block_id in consumed_caption_ids:
+            # Caption already folded into its figure via RenderFigure.caption.
             continue
 
         # FigureBlock does not have translatable text children — handle separately
@@ -114,7 +139,11 @@ def build_render_page(
                 src = f"{image_base_path}/{asset_id}"
             else:
                 src = asset_id
-            figures[asset_id] = RenderFigure(src=src, alt=asset_id)
+            figures[asset_id] = RenderFigure(
+                src=src,
+                alt=asset_id,
+                caption=caption_for_figure.get(asset_id, ""),
+            )
             continue
 
         children = _convert_inline_nodes(list(block.children))
@@ -131,7 +160,9 @@ def build_render_page(
                     children=children,
                 )
             )
-        elif block.type == "paragraph":
+        elif block.type == "paragraph" or block.type == "caption":
+            # Orphan CaptionBlocks (no resolvable figure) still render as
+            # paragraphs so the text is not lost.
             render_blocks.append(RenderParagraphBlock(id=block.block_id, children=children))
         elif block.type == "table":
             render_blocks.append(RenderTableBlock(id=block.block_id, children=children))

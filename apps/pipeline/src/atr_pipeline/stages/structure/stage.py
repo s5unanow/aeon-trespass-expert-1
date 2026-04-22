@@ -69,7 +69,7 @@ class StructureStage:
 
     @property
     def version(self) -> str:
-        return "1.2"  # S5U-698 multi-cell heading refusal (S5U-662 bump).
+        return "1.3"  # S5U-700 best-fit + column-aware reorder (S5U-662 bump)
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> StructureResult:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))
