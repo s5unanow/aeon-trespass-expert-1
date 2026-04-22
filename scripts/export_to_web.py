@@ -27,6 +27,8 @@ from _export_images import extract_images, resolve_source_pdf  # noqa: E402
 from _export_qa import export_qa  # noqa: E402
 from _export_validation import run_export_validation  # noqa: E402
 
+from atr_pipeline.config import load_document_config  # noqa: E402
+
 # Re-exports for S5U-688 regression tests and downstream callers that want to
 # import the helpers from the main entry script.
 __all__ = ["extract_images", "resolve_source_pdf"]
@@ -154,6 +156,35 @@ _KIND_MAP = {
     "heading": "headings",
     "paragraph": "paragraphs",
 }
+
+
+def _load_facsimile_override_pids(doc_id: str) -> list[str]:
+    """Load the allowlist of page IDs explicitly marked ``presentation_mode = "facsimile"``.
+
+    Consumed by the S5U-699 publish-time consistency guard in
+    ``_export_validation.validate_presentation_mode_payload_consistency``.
+    A page appearing in this list is intentionally image-dominant even if
+    its blocks payload is substantial (e.g. p0006/p0007 — card-component
+    overview pages with dense caption fragments that are meaningful only
+    alongside the raster). Pages *not* in this list whose payload still
+    advertises facsimile mode while carrying many structured blocks are
+    rejected at publish time.
+
+    The allowlist is derived from the **same merged/validated
+    ``DocumentBuildConfig``** the render stage consumes (base.toml + env
+    overlay + document TOML, validated by pydantic) so the export gate
+    cannot drift from the pipeline's classification contract. See the
+    S5U-699 Codex review for the contract-split regression this guards
+    against.
+
+    Returns a sorted list for deterministic logging.
+    """
+    config = load_document_config(doc_id)
+    return sorted(
+        pid
+        for pid, override in config.render.page_overrides.items()
+        if override.presentation_mode == "facsimile"
+    )
 
 
 def _count_block_stats(blocks: list[dict], stats: dict) -> None:
@@ -336,6 +367,10 @@ def main(argv: list[str] | None = None) -> None:
 
     glossary_src = ARTIFACT_ROOT / doc_id / "glossary_payload.v1" / "document" / doc_id
 
+    facsimile_override_pids = _load_facsimile_override_pids(doc_id)
+    if facsimile_override_pids:
+        print(f"Config-allowlisted facsimile pages: {', '.join(facsimile_override_pids)}")
+
     validation_ok = True
     for edition in editions:
         print(f"Exporting {edition.upper()} render pages...")
@@ -345,7 +380,7 @@ def main(argv: list[str] | None = None) -> None:
 
         edition_dir = doc_public / edition
         manifest = json.loads((edition_dir / "manifest.json").read_text())
-        if not run_export_validation(edition_dir, manifest["pages"]):
+        if not run_export_validation(edition_dir, manifest["pages"], facsimile_override_pids):
             validation_ok = False
 
     write_document_index(documents_root)

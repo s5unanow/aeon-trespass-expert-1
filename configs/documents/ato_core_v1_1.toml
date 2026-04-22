@@ -42,6 +42,39 @@ facsimile_annotation_keep_texts = [
 [render.page_overrides.p0054]
 title = "Wounded / Escalation Charts"
 
+# S5U-699 — force article mode for the "Tree of Knowledge" card-reference pages.
+# The auto heuristic (hard_page + native_text_coverage < 0.15) mis-classifies
+# these as facsimile-only even though structure recovery produces readable
+# headings, paragraphs, and tables (44 and 37 non-figure blocks respectively).
+# Without this override the reader shows only the raster scan with tiny
+# non-selectable text. See the Linear issue for the must-refuse matrix.
+[render.page_overrides.p0075]
+presentation_mode = "article"
+title = "Tree of Knowledge"
+
+[render.page_overrides.p0076]
+presentation_mode = "article"
+title = "Tree of Knowledge (continued)"
+
+# S5U-699 — the publish-time guard in `scripts/_export_validation.py` also
+# detects the same facsimile/structured-payload mismatch on p0040, p0067,
+# p0074, and p0082. These pages are OUT OF SCOPE for S5U-699 (which
+# explicitly scopes p0075/p0076). They are allowlisted as facsimile below
+# so the guard does not break the export. Tracked in S5U-706 — remove
+# the override and re-run once each page's article-mode output is verified
+# readable.
+[render.page_overrides.p0040]
+presentation_mode = "facsimile"
+
+[render.page_overrides.p0067]
+presentation_mode = "facsimile"
+
+[render.page_overrides.p0074]
+presentation_mode = "facsimile"
+
+[render.page_overrides.p0082]
+presentation_mode = "facsimile"
+
 [structure]
 # ATO Core uses denser layouts — lower footer threshold
 footer_y_threshold = 785.0
