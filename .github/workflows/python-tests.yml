@@ -157,6 +157,20 @@ jobs:
       - name: Pre-PR safety gate harness — feature-branch skip regression
         run: bash scripts/test_harness_skip_on_feature_branch.sh
 
+      # S5U-692: regression test simulating a future refactor of the hook's
+      # safety-gate anchor (e.g., `| grep -E '^(…)'` → `| grep
+      # --extended-regexp '^(…)'`). Copies the harness + hook into a tempdir,
+      # rewrites the anchor, points the harness at the refactored hook, and
+      # asserts exit 1 + the `FAIL: could not extract safety-gate regex`
+      # diagnostic. Pre-S5U-692 the harness silent-crashed at the line-44
+      # `SAFETY_REGEX=$(…)` assignment under `set -euo pipefail` before the
+      # fail-closed branch at line 47 could emit its diagnostic. Same bug
+      # class as S5U-691, sibling site. Per .claude/rules/guards.md Rule G1
+      # this is the parse-error / missing-state coverage for the harness's
+      # hook-extraction step.
+      - name: Pre-PR safety gate harness — safety-regex extraction regression
+        run: bash scripts/test_harness_safety_regex_extraction.sh
+
       - name: Code erosion report (advisory)
         if: github.event_name == 'pull_request'
         continue-on-error: true
