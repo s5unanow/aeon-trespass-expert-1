@@ -52,7 +52,7 @@ Runs automatically on every `git commit` via `.claude/hooks/pre-commit-check.sh`
 7. `tsc --noEmit` — frontend type check
 8. `pytest -x -q --timeout=60 -m "not slow"` — fast test subset only
 
-### CI (GitHub Actions, 9 + 8 extra)
+### CI (GitHub Actions, 9 + 7 extra)
 
 Runs on every push to `main` and on every PR. Includes all 9 local gates plus:
 
@@ -80,7 +80,7 @@ CI also runs `pytest --tb=short` (full suite — includes slow tests, no timeout
 ### What "passing" means
 
 - **Local green** = safe to commit and push, but not sufficient for merge.
-- **CI green** = all 17 gates pass — required for merge. "Definition of Done" means CI green.
+- **CI green** = all 16 gates pass — required for merge. "Definition of Done" means CI green.
 
 ## Development workflow (MANDATORY)
 
@@ -114,7 +114,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] **Coverage table (multi-bullet issues only)** — if the Linear issue has **≥3 explicit bullets across its "Fix" + "Success criteria" sections** (counting every list marker at any indent level — nested sub-bullets count), the PR body must include a Coverage table listing **one row per bullet, verbatim** (do not merge rows, do not collapse nested sub-bullets under the parent) mapping each bullet to the commit/file that addresses it, or an explicit `"deferred to S5U-XXX"` with a linked Linear follow-up (the follow-up must exist and not be Canceled). Single-bullet or prose-style issues are exempt — reviewer judgment applies. See `.claude/prompts/linear-conventions.md` § "Coverage table format (multi-bullet issues)" for the worked example. Motivated by S5U-616 after S5U-594 / S5U-595 / S5U-605 dropped-bullet regressions; nested-bullet semantics clarified in S5U-622.
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
-- [ ] CI green after push (all 17 gates — local green alone is not sufficient)
+- [ ] CI green after push (all 16 gates — local green alone is not sufficient)
 - [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 
 ### 6. Independent fresh-eyes review (MANDATORY before PR)
