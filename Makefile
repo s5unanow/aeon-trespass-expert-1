@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test test-hooks codegen check-codegen verify export clean validate-fixtures config-health erosion-report
+.PHONY: help bootstrap lint format typecheck test test-hooks codegen check-codegen verify export clean validate-fixtures config-health erosion-report verify-branch-protection
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -63,6 +63,9 @@ config-health: ## Check config drift across CLAUDE.md, hooks, skills, and CI
 
 erosion-report: ## Advisory code erosion report (non-blocking)
 	uv run python scripts/check_code_erosion.py --base main --head HEAD
+
+verify-branch-protection: ## Compare live main branch protection against repo workflow policy
+	uv run python scripts/check_branch_protection.py
 
 clean: ## Remove caches and build artifacts
 	rm -rf artifacts/*
