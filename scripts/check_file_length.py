@@ -24,7 +24,11 @@ import argparse
 import sys
 from pathlib import Path
 
-# Files with known violations — each must reference a tracking Linear issue.
+# Files with known violations.
+#
+# This is a static debt ledger, not a live policy surface: the line-count
+# gate above is the enforcement, and the issue IDs below are informational
+# references for the follow-up work that should eventually split each file.
 #
 # S5U-663 grandfather set: the 14 test files that exceeded 400 lines at the
 # time test directories were added to the scan. Each entry is a regression
@@ -32,11 +36,7 @@ from pathlib import Path
 # sibling split issues (S5U-655 for visual_gate_scope, S5U-656 for
 # threshold_changes); the remaining 12 entries are tracked under the
 # S5U-663 follow-up umbrella S5U-677 (re-keyed in S5U-669 after S5U-663
-# itself shipped Done — a Done issue cannot function as an open tracker).
-#
-# S5U-669: an advisory CI check (`scripts/check_file_length_violators_live.py`,
-# `.github/workflows/check-file-length-violators.yml`) validates that every
-# value here resolves to a non-Done / non-Canceled Linear issue.
+# itself shipped Done — a Done issue cannot function as a useful tracker).
 KNOWN_VIOLATORS: dict[str, str] = {
     # Source-side (pre-existing)
     "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py": "S5U-144",
