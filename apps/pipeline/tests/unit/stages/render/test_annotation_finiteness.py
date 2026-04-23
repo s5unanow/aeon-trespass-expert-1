@@ -22,7 +22,7 @@ def _para(bid: str, bbox: Rect, text: str) -> ParagraphBlock:
         block_id=bid,
         type="paragraph",
         bbox=bbox,
-        inlines=[TextInline(type="text", text=text)],
+        children=[TextInline(text=text)],
     )
 
 
