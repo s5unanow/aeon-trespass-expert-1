@@ -14,12 +14,13 @@ import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, cast
 
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS_DIR = REPO_ROOT / ".github" / "workflows"
+MISSING = object()
 
 
 @dataclass(frozen=True)
@@ -78,8 +79,9 @@ def _workflow_on_block(workflow: dict[str, Any]) -> Any:
     """Return the `on:` block, handling YAML 1.1 bool coercion of `on` -> True."""
     if "on" in workflow:
         return workflow["on"]
-    if True in workflow:  # PyYAML treats bare `on:` as boolean True.
-        return workflow[True]
+    bool_key_value = workflow.get(cast(Any, True), MISSING)
+    if bool_key_value is not MISSING:  # PyYAML treats bare `on:` as boolean True.
+        return bool_key_value
     raise RuntimeError("Workflow is missing an 'on' block")
 
 
@@ -92,26 +94,32 @@ def _normalise_workflow_paths(repo_root: Path) -> list[Path]:
     return files
 
 
-def _has_pull_request_trigger(workflow: dict[str, Any], *, branch: str) -> bool:
-    """Return whether a workflow runs for pull requests targeting the branch."""
+def _pull_request_events(workflow: dict[str, Any], *, branch: str) -> set[str]:
+    """Return the PR-style events the workflow runs for on the branch."""
     on_block = _workflow_on_block(workflow)
     if isinstance(on_block, str):
-        return on_block in {"pull_request", "pull_request_target"}
+        return {on_block} if on_block in {"pull_request", "pull_request_target"} else set()
     if isinstance(on_block, list):
-        return any(event in {"pull_request", "pull_request_target"} for event in on_block)
+        return {
+            event
+            for event in on_block
+            if isinstance(event, str) and event in {"pull_request", "pull_request_target"}
+        }
     if not isinstance(on_block, dict):
         raise RuntimeError("Workflow 'on' block must be a scalar, list, or mapping")
+    events: set[str] = set()
     for event_name in ("pull_request", "pull_request_target"):
         if event_name not in on_block:
             continue
         event_block = on_block[event_name]
         if event_block in (None, {}):
-            return True
+            events.add(event_name)
+            continue
         if not isinstance(event_block, dict):
             raise RuntimeError(f"{event_name} trigger must be null or a mapping")
         if _event_matches_branch(event_block, branch):
-            return True
-    return False
+            events.add(event_name)
+    return events
 
 
 def _branch_matches_pattern(branch: str, pattern: str) -> bool:
@@ -156,6 +164,39 @@ def _job_display_name(job_id: str, job_data: Any) -> str:
     return name.strip()
 
 
+def _job_runs_for_pr_events(job_data: dict[str, Any], pr_events: set[str]) -> bool:
+    """Skip jobs whose simple event-name guard excludes every PR event.
+
+    GitHub `if:` expressions are richer than we want to statically interpret
+    here. We only special-case the simple `github.event_name ==/!= 'event'`
+    guards that would otherwise overcount obviously non-emitted PR jobs.
+    More complex expressions stay in-scope once the surrounding workflow
+    itself is PR-triggered.
+    """
+    condition = job_data.get("if")
+    if condition is None:
+        return True
+    if isinstance(condition, bool):
+        return condition
+    if not isinstance(condition, str) or not condition.strip():
+        raise RuntimeError("Workflow job 'if' must be a non-empty string or bool")
+    normalized = condition.strip()
+    match = re.fullmatch(
+        r"\${{\s*github\.event_name\s*([!=]=)\s*['\"]([^'\"]+)['\"]\s*}}"
+        r"|github\.event_name\s*([!=]=)\s*['\"]([^'\"]+)['\"]",
+        normalized,
+    )
+    if match is None:
+        return True
+    operator = match.group(1) or match.group(3)
+    event_name = match.group(2) or match.group(4)
+    if operator is None or event_name is None:
+        raise RuntimeError("Failed to parse simple github.event_name guard")
+    if operator == "==":
+        return event_name in pr_events
+    return any(candidate != event_name for candidate in pr_events)
+
+
 def _expand_reusable_job_contexts(
     repo_root: Path,
     caller_job_id: str,
@@ -195,7 +236,8 @@ def collect_expected_contexts(repo_root: Path, *, branch: str = "main") -> froze
     contexts: set[str] = set()
     for workflow_path in _normalise_workflow_paths(repo_root):
         workflow = load_workflow(workflow_path)
-        if not _has_pull_request_trigger(workflow, branch=branch):
+        pr_events = _pull_request_events(workflow, branch=branch)
+        if not pr_events:
             continue
         jobs = workflow.get("jobs")
         if not isinstance(jobs, dict) or not jobs:
@@ -203,6 +245,8 @@ def collect_expected_contexts(repo_root: Path, *, branch: str = "main") -> froze
         for job_id, job_data_any in jobs.items():
             if not isinstance(job_data_any, dict):
                 raise RuntimeError(f"Workflow job {workflow_path}:{job_id} is not a mapping")
+            if not _job_runs_for_pr_events(job_data_any, pr_events):
+                continue
             job_contexts = _expand_reusable_job_contexts(repo_root, job_id, job_data_any)
             contexts.update(job_contexts)
     if not contexts:

@@ -164,6 +164,33 @@ def test_collect_expected_contexts_matches_branch_globs(mod: ModuleType, tmp_pat
     assert contexts == frozenset({"python / test"})
 
 
+def test_collect_expected_contexts_skips_push_only_jobs_inside_pr_workflows(
+    mod: ModuleType, tmp_path: Path
+) -> None:
+    _write_workflow(
+        tmp_path,
+        ".github/workflows/mixed.yml",
+        (
+            "name: Mixed\n"
+            "on:\n"
+            "  pull_request:\n"
+            "    branches: [main]\n"
+            "jobs:\n"
+            "  only-on-push:\n"
+            "    if: github.event_name == 'push'\n"
+            "    runs-on: ubuntu-latest\n"
+            "    steps:\n"
+            "      - run: echo push-only\n"
+            "  still-on-pr:\n"
+            "    runs-on: ubuntu-latest\n"
+            "    steps:\n"
+            "      - run: echo pr\n"
+        ),
+    )
+    contexts = mod.collect_expected_contexts(tmp_path)
+    assert contexts == frozenset({"still-on-pr"})
+
+
 def test_collect_expected_contexts_matches_current_repo_surface(mod: ModuleType) -> None:
     assert mod.collect_expected_contexts(REPO) == frozenset(
         {
