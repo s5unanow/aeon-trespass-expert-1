@@ -13,7 +13,7 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import yaml
@@ -96,26 +96,52 @@ def _has_pull_request_trigger(workflow: dict[str, Any], *, branch: str) -> bool:
     """Return whether a workflow runs for pull requests targeting the branch."""
     on_block = _workflow_on_block(workflow)
     if isinstance(on_block, str):
-        return on_block == "pull_request"
+        return on_block in {"pull_request", "pull_request_target"}
     if isinstance(on_block, list):
-        return "pull_request" in on_block
+        return any(event in {"pull_request", "pull_request_target"} for event in on_block)
     if not isinstance(on_block, dict):
         raise RuntimeError("Workflow 'on' block must be a scalar, list, or mapping")
-    if "pull_request" not in on_block:
-        return False
-    pr_block = on_block["pull_request"]
-    if pr_block in (None, {}):
-        return True
-    if not isinstance(pr_block, dict):
-        raise RuntimeError("pull_request trigger must be null or a mapping")
-    branches = pr_block.get("branches")
-    if branches is None:
-        return True
-    if isinstance(branches, str):
-        return branches == branch
-    if isinstance(branches, list):
-        return branch in branches
-    raise RuntimeError("pull_request.branches must be a string or list")
+    for event_name in ("pull_request", "pull_request_target"):
+        if event_name not in on_block:
+            continue
+        event_block = on_block[event_name]
+        if event_block in (None, {}):
+            return True
+        if not isinstance(event_block, dict):
+            raise RuntimeError(f"{event_name} trigger must be null or a mapping")
+        if _event_matches_branch(event_block, branch):
+            return True
+    return False
+
+
+def _branch_matches_pattern(branch: str, pattern: str) -> bool:
+    """Match a GitHub branch glob using path-aware semantics."""
+    return PurePosixPath(branch).match(pattern)
+
+
+def _event_matches_branch(event_block: dict[str, Any], branch: str) -> bool:
+    """Evaluate branches/branches-ignore filters for a PR-style event."""
+    branches = event_block.get("branches")
+    branches_ignore = event_block.get("branches-ignore")
+    if branches is not None and branches_ignore is not None:
+        raise RuntimeError("Workflow trigger cannot define both branches and branches-ignore")
+    if branches is not None:
+        branch_patterns = [branches] if isinstance(branches, str) else branches
+        if not isinstance(branch_patterns, list) or not all(
+            isinstance(item, str) for item in branch_patterns
+        ):
+            raise RuntimeError("Workflow branches filter must be a string or list of strings")
+        return any(_branch_matches_pattern(branch, pattern) for pattern in branch_patterns)
+    if branches_ignore is not None:
+        ignore_patterns = [branches_ignore] if isinstance(branches_ignore, str) else branches_ignore
+        if not isinstance(ignore_patterns, list) or not all(
+            isinstance(item, str) for item in ignore_patterns
+        ):
+            raise RuntimeError(
+                "Workflow branches-ignore filter must be a string or list of strings"
+            )
+        return not any(_branch_matches_pattern(branch, pattern) for pattern in ignore_patterns)
+    return True
 
 
 def _job_display_name(job_id: str, job_data: Any) -> str:

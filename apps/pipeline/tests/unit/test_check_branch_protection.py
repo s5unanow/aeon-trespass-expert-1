@@ -98,6 +98,72 @@ def test_collect_expected_contexts_includes_direct_pull_request_job_name(
     assert contexts == frozenset({"coverage-table-scan / scan"})
 
 
+def test_collect_expected_contexts_accepts_pull_request_target(
+    mod: ModuleType, tmp_path: Path
+) -> None:
+    _write_workflow(
+        tmp_path,
+        ".github/workflows/ci.yml",
+        (
+            "name: CI\n"
+            "on:\n"
+            "  pull_request_target:\n"
+            "    branches: [main]\n"
+            "jobs:\n"
+            "  python:\n"
+            "    uses: ./.github/workflows/python-tests.yml\n"
+        ),
+    )
+    _write_workflow(
+        tmp_path,
+        ".github/workflows/python-tests.yml",
+        (
+            "name: Python Tests\n"
+            "on:\n"
+            "  workflow_call:\n"
+            "jobs:\n"
+            "  test:\n"
+            "    runs-on: ubuntu-latest\n"
+            "    steps:\n"
+            "      - run: echo ok\n"
+        ),
+    )
+    contexts = mod.collect_expected_contexts(tmp_path)
+    assert contexts == frozenset({"python / test"})
+
+
+def test_collect_expected_contexts_matches_branch_globs(mod: ModuleType, tmp_path: Path) -> None:
+    _write_workflow(
+        tmp_path,
+        ".github/workflows/ci.yml",
+        (
+            "name: CI\n"
+            "on:\n"
+            "  pull_request:\n"
+            "    branches: [ma*]\n"
+            "jobs:\n"
+            "  python:\n"
+            "    uses: ./.github/workflows/python-tests.yml\n"
+        ),
+    )
+    _write_workflow(
+        tmp_path,
+        ".github/workflows/python-tests.yml",
+        (
+            "name: Python Tests\n"
+            "on:\n"
+            "  workflow_call:\n"
+            "jobs:\n"
+            "  test:\n"
+            "    runs-on: ubuntu-latest\n"
+            "    steps:\n"
+            "      - run: echo ok\n"
+        ),
+    )
+    contexts = mod.collect_expected_contexts(tmp_path)
+    assert contexts == frozenset({"python / test"})
+
+
 def test_collect_expected_contexts_matches_current_repo_surface(mod: ModuleType) -> None:
     assert mod.collect_expected_contexts(REPO) == frozenset(
         {
