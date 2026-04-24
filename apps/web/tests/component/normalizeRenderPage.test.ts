@@ -264,7 +264,7 @@ describe('normalizeRenderPage — defaulted-field materialization', () => {
     expect(out.facsimile?.annotations[0].priority).toBe(0);
     expect(out.search.raw_text).toBe('abc');
     expect(out.search.normalized_terms).toEqual(['a', 'b']);
-    expect(out.source_map).toEqual({ page_id: 'p0001', block_refs: [] });
+    expect(out.source_map).toEqual({ document_id: '', page_id: 'p0001', block_refs: [] });
     expect(out.build_meta).toEqual({ build_id: 'b1', generated_at: '' });
   });
 });

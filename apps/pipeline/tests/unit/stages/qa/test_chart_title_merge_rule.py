@@ -16,14 +16,14 @@ from atr_schemas.render_page_v1 import (
 )
 
 
-def _page(blocks: list) -> RenderPageV1:
+def _page(blocks: list, *, document_id: str = "walking_skeleton") -> RenderPageV1:
     return RenderPageV1(
         schema_version="render_page.v1",
         document_version="en",
         presentation_mode="article",
         page=RenderPageMeta(id="p0054", title=""),
         blocks=blocks,
-        source_map=RenderSourceMap(page_id="p0054"),
+        source_map=RenderSourceMap(document_id=document_id, page_id="p0054"),
     )
 
 
@@ -40,7 +40,7 @@ def test_glued_chart_heading_emits_error_record() -> None:
             ),
         ]
     )
-    records = evaluate_chart_title_merge(page, document_id="walking_skeleton")
+    records = evaluate_chart_title_merge(page)
     assert len(records) == 1
     rec = records[0]
     assert rec.code == "CHART_TITLE_MERGE"
@@ -62,7 +62,7 @@ def test_case_transition_glue_emits_record() -> None:
             ),
         ]
     )
-    records = evaluate_chart_title_merge(page, document_id="walking_skeleton")
+    records = evaluate_chart_title_merge(page)
     assert len(records) == 1
     assert records[0].code == "CHART_TITLE_MERGE"
 
@@ -86,7 +86,7 @@ def test_clean_heading_emits_no_record() -> None:
             ),
         ]
     )
-    records = evaluate_chart_title_merge(page, document_id="walking_skeleton")
+    records = evaluate_chart_title_merge(page)
     assert records == []
 
 
@@ -110,7 +110,7 @@ def test_glued_pattern_inside_table_body_is_ignored() -> None:
             ),
         ]
     )
-    records = evaluate_chart_title_merge(page, document_id="walking_skeleton")
+    records = evaluate_chart_title_merge(page)
     assert records == []
 
 
@@ -133,24 +133,22 @@ def test_legitimate_camelcase_does_not_emit_record() -> None:
             ),
         ]
     )
-    records = evaluate_chart_title_merge(page, document_id="walking_skeleton")
+    records = evaluate_chart_title_merge(page)
     assert records == []
 
 
-def test_record_document_id_is_the_passed_document_id_not_page_id() -> None:
-    """S5U-705 regression — ``QARecordV1.document_id`` must be the document
-    id supplied by the caller (``QAPageContext.source_ir.document_id``),
-    NOT the ``render_page.source_map.page_id`` value that the S5U-698
-    introduction erroneously used.
+def test_record_document_id_is_the_source_map_document_id_not_page_id() -> None:
+    """S5U-705 → S5U-735 regression — ``QARecordV1.document_id`` must be
+    the document id carried by ``render_page.source_map.document_id``
+    (populated by the render stage from ``page_ir.document_id``), NOT
+    the ``source_map.page_id`` value that the S5U-698 introduction
+    erroneously used.
 
-    Before the fix, the rule set
-    ``doc_id = render_page.source_map.page_id if render_page.source_map else ""``
-    and passed that into ``QARecordV1(document_id=doc_id, ...)`` — so a
-    record emitted for a heading on page ``p0054`` carried
-    ``document_id == "p0054"``. This test asserts the post-fix behavior:
-    the emitted record's ``document_id`` is the caller-supplied
-    ``"ato_core_v1_1"`` doc id, and is NOT equal to the ``p0054`` page
-    id.
+    S5U-705 landed the fix rule-locally via a ``document_id`` parameter.
+    S5U-735 hoists it to a schema field so all QA rules read the same
+    source. This test asserts the post-S5U-735 contract: the emitted
+    record's ``document_id`` is whatever ``source_map.document_id`` was
+    set to, and is NOT equal to the page id.
     """
     page = _page(
         [
@@ -159,13 +157,14 @@ def test_record_document_id_is_the_passed_document_id_not_page_id() -> None:
                 level=2,
                 children=[RenderTextInline(text="Wounded card:BP deckAI deck")],
             ),
-        ]
+        ],
+        document_id="ato_core_v1_1",
     )
-    records = evaluate_chart_title_merge(page, document_id="ato_core_v1_1")
+    records = evaluate_chart_title_merge(page)
     assert len(records) == 1
     rec = records[0]
     # Positive assertion — the doc id threaded through is exactly what
-    # the caller passed.
+    # source_map.document_id was set to.
     assert rec.document_id == "ato_core_v1_1"
     # Negative assertion — guards against the page_id-shaped value the
     # pre-fix code produced. ``p0054`` would pass the positive branch if

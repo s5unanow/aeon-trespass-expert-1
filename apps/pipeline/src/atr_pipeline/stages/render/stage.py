@@ -52,6 +52,12 @@ class RenderStage:
 
     @property
     def version(self) -> str:
+        # 1.4 (S5U-735): RenderSourceMap now carries ``document_id``
+        #   populated from ``page_ir.document_id``. The shape of the
+        #   emitted render_page.v1 artifact changes, so cached pages
+        #   from 1.3 must be regenerated for QA rules to pick up the
+        #   real document id (per .claude/rules/pipeline.md cache-
+        #   invalidation rule).
         # 1.3 (S5U-700 Must-refuse M2): page_builder now drops orphan
         #   CaptionBlocks entirely instead of emitting them as floating
         #   paragraphs. Attached captions still fold into
@@ -64,7 +70,7 @@ class RenderStage:
         # 1.1 (S5U-697): annotation filtering semantics changed — stale-IR
         #   pairings are now rewritten to EN-only and fully-occluded outer
         #   hotspots are suppressed.
-        return "1.3"
+        return "1.4"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is

@@ -52,7 +52,15 @@ class QAStage:
         # Cached QA records from v1.4 carry the wrong document_id value, so
         # the version bump forces a re-run so downstream consumers that
         # join/group by document_id see the corrected value.
-        return "1.5"
+        # 1.5 -> 1.6 (S5U-735): seven more rules (dead_page_ref,
+        # decorative_icon, duplicate_content, flat_table, glued_text,
+        # leaked_identifier, paragraph_length) now read ``document_id``
+        # from the new ``RenderSourceMap.document_id`` field; the
+        # chart_title_merge rule is reconciled to the same source.
+        # Cached QA records from v1.5 carry the page id in
+        # ``QARecordV1.document_id`` for these rules; the bump forces
+        # a re-run so per-document rollups see the corrected value.
+        return "1.6"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set from the artifact

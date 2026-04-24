@@ -76,6 +76,7 @@ export type Kind12 = 'title' | 'body' | 'caption' | 'callout' | 'label';
 export type Priority = number;
 export type Annotations = FacsimileAnnotation[];
 export type GlossaryMentions = string[];
+export type DocumentId = string;
 export type PageId = string;
 export type BlockRefs = string[];
 export type BuildId = string;
@@ -224,7 +225,21 @@ export interface NormRect {
 export interface Search {
   [k: string]: string | string[];
 }
+/**
+ * Provenance back to the source IR for a render page.
+ *
+ * ``document_id`` is the parent document identifier (e.g.
+ * ``"ato_core_v1_1"``); ``page_id`` is the single-page id
+ * (e.g. ``"p0054"``). Both fields live here so QA rules
+ * that walk render pages can emit per-document *and* per-page
+ * records without threading the ids through every rule signature.
+ *
+ * ``document_id`` defaults to ``""`` for backward compatibility with
+ * render_page.v1 payloads produced before S5U-735; the render stage
+ * populates it from ``page_ir.document_id`` going forward.
+ */
 export interface RenderSourceMap {
+  document_id?: DocumentId;
   page_id: PageId;
   block_refs?: BlockRefs;
 }

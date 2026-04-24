@@ -76,7 +76,7 @@ def evaluate_dead_page_refs(
     """
     records: list[QARecordV1] = []
     page_id = render_page.page.id
-    doc_id = render_page.source_map.page_id if render_page.source_map else ""
+    doc_id = render_page.source_map.document_id if render_page.source_map else ""
 
     for block in render_page.blocks:
         if isinstance(block, RenderDividerBlock):

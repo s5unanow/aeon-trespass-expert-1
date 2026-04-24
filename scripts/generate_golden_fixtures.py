@@ -401,6 +401,7 @@ def main() -> None:
                 "normalized_terms": ["проверка", "атака", "получить", "прогресс"],
             },
             "source_map": {
+                "document_id": "walking_skeleton",
                 "page_id": "p0001",
                 "block_refs": ["p0001.b001", "p0001.b002"],
             },

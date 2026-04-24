@@ -481,7 +481,13 @@
       "type": "object"
     },
     "RenderSourceMap": {
+      "description": "Provenance back to the source IR for a render page.\n\n``document_id`` is the parent document identifier (e.g.\n``\"ato_core_v1_1\"``); ``page_id`` is the single-page id\n(e.g. ``\"p0054\"``). Both fields live here so QA rules\nthat walk render pages can emit per-document *and* per-page\nrecords without threading the ids through every rule signature.\n\n``document_id`` defaults to ``\"\"`` for backward compatibility with\nrender_page.v1 payloads produced before S5U-735; the render stage\npopulates it from ``page_ir.document_id`` going forward.",
       "properties": {
+        "document_id": {
+          "default": "",
+          "title": "Document Id",
+          "type": "string"
+        },
         "page_id": {
           "title": "Page Id",
           "type": "string"
