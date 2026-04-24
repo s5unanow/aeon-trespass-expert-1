@@ -17,23 +17,21 @@ from atr_pipeline.stages.structure.block_postprocess import (
     merge_list_continuations,
     split_long_paragraphs,
 )
-from atr_pipeline.stages.structure.furniture import FurnitureMap
-from atr_pipeline.stages.structure.span_classify import (
-    _NUMBERED_STEP_RE,
-    _WORD_GAP_THRESHOLD,
-    _bbox_from_spans,
-    _classify_span,
-    _group_spans_by_line,
-    _same_line,
-    _spans_to_text_inline,
-)
 from atr_pipeline.stages.structure.figure_extraction import (
     _image_overlaps_text,
     _significant_image_blocks,
 )
+from atr_pipeline.stages.structure.furniture import FurnitureMap
 from atr_pipeline.stages.structure.icon_insertion import (
     _insert_icons,
     _insert_icons_line_aware,
+)
+from atr_pipeline.stages.structure.span_classify import (
+    _NUMBERED_STEP_RE,
+    _bbox_from_spans,
+    _classify_span,
+    _same_line,
+    _spans_to_text_inline,
 )
 from atr_pipeline.stages.structure.table_assembly import (
     _build_table_row,
