@@ -18,4 +18,14 @@ describe('langForEdition', () => {
     expect(langForEdition('fr')).toBe(DEFAULT_READER_LANG);
     expect(langForEdition('')).toBe(DEFAULT_READER_LANG);
   });
+
+  // S5U-702 (Codex review): the pipeline export contract emits a synthetic
+  // "default" edition for documents with a root-level manifest but no
+  // per-edition subdirectory. See scripts/export_to_web.py _build_document_index
+  // and apps/pipeline/tests/unit/test_export_to_web.py
+  // :: test_root_level_manifest_indexed_as_default. Pin the mapping so a
+  // careless edit to the helper does not silently break the contract.
+  it('maps pipeline synthetic "default" edition to the reader default lang', () => {
+    expect(langForEdition('default')).toBe(DEFAULT_READER_LANG);
+  });
 });
