@@ -20,13 +20,19 @@ from atr_schemas.page_ir_v1 import (
     CaptionBlock,
     FigureBlock,
     HeadingBlock,
+    InlineNode,
     ListBlock,
     ListItemBlock,
     PageIRV1,
     ParagraphBlock,
     TableBlock,
+    TableCellBlock,
+    TableChild,
+    TableRowBlock,
 )
+from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
 from atr_schemas.translation_qa_record_set_v1 import TranslationQARecordSetV1
+from atr_schemas.translation_result_v1 import TranslatedSegment, TranslationResultV1
 
 _BLOCK_TYPE_MAP: dict[str, type[BaseModel]] = {
     "heading": HeadingBlock,
@@ -56,6 +62,119 @@ class TranslationResult(BaseModel):
     validation_warnings: int = Field(ge=0)
 
 
+def _translated_by_id(result: TranslationResultV1) -> dict[str, TranslatedSegment]:
+    """Index translated segments by their ``segment_id``."""
+    return {seg.segment_id: seg for seg in result.segments}
+
+
+def _batch_seg_by_id(batch: TranslationBatchV1) -> dict[str, TranslationSegment]:
+    """Index batch segments by their ``segment_id``."""
+    return {seg.segment_id: seg for seg in batch.segments}
+
+
+def _rebuild_structured_table(
+    src_block: TableBlock,
+    *,
+    batch_by_id: dict[str, TranslationSegment],
+    translated_by_id: dict[str, TranslatedSegment],
+) -> TableBlock:
+    """S5U-734 — reassemble a structured RU ``TableBlock`` from per-cell segments.
+
+    Preserves the EN row/cell structure (block ids, header flags, row ordering).
+    Missing translations leave the cell structurally present with empty
+    ``children`` rather than collapsing the row.
+    """
+    new_rows: list[TableChild] = []
+    for row in src_block.children:
+        if not isinstance(row, TableRowBlock):
+            # Legacy mixed-content child; pass through unchanged. The
+            # planner skipped these, so there is no translation to apply.
+            new_rows.append(row)
+            continue
+        new_cells: list[TableCellBlock] = []
+        for cell in row.cells:
+            translated = translated_by_id.get(cell.block_id)
+            target_inline: list[InlineNode] = (
+                list(translated.target_inline) if translated is not None else []
+            )
+            new_cells.append(
+                TableCellBlock(
+                    block_id=cell.block_id,
+                    bbox=cell.bbox,
+                    header=cell.header,
+                    children=target_inline,
+                    translatable=cell.translatable,
+                    source_ref=cell.source_ref,
+                )
+            )
+        new_rows.append(
+            TableRowBlock(
+                block_id=row.block_id,
+                bbox=row.bbox,
+                header=row.header,
+                cells=new_cells,
+                translatable=row.translatable,
+                source_ref=row.source_ref,
+            )
+        )
+    # Silence unused-variable warnings from the batch index — the source of
+    # truth for structure is the EN source block; the batch mapping is
+    # retained for future use (e.g., untranslatable-cell policy).
+    _ = batch_by_id
+    return TableBlock(
+        block_id=src_block.block_id,
+        bbox=src_block.bbox,
+        children=new_rows,
+        translatable=src_block.translatable,
+        source_ref=src_block.source_ref,
+    )
+
+
+def _rematerialize_ru_blocks(
+    en_ir: PageIRV1,
+    batch: TranslationBatchV1,
+    result: TranslationResultV1,
+) -> list[Block]:
+    """Rebuild the RU ``PageIRV1.blocks`` from the EN source IR and the
+    translation result. Structured tables are reassembled per S5U-734; other
+    blocks retain their prior single-segment re-materialization path.
+    """
+    translated_by_id = _translated_by_id(result)
+    batch_by_id = _batch_seg_by_id(batch)
+
+    ru_blocks: list[Block] = []
+    for src_block in en_ir.blocks:
+        # Structured TableBlock — per-cell re-assembly.
+        if isinstance(src_block, TableBlock) and any(
+            isinstance(c, TableRowBlock) for c in src_block.children
+        ):
+            ru_blocks.append(
+                _rebuild_structured_table(
+                    src_block,
+                    batch_by_id=batch_by_id,
+                    translated_by_id=translated_by_id,
+                )
+            )
+            continue
+
+        # Non-table or legacy flat table — use the top-level segment.
+        translated = translated_by_id.get(src_block.block_id)
+        if translated is None:
+            continue
+
+        block_cls = _BLOCK_TYPE_MAP.get(src_block.type, ParagraphBlock)
+        kwargs: dict[str, object] = {
+            "block_id": src_block.block_id,
+            "children": list(translated.target_inline),
+            "bbox": src_block.bbox,
+        }
+        for field in _STRUCTURAL_FIELDS.get(src_block.type, []):
+            kwargs[field] = getattr(src_block, field)
+        ru_blocks.append(cast(Block, block_cls(**kwargs)))
+
+    return ru_blocks
+
+
 class TranslationStage:
     """Translate EN page IR to RU using an LLM adapter.
 
@@ -74,7 +193,10 @@ class TranslationStage:
 
     @property
     def version(self) -> str:
-        return "1.0"
+        # S5U-734 — planner now emits per-cell segments for structured
+        # TableBlocks and the re-materializer rebuilds row/cell structure
+        # in the RU IR. Bumped from 1.0 so cached runs re-execute.
+        return "1.1"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
@@ -180,28 +302,7 @@ class TranslationStage:
             data=record_set,
         )
 
-        ru_blocks: list[Block] = []
-        for seg in result.segments:
-            src_block = next(
-                (b for b in en_ir.blocks if b.block_id == seg.segment_id),
-                None,
-            )
-            if src_block is None:
-                ctx.logger.warning(
-                    "Segment %s has no matching source block, skipping",
-                    seg.segment_id,
-                )
-                continue
-
-            block_cls = _BLOCK_TYPE_MAP.get(src_block.type, ParagraphBlock)
-            kwargs: dict[str, object] = {
-                "block_id": seg.segment_id,
-                "children": list(seg.target_inline),
-                "bbox": src_block.bbox,
-            }
-            for field in _STRUCTURAL_FIELDS.get(src_block.type, []):
-                kwargs[field] = getattr(src_block, field)
-            ru_blocks.append(cast(Block, block_cls(**kwargs)))
+        ru_blocks = _rematerialize_ru_blocks(en_ir, batch, result)
 
         ru_ir = PageIRV1(
             document_id=ctx.document_id,

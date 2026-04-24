@@ -149,7 +149,7 @@
       "type": "object"
     },
     "SegmentContext": {
-      "description": "Contextual information for a translation segment.",
+      "description": "Contextual information for a translation segment.\n\nS5U-734 — table-cell segments additionally carry ``parent_block_id``,\n``row_index``, ``cell_index``, ``is_header_row`` and ``is_header_cell``\nso the downstream re-materializer can stitch translated cells back into\n``TableRowBlock`` / ``TableCellBlock`` structure. Non-table segments\nleave these fields at their defaults.",
       "properties": {
         "page_id": {
           "default": "",
@@ -167,6 +167,45 @@
           "default": "",
           "title": "Prev Heading",
           "type": "string"
+        },
+        "parent_block_id": {
+          "default": "",
+          "title": "Parent Block Id",
+          "type": "string"
+        },
+        "row_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Row Index"
+        },
+        "cell_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cell Index"
+        },
+        "is_header_row": {
+          "default": false,
+          "title": "Is Header Row",
+          "type": "boolean"
+        },
+        "is_header_cell": {
+          "default": false,
+          "title": "Is Header Cell",
+          "type": "boolean"
         }
       },
       "title": "SegmentContext",
