@@ -41,10 +41,12 @@ class QAStage:
 
     @property
     def version(self) -> str:
-        # 1.1 → 1.2 (S5U-588): invalidates pre-S5U-588 cache entries so
-        # cached QA runs re-execute and emit confidence-band QA records
-        # plus review packs widened for qa_required findings.
-        return "1.2"
+        # 1.2 -> 1.3 (S5U-701): manifest-aware dead-page-ref + placeholder-
+        # prose detection change QA record output shape. Bump invalidates
+        # cached QA runs so previously-emitted false-positive DEAD_PAGE_REF
+        # findings are replaced with the manifest-checked set and the new
+        # PLACEHOLDER_PROSE_LEAKED records appear.
+        return "1.3"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
@@ -61,6 +63,11 @@ class QAStage:
         if source_only:
             ctx.logger.info("QA running in source-only mode (edition=en)")
 
+        # S5U-701 — derive the set of published page numbers once so the
+        # dead-page-ref rule can suppress references whose target is in the
+        # manifest (false positives from the original context-free rule).
+        known_page_numbers = _page_ids_to_numbers(page_ids)
+
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
             ru_ir = self._load_ir(ctx, "page_ir.v1.ru", page_id) if not source_only else en_ir
@@ -70,7 +77,12 @@ class QAStage:
                 ctx.logger.warning("Skipping QA for %s: missing artifacts", page_id)
                 continue
 
-            page_ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
+            page_ctx = QAPageContext(
+                source_ir=en_ir,
+                target_ir=ru_ir,
+                render_page=render,
+                known_page_numbers=known_page_numbers,
+            )
             records: list[QARecordV1] = []
             for rule in rules:
                 records.extend(rule.evaluate(page_ctx))
@@ -256,3 +268,25 @@ def _tally_severities(records: list[QARecordV1]) -> SeverityCounts:
         elif r.severity == Severity.CRITICAL:
             counts.critical += 1
     return counts
+
+
+def _page_ids_to_numbers(page_ids: list[str]) -> frozenset[int]:
+    """Convert p0008-style ids to the set of PDF page numbers.
+
+    Invalid or malformed ids are silently skipped; the helper is called from
+    the QA stage's initialization path and must never raise.  The rule
+    downstream treats a populated set as the authoritative manifest, so
+    preserving even partial membership is correct when an id happens to
+    be malformed (the manifest-aware branch suppresses less than it could,
+    never more).
+    """
+    numbers: set[int] = set()
+    for pid in page_ids:
+        # page_id shape: "p" + 4-digit zero-padded number.
+        if len(pid) < 2 or not pid.startswith("p"):
+            continue
+        try:
+            numbers.add(int(pid[1:]))
+        except ValueError:
+            continue
+    return frozenset(numbers)

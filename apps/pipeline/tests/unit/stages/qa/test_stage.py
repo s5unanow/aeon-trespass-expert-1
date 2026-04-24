@@ -84,10 +84,11 @@ def test_qa_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "qa"
     assert stage.scope == StageScope.DOCUMENT
-    # 1.1 → 1.2 in S5U-588: confidence-band records + widened review-pack
-    # write are new observable side effects — version bump invalidates
-    # pre-S5U-588 cached QA events so they re-emit the new records.
-    assert stage.version == "1.2"
+    # 1.2 → 1.3 in S5U-701: manifest-aware DEAD_PAGE_REF + new
+    # PLACEHOLDER_PROSE_LEAKED (ERROR) record are new observable
+    # side effects — version bump invalidates pre-S5U-701 cached QA
+    # events so false-positive records are suppressed and new ones emit.
+    assert stage.version == "1.3"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:

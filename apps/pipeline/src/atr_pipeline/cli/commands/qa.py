@@ -104,6 +104,7 @@ def qa(
             rules=rules,
             patches=patches_written,
             pre_records=all_records,
+            known_page_numbers=_page_ids_to_numbers(page_ids),
         )
         # `result.post_records` only covers pages the apply loop
         # successfully refreshed. Keep pre-fix records for every other
@@ -133,6 +134,9 @@ def _collect_records(
     records: list[QARecordV1] = []
     bundles: dict[str, AutoFixPageBundle] = {}
 
+    # S5U-701 — page-number set for manifest-aware rules (dead-page-ref).
+    known_page_numbers = _page_ids_to_numbers(page_ids)
+
     for page_id in page_ids:
         en_ir = _load_ir(store, doc, "page_ir.v1.en", page_id)
         ru_ir = _load_ir(store, doc, "page_ir.v1.ru", page_id)
@@ -142,7 +146,12 @@ def _collect_records(
             typer.echo(f"  SKIP {page_id}: missing artifacts", err=True)
             continue
 
-        ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
+        ctx = QAPageContext(
+            source_ir=en_ir,
+            target_ir=ru_ir,
+            render_page=render,
+            known_page_numbers=known_page_numbers,
+        )
         for rule in rules:
             records.extend(rule.evaluate(ctx))
 
@@ -206,6 +215,24 @@ def _resolve_page_ids(store: ArtifactStore, doc: str) -> list[str]:
     if ir_dir.exists():
         return sorted(d.name for d in ir_dir.iterdir() if d.is_dir())
     return []
+
+
+def _page_ids_to_numbers(page_ids: list[str]) -> frozenset[int]:
+    """Convert p0008-style ids to the set of PDF page numbers (S5U-701).
+
+    Mirrors ``atr_pipeline.stages.qa.stage._page_ids_to_numbers``; kept
+    local to this CLI module to avoid cross-module coupling between the
+    stage runner and the ad-hoc CLI entrypoint.
+    """
+    numbers: set[int] = set()
+    for pid in page_ids:
+        if len(pid) < 2 or not pid.startswith("p"):
+            continue
+        try:
+            numbers.add(int(pid[1:]))
+        except ValueError:
+            continue
+    return frozenset(numbers)
 
 
 def _load_ir(

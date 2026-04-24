@@ -95,3 +95,58 @@ def test_severity_is_warning() -> None:
     records = evaluate_decorative_icons(page)
 
     assert records[0].severity.value == "warning"
+
+
+# --- S5U-701 — placeholder-prose detection -----------------------------------
+#
+# The Apr-22 EN bundle p0009.b026 ships the prose
+#     "Potential symbol Power symbol ??? symbol"
+# as visible body text — the PDF extractor dropped the actual icons and left
+# descriptive stand-ins.  Never legitimate in game text ("the Potential", not
+# "the Potential symbol").  The rule emits PLACEHOLDER_PROSE_LEAKED at ERROR
+# severity so export refuses to publish while the extraction regression is
+# being fixed upstream.
+
+
+def test_detects_placeholder_prose_potential_symbol() -> None:
+    """RED before fix — "<concept> symbol" prose is flagged."""
+    page = _page([_para("b1", "Potential symbol Power symbol description")])
+    records = evaluate_decorative_icons(page)
+
+    placeholder = [r for r in records if r.code == "PLACEHOLDER_PROSE_LEAKED"]
+    assert len(placeholder) == 1
+    assert placeholder[0].entity_ref == "b1"
+
+
+def test_detects_placeholder_prose_question_marks() -> None:
+    """RED before fix — the "??? symbol" stand-in used for unknown icons."""
+    page = _page([_para("b1", "Don't worry about the ??? symbol yet.")])
+    records = evaluate_decorative_icons(page)
+
+    placeholder = [r for r in records if r.code == "PLACEHOLDER_PROSE_LEAKED"]
+    assert len(placeholder) == 1
+
+
+def test_placeholder_prose_severity_is_error() -> None:
+    """RED before fix — placeholder prose MUST be ERROR (blocking) per the
+    Must-refuse clause of S5U-701."""
+    page = _page([_para("b1", "Potential symbol appears")])
+    records = evaluate_decorative_icons(page)
+
+    placeholder = [r for r in records if r.code == "PLACEHOLDER_PROSE_LEAKED"]
+    assert placeholder[0].severity.value == "error"
+
+
+def test_placeholder_prose_ignores_legitimate_symbol_noun() -> None:
+    """Adversarial — "symbol" used as a noun in legitimate prose
+    (without "<concept> symbol" adjacency) is NOT flagged."""
+    page = _page(
+        [
+            _para("b1", "The symbol on the card shows a hooded figure."),
+            _para("b2", "This is a powerful symbol of victory."),
+        ]
+    )
+    records = evaluate_decorative_icons(page)
+
+    placeholder = [r for r in records if r.code == "PLACEHOLDER_PROSE_LEAKED"]
+    assert placeholder == []
