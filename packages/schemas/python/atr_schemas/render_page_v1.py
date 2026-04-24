@@ -96,10 +96,48 @@ class RenderCalloutBlock(BaseModel):
     children: list[RenderInlineNode] = Field(default_factory=list)
 
 
+class RenderTableCellBlock(BaseModel):
+    """S5U-704 — a structured table cell."""
+
+    kind: Literal["table_cell"] = "table_cell"
+    id: str
+    header: bool = False
+    children: list[RenderInlineNode] = Field(default_factory=list)
+
+
+class RenderTableRowBlock(BaseModel):
+    """S5U-704 — a row of ``RenderTableCellBlock`` cells."""
+
+    kind: Literal["table_row"] = "table_row"
+    id: str
+    header: bool = False
+    cells: list[RenderTableCellBlock] = Field(default_factory=list)
+
+
+def _get_render_table_child_discriminator(v: dict[str, object] | BaseModel) -> str:
+    if isinstance(v, dict):
+        return str(v.get("kind", ""))
+    return str(getattr(v, "kind", ""))
+
+
+RenderTableChild = Annotated[
+    Annotated[RenderTextInline, Tag("text")]
+    | Annotated[RenderIconInline, Tag("icon")]
+    | Annotated[RenderFigureRefInline, Tag("figure_ref")]
+    | Annotated[RenderTableRowBlock, Tag("table_row")],
+    Discriminator(_get_render_table_child_discriminator),
+]
+
+
 class RenderTableBlock(BaseModel):
+    """S5U-704 — ``children`` may carry legacy flat inlines or
+    ``RenderTableRowBlock`` rows.  The table is "structured" iff any
+    child is a ``RenderTableRowBlock``.
+    """
+
     kind: Literal["table"] = "table"
     id: str
-    children: list[RenderInlineNode] = Field(default_factory=list)
+    children: list[RenderTableChild] = Field(default_factory=list)
 
 
 class RenderListItemBlock(BaseModel):

@@ -501,6 +501,7 @@
       "type": "object"
     },
     "RenderTableBlock": {
+      "description": "S5U-704 — ``children`` may carry legacy flat inlines or\n``RenderTableRowBlock`` rows.  The table is \"structured\" iff any\nchild is a ``RenderTableRowBlock``.",
       "properties": {
         "kind": {
           "const": "table",
@@ -523,6 +524,9 @@
               },
               {
                 "$ref": "#/$defs/RenderFigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/RenderTableRowBlock"
               }
             ]
           },
@@ -534,6 +538,80 @@
         "id"
       ],
       "title": "RenderTableBlock",
+      "type": "object"
+    },
+    "RenderTableCellBlock": {
+      "description": "S5U-704 — a structured table cell.",
+      "properties": {
+        "kind": {
+          "const": "table_cell",
+          "default": "table_cell",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "header": {
+          "default": false,
+          "title": "Header",
+          "type": "boolean"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderTableCellBlock",
+      "type": "object"
+    },
+    "RenderTableRowBlock": {
+      "description": "S5U-704 — a row of ``RenderTableCellBlock`` cells.",
+      "properties": {
+        "kind": {
+          "const": "table_row",
+          "default": "table_row",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "header": {
+          "default": false,
+          "title": "Header",
+          "type": "boolean"
+        },
+        "cells": {
+          "items": {
+            "$ref": "#/$defs/RenderTableCellBlock"
+          },
+          "title": "Cells",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderTableRowBlock",
       "type": "object"
     },
     "RenderTextInline": {

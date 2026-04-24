@@ -1,10 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import {
-  InvalidRenderPageError,
-  normalizeRenderPage,
-} from '../../src/lib/render/normalize';
+import { InvalidRenderPageError, normalizeRenderPage } from '../../src/lib/render/normalize';
 
 describe('normalizeRenderPage — structural validation', () => {
   it('rejects non-object payloads', () => {
@@ -28,9 +25,9 @@ describe('normalizeRenderPage — structural validation', () => {
   });
 
   it('rejects payload missing page.id', () => {
-    expect(() =>
-      normalizeRenderPage({ schema_version: 'render_page.v1', page: {} }),
-    ).toThrow(/page\.id: missing required string/);
+    expect(() => normalizeRenderPage({ schema_version: 'render_page.v1', page: {} })).toThrow(
+      /page\.id: missing required string/,
+    );
   });
 
   it('rejects an unknown block kind with the offending path', () => {
@@ -67,6 +64,112 @@ describe('normalizeRenderPage — structural validation', () => {
         blocks: [{ id: 'p0001.b001' }],
       }),
     ).toThrow(/blocks\[0\]\.kind: missing required string/);
+  });
+
+  it('normalizes table rows and cells (S5U-704)', () => {
+    const out = normalizeRenderPage({
+      schema_version: 'render_page.v1',
+      page: { id: 'p0054' },
+      blocks: [
+        {
+          kind: 'table',
+          id: 'p0054.b002',
+          children: [
+            {
+              kind: 'table_row',
+              id: 'p0054.b002.r0',
+              header: true,
+              cells: [
+                {
+                  kind: 'table_cell',
+                  id: 'p0054.b002.r0.c0',
+                  header: true,
+                  children: [{ kind: 'text', text: 'BP I' }],
+                },
+                {
+                  kind: 'table_cell',
+                  id: 'p0054.b002.r0.c1',
+                  children: [{ kind: 'text', text: 'AI deck' }],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const block = out.blocks[0];
+    expect(block.kind).toBe('table');
+    if (block.kind === 'table') {
+      expect(block.children).toHaveLength(1);
+      const row = block.children[0];
+      expect(row.kind).toBe('table_row');
+      if (row.kind === 'table_row') {
+        expect(row.header).toBe(true);
+        expect(row.cells).toHaveLength(2);
+        expect(row.cells[0].header).toBe(true);
+        expect(row.cells[0].children[0]).toEqual({
+          kind: 'text',
+          text: 'BP I',
+          marks: [],
+        });
+      }
+    }
+  });
+
+  it('preserves legacy flat table children (back-compat)', () => {
+    const out = normalizeRenderPage({
+      schema_version: 'render_page.v1',
+      page: { id: 'p0054' },
+      blocks: [
+        {
+          kind: 'table',
+          id: 'p0054.b002',
+          children: [
+            { kind: 'text', text: 'BP I' },
+            { kind: 'text', text: '\n' },
+            { kind: 'text', text: 'AI deck' },
+          ],
+        },
+      ],
+    });
+    const block = out.blocks[0];
+    expect(block.kind).toBe('table');
+    if (block.kind === 'table') {
+      expect(block.children).toHaveLength(3);
+      expect(block.children.every((c) => c.kind === 'text')).toBe(true);
+    }
+  });
+
+  it('rejects an unknown table child kind', () => {
+    expect(() =>
+      normalizeRenderPage({
+        schema_version: 'render_page.v1',
+        page: { id: 'p0054' },
+        blocks: [
+          {
+            kind: 'table',
+            id: 'p0054.b002',
+            children: [{ kind: 'mystery_cell' }],
+          },
+        ],
+      }),
+    ).toThrow(/blocks\[0\]\.children\[0\]\.kind: unsupported inline kind "mystery_cell"/);
+  });
+
+  it('rejects a table_row with no cells array missing its kind tag', () => {
+    expect(() =>
+      normalizeRenderPage({
+        schema_version: 'render_page.v1',
+        page: { id: 'p0054' },
+        blocks: [
+          {
+            kind: 'table',
+            id: 'p0054.b002',
+            children: [{ kind: 'table_row', id: 'r0', cells: [{ id: 'c0' }] }],
+          },
+        ],
+      }),
+    ).toThrow(/blocks\[0\]\.children\[0\]\.cells\[0\]\.kind: missing required string/);
   });
 });
 
@@ -149,9 +252,7 @@ describe('normalizeRenderPage — defaulted-field materialization', () => {
       page: { id: 'p0001' },
       facsimile: {
         raster_src: '/r.png',
-        annotations: [
-          { text: 'A', bbox: { x0: 0, y0: 0, x1: 1, y1: 1 } },
-        ],
+        annotations: [{ text: 'A', bbox: { x0: 0, y0: 0, x1: 1, y1: 1 } }],
       },
       search: { raw_text: 'abc', normalized_terms: ['a', 'b'] },
       source_map: { page_id: 'p0001' },

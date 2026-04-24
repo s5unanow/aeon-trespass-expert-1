@@ -69,7 +69,35 @@ export type RenderFigureBlock = NarrowBlock<renderPageV1.RenderFigureBlock> & {
 export type RenderCalloutBlock = NarrowBlock<renderPageV1.RenderCalloutBlock> & {
   variant: string;
 };
-export type RenderTableBlock = NarrowBlock<renderPageV1.RenderTableBlock>;
+
+// S5U-704 — table rows/cells are nested structured children of a table block.
+export type RenderTableCellBlock = Omit<
+  NarrowKind<renderPageV1.RenderTableCellBlock>,
+  'children' | 'header'
+> & {
+  kind: 'table_cell';
+  header: boolean;
+  children: RenderInlineNode[];
+};
+export type RenderTableRowBlock = Omit<
+  NarrowKind<renderPageV1.RenderTableRowBlock>,
+  'cells' | 'header'
+> & {
+  kind: 'table_row';
+  header: boolean;
+  cells: RenderTableCellBlock[];
+};
+
+/**
+ * A table's child may be a legacy flat inline or a structured
+ * `RenderTableRowBlock`. The reader treats the block as "structured" iff
+ * any child is a row.
+ */
+export type RenderTableChild = RenderInlineNode | RenderTableRowBlock;
+
+export type RenderTableBlock = Omit<NarrowBlock<renderPageV1.RenderTableBlock>, 'children'> & {
+  children: RenderTableChild[];
+};
 export type RenderListItemBlock = NarrowBlock<renderPageV1.RenderListItemBlock>;
 export type RenderDividerBlock = NarrowKind<renderPageV1.RenderDividerBlock>;
 
