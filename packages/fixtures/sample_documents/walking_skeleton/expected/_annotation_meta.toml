@@ -1,7 +1,7 @@
 schema_version = "annotation_meta.v1"
 annotation_format_version = 1
-last_refresh_timestamp = "2026-04-25T00:00:00Z"
-last_refresh_issue = "S5U-734"
+last_refresh_timestamp = "2026-04-25T02:00:00Z"
+last_refresh_issue = "S5U-735"
 last_refresh_commit = ""
 reviewer = "s5unanow"
 
@@ -11,7 +11,7 @@ reviewer = "s5unanow"
 "page_ir.en.p0001.json" = "1f9a40651ab7ad6d8ad172966dbe094393835e83cc5613139af252e16fde0ed1"
 "page_ir.ru.p0001.json" = "5072b97083f47d81f2bee3fa3de96be5a348e41af2cb2f1e1abf29b0984db336"
 "qa_summary.json" = "fd7cb51d63ff1c4213231269941c167a74bb4f4f5c89d81a8e54eaaecfc60e57"
-"render_page.p0001.json" = "14f5234c1dbea69e65c754b241710283bc999454d71913cc9f7c1377a3888986"
+"render_page.p0001.json" = "42a9ef49be14119cf2936ecc3c120208e6fabc549f3aff48fd6faa8d64190a23"
 "source_manifest.json" = "a73656b94d0820e88d5e6322e7b98c94413921372042740cbd907255311ba01a"
 "symbol_matches.p0001.json" = "24ae04878ed393c4c127791b15e68fe1bc1762fb980a68bcf3907fdc12e04727"
 "translation_batch.p0001.json" = "dd45baf4a4ad2c2b82f61e0a7755961d093e2efd79dad01db5fc819675388fab"
