@@ -182,6 +182,60 @@ def test_audit_ack_from_non_allowlisted_signer_fails(mod: ModuleType, tmp_path: 
     assert rc == 1
 
 
+def test_audit_recovers_from_pulls_propagation_delay(mod: ModuleType, tmp_path: Path) -> None:
+    """S5U-728 regression: first /pulls call returns [], retry returns the PR.
+
+    Reproduces the PR #320 / S5U-694 false-negative where the audit ran ~0.9s
+    after merge and the GitHub commit→PR association index had not yet caught
+    up. With retry-with-backoff in fetch_pull_numbers_for_commit, the second
+    or later attempt finds the PR; the audit then resolves the PR HEAD SHA
+    and verifies the coordinator-ack on it.
+    """
+    base, _ = _init_repo(tmp_path)
+    head = _commit(tmp_path, "CLAUDE.md", "changed\n", "squash merge")
+    _write_allowlist(tmp_path, ["s5unanow"])
+
+    pr_head_sha = "8426" + "8" * 36
+    statuses_on_pr_head = json.dumps(
+        [
+            {
+                "context": "coordinator-ack",
+                "state": "success",
+                "creator": {"login": "s5unanow"},
+                "created_at": "2026-04-21T12:00:00Z",
+            }
+        ]
+    )
+
+    pulls_responses_for_head = iter(["[]", json.dumps([{"number": 320}])])
+
+    def _fake_gh(path: str) -> str:
+        if path.endswith(f"/commits/{pr_head_sha}/statuses"):
+            return statuses_on_pr_head
+        if "/statuses" in path:
+            return "[]"
+        if path.endswith(f"/commits/{head}/pulls"):
+            # First call mimics the propagation delay; second succeeds.
+            return next(pulls_responses_for_head)
+        if path.endswith("/pulls/320"):
+            return json.dumps({"head": {"sha": pr_head_sha}})
+        if "/pulls" in path:
+            return "[]"
+        return "{}"
+
+    sleeps: list[float] = []
+    with patch.object(mod, "_gh_api", side_effect=_fake_gh):
+        # Patch time.sleep at module scope so the production code path
+        # (which uses time.sleep as the default sleeper) does not actually
+        # block the test for ~30s.
+        with patch.object(mod.time, "sleep", side_effect=sleeps.append):
+            rc = mod.audit(repo="owner/repo", base=base, head=head, root=tmp_path)
+
+    assert rc == 0, "audit must recover from /pulls propagation delay"
+    # We expect exactly one backoff sleep (between attempt 1 and 2).
+    assert len(sleeps) >= 1, "retry path must invoke sleeper at least once"
+
+
 def test_audit_ack_with_later_failure_is_revoked(mod: ModuleType, tmp_path: Path) -> None:
     """Adversarial: a later failure status revokes a prior success (S5U-673 parity)."""
     base, _ = _init_repo(tmp_path)
