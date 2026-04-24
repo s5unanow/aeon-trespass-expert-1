@@ -233,3 +233,114 @@ def test_find_valid_coordinator_ack_happy_path(mod: ModuleType) -> None:
         created_at="2026-04-21T12:00:00Z",
     )
     assert mod.find_valid_coordinator_ack([s], ["s5unanow"]) is s
+
+
+# ---------------------------------------------------------------------------
+# fetch_pull_numbers_for_commit retry-with-backoff (S5U-728)
+#
+# Background: GitHub's /commits/<sha>/pulls endpoint is eventually consistent
+# after a squash merge — see S5U-728 / PR #320 false-negative on merge SHA
+# f711b9d. The retry-with-backoff lets the API index settle without weakening
+# the audit's missing-ack detection.
+# ---------------------------------------------------------------------------
+
+
+def test_fetch_pull_numbers_returns_immediately_on_first_success(mod: ModuleType) -> None:
+    """Fast path: first attempt non-empty → no sleep, return immediately."""
+    sleep_calls: list[float] = []
+    with patch.object(mod, "_gh_api", return_value='[{"number": 320}]'):
+        numbers = mod.fetch_pull_numbers_for_commit(
+            "owner/repo",
+            "abc",
+            sleeper=sleep_calls.append,
+        )
+    assert numbers == [320]
+    assert sleep_calls == [], "no backoff sleep when first attempt succeeds"
+
+
+def test_fetch_pull_numbers_retries_until_populated(mod: ModuleType) -> None:
+    """Propagation-delay path: first attempts return [], later attempt finds PR.
+
+    This is the S5U-728 reproduction: the API returns an empty pull list
+    immediately after merge, then catches up.
+    """
+    responses = ["[]", "[]", '[{"number": 320}]']
+    sleep_calls: list[float] = []
+    with patch.object(mod, "_gh_api", side_effect=responses):
+        numbers = mod.fetch_pull_numbers_for_commit(
+            "owner/repo",
+            "abc",
+            max_retries=5,
+            initial_backoff_s=2.0,
+            sleeper=sleep_calls.append,
+        )
+    assert numbers == [320]
+    # Two sleeps between three attempts: 2.0, 4.0 (exponential backoff).
+    assert sleep_calls == [2.0, 4.0]
+
+
+def test_fetch_pull_numbers_returns_empty_after_max_retries(mod: ModuleType) -> None:
+    """Force-push / no-PR path: every attempt returns [] → return []."""
+    sleep_calls: list[float] = []
+    with patch.object(mod, "_gh_api", return_value="[]"):
+        numbers = mod.fetch_pull_numbers_for_commit(
+            "owner/repo",
+            "abc",
+            max_retries=4,
+            initial_backoff_s=1.0,
+            sleeper=sleep_calls.append,
+        )
+    assert numbers == []
+    # max_retries - 1 sleeps between attempts: 1.0, 2.0, 4.0 (3 sleeps for 4 attempts).
+    assert sleep_calls == [1.0, 2.0, 4.0]
+
+
+def test_fetch_pull_numbers_swallows_runtime_errors_and_retries(mod: ModuleType) -> None:
+    """Transient gh failure: RuntimeError on early attempts, then success."""
+
+    class _Side:
+        def __init__(self) -> None:
+            self.n = 0
+
+        def __call__(self, _path: str) -> str:
+            self.n += 1
+            if self.n < 3:
+                raise RuntimeError("transient gh failure")
+            return '[{"number": 320}]'
+
+    side = _Side()
+    sleep_calls: list[float] = []
+    with patch.object(mod, "_gh_api", side_effect=side):
+        numbers = mod.fetch_pull_numbers_for_commit(
+            "owner/repo",
+            "abc",
+            max_retries=5,
+            initial_backoff_s=2.0,
+            sleeper=sleep_calls.append,
+        )
+    assert numbers == [320]
+    assert sleep_calls == [2.0, 4.0]
+
+
+def test_fetch_pull_numbers_returns_empty_when_all_attempts_raise(mod: ModuleType) -> None:
+    """Persistent gh failure: every attempt raises → return [] (caller falls back).
+
+    The caller then proceeds to check coordinator-ack on the merge SHA itself.
+    If those status calls also fail, fetch_statuses raises and the audit fails
+    closed at a higher level (G1 preserved).
+    """
+
+    def _raise(_path: str) -> str:
+        raise RuntimeError("persistent gh failure")
+
+    sleep_calls: list[float] = []
+    with patch.object(mod, "_gh_api", side_effect=_raise):
+        numbers = mod.fetch_pull_numbers_for_commit(
+            "owner/repo",
+            "abc",
+            max_retries=3,
+            initial_backoff_s=1.0,
+            sleeper=sleep_calls.append,
+        )
+    assert numbers == []
+    assert sleep_calls == [1.0, 2.0]

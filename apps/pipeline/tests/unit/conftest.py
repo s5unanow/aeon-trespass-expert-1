@@ -57,6 +57,13 @@ def mod() -> Iterator[ModuleType]:
     Name is deliberately generic (`mod`) because the fixture is only used by
     the two S5U-693 test files and keeping the test bodies readable matters
     more than the fixture namespace here.
+
+    Side effect (S5U-728): the fixture replaces `module.time.sleep` with a
+    no-op for the duration of the test so retry-with-backoff in
+    `fetch_pull_numbers_for_commit` does not burn real wall-clock seconds.
+    Tests that need to observe sleep calls must explicitly inject a `sleeper`
+    callable or `patch.object(mod.time, "sleep", side_effect=...)` themselves
+    (the explicit patch overrides the fixture's no-op for the patch's scope).
     """
     if str(SCRIPT_DIR) not in sys.path:
         sys.path.insert(0, str(SCRIPT_DIR))
@@ -67,8 +74,19 @@ def mod() -> Iterator[ModuleType]:
     module = importlib.util.module_from_spec(spec)
     sys.modules["check_post_merge_coordinator_ack"] = module
     spec.loader.exec_module(module)
-    yield module
-    sys.modules.pop("check_post_merge_coordinator_ack", None)
+    # Replace the module-level `time` reference with a stand-in whose
+    # `sleep` is a no-op. We must NOT mutate the global `time` module; we
+    # rebind only this module's `time` attribute.
+    import time as _real_time
+    from types import SimpleNamespace
+
+    real_time_module = module.time
+    module.time = SimpleNamespace(sleep=lambda _seconds: None, _real=_real_time)
+    try:
+        yield module
+    finally:
+        module.time = real_time_module
+        sys.modules.pop("check_post_merge_coordinator_ack", None)
 
 
 @pytest.fixture()
