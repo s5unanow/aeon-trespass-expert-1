@@ -1,0 +1,64 @@
+name: Post-merge coordinator-ack audit
+
+# S5U-693: Audit-trail gate that runs on every push to main and fails the
+# workflow when the merged push touches safety-gate scope (per the regex in
+# .claude/hooks/pre-pr-check.sh line 224) without a valid `coordinator-ack`
+# commit status on the PR HEAD SHA from an allowlisted signer.
+#
+# This complements the pre-PR hook, which only intercepts local `gh pr create`
+# and can be evaded by:
+#   1. Opening a PR via GitHub web UI
+#   2. Opening a PR via `gh api` direct REST
+#   3. Running under a harness where .claude/settings.json hooks are not wired
+#
+# The workflow runs AFTER merge — it cannot block merge. Its role is a durable
+# red-workflow-run audit signal visible in the Actions tab, which the next
+# coordinator audit sweep catches. PR #307 (merge b8e281e) is the concrete
+# precedent this guard addresses.
+#
+# Per `.claude/rules/guards.md` Rule G1 (fail-closed defaults), the underlying
+# script exits non-zero on every degenerate-input path (missing base ref,
+# malformed allowlist, gh api failure, malformed JSON). Rule G2 is satisfied
+# by the content-derived path regex (same shape as the pre-PR hook).
+#
+# NOTE: this workflow is NOT a required-check context in branch protection.
+# Required contexts are pull_request-time gates and cannot run on push:main.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  statuses: read
+
+jobs:
+  audit:
+    name: post-merge-coordinator-ack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          # fetch-depth: 0 because the script resolves both
+          # github.event.before and the merge SHA; a shallow checkout
+          # leaves github.event.before unresolvable and fails the
+          # G1 base-ref check.
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run post-merge coordinator-ack audit
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/check_post_merge_coordinator_ack.py \
+            --repo "$GITHUB_REPOSITORY" \
+            --base "$GITHUB_EVENT_BEFORE" \
+            --head "$GITHUB_SHA"

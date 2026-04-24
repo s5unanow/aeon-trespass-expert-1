@@ -43,6 +43,34 @@ def cct_mod() -> Iterator[ModuleType]:
     sys.modules.pop("check_coverage_table", None)
 
 
+# ---------------------------------------------------------------------------
+# check_post_merge_coordinator_ack module-loader fixture (S5U-693)
+# ---------------------------------------------------------------------------
+
+_PMA_SCRIPT_PATH = SCRIPT_DIR / "check_post_merge_coordinator_ack.py"
+
+
+@pytest.fixture()
+def mod() -> Iterator[ModuleType]:
+    """Load check_post_merge_coordinator_ack as a module for unit-testing.
+
+    Name is deliberately generic (`mod`) because the fixture is only used by
+    the two S5U-693 test files and keeping the test bodies readable matters
+    more than the fixture namespace here.
+    """
+    if str(SCRIPT_DIR) not in sys.path:
+        sys.path.insert(0, str(SCRIPT_DIR))
+    spec = importlib.util.spec_from_file_location(
+        "check_post_merge_coordinator_ack", _PMA_SCRIPT_PATH
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["check_post_merge_coordinator_ack"] = module
+    spec.loader.exec_module(module)
+    yield module
+    sys.modules.pop("check_post_merge_coordinator_ack", None)
+
+
 @pytest.fixture()
 def cct_stub_fetcher(
     cct_mod: ModuleType,
