@@ -132,8 +132,7 @@ def test_heading_cell_group_refusal_emits_structured_row() -> None:
     assert header_row.header is True
     assert len(header_row.cells) == 3
     cell_texts = [
-        " ".join(x.text for x in cell.children if hasattr(x, "text"))
-        for cell in header_row.cells
+        " ".join(x.text for x in cell.children if hasattr(x, "text")) for cell in header_row.cells
     ]
     assert cell_texts[0].strip().startswith("Wounded")
     assert cell_texts[1].strip() == "BP deck"

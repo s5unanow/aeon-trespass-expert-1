@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Sequence
 
 from atr_pipeline.utils.hashing import sha256_str
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
@@ -12,7 +13,9 @@ from atr_schemas.page_ir_v1 import (
     HeadingBlock,
     IconInline,
     PageIRV1,
+    TableBlock,
     UnknownBlock,
+    iter_table_inlines,
 )
 from atr_schemas.translation_batch_v1 import (
     SegmentContext,
@@ -21,7 +24,7 @@ from atr_schemas.translation_batch_v1 import (
 )
 
 
-def _inline_checksum(nodes: list[object]) -> str:
+def _inline_checksum(nodes: Sequence[object]) -> str:
     """Compute a short hash of serialized inline nodes for cache invalidation."""
     canonical = json.dumps(
         [n.model_dump(mode="json") if hasattr(n, "model_dump") else n for n in nodes],
@@ -67,11 +70,20 @@ def build_translation_batch(
         if not getattr(block, "translatable", False):
             continue
 
+        # S5U-704 — a ``TableBlock`` may hold ``TableRowBlock`` children
+        # whose cells wrap the real inlines. Flatten to a single inline
+        # stream for the segment; cell boundaries are a known follow-up
+        # (per-cell translation segments are a bigger refactor).
+        if isinstance(block, TableBlock):
+            source_inline = iter_table_inlines(block)
+        else:
+            source_inline = list(block.children)
+
         segment = TranslationSegment(
             segment_id=block.block_id,
             block_type=block.type,
-            source_inline=list(block.children),
-            source_checksum=_inline_checksum(list(block.children)),
+            source_inline=source_inline,
+            source_checksum=_inline_checksum(source_inline),
             context=SegmentContext(
                 page_id=page_ir.page_id,
                 prev_heading=prev_heading,
@@ -79,7 +91,7 @@ def build_translation_batch(
         )
 
         # Track locked icon nodes
-        for child in block.children:
+        for child in source_inline:
             if isinstance(child, IconInline):
                 sid = child.symbol_id
                 segment.locked_nodes.append(sid)
@@ -94,7 +106,7 @@ def build_translation_batch(
         if _concept_patterns:
             full_text = " ".join(
                 child.text
-                for child in block.children
+                for child in source_inline
                 if child.type == "text" and hasattr(child, "text")
             )
             for rx, concept_id, forbidden in _concept_patterns:

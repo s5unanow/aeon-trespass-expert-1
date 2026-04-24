@@ -13,7 +13,7 @@ from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
-from atr_schemas.page_ir_v1 import TableBlock, iter_table_inlines
+from atr_schemas.page_ir_v1 import iter_table_inlines
 
 
 def _span(

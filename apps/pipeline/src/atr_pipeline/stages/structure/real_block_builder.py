@@ -210,7 +210,7 @@ def _build_table_row(
                 block_id=f"{parent_block_id}.r{row_index}.c{ci}",
                 bbox=_bbox_from_spans(group),
                 header=header,
-                children=list(inlines),  # type: ignore[arg-type]
+                children=list(inlines),
             )
         )
     if not cells:
@@ -422,7 +422,7 @@ def build_page_ir_real(
             TableBlock(
                 block_id=block_id,
                 bbox=_bbox_from_spans(all_spans),
-                children=list(row_blocks),  # type: ignore[arg-type]
+                children=list(row_blocks),
             )
         )
         current_table_rows.clear()
@@ -479,7 +479,7 @@ def build_page_ir_real(
                         TableBlock(
                             block_id=block_id,
                             bbox=_bbox_from_spans(non_decorative),
-                            children=[header_row],  # type: ignore[arg-type]
+                            children=[header_row],
                         )
                     )
                 continue

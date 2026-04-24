@@ -10,8 +10,8 @@ pre-wrap wall of text.
 
 This rule flags the condition as ERROR so a release cannot silently
 ship a chart with the row/cell semantics stripped out. The threshold
-(≥20 inline children) is tuned above the size of typical split-header
-TableBlocks (which carry 2–4 inlines) but below the chart-body sizes
+(>=20 inline children) is tuned above the size of typical split-header
+TableBlocks (which carry 2-4 inlines) but below the chart-body sizes
 observed in the S5U-704 evidence (p0054.b002 = 177 inlines).
 """
 
