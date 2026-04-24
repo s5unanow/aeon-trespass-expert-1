@@ -27,6 +27,10 @@ from atr_pipeline.stages.structure.span_classify import (
     _same_line,
     _spans_to_text_inline,
 )
+from atr_pipeline.stages.structure.figure_extraction import (
+    _image_overlaps_text,
+    _significant_image_blocks,
+)
 from atr_pipeline.stages.structure.table_assembly import (
     _build_table_row,
     _line_in_table_region,
@@ -35,7 +39,7 @@ from atr_pipeline.stages.structure.table_assembly import (
 from atr_pipeline.stages.structure.text_normalize import normalize_text
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
-from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
+from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
 from atr_schemas.page_ir_v1 import (
     CalloutBlock,
     DividerBlock,
@@ -50,45 +54,6 @@ from atr_schemas.page_ir_v1 import (
     TextInline,
 )
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
-
-
-def _significant_image_blocks(
-    native: NativePageV1,
-    cfg: StructureConfig,
-) -> list[ImageBlockEvidence]:
-    """Return image blocks large enough to warrant a FigureBlock.
-
-    Filters by bounding-box size in PDF points and excludes images that sit
-    entirely within the footer region.
-    """
-    results: list[ImageBlockEvidence] = []
-    for img in native.image_blocks:
-        w = img.bbox.x1 - img.bbox.x0
-        h = img.bbox.y1 - img.bbox.y0
-        if w < cfg.figure_min_width_pt or h < cfg.figure_min_height_pt:
-            continue
-        if img.bbox.y0 >= cfg.footer_y_threshold:
-            continue
-        results.append(img)
-    return results
-
-
-def _image_overlaps_text(
-    img: ImageBlockEvidence,
-    spans: list[SpanEvidence],
-    tolerance: float = 5.0,
-) -> bool:
-    """Check whether an image's bbox substantially overlaps with text spans."""
-    for span in spans:
-        # If the bounding boxes overlap vertically and horizontally
-        if (
-            img.bbox.x0 < span.bbox.x1 + tolerance
-            and img.bbox.x1 > span.bbox.x0 - tolerance
-            and img.bbox.y0 < span.bbox.y1 + tolerance
-            and img.bbox.y1 > span.bbox.y0 - tolerance
-        ):
-            return True
-    return False
 
 
 def build_page_ir_real(
