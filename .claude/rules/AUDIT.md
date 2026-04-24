@@ -1,6 +1,6 @@
 # `.claude/rules/` drift audit
 
-**Last reviewed:** 2026-04-20 (S5U-662; `pipeline.md` stage-cache-invalidation bullet added)
+**Last reviewed:** 2026-04-24 (S5U-724; CLAUDE.md retrospective extraction + new `merge-discipline.md` rule file)
 **Next review due:** 2026-07-18 (quarterly; manual — cadence unchanged)
 
 This file tracks whether each `.claude/rules/*.md` still matches the codebase.
@@ -23,17 +23,18 @@ to be a false positive), re-run the audit:
 No automated checker exists; out of scope for S5U-617. If drift recurs faster
 than quarterly review catches it, file a follow-up to build one.
 
-## Current verdicts (2026-04-20)
+## Current verdicts (2026-04-24)
 
-| Rule file         | Verdict                    | Action                                                      |
-|-------------------|----------------------------|-------------------------------------------------------------|
-| `pipeline.md`     | **Accurate** (post-S5U-662)| Added stage-cache-invalidation bullet in S5U-662; verified other bullets still current (logging, atomic writes, file-length, import layers, inline-word-boundary) |
-| `schemas.md`      | **Accurate**               | No change                                                   |
-| `web.md`          | **Accurate**               | No change                                                   |
-| `extraction.md`   | **Accurate** (post-S5U-617)| No change (globs fixed in S5U-617; verified still current)  |
-| `hooks.md`        | **Accurate**               | No change                                                   |
-| `visual-verify.md`| **Accurate**               | No change                                                   |
-| `guards.md`       | **New (S5U-661)**          | Added; codifies G1 fail-closed + G2 content-derived sets    |
+| Rule file             | Verdict                       | Action                                                      |
+|-----------------------|-------------------------------|-------------------------------------------------------------|
+| `pipeline.md`         | **Accurate** (post-S5U-662)   | No change (stage-cache-invalidation bullet verified current) |
+| `schemas.md`          | **Accurate**                  | No change                                                   |
+| `web.md`              | **Accurate**                  | No change                                                   |
+| `extraction.md`       | **Accurate** (post-S5U-617)   | No change                                                   |
+| `hooks.md`            | **Expanded (S5U-724)**        | Added "Hook-bypass disclosure" section with full token enumeration moved out of CLAUDE.md NEVER bullet |
+| `visual-verify.md`    | **Expanded (S5U-724)**        | Added "Visual regression CI gate" section absorbing the 7 bullets moved out of CLAUDE.md lines 71–81 |
+| `guards.md`           | **Accurate** (post-S5U-661)   | No change                                                   |
+| `merge-discipline.md` | **New (S5U-724)**             | Added; holds admin-merge-disclosure full vector list, two-pass reviewer-probe semantics, stale-context carve-out history, and coordinator-ack mechanics rationale |
 
 ### `pipeline.md` — stale bullets
 
@@ -145,3 +146,28 @@ agree.
   fix — S5U-640 shipped separately; this PR codifies the meta-rule.
   Did not re-verify other rule files this cycle; carry-forward applies.
   Next full audit due 2026-07-18.
+- 2026-04-24 (S5U-724): extracted retrospective prose from CLAUDE.md
+  into referenced rule files to shrink the hot-path doc from 243 to
+  under 160 lines per the external-review sweet-spot finding. Three
+  extractions:
+  (1) Visual regression gate subsection (CLAUDE.md lines 71–81 with
+  S5U-599/608/611/639/709 retrospectives) → `.claude/rules/visual-verify.md`
+  § "Visual regression CI gate (S5U-599)". CLAUDE.md keeps a 5-bullet
+  short form + pointer. (2) NEVER §hook-bypass bullet (S5U-629/672
+  token-enumeration prose) → `.claude/rules/hooks.md` § "Hook-bypass
+  disclosure (S5U-629, extended S5U-672)". (3) NEVER §admin-merge bullet
+  (S5U-671/675/664 two-pass-probe and carve-out prose) + §6
+  coordinator-ack rationale (S5U-670/693 file-marker-retire history)
+  → new `.claude/rules/merge-discipline.md` with two sections
+  ("Admin-merge disclosure" and "Coordinator-ack mechanics"). Updated
+  reviewer-probe citations: `.claude/prompts/review.md:182` replaced
+  `CLAUDE.md:206` with a stable section-anchor reference to
+  `.claude/rules/hooks.md § "Hook-bypass token enumeration"`. Updated
+  three skill files (`next`, `build-loop`, `ship`) that cited
+  `CLAUDE.md:154` — replaced the line number with the stable section
+  anchor "Bypass clauses (must-refuse, S5U-614)". Verified that
+  `scripts/check_instruction_drift.py`'s canonical `safety-gate scope
+  (...)` parenthetical regex still matches the preserved CLAUDE.md
+  paragraph. Not a retroactive rule addition — the underlying rules
+  are unchanged; only the prose location moved. Next full audit due
+  2026-07-18.

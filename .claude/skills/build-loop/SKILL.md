@@ -36,7 +36,7 @@ Repeat:
 
 ## Safety-gate scope hard-stop (S5U-628 / S5U-647)
 
-`/build-loop` loops `/next`, which invokes `/ship` — all three run as lone workers without a coordinator-style fresh-eyes post-ship reviewer. Per CLAUDE.md step 6 and the must-refuse bypass clause at CLAUDE.md:154, safety-gate PRs (`.claude/hooks/**`, `.claude/prompts/review.md`, `.claude/prompts/codex-review.md`, `.github/workflows/**`, `.github/actions/**`, `.claude/skills/**/SKILL.md`, `scripts/check_*.{sh,py}`, `scripts/pre-*.{sh,py}`, `CLAUDE.md`) MUST be shipped via `/coordinator`, not `/build-loop`.
+`/build-loop` loops `/next`, which invokes `/ship` — all three run as lone workers without a coordinator-style fresh-eyes post-ship reviewer. Per CLAUDE.md step 6 and the must-refuse **Bypass clauses (must-refuse, S5U-614)**, safety-gate PRs (`.claude/hooks/**`, `.claude/prompts/review.md`, `.claude/prompts/codex-review.md`, `.github/workflows/**`, `.github/actions/**`, `.claude/skills/**/SKILL.md`, `scripts/check_*.{sh,py}`, `scripts/pre-*.{sh,py}`, `CLAUDE.md`) MUST be shipped via `/coordinator`, not `/build-loop`.
 
 Before beginning each loop iteration, inspect the picked-up issue for safety-gate scope by:
 

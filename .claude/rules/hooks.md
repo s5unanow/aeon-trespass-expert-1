@@ -78,3 +78,94 @@ The original blanket parametrize carve-out failed twice:
 2. **Even post-S5U-615 blocks** can mask a new branch: see S5U-604, where WARNING-severity fixtures kept `has_blocking=False` in both pre- and post-fix states. Adding a fourth row that *also* doesn't exercise the new branch (typo in severity, wrong enum value) passes silently before and after the fix. This is the precise failure mode S5U-615 was created to prevent; the prior blanket carve-out re-opened it in its most common shape.
 
 The narrow carve-out keeps the cheap legitimate case (extending existing-branch coverage with new fixture data) while restoring the discipline on branch-extending rows.
+
+## Hook-bypass disclosure (S5U-629, extended S5U-672)
+
+The short-form rule lives in the CLAUDE.md NEVER list ("Never skip pre-commit
+hooks without disclosure"). This section is the authoritative token
+enumeration and rationale.
+
+### Hook-bypass token enumeration
+
+Any of the following, used to skip or neutralize the pre-commit hook, counts
+as a hook bypass and **requires** a `## Hook bypass disclosure` section in
+the PR body naming the commit SHA, the reason, and what the worker did to
+verify the skipped check(s) independently.
+
+**CLI flag bypasses:**
+- `git commit --no-verify`
+- `git commit -n`
+- `git commit --amend --no-verify`
+
+**Environment-variable bypasses:**
+- `HUSKY=0` — disables husky hook runner.
+- `LEFTHOOK=0` — disables lefthook hook runner.
+- `SKIP=<hook>` — selective skip (e.g., husky / lefthook feature).
+- `HOOK_BYPASS=` — any value; documentary form of intent.
+- `NO_VERIFY=` — any value.
+- `COORDINATOR_ACK_STATUS_SOURCE=` — the S5U-670 test-only env-var override of
+  the pre-PR coordinator-ack gate. Removed from the hook in S5U-672 because a
+  worker could set it at `gh pr create` time to inject forged status JSON. Any
+  reference to this identifier in commits or PR body is an attempted-bypass
+  event regardless of whether the current hook honors it — the probe's job is
+  to surface intent, not hook state.
+
+**Hook-file mutation:**
+- `chmod -x .git/hooks/pre-commit`
+- `rm .git/hooks/pre-commit`
+- No-op hook replacement (e.g., overwriting `.git/hooks/pre-commit` with
+  `exit 0`).
+
+**Hook-path redirection:**
+- `git config core.hooksPath …`
+- `git -c core.hooksPath=… commit`
+- `[core]\n  hooksPath = …` in a gitconfig file (out of scope for the reviewer's
+  probe — probe corpus is commit messages + PR body, not on-disk `.git/config`).
+
+### Required disclosure
+
+If any of the above was used — **even if the commit was rolled back before
+reaching `origin`** — add a `## Hook bypass disclosure` heading (level-2) to
+the PR body containing:
+
+- The commit SHA (or rollback SHA + `git reset` command used).
+- The reason the hook was bypassed.
+- What the worker did to verify the skipped check(s) independently.
+
+### Concealment is the stronger violation
+
+The reviewer's probe (check #22 in `.claude/prompts/review.md`) greps commit
+messages and PR body for bypass tokens. A match **without** a `## Hook bypass
+disclosure` heading is **CRITICAL** — concealment grades stronger than the
+bypass itself. A match **with** the heading is **WARNING** — audit-trail
+finding.
+
+Reflog inspection is **not** a valid detection path for independent reviewers
+on a fresh checkout — the reviewer's probe runs on commit-message + PR-body
+content only. This is a deliberate tradeoff documented in S5U-629.
+
+### Canonical forms for the probe regex
+
+The reviewer's probe uses word-proximity matching for short flags. The
+canonical forms the probe is tuned for are `git commit -n`, `git commit
+--no-verify`, and the env-var names above. English-inflected prose
+("committed", "committing") does **not** match; the probe surfaces documented
+vectors, not paraphrases.
+
+### Residuals (not probe-detectable)
+
+The probe does NOT detect:
+
+- Bypasses concealed via neutral commit message + no disclosure.
+- Bypasses via direct hook-file modification that leave no commit-message
+  trace *and* no prose trace (e.g., the worker runs `chmod -x
+  .git/hooks/pre-commit` silently and never writes about it).
+- Rolled-back bypass commits that never reach origin and are not
+  self-reported.
+- Cross-line paraphrases of hook mutation that fall outside the probe's
+  40-char window.
+
+These are acknowledged residual risks; the gate is worker honesty backed by
+the NEVER-list framing of concealment as the stronger violation. See
+`tmp/plan-s5u-629.md` §4d Scenarios 4 and 5 and `tmp/plan-s5u-659-648.md` §4d
+for the documented limits.
