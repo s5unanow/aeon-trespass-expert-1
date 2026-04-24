@@ -17,6 +17,9 @@ Bump history:
   PLACEHOLDER_PROSE_LEAKED (ERROR) record fires on descriptive placeholder
   prose like "Potential symbol" / "??? symbol".  Both change the record
   set a cached QA pass would otherwise replay.
+- "1.3" → "1.4" (S5U-704): new ``flat_table`` rule emits
+  FLAT_TABLE_NO_ROWS records for TableBlocks lacking row/cell structure.
+  Cached QA runs must re-emit the broader record set.
 """
 
 from __future__ import annotations
@@ -33,10 +36,10 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
     declare the affected outputs as cache-aware (larger refactor; see
     plan-s5u-640-641.md).
     """
-    assert QAStage().version == "1.3", (
+    assert QAStage().version == "1.4", (
         "QAStage.version must be bumped past earlier pins so pre-existing "
         "cached events invalidate and re-emit the full current output set "
         "(manifest-aware DEAD_PAGE_REF suppression, PLACEHOLDER_PROSE_LEAKED "
-        "records, qa_metrics.json, confidence-band QA records, widened "
-        "review pack)."
+        "records, FLAT_TABLE_NO_ROWS records, qa_metrics.json, "
+        "confidence-band QA records, widened review pack)."
     )

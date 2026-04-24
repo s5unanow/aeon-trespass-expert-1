@@ -88,7 +88,10 @@ def test_qa_implements_stage_protocol() -> None:
     # PLACEHOLDER_PROSE_LEAKED (ERROR) record are new observable
     # side effects — version bump invalidates pre-S5U-701 cached QA
     # events so false-positive records are suppressed and new ones emit.
-    assert stage.version == "1.3"
+    # 1.3 → 1.4 in S5U-704: new ``flat_table`` rule emits
+    # FLAT_TABLE_NO_ROWS records; bump invalidates cached pre-S5U-704
+    # QA events so the broader record set re-emits.
+    assert stage.version == "1.4"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:
