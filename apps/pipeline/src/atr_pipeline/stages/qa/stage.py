@@ -49,7 +49,16 @@ class QAStage:
         return "1.3"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
-        page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
+        # S5U-701 — resolve the FULL published page set from the artifact
+        # store BEFORE applying any `--pages` selection.  The dead-page-ref
+        # rule uses this set as the authoritative manifest; if we built it
+        # from the filtered subset, a partial QA run with ``--pages`` would
+        # misclassify every reference to an unselected-but-published page
+        # as dead (regression flagged by Codex cross-system review).
+        all_page_ids = self._resolve_page_ids(ctx)
+        known_page_numbers = _page_ids_to_numbers(all_page_ids)
+        page_ids = ctx.filter_pages(all_page_ids)
+
         all_records: list[QARecordV1] = []
         rules = get_all_rules()
         confidence_policy = load_confidence_bands(repo_root=ctx.config.repo_root)
@@ -62,11 +71,6 @@ class QAStage:
         source_only = ctx.edition == "en"
         if source_only:
             ctx.logger.info("QA running in source-only mode (edition=en)")
-
-        # S5U-701 — derive the set of published page numbers once so the
-        # dead-page-ref rule can suppress references whose target is in the
-        # manifest (false positives from the original context-free rule).
-        known_page_numbers = _page_ids_to_numbers(page_ids)
 
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
