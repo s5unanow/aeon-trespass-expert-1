@@ -18,6 +18,7 @@ from atr_pipeline.stages.structure.semantic_resolver import (
 from atr_schemas.common import NormRect, PageDimensions, Rect
 from atr_schemas.enums import AnchorEdgeKind, BlockType, RegionKind
 from atr_schemas.evidence_primitives_v1 import EvidenceTableCandidate
+from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
 from atr_schemas.page_evidence_v1 import EvidenceTransformMeta, PageEvidenceV1
 from atr_schemas.page_ir_v1 import (
     CalloutBlock,
@@ -26,6 +27,7 @@ from atr_schemas.page_ir_v1 import (
     HeadingBlock,
     ParagraphBlock,
     TableBlock,
+    TableRowBlock,
     TextInline,
 )
 from atr_schemas.resolved_page_v1 import ResolvedRegion
@@ -92,6 +94,20 @@ def _table_candidate(
     bbox = _rect(x0, y0, x1, y1)
     return EvidenceTableCandidate(
         evidence_id=eid, bbox=bbox, norm_bbox=_norm(bbox), confidence=confidence
+    )
+
+
+def _span(sid: str, text: str, x0: float, y0: float, x1: float, y1: float) -> SpanEvidence:
+    return SpanEvidence(span_id=sid, text=text, bbox=_rect(x0, y0, x1, y1))
+
+
+def _native(spans: list[SpanEvidence]) -> NativePageV1:
+    return NativePageV1(
+        document_id="test_doc",
+        page_id="p0001",
+        page_number=1,
+        dimensions_pt=_DIMS,
+        spans=spans,
     )
 
 
@@ -213,14 +229,69 @@ class TestPromoteCallouts:
 
 
 class TestResolveTables:
-    def test_table_area_with_evidence_promotes(self) -> None:
+    """S5U-733 — ``_resolve_tables`` now re-infers row/cell structure
+    from native spans inside the table candidate's bbox (Option 1).
+    When ``native`` is unavailable OR the span-based re-inference yields
+    zero rows, the promotion is refused and the block stays a
+    ``ParagraphBlock`` (Option 2 fallback) so the ``FLAT_TABLE_NO_ROWS``
+    QA rule cannot fire.
+    """
+
+    def test_table_area_with_spans_promotes_with_rows(self) -> None:
+        """Option 1 path — native spans inside the candidate bbox produce
+        structured ``TableRowBlock`` children on the promoted TableBlock."""
+        para = _para("b1", 50, 100, 400, 200)
+        tc = _table_candidate("e.tbl.001", 45, 95, 405, 205, confidence=0.9)
+        # Two visual rows, two cells each — wide x-gap forces cell split.
+        spans = [
+            _span("s1", "Name", 60, 110, 100, 122),
+            _span("s2", "Value", 300, 110, 360, 122),
+            _span("s3", "Alice", 60, 150, 100, 162),
+            _span("s4", "42", 300, 150, 340, 162),
+        ]
+        blocks, edges = _resolve_tables(
+            [para],
+            _evidence([tc]),
+            StructureConfig(table_min_confidence=0.6, table_body_cell_split_gap_pt=25.0),
+            _native(spans),
+        )
+        tables = [b for b in blocks if isinstance(b, TableBlock)]
+        assert len(tables) == 1
+        assert len(edges) == 1
+        rows = [c for c in tables[0].children if isinstance(c, TableRowBlock)]
+        # S5U-733 core assertion — promoted TableBlock carries structured rows,
+        # not the paragraph's flat inline children.
+        assert len(rows) == 2
+        assert all(len(r.cells) == 2 for r in rows)
+
+    def test_table_area_without_native_refuses_promotion(self) -> None:
+        """Option 2 fallback — ``native=None`` means we cannot prove row
+        structure, so the paragraph is left as-is rather than promoted to
+        a flat-inline TableBlock (the S5U-733 failure mode)."""
         para = _para("b1", 50, 100, 400, 200)
         tc = _table_candidate("e.tbl.001", 45, 95, 405, 205, confidence=0.9)
         blocks, edges = _resolve_tables(
             [para], _evidence([tc]), StructureConfig(table_min_confidence=0.6)
         )
-        assert len([b for b in blocks if isinstance(b, TableBlock)]) == 1
-        assert len(edges) == 1
+        assert [type(b).__name__ for b in blocks] == ["ParagraphBlock"]
+        assert edges == []
+
+    def test_table_area_with_empty_spans_refuses_promotion(self) -> None:
+        """Option 2 fallback — native present but no spans inside the
+        candidate bbox yields zero rows → promotion is refused."""
+        para = _para("b1", 50, 100, 400, 200)
+        tc = _table_candidate("e.tbl.001", 45, 95, 405, 205, confidence=0.9)
+        # Spans that sit outside the candidate bbox — the containment filter
+        # discards them all.
+        outside_spans = [_span("s1", "nope", 800, 800, 900, 812)]
+        blocks, edges = _resolve_tables(
+            [para],
+            _evidence([tc]),
+            StructureConfig(table_min_confidence=0.6),
+            _native(outside_spans),
+        )
+        assert [type(b).__name__ for b in blocks] == ["ParagraphBlock"]
+        assert edges == []
 
     def test_without_evidence_unchanged(self) -> None:
         para = _para("b1", 50, 100, 400, 200)
@@ -326,13 +397,28 @@ class TestResolveSemanticsIntegration:
         assert result.anchor_edges == []
 
     def test_with_table_evidence(self) -> None:
+        """S5U-733 — ``resolve_semantics`` promotes to TableBlock only when
+        native spans let the resolver re-derive row structure."""
         para = _para("b1", 50, 100, 400, 200, text="Row data")
         regions = [_region("r001", RegionKind.TABLE_AREA, 40, 90, 410, 210)]
         tc = _table_candidate("e.tbl.001", 45, 95, 405, 205, confidence=0.9)
+        spans = [
+            _span("s1", "Col1", 60, 110, 100, 122),
+            _span("s2", "Col2", 300, 110, 340, 122),
+            _span("s3", "Row1", 60, 150, 100, 162),
+            _span("s4", "Row2", 300, 150, 340, 162),
+        ]
         result = resolve_semantics(
-            [para], regions, _evidence([tc]), StructureConfig(table_min_confidence=0.6)
+            [para],
+            regions,
+            _evidence([tc]),
+            StructureConfig(table_min_confidence=0.6, table_body_cell_split_gap_pt=25.0),
+            _native(spans),
         )
-        assert len([b for b in result.blocks if isinstance(b, TableBlock)]) == 1
+        tables = [b for b in result.blocks if isinstance(b, TableBlock)]
+        assert len(tables) == 1
+        rows = [c for c in tables[0].children if isinstance(c, TableRowBlock)]
+        assert len(rows) == 2
 
 
 class TestReorderBlocksByRegions:

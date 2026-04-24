@@ -9,9 +9,13 @@ from atr_pipeline.stages.structure.block_filter import (
     filter_figure_area_blocks,
     filter_heading_clusters,
 )
+from atr_pipeline.stages.structure.table_resolver import (
+    _bbox_overlap,
+    _resolve_tables,
+)
 from atr_schemas.common import Rect
 from atr_schemas.enums import AnchorEdgeKind, BlockType, RegionKind
-from atr_schemas.evidence_primitives_v1 import EvidenceTableCandidate
+from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
 from atr_schemas.page_ir_v1 import (
     Block,
@@ -20,9 +24,18 @@ from atr_schemas.page_ir_v1 import (
     FigureBlock,
     InlineNode,
     ParagraphBlock,
-    TableBlock,
 )
 from atr_schemas.resolved_page_v1 import AnchorEdge, ResolvedBlock, ResolvedRegion
+
+# Re-export for existing callers/tests that import these from
+# ``semantic_resolver``. The real implementations live in
+# ``table_resolver`` (S5U-733).
+__all__ = [
+    "SemanticResolution",
+    "_bbox_overlap",
+    "_resolve_tables",
+    "resolve_semantics",
+]
 
 
 @dataclass
@@ -40,6 +53,7 @@ def resolve_semantics(
     regions: list[ResolvedRegion],
     evidence: PageEvidenceV1 | None,
     cfg: StructureConfig,
+    native: NativePageV1 | None = None,
 ) -> SemanticResolution:
     """Post-process blocks using region context for richer IR and anchor edges."""
     if not blocks:
@@ -54,7 +68,7 @@ def resolve_semantics(
     blocks = filter_heading_clusters(blocks)
     blocks, callout_edges = _promote_callouts(blocks, region_map, regions)
     edges.extend(callout_edges)
-    blocks, table_edges = _resolve_tables(blocks, evidence, cfg)
+    blocks, table_edges = _resolve_tables(blocks, evidence, cfg, native)
     edges.extend(table_edges)
     edges.extend(_build_region_edges(blocks, region_map))
     resolved = _build_resolved_blocks(blocks, region_map)
@@ -267,76 +281,6 @@ def _union_bboxes(bboxes: list[Rect]) -> Rect:
         x1 = max(x1, b.x1)
         y1 = max(y1, b.y1)
     return Rect(x0=x0, y0=y0, x1=x1, y1=y1)
-
-
-def _bbox_overlap(a: Rect, b: Rect) -> float:
-    """Compute intersection-over-minimum-area overlap between two rects."""
-    ix0 = max(a.x0, b.x0)
-    iy0 = max(a.y0, b.y0)
-    ix1 = min(a.x1, b.x1)
-    iy1 = min(a.y1, b.y1)
-    if ix1 <= ix0 or iy1 <= iy0:
-        return 0.0
-    intersection = (ix1 - ix0) * (iy1 - iy0)
-    min_area = min((a.x1 - a.x0) * (a.y1 - a.y0), (b.x1 - b.x0) * (b.y1 - b.y0))
-    return intersection / min_area if min_area > 0 else 0.0
-
-
-def _resolve_tables(
-    blocks: list[Block],
-    evidence: PageEvidenceV1 | None,
-    cfg: StructureConfig,
-) -> tuple[list[Block], list[AnchorEdge]]:
-    """Promote ParagraphBlocks with matching table evidence to TableBlocks."""
-    if evidence is None:
-        return blocks, []
-
-    table_candidates = [e for e in evidence.entities if isinstance(e, EvidenceTableCandidate)]
-    if not table_candidates:
-        return blocks, []
-
-    edges: list[AnchorEdge] = []
-    new_blocks: list[Block] = []
-
-    for block in blocks:
-        # Only promote paragraph and list-item blocks — never figures, headings, etc.
-        if not isinstance(block, (ParagraphBlock,)):
-            new_blocks.append(block)
-            continue
-        bbox = block.bbox
-        if bbox is None:
-            new_blocks.append(block)
-            continue
-
-        # Find matching table candidate by bbox overlap
-        best_candidate: EvidenceTableCandidate | None = None
-        best_overlap = 0.0
-        for tc in table_candidates:
-            if tc.confidence < cfg.table_min_confidence:
-                continue
-            overlap = _bbox_overlap(bbox, tc.bbox)
-            if overlap > 0.5 and overlap > best_overlap:
-                best_overlap = overlap
-                best_candidate = tc
-
-        if best_candidate is not None:
-            table = TableBlock(
-                block_id=block.block_id,
-                bbox=bbox,
-                children=list(getattr(block, "children", [])),
-            )
-            new_blocks.append(table)
-            edges.append(
-                AnchorEdge(
-                    edge_kind=AnchorEdgeKind.BLOCK_TO_REGION,
-                    source_id=block.block_id,
-                    target_id=best_candidate.evidence_id,
-                )
-            )
-        else:
-            new_blocks.append(block)
-
-    return new_blocks, edges
 
 
 def _build_region_edges(
