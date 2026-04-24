@@ -2,39 +2,26 @@
 """Post-merge coordinator-ack audit (S5U-693).
 
 Runs on every push to `main` via `.github/workflows/post-merge-coordinator-ack.yml`.
-If the push contains commits whose combined diff touches safety-gate scope (per
-the regex in `.claude/hooks/pre-pr-check.sh` line 224), the script queries the
-GitHub API for a `coordinator-ack` commit status on the PR HEAD SHA and fails
-the workflow when no valid ack exists.
+If the merged push touches safety-gate scope (per the regex in
+`.claude/hooks/pre-pr-check.sh` line 224), the script queries the GitHub API
+for a `coordinator-ack` commit status on the PR HEAD SHA and fails the
+workflow when no valid ack exists. This is an audit-trail gate, not a merge
+gate — branch-protection required contexts only apply at PR time. A red run
+is a durable signal that complements the pre-PR hook (which only intercepts
+local `gh pr create`).
 
-This is an **audit-trail** gate, not a merge gate. The workflow runs *after*
-merge; branch protection required-check contexts only apply to PR-time events.
-A red workflow run is a durable, searchable signal that a safety-gate-scope
-merge lacked coordinator-ack. It complements the pre-PR hook which only
-intercepts local `gh pr create`.
-
-Per `.claude/rules/guards.md` Rule G1 (fail-closed defaults), every degenerate
-input path exits non-zero with a clear message:
-
-* missing/unresolvable base ref → exit 1
-* `git diff` subprocess failure → exit 1 with stderr
-* `gh api` unreachable / non-zero → exit 1
-* malformed JSON response → exit 1
-* missing allowlist file → exit 1
-* empty allowlist after comment/blank stripping → exit 1
-
-Per Rule G2 (content-derived sets), the safety-gate check uses the **path
-regex** from `pre-pr-check.sh` — matching by path shape, not by a hardcoded
-file-name list. Renames within a matching path pattern remain matched.
+Per `.claude/rules/guards.md` Rule G1, every degenerate input exits non-zero:
+missing/unresolvable base ref, `git diff` failure, `gh api` non-zero,
+malformed JSON, missing/empty allowlist. Per Rule G2, the safety-gate check
+is path-regex-matched (not a name list); renames within a matching pattern
+remain matched.
 
 Usage:
     python scripts/check_post_merge_coordinator_ack.py \\
-        --repo s5unanow/aeon-trespass-expert-1 \\
-        --base <sha> --head <sha>
+        --repo <owner>/<repo> --base <sha> --head <sha>
 
-Both `--base` and `--head` default to `github.event.before` and `$GITHUB_SHA`
-respectively (read from env vars when the `--base`/`--head` args are omitted),
-so the workflow invocation is bare.
+`--base` and `--head` default to `GITHUB_EVENT_BEFORE` and `GITHUB_SHA` env
+vars when omitted, so the workflow invocation is bare.
 """
 
 from __future__ import annotations
@@ -45,6 +32,8 @@ import os
 import re
 import subprocess
 import sys
+import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -93,12 +82,11 @@ def _run_git(args: list[str], cwd: Path) -> str:
         check=False,
     )
     if result.returncode != 0:
-        msg = (
+        raise RuntimeError(
             f"BLOCKED: git {' '.join(args)} failed (exit {result.returncode}).\n"
             f"  stderr: {result.stderr.strip()}\n"
-            f"Per .claude/rules/guards.md Rule G1, git failures fail closed."
+            "Per .claude/rules/guards.md Rule G1, git failures fail closed."
         )
-        raise RuntimeError(msg)
     return result.stdout
 
 
@@ -214,14 +202,14 @@ def fetch_statuses(repo: str, sha: str) -> list[StatusEntry]:
     return out
 
 
-def fetch_pull_numbers_for_commit(repo: str, sha: str) -> list[int]:
-    """Find PR numbers whose merge commit equals sha. Empty list if none (not fatal)."""
-    # Using /commits/<sha>/pulls which returns associated PRs.
-    try:
-        raw = _gh_api(f"repos/{repo}/commits/{sha}/pulls")
-    except RuntimeError:
-        # Treat as "no PRs found" — this endpoint is best-effort.
-        return []
+def _parse_pull_numbers(raw: str) -> list[int]:
+    """Parse /commits/<sha>/pulls JSON into PR numbers; [] on any malformed shape.
+
+    The caller treats empty as "no PRs found this attempt" and either retries
+    or falls back to the merge-commit-SHA status check. The pass/fail-deciding
+    `/statuses` endpoint is NOT this permissive — see `fetch_statuses` for the
+    G1 fail-closed parser.
+    """
     try:
         data = json.loads(raw)
     except json.JSONDecodeError:
@@ -236,6 +224,47 @@ def fetch_pull_numbers_for_commit(repo: str, sha: str) -> list[int]:
         if isinstance(num, int):
             numbers.append(num)
     return numbers
+
+
+def fetch_pull_numbers_for_commit(
+    repo: str,
+    sha: str,
+    *,
+    max_retries: int = 5,
+    initial_backoff_s: float = 2.0,
+    sleeper: Callable[[float], None] | None = None,
+) -> list[int]:
+    """Find PR numbers whose merge commit equals sha, with retry-with-backoff.
+
+    GitHub's `/commits/<sha>/pulls` is eventually consistent after a squash
+    merge (S5U-728: PR #320 audit ran ~0.9s after merge SHA f711b9d landed and
+    got `[]` despite a valid PR-HEAD coordinator-ack). Exponential backoff
+    lets the index settle. Empty `[]` AND transient `RuntimeError` from
+    `_gh_api` are both retried; returning `[]` after the budget is exhausted
+    preserves the legitimate force-push / direct-push pathway where no PR is
+    associated. The pass/fail decision happens in `fetch_statuses`, which is
+    NOT permissive — persistent API outage there raises and fails closed (G1).
+
+    Worst-case wait at defaults: 2+4+8+16 = 30s across 5 attempts. `sleeper`
+    is parameterized for tests; resolved at call time so test patches on
+    `mod.time.sleep` work (default-arg binding would bypass the patch).
+    """
+    if max_retries < 1:
+        # Defensive: never silently degrade to zero attempts.
+        max_retries = 1
+    sleep_fn: Callable[[float], None] = sleeper if sleeper is not None else time.sleep
+    for attempt in range(max_retries):
+        try:
+            raw = _gh_api(f"repos/{repo}/commits/{sha}/pulls")
+            numbers = _parse_pull_numbers(raw)
+            if numbers:
+                return numbers
+        except RuntimeError:
+            # Transient gh failure — same handling as empty: retry until budget.
+            pass
+        if attempt < max_retries - 1:
+            sleep_fn(initial_backoff_s * (2**attempt))
+    return []
 
 
 def fetch_pr_head_sha(repo: str, number: int) -> str | None:
@@ -261,31 +290,21 @@ def fetch_pr_head_sha(repo: str, number: int) -> str | None:
 def find_valid_coordinator_ack(
     statuses: list[StatusEntry], allowlist: list[str]
 ) -> StatusEntry | None:
-    """Return the newest success coordinator-ack from an allowlisted signer, or None.
+    """Return latest-by-created_at success coordinator-ack from an allowlisted signer.
 
-    Follows the same latest-status-wins logic as `pre-pr-check.sh` (S5U-673):
-    sort coordinator-ack statuses by created_at, take the most recent, and
-    require it to be state=success AND creator in allowlist.
+    Mirrors `pre-pr-check.sh` (S5U-673) latest-wins: a later failure revokes
+    a prior success; only the latest entry is consulted.
     """
     ack = [s for s in statuses if s.context == "coordinator-ack"]
     if not ack:
         return None
-    ack_sorted = sorted(ack, key=lambda s: s.created_at)
-    latest = ack_sorted[-1]
-    if latest.state != "success":
-        return None
-    if latest.creator_login not in allowlist:
+    latest = sorted(ack, key=lambda s: s.created_at)[-1]
+    if latest.state != "success" or latest.creator_login not in allowlist:
         return None
     return latest
 
 
-def audit(
-    *,
-    repo: str,
-    base: str,
-    head: str,
-    root: Path,
-) -> int:
+def audit(*, repo: str, base: str, head: str, root: Path) -> int:
     """Core audit logic. Returns exit code (0 = pass, 1 = fail)."""
     paths = diff_paths(base, head, root)
     hits = safety_gate_hits(paths)
@@ -300,9 +319,8 @@ def audit(
     allowlist = load_allowlist(root)
     print(f"Coordinator signer allowlist: {', '.join(allowlist)}")
 
-    # Determine the commit SHAs to check for coordinator-ack.
-    # Strategy: start with the merge commit and every commit in the push range,
-    # then augment with PR HEAD SHAs via gh api commits/<sha>/pulls.
+    # SHAs to check: merge commit + push-range commits, plus PR HEAD SHAs
+    # discovered via /commits/<sha>/pulls.
     commits_to_check: set[str] = {head}
     range_out = _run_git(["rev-list", f"{base}..{head}"], root)
     for line in range_out.splitlines():
@@ -331,18 +349,18 @@ def audit(
             return 0
 
     # No valid coordinator-ack anywhere. Fail closed.
+    pr_list = ", ".join(str(n) for n in sorted(pr_numbers)) or "<none>"
     print(
         "BLOCKED: no valid coordinator-ack commit status found for the "
         "safety-gate-scope change in this push.\n"
         f"  Checked commits: {', '.join(sorted(s[:7] for s in commits_to_check))}\n"
-        f"  Associated PRs:  {', '.join(str(n) for n in sorted(pr_numbers)) or '<none>'}\n"
+        f"  Associated PRs:  {pr_list}\n"
         "\n"
-        "Per CLAUDE.md step 6 and the S5U-693 post-merge audit rule, any\n"
-        "safety-gate-scope merge must have a 'coordinator-ack' commit status\n"
-        "(state=success) from an allowlisted signer on the PR HEAD SHA at\n"
-        "merge time. This workflow is the post-merge audit trail that\n"
-        "complements the pre-PR hook (which only intercepts local\n"
-        "`gh pr create`)."
+        "Per CLAUDE.md step 6 and the S5U-693 post-merge audit rule, any "
+        "safety-gate-scope merge must have a 'coordinator-ack' commit status "
+        "(state=success) from an allowlisted signer on the PR HEAD SHA at "
+        "merge time. This workflow complements the pre-PR hook (which only "
+        "intercepts local `gh pr create`)."
     )
     return 1
 
@@ -364,12 +382,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        return audit(
-            repo=args.repo,
-            base=args.base,
-            head=args.head,
-            root=args.repo_root,
-        )
+        return audit(repo=args.repo, base=args.base, head=args.head, root=args.repo_root)
     except RuntimeError as exc:
         print(str(exc))
         return 1

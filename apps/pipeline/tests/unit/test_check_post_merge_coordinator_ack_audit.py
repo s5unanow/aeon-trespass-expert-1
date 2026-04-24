@@ -224,12 +224,14 @@ def test_audit_recovers_from_pulls_propagation_delay(mod: ModuleType, tmp_path: 
         return "{}"
 
     sleeps: list[float] = []
-    with patch.object(mod, "_gh_api", side_effect=_fake_gh):
-        # Patch time.sleep at module scope so the production code path
-        # (which uses time.sleep as the default sleeper) does not actually
-        # block the test for ~30s.
-        with patch.object(mod.time, "sleep", side_effect=sleeps.append):
-            rc = mod.audit(repo="owner/repo", base=base, head=head, root=tmp_path)
+    # The conftest `mod` fixture already rebinds `mod.time` so real sleeps
+    # never fire (S5U-728); here we additionally observe that at least one
+    # backoff sleep happens by patching the rebound stand-in's `sleep`.
+    with (
+        patch.object(mod, "_gh_api", side_effect=_fake_gh),
+        patch.object(mod.time, "sleep", side_effect=sleeps.append),
+    ):
+        rc = mod.audit(repo="owner/repo", base=base, head=head, root=tmp_path)
 
     assert rc == 0, "audit must recover from /pulls propagation delay"
     # We expect exactly one backoff sleep (between attempt 1 and 2).
