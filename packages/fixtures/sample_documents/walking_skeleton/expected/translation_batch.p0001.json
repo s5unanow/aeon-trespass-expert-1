@@ -20,7 +20,12 @@
       "context": {
         "page_id": "p0001",
         "section_path": [],
-        "prev_heading": ""
+        "prev_heading": "",
+        "parent_block_id": "",
+        "row_index": null,
+        "cell_index": null,
+        "is_header_row": false,
+        "is_header_cell": false
       },
       "required_concepts": [],
       "forbidden_targets": [],
@@ -57,7 +62,12 @@
       "context": {
         "page_id": "p0001",
         "section_path": [],
-        "prev_heading": "Attack Test"
+        "prev_heading": "Attack Test",
+        "parent_block_id": "",
+        "row_index": null,
+        "cell_index": null,
+        "is_header_row": false,
+        "is_header_cell": false
       },
       "required_concepts": [
         "concept.progress"
