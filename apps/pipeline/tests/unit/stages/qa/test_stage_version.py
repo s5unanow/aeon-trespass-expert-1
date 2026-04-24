@@ -20,6 +20,11 @@ Bump history:
 - "1.3" → "1.4" (S5U-704): new ``flat_table`` rule emits
   FLAT_TABLE_NO_ROWS records for TableBlocks lacking row/cell structure.
   Cached QA runs must re-emit the broader record set.
+- "1.4" → "1.5" (S5U-705): ``chart_title_merge_rule`` now writes the real
+  ``document_id`` into ``QARecordV1.document_id`` (sourced from
+  ``source_ir.document_id``) instead of the ``render_page.source_map.page_id``
+  value plumbed by the S5U-698 introduction. Cached records from v1.4
+  carry the wrong ``document_id`` shape, so the bump forces a re-run.
 """
 
 from __future__ import annotations
@@ -36,10 +41,11 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
     declare the affected outputs as cache-aware (larger refactor; see
     plan-s5u-640-641.md).
     """
-    assert QAStage().version == "1.4", (
+    assert QAStage().version == "1.5", (
         "QAStage.version must be bumped past earlier pins so pre-existing "
         "cached events invalidate and re-emit the full current output set "
         "(manifest-aware DEAD_PAGE_REF suppression, PLACEHOLDER_PROSE_LEAKED "
         "records, FLAT_TABLE_NO_ROWS records, qa_metrics.json, "
-        "confidence-band QA records, widened review pack)."
+        "confidence-band QA records, widened review pack, "
+        "CHART_TITLE_MERGE records with real document_id)."
     )

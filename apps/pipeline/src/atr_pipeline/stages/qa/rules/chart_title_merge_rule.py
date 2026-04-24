@@ -39,16 +39,23 @@ def _check_heading_text(text: str) -> str | None:
     return None
 
 
-def evaluate_chart_title_merge(render_page: RenderPageV1) -> list[QARecordV1]:
+def evaluate_chart_title_merge(render_page: RenderPageV1, document_id: str) -> list[QARecordV1]:
     """Flag heading blocks whose text shows a merged-cell pattern.
 
     Only heading blocks are scanned — table-body blocks routinely contain
     glue-like patterns in inline text and are out of scope for this rule
     (the ``glued_text`` rule covers body-text cases in a different layer).
+
+    ``document_id`` is the parent document identifier (e.g. ``"ato_core_v1_1"``)
+    and must be supplied by the caller — typically
+    ``QAPageContext.source_ir.document_id``. Previously the rule sourced the
+    value from ``render_page.source_map.page_id``, which is a *page id*
+    (e.g. ``"p0054"``), not a document id; downstream QA rollups that join
+    or group by ``document_id`` saw page ids where document ids were
+    expected (S5U-705, follow-up to S5U-698).
     """
     records: list[QARecordV1] = []
     page_id = render_page.page.id
-    doc_id = render_page.source_map.page_id if render_page.source_map else ""
 
     for block in render_page.blocks:
         if not isinstance(block, RenderHeadingBlock):
@@ -62,7 +69,7 @@ def evaluate_chart_title_merge(render_page: RenderPageV1) -> list[QARecordV1]:
                     layer=QALayer.STRUCTURE,
                     severity=Severity.ERROR,
                     code="CHART_TITLE_MERGE",
-                    document_id=doc_id,
+                    document_id=document_id,
                     page_id=page_id,
                     entity_ref=block.id,
                     message=(

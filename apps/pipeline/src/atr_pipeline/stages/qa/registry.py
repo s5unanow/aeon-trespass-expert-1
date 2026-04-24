@@ -182,7 +182,7 @@ class ChartTitleMergeRule:
         return QALayer.STRUCTURE
 
     def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
-        return evaluate_chart_title_merge(ctx.render_page)
+        return evaluate_chart_title_merge(ctx.render_page, ctx.source_ir.document_id)
 
 
 class FlatTableRule:
