@@ -452,6 +452,111 @@ def test_qa_manifest_respects_full_page_set_under_page_filter(tmp_path: Path) ->
     )
 
 
+def test_qa_manifest_excludes_empty_non_facsimile_pages(tmp_path: Path) -> None:
+    """S5U-701 follow-up (Codex REVISE round 2):
+
+    The dead-page-ref suppression manifest must match the **web reader's**
+    published page set, not the full EN IR directory.  The exporter in
+    ``scripts/export_to_web.py::export_pages`` drops non-facsimile pages
+    whose render has no blocks (see Lines 221-248 of that file); if QA
+    built its manifest from every EN IR page, a reference to such a
+    dropped page would pass QA while still being dead for readers.
+
+    This test seeds a synthetic ``p0999`` with an EN/RU IR and a
+    non-facsimile render carrying zero blocks.  A paragraph on the real
+    page references ``p. 999``.  With the reader-manifest-aligned fix,
+    ``p0999`` is NOT in ``known_page_numbers`` (no renderable blocks →
+    exporter would drop it), so the reference fires as ``DEAD_PAGE_REF``.
+
+    Red-before confirmation: pre-fix (``known_page_numbers`` built from
+    ``_resolve_page_ids(ctx)`` directly without the publishability
+    filter) the EN IR presence alone suppressed the finding — the
+    assertion ``len(dead_refs) == 1`` would fail with ``[] == 1``.
+    Verified by reverting ``_filter_publishable_pages`` locally and
+    re-running this test.
+    """
+    from atr_schemas.render_page_v1 import (
+        RenderPageMeta,
+        RenderPageV1,
+        RenderParagraphBlock,
+        RenderSourceMap,
+        RenderTextInline,
+    )
+
+    ctx = _make_ctx(tmp_path)
+    _run_prerequisites(ctx)
+
+    en_dir = ctx.artifact_store.root / ctx.document_id / "page_ir.v1.en" / "page"
+    real_page_id = sorted(p.name for p in en_dir.iterdir() if p.is_dir())[0]
+
+    # Clone EN/RU IR for p0999 (so _resolve_page_ids sees the page),
+    # but install an EMPTY non-facsimile render.  This matches the
+    # exporter's "would-be-dropped" case.
+    for family in ("page_ir.v1.en", "page_ir.v1.ru"):
+        src = ctx.artifact_store.load_latest_json(
+            document_id=ctx.document_id,
+            schema_family=family,
+            scope="page",
+            entity_id=real_page_id,
+        )
+        assert src is not None
+        ctx.artifact_store.put_json(
+            document_id=ctx.document_id,
+            schema_family=family,
+            scope="page",
+            entity_id="p0999",
+            data=src,
+        )
+
+    empty_render = RenderPageV1(
+        page=RenderPageMeta(id="p0999", title="Empty", source_page_number=999),
+        blocks=[],
+        source_map=RenderSourceMap(page_id="p0999", block_refs=[]),
+    )
+    ctx.artifact_store.put_json(
+        document_id=ctx.document_id,
+        schema_family="render_page.v1",
+        scope="page",
+        entity_id="p0999",
+        data=empty_render,
+    )
+
+    # Overwrite the real page's render to reference p. 999.
+    ref_render = RenderPageV1(
+        page=RenderPageMeta(id=real_page_id, title="Test", source_page_number=1),
+        blocks=[
+            RenderParagraphBlock(
+                id="b_crossref",
+                children=[RenderTextInline(text="See rules on p. 999 for details")],
+            )
+        ],
+        source_map=RenderSourceMap(page_id=real_page_id, block_refs=[]),
+    )
+    ctx.artifact_store.put_json(
+        document_id=ctx.document_id,
+        schema_family="render_page.v1",
+        scope="page",
+        entity_id=real_page_id,
+        data=ref_render,
+    )
+
+    result = execute_stage(QAStage(), ctx)
+    assert result.success
+    assert result.artifact_ref is not None
+
+    summary = QASummaryV1.model_validate(ctx.artifact_store.get_json(result.artifact_ref))
+    records: list[QARecordV1] = []
+    for ref in summary.record_refs:
+        records.append(QARecordV1.model_validate(_load_json(ctx.artifact_store.root / ref)))
+
+    dead_refs = [r for r in records if r.code == "DEAD_PAGE_REF" and "p. 999" in r.message]
+    assert len(dead_refs) == 1, (
+        "Expected DEAD_PAGE_REF for p. 999 when p0999's render is empty "
+        "(exporter would drop it from the reader manifest); "
+        f"got {[r.message for r in dead_refs]}"
+    )
+
+
 def _load_json(path: Path) -> dict[str, object]:
     import json
 

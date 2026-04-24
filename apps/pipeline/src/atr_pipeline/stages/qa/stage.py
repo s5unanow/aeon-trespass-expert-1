@@ -54,9 +54,19 @@ class QAStage:
         # rule uses this set as the authoritative manifest; if we built it
         # from the filtered subset, a partial QA run with ``--pages`` would
         # misclassify every reference to an unselected-but-published page
-        # as dead (regression flagged by Codex cross-system review).
+        # as dead (regression flagged by Codex cross-system review round 1).
+        #
+        # Round 2 (Codex) flagged a cross-system contract gap: the web
+        # reader's ``manifest.json`` is narrower than EN IR — ``export_pages``
+        # skips non-facsimile pages with no renderable blocks (see
+        # ``scripts/export_to_web.py`` Lines 221-248).  A QA-known page that
+        # gets dropped at export time would still be dead from the reader's
+        # perspective.  The manifest the QA rule checks against must match
+        # the exporter's filter so the suppression set never includes pages
+        # the reader will not actually publish.
         all_page_ids = self._resolve_page_ids(ctx)
-        known_page_numbers = _page_ids_to_numbers(all_page_ids)
+        publishable_page_ids = self._filter_publishable_pages(ctx, all_page_ids)
+        known_page_numbers = _page_ids_to_numbers(publishable_page_ids)
         page_ids = ctx.filter_pages(all_page_ids)
 
         all_records: list[QARecordV1] = []
@@ -198,6 +208,36 @@ class QAStage:
 
         msg = "No EN IR pages found. Run structure stage first."
         raise RuntimeError(msg)
+
+    @staticmethod
+    def _filter_publishable_pages(ctx: StageContext, page_ids: list[str]) -> list[str]:
+        """Return the subset of *page_ids* the web exporter will publish.
+
+        Mirrors the filter in ``scripts/export_to_web.py::export_pages``:
+        a page is published iff a render artifact exists for it AND the
+        page is either in facsimile mode or has at least one renderable
+        block.  This keeps the dead-page-ref suppression manifest aligned
+        with what the reader actually sees — a page that EN IR knows
+        about but the exporter drops is still dead from the reader's
+        perspective and must not be suppressed (Codex REVISE round 2).
+        """
+        publishable: list[str] = []
+        for pid in page_ids:
+            data = ctx.artifact_store.load_latest_json(
+                document_id=ctx.document_id,
+                schema_family="render_page.v1",
+                scope="page",
+                entity_id=pid,
+            )
+            if not data:
+                # No render artifact → exporter skips it, so it's not in
+                # the reader manifest.
+                continue
+            presentation = data.get("presentation_mode")
+            blocks = data.get("blocks") or []
+            if presentation == "facsimile" or blocks:
+                publishable.append(pid)
+        return publishable
 
     @staticmethod
     def _load_ir(ctx: StageContext, family: str, page_id: str) -> PageIRV1 | None:
