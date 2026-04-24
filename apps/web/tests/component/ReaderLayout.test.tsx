@@ -1,6 +1,7 @@
 import { cleanup, render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { describe, expect, it, vi, afterEach } from 'vitest';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { describe, expect, it, vi, afterEach, beforeEach } from 'vitest';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router';
+import { useEffect } from 'react';
 import { ReaderLayout } from '../../src/components/layout/ReaderLayout';
 
 const MANIFEST = {
@@ -28,9 +29,16 @@ function renderLayout(path: string) {
 describe('ReaderLayout', () => {
   const fetchSpy = vi.spyOn(globalThis, 'fetch');
 
+  beforeEach(() => {
+    // Reset the documentElement.lang between tests so each assertion reflects
+    // the layout's own behavior, not leftover state from a prior test.
+    document.documentElement.removeAttribute('lang');
+  });
+
   afterEach(() => {
     fetchSpy.mockReset();
     cleanup();
+    document.documentElement.removeAttribute('lang');
   });
 
   it('renders header with document title and brand link', async () => {
@@ -193,6 +201,71 @@ describe('ReaderLayout', () => {
     await waitFor(() => {
       const back = screen.getByText(/Back/).closest('a');
       expect(back?.getAttribute('href')).toBe('/');
+    });
+  });
+
+  // --- S5U-702: HTML lang metadata tracks the active edition ---
+
+  it('sets document.documentElement.lang to "ru" on a RU reader route', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(MANIFEST),
+    } as Response);
+
+    renderLayout('/documents/ato_core_v1_1/ru/p0002');
+
+    await waitFor(() => {
+      expect(document.documentElement.lang).toBe('ru');
+    });
+  });
+
+  it('sets document.documentElement.lang to "en" on an EN reader route', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(MANIFEST),
+    } as Response);
+
+    renderLayout('/documents/ato_core_v1_1/en/p0001');
+
+    await waitFor(() => {
+      expect(document.documentElement.lang).toBe('en');
+    });
+  });
+
+  it('updates lang on edition transition without leaving stale metadata', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(MANIFEST),
+    } as Response);
+
+    function TransitionHarness({ target }: { target: string }) {
+      const navigate = useNavigate();
+      useEffect(() => {
+        navigate(target);
+      }, [navigate, target]);
+      return null;
+    }
+
+    render(
+      <MemoryRouter initialEntries={['/documents/ato_core_v1_1/en/p0001']}>
+        <Routes>
+          <Route path="/documents/:documentId/:edition" element={<ReaderLayout />}>
+            <Route
+              path=":pageId"
+              element={
+                <>
+                  <div data-testid="page-outlet">Page content</div>
+                  <TransitionHarness target="/documents/ato_core_v1_1/ru/p0002" />
+                </>
+              }
+            />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(document.documentElement.lang).toBe('ru');
     });
   });
 });
