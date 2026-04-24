@@ -41,8 +41,15 @@ fi
 
 # Extract the safety-gate regex from the hook for co-testing. If the regex
 # shifts in the hook, this grep picks up the new form automatically.
+#
+# S5U-692: `|| true` at the end of the pipeline. Under `set -euo pipefail`, if
+# the hook's safety-gate anchor is ever refactored out of the `| grep -E '^(..)'`
+# form, the outer `grep -oE` exits 1 and `pipefail + set -e` kill this script
+# at the assignment — before the fail-closed branch below can fire. Same class
+# as S5U-691's line-264 fix. With `|| true`, the empty-match case reaches the
+# `if [ -z "$SAFETY_REGEX" ]` guard, which emits the intended diagnostic.
 SAFETY_REGEX=$(grep -oE "\\| grep -E '\\^\\([^']+\\)'" "$HOOK_SCRIPT" | head -1 \
-  | sed -E "s/^\| grep -E '//; s/'$//")
+  | sed -E "s/^\| grep -E '//; s/'$//" || true)
 
 if [ -z "$SAFETY_REGEX" ]; then
   echo "FAIL: could not extract safety-gate regex from $HOOK_SCRIPT"
