@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router';
 import { loadManifest, type DocumentManifest } from '../../lib/api/loadManifest';
+import { DEFAULT_READER_LANG, langForEdition } from '../../lib/editionLang';
 import { AppHeader } from './AppHeader';
 import { PageSidebar } from './PageSidebar';
 
@@ -38,6 +39,19 @@ export function ReaderLayout() {
       stale = true;
     };
   }, [documentId, edition]);
+
+  // S5U-702: set the root <html lang> to the active edition's language.
+  // The static shell (apps/web/index.html) defaults to the reader's English
+  // shell; any reader route must override that with its edition-derived
+  // language, and must restore the default on unmount so the next route has
+  // no stale metadata.
+  useEffect(() => {
+    const html = document.documentElement;
+    html.setAttribute('lang', langForEdition(edition));
+    return () => {
+      html.setAttribute('lang', DEFAULT_READER_LANG);
+    };
+  }, [edition]);
 
   const pages = manifest?.pages ?? [];
 
