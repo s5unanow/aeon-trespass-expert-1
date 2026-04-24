@@ -41,13 +41,34 @@ class QAStage:
 
     @property
     def version(self) -> str:
-        # 1.1 → 1.2 (S5U-588): invalidates pre-S5U-588 cache entries so
-        # cached QA runs re-execute and emit confidence-band QA records
-        # plus review packs widened for qa_required findings.
-        return "1.2"
+        # 1.2 -> 1.3 (S5U-701): manifest-aware dead-page-ref + placeholder-
+        # prose detection change QA record output shape. Bump invalidates
+        # cached QA runs so previously-emitted false-positive DEAD_PAGE_REF
+        # findings are replaced with the manifest-checked set and the new
+        # PLACEHOLDER_PROSE_LEAKED records appear.
+        return "1.3"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
-        page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
+        # S5U-701 — resolve the FULL published page set from the artifact
+        # store BEFORE applying any `--pages` selection.  The dead-page-ref
+        # rule uses this set as the authoritative manifest; if we built it
+        # from the filtered subset, a partial QA run with ``--pages`` would
+        # misclassify every reference to an unselected-but-published page
+        # as dead (regression flagged by Codex cross-system review round 1).
+        #
+        # Round 2 (Codex) flagged a cross-system contract gap: the web
+        # reader's ``manifest.json`` is narrower than EN IR — ``export_pages``
+        # skips non-facsimile pages with no renderable blocks (see
+        # ``scripts/export_to_web.py`` Lines 221-248).  A QA-known page that
+        # gets dropped at export time would still be dead from the reader's
+        # perspective.  The manifest the QA rule checks against must match
+        # the exporter's filter so the suppression set never includes pages
+        # the reader will not actually publish.
+        all_page_ids = self._resolve_page_ids(ctx)
+        publishable_page_ids = self._filter_publishable_pages(ctx, all_page_ids)
+        known_page_numbers = _page_ids_to_numbers(publishable_page_ids)
+        page_ids = ctx.filter_pages(all_page_ids)
+
         all_records: list[QARecordV1] = []
         rules = get_all_rules()
         confidence_policy = load_confidence_bands(repo_root=ctx.config.repo_root)
@@ -70,7 +91,12 @@ class QAStage:
                 ctx.logger.warning("Skipping QA for %s: missing artifacts", page_id)
                 continue
 
-            page_ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
+            page_ctx = QAPageContext(
+                source_ir=en_ir,
+                target_ir=ru_ir,
+                render_page=render,
+                known_page_numbers=known_page_numbers,
+            )
             records: list[QARecordV1] = []
             for rule in rules:
                 records.extend(rule.evaluate(page_ctx))
@@ -184,6 +210,36 @@ class QAStage:
         raise RuntimeError(msg)
 
     @staticmethod
+    def _filter_publishable_pages(ctx: StageContext, page_ids: list[str]) -> list[str]:
+        """Return the subset of *page_ids* the web exporter will publish.
+
+        Mirrors the filter in ``scripts/export_to_web.py::export_pages``:
+        a page is published iff a render artifact exists for it AND the
+        page is either in facsimile mode or has at least one renderable
+        block.  This keeps the dead-page-ref suppression manifest aligned
+        with what the reader actually sees — a page that EN IR knows
+        about but the exporter drops is still dead from the reader's
+        perspective and must not be suppressed (Codex REVISE round 2).
+        """
+        publishable: list[str] = []
+        for pid in page_ids:
+            data = ctx.artifact_store.load_latest_json(
+                document_id=ctx.document_id,
+                schema_family="render_page.v1",
+                scope="page",
+                entity_id=pid,
+            )
+            if not data:
+                # No render artifact → exporter skips it, so it's not in
+                # the reader manifest.
+                continue
+            presentation = data.get("presentation_mode")
+            blocks = data.get("blocks") or []
+            if presentation == "facsimile" or blocks:
+                publishable.append(pid)
+        return publishable
+
+    @staticmethod
     def _load_ir(ctx: StageContext, family: str, page_id: str) -> PageIRV1 | None:
         """Load a PageIRV1 from the artifact store."""
         data = ctx.artifact_store.load_latest_json(
@@ -256,3 +312,25 @@ def _tally_severities(records: list[QARecordV1]) -> SeverityCounts:
         elif r.severity == Severity.CRITICAL:
             counts.critical += 1
     return counts
+
+
+def _page_ids_to_numbers(page_ids: list[str]) -> frozenset[int]:
+    """Convert p0008-style ids to the set of PDF page numbers.
+
+    Invalid or malformed ids are silently skipped; the helper is called from
+    the QA stage's initialization path and must never raise.  The rule
+    downstream treats a populated set as the authoritative manifest, so
+    preserving even partial membership is correct when an id happens to
+    be malformed (the manifest-aware branch suppresses less than it could,
+    never more).
+    """
+    numbers: set[int] = set()
+    for pid in page_ids:
+        # page_id shape: "p" + 4-digit zero-padded number.
+        if len(pid) < 2 or not pid.startswith("p"):
+            continue
+        try:
+            numbers.add(int(pid[1:]))
+        except ValueError:
+            continue
+    return frozenset(numbers)

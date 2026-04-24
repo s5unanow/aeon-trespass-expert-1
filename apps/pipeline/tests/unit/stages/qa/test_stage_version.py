@@ -12,6 +12,11 @@ Bump history:
   added the artifact write without bumping.
 - "1.1" → "1.2" (S5U-588): force confidence-band QA records + widened
   review-pack writes to be emitted on pre-existing cached documents.
+- "1.2" → "1.3" (S5U-701): manifest-aware dead-page-ref suppresses false
+  positives whose target IS in the published page set, and a new
+  PLACEHOLDER_PROSE_LEAKED (ERROR) record fires on descriptive placeholder
+  prose like "Potential symbol" / "??? symbol".  Both change the record
+  set a cached QA pass would otherwise replay.
 """
 
 from __future__ import annotations
@@ -28,8 +33,10 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
     declare the affected outputs as cache-aware (larger refactor; see
     plan-s5u-640-641.md).
     """
-    assert QAStage().version == "1.2", (
+    assert QAStage().version == "1.3", (
         "QAStage.version must be bumped past earlier pins so pre-existing "
         "cached events invalidate and re-emit the full current output set "
-        "(qa_metrics.json, confidence-band QA records, widened review pack)."
+        "(manifest-aware DEAD_PAGE_REF suppression, PLACEHOLDER_PROSE_LEAKED "
+        "records, qa_metrics.json, confidence-band QA records, widened "
+        "review pack)."
     )

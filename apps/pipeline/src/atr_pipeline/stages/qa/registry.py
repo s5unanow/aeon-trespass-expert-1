@@ -22,11 +22,19 @@ from atr_schemas.render_page_v1 import RenderPageV1
 
 @dataclass(frozen=True)
 class QAPageContext:
-    """All artifacts available for QA evaluation on a single page."""
+    """All artifacts available for QA evaluation on a single page.
+
+    ``known_page_numbers`` carries the set of PDF page numbers that are
+    actually published in the manifest for the current run.  Rules that
+    cross-check references against the live page set (e.g. dead-page-ref)
+    consult this field; ``None`` preserves legacy context-free behavior
+    for standalone/ad-hoc invocations.
+    """
 
     source_ir: PageIRV1
     target_ir: PageIRV1
     render_page: RenderPageV1
+    known_page_numbers: frozenset[int] | None = None
 
 
 class QARule(Protocol):
@@ -128,7 +136,7 @@ class DeadPageRefRule:
         return QALayer.RENDER
 
     def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
-        return evaluate_dead_page_refs(ctx.render_page)
+        return evaluate_dead_page_refs(ctx.render_page, ctx.known_page_numbers)
 
 
 class DuplicateContentRule:

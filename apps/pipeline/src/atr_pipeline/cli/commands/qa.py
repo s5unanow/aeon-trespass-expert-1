@@ -63,8 +63,12 @@ def qa(
 
     rules = get_all_rules()
     confidence_policy = load_confidence_bands(repo_root=config.repo_root)
+    # S5U-701 round 2 — compute the reader-manifest-aligned page set once
+    # and reuse for both the initial QA pass and the post-apply re-run.
+    publishable_page_ids = _filter_publishable_pages(store, doc, page_ids)
+    known_page_numbers = _page_ids_to_numbers(publishable_page_ids)
     all_records, bundles = _collect_records(
-        store, doc, page_ids, rules, confidence_policy, auto_fix
+        store, doc, page_ids, rules, confidence_policy, auto_fix, known_page_numbers
     )
 
     waivers_dir = config.repo_root / config.qa.waivers_dir
@@ -97,6 +101,9 @@ def qa(
     final_records = all_records
     if apply_fixes:
         typer.echo("\nApplying patches and re-running QA…")
+        # Reuse the reader-manifest-aligned page set computed above so the
+        # re-run path agrees with the initial QA pass on what "dead page
+        # ref" means (Codex REVISE round 2).
         result = apply_patches_and_rerun(
             store=store,
             doc=doc,
@@ -104,6 +111,7 @@ def qa(
             rules=rules,
             patches=patches_written,
             pre_records=all_records,
+            known_page_numbers=known_page_numbers,
         )
         # `result.post_records` only covers pages the apply loop
         # successfully refreshed. Keep pre-fix records for every other
@@ -124,6 +132,7 @@ def _collect_records(
     rules: list[QARule],
     confidence_policy: ConfidenceBandPolicy,
     auto_fix: bool,
+    known_page_numbers: frozenset[int],
 ) -> tuple[list[QARecordV1], dict[str, AutoFixPageBundle]]:
     """Load artifacts + evaluate rules across pages.
 
@@ -142,7 +151,12 @@ def _collect_records(
             typer.echo(f"  SKIP {page_id}: missing artifacts", err=True)
             continue
 
-        ctx = QAPageContext(source_ir=en_ir, target_ir=ru_ir, render_page=render)
+        ctx = QAPageContext(
+            source_ir=en_ir,
+            target_ir=ru_ir,
+            render_page=render,
+            known_page_numbers=known_page_numbers,
+        )
         for rule in rules:
             records.extend(rule.evaluate(ctx))
 
@@ -206,6 +220,47 @@ def _resolve_page_ids(store: ArtifactStore, doc: str) -> list[str]:
     if ir_dir.exists():
         return sorted(d.name for d in ir_dir.iterdir() if d.is_dir())
     return []
+
+
+def _page_ids_to_numbers(page_ids: list[str]) -> frozenset[int]:
+    """Convert p0008-style ids to the set of PDF page numbers (S5U-701).
+
+    Mirrors ``atr_pipeline.stages.qa.stage._page_ids_to_numbers``; kept
+    local to this CLI module to avoid cross-module coupling between the
+    stage runner and the ad-hoc CLI entrypoint.
+    """
+    numbers: set[int] = set()
+    for pid in page_ids:
+        if len(pid) < 2 or not pid.startswith("p"):
+            continue
+        try:
+            numbers.add(int(pid[1:]))
+        except ValueError:
+            continue
+    return frozenset(numbers)
+
+
+def _filter_publishable_pages(store: ArtifactStore, doc: str, page_ids: list[str]) -> list[str]:
+    """Return the subset of *page_ids* the web exporter will publish.
+
+    Mirrors the filter in ``scripts/export_to_web.py::export_pages``:
+    a page is published iff a render artifact exists AND the page is
+    either in facsimile mode or has at least one renderable block.
+    Keeps QA's dead-page-ref manifest aligned with reader reality
+    (Codex REVISE round 2 — see ``atr_pipeline.stages.qa.stage``).
+    """
+    publishable: list[str] = []
+    for pid in page_ids:
+        data = store.load_latest_json(
+            document_id=doc, schema_family="render_page.v1", scope="page", entity_id=pid
+        )
+        if not data:
+            continue
+        presentation = data.get("presentation_mode")
+        blocks = data.get("blocks") or []
+        if presentation == "facsimile" or blocks:
+            publishable.append(pid)
+    return publishable
 
 
 def _load_ir(

@@ -130,6 +130,7 @@ def apply_patches_and_rerun(
     rules: list[QARule],
     patches: list[tuple[AutoFixPageBundle, PatchSetV1]],
     pre_records: list[QARecordV1],
+    known_page_numbers: frozenset[int] | None = None,
 ) -> ApplyRerunResult:
     """Apply generated patches, re-run QA, and print a before/after diff.
 
@@ -176,6 +177,7 @@ def apply_patches_and_rerun(
             source_ir=post_bundle.en_ir,
             target_ir=post_bundle.ru_ir,
             render_page=post_bundle.render,
+            known_page_numbers=known_page_numbers,
         )
         for rule in rules:
             post_records.extend(rule.evaluate(ctx))
