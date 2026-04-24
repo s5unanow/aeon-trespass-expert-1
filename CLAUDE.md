@@ -47,7 +47,7 @@ Two tiers of checks run at different stages. Both must pass.
 7. `tsc --noEmit` — frontend type check
 8. `pytest -x -q --timeout=60 -m "not slow"` — fast test subset only
 
-### CI (GitHub Actions, 9 + 7 extra) — runs on every push to `main` and every PR; includes all 9 local gates plus:
+### CI (GitHub Actions, 9 + 9 extra) — runs on every push to `main` and every PR; includes all 9 local gates plus:
 
 9. `check_codegen_fresh.sh` — generated JSON Schema + TS types match Pydantic sources (also `make check-codegen`).
 10. `validate_fixture_manifest.py` — fixture integrity (also `make validate-fixtures`).
@@ -55,7 +55,8 @@ Two tiers of checks run at different stages. Both must pass.
 13. `visual-regression / visual` — Playwright `toHaveScreenshot` at `maxDiffPixelRatio: 0.005`. Full stack in `.claude/rules/visual-verify.md` § "Visual regression CI gate".
 14. `visual-gate-scope / scan` — content-derived scan of workflow YAML and `apps/web/package.json` for flags that bypass the visual-regression gate. See `.claude/rules/guards.md` Rule G2.
 15. `coverage-table-scan / scan` — on `pull_request`, enforces the Coverage table on ≥3-bullet Linear issues. Requires `LINEAR_API_KEY`.
-16. `check_instruction_drift.py` — scans `*.md` for stale check-count claims, retired-term leaks, and drifted safety-gate-scope enumerations. Runs inside `python / test`.
+16. `check_instruction_drift.py` — scans `*.md` for stale check-count claims, retired-term leaks, and drifted safety-gate-scope enumerations. Runs inside `python / test`. Now also enforces CI gate count parity between the header, the enumerated list, and `all K gates` claims (Rule E, S5U-694).
+17. `check_make_doc_parity.py` — fails CI when `make lint` in the `Makefile` drifts from the one-line summaries in CLAUDE.md and load-bearing templates (e.g. `docs/EXTRACTION_TICKET_TEMPLATE.md`). Fail-closed on missing `Makefile`/`CLAUDE.md`/template per `.claude/rules/guards.md` Rule G1. Runs inside `python / test` (S5U-690, PR #307).
 
 CI also runs `pytest --tb=short` (full suite — includes slow tests, no timeout), unlike the pre-commit fast subset.
 
@@ -70,7 +71,7 @@ CI also runs `pytest --tb=short` (full suite — includes slow tests, no timeout
 ### What "passing" means
 
 - **Local green** = safe to commit and push, but not sufficient for merge.
-- **CI green** = all 16 gates pass — required for merge. "Definition of Done" means CI green.
+- **CI green** = all 18 gates pass — required for merge. "Definition of Done" means CI green.
 
 ## Development workflow (MANDATORY)
 
@@ -97,7 +98,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] **Coverage table (multi-bullet issues only)** — Linear issues with ≥3 explicit bullets across "Fix" + "Success criteria" need a Coverage table in the PR body — one row per bullet verbatim, mapping each to a commit/file or a deferred-to-followup row with a live Linear reference. See `.claude/prompts/linear-conventions.md` § "Coverage table format".
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
-- [ ] CI green after push (all 16 gates — local green alone is not sufficient)
+- [ ] CI green after push (all 18 gates — local green alone is not sufficient)
 - [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 
 ### 6. Independent fresh-eyes review (MANDATORY before PR)

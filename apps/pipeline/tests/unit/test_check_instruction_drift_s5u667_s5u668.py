@@ -76,6 +76,10 @@ def _seed_repo(tmp: Path, *, checks: int = 22) -> None:
             checks, merge guards, branch-protection-adjacent scripts,
             `.claude/skills/**/SKILL.md` edits) MUST additionally be shipped
             via `/coordinator`.
+
+            ### CI (GitHub Actions, 9 + 1 extra) — runs on every push.
+
+            9. `gate-9` — placeholder.
             """
         ),
     )
@@ -211,7 +215,7 @@ class TestS5U668RuleDAdvisory:
 
                 ## Quality gates
 
-                ### CI (GitHub Actions)
+                ### CI (GitHub Actions, 9 + 8 extra)
 
                 13. `visual-regression / visual` — Playwright snapshots.
                 14. `visual-gate-scope / scan` — scans YAML for forbidden flags.
