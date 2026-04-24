@@ -9,6 +9,8 @@ from __future__ import annotations
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
+from atr_schemas.page_ir_v1 import TableBlock as _TableBlock
+from atr_schemas.page_ir_v1 import iter_table_inlines
 
 _DIMS = PageDimensions(width=612, height=792)
 _SPAN_COUNTER = 0
@@ -474,9 +476,9 @@ def test_config_table_region_produces_table_block() -> None:
     table_regions = [Rect(x0=55, y0=105, x1=550, y1=250)]
 
     ir = build_page_ir_real(native, table_regions=table_regions)
-    tables = [b for b in ir.blocks if b.type == "table"]
+    tables = [b for b in ir.blocks if isinstance(b, _TableBlock)]
     assert len(tables) >= 1, "Config-driven table region must produce TableBlock"
-    table_text = " ".join(c.text for c in tables[0].children if hasattr(c, "text"))
+    table_text = " ".join(c.text for c in iter_table_inlines(tables[0]) if hasattr(c, "text"))
     assert "BP I" in table_text
     assert "BP II" in table_text
 

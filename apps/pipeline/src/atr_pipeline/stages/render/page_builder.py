@@ -14,8 +14,13 @@ from atr_schemas.page_ir_v1 import (
     InlineNode,
     LineBreakInline,
     PageIRV1,
+    TableBlock,
+    TableCellBlock,
+    TableChild,
+    TableRowBlock,
     TextInline,
     UnknownBlock,
+    iter_table_inlines,
 )
 from atr_schemas.render_page_v1 import (
     RenderBlock,
@@ -30,6 +35,9 @@ from atr_schemas.render_page_v1 import (
     RenderParagraphBlock,
     RenderSourceMap,
     RenderTableBlock,
+    RenderTableCellBlock,
+    RenderTableChild,
+    RenderTableRowBlock,
     RenderTextInline,
 )
 
@@ -119,6 +127,15 @@ def build_render_page(
             )
             continue
 
+        if isinstance(block, TableBlock):
+            render_blocks.append(
+                RenderTableBlock(
+                    id=block.block_id,
+                    children=_convert_table_children(list(block.children)),
+                )
+            )
+            continue
+
         children = _convert_inline_nodes(list(block.children))
 
         if block.type == "heading":
@@ -135,8 +152,6 @@ def build_render_page(
             )
         elif block.type == "paragraph":
             render_blocks.append(RenderParagraphBlock(id=block.block_id, children=children))
-        elif block.type == "table":
-            render_blocks.append(RenderTableBlock(id=block.block_id, children=children))
         elif block.type == "list_item":
             render_blocks.append(RenderListItemBlock(id=block.block_id, children=children))
 
@@ -232,6 +247,50 @@ def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
     return result
 
 
+def _convert_table_cell(cell: TableCellBlock) -> RenderTableCellBlock:
+    """S5U-704 — translate an IR TableCellBlock to its render counterpart."""
+    return RenderTableCellBlock(
+        id=cell.block_id,
+        header=cell.header,
+        children=_convert_inline_nodes(list(cell.children)),
+    )
+
+
+def _convert_table_row(row: TableRowBlock) -> RenderTableRowBlock:
+    """S5U-704 — translate an IR TableRowBlock to its render counterpart."""
+    return RenderTableRowBlock(
+        id=row.block_id,
+        header=row.header,
+        cells=[_convert_table_cell(c) for c in row.cells],
+    )
+
+
+def _convert_table_children(children: list[TableChild]) -> list[RenderTableChild]:
+    """Translate a ``TableBlock.children`` sequence to render-side children.
+
+    S5U-704 — children may be either structured rows (``TableRowBlock``)
+    or legacy flat inlines.  Rows are translated cell-by-cell; legacy
+    inlines fall through to ``_convert_inline_nodes``.
+    """
+    result: list[RenderTableChild] = []
+    flat_inlines: list[InlineNode] = []
+
+    def flush_inlines() -> None:
+        if not flat_inlines:
+            return
+        result.extend(_convert_inline_nodes(list(flat_inlines)))
+        flat_inlines.clear()
+
+    for child in children:
+        if isinstance(child, TableRowBlock):
+            flush_inlines()
+            result.append(_convert_table_row(child))
+        else:
+            flat_inlines.append(child)
+    flush_inlines()
+    return result
+
+
 def _extract_concept_mentions(
     page_ir: PageIRV1,
     concept_registry: ConceptRegistryV1 | None = None,
@@ -245,8 +304,17 @@ def _extract_concept_mentions(
         if isinstance(block, (DividerBlock, UnknownBlock)):
             continue
 
+        # S5U-704 — flatten TableRowBlock/TableCellBlock descendants so
+        # concept detection still sees every inline.  Non-table blocks
+        # return their own children unchanged.
+        inlines: list[InlineNode]
+        if isinstance(block, TableBlock):
+            inlines = iter_table_inlines(block)
+        else:
+            inlines = list(block.children)
+
         # Icon-based detection
-        for child in block.children:
+        for child in inlines:
             if isinstance(child, IconInline):
                 concept = f"concept.{child.symbol_id.removeprefix('sym.')}"
                 if concept not in seen:
@@ -257,7 +325,7 @@ def _extract_concept_mentions(
         # block so phrases spanning node boundaries are found.
         if text_patterns:
             full_text = "".join(
-                child.text if isinstance(child, TextInline) else " " for child in block.children
+                child.text if isinstance(child, TextInline) else " " for child in inlines
             )
             if full_text:
                 _match_text_patterns(full_text, text_patterns, seen, mentions)

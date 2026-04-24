@@ -9,6 +9,7 @@ from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
+from atr_schemas.page_ir_v1 import TableBlock, TableRowBlock, iter_table_inlines
 
 PDF_PATH = Path(__file__).resolve().parents[6] / "materials" / "ATO_CORE_Rulebook_v1.1.pdf"
 
@@ -398,16 +399,17 @@ def test_table_region_produces_table_block() -> None:
     table_bbox = Rect(x0=50, y0=190, x1=300, y1=260)
     ir = build_page_ir_real(native, table_regions=[table_bbox])
 
-    table_blocks = [b for b in ir.blocks if b.type == "table"]
+    table_blocks = [b for b in ir.blocks if isinstance(b, TableBlock)]
     assert len(table_blocks) == 1
     # Should contain text from all rows
-    text = " ".join(c.text for c in table_blocks[0].children if hasattr(c, "text"))
+    text = " ".join(c.text for c in iter_table_inlines(table_blocks[0]) if hasattr(c, "text"))
     assert "Header A" in text
     assert "Cell 4" in text
 
 
-def test_table_region_has_line_breaks_between_rows() -> None:
-    """TableBlock should have LineBreakInline between visual rows."""
+def test_table_region_emits_structured_rows() -> None:
+    """S5U-704 — TableBlock from a table region should emit TableRowBlock
+    children (one per visual row), not flat inlines with line breaks."""
     native = NativePageV1(
         document_id="test",
         page_id="p0001",
@@ -420,11 +422,14 @@ def test_table_region_has_line_breaks_between_rows() -> None:
     table_bbox = Rect(x0=50, y0=190, x1=300, y1=260)
     ir = build_page_ir_real(native, table_regions=[table_bbox])
 
-    table_blocks = [b for b in ir.blocks if b.type == "table"]
+    table_blocks = [b for b in ir.blocks if isinstance(b, TableBlock)]
     assert len(table_blocks) == 1
-    # 3 rows → 2 line breaks
-    line_breaks = [c for c in table_blocks[0].children if c.type == "line_break"]
-    assert len(line_breaks) == 2
+    rows = [c for c in table_blocks[0].children if isinstance(c, TableRowBlock)]
+    # 3 visual rows → 3 TableRowBlock children
+    assert len(rows) == 3
+    # No legacy LineBreakInline children in a structured table.
+    non_row_children = [c for c in table_blocks[0].children if not isinstance(c, TableRowBlock)]
+    assert non_row_children == []
 
 
 def test_table_heading_not_promoted() -> None:
@@ -459,9 +464,9 @@ def test_table_heading_not_promoted() -> None:
 
     headings = [b for b in ir.blocks if b.type == "heading"]
     assert len(headings) == 0
-    table_blocks = [b for b in ir.blocks if b.type == "table"]
+    table_blocks = [b for b in ir.blocks if isinstance(b, TableBlock)]
     assert len(table_blocks) == 1
-    text = " ".join(c.text for c in table_blocks[0].children if hasattr(c, "text"))
+    text = " ".join(c.text for c in iter_table_inlines(table_blocks[0]) if hasattr(c, "text"))
     assert "Evolution Track" in text
 
 

@@ -29,20 +29,18 @@ import type {
   RenderPageData,
   RenderPageMeta,
   RenderSourceMap,
-  RenderTableCellBlock,
-  RenderTableChild,
-  RenderTableRowBlock,
 } from './types';
+import {
+  asArray,
+  asNumber,
+  asString,
+  asStringArray,
+  InvalidRenderPageError,
+  isObject,
+} from './normalize_primitives';
+import { normalizeTableChildren } from './normalize_table';
 
-/** Thrown when a `render_page.v1` payload cannot be normalized to `RenderPageData`. */
-export class InvalidRenderPageError extends Error {
-  readonly path: string;
-  constructor(path: string, detail: string) {
-    super(`Invalid render_page payload at ${path}: ${detail}`);
-    this.name = 'InvalidRenderPageError';
-    this.path = path;
-  }
-}
+export { InvalidRenderPageError } from './normalize_primitives';
 
 const SUPPORTED_SCHEMA_VERSION = 'render_page.v1';
 
@@ -76,42 +74,6 @@ const PRESENTATION_MODE_SET: ReadonlySet<PresentationMode> = new Set(PRESENTATIO
 const FACSIMILE_ANNOTATION_KIND_SET: ReadonlySet<FacsimileAnnotationKind> = new Set(
   FACSIMILE_ANNOTATION_KINDS,
 );
-
-function isObject(v: unknown): v is Record<string, unknown> {
-  return typeof v === 'object' && v !== null && !Array.isArray(v);
-}
-
-function asArray(v: unknown, path: string): unknown[] {
-  if (v === undefined) return [];
-  if (!Array.isArray(v)) {
-    throw new InvalidRenderPageError(path, `expected array, got ${typeof v}`);
-  }
-  return v;
-}
-
-function asString(v: unknown, path: string, fallback?: string): string {
-  if (v === undefined || v === null) {
-    if (fallback !== undefined) return fallback;
-    throw new InvalidRenderPageError(path, 'missing required string');
-  }
-  if (typeof v !== 'string') {
-    throw new InvalidRenderPageError(path, `expected string, got ${typeof v}`);
-  }
-  return v;
-}
-
-function asStringArray(v: unknown, path: string): string[] {
-  const arr = asArray(v, path);
-  return arr.map((item, i) => asString(item, `${path}[${i}]`));
-}
-
-function asNumber(v: unknown, path: string, fallback: number): number {
-  if (v === undefined || v === null) return fallback;
-  if (typeof v !== 'number' || Number.isNaN(v)) {
-    throw new InvalidRenderPageError(path, `expected number, got ${typeof v}`);
-  }
-  return v;
-}
 
 // ---------------------------------------------------------------------------
 // Inline nodes
@@ -148,71 +110,6 @@ function normalizeInline(raw: unknown, path: string): RenderInlineNode {
 
 function normalizeInlines(raw: unknown, path: string): RenderInlineNode[] {
   return asArray(raw, path).map((node, i) => normalizeInline(node, `${path}[${i}]`));
-}
-
-// ---------------------------------------------------------------------------
-// Table rows & cells (S5U-704)
-//
-// A `RenderTableBlock.children` entry may be either a legacy flat inline
-// or a structured `RenderTableRowBlock`. The normalizer dispatches on the
-// `kind` discriminator: `table_row` becomes a row, everything else falls
-// through to `normalizeInline` and is preserved.
-// ---------------------------------------------------------------------------
-
-function asBoolean(v: unknown, path: string, fallback: boolean): boolean {
-  if (v === undefined || v === null) return fallback;
-  if (typeof v !== 'boolean') {
-    throw new InvalidRenderPageError(path, `expected boolean, got ${typeof v}`);
-  }
-  return v;
-}
-
-function normalizeTableCell(raw: unknown, path: string): RenderTableCellBlock {
-  if (!isObject(raw)) {
-    throw new InvalidRenderPageError(path, `expected table_cell object, got ${typeof raw}`);
-  }
-  const kind = asString(raw.kind, `${path}.kind`);
-  if (kind !== 'table_cell') {
-    throw new InvalidRenderPageError(`${path}.kind`, `expected "table_cell", got "${kind}"`);
-  }
-  return {
-    kind: 'table_cell',
-    id: asString(raw.id, `${path}.id`),
-    header: asBoolean(raw.header, `${path}.header`, false),
-    children: normalizeInlines(raw.children ?? [], `${path}.children`),
-  };
-}
-
-function normalizeTableRow(raw: unknown, path: string): RenderTableRowBlock {
-  if (!isObject(raw)) {
-    throw new InvalidRenderPageError(path, `expected table_row object, got ${typeof raw}`);
-  }
-  const kind = asString(raw.kind, `${path}.kind`);
-  if (kind !== 'table_row') {
-    throw new InvalidRenderPageError(`${path}.kind`, `expected "table_row", got "${kind}"`);
-  }
-  const cellsRaw = asArray(raw.cells ?? [], `${path}.cells`);
-  return {
-    kind: 'table_row',
-    id: asString(raw.id, `${path}.id`),
-    header: asBoolean(raw.header, `${path}.header`, false),
-    cells: cellsRaw.map((cell, i) => normalizeTableCell(cell, `${path}.cells[${i}]`)),
-  };
-}
-
-function normalizeTableChild(raw: unknown, path: string): RenderTableChild {
-  if (!isObject(raw)) {
-    throw new InvalidRenderPageError(path, `expected table child object, got ${typeof raw}`);
-  }
-  const kind = asString(raw.kind, `${path}.kind`);
-  if (kind === 'table_row') {
-    return normalizeTableRow(raw, path);
-  }
-  return normalizeInline(raw, path);
-}
-
-function normalizeTableChildren(raw: unknown, path: string): RenderTableChild[] {
-  return asArray(raw, path).map((child, i) => normalizeTableChild(child, `${path}[${i}]`));
 }
 
 // ---------------------------------------------------------------------------
@@ -257,7 +154,7 @@ function normalizeBlock(raw: unknown, path: string): RenderBlock {
       return {
         kind: 'table',
         id,
-        children: normalizeTableChildren(raw.children ?? [], `${path}.children`),
+        children: normalizeTableChildren(raw.children ?? [], `${path}.children`, normalizeInline),
       };
     case 'list_item':
       return {

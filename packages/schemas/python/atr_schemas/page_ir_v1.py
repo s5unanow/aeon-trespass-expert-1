@@ -236,6 +236,27 @@ class TableBlock(BaseModel):
     source_ref: SourceRef | None = None
 
 
+def iter_table_inlines(block: TableBlock) -> list[InlineNode]:
+    """Flatten a ``TableBlock``'s children into a list of inline nodes.
+
+    S5U-704 — ``TableBlock.children`` may carry either legacy flat
+    ``InlineNode`` entries or structured ``TableRowBlock`` rows whose
+    ``cells`` wrap the real inlines.  Tests and downstream scans that
+    need to inspect all text/icon content regardless of table shape
+    call this helper to get a flat stream.  A structural space is NOT
+    inserted between cells; callers that need word boundaries should
+    inspect the row structure directly.
+    """
+    flat: list[InlineNode] = []
+    for child in block.children:
+        if isinstance(child, TableRowBlock):
+            for cell in child.cells:
+                flat.extend(cell.children)
+        else:
+            flat.append(child)
+    return flat
+
+
 class CalloutBlock(BaseModel):
     """Callout/sidebar block."""
 
