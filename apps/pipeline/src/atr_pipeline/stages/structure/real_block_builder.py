@@ -7,8 +7,6 @@ match the ATO Core Rulebook v1.1 analysis.
 
 from __future__ import annotations
 
-import re
-
 from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.services.assets.inline_placer import place_icons_in_inlines
 from atr_pipeline.services.assets.resolver import ResolvedSymbolPlacement
@@ -19,14 +17,31 @@ from atr_pipeline.stages.structure.block_postprocess import (
     merge_list_continuations,
     split_long_paragraphs,
 )
-from atr_pipeline.stages.structure.furniture import FurnitureMap
-from atr_pipeline.stages.structure.text_normalize import (
-    normalize_text,
-    normalize_text_inlines,
+from atr_pipeline.stages.structure.figure_extraction import (
+    _image_overlaps_text,
+    _significant_image_blocks,
 )
+from atr_pipeline.stages.structure.furniture import FurnitureMap
+from atr_pipeline.stages.structure.icon_insertion import (
+    _insert_icons,
+    _insert_icons_line_aware,
+)
+from atr_pipeline.stages.structure.span_classify import (
+    _NUMBERED_STEP_RE,
+    _bbox_from_spans,
+    _classify_span,
+    _same_line,
+    _spans_to_text_inline,
+)
+from atr_pipeline.stages.structure.table_assembly import (
+    _build_table_row,
+    _line_in_table_region,
+    _split_spans_by_x_gap,
+)
+from atr_pipeline.stages.structure.text_normalize import normalize_text
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
-from atr_schemas.native_page_v1 import ImageBlockEvidence, NativePageV1, SpanEvidence
+from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
 from atr_schemas.page_ir_v1 import (
     CalloutBlock,
     DividerBlock,
@@ -37,249 +52,20 @@ from atr_schemas.page_ir_v1 import (
     PageIRV1,
     ParagraphBlock,
     TableBlock,
-    TableCellBlock,
     TableRowBlock,
     TextInline,
 )
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 
-
-def _bbox_from_spans(spans: list[SpanEvidence]) -> Rect | None:
-    """Compute bounding box union from constituent spans."""
-    if not spans:
-        return None
-    first = spans[0].bbox
-    x0, y0, x1, y1 = first.x0, first.y0, first.x1, first.y1
-    for s in spans[1:]:
-        x0 = min(x0, s.bbox.x0)
-        y0 = min(y0, s.bbox.y0)
-        x1 = max(x1, s.bbox.x1)
-        y1 = max(y1, s.bbox.y1)
-    return Rect(x0=x0, y0=y0, x1=x1, y1=y1)
-
-
-def _classify_span(span: SpanEvidence, cfg: StructureConfig) -> str:
-    """Classify a span into a structural role."""
-    if span.bbox.y0 >= cfg.footer_y_threshold:
-        return "footer"
-    if span.font_name in cfg.heading_fonts and span.font_size >= cfg.heading_min_size:
-        return "heading"
-    if span.font_name in cfg.decorative_fonts:
-        return "decorative"
-    # Heading font at sub-body size → diagram/figure label text, not prose.
-    if span.font_name in cfg.heading_fonts and span.font_size < cfg.body_size_min:
-        return "diagram_label"
-    if span.font_name == cfg.bold_font and span.font_size >= cfg.subheading_bold_min_size:
-        return "subheading"
-    if span.font_name == cfg.dingbat_font:
-        return "bullet"
-    if span.font_name == cfg.italic_font:
-        return "italic"
-    if span.font_name == cfg.bold_font:
-        return "bold"
-    if span.font_name == cfg.bold_italic_font:
-        return "bold_italic"
-    return "body"
-
-
-def _same_line(a: SpanEvidence, b: SpanEvidence, tolerance: float = 3.0) -> bool:
-    """Check if two spans are on the same line (similar y position)."""
-    return abs(a.bbox.y0 - b.bbox.y0) < tolerance
-
-
-def _group_spans_by_line(
-    spans: list[SpanEvidence],
-    tolerance: float = 3.0,
-) -> list[list[SpanEvidence]]:
-    """Group consecutive spans into visual lines by y-position proximity."""
-    if not spans:
-        return []
-    lines: list[list[SpanEvidence]] = [[spans[0]]]
-    for s in spans[1:]:
-        if _same_line(lines[-1][-1], s, tolerance):
-            lines[-1].append(s)
-        else:
-            lines.append([s])
-    return lines
-
-
-def _spans_to_text_inline(
-    spans: list[SpanEvidence],
-    cfg: StructureConfig,
-) -> list[TextInline]:
-    """Convert a group of spans into TextInline nodes, merging adjacent same-role spans."""
-    if not spans:
-        return []
-
-    inlines: list[TextInline] = []
-    prev_span: SpanEvidence | None = None
-    for span in spans:
-        role = _classify_span(span, cfg)
-        marks: list[str] = []
-        if role == "bold" or role == "subheading":
-            marks = ["bold"]
-        elif role == "italic":
-            marks = ["italic"]
-        elif role == "bold_italic":
-            marks = ["bold", "italic"]
-
-        text = span.text
-        if not text.strip():
-            continue
-
-        # Insert whitespace between non-adjacent spans (but not for
-        # horizontally touching spans like small-caps word parts).
-        if inlines and prev_span is not None:
-            prev_text = inlines[-1].text
-            if prev_text and text and not prev_text[-1].isspace() and not text[0].isspace():
-                gap = span.bbox.x0 - prev_span.bbox.x1
-                if abs(gap) > _WORD_GAP_THRESHOLD:
-                    text = " " + text
-
-        # Merge with previous if same marks
-        if inlines and inlines[-1].marks == marks:
-            inlines[-1] = TextInline(
-                text=inlines[-1].text + text,
-                marks=marks,
-                lang=LanguageCode.EN,
-            )
-        else:
-            inlines.append(TextInline(text=text, marks=marks, lang=LanguageCode.EN))
-        prev_span = span
-
-    return normalize_text_inlines(inlines)
-
-
-# Horizontal gap (pt) below which spans are treated as the same word.
-_WORD_GAP_THRESHOLD = 1.5
-
-# Standalone numbered step: "1", "2.", "3)", "10:", etc.
-_NUMBERED_STEP_RE = re.compile(r"^\d{1,3}[.):]*$")
-
-
-def _split_spans_by_x_gap(
-    spans: list[SpanEvidence],
-    gap_threshold_pt: float,
-) -> list[list[SpanEvidence]]:
-    """Split spans on the same y-baseline into cell groups by horizontal gap.
-
-    S5U-698 — a heading-classified line composed of multiple spans with
-    gaps wider than ``gap_threshold_pt`` is almost certainly a multi-column
-    table-header row rather than a single heading. Returning a list of
-    length > 1 is the signal that the structure layer must refuse to emit
-    one joined heading.
-    """
-    if not spans:
-        return []
-    ordered = sorted(spans, key=lambda s: s.bbox.x0)
-    groups: list[list[SpanEvidence]] = [[ordered[0]]]
-    for span in ordered[1:]:
-        prev = groups[-1][-1]
-        gap = span.bbox.x0 - prev.bbox.x1
-        if gap > gap_threshold_pt:
-            groups.append([span])
-        else:
-            groups[-1].append(span)
-    return groups
-
-
-def _build_table_row(
-    cell_groups: list[list[SpanEvidence]],
-    cfg: StructureConfig,
-    parent_block_id: str,
-    row_index: int,
-    *,
-    header: bool = False,
-) -> TableRowBlock | None:
-    """Assemble a ``TableRowBlock`` from ordered cell-groups of spans.
-
-    S5U-704 — each ``cell_groups`` entry becomes one ``TableCellBlock``
-    with its own inline run (via ``_spans_to_text_inline``). Empty groups
-    are skipped; the row is refused (``None``) if no cell produces any
-    non-empty inline.  Block ids are suffixed with ``.rN`` and ``.rN.cM``
-    relative to the parent table block id so they are stable and unique
-    within the page.
-    """
-    cells: list[TableCellBlock] = []
-    for ci, group in enumerate(cell_groups):
-        inlines = _spans_to_text_inline(group, cfg)
-        if not inlines:
-            continue
-        cells.append(
-            TableCellBlock(
-                block_id=f"{parent_block_id}.r{row_index}.c{ci}",
-                bbox=_bbox_from_spans(group),
-                header=header,
-                children=list(inlines),
-            )
-        )
-    if not cells:
-        return None
-    return TableRowBlock(
-        block_id=f"{parent_block_id}.r{row_index}",
-        bbox=_bbox_from_spans([s for grp in cell_groups for s in grp]),
-        header=header,
-        cells=cells,
-    )
-
-
-def _significant_image_blocks(
-    native: NativePageV1,
-    cfg: StructureConfig,
-) -> list[ImageBlockEvidence]:
-    """Return image blocks large enough to warrant a FigureBlock.
-
-    Filters by bounding-box size in PDF points and excludes images that sit
-    entirely within the footer region.
-    """
-    results: list[ImageBlockEvidence] = []
-    for img in native.image_blocks:
-        w = img.bbox.x1 - img.bbox.x0
-        h = img.bbox.y1 - img.bbox.y0
-        if w < cfg.figure_min_width_pt or h < cfg.figure_min_height_pt:
-            continue
-        if img.bbox.y0 >= cfg.footer_y_threshold:
-            continue
-        results.append(img)
-    return results
-
-
-def _image_overlaps_text(
-    img: ImageBlockEvidence,
-    spans: list[SpanEvidence],
-    tolerance: float = 5.0,
-) -> bool:
-    """Check whether an image's bbox substantially overlaps with text spans."""
-    for span in spans:
-        # If the bounding boxes overlap vertically and horizontally
-        if (
-            img.bbox.x0 < span.bbox.x1 + tolerance
-            and img.bbox.x1 > span.bbox.x0 - tolerance
-            and img.bbox.y0 < span.bbox.y1 + tolerance
-            and img.bbox.y1 > span.bbox.y0 - tolerance
-        ):
-            return True
-    return False
-
-
-def _line_in_table_region(
-    spans: list[SpanEvidence],
-    table_regions: list[Rect],
-    tolerance: float = 5.0,
-) -> int:
-    """Return index of the table region containing the majority of spans, or -1."""
-    for idx, region in enumerate(table_regions):
-        count = sum(
-            1
-            for s in spans
-            if (
-                region.x0 - tolerance <= (s.bbox.x0 + s.bbox.x1) / 2 <= region.x1 + tolerance
-                and region.y0 - tolerance <= (s.bbox.y0 + s.bbox.y1) / 2 <= region.y1 + tolerance
-            )
-        )
-        if count > len(spans) / 2:
-            return idx
-    return -1
+# Re-exported for backward-compatibility with
+# ``tests/unit/stages/structure/test_insert_icons.py`` which imports
+# these helpers directly from this module. Keeping the re-export lets
+# the extraction in S5U-710 leave test imports untouched.
+__all__ = [
+    "_insert_icons",
+    "_insert_icons_line_aware",
+    "build_page_ir_real",
+]
 
 
 def build_page_ir_real(
@@ -588,117 +374,3 @@ def build_page_ir_real(
         assets=asset_ids,
         reading_order=reading_order,
     )
-
-
-def _insert_icons(
-    inlines: list[TextInline],
-    spans: list[SpanEvidence],
-    symbols: SymbolMatchSetV1,
-    page_id: str,
-) -> list[TextInline | IconInline]:
-    """Insert icon nodes into the inline sequence at correct x-positions.
-
-    Filters symbol matches to those overlapping the vertical span region,
-    sorts them by horizontal position, then interleaves them among the text
-    inlines using average character width to track cumulative x-offsets.
-    """
-    if not symbols.matches or not spans:
-        return list(inlines)
-
-    region_y_min = min(s.bbox.y0 for s in spans) - 5
-    region_y_max = max(s.bbox.y1 for s in spans) + 5
-
-    block_matches = [
-        m
-        for m in symbols.matches
-        if m.inline and m.bbox.y0 >= region_y_min and m.bbox.y1 <= region_y_max
-    ]
-    if not block_matches:
-        return list(inlines)
-
-    block_matches.sort(key=lambda m: m.bbox.x0)
-
-    char_width = _avg_char_width_spans(spans)
-    cum_x = min(s.bbox.x0 for s in spans)
-
-    result: list[TextInline | IconInline] = []
-    midx = 0
-
-    for ti in inlines:
-        while midx < len(block_matches) and block_matches[midx].bbox.x0 <= cum_x:
-            m = block_matches[midx]
-            result.append(
-                IconInline(
-                    symbol_id=m.symbol_id,
-                    instance_id=m.instance_id,
-                    bbox=m.bbox,
-                    source_asset_id=m.source_asset_id,
-                )
-            )
-            midx += 1
-        result.append(ti)
-        cum_x += len(ti.text) * char_width
-
-    for m in block_matches[midx:]:
-        result.append(
-            IconInline(
-                symbol_id=m.symbol_id,
-                instance_id=m.instance_id,
-                bbox=m.bbox,
-                source_asset_id=m.source_asset_id,
-            )
-        )
-
-    return result
-
-
-def _insert_icons_line_aware(
-    spans: list[SpanEvidence],
-    symbols: SymbolMatchSetV1,
-    page_id: str,
-    cfg: StructureConfig,
-) -> list[TextInline | IconInline]:
-    """Insert icons with per-line x-tracking for multi-line paragraphs.
-
-    Groups paragraph spans into visual lines and calls ``_insert_icons`` per
-    line so the cumulative x-cursor resets at each line break.
-    """
-    result: list[TextInline | IconInline] = []
-    prev_line_spans: list[SpanEvidence] = []
-    for line_spans in _group_spans_by_line(spans):
-        line_inlines = _spans_to_text_inline(line_spans, cfg)
-        if not line_inlines:
-            continue
-        # Insert whitespace between lines unless spans are x-adjacent
-        if result and isinstance(result[-1], TextInline) and prev_line_spans:
-            prev_text = result[-1].text
-            first_text = line_inlines[0].text
-            if (
-                prev_text
-                and first_text
-                and not prev_text[-1].isspace()
-                and not first_text[0].isspace()
-            ):
-                gap = line_spans[0].bbox.x0 - prev_line_spans[-1].bbox.x1
-                if abs(gap) > _WORD_GAP_THRESHOLD:
-                    first = line_inlines[0]
-                    line_inlines[0] = TextInline(
-                        text=" " + first.text,
-                        marks=first.marks,
-                        lang=first.lang,
-                    )
-        result.extend(_insert_icons(line_inlines, line_spans, symbols, page_id))
-        prev_line_spans = line_spans
-    return result
-
-
-def _avg_char_width_spans(spans: list[SpanEvidence]) -> float:
-    """Compute average character width across spans."""
-    total_chars = 0
-    total_width = 0.0
-    for s in spans:
-        n = len(s.text)
-        if n > 0:
-            total_chars += n
-            total_width += s.bbox.width
-    return total_width / total_chars if total_chars > 0 else 10.0
