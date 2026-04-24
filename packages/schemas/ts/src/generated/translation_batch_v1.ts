@@ -47,6 +47,11 @@ export type SourceInline = (
 export type PageId = string;
 export type SectionPath = string[];
 export type PrevHeading = string;
+export type ParentBlockId = string;
+export type RowIndex = number | null;
+export type CellIndex = number | null;
+export type IsHeaderRow = boolean;
+export type IsHeaderCell = boolean;
 export type RequiredConcepts = string[];
 export type ForbiddenTargets = string[];
 export type LockedNodes = string[];
@@ -145,9 +150,20 @@ export interface TermMarkInline {
 }
 /**
  * Contextual information for a translation segment.
+ *
+ * S5U-734 — table-cell segments additionally carry ``parent_block_id``,
+ * ``row_index``, ``cell_index``, ``is_header_row`` and ``is_header_cell``
+ * so the downstream re-materializer can stitch translated cells back into
+ * ``TableRowBlock`` / ``TableCellBlock`` structure. Non-table segments
+ * leave these fields at their defaults.
  */
 export interface SegmentContext {
   page_id?: PageId;
   section_path?: SectionPath;
   prev_heading?: PrevHeading;
+  parent_block_id?: ParentBlockId;
+  row_index?: RowIndex;
+  cell_index?: CellIndex;
+  is_header_row?: IsHeaderRow;
+  is_header_cell?: IsHeaderCell;
 }

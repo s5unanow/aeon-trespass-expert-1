@@ -8,11 +8,24 @@ from atr_schemas.page_ir_v1 import InlineNode
 
 
 class SegmentContext(BaseModel):
-    """Contextual information for a translation segment."""
+    """Contextual information for a translation segment.
+
+    S5U-734 — table-cell segments additionally carry ``parent_block_id``,
+    ``row_index``, ``cell_index``, ``is_header_row`` and ``is_header_cell``
+    so the downstream re-materializer can stitch translated cells back into
+    ``TableRowBlock`` / ``TableCellBlock`` structure. Non-table segments
+    leave these fields at their defaults.
+    """
 
     page_id: str = ""
     section_path: list[str] = Field(default_factory=list)
     prev_heading: str = ""
+    # S5U-734 table-cell fields
+    parent_block_id: str = ""
+    row_index: int | None = None
+    cell_index: int | None = None
+    is_header_row: bool = False
+    is_header_cell: bool = False
 
 
 class TranslationSegment(BaseModel):

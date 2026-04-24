@@ -1,7 +1,7 @@
 schema_version = "annotation_meta.v1"
 annotation_format_version = 1
-last_refresh_timestamp = "2026-03-21T00:00:00Z"
-last_refresh_issue = "S5U-292"
+last_refresh_timestamp = "2026-04-25T00:00:00Z"
+last_refresh_issue = "S5U-734"
 last_refresh_commit = ""
 reviewer = "s5unanow"
 
@@ -14,5 +14,5 @@ reviewer = "s5unanow"
 "render_page.p0001.json" = "14f5234c1dbea69e65c754b241710283bc999454d71913cc9f7c1377a3888986"
 "source_manifest.json" = "a73656b94d0820e88d5e6322e7b98c94413921372042740cbd907255311ba01a"
 "symbol_matches.p0001.json" = "24ae04878ed393c4c127791b15e68fe1bc1762fb980a68bcf3907fdc12e04727"
-"translation_batch.p0001.json" = "56d0617e0ea686a436a275035e53e68dc9508d27926a7aeabc7b06219b571def"
+"translation_batch.p0001.json" = "dd45baf4a4ad2c2b82f61e0a7755961d093e2efd79dad01db5fc819675388fab"
 "translation_result.p0001.json" = "d0078c9da92c644521a20d67d98cb0e97976fe6ac3eb95a62683ee14577b227a"

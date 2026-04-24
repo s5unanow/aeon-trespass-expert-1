@@ -70,7 +70,8 @@ def test_translation_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "translate"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.0"
+    # S5U-734 — bumped from 1.0 after per-cell table segments landed.
+    assert stage.version == "1.1"
 
 
 def test_translation_translates_pages(tmp_path: Path) -> None:
