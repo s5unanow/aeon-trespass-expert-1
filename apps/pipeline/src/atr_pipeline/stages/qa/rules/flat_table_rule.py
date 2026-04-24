@@ -46,7 +46,7 @@ def evaluate_flat_table(render_page: RenderPageV1) -> list[QARecordV1]:
     """
     records: list[QARecordV1] = []
     page_id = render_page.page.id
-    doc_id = render_page.source_map.page_id if render_page.source_map else ""
+    doc_id = render_page.source_map.document_id if render_page.source_map else ""
 
     for block in render_page.blocks:
         if not isinstance(block, RenderTableBlock):

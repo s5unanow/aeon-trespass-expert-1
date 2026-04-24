@@ -96,7 +96,13 @@ def test_qa_implements_stage_protocol() -> None:
     # ``source_ir.document_id``) instead of the ``render_page.source_map.page_id``
     # value plumbed by S5U-698; the bump invalidates cached v1.4 records
     # whose ``document_id`` still carries the page-id shape.
-    assert stage.version == "1.5"
+    # 1.5 → 1.6 in S5U-735: seven more rules (dead_page_ref,
+    # decorative_icon, duplicate_content, flat_table, glued_text,
+    # leaked_identifier, paragraph_length) now read ``document_id``
+    # from the new ``RenderSourceMap.document_id`` field; chart_title_merge
+    # is reconciled to the same source. Cached v1.5 records for those
+    # rules still carry the page-id shape; the bump re-runs them.
+    assert stage.version == "1.6"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:

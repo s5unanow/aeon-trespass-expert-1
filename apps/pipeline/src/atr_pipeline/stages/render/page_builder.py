@@ -165,6 +165,7 @@ def build_render_page(
         figures=figures,
         glossary_mentions=_extract_concept_mentions(page_ir, concept_registry),
         source_map=RenderSourceMap(
+            document_id=page_ir.document_id,
             page_id=page_ir.page_id,
             block_refs=block_refs,
         ),

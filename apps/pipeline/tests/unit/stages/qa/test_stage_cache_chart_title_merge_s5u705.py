@@ -13,17 +13,17 @@ Scenario:
 1. Run the upstream pipeline to populate EN/RU IR + render artifacts.
 2. Seed a render page with a glue-pattern heading that the rule fires
    on.
-3. Forge a prior-version (1.4) cached QA event in the registry as if a
+3. Forge a prior-version (1.5) cached QA event in the registry as if a
    historical run had completed.
 4. Run ``execute_stage(QAStage(), ctx)``. Because ``QAStage.version`` is
-   now ``"1.5"``, the live cache key differs from the forged 1.4 key —
-   the 1.4 event is NOT a hit, the stage runs, and the emitted
+   now ``"1.6"``, the live cache key differs from the forged 1.5 key —
+   the 1.5 event is NOT a hit, the stage runs, and the emitted
    ``CHART_TITLE_MERGE`` record carries the real document id.
 
-If the bump is reverted to ``"1.4"`` the forged-event key matches, the
-executor short-circuits on the synthetic artifact ref, and the
-assertions below fail — which is exactly the regression we're guarding
-against.
+If the bump is reverted to the prior version the forged-event key
+matches, the executor short-circuits on the synthetic artifact ref,
+and the assertions below fail — which is exactly the regression we're
+guarding against.
 """
 
 from __future__ import annotations
@@ -111,7 +111,11 @@ def _seed_glue_heading_render(ctx: StageContext, page_id: str) -> None:
                 children=[RenderTextInline(text="Wounded card:BP deckAI deck")],
             ),
         ],
-        source_map=RenderSourceMap(page_id=page_id, block_refs=[]),
+        source_map=RenderSourceMap(
+            document_id="walking_skeleton",
+            page_id=page_id,
+            block_refs=[],
+        ),
     )
     ctx.artifact_store.put_json(
         document_id=ctx.document_id,
@@ -175,14 +179,16 @@ def _records_for(ctx: StageContext, artifact_ref: object) -> list[QARecordV1]:
 
 
 def test_version_bump_invalidates_prior_qa_cache_s5u705(tmp_path: Path) -> None:
-    """S5U-705 cache-invariance — a prior-version (1.4) cached QA event
-    must NOT hit when ``QAStage.version`` has been bumped to 1.5 for the
+    """S5U-705 cache-invariance — a prior-version cached QA event must
+    NOT hit when ``QAStage.version`` has been bumped for the
     chart_title_merge doc_id fix.
 
-    If the bump is reverted (version back to 1.4), the forged 1.4 event's
-    cache key matches the live cache key, ``execute_stage`` returns a
-    cached StageResult pointing at the synthetic dead artifact ref, and
-    the assertions below (``chart_title`` record present with the real
+    The forged event's ``prior_version`` is pinned to the immediately-
+    preceding ``QAStage.version`` (``"1.5"`` after S5U-735 bumped to
+    ``"1.6"``). If the bump is reverted, the forged event's cache key
+    matches the live cache key, ``execute_stage`` returns a cached
+    StageResult pointing at the synthetic dead artifact ref, and the
+    assertions below (``chart_title`` record present with the real
     document id) fail.
     """
     ctx = _make_ctx(tmp_path)
@@ -192,7 +198,7 @@ def test_version_bump_invalidates_prior_qa_cache_s5u705(tmp_path: Path) -> None:
     _seed_glue_heading_render(ctx, page_id)
     ctx.page_filter = frozenset({page_id})
 
-    prior_key = _forge_prior_version_event(ctx, prior_version="1.4")
+    prior_key = _forge_prior_version_event(ctx, prior_version="1.5")
 
     qa_result = execute_stage(QAStage(), ctx)
     assert qa_result.success

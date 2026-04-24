@@ -39,7 +39,7 @@ def evaluate_leaked_identifiers(render_page: RenderPageV1) -> list[QARecordV1]:
     """
     records: list[QARecordV1] = []
     page_id = render_page.page.id
-    doc_id = render_page.source_map.page_id if render_page.source_map else ""
+    doc_id = render_page.source_map.document_id if render_page.source_map else ""
 
     # Check page title
     reason = _check_text(render_page.page.title)

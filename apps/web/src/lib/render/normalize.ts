@@ -274,6 +274,7 @@ function normalizeSourceMap(raw: unknown): RenderSourceMap | null {
     throw new InvalidRenderPageError('source_map', `expected object, got ${typeof raw}`);
   }
   return {
+    document_id: asString(raw.document_id ?? '', 'source_map.document_id', ''),
     page_id: asString(raw.page_id, 'source_map.page_id'),
     block_refs: asStringArray(raw.block_refs ?? [], 'source_map.block_refs'),
   };
