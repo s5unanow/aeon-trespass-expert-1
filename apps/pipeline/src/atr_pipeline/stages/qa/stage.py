@@ -45,7 +45,14 @@ class QAStage:
         # that lack RenderTableRowBlock structure. The version bump
         # invalidates cached QA runs so previously-missing
         # FLAT_TABLE_NO_ROWS records now appear for the full page set.
-        return "1.4"
+        # 1.4 -> 1.5 (S5U-705): ``chart_title_merge_rule`` now writes the
+        # real document_id into ``QARecordV1.document_id`` (sourced from
+        # ``source_ir.document_id``) instead of the page_id that the S5U-698
+        # introduction erroneously plumbed via ``render_page.source_map``.
+        # Cached QA records from v1.4 carry the wrong document_id value, so
+        # the version bump forces a re-run so downstream consumers that
+        # join/group by document_id see the corrected value.
+        return "1.5"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set from the artifact
