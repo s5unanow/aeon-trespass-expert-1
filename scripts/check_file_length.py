@@ -39,7 +39,6 @@ from pathlib import Path
 # itself shipped Done — a Done issue cannot function as a useful tracker).
 KNOWN_VIOLATORS: dict[str, str] = {
     # Source-side (pre-existing)
-    "apps/pipeline/src/atr_pipeline/stages/structure/real_block_builder.py": "S5U-144",
     "scripts/generate_golden_fixtures.py": "S5U-211",
     # Test-side grandfather (S5U-663, umbrella-tracked by S5U-677 post-S5U-669)
     "apps/pipeline/tests/unit/test_export_to_web.py": "S5U-677",  # 919 lines
