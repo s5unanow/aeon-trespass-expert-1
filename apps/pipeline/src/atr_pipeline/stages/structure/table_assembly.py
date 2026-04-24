@@ -18,6 +18,7 @@ from __future__ import annotations
 from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.stages.structure.span_classify import (
     _bbox_from_spans,
+    _group_spans_by_line,
     _spans_to_text_inline,
 )
 from atr_schemas.common import Rect
@@ -89,6 +90,56 @@ def _build_table_row(
         header=header,
         cells=cells,
     )
+
+
+def build_table_rows_from_spans(
+    spans: list[SpanEvidence],
+    bbox: Rect,
+    cfg: StructureConfig,
+    parent_block_id: str,
+    *,
+    tolerance: float = 3.0,
+) -> list[TableRowBlock]:
+    """Re-infer ``TableRowBlock`` rows from raw native spans inside ``bbox``.
+
+    S5U-733 — the semantic resolver's paragraph→table promotion path
+    (``semantic_resolver._resolve_tables``) previously copied the paragraph's
+    flat inline children verbatim, losing row/cell structure. This helper
+    lets the resolver re-derive rows on the same contract as the region-
+    accumulator path in ``real_block_builder.flush_table``: filter spans
+    whose centre falls inside the table-candidate bbox, group them into
+    visual lines by y-position, then split each line into cells by
+    ``cfg.table_body_cell_split_gap_pt`` using the helpers added in S5U-704.
+
+    Spans are filtered by bbox containment (span centre inside ``bbox``)
+    rather than source_word_id lookup because ParagraphBlock source_refs
+    don't reliably carry span ids at this pipeline stage. Returns an empty
+    list when no cells with non-empty inlines survive — the caller is
+    expected to treat that as "refuse promotion" (Option 2 fallback).
+    """
+    if not spans:
+        return []
+    contained: list[SpanEvidence] = []
+    for s in spans:
+        cx = (s.bbox.x0 + s.bbox.x1) / 2
+        cy = (s.bbox.y0 + s.bbox.y1) / 2
+        if bbox.x0 <= cx <= bbox.x1 and bbox.y0 <= cy <= bbox.y1:
+            contained.append(s)
+    if not contained:
+        return []
+    # Sort by y then x so line-grouping sees a stable order.
+    contained.sort(key=lambda s: (s.bbox.y0, s.bbox.x0))
+    lines = _group_spans_by_line(contained, tolerance=tolerance)
+    rows: list[TableRowBlock] = []
+    for ri, line_spans in enumerate(lines):
+        cell_groups = _split_spans_by_x_gap(
+            line_spans,
+            cfg.table_body_cell_split_gap_pt,
+        )
+        row = _build_table_row(cell_groups, cfg, parent_block_id, ri)
+        if row is not None:
+            rows.append(row)
+    return rows
 
 
 def _line_in_table_region(

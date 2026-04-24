@@ -69,7 +69,10 @@ class StructureStage:
 
     @property
     def version(self) -> str:
-        return "1.4"  # S5U-700 drop decorative FULL_WIDTH from main flow
+        # S5U-733: _resolve_tables re-infers row structure from native spans
+        # and refuses promotion when rows can't be proven; bump invalidates
+        # cached PageIRV1 artifacts so the fix applies on re-run.
+        return "1.5"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> StructureResult:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))
@@ -208,12 +211,7 @@ class StructureStage:
             )
 
             if regions:
-                sem = resolve_semantics(
-                    ir.blocks,
-                    regions,
-                    evidence,
-                    ctx.config.structure,
-                )
+                sem = resolve_semantics(ir.blocks, regions, evidence, ctx.config.structure, native)
                 reordered = (
                     reorder_blocks_by_regions(sem.blocks, regions, order.main_flow_order)
                     if order is not None
