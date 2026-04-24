@@ -1,27 +1,25 @@
 #!/usr/bin/env python3
-"""Instruction/config drift scanner (S5U-658 + S5U-667 + S5U-668).
+"""Instruction/config drift scanner (S5U-658/667/668/694).
 
-Fails CI when repo instruction files (CLAUDE.md, skill SKILL.mds, prompt
-.mds) drift from their authoritative source. Three fail-closed rule classes
-plus one advisory class:
+Fails CI when repo instruction files drift from their authoritative source.
+Four fail-closed rules (A/B/C/E) plus one advisory (D):
 
-* Rule A — check-count claim drift. Authoritative count = max of top-level
-  numbered items in `.claude/prompts/review.md`. Every `*.md` under the repo
-  is scanned for claims like "checks 1-22" / "all 22 checks". Exemption is
-  structural (S5U-667): a line matching `Checks? <N>[-<en-dash>]<M> ... (are
-  /always) (run/conditional)` is exempt; prose containing those keywords
-  somewhere else is NOT exempt.
-* Rule B — retired-term references (e.g., "tesseract") fail unless the
-  file is grandfathered (`docs/adrs/**`, `CHANGELOG*`, this scanner, its
-  tests) OR a retirement scoping marker appears within +/-2 lines.
-* Rule C — safety-gate scope enumeration in `.claude/skills/**/SKILL.md` +
-  `.claude/prompts/**.md` must match CLAUDE.md canonically OR defer with
+* Rule A — check-count claim drift vs `.claude/prompts/review.md` max
+  numbered item. Structural exemption per S5U-667 (line matches
+  `Checks? N[-M] ... (are|always) (run|conditional)`).
+* Rule B — retired-term references (e.g., "tesseract") unless the file is
+  grandfathered (`docs/adrs/**`, `CHANGELOG*`) or a retirement scoping
+  marker is within +/-2 lines.
+* Rule C — safety-gate scope enumeration in `.claude/skills/**/SKILL.md`
+  + `.claude/prompts/**.md` must match CLAUDE.md or defer with
   "per CLAUDE.md" on the same line.
-* Rule D — required-check advisory (warning-only, S5U-668). Walks every
-  `.github/workflows/*.yml`, enumerates top-level jobs, and prints a stdout
-  advisory for any job whose name/key does not appear in CLAUDE.md §
-  Quality gates. Never changes exit code. Malformed YAML emits a stderr
-  warning and continues. Implementation in `_instruction_drift_rule_d.py`.
+* Rule D — required-check advisory (warning-only, S5U-668). Walks
+  `.github/workflows/*.yml` and reports jobs missing from CLAUDE.md §
+  Quality gates. Never changes exit code. In `_instruction_drift_rule_d.py`.
+* Rule E — CI gate count drift (S5U-694). Ensures CLAUDE.md's CI section
+  header ``9 + N extra``, enumerated list max ``L``, and every
+  ``all K gates`` claim agree (N = L-8, K = L+1). In
+  `_instruction_drift_rule_e.py`.
 
 Exit codes: 0 = no drift; 1 = a fail-closed rule violated OR authoritative
 source missing/unparseable.
@@ -36,10 +34,11 @@ import re
 import sys
 from pathlib import Path
 
-# Rule D helpers live in a sibling module so both files stay under the
-# 400-line file-length ceiling.
+# Rule D (advisory) and Rule E (CI gate count drift, S5U-694) helpers live
+# in sibling modules so the main scanner stays under the 400-line ceiling.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _instruction_drift_rule_d import rule_d_advisory
+from _instruction_drift_rule_e import scan_ci_gate_claims
 
 # --- Paths ---------------------------------------------------------------
 
@@ -173,12 +172,9 @@ def _is_inside_backticks_or_quotes(line: str, start: int, end: int) -> bool:
 
 
 def _line_is_structural_subrange(line: str) -> bool:
-    """Return True if `line` (or any of its sentence-like segments) matches
-    the structural sub-range template. Segments are split on `.`, `;`, and
-    `:` so a line like `"Checks 1-13 always run. Checks 14-21 are conditional."`
-    matches via both halves. The regex is anchored at the start of each
-    segment (after leading whitespace + optional bullet), so prose prefixes
-    like `"When a trigger fires, walk checks 1-21"` do NOT match.
+    """True if `line` or any sentence segment (split on ``.;:``) matches the
+    structural sub-range template. Anchored at segment start so prose prefixes
+    like "When a trigger fires, walk checks 1-21" don't match.
     """
     if _STRUCTURAL_SUBRANGE_RE.match(line):
         return True
@@ -294,9 +290,8 @@ def _safety_gate_scan_file(
     return msgs
 
 
-# Rule D (required-check advisory) lives in scripts/_instruction_drift_rule_d.py
-# so both files stay under the 400-line file-length ceiling. It is warning-
-# only and imported above. See that module's docstring for semantics.
+# Rules D (advisory) and E (CI gate count) live in sibling modules; see
+# their module docstrings for semantics.
 
 
 # --- Repo traversal -------------------------------------------------------
@@ -334,6 +329,18 @@ def run(repo_root: Path) -> int:
         print(f"check_instruction_drift: FAIL-CLOSED: {exc}", file=sys.stderr)
         return 1
 
+    # Rule E (S5U-694): CI gate count drift. Reuse claude_md_text for Rule D.
+    claude_md_path = repo_root / CLAUDE_MD
+    try:
+        claude_md_text = claude_md_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        claude_md_text = ""
+    try:
+        errors.extend(scan_ci_gate_claims(claude_md_text))
+    except RuntimeError as exc:
+        print(f"check_instruction_drift: FAIL-CLOSED: {exc}", file=sys.stderr)
+        return 1
+
     md_files = iter_markdown_files(repo_root)
 
     for path in md_files:
@@ -355,14 +362,8 @@ def run(repo_root: Path) -> int:
         if rel.startswith(".claude/skills/") or rel.startswith(".claude/prompts/"):
             errors.extend(_safety_gate_scan_file(rel, text, canonical_safety_gate))
 
-    # Rule D — warning-only advisory. Runs even when rules A/B/C have
-    # errors, but never changes the exit code; its output always goes to
-    # stdout (advisories) or stderr (warnings) so reviewers can inspect.
-    claude_md_path = repo_root / CLAUDE_MD
-    try:
-        claude_md_text = claude_md_path.read_text(encoding="utf-8", errors="replace")
-    except OSError:
-        claude_md_text = ""
+    # Rule D — warning-only advisory. Runs regardless of A/B/C errors;
+    # stdout advisories, stderr warnings, never changes exit code.
     advisories, rule_d_warnings = rule_d_advisory(repo_root, claude_md_text)
     for warning in rule_d_warnings:
         print(f"check_instruction_drift: {warning}", file=sys.stderr)

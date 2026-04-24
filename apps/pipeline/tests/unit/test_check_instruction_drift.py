@@ -42,7 +42,8 @@ def _write(p: Path, body: str) -> Path:
 
 def _seed_repo(tmp: Path, *, checks: int = 22) -> None:
     """Seed a minimal fake repo with review.md + CLAUDE.md so the scanner's
-    fail-closed derivation succeeds."""
+    fail-closed derivation succeeds. Includes a minimal CI section so
+    Rule E (S5U-694) can parse the CI gate count."""
     review = ["## What to check", ""]
     for i in range(1, checks + 1):
         review.append(f"{i}. **Check number {i}** — description.")
@@ -58,6 +59,10 @@ def _seed_repo(tmp: Path, *, checks: int = 22) -> None:
         checks, merge guards, branch-protection-adjacent scripts,
         `.claude/skills/**/SKILL.md` edits) MUST additionally be shipped
         via `/coordinator`.
+
+        ### CI (GitHub Actions, 9 + 1 extra) — runs on every push.
+
+        9. `gate-9` — placeholder.
         """,
     )
 
@@ -233,7 +238,9 @@ class TestSafetyGateScope:
         )
         _write(
             tmp_path / "CLAUDE.md",
-            f"safety-gate scope ({self._CANONICAL_PARENTHETICAL}) canonical.\n",
+            f"safety-gate scope ({self._CANONICAL_PARENTHETICAL}) canonical.\n\n"
+            "### CI (GitHub Actions, 9 + 1 extra) — runs.\n\n"
+            "9. `gate-9` — placeholder.\n",
         )
 
     def test_happy_skill_defers_to_claude_md(self, scanner: ModuleType, tmp_path: Path) -> None:
