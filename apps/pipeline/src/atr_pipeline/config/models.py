@@ -147,6 +147,14 @@ class StructureConfig(BaseModel):
     # single-column headings are preserved.
     heading_cell_split_gap_pt: float = Field(default=40.0, gt=0.0)
 
+    # S5U-704 — split a table-body row's spans into cells when horizontal
+    # gaps exceed this threshold. Tuned lower than
+    # ``heading_cell_split_gap_pt`` because body cells are usually tighter
+    # and narrower-gapped than the emphatic header row. ~25 pt catches the
+    # three-column ATO rulebook chart body (BP | BP deck action | AI deck
+    # action) without splitting normal prose spans.
+    table_body_cell_split_gap_pt: float = Field(default=25.0, gt=0.0)
+
     # Per-page structure overrides
     page_overrides: dict[str, StructurePageOverride] = Field(default_factory=dict)
 

@@ -274,6 +274,40 @@ h2.reader-heading {
   white-space: pre-wrap;
 }
 
+/* S5U-704 — structured tables render as real <table> with rows and cells.
+ * The ``reader-table-structured`` modifier overrides the legacy pre-wrap
+ * div styling so cells lay out as a proper grid. */
+.reader-table.reader-table-structured {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  padding: 0;
+  white-space: normal;
+}
+
+.reader-table-structured .reader-table-row {
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.reader-table-structured .reader-table-row-header {
+  background: var(--color-bg-primary);
+  font-weight: 600;
+}
+
+.reader-table-structured .reader-table-row:last-child {
+  border-bottom: none;
+}
+
+.reader-table-structured .reader-table-cell {
+  padding: var(--space-3) var(--space-4);
+  border-right: 1px solid var(--color-border-light);
+  vertical-align: top;
+}
+
+.reader-table-structured .reader-table-cell:last-child {
+  border-right: none;
+}
+
 /* --- Divider --- */
 
 .reader-divider {

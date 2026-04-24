@@ -66,31 +66,49 @@ export type Children3 = (TextInline | IconInline | FigureRefInline | XrefInline 
 export type Translatable3 = boolean;
 export type Type10 = 'table';
 export type BlockId4 = string;
-export type Children4 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
-export type Translatable4 = boolean;
-export type Type11 = 'callout';
+export type Type11 = 'table_row';
 export type BlockId5 = string;
+export type Header = boolean;
+export type Type12 = 'table_cell';
+export type BlockId6 = string;
+export type Header1 = boolean;
+export type Children5 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
+export type Translatable4 = boolean;
+export type Cells = TableCellBlock[];
+export type Translatable5 = boolean;
+export type Children4 = (
+  | TextInline
+  | IconInline
+  | FigureRefInline
+  | XrefInline
+  | LineBreakInline
+  | TermMarkInline
+  | TableRowBlock
+)[];
+export type Translatable6 = boolean;
+export type Type13 = 'callout';
+export type BlockId7 = string;
 export type RegionId = string;
 export type Variant = string;
-export type Children5 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
-export type Translatable5 = boolean;
-export type Type12 = 'figure';
-export type BlockId6 = string;
-export type AssetId1 = string;
 export type Children6 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
-export type Translatable6 = boolean;
-export type Type13 = 'caption';
-export type BlockId7 = string;
-export type FigureBlockId = string;
-export type Children7 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
 export type Translatable7 = boolean;
-export type Type14 = 'divider';
+export type Type14 = 'figure';
 export type BlockId8 = string;
+export type AssetId1 = string;
+export type Children7 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
 export type Translatable8 = boolean;
-export type Type15 = 'unknown';
+export type Type15 = 'caption';
 export type BlockId9 = string;
-export type RawText = string;
+export type FigureBlockId = string;
+export type Children8 = (TextInline | IconInline | FigureRefInline | XrefInline | LineBreakInline | TermMarkInline)[];
 export type Translatable9 = boolean;
+export type Type16 = 'divider';
+export type BlockId10 = string;
+export type Translatable10 = boolean;
+export type Type17 = 'unknown';
+export type BlockId11 = string;
+export type RawText = string;
+export type Translatable11 = boolean;
 export type Blocks = (
   | HeadingBlock
   | ParagraphBlock
@@ -290,12 +308,49 @@ export interface ListItemBlock {
 }
 /**
  * Table block.
+ *
+ * S5U-704 — ``children`` widened to accept either the legacy flat
+ * ``InlineNode`` sequence (back-compat for cached artifacts and simple
+ * cases) or a list of ``TableRowBlock`` rows with structured cells.
+ * The two forms may be mixed but readers should treat the table as
+ * "structured" iff any child is a ``TableRowBlock``.
  */
 export interface TableBlock {
   type?: Type10;
   block_id: BlockId4;
   bbox?: Rect | null;
   children?: Children4;
+  translatable?: Translatable6;
+  source_ref?: SourceRef | null;
+}
+/**
+ * Row inside a TableBlock.
+ *
+ * S5U-704 — a ``TableRowBlock`` groups one or more ``TableCellBlock``
+ * children. Only meaningful inside a ``TableBlock``.
+ */
+export interface TableRowBlock {
+  type?: Type11;
+  block_id: BlockId5;
+  bbox?: Rect | null;
+  header?: Header;
+  cells?: Cells;
+  translatable?: Translatable5;
+  source_ref?: SourceRef | null;
+}
+/**
+ * Cell inside a TableRowBlock.
+ *
+ * S5U-704 — structured chart/table cells carry their own inline run.
+ * A ``TableCellBlock`` is only meaningful inside a ``TableRowBlock``;
+ * its ``children`` field is the familiar inline union.
+ */
+export interface TableCellBlock {
+  type?: Type12;
+  block_id: BlockId6;
+  bbox?: Rect | null;
+  header?: Header1;
+  children?: Children5;
   translatable?: Translatable4;
   source_ref?: SourceRef | null;
 }
@@ -303,57 +358,57 @@ export interface TableBlock {
  * Callout/sidebar block.
  */
 export interface CalloutBlock {
-  type?: Type11;
-  block_id: BlockId5;
+  type?: Type13;
+  block_id: BlockId7;
   bbox?: Rect | null;
   region_id?: RegionId;
   variant?: Variant;
-  children?: Children5;
-  translatable?: Translatable5;
+  children?: Children6;
+  translatable?: Translatable7;
   source_ref?: SourceRef | null;
 }
 /**
  * Figure block.
  */
 export interface FigureBlock {
-  type?: Type12;
-  block_id: BlockId6;
+  type?: Type14;
+  block_id: BlockId8;
   bbox?: Rect | null;
   asset_id?: AssetId1;
-  children?: Children6;
-  translatable?: Translatable6;
+  children?: Children7;
+  translatable?: Translatable8;
   source_ref?: SourceRef | null;
 }
 /**
  * Caption block.
  */
 export interface CaptionBlock {
-  type?: Type13;
-  block_id: BlockId7;
+  type?: Type15;
+  block_id: BlockId9;
   bbox?: Rect | null;
   figure_block_id?: FigureBlockId;
-  children?: Children7;
-  translatable?: Translatable7;
+  children?: Children8;
+  translatable?: Translatable9;
   source_ref?: SourceRef | null;
 }
 /**
  * Divider/rule block.
  */
 export interface DividerBlock {
-  type?: Type14;
-  block_id: BlockId8;
+  type?: Type16;
+  block_id: BlockId10;
   bbox?: Rect | null;
-  translatable?: Translatable8;
+  translatable?: Translatable10;
 }
 /**
  * Unknown block — allowed only pre-publish.
  */
 export interface UnknownBlock {
-  type?: Type15;
-  block_id: BlockId9;
+  type?: Type17;
+  block_id: BlockId11;
   bbox?: Rect | null;
   raw_text?: RawText;
-  translatable?: Translatable9;
+  translatable?: Translatable11;
   source_ref?: SourceRef | null;
 }
 /**

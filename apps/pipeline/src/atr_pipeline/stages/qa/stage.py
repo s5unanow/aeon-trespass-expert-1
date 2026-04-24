@@ -41,12 +41,11 @@ class QAStage:
 
     @property
     def version(self) -> str:
-        # 1.2 -> 1.3 (S5U-701): manifest-aware dead-page-ref + placeholder-
-        # prose detection change QA record output shape. Bump invalidates
-        # cached QA runs so previously-emitted false-positive DEAD_PAGE_REF
-        # findings are replaced with the manifest-checked set and the new
-        # PLACEHOLDER_PROSE_LEAKED records appear.
-        return "1.3"
+        # 1.3 -> 1.4 (S5U-704): new ``flat_table`` rule flags TableBlocks
+        # that lack RenderTableRowBlock structure. The version bump
+        # invalidates cached QA runs so previously-missing
+        # FLAT_TABLE_NO_ROWS records now appear for the full page set.
+        return "1.4"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set from the artifact

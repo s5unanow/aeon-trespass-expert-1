@@ -33,11 +33,12 @@ from atr_schemas.page_ir_v1 import (
     FigureBlock,
     HeadingBlock,
     IconInline,
-    LineBreakInline,
     ListItemBlock,
     PageIRV1,
     ParagraphBlock,
     TableBlock,
+    TableCellBlock,
+    TableRowBlock,
     TextInline,
 )
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
@@ -180,6 +181,46 @@ def _split_spans_by_x_gap(
         else:
             groups[-1].append(span)
     return groups
+
+
+def _build_table_row(
+    cell_groups: list[list[SpanEvidence]],
+    cfg: StructureConfig,
+    parent_block_id: str,
+    row_index: int,
+    *,
+    header: bool = False,
+) -> TableRowBlock | None:
+    """Assemble a ``TableRowBlock`` from ordered cell-groups of spans.
+
+    S5U-704 — each ``cell_groups`` entry becomes one ``TableCellBlock``
+    with its own inline run (via ``_spans_to_text_inline``). Empty groups
+    are skipped; the row is refused (``None``) if no cell produces any
+    non-empty inline.  Block ids are suffixed with ``.rN`` and ``.rN.cM``
+    relative to the parent table block id so they are stable and unique
+    within the page.
+    """
+    cells: list[TableCellBlock] = []
+    for ci, group in enumerate(cell_groups):
+        inlines = _spans_to_text_inline(group, cfg)
+        if not inlines:
+            continue
+        cells.append(
+            TableCellBlock(
+                block_id=f"{parent_block_id}.r{row_index}.c{ci}",
+                bbox=_bbox_from_spans(group),
+                header=header,
+                children=list(inlines),
+            )
+        )
+    if not cells:
+        return None
+    return TableRowBlock(
+        block_id=f"{parent_block_id}.r{row_index}",
+        bbox=_bbox_from_spans([s for grp in cell_groups for s in grp]),
+        header=header,
+        cells=cells,
+    )
 
 
 def _significant_image_blocks(
@@ -364,17 +405,24 @@ def build_page_ir_real(
             return
         block_idx += 1
         block_id = f"{native.page_id}.b{block_idx:03d}"
-        inlines: list[TextInline | IconInline | LineBreakInline] = []
+        # S5U-704 — split each accumulated row's spans into cells by
+        # horizontal x-gap and emit structured ``TableRowBlock`` children
+        # in place of the legacy flat inline run.
+        row_blocks: list[TableRowBlock] = []
         for ri, row_spans in enumerate(current_table_rows):
-            if ri > 0:
-                inlines.append(LineBreakInline())
-            inlines.extend(_spans_to_text_inline(row_spans, cfg))
+            cell_groups = _split_spans_by_x_gap(
+                row_spans,
+                cfg.table_body_cell_split_gap_pt,
+            )
+            row = _build_table_row(cell_groups, cfg, block_id, ri)
+            if row is not None:
+                row_blocks.append(row)
         all_spans = [s for row in current_table_rows for s in row]
         blocks.append(
             TableBlock(
                 block_id=block_id,
                 bbox=_bbox_from_spans(all_spans),
-                children=inlines,  # type: ignore[arg-type]
+                children=list(row_blocks),
             )
         )
         current_table_rows.clear()
@@ -403,13 +451,13 @@ def build_page_ir_real(
             # S5U-698: refuse to merge heading spans that sit across multiple
             # cells of a table-header row. When the line splits into ≥2 cell
             # groups at ``heading_cell_split_gap_pt``, emit the line as its
-            # own standalone TableBlock (one cell per group, separated by
-            # LineBreakInline) *immediately* — not buffered into the regular
-            # table accumulator. Emitting in place (rather than buffering)
-            # keeps reading order intact when the split header is followed
-            # by non-table content, and avoids synthetic-region-index
-            # collisions when the next line belongs to a real table region
-            # with a different ``tbl_idx`` (Codex round 1 findings).
+            # own standalone TableBlock (one TableRowBlock with one cell
+            # per group, per S5U-704) *immediately* — not buffered into the
+            # regular table accumulator. Emitting in place (rather than
+            # buffering) keeps reading order intact when the split header is
+            # followed by non-table content, and avoids synthetic-region-
+            # index collisions when the next line belongs to a real table
+            # region with a different ``tbl_idx`` (Codex round 1 findings).
             non_decorative = [s for _, s in line if _classify_span(s, cfg) != "decorative"]
             cell_groups = _split_spans_by_x_gap(
                 non_decorative,
@@ -419,17 +467,19 @@ def build_page_ir_real(
                 flush_table()  # close any open real-region table first
                 block_idx += 1
                 block_id = f"{native.page_id}.b{block_idx:03d}"
-                header_inlines: list[TextInline | IconInline | LineBreakInline] = []
-                for gi, grp in enumerate(cell_groups):
-                    if gi > 0:
-                        header_inlines.append(LineBreakInline())
-                    header_inlines.extend(_spans_to_text_inline(grp, cfg))
-                if header_inlines:
+                header_row = _build_table_row(
+                    cell_groups,
+                    cfg,
+                    block_id,
+                    row_index=0,
+                    header=True,
+                )
+                if header_row is not None:
                     blocks.append(
                         TableBlock(
                             block_id=block_id,
                             bbox=_bbox_from_spans(non_decorative),
-                            children=header_inlines,  # type: ignore[arg-type]
+                            children=[header_row],
                         )
                     )
                 continue

@@ -7,7 +7,13 @@ from collections.abc import Sequence
 
 from atr_schemas.enums import QALayer, Severity
 from atr_schemas.qa_record_v1 import QARecordV1
-from atr_schemas.render_page_v1 import RenderDividerBlock, RenderInlineNode, RenderPageV1
+from atr_schemas.render_page_v1 import (
+    RenderDividerBlock,
+    RenderInlineNode,
+    RenderPageV1,
+    RenderTableBlock,
+    RenderTableRowBlock,
+)
 
 # Russian: "стр. 16", "стр.16", "стр 16"
 _STR_RE = re.compile(r"\u0441\u0442\u0440\.?\s*\d+")
@@ -75,7 +81,15 @@ def evaluate_dead_page_refs(
     for block in render_page.blocks:
         if isinstance(block, RenderDividerBlock):
             continue
-        dead_ref = _first_dead_ref_in_block(block.children, known_page_numbers)
+        # S5U-704 — ``RenderTableBlock.children`` may contain nested
+        # ``RenderTableRowBlock`` entries whose cells hold the real
+        # inlines. Flatten here so the scan still sees every text node.
+        children: Sequence[RenderInlineNode]
+        if isinstance(block, RenderTableBlock):
+            children = _flatten_table_inlines(block)
+        else:
+            children = block.children
+        dead_ref = _first_dead_ref_in_block(children, known_page_numbers)
         if dead_ref is None:
             continue
         records.append(
@@ -92,6 +106,20 @@ def evaluate_dead_page_refs(
         )
 
     return records
+
+
+def _flatten_table_inlines(block: RenderTableBlock) -> list[RenderInlineNode]:
+    """S5U-704 — flatten a RenderTableBlock's nested rows/cells so the
+    dead-page-ref scanner can see every inline text node regardless of
+    whether the table is structured or still flat."""
+    out: list[RenderInlineNode] = []
+    for child in block.children:
+        if isinstance(child, RenderTableRowBlock):
+            for cell in child.cells:
+                out.extend(cell.children)
+        else:
+            out.append(child)
+    return out
 
 
 def _first_dead_ref_in_block(

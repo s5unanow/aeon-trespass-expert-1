@@ -979,7 +979,7 @@
       "type": "string"
     },
     "TableBlock": {
-      "description": "Table block.",
+      "description": "Table block.\n\nS5U-704 — ``children`` widened to accept either the legacy flat\n``InlineNode`` sequence (back-compat for cached artifacts and simple\ncases) or a list of ``TableRowBlock`` rows with structured cells.\nThe two forms may be mixed but readers should treat the table as\n\"structured\" iff any child is a ``TableRowBlock``.",
       "properties": {
         "type": {
           "const": "table",
@@ -1001,6 +1001,87 @@
             }
           ],
           "default": null
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextInline"
+              },
+              {
+                "$ref": "#/$defs/IconInline"
+              },
+              {
+                "$ref": "#/$defs/FigureRefInline"
+              },
+              {
+                "$ref": "#/$defs/XrefInline"
+              },
+              {
+                "$ref": "#/$defs/LineBreakInline"
+              },
+              {
+                "$ref": "#/$defs/TermMarkInline"
+              },
+              {
+                "$ref": "#/$defs/TableRowBlock"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "TableBlock",
+      "type": "object"
+    },
+    "TableCellBlock": {
+      "description": "Cell inside a TableRowBlock.\n\nS5U-704 — structured chart/table cells carry their own inline run.\nA ``TableCellBlock`` is only meaningful inside a ``TableRowBlock``;\nits ``children`` field is the familiar inline union.",
+      "properties": {
+        "type": {
+          "const": "table_cell",
+          "default": "table_cell",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "header": {
+          "default": false,
+          "title": "Header",
+          "type": "boolean"
         },
         "children": {
           "items": {
@@ -1048,7 +1129,66 @@
       "required": [
         "block_id"
       ],
-      "title": "TableBlock",
+      "title": "TableCellBlock",
+      "type": "object"
+    },
+    "TableRowBlock": {
+      "description": "Row inside a TableBlock.\n\nS5U-704 — a ``TableRowBlock`` groups one or more ``TableCellBlock``\nchildren. Only meaningful inside a ``TableBlock``.",
+      "properties": {
+        "type": {
+          "const": "table_row",
+          "default": "table_row",
+          "title": "Type",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "header": {
+          "default": false,
+          "title": "Header",
+          "type": "boolean"
+        },
+        "cells": {
+          "items": {
+            "$ref": "#/$defs/TableCellBlock"
+          },
+          "title": "Cells",
+          "type": "array"
+        },
+        "translatable": {
+          "default": true,
+          "title": "Translatable",
+          "type": "boolean"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id"
+      ],
+      "title": "TableRowBlock",
       "type": "object"
     },
     "TermMarkInline": {

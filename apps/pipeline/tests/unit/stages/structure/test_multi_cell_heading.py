@@ -13,6 +13,7 @@ from atr_pipeline.config.models import StructureConfig
 from atr_pipeline.stages.structure.real_block_builder import build_page_ir_real
 from atr_schemas.common import PageDimensions, Rect
 from atr_schemas.native_page_v1 import NativePageV1, SpanEvidence
+from atr_schemas.page_ir_v1 import iter_table_inlines
 
 
 def _span(
@@ -219,8 +220,8 @@ def test_multi_cell_heading_does_not_collide_with_real_table_region() -> None:
         f"expected separate TableBlocks for split header and real region; "
         f"got {len(tables)} tables in {[b.type for b in ir.blocks]}"
     )
-    first_texts = "".join(c.text for c in tables[0].children if hasattr(c, "text"))
-    second_texts = "".join(c.text for c in tables[1].children if hasattr(c, "text"))
+    first_texts = "".join(c.text for c in iter_table_inlines(tables[0]) if hasattr(c, "text"))
+    second_texts = "".join(c.text for c in iter_table_inlines(tables[1]) if hasattr(c, "text"))
     # The split-header TableBlock must carry the header cell text.
     assert "A" in first_texts and "B" in first_texts, (
         f"split-header table lost its cell text: first_texts={first_texts!r}"

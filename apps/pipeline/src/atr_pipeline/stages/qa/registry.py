@@ -9,6 +9,7 @@ from atr_pipeline.stages.qa.rules.chart_title_merge_rule import evaluate_chart_t
 from atr_pipeline.stages.qa.rules.dead_page_ref_rule import evaluate_dead_page_refs
 from atr_pipeline.stages.qa.rules.decorative_icon_rule import evaluate_decorative_icons
 from atr_pipeline.stages.qa.rules.duplicate_rule import evaluate_duplicate_content
+from atr_pipeline.stages.qa.rules.flat_table_rule import evaluate_flat_table
 from atr_pipeline.stages.qa.rules.glued_text_rule import evaluate_glued_text
 from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
 from atr_pipeline.stages.qa.rules.leaked_identifier_rule import evaluate_leaked_identifiers
@@ -184,6 +185,21 @@ class ChartTitleMergeRule:
         return evaluate_chart_title_merge(ctx.render_page)
 
 
+class FlatTableRule:
+    """Detect TableBlocks lacking row/cell structure (S5U-704)."""
+
+    @property
+    def name(self) -> str:
+        return "flat_table"
+
+    @property
+    def layer(self) -> QALayer:
+        return QALayer.STRUCTURE
+
+    def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
+        return evaluate_flat_table(ctx.render_page)
+
+
 def get_all_rules() -> list[QARule]:
     """Return all registered QA rules."""
     return [
@@ -196,4 +212,5 @@ def get_all_rules() -> list[QARule]:
         DuplicateContentRule(),
         LeakedIdentifierRule(),
         ChartTitleMergeRule(),
+        FlatTableRule(),
     ]

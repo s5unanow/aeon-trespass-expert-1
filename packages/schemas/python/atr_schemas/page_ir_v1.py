@@ -167,15 +167,94 @@ class ListItemBlock(BaseModel):
     source_ref: SourceRef | None = None
 
 
+class TableCellBlock(BaseModel):
+    """Cell inside a TableRowBlock.
+
+    S5U-704 — structured chart/table cells carry their own inline run.
+    A ``TableCellBlock`` is only meaningful inside a ``TableRowBlock``;
+    its ``children`` field is the familiar inline union.
+    """
+
+    type: Literal["table_cell"] = "table_cell"
+    block_id: str
+    bbox: Rect | None = None
+    header: bool = False
+    children: list[InlineNode] = Field(default_factory=list)
+    translatable: bool = True
+    source_ref: SourceRef | None = None
+
+
+class TableRowBlock(BaseModel):
+    """Row inside a TableBlock.
+
+    S5U-704 — a ``TableRowBlock`` groups one or more ``TableCellBlock``
+    children. Only meaningful inside a ``TableBlock``.
+    """
+
+    type: Literal["table_row"] = "table_row"
+    block_id: str
+    bbox: Rect | None = None
+    header: bool = False
+    cells: list[TableCellBlock] = Field(default_factory=list)
+    translatable: bool = True
+    source_ref: SourceRef | None = None
+
+
+def _get_table_child_discriminator(v: dict[str, object] | BaseModel) -> str:
+    if isinstance(v, dict):
+        return str(v.get("type", ""))
+    return str(getattr(v, "type", ""))
+
+
+TableChild = Annotated[
+    Annotated[TextInline, Tag("text")]
+    | Annotated[IconInline, Tag("icon")]
+    | Annotated[FigureRefInline, Tag("figure_ref")]
+    | Annotated[XrefInline, Tag("xref")]
+    | Annotated[LineBreakInline, Tag("line_break")]
+    | Annotated[TermMarkInline, Tag("term_mark")]
+    | Annotated[TableRowBlock, Tag("table_row")],
+    Discriminator(_get_table_child_discriminator),
+]
+
+
 class TableBlock(BaseModel):
-    """Table block."""
+    """Table block.
+
+    S5U-704 — ``children`` widened to accept either the legacy flat
+    ``InlineNode`` sequence (back-compat for cached artifacts and simple
+    cases) or a list of ``TableRowBlock`` rows with structured cells.
+    The two forms may be mixed but readers should treat the table as
+    "structured" iff any child is a ``TableRowBlock``.
+    """
 
     type: Literal["table"] = "table"
     block_id: str
     bbox: Rect | None = None
-    children: list[InlineNode] = Field(default_factory=list)
+    children: list[TableChild] = Field(default_factory=list)
     translatable: bool = True
     source_ref: SourceRef | None = None
+
+
+def iter_table_inlines(block: TableBlock) -> list[InlineNode]:
+    """Flatten a ``TableBlock``'s children into a list of inline nodes.
+
+    S5U-704 — ``TableBlock.children`` may carry either legacy flat
+    ``InlineNode`` entries or structured ``TableRowBlock`` rows whose
+    ``cells`` wrap the real inlines.  Tests and downstream scans that
+    need to inspect all text/icon content regardless of table shape
+    call this helper to get a flat stream.  A structural space is NOT
+    inserted between cells; callers that need word boundaries should
+    inspect the row structure directly.
+    """
+    flat: list[InlineNode] = []
+    for child in block.children:
+        if isinstance(child, TableRowBlock):
+            for cell in child.cells:
+                flat.extend(cell.children)
+        else:
+            flat.append(child)
+    return flat
 
 
 class CalloutBlock(BaseModel):
