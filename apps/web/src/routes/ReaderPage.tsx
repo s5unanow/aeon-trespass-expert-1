@@ -7,6 +7,7 @@ import { FacsimilePage } from '../components/reader/FacsimilePage';
 import { FeedbackButton } from '../components/reader/FeedbackButton';
 import { SourcePageBadge } from '../components/nav/SourcePageBadge';
 import { GlossaryProvider } from '../contexts/GlossaryContext';
+import { PageGlossaryProvider } from '../contexts/PageContext';
 
 export function ReaderPage() {
   const { documentId, edition, pageId } = useParams<{
@@ -79,30 +80,32 @@ export function ReaderPage() {
 
   return (
     <GlossaryProvider documentId={documentId!} edition={edition!}>
-      <article className="reader-page fade-in">
-        <header>
-          <SourcePageBadge pageNumber={page.page.source_page_number} />
-        </header>
-        <section className="reader-content">
-          {page.presentation_mode === 'facsimile' && page.facsimile ? (
-            <FacsimilePage
-              facsimile={page.facsimile}
-              pageTitle={page.page.title}
-              pageNumber={page.page.source_page_number}
-            />
-          ) : (
-            page.blocks.map((block) => (
-              <BlockRenderer
-                key={block.id}
-                block={block}
-                figures={page.figures}
-                pageOffset={pageOffset}
+      <PageGlossaryProvider mentions={page.glossary_mentions}>
+        <article className="reader-page fade-in">
+          <header>
+            <SourcePageBadge pageNumber={page.page.source_page_number} />
+          </header>
+          <section className="reader-content">
+            {page.presentation_mode === 'facsimile' && page.facsimile ? (
+              <FacsimilePage
+                facsimile={page.facsimile}
+                pageTitle={page.page.title}
+                pageNumber={page.page.source_page_number}
               />
-            ))
-          )}
-        </section>
-        <FeedbackButton documentId={documentId!} edition={edition!} pageId={pageId!} />
-      </article>
+            ) : (
+              page.blocks.map((block) => (
+                <BlockRenderer
+                  key={block.id}
+                  block={block}
+                  figures={page.figures}
+                  pageOffset={pageOffset}
+                />
+              ))
+            )}
+          </section>
+          <FeedbackButton documentId={documentId!} edition={edition!} pageId={pageId!} />
+        </article>
+      </PageGlossaryProvider>
     </GlossaryProvider>
   );
 }

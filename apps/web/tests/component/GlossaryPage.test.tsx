@@ -153,6 +153,44 @@ describe('GlossaryPage', () => {
     });
   });
 
+  // --- S5U-584: deep-link via location hash ---
+
+  it('highlights the entry whose concept_id matches the URL hash', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(sampleGlossary),
+    } as Response);
+
+    renderGlossary('/documents/test_doc/ru/glossary#concept.fate');
+
+    await waitFor(() => {
+      expect(screen.getByText('Опасность')).toBeDefined();
+    });
+
+    const fateCard = document.getElementById('concept.fate');
+    expect(fateCard).not.toBeNull();
+    expect(fateCard?.className).toContain('glossary-card-highlight');
+
+    const dangerCard = document.getElementById('concept.danger');
+    expect(dangerCard).not.toBeNull();
+    expect(dangerCard?.className).not.toContain('glossary-card-highlight');
+  });
+
+  it('does not highlight any entry when no hash is present', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(sampleGlossary),
+    } as Response);
+
+    renderGlossary('/documents/test_doc/ru/glossary');
+
+    await waitFor(() => {
+      expect(screen.getByText('Опасность')).toBeDefined();
+    });
+
+    expect(document.querySelector('.glossary-card-highlight')).toBeNull();
+  });
+
   it('renders page reference links', async () => {
     fetchSpy.mockResolvedValue({
       ok: true,

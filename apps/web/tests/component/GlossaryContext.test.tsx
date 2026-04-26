@@ -1,6 +1,10 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, afterEach } from 'vitest';
-import { GlossaryProvider, useGlossary } from '../../src/contexts/GlossaryContext';
+import {
+  GlossaryProvider,
+  useGlossary,
+  useGlossaryShape,
+} from '../../src/contexts/GlossaryContext';
 import type { glossaryPayloadV1 } from '@atr/schemas';
 
 const sampleGlossary: glossaryPayloadV1.GlossaryPayloadV1 = {
@@ -29,8 +33,27 @@ function GlossaryConsumer() {
   return (
     <div>
       <span data-testid="size">{glossary.size}</span>
-      {glossary.has('sym.danger') && <span data-testid="danger">{glossary.get('sym.danger')!.preferred_term}</span>}
+      {glossary.has('sym.danger') && (
+        <span data-testid="danger">{glossary.get('sym.danger')!.preferred_term}</span>
+      )}
       {glossary.has('sym.voyage') && <span data-testid="voyage">found</span>}
+    </div>
+  );
+}
+
+function ShapeConsumer() {
+  const shape = useGlossaryShape();
+  return (
+    <div>
+      <span data-testid="entry-count">{shape.entries.length}</span>
+      <span data-testid="icon-count">{shape.byIcon.size}</span>
+      <span data-testid="concept-count">{shape.byConcept.size}</span>
+      <span data-testid="edition">{shape.edition}</span>
+      {shape.byConcept.has('concept.voyage') && (
+        <span data-testid="voyage-by-concept">
+          {shape.byConcept.get('concept.voyage')!.preferred_term}
+        </span>
+      )}
     </div>
   );
 }
@@ -59,7 +82,7 @@ describe('GlossaryContext', () => {
       expect(screen.getByTestId('size').textContent).toBe('1');
     });
     expect(screen.getByTestId('danger').textContent).toBe('Опасность');
-    // concept.voyage has no icon_binding, so it's excluded from the map
+    // concept.voyage has no icon_binding, so it's excluded from the icon map
     expect(screen.queryByTestId('voyage')).toBeNull();
   });
 
@@ -72,7 +95,6 @@ describe('GlossaryContext', () => {
       </GlossaryProvider>,
     );
 
-    // Map stays empty — no crash
     await waitFor(() => {
       expect(screen.getByTestId('size').textContent).toBe('0');
     });
@@ -82,5 +104,28 @@ describe('GlossaryContext', () => {
     // Without provider, useGlossary returns default empty map
     render(<GlossaryConsumer />);
     expect(screen.getByTestId('size').textContent).toBe('0');
+  });
+
+  // S5U-584: byConcept index + entries list + edition exposed via shape
+  it('indexes entries by concept_id (icon-binding-independent)', async () => {
+    fetchSpy.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(sampleGlossary),
+    } as Response);
+
+    render(
+      <GlossaryProvider documentId="test_doc" edition="ru">
+        <ShapeConsumer />
+      </GlossaryProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('entry-count').textContent).toBe('2');
+    });
+    expect(screen.getByTestId('icon-count').textContent).toBe('1');
+    expect(screen.getByTestId('concept-count').textContent).toBe('2');
+    expect(screen.getByTestId('edition').textContent).toBe('ru');
+    // concept.voyage has no icon_binding but IS indexed by concept_id
+    expect(screen.getByTestId('voyage-by-concept').textContent).toBe('Путешествие');
   });
 });
