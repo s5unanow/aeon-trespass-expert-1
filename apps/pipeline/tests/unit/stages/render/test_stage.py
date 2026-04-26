@@ -74,11 +74,14 @@ def test_render_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "render"
     assert stage.scope == StageScope.DOCUMENT
+    # 1.4 → 1.5 (S5U-581): callout blocks now emit ``RenderCalloutBlock``
+    # instead of being silently dropped; render_page.v1 payload shape changes
+    # for callout-bearing pages, so cached 1.4 pages must be regenerated.
     # 1.3 → 1.4 (S5U-735): RenderSourceMap grew ``document_id`` (populated
     # from page_ir.document_id); the render_page.v1 artifact shape changed,
     # so cached 1.3 pages must be regenerated for QA rules to pick up the
     # real document id.
-    assert stage.version == "1.4"
+    assert stage.version == "1.5"
 
 
 def test_render_builds_pages(tmp_path: Path) -> None:

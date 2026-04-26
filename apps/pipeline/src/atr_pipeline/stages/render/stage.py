@@ -52,6 +52,11 @@ class RenderStage:
 
     @property
     def version(self) -> str:
+        # 1.5 (S5U-581): callout blocks now emit ``RenderCalloutBlock``
+        #   instead of being silently dropped. The shape of every
+        #   render_page.v1 artifact for a callout-bearing page changes,
+        #   so cached pages from 1.4 must be regenerated (per
+        #   .claude/rules/pipeline.md cache-invalidation rule).
         # 1.4 (S5U-735): RenderSourceMap now carries ``document_id``
         #   populated from ``page_ir.document_id``. The shape of the
         #   emitted render_page.v1 artifact changes, so cached pages
@@ -70,7 +75,7 @@ class RenderStage:
         # 1.1 (S5U-697): annotation filtering semantics changed — stale-IR
         #   pairings are now rewritten to EN-only and fully-occluded outer
         #   hotspots are suppressed.
-        return "1.4"
+        return "1.5"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is
