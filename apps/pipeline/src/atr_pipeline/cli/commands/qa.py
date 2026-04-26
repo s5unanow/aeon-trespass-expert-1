@@ -15,6 +15,7 @@ from atr_pipeline.stages.qa.auto_fix_runner import (
     write_patches,
 )
 from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
+from atr_pipeline.stages.qa.publishable import filter_publishable_pages
 from atr_pipeline.stages.qa.registry import QAPageContext, QARule, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.rules.confidence_band_rule import evaluate_confidence_band
@@ -63,9 +64,15 @@ def qa(
 
     rules = get_all_rules()
     confidence_policy = load_confidence_bands(repo_root=config.repo_root)
-    # S5U-701 round 2 — compute the reader-manifest-aligned page set once
-    # and reuse for both the initial QA pass and the post-apply re-run.
-    publishable_page_ids = _filter_publishable_pages(store, doc, page_ids)
+    # S5U-701 round 2 / S5U-730 — compute the reader-manifest-aligned
+    # page set once and reuse for both the initial QA pass and the
+    # post-apply re-run. Delegates to the shared
+    # ``stages.qa.publishable.filter_publishable_pages`` helper so the
+    # CLI and the stage runner cannot drift on what "publishable" means
+    # (image-injection-rescued pages must be included so DEAD_PAGE_REF
+    # does not false-positive on references to article-mode pages whose
+    # render is empty but whose source-PDF imagery the exporter rescues).
+    publishable_page_ids = filter_publishable_pages(store, doc, page_ids)
     known_page_numbers = _page_ids_to_numbers(publishable_page_ids)
     all_records, bundles = _collect_records(
         store, doc, page_ids, rules, confidence_policy, auto_fix, known_page_numbers
@@ -238,29 +245,6 @@ def _page_ids_to_numbers(page_ids: list[str]) -> frozenset[int]:
         except ValueError:
             continue
     return frozenset(numbers)
-
-
-def _filter_publishable_pages(store: ArtifactStore, doc: str, page_ids: list[str]) -> list[str]:
-    """Return the subset of *page_ids* the web exporter will publish.
-
-    Mirrors the filter in ``scripts/export_to_web.py::export_pages``:
-    a page is published iff a render artifact exists AND the page is
-    either in facsimile mode or has at least one renderable block.
-    Keeps QA's dead-page-ref manifest aligned with reader reality
-    (Codex REVISE round 2 — see ``atr_pipeline.stages.qa.stage``).
-    """
-    publishable: list[str] = []
-    for pid in page_ids:
-        data = store.load_latest_json(
-            document_id=doc, schema_family="render_page.v1", scope="page", entity_id=pid
-        )
-        if not data:
-            continue
-        presentation = data.get("presentation_mode")
-        blocks = data.get("blocks") or []
-        if presentation == "facsimile" or blocks:
-            publishable.append(pid)
-    return publishable
 
 
 def _load_ir(

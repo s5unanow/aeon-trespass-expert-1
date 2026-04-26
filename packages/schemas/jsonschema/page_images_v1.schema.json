@@ -1,0 +1,76 @@
+{
+  "$defs": {
+    "PageImageEntry": {
+      "description": "One image extracted from the source PDF for a given page.",
+      "properties": {
+        "image_id": {
+          "description": "Namespaced image id of the form ``p{page_number:04d}.img{idx:04d}`` matching the entity_id used by the ``image`` artifact family.",
+          "title": "Image Id",
+          "type": "string"
+        },
+        "width_px": {
+          "description": "Decoded image width in pixels.",
+          "minimum": 1,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "description": "Decoded image height in pixels.",
+          "minimum": 1,
+          "title": "Height Px",
+          "type": "integer"
+        },
+        "extension": {
+          "description": "File extension including leading dot (e.g. ``.png``, ``.jpeg``).",
+          "title": "Extension",
+          "type": "string"
+        }
+      },
+      "required": [
+        "image_id",
+        "width_px",
+        "height_px",
+        "extension"
+      ],
+      "title": "PageImageEntry",
+      "type": "object"
+    }
+  },
+  "description": "Per-page manifest of source-PDF images, scoped to ``page``.",
+  "properties": {
+    "schema_version": {
+      "default": "page_images.v1",
+      "pattern": "^page_images\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "pattern": "^p\\d{4}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "page_number": {
+      "minimum": 1,
+      "title": "Page Number",
+      "type": "integer"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/PageImageEntry"
+      },
+      "title": "Images",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id",
+    "page_number"
+  ],
+  "title": "PageImagesV1",
+  "type": "object"
+}

@@ -35,6 +35,11 @@ Bump history:
 - "1.6" → "1.7" (S5U-736): new ``table_structure_parity`` rule asserts
   EN<->RU TableBlock row/cell parity (S5U-734 follow-up). Cached v1.6
   events would short-circuit the new TABLE_PARITY_* records.
+- "1.7" → "1.8" (S5U-730): ``_filter_publishable_pages`` now reads the
+  new ``page_images.v1`` manifest emitted by IngestStage to align the
+  dead-page-ref suppression set with the web exporter's image-injection
+  rescue. Cached v1.7 events would short-circuit the manifest-aware
+  filter and re-introduce the FP on image-rescued pages.
 """
 
 from __future__ import annotations
@@ -51,7 +56,7 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
     declare the affected outputs as cache-aware (larger refactor; see
     plan-s5u-640-641.md).
     """
-    assert QAStage().version == "1.7", (
+    assert QAStage().version == "1.8", (
         "QAStage.version must be bumped past earlier pins so pre-existing "
         "cached events invalidate and re-emit the full current output set "
         "(manifest-aware DEAD_PAGE_REF suppression, PLACEHOLDER_PROSE_LEAKED "
@@ -59,5 +64,6 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
         "confidence-band QA records, widened review pack, "
         "CHART_TITLE_MERGE records with real document_id, the seven "
         "S5U-735 rules sourcing document_id from source_map.document_id, "
-        "and the S5U-736 TABLE_PARITY_* records)."
+        "the S5U-736 TABLE_PARITY_* records, and the S5U-730 image-rescue "
+        "publishability filter reading page_images.v1)."
     )

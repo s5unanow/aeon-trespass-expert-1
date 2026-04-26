@@ -56,6 +56,7 @@ from atr_schemas.native_page_v1 import (
 )
 from atr_schemas.nav_payload_v1 import NavEntryV1, NavPayloadV1
 from atr_schemas.page_evidence_v1 import EvidenceTransformMeta, PageEvidenceV1
+from atr_schemas.page_images_v1 import PageImageEntry, PageImagesV1
 from atr_schemas.page_ir_v1 import (
     Block,
     CalloutBlock,
@@ -186,6 +187,8 @@ __all__ = [
     "PageEntry",
     "PageEvidenceV1",
     "PageIRV1",
+    "PageImageEntry",
+    "PageImagesV1",
     "ParagraphBlock",
     "PatchOperation",
     "PatchProvenance",
