@@ -105,7 +105,12 @@ def test_qa_implements_stage_protocol() -> None:
     # 1.6 → 1.7 in S5U-736: new ``table_structure_parity`` rule asserts
     # EN<->RU TableBlock row/cell parity; cached v1.6 events would short-
     # circuit the new rule's TABLE_PARITY_* records.
-    assert stage.version == "1.7"
+    # 1.7 → 1.8 in S5U-730: ``_filter_publishable_pages`` now reads the
+    # new ``page_images.v1`` manifest emitted by IngestStage to align the
+    # dead-page-ref suppression set with the web exporter's image-injection
+    # rescue. Cached v1.7 events would short-circuit the manifest-aware
+    # filter and re-introduce the FP on image-rescued pages.
+    assert stage.version == "1.8"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:

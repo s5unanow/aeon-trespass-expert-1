@@ -15,6 +15,7 @@ export * as layoutPageV1 from './generated/layout_page_v1';
 export * as nativePageV1 from './generated/native_page_v1';
 export * as navPayloadV1 from './generated/nav_payload_v1';
 export * as pageEvidenceV1 from './generated/page_evidence_v1';
+export * as pageImagesV1 from './generated/page_images_v1';
 export * as pageIrV1 from './generated/page_ir_v1';
 export * as patchSetV1 from './generated/patch_set_v1';
 export * as publicQaRecordSetV1 from './generated/public_qa_record_set_v1';

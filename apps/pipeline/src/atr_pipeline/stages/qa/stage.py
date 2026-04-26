@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from atr_pipeline.eval.confidence_policy import load_confidence_bands
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
+from atr_pipeline.stages.qa.publishable import filter_publishable_pages
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.rules.confidence_band_rule import (
@@ -64,7 +65,15 @@ class QAStage:
         # EN<->RU TableBlock row/cell parity (S5U-734 follow-up). Cached
         # QA runs from v1.6 miss the new TABLE_PARITY_* records; the bump
         # invalidates them so the new rule fires on the full page set.
-        return "1.7"
+        # 1.7 -> 1.8 (S5U-730): ``_filter_publishable_pages`` now reads
+        # the new ``page_images.v1`` manifest emitted by IngestStage and
+        # accepts pages whose render is empty but which carry ≥1 image
+        # meeting the web exporter's ``min_width=100, min_height=100``
+        # threshold (the page is rescued by ``inject_image_figures`` at
+        # export). Cached QA runs from v1.7 carry the narrower
+        # publishability set, so the bump invalidates them so dead-page-ref
+        # suppression aligns with reader reality on image-rescued pages.
+        return "1.8"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set from the artifact
@@ -229,33 +238,14 @@ class QAStage:
 
     @staticmethod
     def _filter_publishable_pages(ctx: StageContext, page_ids: list[str]) -> list[str]:
-        """Return the subset of *page_ids* the web exporter will publish.
+        """Delegate to ``stages.qa.publishable.filter_publishable_pages``.
 
-        Mirrors the filter in ``scripts/export_to_web.py::export_pages``:
-        a page is published iff a render artifact exists for it AND the
-        page is either in facsimile mode or has at least one renderable
-        block.  This keeps the dead-page-ref suppression manifest aligned
-        with what the reader actually sees — a page that EN IR knows
-        about but the exporter drops is still dead from the reader's
-        perspective and must not be suppressed (Codex REVISE round 2).
+        Kept as an instance method for backwards-compat call sites; the
+        real logic lives in the shared module so the CLI ``atr qa``
+        entrypoint and the stage runner cannot drift on what
+        "publishable" means (S5U-701 Codex REVISE round 2 / S5U-730).
         """
-        publishable: list[str] = []
-        for pid in page_ids:
-            data = ctx.artifact_store.load_latest_json(
-                document_id=ctx.document_id,
-                schema_family="render_page.v1",
-                scope="page",
-                entity_id=pid,
-            )
-            if not data:
-                # No render artifact → exporter skips it, so it's not in
-                # the reader manifest.
-                continue
-            presentation = data.get("presentation_mode")
-            blocks = data.get("blocks") or []
-            if presentation == "facsimile" or blocks:
-                publishable.append(pid)
-        return publishable
+        return filter_publishable_pages(ctx.artifact_store, ctx.document_id, page_ids)
 
     @staticmethod
     def _load_ir(ctx: StageContext, family: str, page_id: str) -> PageIRV1 | None:
