@@ -28,6 +28,9 @@ from _export_qa import export_qa  # noqa: E402
 from _export_validation import run_export_validation  # noqa: E402
 
 from atr_pipeline.config import load_document_config  # noqa: E402
+from atr_pipeline.store.edition_selection import (  # noqa: E402
+    pick_latest_for_edition,
+)
 
 # Re-exports for S5U-688 regression tests and downstream callers that want to
 # import the helpers from the main entry script.
@@ -37,59 +40,17 @@ ARTIFACT_ROOT = REPO / "artifacts"
 
 
 def _pick_latest(jsons: list[Path], edition: str = "") -> dict | None:
-    """Load the newest artifact whose ``document_version`` matches *edition*.
+    """Edition-aware selection across raw artifact paths.
 
-    Selection follows two tiers when *edition* is non-empty:
-
-    1. **Exact match** — ``document_version == edition``.
-    2. **Untagged fallback** — ``document_version == ""``, used only when *no*
-       tagged artifacts exist in the candidate set.  This preserves backwards
-       compatibility for pages that predate edition tagging (S5U-402) while
-       preventing cross-edition contamination when a tagged artifact for a
-       *different* edition proves the page has edition-specific content.
-
-    When *edition* is empty all artifacts are eligible (no filtering).
-
-    Returns the parsed JSON dict of the winning artifact, or ``None`` when
-    no artifact matches the requested edition.
+    Thin wrapper around
+    :func:`atr_pipeline.store.edition_selection.pick_latest_for_edition`
+    so the exporter and the QA stage share a single source of truth for
+    the two-tier ``document_version`` selection policy (S5U-731).
+    Kept as a module-level symbol because existing tests in
+    ``apps/pipeline/tests/unit/test_export_to_web.py::TestPickLatest``
+    import it through the script module.
     """
-    best_exact: dict | None = None
-    best_exact_mtime: float = 0.0
-    best_untagged: dict | None = None
-    best_untagged_mtime: float = 0.0
-    has_any_tagged = False
-
-    for p in jsons:
-        mt = p.stat().st_mtime
-        data = json.loads(p.read_text())
-        dv = data.get("document_version", "")
-
-        if edition == "":
-            # No specific edition requested — accept everything.
-            if mt > best_exact_mtime:
-                best_exact = data
-                best_exact_mtime = mt
-        elif dv == edition:
-            if mt > best_exact_mtime:
-                best_exact = data
-                best_exact_mtime = mt
-        elif dv != "":
-            has_any_tagged = True
-        elif mt > best_untagged_mtime:
-            # dv == "" and edition != ""
-            best_untagged = data
-            best_untagged_mtime = mt
-
-    if best_exact is not None:
-        return best_exact
-
-    # Fall back to untagged artifacts only when no tagged artifacts exist
-    # at all for this page — avoids picking stale pre-tagging artifacts
-    # whose actual edition is unknown.
-    if not has_any_tagged:
-        return best_untagged
-
-    return None
+    return pick_latest_for_edition(jsons, edition)
 
 
 _TOC_ENTRY_RE = re.compile(r"(.+?)\.{3,}\s*(\d+)")

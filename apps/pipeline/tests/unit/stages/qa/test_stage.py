@@ -110,7 +110,12 @@ def test_qa_implements_stage_protocol() -> None:
     # dead-page-ref suppression set with the web exporter's image-injection
     # rescue. Cached v1.7 events would short-circuit the manifest-aware
     # filter and re-introduce the FP on image-rescued pages.
-    assert stage.version == "1.8"
+    # 1.8 → 1.9 in S5U-731: ``_load_render`` and ``_filter_publishable_pages``
+    # now route through ``store.edition_selection.load_latest_json_for_edition``
+    # which honors the exporter's two-tier ``document_version`` policy. On
+    # mixed EN/RU artifact dirs cached v1.8 events would still load
+    # whichever render is newest by mtime — potentially the wrong edition.
+    assert stage.version == "1.9"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:

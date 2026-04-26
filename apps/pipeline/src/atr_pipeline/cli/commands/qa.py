@@ -22,6 +22,7 @@ from atr_pipeline.stages.qa.rules.confidence_band_rule import evaluate_confidenc
 from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.store.edition_selection import load_latest_json_for_edition
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.patch_set_v1 import PatchSetV1
 from atr_schemas.qa_record_v1 import QARecordV1
@@ -264,8 +265,20 @@ def _load_render(
     doc: str,
     page_id: str,
 ) -> RenderPageV1 | None:
-    data = store.load_latest_json(
-        document_id=doc, schema_family="render_page.v1", scope="page", entity_id=page_id
+    """Load the latest render artifact for *page_id*.
+
+    The CLI ``atr qa`` entrypoint has no edition contract, so this
+    delegates to the shared edition-aware helper with ``edition=""``
+    which preserves the pre-S5U-731 newest-by-mtime selection. A future
+    follow-up could plumb a ``--edition`` flag through and pass it here.
+    """
+    data = load_latest_json_for_edition(
+        store,
+        document_id=doc,
+        schema_family="render_page.v1",
+        scope="page",
+        entity_id=page_id,
+        edition="",
     )
     return RenderPageV1.model_validate(data) if data else None
 

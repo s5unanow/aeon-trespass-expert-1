@@ -14,6 +14,7 @@ codepaths cannot drift on what "publishable" means.
 from __future__ import annotations
 
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.store.edition_selection import load_latest_json_for_edition
 
 # S5U-730 — exporter image-injection rescue threshold (must match the
 # values in ``scripts/_export_images.extract_images``: ``min_width=100``,
@@ -68,7 +69,7 @@ def page_has_rescuable_images(store: ArtifactStore, document_id: str, page_id: s
 
 
 def filter_publishable_pages(
-    store: ArtifactStore, document_id: str, page_ids: list[str]
+    store: ArtifactStore, document_id: str, page_ids: list[str], *, edition: str = ""
 ) -> list[str]:
     """Return the subset of *page_ids* the web exporter will publish.
 
@@ -91,15 +92,23 @@ def filter_publishable_pages(
     a page that EN IR has nothing for but which the exporter
     rescues from PDF imagery alone is published and must NOT fire
     DEAD_PAGE_REF (S5U-730).
+
+    S5U-731 — when *edition* is ``"en"`` or ``"ru"`` the render-load
+    routes through the shared edition-aware helper so the
+    publishability set matches the reader's edition-isolated view
+    on mixed EN/RU artifact dirs. Empty / ``"all"`` edition preserves
+    the pre-S5U-731 newest-by-mtime semantics for legacy callers.
     """
     publishable: list[str] = []
     manifest_present = page_images_manifest_present(store, document_id)
     for pid in page_ids:
-        data = store.load_latest_json(
+        data = load_latest_json_for_edition(
+            store,
             document_id=document_id,
             schema_family="render_page.v1",
             scope="page",
             entity_id=pid,
+            edition=edition,
         )
         if not data:
             # No render artifact → exporter skips it entirely (the
