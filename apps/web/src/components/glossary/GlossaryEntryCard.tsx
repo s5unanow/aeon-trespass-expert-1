@@ -4,15 +4,20 @@ import { IconInline } from '../reader/IconInline';
 
 interface GlossaryEntryCardProps {
   entry: glossaryPayloadV1.GlossaryEntryV1;
+  /** When true, applies the `glossary-card-highlight` class for deep-link UI. */
+  highlighted?: boolean;
 }
 
-export function GlossaryEntryCard({ entry }: GlossaryEntryCardProps) {
+export function GlossaryEntryCard({ entry, highlighted }: GlossaryEntryCardProps) {
   const { documentId, edition } = useParams<{ documentId: string; edition: string }>();
   const aliases = entry.aliases ?? [];
   const pageRefs = entry.page_refs ?? [];
 
   return (
-    <div className="glossary-card">
+    <div
+      id={entry.concept_id}
+      className={`glossary-card${highlighted ? ' glossary-card-highlight' : ''}`}
+    >
       <div className="glossary-card-header">
         {entry.icon_binding && (
           <span className="glossary-card-icon">

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import type { GlossaryPayloadV1, glossaryPayloadV1 } from '@atr/schemas';
 import { loadGlossary } from '../lib/api/loadGlossary';
 import { GlossaryEntryCard } from '../components/glossary/GlossaryEntryCard';
@@ -18,6 +18,8 @@ export function GlossaryPage() {
   const [glossary, setGlossary] = useState<GlossaryPayloadV1 | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const location = useLocation();
+  const targetConceptId = location.hash ? location.hash.slice(1) : '';
 
   useEffect(() => {
     if (!documentId || !edition) return;
@@ -33,6 +35,22 @@ export function GlossaryPage() {
       stale = true;
     };
   }, [documentId, edition]);
+
+  // After data loads, scroll the deep-link target into view. Search filtering
+  // may hide the target; we only act when the target element is present.
+  // `scrollIntoView` is jsdom-flaky — guard it. We deliberately rely on the
+  // `glossary-card-highlight` class (from `highlighted` prop below) rather
+  // than CSS `:target`, so we don't need to re-bounce the hash to force a
+  // pseudo-class match — that bounce inserted spurious history entries and
+  // broke browser-back. See S5U-584.
+  useEffect(() => {
+    if (!glossary || !targetConceptId) return;
+    const el = document.getElementById(targetConceptId);
+    if (!el) return;
+    if (typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+  }, [glossary, targetConceptId, query]);
 
   const filtered = useMemo(() => {
     const entries = glossary?.entries ?? [];
@@ -69,7 +87,11 @@ export function GlossaryPage() {
       </header>
       <section className="glossary-entries">
         {filtered.map((entry) => (
-          <GlossaryEntryCard key={entry.concept_id} entry={entry} />
+          <GlossaryEntryCard
+            key={entry.concept_id}
+            entry={entry}
+            highlighted={entry.concept_id === targetConceptId}
+          />
         ))}
         {filtered.length === 0 && <p className="glossary-empty">No matching entries.</p>}
       </section>

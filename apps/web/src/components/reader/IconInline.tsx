@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from 'react-router';
 import { useGlossary } from '../../contexts/GlossaryContext';
 
 interface IconInlineProps {
@@ -49,6 +50,8 @@ const HIDDEN_ICONS = new Set([
 
 export function IconInline({ symbolId, alt }: IconInlineProps) {
   const glossary = useGlossary();
+  const navigate = useNavigate();
+  const { documentId, edition } = useParams<{ documentId: string; edition: string }>();
 
   if (HIDDEN_ICONS.has(symbolId)) {
     return null;
@@ -63,9 +66,52 @@ export function IconInline({ symbolId, alt }: IconInlineProps) {
       : (entry.notes ?? entry.preferred_term)
     : undefined;
 
+  // Click handler navigates to the glossary deep-link if we have an entry +
+  // edition + documentId. Without those, the icon stays non-interactive.
+  const conceptId = entry?.concept_id;
+  const canNavigate = !!conceptId && !!documentId && !!edition;
+  const targetPath = canNavigate
+    ? `/documents/${documentId}/${edition}/glossary#${conceptId}`
+    : undefined;
+  const onClick = canNavigate
+    ? (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        navigate(targetPath!);
+      }
+    : undefined;
+  const onKeyDown = canNavigate
+    ? (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          navigate(targetPath!);
+        }
+      }
+    : undefined;
+  const role = canNavigate ? 'link' : undefined;
+  const tabIndex = canNavigate ? 0 : undefined;
+  const ariaLabel = canNavigate
+    ? `${label} — open glossary entry`
+    : undefined;
+  const className = [
+    'icon-inline-wrapper',
+    tooltip ? 'glossary-tooltip' : '',
+    canNavigate ? 'glossary-keyword' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   if (src) {
     return (
-      <span className={tooltip ? 'glossary-tooltip' : undefined} data-tooltip={tooltip}>
+      <span
+        className={className || undefined}
+        data-tooltip={tooltip}
+        data-concept-id={conceptId}
+        onClick={onClick}
+        onKeyDown={onKeyDown}
+        role={role}
+        tabIndex={tabIndex}
+        aria-label={ariaLabel}
+      >
         <img
           className="icon-inline"
           src={src}
@@ -80,12 +126,16 @@ export function IconInline({ symbolId, alt }: IconInlineProps) {
 
   return (
     <span
-      className={`icon-inline${tooltip ? ' glossary-tooltip' : ''}`}
-      role="img"
-      aria-label={label}
+      className={`icon-inline${tooltip ? ' glossary-tooltip' : ''}${canNavigate ? ' glossary-keyword' : ''}`}
+      role={canNavigate ? 'link' : 'img'}
+      aria-label={ariaLabel ?? label}
       data-symbol-id={symbolId}
+      data-concept-id={conceptId}
       title={tooltip ?? label}
       data-tooltip={tooltip}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      tabIndex={tabIndex}
     >
       [{label}]
     </span>

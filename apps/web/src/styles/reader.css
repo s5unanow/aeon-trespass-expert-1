@@ -574,6 +574,45 @@ h2.reader-heading {
   box-shadow: var(--shadow-md);
 }
 
-.glossary-tooltip:hover::after {
+.glossary-tooltip:hover::after,
+.glossary-tooltip:focus-visible::after {
   opacity: 1;
+}
+
+/* --- Inline keyword link (text + icons that resolve to a glossary entry) --- */
+
+.glossary-keyword {
+  cursor: pointer;
+  color: var(--color-accent, currentColor);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  border-radius: var(--radius-sm, 2px);
+}
+
+.glossary-keyword:hover,
+.glossary-keyword:focus-visible {
+  text-decoration-style: solid;
+  background: color-mix(in srgb, var(--color-accent, #888) 10%, transparent);
+  outline: none;
+}
+
+a.glossary-keyword {
+  /* Override the default <a> blue when nested in body text. */
+  color: inherit;
+}
+
+a.glossary-keyword:hover,
+a.glossary-keyword:focus-visible {
+  color: var(--color-accent, currentColor);
+}
+
+/* Wrapper span around an icon that links to the glossary should not show the
+ * dotted underline (the icon itself is the visual cue). Only show the
+ * pointer cursor. */
+span.icon-inline-wrapper.glossary-keyword,
+span.icon-inline-wrapper.glossary-keyword:hover {
+  text-decoration: none;
+  background: transparent;
 }

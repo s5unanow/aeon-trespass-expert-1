@@ -156,6 +156,27 @@
   padding: var(--space-8) 0;
 }
 
+/* --- Deep-link target highlight (S5U-584) --- */
+
+.glossary-card-highlight,
+.glossary-card:target {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  animation: glossary-card-pulse 1.4s ease-out 1;
+}
+
+@keyframes glossary-card-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-accent) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+}
+
 @media (max-width: 640px) {
   .glossary-page {
     padding: var(--space-4) var(--space-3);

@@ -1,8 +1,17 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
+import { MemoryRouter } from 'react-router';
 import { BlockRenderer } from '../../src/components/reader/BlockRenderer';
 import { InlineRenderer } from '../../src/components/reader/InlineRenderer';
 import type { RenderBlock, RenderFigure, RenderInlineNode } from '../../src/lib/render/types';
+
+// GlossaryText (used by InlineRenderer for text nodes, S5U-584) calls
+// `useNavigate`, which requires a Router. Wrap every render in MemoryRouter
+// so block-level tests don't have to care about routing.
+function renderWithRouter(ui: ReactElement) {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+}
 
 describe('BlockRenderer', () => {
   it('renders a heading block', () => {
@@ -13,7 +22,7 @@ describe('BlockRenderer', () => {
       children: [{ kind: 'text', text: 'Проверка атаки', marks: [] }],
     };
 
-    render(<BlockRenderer block={block} />);
+    renderWithRouter(<BlockRenderer block={block} />);
     expect(screen.getByText('Проверка атаки')).toBeDefined();
   });
 
@@ -28,7 +37,7 @@ describe('BlockRenderer', () => {
       ],
     };
 
-    render(<BlockRenderer block={block} />);
+    renderWithRouter(<BlockRenderer block={block} />);
     expect(screen.getByText('Получите 1')).toBeDefined();
     expect(screen.getByText('Прогресс.')).toBeDefined();
 
@@ -40,7 +49,7 @@ describe('BlockRenderer', () => {
 
   it('renders a divider block', () => {
     const block: RenderBlock = { kind: 'divider', id: 'p0001.b003' };
-    const { container } = render(<BlockRenderer block={block} />);
+    const { container } = renderWithRouter(<BlockRenderer block={block} />);
     expect(container.querySelector('hr')).toBeDefined();
   });
 
@@ -51,7 +60,7 @@ describe('BlockRenderer', () => {
       children: [{ kind: 'text', text: 'Первый пункт', marks: [] }],
     };
 
-    const { container } = render(<BlockRenderer block={block} />);
+    const { container } = renderWithRouter(<BlockRenderer block={block} />);
     const li = container.querySelector('li');
     expect(li).toBeDefined();
     expect(li?.id).toBe('p0001.b004');
@@ -67,7 +76,7 @@ describe('BlockRenderer', () => {
       children: [{ kind: 'text', text: 'Внимание!', marks: [] }],
     };
 
-    const { container } = render(<BlockRenderer block={block} />);
+    const { container } = renderWithRouter(<BlockRenderer block={block} />);
     const aside = container.querySelector('aside');
     expect(aside).toBeDefined();
     expect(aside?.id).toBe('p0001.b005');
@@ -83,7 +92,7 @@ describe('BlockRenderer', () => {
       children: [{ kind: 'text', text: 'Примечание', marks: [] }],
     };
 
-    const { container } = render(<BlockRenderer block={block} />);
+    const { container } = renderWithRouter(<BlockRenderer block={block} />);
     const aside = container.querySelector('aside');
     expect(aside).toBeDefined();
     expect(aside?.className).toBe('reader-callout');
@@ -98,7 +107,7 @@ describe('BlockRenderer', () => {
       children: [{ kind: 'text', text: 'Ячейка', marks: [] }],
     };
 
-    const { container } = render(<BlockRenderer block={block} />);
+    const { container } = renderWithRouter(<BlockRenderer block={block} />);
     const table = container.querySelector('[role="table"]');
     expect(table).toBeDefined();
     expect(table?.id).toBe('p0001.b006');
@@ -117,7 +126,7 @@ describe('BlockRenderer', () => {
       fig001: { src: '/img/fig001.png', alt: 'Test figure' },
     };
 
-    render(<BlockRenderer block={block} figures={figures} />);
+    renderWithRouter(<BlockRenderer block={block} figures={figures} />);
     const img = screen.getByRole('img', { name: 'Test figure' });
     expect(img.className).toContain('img-lazy');
     expect(img.className).not.toContain('is-loaded');
@@ -129,7 +138,7 @@ describe('BlockRenderer', () => {
   it('throws on unsupported block kind', () => {
     const block = { kind: 'unknown_kind', id: 'p0001.b007' } as unknown as RenderBlock;
 
-    expect(() => render(<BlockRenderer block={block} />)).toThrow(
+    expect(() => renderWithRouter(<BlockRenderer block={block} />)).toThrow(
       'Unsupported block kind: unknown_kind',
     );
   });

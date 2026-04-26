@@ -1,5 +1,7 @@
 import { cleanup, render, within } from '@testing-library/react';
+import type { ReactElement } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
+import { MemoryRouter } from 'react-router';
 import { TableBlock } from '../../src/components/reader/TableBlock';
 import type {
   RenderTableBlock,
@@ -7,15 +9,18 @@ import type {
   RenderTableRowBlock,
 } from '../../src/lib/render/types';
 
+// TableBlock cells eventually render `GlossaryText` (S5U-584) which calls
+// `useNavigate`. Wrap every render in `MemoryRouter` so the test environment
+// satisfies that hook even though no nav happens.
+function renderWithRouter(ui: ReactElement) {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+}
+
 afterEach(() => {
   cleanup();
 });
 
-function makeCell(
-  id: string,
-  text: string,
-  header = false,
-): RenderTableCellBlock {
+function makeCell(id: string, text: string, header = false): RenderTableCellBlock {
   return {
     kind: 'table_cell',
     id,
@@ -34,11 +39,15 @@ describe('TableBlock', () => {
       kind: 'table',
       id: 'p0054.b002',
       children: [
-        makeRow('p0054.b002.r0', [
-          makeCell('p0054.b002.r0.c0', 'BP I', true),
-          makeCell('p0054.b002.r0.c1', 'Action A', true),
-          makeCell('p0054.b002.r0.c2', 'Action B', true),
-        ], true),
+        makeRow(
+          'p0054.b002.r0',
+          [
+            makeCell('p0054.b002.r0.c0', 'BP I', true),
+            makeCell('p0054.b002.r0.c1', 'Action A', true),
+            makeCell('p0054.b002.r0.c2', 'Action B', true),
+          ],
+          true,
+        ),
         makeRow('p0054.b002.r1', [
           makeCell('p0054.b002.r1.c0', 'BP II'),
           makeCell('p0054.b002.r1.c1', 'Shuffle a BP III card'),
@@ -46,7 +55,7 @@ describe('TableBlock', () => {
         ]),
       ],
     };
-    const { container } = render(<TableBlock block={block} />);
+    const { container } = renderWithRouter(<TableBlock block={block} />);
     const table = container.querySelector('table');
     expect(table).not.toBeNull();
     const rows = within(table as HTMLElement).getAllByRole('row');
@@ -70,7 +79,7 @@ describe('TableBlock', () => {
         { kind: 'text', text: 'Shuffle a BP II card', marks: [] },
       ],
     };
-    const { container } = render(<TableBlock block={block} />);
+    const { container } = renderWithRouter(<TableBlock block={block} />);
     const div = container.querySelector('div.reader-table');
     expect(div).not.toBeNull();
     expect(container.querySelector('table')).toBeNull();
@@ -87,7 +96,7 @@ describe('TableBlock', () => {
         makeRow('r0', [makeCell('c0', 'A'), makeCell('c1', 'B')]),
       ],
     };
-    const { container } = render(<TableBlock block={block} />);
+    const { container } = renderWithRouter(<TableBlock block={block} />);
     const table = container.querySelector('table');
     expect(table).not.toBeNull();
     // Stray inlines are dropped when rows are present.
