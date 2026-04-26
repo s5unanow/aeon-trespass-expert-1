@@ -32,6 +32,9 @@ Bump history:
   is reconciled to the same source so all rules follow the same
   schema-level contract. Cached v1.5 records for those rules still
   carry the page-id shape; the bump re-runs them.
+- "1.6" → "1.7" (S5U-736): new ``table_structure_parity`` rule asserts
+  EN<->RU TableBlock row/cell parity (S5U-734 follow-up). Cached v1.6
+  events would short-circuit the new TABLE_PARITY_* records.
 """
 
 from __future__ import annotations
@@ -48,12 +51,13 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
     declare the affected outputs as cache-aware (larger refactor; see
     plan-s5u-640-641.md).
     """
-    assert QAStage().version == "1.6", (
+    assert QAStage().version == "1.7", (
         "QAStage.version must be bumped past earlier pins so pre-existing "
         "cached events invalidate and re-emit the full current output set "
         "(manifest-aware DEAD_PAGE_REF suppression, PLACEHOLDER_PROSE_LEAKED "
         "records, FLAT_TABLE_NO_ROWS records, qa_metrics.json, "
         "confidence-band QA records, widened review pack, "
-        "CHART_TITLE_MERGE records with real document_id, and the seven "
-        "S5U-735 rules sourcing document_id from source_map.document_id)."
+        "CHART_TITLE_MERGE records with real document_id, the seven "
+        "S5U-735 rules sourcing document_id from source_map.document_id, "
+        "and the S5U-736 TABLE_PARITY_* records)."
     )

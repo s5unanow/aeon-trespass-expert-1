@@ -102,7 +102,10 @@ def test_qa_implements_stage_protocol() -> None:
     # from the new ``RenderSourceMap.document_id`` field; chart_title_merge
     # is reconciled to the same source. Cached v1.5 records for those
     # rules still carry the page-id shape; the bump re-runs them.
-    assert stage.version == "1.6"
+    # 1.6 → 1.7 in S5U-736: new ``table_structure_parity`` rule asserts
+    # EN<->RU TableBlock row/cell parity; cached v1.6 events would short-
+    # circuit the new rule's TABLE_PARITY_* records.
+    assert stage.version == "1.7"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:
