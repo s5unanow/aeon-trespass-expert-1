@@ -16,6 +16,7 @@ from atr_pipeline.stages.qa.rules.confidence_band_rule import (
 )
 from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
+from atr_pipeline.store.edition_selection import load_latest_json_for_edition
 from atr_schemas.enums import QALayer, Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_record_v1 import QARecordV1
@@ -73,7 +74,15 @@ class QAStage:
         # export). Cached QA runs from v1.7 carry the narrower
         # publishability set, so the bump invalidates them so dead-page-ref
         # suppression aligns with reader reality on image-rescued pages.
-        return "1.8"
+        # 1.8 -> 1.9 (S5U-731): ``_load_render`` and ``_filter_publishable_pages``
+        # now route through ``store.edition_selection.load_latest_json_for_edition``
+        # which honors the exporter's two-tier ``document_version`` policy.
+        # On mixed EN/RU artifact dirs (the common case after a full
+        # pipeline run) cached QA runs from v1.8 may have evaluated rules
+        # against a different-edition render than the reader publishes;
+        # the bump invalidates them so the QA records align with the
+        # exporter's edition-isolated view.
+        return "1.9"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set from the artifact
@@ -92,7 +101,9 @@ class QAStage:
         # the exporter's filter so the suppression set never includes pages
         # the reader will not actually publish.
         all_page_ids = self._resolve_page_ids(ctx)
-        publishable_page_ids = self._filter_publishable_pages(ctx, all_page_ids)
+        publishable_page_ids = self._filter_publishable_pages(
+            ctx, all_page_ids, edition=ctx.edition
+        )
         known_page_numbers = _page_ids_to_numbers(publishable_page_ids)
         page_ids = ctx.filter_pages(all_page_ids)
 
@@ -112,7 +123,7 @@ class QAStage:
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
             ru_ir = self._load_ir(ctx, "page_ir.v1.ru", page_id) if not source_only else en_ir
-            render = self._load_render(ctx, page_id)
+            render = self._load_render(ctx, page_id, edition=ctx.edition)
 
             if en_ir is None or ru_ir is None or render is None:
                 ctx.logger.warning("Skipping QA for %s: missing artifacts", page_id)
@@ -237,15 +248,23 @@ class QAStage:
         raise RuntimeError(msg)
 
     @staticmethod
-    def _filter_publishable_pages(ctx: StageContext, page_ids: list[str]) -> list[str]:
+    def _filter_publishable_pages(
+        ctx: StageContext, page_ids: list[str], *, edition: str = ""
+    ) -> list[str]:
         """Delegate to ``stages.qa.publishable.filter_publishable_pages``.
 
         Kept as an instance method for backwards-compat call sites; the
         real logic lives in the shared module so the CLI ``atr qa``
         entrypoint and the stage runner cannot drift on what
         "publishable" means (S5U-701 Codex REVISE round 2 / S5U-730).
+        S5U-731 added the ``edition`` kwarg so the publishability filter
+        loads the same render the exporter would publish for the
+        targeted edition (mixed EN/RU artifact dirs are the common
+        case after a full pipeline run).
         """
-        return filter_publishable_pages(ctx.artifact_store, ctx.document_id, page_ids)
+        return filter_publishable_pages(
+            ctx.artifact_store, ctx.document_id, page_ids, edition=edition
+        )
 
     @staticmethod
     def _load_ir(ctx: StageContext, family: str, page_id: str) -> PageIRV1 | None:
@@ -296,13 +315,23 @@ class QAStage:
         return records
 
     @staticmethod
-    def _load_render(ctx: StageContext, page_id: str) -> RenderPageV1 | None:
-        """Load a RenderPageV1 from the artifact store."""
-        data = ctx.artifact_store.load_latest_json(
+    def _load_render(ctx: StageContext, page_id: str, *, edition: str = "") -> RenderPageV1 | None:
+        """Load a RenderPageV1 from the artifact store.
+
+        S5U-731 — selection is edition-aware so a mixed EN/RU artifact
+        directory (the common case after a full pipeline run) does not
+        leak the wrong-edition render into QA's rule evaluation. The
+        underlying policy lives in
+        :func:`atr_pipeline.store.edition_selection.load_latest_json_for_edition`
+        and is shared with the web exporter so the two cannot drift.
+        """
+        data = load_latest_json_for_edition(
+            ctx.artifact_store,
             document_id=ctx.document_id,
             schema_family="render_page.v1",
             scope="page",
             entity_id=page_id,
+            edition=edition,
         )
         return RenderPageV1.model_validate(data) if data else None
 
