@@ -43,7 +43,7 @@ FIXTURES = REPO_ROOT / "packages" / "fixtures" / "sample_documents"
 CURATED_FIXTURES = ["multi_column", "icon_dense", "table_callout", "figure_caption", "hard_route"]
 
 # Block types that produce render blocks in the page builder.
-_RENDERABLE = {"heading", "paragraph", "list_item", "figure", "table"}
+_RENDERABLE = {"heading", "paragraph", "list_item", "figure", "table", "callout"}
 
 
 # ---------------------------------------------------------------------------

@@ -6,6 +6,7 @@ import re
 
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.page_ir_v1 import (
+    CalloutBlock,
     CaptionBlock,
     DividerBlock,
     FigureBlock,
@@ -24,6 +25,7 @@ from atr_schemas.page_ir_v1 import (
 )
 from atr_schemas.render_page_v1 import (
     RenderBlock,
+    RenderCalloutBlock,
     RenderFigure,
     RenderFigureBlock,
     RenderHeadingBlock,
@@ -132,6 +134,19 @@ def build_render_page(
                 RenderTableBlock(
                     id=block.block_id,
                     children=_convert_table_children(list(block.children)),
+                )
+            )
+            continue
+
+        if isinstance(block, CalloutBlock):
+            # S5U-581: callout blocks now produce RenderCalloutBlock instead
+            # of being silently dropped. The IR ``variant`` is propagated
+            # verbatim so the web component can stylize via ``data-variant``.
+            render_blocks.append(
+                RenderCalloutBlock(
+                    id=block.block_id,
+                    variant=block.variant,
+                    children=_convert_inline_nodes(list(block.children)),
                 )
             )
             continue

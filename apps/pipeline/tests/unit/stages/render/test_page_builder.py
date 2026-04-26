@@ -12,6 +12,7 @@ from atr_pipeline.stages.render.search_builder import build_search_docs
 from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import (
+    CalloutBlock,
     FigureBlock,
     HeadingBlock,
     IconInline,
@@ -766,6 +767,119 @@ def test_all_garbage_headings_produce_empty_title() -> None:
     )
     render = build_render_page(ir)
     assert render.page.title == ""
+
+
+# ── Callout block render mapping (S5U-581) ──────────────────────────
+
+
+def test_callout_block_emits_render_callout() -> None:
+    """S5U-581: a CalloutBlock in IR produces a RenderCalloutBlock.
+
+    Red-before confirmation: prior to the page_builder.py edit on this
+    branch, ``build_render_page`` had no ``CalloutBlock`` dispatch branch
+    and the callout fell off the end of the if-chain — ``len(render.blocks)``
+    was 0. Run the test on commit before this PR's page_builder edit:
+    AssertionError on ``len(render.blocks) == 1``.
+    """
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0050",
+        page_number=50,
+        language=LanguageCode.EN,
+        blocks=[
+            CalloutBlock(
+                block_id="p0050.b001",
+                variant="info",
+                children=[TextInline(text="Sidebar tip", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=["p0050.b001"],
+    )
+    render = build_render_page(ir)
+
+    assert len(render.blocks) == 1
+    block = render.blocks[0]
+    assert block.kind == "callout"
+    assert block.id == "p0050.b001"
+    assert block.variant == "info"  # type: ignore[union-attr]
+    assert len(block.children) == 1  # type: ignore[union-attr]
+    assert block.children[0].kind == "text"  # type: ignore[union-attr]
+
+
+def test_multiple_callouts_preserve_order() -> None:
+    """Multiple CalloutBlocks render in IR block order.
+
+    Red-before confirmation: same as the single-callout test —
+    pre-fix ``build_render_page`` produced zero render blocks for any
+    callout-only IR.
+    """
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0051",
+        page_number=51,
+        language=LanguageCode.EN,
+        blocks=[
+            CalloutBlock(
+                block_id="p0051.b001",
+                children=[TextInline(text="First callout", lang=LanguageCode.EN)],
+            ),
+            CalloutBlock(
+                block_id="p0051.b002",
+                children=[TextInline(text="Second callout", lang=LanguageCode.EN)],
+            ),
+        ],
+        reading_order=["p0051.b001", "p0051.b002"],
+    )
+    render = build_render_page(ir)
+
+    assert len(render.blocks) == 2
+    assert all(b.kind == "callout" for b in render.blocks)
+    assert render.blocks[0].id == "p0051.b001"
+    assert render.blocks[1].id == "p0051.b002"
+
+
+def test_callout_preserves_inline_kinds_and_variant() -> None:
+    """Callout children with TextInline + IconInline preserve order and kinds.
+
+    Verifies the new render branch routes through ``_convert_inline_nodes``
+    so non-text inlines (icons) survive the conversion as ``RenderIconInline``
+    rather than being dropped or word-joined. ``variant`` passes through
+    verbatim.
+
+    Red-before confirmation: pre-fix the callout produced no render block
+    at all, so the per-child kind/order assertions never executed.
+    """
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0052",
+        page_number=52,
+        language=LanguageCode.EN,
+        blocks=[
+            CalloutBlock(
+                block_id="p0052.b001",
+                variant="warning",
+                children=[
+                    TextInline(text="Beware ", lang=LanguageCode.EN),
+                    IconInline(symbol_id="sym.danger", instance_id="syminst.p0052.01"),
+                    TextInline(text=" the void.", lang=LanguageCode.EN),
+                ],
+            ),
+        ],
+        reading_order=["p0052.b001"],
+    )
+    render = build_render_page(ir)
+
+    assert len(render.blocks) == 1
+    block = render.blocks[0]
+    assert block.kind == "callout"
+    assert block.variant == "warning"  # type: ignore[union-attr]
+    children = block.children  # type: ignore[union-attr]
+    assert len(children) == 3
+    assert children[0].kind == "text"
+    assert children[1].kind == "icon"
+    assert children[2].kind == "text"
+    # The icon symbol_id is preserved.
+    assert children[1].symbol_id == "sym.danger"  # type: ignore[union-attr]
 
 
 def test_article_mode_garbage_title_gets_fallback() -> None:
