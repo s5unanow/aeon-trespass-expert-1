@@ -60,7 +60,11 @@ class QAStage:
         # Cached QA records from v1.5 carry the page id in
         # ``QARecordV1.document_id`` for these rules; the bump forces
         # a re-run so per-document rollups see the corrected value.
-        return "1.6"
+        # 1.6 -> 1.7 (S5U-736): new ``table_structure_parity`` rule asserts
+        # EN<->RU TableBlock row/cell parity (S5U-734 follow-up). Cached
+        # QA runs from v1.6 miss the new TABLE_PARITY_* records; the bump
+        # invalidates them so the new rule fires on the full page set.
+        return "1.7"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set from the artifact

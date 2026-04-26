@@ -14,6 +14,9 @@ from atr_pipeline.stages.qa.rules.glued_text_rule import evaluate_glued_text
 from atr_pipeline.stages.qa.rules.icon_count_rule import evaluate_icon_count
 from atr_pipeline.stages.qa.rules.leaked_identifier_rule import evaluate_leaked_identifiers
 from atr_pipeline.stages.qa.rules.paragraph_length_rule import evaluate_paragraph_length
+from atr_pipeline.stages.qa.rules.table_structure_parity_rule import (
+    evaluate_table_structure_parity,
+)
 from atr_pipeline.stages.qa.rules.untranslated_rule import evaluate_untranslated
 from atr_schemas.enums import QALayer
 from atr_schemas.page_ir_v1 import PageIRV1
@@ -200,6 +203,21 @@ class FlatTableRule:
         return evaluate_flat_table(ctx.render_page)
 
 
+class TableStructureParityRule:
+    """EN<->RU TableBlock row/cell structural parity (S5U-736)."""
+
+    @property
+    def name(self) -> str:
+        return "table_structure_parity"
+
+    @property
+    def layer(self) -> QALayer:
+        return QALayer.STRUCTURE
+
+    def evaluate(self, ctx: QAPageContext) -> list[QARecordV1]:
+        return evaluate_table_structure_parity(ctx.source_ir, ctx.target_ir)
+
+
 def get_all_rules() -> list[QARule]:
     """Return all registered QA rules."""
     return [
@@ -213,4 +231,5 @@ def get_all_rules() -> list[QARule]:
         LeakedIdentifierRule(),
         ChartTitleMergeRule(),
         FlatTableRule(),
+        TableStructureParityRule(),
     ]
