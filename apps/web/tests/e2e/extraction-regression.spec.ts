@@ -191,6 +191,23 @@ test.describe('EN extraction: table_callout block-specific checks', () => {
     await expect(callout).toHaveAttribute('data-variant', 'warning');
     await expect(callout).toContainText('Cursed items');
   });
+
+  // Visual regression coverage for the callout render path (S5U-741).
+  // S5U-581 added the callout render code; this baseline pixel-diffs the
+  // table_callout fixture so future regressions in callout CSS, layout, or
+  // data-variant styling are caught by CI. Per .claude/rules/visual-verify.md,
+  // baselines are platform-sensitive — CI Linux is authoritative.
+  test('visual snapshot: table_callout EN page', async ({ page }) => {
+    await page.goto('/documents/table_callout/en/p0001');
+    const content = page.locator('.reader-content');
+    await expect(content.getByText('Equipment Table')).toBeVisible();
+    await expect(content.locator('.reader-callout')).toBeVisible();
+    // Hide the floating feedback button during snapshot — same rationale as
+    // target_p0040 (matches the bounding box of .reader-content on short pages).
+    await page.addStyleTag({ content: '.feedback-button { display: none !important; }' });
+    await page.waitForLoadState('networkidle');
+    await expect(content).toHaveScreenshot('table-callout-en.png');
+  });
 });
 
 test.describe('EN extraction: figure_caption block-specific checks', () => {
