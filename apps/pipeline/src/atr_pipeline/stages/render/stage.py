@@ -52,6 +52,14 @@ class RenderStage:
 
     @property
     def version(self) -> str:
+        # 1.6 (S5U-739): ``_convert_inline_nodes`` now dispatches on
+        #   ``FigureRefInline`` and emits ``RenderFigureRefInline`` instead
+        #   of silently dropping the node. Every block sharing the inline
+        #   dispatch (callout, paragraph, list_item, heading, figure,
+        #   table cell) inherits the fix, so the render_page.v1 artifact
+        #   shape changes for any page whose IR carries a ``figure_ref``
+        #   inline. Cached 1.5 pages must be regenerated (per
+        #   .claude/rules/pipeline.md cache-invalidation rule, S5U-662).
         # 1.5 (S5U-581): callout blocks now emit ``RenderCalloutBlock``
         #   instead of being silently dropped. The shape of every
         #   render_page.v1 artifact for a callout-bearing page changes,
@@ -75,7 +83,7 @@ class RenderStage:
         # 1.1 (S5U-697): annotation filtering semantics changed — stale-IR
         #   pairings are now rewritten to EN-only and fully-occluded outer
         #   hotspots are suppressed.
-        return "1.5"
+        return "1.6"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is

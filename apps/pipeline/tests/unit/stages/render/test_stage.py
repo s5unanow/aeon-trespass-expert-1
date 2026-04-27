@@ -74,6 +74,12 @@ def test_render_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "render"
     assert stage.scope == StageScope.DOCUMENT
+    # 1.5 → 1.6 (S5U-739): ``_convert_inline_nodes`` now emits
+    # ``RenderFigureRefInline`` for ``FigureRefInline`` IR nodes instead of
+    # silently dropping them. The render_page.v1 artifact shape changes for
+    # any page whose IR carries a ``figure_ref`` inline (in callouts,
+    # paragraphs, list items, headings, figures, or table cells), so cached
+    # 1.5 pages must be regenerated.
     # 1.4 → 1.5 (S5U-581): callout blocks now emit ``RenderCalloutBlock``
     # instead of being silently dropped; render_page.v1 payload shape changes
     # for callout-bearing pages, so cached 1.4 pages must be regenerated.
@@ -81,7 +87,7 @@ def test_render_implements_stage_protocol() -> None:
     # from page_ir.document_id); the render_page.v1 artifact shape changed,
     # so cached 1.3 pages must be regenerated for QA rules to pick up the
     # real document id.
-    assert stage.version == "1.5"
+    assert stage.version == "1.6"
 
 
 def test_render_builds_pages(tmp_path: Path) -> None:

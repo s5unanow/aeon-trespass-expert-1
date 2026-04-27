@@ -4,12 +4,17 @@ from __future__ import annotations
 
 import re
 
+from atr_pipeline.stages.render.concept_matcher import (
+    build_text_pattern_index,
+    match_text_patterns,
+)
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.page_ir_v1 import (
     CalloutBlock,
     CaptionBlock,
     DividerBlock,
     FigureBlock,
+    FigureRefInline,
     HeadingBlock,
     IconInline,
     InlineNode,
@@ -28,6 +33,7 @@ from atr_schemas.render_page_v1 import (
     RenderCalloutBlock,
     RenderFigure,
     RenderFigureBlock,
+    RenderFigureRefInline,
     RenderHeadingBlock,
     RenderIconInline,
     RenderInlineNode,
@@ -247,6 +253,7 @@ def _resolve_caption_attachments(page_ir: PageIRV1) -> dict[str, str]:
 
 def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
     """Convert IR inline nodes to render inline nodes."""
+    # S5U-739 — figure_ref now round-trips (was: silently dropped).
     result: list[RenderInlineNode] = []
     for node in nodes:
         if node.type == "text":
@@ -257,6 +264,9 @@ def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
             sym_id = node.symbol_id
             alt = sym_id.removeprefix("sym.").capitalize()
             result.append(RenderIconInline(symbol_id=sym_id, alt=alt))
+        elif node.type == "figure_ref":
+            assert isinstance(node, FigureRefInline)
+            result.append(RenderFigureRefInline(asset_id=node.asset_id, label=node.label))
         elif node.type == "line_break":
             assert isinstance(node, LineBreakInline)
             result.append(RenderTextInline(text="\n"))
@@ -314,7 +324,7 @@ def _extract_concept_mentions(
     """Extract concept mentions from icon annotations and text content."""
     mentions: list[str] = []
     seen: set[str] = set()
-    text_patterns = _build_text_pattern_index(concept_registry) if concept_registry else []
+    text_patterns = build_text_pattern_index(concept_registry) if concept_registry else []
 
     for block in page_ir.blocks:
         if isinstance(block, (DividerBlock, UnknownBlock)):
@@ -344,57 +354,6 @@ def _extract_concept_mentions(
                 child.text if isinstance(child, TextInline) else " " for child in inlines
             )
             if full_text:
-                _match_text_patterns(full_text, text_patterns, seen, mentions)
+                match_text_patterns(full_text, text_patterns, seen, mentions)
 
     return mentions
-
-
-def _match_text_patterns(
-    text: str,
-    patterns: list[tuple[re.Pattern[str], str, int]],
-    seen: set[str],
-    mentions: list[str],
-) -> None:
-    """Match text patterns with longest-match-first span deduplication.
-
-    Each pattern carries a specificity score (lower = more specific):
-    0 = lemma match, 1 = pattern/surface-form match.
-    When spans overlap, the longest match wins; ties broken by specificity.
-    """
-    hits: list[tuple[int, int, str, int]] = []
-    for pattern, concept_id, specificity in patterns:
-        for m in pattern.finditer(text):
-            hits.append((m.start(), m.end(), concept_id, specificity))
-
-    # Sort: longest span first, then most specific, then earliest position
-    hits.sort(key=lambda h: (-(h[1] - h[0]), h[3], h[0]))
-
-    # Greedily accept longest matches; skip overlapping shorter ones
-    claimed: list[tuple[int, int]] = []
-    for start, end, concept_id, _spec in hits:
-        if concept_id in seen:
-            continue
-        if any(start < ce and end > cs for cs, ce in claimed):
-            continue
-        claimed.append((start, end))
-        seen.add(concept_id)
-        mentions.append(concept_id)
-
-
-def _build_text_pattern_index(
-    registry: ConceptRegistryV1,
-) -> list[tuple[re.Pattern[str], str, int]]:
-    """Build compiled regex patterns for text-based concept detection.
-
-    Returns (compiled_pattern, concept_id, specificity) tuples.
-    Specificity 0 = lemma match, 1 = pattern/surface-form match.
-    """
-    index: list[tuple[re.Pattern[str], str, int]] = []
-    for concept in registry.concepts:
-        lemma_lower = concept.source.lemma.lower()
-        for text in (*concept.source.patterns, *concept.target.allowed_surface_forms):
-            if text:
-                specificity = 0 if text.lower() == lemma_lower else 1
-                pat = re.compile(r"\b" + re.escape(text) + r"\b", re.IGNORECASE)
-                index.append((pat, concept.concept_id, specificity))
-    return index
