@@ -100,6 +100,27 @@ describe('BlockRenderer', () => {
     expect(screen.getByText('Примечание')).toBeDefined();
   });
 
+  // S5U-737 — orphan captions are now rendered as RenderCaptionBlock
+  // instead of being silently dropped. Pre-fix the pipeline emitted
+  // zero blocks for an orphan-caption-only IR; this assertion guards
+  // both the schema-side discriminator (kind: 'caption') and the
+  // reader-side dispatch (BlockRenderer + CaptionBlock).
+  it('renders a caption block as an orphan aside (S5U-737)', () => {
+    const block: RenderBlock = {
+      kind: 'caption',
+      id: 'p0042.b009',
+      children: [{ kind: 'text', text: 'Floating caption', marks: [] }],
+    };
+
+    const { container } = renderWithRouter(<BlockRenderer block={block} />);
+    const aside = container.querySelector('aside');
+    expect(aside).toBeDefined();
+    expect(aside?.id).toBe('p0042.b009');
+    expect(aside?.className).toBe('reader-caption');
+    expect(aside?.dataset.orphan).toBe('true');
+    expect(screen.getByText('Floating caption')).toBeDefined();
+  });
+
   it('renders a table block', () => {
     const block: RenderBlock = {
       kind: 'table',

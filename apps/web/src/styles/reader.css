@@ -261,6 +261,26 @@ h2.reader-heading {
   background: var(--color-callout-tip-bg);
 }
 
+/* --- Captions (S5U-737) --- */
+
+/*
+ * Orphan captions — translatable prose extracted as ``CaptionBlock`` whose
+ * ``figure_block_id`` did not resolve to a figure on the page. Rendered as
+ * a small italic aside with a left border so it is visually distinct from
+ * regular paragraphs and so reviewers can spot orphaned captions while
+ * comparing against the source. Attached captions still fold into
+ * ``RenderFigure.caption`` and are styled by the figure component.
+ */
+.reader-caption[data-orphan='true'] {
+  margin: var(--space-4) 0;
+  padding: var(--space-2) var(--space-4);
+  border-left: 2px dashed var(--color-border-light);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
 /* --- Tables --- */
 
 .reader-table {

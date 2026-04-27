@@ -52,6 +52,15 @@ class RenderStage:
 
     @property
     def version(self) -> str:
+        # 1.7 (S5U-737): orphan ``CaptionBlock`` instances now emit a
+        #   ``RenderCaptionBlock`` instead of being silently dropped.
+        #   The render_page.v1 artifact shape changes for any page whose
+        #   IR carries a CaptionBlock without a resolvable owning figure
+        #   (typical extraction artifact for floating in-figure prose),
+        #   so cached 1.6 pages must be regenerated (per
+        #   .claude/rules/pipeline.md cache-invalidation rule, S5U-662).
+        #   Attached captions still fold into RenderFigure.caption
+        #   unchanged.
         # 1.6 (S5U-739): ``_convert_inline_nodes`` now dispatches on
         #   ``FigureRefInline`` and emits ``RenderFigureRefInline`` instead
         #   of silently dropping the node. Every block sharing the inline
@@ -60,30 +69,16 @@ class RenderStage:
         #   shape changes for any page whose IR carries a ``figure_ref``
         #   inline. Cached 1.5 pages must be regenerated (per
         #   .claude/rules/pipeline.md cache-invalidation rule, S5U-662).
-        # 1.5 (S5U-581): callout blocks now emit ``RenderCalloutBlock``
-        #   instead of being silently dropped. The shape of every
-        #   render_page.v1 artifact for a callout-bearing page changes,
-        #   so cached pages from 1.4 must be regenerated (per
-        #   .claude/rules/pipeline.md cache-invalidation rule).
-        # 1.4 (S5U-735): RenderSourceMap now carries ``document_id``
-        #   populated from ``page_ir.document_id``. The shape of the
-        #   emitted render_page.v1 artifact changes, so cached pages
-        #   from 1.3 must be regenerated for QA rules to pick up the
-        #   real document id (per .claude/rules/pipeline.md cache-
-        #   invalidation rule).
-        # 1.3 (S5U-700 Must-refuse M2): page_builder now drops orphan
-        #   CaptionBlocks entirely instead of emitting them as floating
-        #   paragraphs. Attached captions still fold into
-        #   RenderFigure.caption unchanged.
-        # 1.2 (S5U-700): page_builder now folds CaptionBlocks into the
-        #   owning RenderFigure.caption instead of emitting floating
-        #   paragraphs. This changes the shape of render_page.v1 payloads
-        #   for any page where a caption attaches to a figure, so the
-        #   cache key must invalidate (per S5U-662).
-        # 1.1 (S5U-697): annotation filtering semantics changed — stale-IR
-        #   pairings are now rewritten to EN-only and fully-occluded outer
-        #   hotspots are suppressed.
-        return "1.6"
+        # 1.1-1.5 history (collapsed to keep file under the 400-line cap;
+        # see git log for the full retrospective per version):
+        #   1.5 (S5U-581) — callout blocks emit RenderCalloutBlock.
+        #   1.4 (S5U-735) — RenderSourceMap.document_id populated from IR.
+        #   1.3 (S5U-700 M2) — orphan CaptionBlocks dropped (now
+        #     superseded by 1.7 which renders them).
+        #   1.2 (S5U-700) — attached CaptionBlocks fold into
+        #     RenderFigure.caption.
+        #   1.1 (S5U-697) — annotation filtering semantics changed.
+        return "1.7"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is

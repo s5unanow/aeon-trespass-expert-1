@@ -34,27 +34,31 @@ export type Kind6 = 'callout';
 export type Id4 = string;
 export type Variant = string;
 export type Children3 = (RenderTextInline | RenderIconInline | RenderFigureRefInline)[];
-export type Kind7 = 'table';
+export type Kind7 = 'caption';
 export type Id5 = string;
-export type Kind8 = 'table_row';
+export type Children4 = (RenderTextInline | RenderIconInline | RenderFigureRefInline)[];
+export type Kind8 = 'table';
 export type Id6 = string;
-export type Header = boolean;
-export type Kind9 = 'table_cell';
+export type Kind9 = 'table_row';
 export type Id7 = string;
-export type Header1 = boolean;
-export type Children5 = (RenderTextInline | RenderIconInline | RenderFigureRefInline)[];
-export type Cells = RenderTableCellBlock[];
-export type Children4 = (RenderTextInline | RenderIconInline | RenderFigureRefInline | RenderTableRowBlock)[];
-export type Kind10 = 'list_item';
+export type Header = boolean;
+export type Kind10 = 'table_cell';
 export type Id8 = string;
+export type Header1 = boolean;
 export type Children6 = (RenderTextInline | RenderIconInline | RenderFigureRefInline)[];
-export type Kind11 = 'divider';
+export type Cells = RenderTableCellBlock[];
+export type Children5 = (RenderTextInline | RenderIconInline | RenderFigureRefInline | RenderTableRowBlock)[];
+export type Kind11 = 'list_item';
 export type Id9 = string;
+export type Children7 = (RenderTextInline | RenderIconInline | RenderFigureRefInline)[];
+export type Kind12 = 'divider';
+export type Id10 = string;
 export type Blocks = (
   | RenderHeadingBlock
   | RenderParagraphBlock
   | RenderFigureBlock
   | RenderCalloutBlock
+  | RenderCaptionBlock
   | RenderTableBlock
   | RenderListItemBlock
   | RenderDividerBlock
@@ -72,7 +76,7 @@ export type X0 = number;
 export type Y0 = number;
 export type X1 = number;
 export type Y1 = number;
-export type Kind12 = 'title' | 'body' | 'caption' | 'callout' | 'label';
+export type Kind13 = 'title' | 'body' | 'caption' | 'callout' | 'label';
 export type Priority = number;
 export type Annotations = FacsimileAnnotation[];
 export type GlossaryMentions = string[];
@@ -149,21 +153,37 @@ export interface RenderCalloutBlock {
   children?: Children3;
 }
 /**
- * S5U-704 — ``children`` may carry legacy flat inlines or
- * ``RenderTableRowBlock`` rows.  The table is "structured" iff any
- * child is a ``RenderTableRowBlock``.
+ * S5U-737 — orphan caption rendered as a top-level block.
+ *
+ * Captions whose ``figure_block_id`` resolves to a ``FigureBlock`` on the
+ * page are folded into ``RenderFigure.caption`` (S5U-700). Orphan captions
+ * (no ``figure_block_id`` or a pointer that does not resolve) would
+ * otherwise be silently dropped at render — they are now emitted here so
+ * the translatable prose survives to the reader. Every
+ * ``RenderCaptionBlock`` is orphan by construction; the reader stylizes
+ * via ``data-orphan="true"``.
  */
-export interface RenderTableBlock {
+export interface RenderCaptionBlock {
   kind?: Kind7;
   id: Id5;
   children?: Children4;
 }
 /**
+ * S5U-704 — ``children`` may carry legacy flat inlines or
+ * ``RenderTableRowBlock`` rows.  The table is "structured" iff any
+ * child is a ``RenderTableRowBlock``.
+ */
+export interface RenderTableBlock {
+  kind?: Kind8;
+  id: Id6;
+  children?: Children5;
+}
+/**
  * S5U-704 — a row of ``RenderTableCellBlock`` cells.
  */
 export interface RenderTableRowBlock {
-  kind?: Kind8;
-  id: Id6;
+  kind?: Kind9;
+  id: Id7;
   header?: Header;
   cells?: Cells;
 }
@@ -171,19 +191,19 @@ export interface RenderTableRowBlock {
  * S5U-704 — a structured table cell.
  */
 export interface RenderTableCellBlock {
-  kind?: Kind9;
-  id: Id7;
-  header?: Header1;
-  children?: Children5;
-}
-export interface RenderListItemBlock {
   kind?: Kind10;
   id: Id8;
+  header?: Header1;
   children?: Children6;
 }
-export interface RenderDividerBlock {
+export interface RenderListItemBlock {
   kind?: Kind11;
   id: Id9;
+  children?: Children7;
+}
+export interface RenderDividerBlock {
+  kind?: Kind12;
+  id: Id10;
 }
 export interface Figures {
   [k: string]: RenderFigure;
@@ -210,7 +230,7 @@ export interface FacsimileAnnotation {
   text: Text1;
   translated_text?: TranslatedText;
   bbox: NormRect;
-  kind?: Kind12;
+  kind?: Kind13;
   priority?: Priority;
 }
 /**

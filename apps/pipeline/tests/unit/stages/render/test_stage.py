@@ -74,6 +74,12 @@ def test_render_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "render"
     assert stage.scope == StageScope.DOCUMENT
+    # 1.6 → 1.7 (S5U-737): orphan ``CaptionBlock`` instances now emit a
+    # ``RenderCaptionBlock`` instead of being silently dropped at the top of
+    # the page_builder block loop. The render_page.v1 artifact shape changes
+    # for any page whose IR carries a CaptionBlock without a resolvable
+    # owning figure, so cached 1.6 pages must be regenerated. Attached
+    # captions continue to fold into RenderFigure.caption unchanged.
     # 1.5 → 1.6 (S5U-739): ``_convert_inline_nodes`` now emits
     # ``RenderFigureRefInline`` for ``FigureRefInline`` IR nodes instead of
     # silently dropping them. The render_page.v1 artifact shape changes for
@@ -87,7 +93,7 @@ def test_render_implements_stage_protocol() -> None:
     # from page_ir.document_id); the render_page.v1 artifact shape changed,
     # so cached 1.3 pages must be regenerated for QA rules to pick up the
     # real document id.
-    assert stage.version == "1.6"
+    assert stage.version == "1.7"
 
 
 def test_render_builds_pages(tmp_path: Path) -> None:
