@@ -69,6 +69,7 @@ export type RenderFigureBlock = NarrowBlock<renderPageV1.RenderFigureBlock> & {
 export type RenderCalloutBlock = NarrowBlock<renderPageV1.RenderCalloutBlock> & {
   variant: string;
 };
+export type RenderCaptionBlock = NarrowBlock<renderPageV1.RenderCaptionBlock>;
 
 // S5U-704 — table rows/cells are nested structured children of a table block.
 export type RenderTableCellBlock = Omit<
@@ -106,6 +107,7 @@ export type RenderBlock =
   | RenderParagraphBlock
   | RenderFigureBlock
   | RenderCalloutBlock
+  | RenderCaptionBlock
   | RenderTableBlock
   | RenderListItemBlock
   | RenderDividerBlock;

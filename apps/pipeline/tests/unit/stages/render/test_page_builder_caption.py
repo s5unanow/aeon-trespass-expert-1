@@ -66,16 +66,17 @@ class TestCaptionFolding:
         assert "p0042.fig.p0042.img0000" in block_ids
         assert "p0042.b002" in block_ids
 
-    def test_orphan_caption_is_refused(self) -> None:
-        """S5U-700 Must-refuse M2: a CaptionBlock whose ``figure_block_id``
-        does not point at any FigureBlock on the page is dropped from the
-        render output instead of rendered as detached prose.
+    def test_orphan_caption_emits_render_caption_block(self) -> None:
+        """S5U-737: a CaptionBlock whose ``figure_block_id`` does not point
+        at any FigureBlock on the page is now emitted as a
+        ``RenderCaptionBlock`` so the translatable prose survives to the
+        reader. Pre-S5U-737 the silent ``continue`` in page_builder
+        dropped the block entirely.
 
-        Red-before confirmation: at commit 403920e the orphan CaptionBlock
-        was emitted as a RenderParagraphBlock via the shared
-        ``block.type in ("paragraph", "caption")`` branch; this test
-        asserted that branch was exercised and passed for the wrong
-        reason.
+        Red-before confirmation: at commit 906a1a7 (main HEAD before this
+        PR) the page_builder loop matched ``isinstance(block, CaptionBlock)``
+        and ``continue``d unconditionally; the assertion below failed
+        because ``render.blocks`` was empty.
         """
         orphan = CaptionBlock(
             block_id="p0042.b009",
@@ -91,14 +92,24 @@ class TestCaptionFolding:
             blocks=[orphan],
         )
         render = build_render_page(ir)
-        assert all(b.id != "p0042.b009" for b in render.blocks)
+        captions = [b for b in render.blocks if b.kind == "caption"]
+        assert len(captions) == 1, (
+            f"orphan CaptionBlock must emit exactly one RenderCaptionBlock; "
+            f"got {[b.kind for b in render.blocks]}"
+        )
+        assert captions[0].id == "p0042.b009"
+        # Translatable prose is preserved verbatim.
+        text_children = [c.text for c in captions[0].children if c.kind == "text"]
+        assert text_children == ["Floating caption"]
 
-    def test_caption_with_empty_figure_block_id_is_refused(self) -> None:
-        """A CaptionBlock whose ``figure_block_id`` is the empty default
-        is also orphan per the schema (``figure_block_id: str = ""``).
+    def test_caption_with_empty_figure_block_id_emits_render_caption_block(self) -> None:
+        """S5U-737: a CaptionBlock whose ``figure_block_id`` is the empty
+        default (``""``) is also orphan per the schema. Both shapes
+        (dangling pointer and unset default) must reach the same
+        RenderCaptionBlock branch.
 
         Adversarial input: rather than a dangling pointer the block
-        simply has the default unset value — the refusal must apply
+        simply has the default unset value — the rendering must apply
         in both shapes.
         """
         orphan = CaptionBlock(
@@ -114,7 +125,24 @@ class TestCaptionFolding:
             blocks=[orphan],
         )
         render = build_render_page(ir)
-        assert all(b.id != "p0042.b009" for b in render.blocks)
+        captions = [b for b in render.blocks if b.kind == "caption"]
+        assert len(captions) == 1
+        assert captions[0].id == "p0042.b009"
+
+    def test_attached_caption_does_not_emit_render_caption_block(self) -> None:
+        """S5U-737 regression sentinel: an *attached* CaptionBlock (one
+        whose ``figure_block_id`` resolves to a FigureBlock on the page)
+        must continue to fold into ``RenderFigure.caption`` and NOT
+        appear as a top-level RenderCaptionBlock — otherwise we'd
+        duplicate every figure caption.
+        """
+        render = build_render_page(_ir_with_caption())
+        # No top-level caption blocks — attached caption was consumed.
+        assert all(b.kind != "caption" for b in render.blocks), (
+            f"attached caption leaked into top-level blocks: {[b.kind for b in render.blocks]}"
+        )
+        # Caption text is on the figure record.
+        assert render.figures["p0042.img0000"].caption == "Zone 2 example"
 
     def test_figure_without_caption_has_empty_caption_field(self) -> None:
         """Regression: figures without a CaptionBlock still emit with caption=""."""

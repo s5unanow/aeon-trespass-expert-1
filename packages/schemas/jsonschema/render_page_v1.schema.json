@@ -135,6 +135,43 @@
       "title": "RenderCalloutBlock",
       "type": "object"
     },
+    "RenderCaptionBlock": {
+      "description": "S5U-737 — orphan caption rendered as a top-level block.\n\nCaptions whose ``figure_block_id`` resolves to a ``FigureBlock`` on the\npage are folded into ``RenderFigure.caption`` (S5U-700). Orphan captions\n(no ``figure_block_id`` or a pointer that does not resolve) would\notherwise be silently dropped at render — they are now emitted here so\nthe translatable prose survives to the reader. Every\n``RenderCaptionBlock`` is orphan by construction; the reader stylizes\nvia ``data-orphan=\"true\"``.",
+      "properties": {
+        "kind": {
+          "const": "caption",
+          "default": "caption",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RenderTextInline"
+              },
+              {
+                "$ref": "#/$defs/RenderIconInline"
+              },
+              {
+                "$ref": "#/$defs/RenderFigureRefInline"
+              }
+            ]
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "RenderCaptionBlock",
+      "type": "object"
+    },
     "RenderDividerBlock": {
       "properties": {
         "kind": {
@@ -689,6 +726,9 @@
           },
           {
             "$ref": "#/$defs/RenderCalloutBlock"
+          },
+          {
+            "$ref": "#/$defs/RenderCaptionBlock"
           },
           {
             "$ref": "#/$defs/RenderTableBlock"

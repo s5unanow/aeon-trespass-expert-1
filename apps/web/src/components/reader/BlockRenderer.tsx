@@ -1,5 +1,6 @@
 import type { RenderBlock, RenderFigure } from '../../lib/render/types';
 import { CalloutBlock } from './CalloutBlock';
+import { CaptionBlock } from './CaptionBlock';
 import { FigureBlock } from './FigureBlock';
 import { HeadingBlock } from './HeadingBlock';
 import { ListItemBlock } from './ListItemBlock';
@@ -24,6 +25,8 @@ export function BlockRenderer({ block, figures, pageOffset }: BlockRendererProps
       return <ListItemBlock block={block} />;
     case 'callout':
       return <CalloutBlock block={block} />;
+    case 'caption':
+      return <CaptionBlock block={block} />;
     case 'table':
       return <TableBlock block={block} />;
     case 'divider':

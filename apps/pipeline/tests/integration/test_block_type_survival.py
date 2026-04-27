@@ -63,12 +63,15 @@ INTENTIONALLY_DROPPED: dict[str, str] = {
     "divider": "Decorative rule with no translatable content",
     "unknown": "Pre-publish placeholder that must be resolved before render",
     "list": "Container block — individual ListItemBlocks are rendered instead",
-    "caption": (
-        "Captions never render as standalone blocks: attached captions are "
-        "folded into RenderFigure.caption, and orphan captions are refused "
-        "per S5U-700 Must-refuse M2."
-    ),
 }
+# S5U-737: ``caption`` was previously listed here ("orphan captions are
+# refused per S5U-700 Must-refuse M2"). The actual S5U-700 mechanism is a
+# WARNING-level QA, not a refusal, so the silent ``continue`` in
+# page_builder dropped translatable prose that QA had not blocked. Orphan
+# captions now emit a ``RenderCaptionBlock`` so the prose survives to the
+# reader; the ``_BLOCK_FACTORIES["caption"]`` fixture below constructs an
+# orphan caption (no figure_block_id) and reaches the
+# "produces a render block" branch of the survival assertion.
 
 # ---------------------------------------------------------------------------
 # Extract all block type tags from the Block discriminated union

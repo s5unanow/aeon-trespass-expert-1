@@ -31,6 +31,7 @@ from atr_schemas.page_ir_v1 import (
 from atr_schemas.render_page_v1 import (
     RenderBlock,
     RenderCalloutBlock,
+    RenderCaptionBlock,
     RenderFigure,
     RenderFigureBlock,
     RenderFigureRefInline,
@@ -109,18 +110,14 @@ def build_render_page(
     figures: dict[str, RenderFigure] = {}
     title = ""
 
-    caption_for_figure = _resolve_caption_attachments(page_ir)
+    caption_for_figure, consumed_caption_ids = _resolve_caption_attachments(page_ir)
 
     for block in page_ir.blocks:
         block_refs.append(block.block_id)
         if isinstance(block, (DividerBlock, UnknownBlock)):
             continue
         if isinstance(block, CaptionBlock):
-            # S5U-700 Must-refuse M2: captions without a resolvable owning
-            # figure are refused instead of rendered as detached prose.
-            # Attached captions (block_id in consumed_caption_ids) are
-            # folded into RenderFigure.caption by _emit_figure_block, so
-            # they are also dropped from the top-level block stream.
+            _dispatch_caption_block(block, render_blocks, consumed_caption_ids)
             continue
 
         # FigureBlock does not have translatable text children — handle separately
@@ -224,16 +221,47 @@ def _emit_figure_block(
     )
 
 
-def _resolve_caption_attachments(page_ir: PageIRV1) -> dict[str, str]:
+def _dispatch_caption_block(
+    block: CaptionBlock,
+    render_blocks: list[RenderBlock],
+    consumed_caption_ids: set[str],
+) -> None:
+    """S5U-737: dispatch a top-level CaptionBlock.
+
+    Attached captions (``block.block_id in consumed_caption_ids``) are
+    already folded into ``RenderFigure.caption`` by ``_emit_figure_block``
+    via the ``caption_for_figure`` map, so they are dropped from the
+    top-level block stream here. Orphan captions (block_id not in the
+    consumed set) are emitted as a ``RenderCaptionBlock`` instead — pre-
+    S5U-737 they were silently dropped, leaking translatable prose.
+    """
+    if block.block_id in consumed_caption_ids:
+        return
+    render_blocks.append(
+        RenderCaptionBlock(
+            id=block.block_id,
+            children=_convert_inline_nodes(list(block.children)),
+        )
+    )
+
+
+def _resolve_caption_attachments(page_ir: PageIRV1) -> tuple[dict[str, str], set[str]]:
     """S5U-700: fold each attached CaptionBlock into its owning figure.
 
-    Returns a mapping of figure asset_id → caption text, consumed by
-    ``_emit_figure_block`` to populate ``RenderFigure.caption``. Orphan
-    CaptionBlocks (no ``figure_block_id`` or pointer does not resolve to
-    a FigureBlock on the page) are skipped; the caller drops every
-    CaptionBlock from the render output per Must-refuse M2.
+    Returns a tuple of ``(caption_for_figure, consumed_caption_ids)``:
+
+    * ``caption_for_figure`` — mapping of figure asset_id → caption text,
+      consumed by ``_emit_figure_block`` to populate
+      ``RenderFigure.caption``.
+    * ``consumed_caption_ids`` — the ``block_id`` set of every
+      ``CaptionBlock`` that was successfully attached to a figure on the
+      page. The caller uses this set to distinguish attached captions
+      (drop from the top-level block stream — already folded into
+      RenderFigure.caption) from orphan captions (S5U-737 — emit as a
+      ``RenderCaptionBlock`` so translatable prose survives).
     """
     caption_for_figure: dict[str, str] = {}
+    consumed_caption_ids: set[str] = set()
     figure_id_to_asset: dict[str, str] = {
         b.block_id: b.asset_id for b in page_ir.blocks if isinstance(b, FigureBlock)
     }
@@ -243,12 +271,13 @@ def _resolve_caption_attachments(page_ir: PageIRV1) -> dict[str, str]:
         target_asset = figure_id_to_asset.get(block.figure_block_id)
         if target_asset is None:
             continue
+        consumed_caption_ids.add(block.block_id)
         text = " ".join(
             c.text for c in block.children if isinstance(c, TextInline) and c.text.strip()
         ).strip()
         if text:
             caption_for_figure[target_asset] = text
-    return caption_for_figure
+    return caption_for_figure, consumed_caption_ids
 
 
 def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:

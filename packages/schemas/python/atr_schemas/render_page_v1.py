@@ -96,6 +96,23 @@ class RenderCalloutBlock(BaseModel):
     children: list[RenderInlineNode] = Field(default_factory=list)
 
 
+class RenderCaptionBlock(BaseModel):
+    """S5U-737 — orphan caption rendered as a top-level block.
+
+    Captions whose ``figure_block_id`` resolves to a ``FigureBlock`` on the
+    page are folded into ``RenderFigure.caption`` (S5U-700). Orphan captions
+    (no ``figure_block_id`` or a pointer that does not resolve) would
+    otherwise be silently dropped at render — they are now emitted here so
+    the translatable prose survives to the reader. Every
+    ``RenderCaptionBlock`` is orphan by construction; the reader stylizes
+    via ``data-orphan="true"``.
+    """
+
+    kind: Literal["caption"] = "caption"
+    id: str
+    children: list[RenderInlineNode] = Field(default_factory=list)
+
+
 class RenderTableCellBlock(BaseModel):
     """S5U-704 — a structured table cell."""
 
@@ -162,6 +179,7 @@ RenderBlock = Annotated[
     | Annotated[RenderParagraphBlock, Tag("paragraph")]
     | Annotated[RenderFigureBlock, Tag("figure")]
     | Annotated[RenderCalloutBlock, Tag("callout")]
+    | Annotated[RenderCaptionBlock, Tag("caption")]
     | Annotated[RenderTableBlock, Tag("table")]
     | Annotated[RenderListItemBlock, Tag("list_item")]
     | Annotated[RenderDividerBlock, Tag("divider")],

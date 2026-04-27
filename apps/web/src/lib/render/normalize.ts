@@ -150,6 +150,16 @@ function normalizeBlock(raw: unknown, path: string): RenderBlock {
         variant: asString(raw.variant, `${path}.variant`, ''),
         children: normalizeInlines(raw.children ?? [], `${path}.children`),
       };
+    case 'caption':
+      // S5U-737: orphan captions emitted by the pipeline as a dedicated
+      // RenderCaptionBlock so the translatable prose survives to the
+      // reader. Attached captions are folded into RenderFigure.caption
+      // upstream and never reach this branch.
+      return {
+        kind: 'caption',
+        id,
+        children: normalizeInlines(raw.children ?? [], `${path}.children`),
+      };
     case 'table':
       return {
         kind: 'table',
