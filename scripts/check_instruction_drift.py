@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Instruction/config drift scanner (S5U-658/667/668/694/727).
+"""Instruction/config drift scanner (S5U-658/667/668/694/727/729).
 
 Fails CI when repo instruction files drift from their authoritative source.
-Four fail-closed rules (A/B/C/E) plus one advisory (D):
+Five fail-closed rules (A/B/C/E/F) plus one advisory (D):
 
 * Rule A — check-count claim drift vs `.claude/prompts/review.md` max
   numbered item. Structural exemption per S5U-667 (line matches
@@ -21,6 +21,10 @@ Four fail-closed rules (A/B/C/E) plus one advisory (D):
   header ``9 + N extra``, enumerated list max ``L``, and every
   ``all K gates`` claim agree (N = L-8, K = L+1). In
   `_instruction_drift_rule_e.py`.
+* Rule F — CI body inline enumeration ban (S5U-729). Forbids mid-line
+  ``\\d+\\. `` markers in the CI body so Rule E's line-start regex
+  cannot silently miss compressed ``X. ... / Y. ...`` items. In
+  `_instruction_drift_rule_f.py`.
 
 Exit codes: 0 = no drift; 1 = a fail-closed rule violated OR authoritative
 source missing/unparseable.
@@ -52,6 +56,7 @@ from _instruction_drift_rule_c import (
 )
 from _instruction_drift_rule_d import rule_d_advisory
 from _instruction_drift_rule_e import scan_ci_gate_claims
+from _instruction_drift_rule_f import scan_ci_body_inline_enumeration
 
 # --- Paths ---------------------------------------------------------------
 
@@ -118,6 +123,7 @@ def run(repo_root: Path) -> int:
         claude_md_text = ""
     try:
         errors.extend(scan_ci_gate_claims(claude_md_text))
+        errors.extend(scan_ci_body_inline_enumeration(claude_md_text))
     except RuntimeError as exc:
         print(f"check_instruction_drift: FAIL-CLOSED: {exc}", file=sys.stderr)
         return 1
