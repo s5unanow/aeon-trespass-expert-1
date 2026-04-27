@@ -68,7 +68,10 @@ describe('BlockRenderer', () => {
     expect(screen.getByText('Первый пункт')).toBeDefined();
   });
 
-  it('renders a callout block with variant', () => {
+  // Regression sentinel: a real variant value must be reflected on the DOM as
+  // `data-variant="<value>"` so reader.css selectors (`.reader-callout
+  // [data-variant='warning'/'info'/'tip']`) can stylize the callout.
+  it('renders a callout block with variant (data-variant attribute set)', () => {
     const block: RenderBlock = {
       kind: 'callout',
       id: 'p0001.b005',
@@ -85,10 +88,16 @@ describe('BlockRenderer', () => {
     expect(screen.getByText('Внимание!')).toBeDefined();
   });
 
-  it('renders a callout block without variant', () => {
+  // S5U-738 — production-truthful default: the Pydantic schema
+  // `RenderCalloutBlock.variant: str = ""` and the web normalizer
+  // (`asString(raw.variant, …, '')`) both emit `''`, never `undefined`.
+  // The component must coerce `''` to no `data-variant` attribute so the
+  // empty value doesn't end up in the DOM matching no CSS selector.
+  it('renders a callout block when variant is empty string (production default)', () => {
     const block: RenderBlock = {
       kind: 'callout',
       id: 'p0001.b008',
+      variant: '',
       children: [{ kind: 'text', text: 'Примечание', marks: [] }],
     };
 
@@ -97,7 +106,28 @@ describe('BlockRenderer', () => {
     expect(aside).toBeDefined();
     expect(aside?.className).toBe('reader-callout');
     expect(aside?.dataset.variant).toBeUndefined();
+    expect(aside?.hasAttribute('data-variant')).toBe(false);
     expect(screen.getByText('Примечание')).toBeDefined();
+  });
+
+  // The literal-omitted case (variant absent from the input object) is
+  // not a state production ever emits — the normalizer always sets
+  // variant to a string. Kept here as a defensive test pinning the
+  // component's `||` fallback for both `undefined` and `''`.
+  it('renders a callout block when variant is omitted from the literal', () => {
+    const block: RenderBlock = {
+      kind: 'callout',
+      id: 'p0001.b009',
+      children: [{ kind: 'text', text: 'Примечание-2', marks: [] }],
+    };
+
+    const { container } = renderWithRouter(<BlockRenderer block={block} />);
+    const aside = container.querySelector('aside');
+    expect(aside).toBeDefined();
+    expect(aside?.className).toBe('reader-callout');
+    expect(aside?.dataset.variant).toBeUndefined();
+    expect(aside?.hasAttribute('data-variant')).toBe(false);
+    expect(screen.getByText('Примечание-2')).toBeDefined();
   });
 
   // S5U-737 — orphan captions are now rendered as RenderCaptionBlock
