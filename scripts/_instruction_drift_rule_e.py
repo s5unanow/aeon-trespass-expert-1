@@ -97,12 +97,22 @@ def _ci_section_body(text: str) -> tuple[str, int, int]:
     """Return (body, header_line_number, header_n_claimed).
 
     The body is the slice of text starting right after the header line and
-    ending at the next ``## `` / ``### `` heading (or end of file). The
-    ``header_line_number`` is 1-indexed and points at the line containing
-    the CI header. ``header_n_claimed`` is the integer parsed out of
-    ``9 + N extra``.
+    ending at the next ``## `` / ``### `` heading **outside any fenced code
+    block**, or end of file. The ``header_line_number`` is 1-indexed and
+    points at the line containing the CI header. ``header_n_claimed`` is
+    the integer parsed out of ``9 + N extra``.
 
     Raises ``RuntimeError`` if the header is absent.
+
+    Fence-aware termination (S5U-742): a ``## `` / ``### `` line inside a
+    fenced code block (delimited by ``\\`\\`\\``) does NOT terminate the
+    slice. Rule F's existing fence detector toggles on the same delimiter;
+    keeping the convention symmetric across the two modules. Tilde fences
+    (``~~~``) are intentionally NOT honored — Rule F doesn't honor them
+    either, and CLAUDE.md does not use them. If a future edit introduces
+    them, both modules must be extended in lockstep. An unclosed fence
+    leaves the walker in ``in_fence=True`` state and the slice runs to
+    EOF — same soft-limit convention Rule F documents.
     """
     match = _CI_HEADER_RE.search(text)
     if match is None:
@@ -115,9 +125,20 @@ def _ci_section_body(text: str) -> tuple[str, int, int]:
     # Body starts right after the header line's newline.
     body_newline = text.find("\n", match.end())
     body_start = len(text) if body_newline == -1 else body_newline + 1
-    # Body ends at the next ``## `` or ``### `` heading, or EOF.
-    next_heading = re.search(r"^#{2,3}\s+", text[body_start:], re.MULTILINE)
-    body_end = len(text) if next_heading is None else body_start + next_heading.start()
+
+    # Walk the body line-by-line tracking fence state. Stop only at a
+    # heading-shaped line OUTSIDE any fence.
+    in_fence = False
+    body_end = len(text)
+    cursor = body_start
+    for line in text[body_start:].splitlines(keepends=True):
+        stripped = line.lstrip()
+        if stripped.startswith("```"):
+            in_fence = not in_fence
+        elif not in_fence and re.match(r"^#{2,3}\s+", line):
+            body_end = cursor
+            break
+        cursor += len(line)
     return text[body_start:body_end], header_line_number, int(match.group(1))
 
 
