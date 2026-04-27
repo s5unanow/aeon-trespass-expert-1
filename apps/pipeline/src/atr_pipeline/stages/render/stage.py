@@ -69,7 +69,7 @@ class RenderStage:
         #   shape changes for any page whose IR carries a ``figure_ref``
         #   inline. Cached 1.5 pages must be regenerated (per
         #   .claude/rules/pipeline.md cache-invalidation rule, S5U-662).
-        # 1.1–1.5 history (collapsed to keep file under the 400-line cap;
+        # 1.1-1.5 history (collapsed to keep file under the 400-line cap;
         # see git log for the full retrospective per version):
         #   1.5 (S5U-581) — callout blocks emit RenderCalloutBlock.
         #   1.4 (S5U-735) — RenderSourceMap.document_id populated from IR.
