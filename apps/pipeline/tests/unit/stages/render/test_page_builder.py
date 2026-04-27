@@ -14,6 +14,7 @@ from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import (
     CalloutBlock,
     FigureBlock,
+    FigureRefInline,
     HeadingBlock,
     IconInline,
     LineBreakInline,
@@ -880,6 +881,133 @@ def test_callout_preserves_inline_kinds_and_variant() -> None:
     assert children[2].kind == "text"
     # The icon symbol_id is preserved.
     assert children[1].symbol_id == "sym.danger"  # type: ignore[union-attr]
+
+
+# ── figure_ref inline dispatch (S5U-739) ────────────────────────────
+
+
+def test_callout_with_figure_ref_only_emits_render_figure_ref() -> None:
+    """S5U-739: a CalloutBlock whose only child is a ``FigureRefInline``
+    produces a ``RenderCalloutBlock`` carrying a single
+    ``RenderFigureRefInline`` — the inline survives the dispatch instead
+    of being silently dropped by the else-branch.
+
+    Red-before confirmation: prior to the page_builder.py edit on this
+    branch, ``_convert_inline_nodes`` had no ``figure_ref`` dispatch
+    branch, so the figure_ref fell through and the callout's ``children``
+    came back empty — ``len(callout.children) == 1`` failed at
+    ``assert 0 == 1``. Run on commit
+    ac7ebd807d2c23dbd114a501a8caf0cd22f5021d (the pre-fix tree, see
+    `git worktree add /tmp/s5u-739-pre <sha>`): the assertion in the next
+    block fails because the dispatch silently drops the node.
+    """
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0080",
+        page_number=80,
+        language=LanguageCode.EN,
+        blocks=[
+            CalloutBlock(
+                block_id="p0080.b001",
+                variant="info",
+                children=[FigureRefInline(asset_id="fig.X", label="Figure X")],
+            ),
+        ],
+        reading_order=["p0080.b001"],
+    )
+    render = build_render_page(ir)
+
+    assert len(render.blocks) == 1
+    block = render.blocks[0]
+    assert block.kind == "callout"
+    children = block.children  # type: ignore[union-attr]
+    assert len(children) == 1
+    assert children[0].kind == "figure_ref"
+    assert children[0].asset_id == "fig.X"  # type: ignore[union-attr]
+    assert children[0].label == "Figure X"  # type: ignore[union-attr]
+
+
+def test_callout_mixes_text_figure_ref_and_icon_preserves_order() -> None:
+    """S5U-739: a CalloutBlock with mixed inline kinds preserves the order
+    and each kind round-trips through the dispatch.
+
+    The render order ``text → figure_ref → icon → text`` mirrors the IR
+    order. The ``figure_ref`` carries the right ``asset_id`` and ``label``;
+    surrounding text and icon nodes still convert to ``RenderTextInline``
+    and ``RenderIconInline`` respectively.
+
+    Red-before confirmation: pre-fix on commit
+    ac7ebd807d2c23dbd114a501a8caf0cd22f5021d, the figure_ref was silently
+    dropped, so ``len(children)`` was 3 (text + icon + text) — the
+    ``len(children) == 4`` assertion failed.
+    """
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0081",
+        page_number=81,
+        language=LanguageCode.EN,
+        blocks=[
+            CalloutBlock(
+                block_id="p0081.b001",
+                variant="warning",
+                children=[
+                    TextInline(text="see ", lang=LanguageCode.EN),
+                    FigureRefInline(asset_id="fig.Y", label="Figure Y"),
+                    IconInline(symbol_id="sym.danger", instance_id="syminst.p0081.01"),
+                    TextInline(text=" carefully.", lang=LanguageCode.EN),
+                ],
+            ),
+        ],
+        reading_order=["p0081.b001"],
+    )
+    render = build_render_page(ir)
+
+    assert len(render.blocks) == 1
+    block = render.blocks[0]
+    assert block.kind == "callout"
+    children = block.children  # type: ignore[union-attr]
+    assert len(children) == 4
+    assert [c.kind for c in children] == ["text", "figure_ref", "icon", "text"]
+    assert children[1].asset_id == "fig.Y"  # type: ignore[union-attr]
+    assert children[1].label == "Figure Y"  # type: ignore[union-attr]
+    assert children[2].symbol_id == "sym.danger"  # type: ignore[union-attr]
+
+
+def test_paragraph_with_figure_ref_emits_render_figure_ref() -> None:
+    """S5U-739: the dispatch widening is shared across every block whose
+    children share ``_convert_inline_nodes`` — paragraphs included.
+
+    A paragraph carrying a single ``FigureRefInline`` produces a
+    ``RenderParagraphBlock`` with one ``RenderFigureRefInline`` child.
+
+    Red-before confirmation: same pre-fix SHA
+    ac7ebd807d2c23dbd114a501a8caf0cd22f5021d — ``_convert_inline_nodes``
+    silently dropped the figure_ref, so the paragraph's children list
+    came back empty and ``len(children) == 1`` failed.
+    """
+    ir = PageIRV1(
+        document_id="test_doc",
+        page_id="p0082",
+        page_number=82,
+        language=LanguageCode.EN,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0082.b001",
+                children=[FigureRefInline(asset_id="fig.Z", label="Figure Z")],
+            ),
+        ],
+        reading_order=["p0082.b001"],
+    )
+    render = build_render_page(ir)
+
+    assert len(render.blocks) == 1
+    block = render.blocks[0]
+    assert block.kind == "paragraph"
+    children = block.children  # type: ignore[union-attr]
+    assert len(children) == 1
+    assert children[0].kind == "figure_ref"
+    assert children[0].asset_id == "fig.Z"  # type: ignore[union-attr]
+    assert children[0].label == "Figure Z"  # type: ignore[union-attr]
 
 
 def test_article_mode_garbage_title_gets_fallback() -> None:
