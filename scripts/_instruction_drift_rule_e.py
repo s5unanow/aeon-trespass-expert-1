@@ -57,6 +57,14 @@ backstops stay aligned.
   reviewer would likely catch; the ``all K gates`` claim would also
   disagree if the author believed the count was the gap-including
   number.
+
+## Sibling guard (Rule F, S5U-729)
+
+The line-start anchor on `_NUMBERED_ITEM_RE` makes Rule E silently miss
+inline markers like ``11. foo / 12. bar`` on a single line. Rule F
+(`_instruction_drift_rule_f.py`) closes that convention by forbidding
+the compressed shape in CLAUDE.md's CI body. Rule F reuses
+`_ci_section_body` here so the two rules read the same body slice.
 """
 
 from __future__ import annotations

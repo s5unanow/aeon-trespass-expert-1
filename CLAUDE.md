@@ -51,7 +51,8 @@ Two tiers of checks run at different stages. Both must pass.
 
 9. `check_codegen_fresh.sh` — generated JSON Schema + TS types match Pydantic sources (also `make check-codegen`).
 10. `validate_fixture_manifest.py` — fixture integrity (also `make validate-fixtures`).
-11. `check_extraction_scope.py` / 12. `check_golden_refresh.py` — CI-only (need base-branch comparison); gate golden refreshes when extraction scope is detected.
+11. `check_extraction_scope.py` — CI-only (needs base-branch comparison); reports when a PR touches extraction scope.
+12. `check_golden_refresh.py` — CI-only (needs base-branch comparison); gates golden refreshes when extraction scope is detected.
 13. `visual-regression / visual` — Playwright `toHaveScreenshot` at `maxDiffPixelRatio: 0.005`. Full stack in `.claude/rules/visual-verify.md` § "Visual regression CI gate".
 14. `visual-gate-scope / scan` — content-derived scan of workflow YAML and `apps/web/package.json` for flags that bypass the visual-regression gate. See `.claude/rules/guards.md` Rule G2.
 15. `coverage-table-scan / scan` — on `pull_request`, enforces the Coverage table on ≥3-bullet Linear issues. Requires `LINEAR_API_KEY`.
