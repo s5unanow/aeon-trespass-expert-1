@@ -123,4 +123,5 @@ testpaths = ["apps/pipeline/tests"]
 addopts = "-ra -q"
 markers = [
     "slow: marks tests as slow (skipped by pre-commit hook)",
+    "codex_live: marks tests that shell out to a real `codex` CLI; opt-in only via the ATR_CODEX_LIVE_SMOKE=1 env var",
 ]

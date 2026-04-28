@@ -138,6 +138,7 @@ Review-path selection is **determined by whether the `Agent` tool is available i
 - Path-specific conventions (Python, TypeScript, extraction, schemas, web, hooks, visual-verify, CI guards, merge discipline) are in `.claude/rules/` — auto-loaded on path match.
 - **Linear issue conventions**: read `.claude/prompts/linear-conventions.md` before creating or updating Linear issues
 - **Scripts before skills**: before invoking a slash-command skill for batch or multi-step work, check `scripts/` for a purpose-built tool (e.g., `scripts/run-issues.sh` for batch issue runs — use this instead of `/build-loop`)
+- **Translation provider switching** (S5U-748): see `docs/specs/translation-providers.md` for the `gemini-cli` ↔ `codex-cli` switch and the opt-in Codex CLI smoke command (`-m codex_live` + `ATR_CODEX_LIVE_SMOKE=1`)
 
 ## NEVER
 

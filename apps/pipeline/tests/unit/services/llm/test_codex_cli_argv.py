@@ -174,3 +174,43 @@ def test_codex_cli_argv_omits_json_when_disabled() -> None:
         adapter.translate_batch(make_batch())
     argv = mock_run.call_args.args[0]
     assert "--json" not in argv
+
+
+def test_codex_cli_argv_keeps_required_flags_for_unattended_use() -> None:
+    """Single regression-pin for the S5U-748 success criterion: dropping any
+    of ``--output-schema``, ``approval_policy=never``, or ``sandbox=read-only``
+    from argv must fail this test.
+
+    Each individual flag is also covered by a dedicated test elsewhere in
+    this file; this one explicitly bundles all three so a future refactor
+    that "cleans up argv construction" cannot quietly drop one without a
+    failing test screaming at the diff.
+    """
+    adapter = CodexCLIAdapter(
+        model="gpt-5.5",
+        sandbox="read-only",
+        approval_policy="never",
+    )
+    with patch(
+        "atr_pipeline.services.llm.codex_cli_adapter.subprocess.run",
+        side_effect=last_msg_writer(make_valid_result_json()),
+    ) as mock_run:
+        adapter.translate_batch(make_batch())
+    argv = mock_run.call_args.args[0]
+
+    # 1) --output-schema present and points at a JSON-schema file.
+    schema_path = argv_value_after(argv, "--output-schema")
+    assert schema_path is not None, "argv must include --output-schema"
+
+    # 2) sandbox=read-only via long flag (the value is asserted on
+    # argv directly, not just in the adapter's stored config).
+    assert argv_value_after(argv, "--sandbox") == "read-only"
+
+    # 3) approval_policy=never via -c config override (codex exec does
+    # not accept --ask-for-approval; -c is the only safe surface).
+    config_overrides = [argv[i + 1] for i, t in enumerate(argv) if t == "-c"]
+    matching = [o for o in config_overrides if "approval_policy=" in o]
+    assert matching, f"-c approval_policy=... must appear in {argv}"
+    assert any("'never'" in o or '"never"' in o for o in matching), (
+        f"approval_policy must be 'never' for unattended runs; got {matching}"
+    )
