@@ -118,11 +118,10 @@ def test_factory_creates_mock() -> None:
 
 
 def test_factory_rejects_unknown_provider() -> None:
+    """Unknown providers are rejected by the config validator (S5U-746)."""
     import pytest
 
     from atr_pipeline.config.models import TranslationConfig
-    from atr_pipeline.services.llm.factory import create_translator
 
-    config = TranslationConfig(provider="nonexistent")
     with pytest.raises(ValueError, match="Unknown translation provider"):
-        create_translator(config)
+        TranslationConfig(provider="nonexistent")

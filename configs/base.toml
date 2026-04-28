@@ -31,6 +31,24 @@ temperature = 0.0
 batch_size = 24
 prompt_profile = "translate_rules_ru.v1"
 
+# Example — provider-specific options (S5U-746). Each provider only consumes
+# the namespace that matches its shape (CLI vs API); cross-provider option
+# leakage is rejected by the factory before any LLM/subprocess call. Defaults
+# below match the adapter-side behaviour and are commented out so this block
+# remains a documentation reference.
+#
+# [translation.provider_options.cli]
+# timeout_seconds = 300       # gemini-cli, codex-cli (S5U-747)
+# json_mode = true             # require JSON output
+# # codex-cli only:
+# # reasoning_effort = "medium"
+# # sandbox = "read-only"
+# # approval_policy = "never"
+# # output_file_mode = false
+#
+# [translation.fallback_options.api]
+# # api_key = ""                # empty -> SDK env-var fallback
+
 [structure]
 heading_fonts = ["GreenleafLightPro", "Goobascript"]
 decorative_fonts = ["GreenleafBannersRegularL"]

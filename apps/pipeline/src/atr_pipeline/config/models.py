@@ -5,9 +5,25 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from atr_schemas.common import Rect
+
+# Translation provider canonical names — known to the config layer.
+# A name listed here is *accepted* by Pydantic validation; the factory may
+# still reject it (e.g. ``codex-cli`` is reserved here so configs can be
+# authored against S5U-746 ahead of the S5U-747 adapter landing, but the
+# factory raises until that adapter is wired up).
+_KNOWN_TRANSLATION_PROVIDERS: frozenset[str] = frozenset(
+    {"mock", "openai", "anthropic", "gemini", "gemini-cli", "codex-cli"},
+)
+
+# Providers for which an empty ``model_default`` is acceptable because the
+# adapter applies a documented default model (currently the Gemini family).
+_PROVIDERS_WITH_DEFAULT_MODEL: frozenset[str] = frozenset({"gemini", "gemini-cli"})
+
+# Providers that do not require a model at all (mock has no real call).
+_PROVIDERS_WITHOUT_MODEL: frozenset[str] = frozenset({"mock"})
 
 
 class DocumentConfig(BaseModel):
@@ -71,8 +87,76 @@ class SymbolsConfig(BaseModel):
     match_threshold: float = Field(default=0.93, ge=0.0, le=1.0)
 
 
+class CLIProviderOptions(BaseModel):
+    """Options applicable to CLI-shaped providers (gemini-cli, codex-cli).
+
+    Each field is optional — the adapter applies its own documented default
+    when a value is omitted. Unknown keys are rejected (``extra="forbid"``)
+    so a typo in TOML surfaces at config-load time, not at runtime.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    executable: str | None = None
+    """Override the path to the CLI binary. ``None`` -> rely on PATH."""
+
+    timeout_seconds: int = Field(default=300, ge=1)
+    """Subprocess timeout (seconds). Adapter must enforce this."""
+
+    reasoning_effort: str | None = None
+    """Codex CLI ``--reasoning-effort`` value (``low`` / ``medium`` / ``high``).
+    Ignored by gemini-cli."""
+
+    sandbox: str | None = None
+    """Codex CLI sandbox mode. Ignored by gemini-cli."""
+
+    approval_policy: str | None = None
+    """Codex CLI approval policy. Ignored by gemini-cli."""
+
+    json_mode: bool = True
+    """Require JSON-shaped output from the CLI (default true)."""
+
+    output_file_mode: bool = False
+    """If true, the adapter passes ``-o <path>`` and reads the file rather
+    than capturing stdout. Codex CLI feature; gemini-cli ignores this."""
+
+
+class APIProviderOptions(BaseModel):
+    """Options applicable to API-shaped providers (openai, anthropic, gemini)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    api_key: str = ""
+    """Provider API key. Empty -> rely on the SDK's environment fallback."""
+
+
+class TranslationProviderOptions(BaseModel):
+    """Provider-specific options bundle, namespaced by provider shape.
+
+    ``cli`` carries options for CLI providers (gemini-cli, codex-cli).
+    ``api`` carries options for API providers (openai, anthropic, gemini).
+    Both are optional; default-empty namespaces are non-leakage and accepted
+    by every provider. The factory enforces "options bundle matches provider
+    shape" for *non-default* values (S5U-746).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    cli: CLIProviderOptions = Field(default_factory=CLIProviderOptions)
+    api: APIProviderOptions = Field(default_factory=APIProviderOptions)
+
+
 class TranslationConfig(BaseModel):
-    """Translation provider and model configuration."""
+    """Translation provider and model configuration.
+
+    The flat ``provider`` / ``model_default`` / ``fallback_provider`` /
+    ``fallback_model`` / ``temperature`` / ``max_retries`` /
+    ``retry_delay_seconds`` keys remain the supported authoring surface. The
+    nested ``provider_options`` / ``fallback_options`` namespaces carry
+    provider-specific knobs without leaking across providers (S5U-746).
+    """
+
+    model_config = ConfigDict(extra="forbid")
 
     provider: str = "gemini-cli"
     model_default: str = "gemini-2.5-flash"
@@ -84,6 +168,72 @@ class TranslationConfig(BaseModel):
     prompt_profile: str = "translate_rules_ru.v1"
     max_retries: int = Field(default=2, ge=0)
     retry_delay_seconds: float = Field(default=1.0, ge=0.0)
+
+    provider_options: TranslationProviderOptions = Field(
+        default_factory=TranslationProviderOptions,
+    )
+    fallback_options: TranslationProviderOptions = Field(
+        default_factory=TranslationProviderOptions,
+    )
+
+    @model_validator(mode="after")
+    def _normalize_and_validate(self) -> TranslationConfig:
+        # Normalize provider names to lower-case so casing differences
+        # (``Codex-CLI``, ``GEMINI-CLI``) become non-issues downstream.
+        object.__setattr__(self, "provider", self.provider.lower())
+        if self.fallback_provider:
+            object.__setattr__(
+                self,
+                "fallback_provider",
+                self.fallback_provider.lower(),
+            )
+
+        # Reject unknown provider names early — before any LLM/subprocess
+        # call. The factory may further reject reserved names (e.g.
+        # ``codex-cli`` until its adapter lands) but this layer is the
+        # strict allowlist gate for the config surface.
+        if self.provider not in _KNOWN_TRANSLATION_PROVIDERS:
+            msg = (
+                f"Unknown translation provider: {self.provider!r}. "
+                f"Known providers: {sorted(_KNOWN_TRANSLATION_PROVIDERS)}"
+            )
+            raise ValueError(msg)
+        if self.fallback_provider and self.fallback_provider not in _KNOWN_TRANSLATION_PROVIDERS:
+            msg = (
+                f"Unknown translation fallback_provider: "
+                f"{self.fallback_provider!r}. "
+                f"Known providers: {sorted(_KNOWN_TRANSLATION_PROVIDERS)}"
+            )
+            raise ValueError(msg)
+
+        # Require ``model_default`` for non-mock, non-Gemini-family providers.
+        # Gemini-family adapters apply a documented default when the field
+        # is empty; mock has no real call. Anything else is a config bug.
+        if (
+            self.provider not in _PROVIDERS_WITHOUT_MODEL
+            and self.provider not in _PROVIDERS_WITH_DEFAULT_MODEL
+            and not self.model_default
+        ):
+            msg = (
+                f"Provider {self.provider!r} requires a non-empty "
+                f"model_default — no documented default exists for this "
+                f"provider."
+            )
+            raise ValueError(msg)
+        if (
+            self.fallback_provider
+            and self.fallback_provider not in _PROVIDERS_WITHOUT_MODEL
+            and self.fallback_provider not in _PROVIDERS_WITH_DEFAULT_MODEL
+            and not self.fallback_model
+        ):
+            msg = (
+                f"Fallback provider {self.fallback_provider!r} requires a "
+                f"non-empty fallback_model — no documented default exists "
+                f"for this provider."
+            )
+            raise ValueError(msg)
+
+        return self
 
 
 class StructurePageOverride(BaseModel):
