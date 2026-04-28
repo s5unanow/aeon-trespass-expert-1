@@ -57,12 +57,18 @@ Rule F. These are not documented compression shapes; if a worker
 introduces one, the appropriate response is to extend the separator
 set, not to weaken the regex.
 
-Code-fence-tracking: lines starting with ``\\`\\`\\`` toggle a fence flag;
-content inside a fenced code block is skipped (so a bash snippet
-referencing ``step 12.`` in the CI body does not false-positive). An
-unclosed fence is a documented soft limit — the walker stays in
-"inside-fence" mode and could mask later violations, but a malformed
-fence would be caught by other lints.
+Code-fence-tracking: Rule F shares the fence-length-aware walker
+(`walk_with_fence_state`) with Rule E (S5U-743). A fence opened with N
+backticks closes only on a line of ≥N backticks of the same character
+with no info-string (CommonMark §4.5). Content inside a fenced code
+block is skipped (so a bash snippet referencing ``step 12.`` in the CI
+body does not false-positive), and the canonical idiom of wrapping a
+``\\`\\`\\``-fenced example inside a ``\\`\\`\\`\\``-wrapper is tracked
+correctly. Tilde fences (``~~~``) are intentionally NOT honored — a
+future edit introducing them must extend both Rule E's helper and Rule
+F's caller in lockstep. An unclosed fence is a documented soft limit —
+the walker stays in "inside-fence" mode and could mask later
+violations, but a malformed fence would be caught by other lints.
 
 ## Degenerate inputs (per `.claude/rules/guards.md` G1)
 
@@ -89,7 +95,7 @@ from __future__ import annotations
 
 import re
 
-from _instruction_drift_rule_e import _ci_section_body
+from _instruction_drift_rule_e import _ci_section_body, walk_with_fence_state
 
 # Line-start (post-leading-whitespace) marker: this line IS a Rule E list
 # item. Used to scope Rule F to lines Rule E reads.
@@ -119,18 +125,22 @@ def scan_ci_body_inline_enumeration(text: str) -> list[str]:
     """
     body, header_line, _ = _ci_section_body(text)
     msgs: list[str] = []
-    in_fence = False
 
-    # Walk the body line by line. `splitlines()` discards the trailing
-    # newline; we count lines starting at the first body line, which is
-    # `header_line + 1` in CLAUDE.md.
-    for offset, line in enumerate(body.splitlines()):
-        stripped = line.lstrip()
-        if stripped.startswith("```"):
-            in_fence = not in_fence
-            continue
+    # Walk the body line by line using the shared fence-length-aware
+    # helper from Rule E (S5U-743). Pre-S5U-743 Rule F had its own
+    # length-blind toggle (`in_fence = not in_fence` on any ```` ``` ````-
+    # prefixed line), which mis-tracked the canonical CommonMark idiom of
+    # wrapping an example with 4 backticks so the inner 3-backtick fence
+    # is content. Sharing the helper keeps Rule E's slice extractor and
+    # Rule F's body walker in lockstep on what counts as "inside a fence."
+    # `splitlines()` is implicit in `walk_with_fence_state`'s use of
+    # `splitlines(keepends=True)`; we count lines starting at the first
+    # body line, which is `header_line + 1` in CLAUDE.md.
+    for offset, (line_with_nl, in_fence) in enumerate(walk_with_fence_state(body)):
         if in_fence:
             continue
+        line = line_with_nl.rstrip("\n")
+        stripped = line.lstrip()
         if not _LINE_START_MARKER_RE.match(stripped):
             # Not a list-item line — Rule E does not read its numbers,
             # Rule F has nothing to say.
