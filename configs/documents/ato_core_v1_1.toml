@@ -6,6 +6,18 @@ source_pdf = "materials/ATO_CORE_Rulebook_v1.1.pdf"
 source_lang = "en"
 target_langs = ["ru"]
 
+# S5U-747 — Codex CLI provider options for ATO Core's EN->RU translation.
+# Inherits flat keys (provider="codex-cli", model_default="gpt-5.5", etc.)
+# from configs/base.toml and overlays the Codex-specific knobs here so
+# fixture documents that switch ``provider = "mock"`` don't pick these up
+# via base inheritance.
+[translation.provider_options.cli]
+timeout_seconds = 600          # xhigh reasoning takes minutes per page
+json_mode = true               # require JSON output; drives `--json` events
+reasoning_effort = "xhigh"     # codex-cli only — best translation quality
+sandbox = "read-only"          # codex-cli only — adapter is read-only
+approval_policy = "never"      # codex-cli only — non-interactive pipeline use
+
 [symbols]
 catalog = "configs/symbols/ato_core_v1_1.symbols.toml"
 

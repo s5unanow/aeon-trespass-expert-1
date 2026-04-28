@@ -330,3 +330,50 @@ def test_document_config_minimal_round_trip() -> None:
     doc = DocumentConfig(id="x", source_pdf="x.pdf")
     assert doc.id == "x"
     assert doc.source_lang == "en"
+
+
+# ── S5U-747 — Recommended Codex CLI translation block validates ──────
+
+
+def test_recommended_codex_cli_translation_block_validates() -> None:
+    """The S5U-747 recommended ``[translation]`` block validates end-to-end.
+
+    Pins the configs/base.toml + configs/documents/ato_core_v1_1.toml shape
+    so a future TOML edit that drops a knob (or adds an unknown one) is
+    caught at unit-test time rather than at first pipeline run.
+
+    Red-before: this is a fixture/data extension on the existing
+    ``DocumentBuildConfig.model_validate`` branch — same code path as
+    the legacy block test, just pinned to the new authored values.
+    Per ``.claude/rules/hooks.md`` § "Three-input test discipline" the
+    extension carve-out applies; no new branch coverage.
+    """
+    raw = {
+        "document": {"id": "ato_core_v1_1", "source_pdf": "x.pdf"},
+        "translation": {
+            "provider": "codex-cli",
+            "model_default": "gpt-5.5",
+            "model_hard": "gpt-5.5",
+            "fallback_provider": "gemini-cli",
+            "fallback_model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "batch_size": 24,
+            "prompt_profile": "translate_rules_ru.v1",
+            "provider_options": {
+                "cli": {
+                    "timeout_seconds": 600,
+                    "json_mode": True,
+                    "reasoning_effort": "xhigh",
+                    "sandbox": "read-only",
+                    "approval_policy": "never",
+                },
+            },
+        },
+    }
+    cfg = DocumentBuildConfig.model_validate(raw)
+    assert cfg.translation.provider == "codex-cli"
+    assert cfg.translation.fallback_provider == "gemini-cli"
+    assert cfg.translation.provider_options.cli.reasoning_effort == "xhigh"
+    assert cfg.translation.provider_options.cli.sandbox == "read-only"
+    assert cfg.translation.provider_options.cli.approval_policy == "never"
+    assert cfg.translation.provider_options.cli.timeout_seconds == 600

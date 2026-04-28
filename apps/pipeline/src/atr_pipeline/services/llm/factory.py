@@ -19,11 +19,9 @@ _CLI_PROVIDERS: frozenset[str] = frozenset({"gemini-cli", "codex-cli"})
 _API_PROVIDERS: frozenset[str] = frozenset({"openai", "anthropic", "gemini"})
 _NO_OPTIONS_PROVIDERS: frozenset[str] = frozenset({"mock"})
 
-# Codex CLI is a *reserved* provider name — accepted by Pydantic so configs
-# can be authored against the new shape ahead of S5U-747, but the factory
-# refuses until the adapter lands. Removing this entry is part of S5U-747's
-# definition of done.
-_RESERVED_PROVIDERS: frozenset[str] = frozenset({"codex-cli"})
+# No reserved-but-unimplemented providers as of S5U-747. The slot remains
+# (typed) so adding a future reserved name is a one-line change.
+_RESERVED_PROVIDERS: frozenset[str] = frozenset()
 
 
 def _cli_options_are_default(opts: CLIProviderOptions) -> bool:
@@ -154,6 +152,30 @@ def _create_single_adapter(
             concept_registry=concept_registry,
             timeout_seconds=options.cli.timeout_seconds,
         )
+
+    if provider == "codex-cli":
+        from atr_pipeline.services.llm.codex_cli_adapter import CodexCLIAdapter
+
+        cli_opts = options.cli
+        kwargs: dict[str, object] = {
+            "model": model,
+            "concept_registry": concept_registry,
+            "timeout_seconds": cli_opts.timeout_seconds,
+        }
+        # Only forward CLI-specific knobs when explicitly set, so the
+        # adapter's documented defaults remain authoritative when the
+        # config doesn't override them. ``None`` is the "not set" sentinel
+        # for these fields on ``CLIProviderOptions``.
+        if cli_opts.reasoning_effort is not None:
+            kwargs["reasoning_effort"] = cli_opts.reasoning_effort
+        if cli_opts.sandbox is not None:
+            kwargs["sandbox"] = cli_opts.sandbox
+        if cli_opts.approval_policy is not None:
+            kwargs["approval_policy"] = cli_opts.approval_policy
+        if cli_opts.executable is not None:
+            kwargs["executable"] = cli_opts.executable
+        kwargs["json_events"] = cli_opts.json_mode
+        return CodexCLIAdapter(**kwargs)  # type: ignore[arg-type]
 
     msg = f"Unknown translation provider: {provider!r}"
     raise ValueError(msg)
