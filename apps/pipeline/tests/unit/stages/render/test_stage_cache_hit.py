@@ -71,7 +71,13 @@ from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.render.stage import RenderResult, RenderStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import LanguageCode
-from atr_schemas.page_ir_v1 import CalloutBlock, PageIRV1, ParagraphBlock, TextInline
+from atr_schemas.page_ir_v1 import (
+    CalloutBlock,
+    PageIRV1,
+    ParagraphBlock,
+    TermMarkInline,
+    TextInline,
+)
 from atr_schemas.render_page_v1 import RenderPageV1
 from tests.unit.stages.qa.test_stage_cache_hit import (
     assert_cache_hit_replays_artifact,
@@ -268,3 +274,96 @@ def test_render_stage_cache_hit_preserves_render_output(tmp_path: Path) -> None:
     summaries = list(render_dir.rglob("*.json"))
     assert summaries, "expected RenderStage executor summary artifact"
     RenderResult.model_validate_json(summaries[0].read_bytes())
+
+
+def test_render_stage_cache_hit_preserves_term_mark_dispatch(tmp_path: Path) -> None:
+    """S5U-745 — the term_mark dispatch behavior must replay across cache hits.
+
+    Run RenderStage twice on a context whose IR carries a
+    ``TermMarkInline``:
+
+    1. First run is a miss — ``run()`` executes ``build_render_page``
+       which (post-S5U-745) flattens the term_mark to a
+       ``RenderTextInline(text=surface_form)`` in the persisted
+       ``render_page.v1`` artifact for ``p0001``.
+    2. Second run is a hit — the executor short-circuits ``run()`` and
+       returns the cached ref.
+
+    After the hit, the ``render_page.v1/page/p0001`` artifact must still
+    be on disk byte-identical to the first run, and (defensive cross-
+    check) it must carry the flattened ``RenderTextInline`` whose text
+    is the IR node's surface_form — i.e. the S5U-745 dispatch behavior
+    that replaces the silent drop.
+
+    Live-regression ergonomics: this test does not require a
+    ``RenderStage.version`` bump (Decision 4 in tmp/plan-s5u-745.md
+    explains why no real cached corpus is affected today). What it
+    does guard is the per-page-bytes contract — if a future refactor
+    silently regresses the term_mark dispatch (e.g. by reordering the
+    isinstance chain in a way that drops the new branch), the second
+    pass of the cache-hit invariant would still pass byte-for-byte
+    against the regression's own broken first run, but the
+    ``len(text_blocks) >= 1`` cross-check below fails before the
+    silent drop reaches main.
+    """
+    ctx = _make_ctx(tmp_path)
+    ir = PageIRV1(
+        document_id=ctx.document_id,
+        page_id="p0001",
+        page_number=1,
+        language=LanguageCode.EN,
+        blocks=[
+            ParagraphBlock(
+                block_id="p0001.b001",
+                children=[
+                    TextInline(text="see ", lang=LanguageCode.EN),
+                    TermMarkInline(concept_id="concept.cypher", surface_form="cypher"),
+                ],
+            ),
+        ],
+        reading_order=["p0001.b001"],
+    )
+    ctx.artifact_store.put_json(
+        document_id=ctx.document_id,
+        schema_family="page_ir.v1.en",
+        scope="page",
+        entity_id="p0001",
+        data=ir,
+    )
+
+    assert_cache_hit_replays_artifact(
+        RenderStage(),
+        ctx,
+        schema_families={
+            "render",
+            "render_page.v1",
+            "glossary_payload.v1",
+            "search_docs.v1",
+            "nav.v1",
+        },
+    )
+
+    # Cross-check: the persisted render page for the term_mark-bearing
+    # input actually carries the flattened RenderTextInline. This is
+    # the S5U-745 dispatch behavior that replaces the silent drop; if
+    # a future regression silently drops term_mark dispatch again, this
+    # assertion fails before the cache-hit invariant does.
+    page_dir = tmp_path / "artifacts" / "walking_skeleton" / "render_page.v1" / "page" / "p0001"
+    page_files = list(page_dir.glob("*.json"))
+    assert len(page_files) == 1, f"expected single render_page artifact, got {page_files}"
+    render_page = RenderPageV1.model_validate_json(page_files[0].read_bytes())
+    para_blocks = [b for b in render_page.blocks if b.kind == "paragraph"]
+    assert len(para_blocks) == 1, (
+        f"expected one paragraph; got {[b.kind for b in render_page.blocks]}"
+    )
+    para = para_blocks[0]
+    text_kinds = [c.kind for c in para.children]  # type: ignore[union-attr]
+    assert text_kinds == ["text", "text"], (
+        f"expected ['text', 'text'] (TextInline + flattened TermMarkInline); "
+        f"got {text_kinds} — has the S5U-745 term_mark dispatch in "
+        "build_render_page regressed?"
+    )
+    text_values = [c.text for c in para.children]  # type: ignore[union-attr]
+    assert text_values == ["see ", "cypher"], (
+        f"expected text values ['see ', 'cypher']; got {text_values}"
+    )

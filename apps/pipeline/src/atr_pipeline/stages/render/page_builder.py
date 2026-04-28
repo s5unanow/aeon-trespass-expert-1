@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from typing import assert_never
 
 from atr_pipeline.stages.render.concept_matcher import (
     build_text_pattern_index,
@@ -24,8 +25,10 @@ from atr_schemas.page_ir_v1 import (
     TableCellBlock,
     TableChild,
     TableRowBlock,
+    TermMarkInline,
     TextInline,
     UnknownBlock,
+    XrefInline,
     iter_table_inlines,
 )
 from atr_schemas.render_page_v1 import (
@@ -281,24 +284,33 @@ def _resolve_caption_attachments(page_ir: PageIRV1) -> tuple[dict[str, str], set
 
 
 def _convert_inline_nodes(nodes: list[InlineNode]) -> list[RenderInlineNode]:
-    """Convert IR inline nodes to render inline nodes."""
-    # S5U-739 — figure_ref now round-trips (was: silently dropped).
+    """Convert IR inline nodes to render inline nodes.
+
+    S5U-739 — ``figure_ref`` round-trips. S5U-745 — ``term_mark`` /
+    ``xref`` flatten to ``RenderTextInline`` (were: silently dropped);
+    ``GlossaryText`` re-highlights surface forms from the registry, so
+    per-instance term_mark link metadata is redundant. The trailing
+    ``assert_never`` makes the dispatch exhaustive — a future 7th
+    ``InlineNode`` variant with no render branch fails mypy --strict.
+    """
     result: list[RenderInlineNode] = []
     for node in nodes:
-        if node.type == "text":
-            marks = getattr(node, "marks", None) or []
-            result.append(RenderTextInline(text=node.text, marks=marks))
-        elif node.type == "icon":
-            assert isinstance(node, IconInline)
+        if isinstance(node, TextInline):
+            result.append(RenderTextInline(text=node.text, marks=list(node.marks)))
+        elif isinstance(node, IconInline):
             sym_id = node.symbol_id
             alt = sym_id.removeprefix("sym.").capitalize()
             result.append(RenderIconInline(symbol_id=sym_id, alt=alt))
-        elif node.type == "figure_ref":
-            assert isinstance(node, FigureRefInline)
+        elif isinstance(node, FigureRefInline):
             result.append(RenderFigureRefInline(asset_id=node.asset_id, label=node.label))
-        elif node.type == "line_break":
-            assert isinstance(node, LineBreakInline)
+        elif isinstance(node, LineBreakInline):
             result.append(RenderTextInline(text="\n"))
+        elif isinstance(node, TermMarkInline):
+            result.append(RenderTextInline(text=node.surface_form))
+        elif isinstance(node, XrefInline):
+            result.append(RenderTextInline(text=node.label))
+        else:
+            assert_never(node)
     return result
 
 
