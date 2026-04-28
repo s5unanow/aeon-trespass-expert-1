@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Instruction/config drift scanner (S5U-658/667/668/694/727/729).
+"""Instruction/config drift scanner (S5U-658/667/668/694/727/729/744).
 
 Fails CI when repo instruction files drift from their authoritative source.
-Five fail-closed rules (A/B/C/E/F) plus one advisory (D):
+Six fail-closed rules (A/B/C/E/F/G) plus one advisory (D):
 
 * Rule A — check-count claim drift vs `.claude/prompts/review.md` max
   numbered item. Structural exemption per S5U-667 (line matches
@@ -25,6 +25,11 @@ Five fail-closed rules (A/B/C/E/F) plus one advisory (D):
   ``\\d+\\. `` markers in the CI body so Rule E's line-start regex
   cannot silently miss compressed ``X. ... / Y. ...`` items. In
   `_instruction_drift_rule_f.py`.
+* Rule G — CLAUDE.md tilde-fence corpus guard (S5U-744). Forbids active
+  tilde fences (``~~~``) in CLAUDE.md because Rule E/F's shared
+  ``walk_with_fence_state`` helper does NOT honor them — converts the
+  documented S5U-742/S5U-743 asymmetry into a mechanical fail-closed
+  signal. In `_instruction_drift_rule_g.py`.
 
 Exit codes: 0 = no drift; 1 = a fail-closed rule violated OR authoritative
 source missing/unparseable.
@@ -57,6 +62,7 @@ from _instruction_drift_rule_c import (
 from _instruction_drift_rule_d import rule_d_advisory
 from _instruction_drift_rule_e import scan_ci_gate_claims
 from _instruction_drift_rule_f import scan_ci_body_inline_enumeration
+from _instruction_drift_rule_g import scan_claude_md_tilde_fences
 
 # --- Paths ---------------------------------------------------------------
 
@@ -127,6 +133,12 @@ def run(repo_root: Path) -> int:
     except RuntimeError as exc:
         print(f"check_instruction_drift: FAIL-CLOSED: {exc}", file=sys.stderr)
         return 1
+
+    # Rule G (S5U-744): tilde-fence corpus guard. Does not raise on
+    # degenerate inputs — empty CLAUDE.md text returns []. The
+    # orchestrator's earlier read failure path already returned 1 above
+    # if the file is unreadable.
+    errors.extend(scan_claude_md_tilde_fences(claude_md_text))
 
     md_files = iter_markdown_files(repo_root)
 

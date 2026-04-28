@@ -109,7 +109,13 @@ def walk_with_fence_state(text: str) -> Iterator[tuple[str, bool]]:
     convention (S5U-742) keeps Rule E and Rule F honoring backtick fences
     only, and CLAUDE.md does not use tilde fences. If a future edit
     introduces them, this helper and Rule F's caller must be extended in
-    lockstep.
+    lockstep. The asymmetry is mechanically backstopped by the S5U-744
+    sentinel test
+    (``apps/pipeline/tests/unit/test_check_instruction_drift_s5u744.py::``
+    ``test_ci_body_slice_does_not_honor_tilde_fence_documented_asymmetry``)
+    and Rule G's CLAUDE.md tilde-fence corpus guard
+    (``scripts/_instruction_drift_rule_g.py``). A change to honor
+    tildes here MUST update both backstops in the same PR.
 
     Indented fences (≥1 leading space) are detected via ``lstrip()`` —
     consistent with Rule F's pre-existing toggle. CommonMark allows up
