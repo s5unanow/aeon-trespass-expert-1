@@ -100,3 +100,39 @@ def test_structure_config_document_override() -> None:
     # Base defaults preserved for non-overridden fields
     assert cfg.structure.body_font == "Adonis-Regular"
     assert cfg.structure.paragraph_gap_factor == 1.5
+
+
+def test_ato_core_inherits_codex_cli_translation_defaults() -> None:
+    """S5U-747 — ato_core_v1_1 picks up codex-cli flat keys from base.toml
+    and codex-specific provider_options from its own document config."""
+    cfg = load_document_config("ato_core_v1_1", repo_root=_repo_root())
+    assert cfg.translation.provider == "codex-cli"
+    assert cfg.translation.model_default == "gpt-5.5"
+    assert cfg.translation.model_hard == "gpt-5.5"
+    assert cfg.translation.fallback_provider == "gemini-cli"
+    assert cfg.translation.fallback_model == "gemini-2.5-flash"
+    assert cfg.translation.provider_options.cli.reasoning_effort == "xhigh"
+    assert cfg.translation.provider_options.cli.sandbox == "read-only"
+    assert cfg.translation.provider_options.cli.approval_policy == "never"
+    assert cfg.translation.provider_options.cli.timeout_seconds == 600
+
+
+def test_fixture_documents_override_to_mock_without_codex_options() -> None:
+    """Mock-using fixture documents override ``provider`` cleanly — they do
+    NOT inherit any non-default ``provider_options`` from base.toml.
+
+    Regression-pin on the S5U-747 design: provider_options.cli MUST live in
+    the per-document config, not base.toml, so the factory's
+    "mock accepts no provider options" rule does not fire on fixture runs.
+    """
+    cfg = load_document_config("walking_skeleton", repo_root=_repo_root())
+    assert cfg.translation.provider == "mock"
+    # No CLI options inherited — the namespace is at its Pydantic default.
+    assert cfg.translation.provider_options.cli.reasoning_effort is None
+    assert cfg.translation.provider_options.cli.sandbox is None
+    assert cfg.translation.provider_options.cli.approval_policy is None
+    # And the factory accepts this config without raising.
+    from atr_pipeline.services.llm.factory import create_translator
+
+    adapter = create_translator(cfg.translation)
+    assert type(adapter).__name__ == "MockTranslator"

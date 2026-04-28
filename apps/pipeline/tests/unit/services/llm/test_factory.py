@@ -283,18 +283,11 @@ def test_factory_rejects_cross_provider_options_in_fallback() -> None:
             create_translator(config)
 
 
-# ── S5U-746 — Reserved codex-cli rejection until S5U-747 ─────────────
-
-
-def test_factory_rejects_codex_cli_until_adapter_lands() -> None:
-    """``codex-cli`` is a reserved name; the factory raises until S5U-747."""
-    config = TranslationConfig(
-        provider="codex-cli",
-        model_default="codex-1",
-        fallback_provider="",
-    )
-    with pytest.raises(ValueError, match="S5U-747"):
-        create_translator(config)
+# Codex-CLI-specific factory tests live in ``test_factory_codex_cli.py``
+# (split for the 400-line file ceiling). The remaining S5U-747 changes in
+# *this* file are: removing the now-stale
+# ``test_factory_rejects_codex_cli_until_adapter_lands`` test (the
+# adapter is implemented now and the factory accepts ``codex-cli``).
 
 
 # ── S5U-746 — Fallback wrapping with new options shape ───────────────

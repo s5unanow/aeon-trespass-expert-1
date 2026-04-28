@@ -22,32 +22,31 @@ dpi = 300
 match_threshold = 0.93
 
 [translation]
-provider = "gemini-cli"
-model_default = "gemini-2.5-flash"
-model_hard = "gemini-2.5-flash"
-fallback_provider = "gemini"
+# S5U-747 — Codex CLI is the recommended primary translation provider for
+# best-quality EN -> RU rulebook translation; Gemini CLI remains the
+# documented fallback so a Codex outage doesn't block a build. Real
+# documents (e.g. ``configs/documents/ato_core_v1_1.toml``) layer the
+# Codex-specific provider_options on top of these flat keys; fixture
+# documents (``walking_skeleton``, ``icon_dense``, etc.) override
+# ``provider = "mock"`` so they never invoke a real CLI.
+provider = "codex-cli"
+model_default = "gpt-5.5"
+model_hard = "gpt-5.5"
+fallback_provider = "gemini-cli"
 fallback_model = "gemini-2.5-flash"
 temperature = 0.0
 batch_size = 24
 prompt_profile = "translate_rules_ru.v1"
 
-# Example — provider-specific options (S5U-746). Each provider only consumes
-# the namespace that matches its shape (CLI vs API); cross-provider option
-# leakage is rejected by the factory before any LLM/subprocess call. Defaults
-# below match the adapter-side behaviour and are commented out so this block
-# remains a documentation reference.
+# Provider-specific options live in the per-document config so the mock
+# fixture documents that override ``provider = "mock"`` don't inherit
+# Codex-specific knobs the factory would then reject under the
+# "mock accepts no options" rule. See:
 #
-# [translation.provider_options.cli]
-# timeout_seconds = 300       # gemini-cli, codex-cli (S5U-747)
-# json_mode = true             # require JSON output
-# # codex-cli only:
-# # reasoning_effort = "medium"
-# # sandbox = "read-only"
-# # approval_policy = "never"
-# # output_file_mode = false
+#   configs/documents/ato_core_v1_1.toml [translation.provider_options.cli]
 #
-# [translation.fallback_options.api]
-# # api_key = ""                # empty -> SDK env-var fallback
+# for the recommended Codex CLI block (reasoning_effort = "xhigh",
+# sandbox = "read-only", approval_policy = "never", timeout_seconds = 600).
 
 [structure]
 heading_fonts = ["GreenleafLightPro", "Goobascript"]
