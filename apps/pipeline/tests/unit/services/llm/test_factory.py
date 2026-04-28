@@ -233,7 +233,7 @@ def test_factory_rejects_cli_options_for_api_provider() -> None:
                 cli=CLIProviderOptions(executable="/usr/local/bin/codex"),
             ),
         )
-        with pytest.raises(ValueError, match="provider_options.cli"):
+        with pytest.raises(ValueError, match=r"provider_options\.cli"):
             create_translator(config)
 
 
@@ -247,7 +247,7 @@ def test_factory_rejects_api_options_for_cli_provider() -> None:
             api=APIProviderOptions(api_key="sk-test"),
         ),
     )
-    with pytest.raises(ValueError, match="provider_options.api"):
+    with pytest.raises(ValueError, match=r"provider_options\.api"):
         create_translator(config)
 
 
@@ -279,7 +279,7 @@ def test_factory_rejects_cross_provider_options_in_fallback() -> None:
                 cli=CLIProviderOptions(executable="/usr/local/bin/codex"),
             ),
         )
-        with pytest.raises(ValueError, match="provider_options.cli"):
+        with pytest.raises(ValueError, match=r"provider_options\.cli"):
             create_translator(config)
 
 

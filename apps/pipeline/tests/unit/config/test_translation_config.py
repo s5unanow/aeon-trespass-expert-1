@@ -19,7 +19,6 @@ from atr_pipeline.config.models import (
     TranslationProviderOptions,
 )
 
-
 # ── Provider name normalization ──────────────────────────────────────
 
 
