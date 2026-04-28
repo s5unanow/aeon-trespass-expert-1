@@ -70,6 +70,7 @@ the compressed shape in CLAUDE.md's CI body. Rule F reuses
 from __future__ import annotations
 
 import re
+from collections.abc import Iterator
 
 # Header: "### CI (GitHub Actions, 9 + N extra)" on its own line.
 # Captures N. Case-insensitive on "CI" / "GitHub"; whitespace-tolerant.
@@ -93,6 +94,67 @@ _ALL_K_GATES_RE = re.compile(
 )
 
 
+def walk_with_fence_state(text: str) -> Iterator[tuple[str, bool]]:
+    """Yield ``(line, in_fence_now)`` for each line of ``text``.
+
+    Tracks fenced code blocks per CommonMark §4.5: a fence opened with N
+    backticks closes only on a line whose first non-whitespace run is
+    ≥N backticks of the same character AND whose post-run content is
+    whitespace-only (no info-string). The opening and closing lines of a
+    fence are themselves yielded as ``in_fence=True`` — they are fence
+    boundaries, not body content, and any heading-regex matching on body
+    content must skip them.
+
+    Tilde fences (``~~~``) are intentionally NOT tracked — the existing
+    convention (S5U-742) keeps Rule E and Rule F honoring backtick fences
+    only, and CLAUDE.md does not use tilde fences. If a future edit
+    introduces them, this helper and Rule F's caller must be extended in
+    lockstep.
+
+    Indented fences (≥1 leading space) are detected via ``lstrip()`` —
+    consistent with Rule F's pre-existing toggle. CommonMark allows up
+    to 3 leading spaces on a fence line; the helper tolerates any
+    indentation, which is a slight over-acceptance with no observed
+    false-positive in the current corpus.
+
+    An unclosed fence runs to EOF in ``in_fence=True`` state — soft-limit
+    convention from S5U-742.
+
+    Pre-S5U-743 the walker toggled ``in_fence`` on any ``\\`\\`\\```-
+    prefixed line, treating every triple-backtick line as a length-blind
+    boundary. The canonical CommonMark idiom of wrapping an example with
+    4 backticks so the inner 3-backtick fence is content (the
+    ``\\`\\`\\`\\``-wrapper-with-``\\`\\`\\``-inner shape) was therefore
+    mis-tracked: the inner line was treated as a close, and any heading-
+    shaped line below it terminated the body slice. This helper closes
+    that gap by tracking fence length.
+    """
+    fence_len = 0  # 0 means not currently inside a fence
+    for line in text.splitlines(keepends=True):
+        stripped = line.lstrip()
+        if stripped.startswith("```"):
+            # Count the leading run of backticks (≥3, since startswith
+            # already matched 3).
+            ticks = len(stripped) - len(stripped.lstrip("`"))
+            if fence_len == 0:
+                # Open a new fence of length `ticks`.
+                fence_len = ticks
+                yield line, True
+                continue
+            # We're inside a fence; this is a close-candidate iff the
+            # run is ≥ open-len AND the post-run content is whitespace-
+            # only (CommonMark forbids info-strings on close fences).
+            if ticks >= fence_len and stripped.rstrip()[ticks:].strip() == "":
+                fence_len = 0
+                yield line, True
+                continue
+            # Either run too short (e.g., 3 inside a 4-backtick fence)
+            # or non-empty info-string — it's content, not a close.
+            yield line, True
+            continue
+        yield line, fence_len > 0
+
+
 def _ci_section_body(text: str) -> tuple[str, int, int]:
     """Return (body, header_line_number, header_n_claimed).
 
@@ -104,15 +166,19 @@ def _ci_section_body(text: str) -> tuple[str, int, int]:
 
     Raises ``RuntimeError`` if the header is absent.
 
-    Fence-aware termination (S5U-742): a ``## `` / ``### `` line inside a
-    fenced code block (delimited by ``\\`\\`\\``) does NOT terminate the
-    slice. Rule F's existing fence detector toggles on the same delimiter;
-    keeping the convention symmetric across the two modules. Tilde fences
-    (``~~~``) are intentionally NOT honored — Rule F doesn't honor them
-    either, and CLAUDE.md does not use them. If a future edit introduces
-    them, both modules must be extended in lockstep. An unclosed fence
-    leaves the walker in ``in_fence=True`` state and the slice runs to
-    EOF — same soft-limit convention Rule F documents.
+    Fence-aware termination (S5U-742, hardened S5U-743): a ``## `` / ``### ``
+    line inside a fenced code block does NOT terminate the slice. The
+    walker tracks fence length per CommonMark §4.5 — a fence opened with
+    N backticks only closes on a line of ≥N backticks of the same
+    character with no info-string. Pre-S5U-743 the walker toggled on any
+    triple-backtick prefix, mis-tracking the canonical
+    ``\\`\\`\\`\\``-wrapper-containing-``\\`\\`\\``-inner idiom and
+    silently truncating the slice at heading-shaped lines below the
+    inner fence. The shared helper ``walk_with_fence_state`` (used by
+    Rule F too — see ``_instruction_drift_rule_f.py``) is the
+    single-sourced fence convention. Tilde fences (``~~~``) are
+    intentionally NOT honored; an unclosed fence leaves the walker in
+    ``in_fence=True`` state and the slice runs to EOF.
     """
     match = _CI_HEADER_RE.search(text)
     if match is None:
@@ -128,14 +194,10 @@ def _ci_section_body(text: str) -> tuple[str, int, int]:
 
     # Walk the body line-by-line tracking fence state. Stop only at a
     # heading-shaped line OUTSIDE any fence.
-    in_fence = False
     body_end = len(text)
     cursor = body_start
-    for line in text[body_start:].splitlines(keepends=True):
-        stripped = line.lstrip()
-        if stripped.startswith("```"):
-            in_fence = not in_fence
-        elif not in_fence and re.match(r"^#{2,3}\s+", line):
+    for line, in_fence in walk_with_fence_state(text[body_start:]):
+        if not in_fence and re.match(r"^#{2,3}\s+", line):
             body_end = cursor
             break
         cursor += len(line)
