@@ -178,9 +178,8 @@ def _build_codex_cli_adapter(payload: str) -> Iterator[TranslatorAdapter]:
 #   into returning unparseable output.
 # * ``validates_batch_id``: True if the adapter cross-checks
 #   ``response.batch_id == request.batch_id`` and rejects mismatches.
-#   ``codex-cli`` does this (see CodexCLIAdapter.translate_batch);
-#   ``gemini-cli`` does not (it trusts the upstream; this is a documented
-#   gap, not a regression — see test_provider_conformance retrospective).
+#   Both ``codex-cli`` and ``gemini-cli`` enforce this invariant
+#   (see CodexCLIAdapter.translate_batch and GeminiCLIAdapter.translate_batch).
 #   ``mock`` has the same invariant but constructs the response from the
 #   request, so no mismatch is possible.
 PROVIDER_CASES: list[
@@ -196,7 +195,7 @@ PROVIDER_CASES: list[
         "gemini-cli",
         "gemini-cli",
         _build_gemini_cli_adapter,
-        {"supports_failure_injection": True, "validates_batch_id": False},
+        {"supports_failure_injection": True, "validates_batch_id": True},
     ),
     (
         "codex-cli",
