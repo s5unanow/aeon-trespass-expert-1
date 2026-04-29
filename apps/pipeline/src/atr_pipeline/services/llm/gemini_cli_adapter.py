@@ -163,6 +163,12 @@ class GeminiCLIAdapter:
         data = _extract_result(raw)
         result = TranslationResultV1.model_validate(data)
 
+        if result.batch_id != batch.batch_id:
+            msg = (
+                f"Gemini CLI returned batch_id={result.batch_id!r} but expected {batch.batch_id!r}"
+            )
+            raise RuntimeError(msg)
+
         meta = TranslationResponseMeta(
             provider="gemini-cli",
             model=model,
