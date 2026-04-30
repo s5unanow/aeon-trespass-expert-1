@@ -51,8 +51,12 @@ REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 PKG="${REPO_ROOT}/apps/web/package.json"
 
 # Word-boundary-bounded regex for the three forbidden Playwright flag tokens.
+# S5U-655: leading and trailing classes extended with shell punctuation
+# terminators `;&|()<>,` so vectors like `pnpm exec playwright test -u; echo
+# ok` and `playwright test --update-snapshots&& echo ok` are caught. All
+# eight punctuation chars are literal inside a POSIX ERE character class.
 # shellcheck disable=SC2016
-pattern='(^|[[:space:]"'"'"'`])(-u|--update-snapshots|--ignore-snapshots)([[:space:]="'"'"'`]|$)'
+pattern='(^|[[:space:]"'"'"'`;&|()<>,])(-u|--update-snapshots|--ignore-snapshots)([[:space:]="'"'"'`;&|()<>,]|$)'
 
 # Literal marker string. Must not appear in any .github/** YAML line.
 ALLOW_MARKER='# visual-gate-scope: allow'
@@ -191,8 +195,12 @@ if (( ${#blocked_names[@]} > 0 )); then
   done
   # Join with `|`.
   joined=$(IFS='|'; printf '%s' "${escaped[*]}")
+  # S5U-655: shell punctuation terminators `;&|()<>,` added to leading and
+  # trailing classes (mirror of `_local_only_token_patterns` in the Python
+  # scanner) so vectors like `pnpm test:visual:update;` and `bash -c "pnpm
+  # test:visual:update; echo ok"` are caught.
   # shellcheck disable=SC2016
-  name_pattern='(^|[[:space:]"'"'"'`])('"${joined}"')([[:space:]"'"'"'`]|$)'
+  name_pattern='(^|[[:space:]"'"'"'`;&|()<>,])('"${joined}"')([[:space:]"'"'"'`;&|()<>,]|$)'
 fi
 
 yaml_violations=0

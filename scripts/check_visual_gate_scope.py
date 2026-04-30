@@ -1,20 +1,12 @@
 #!/usr/bin/env python3
 """Block CI paths that would bypass the visual-regression baseline gate.
 
-See S5U-608 for the original four-vector threat model and S5U-611 for the
-Gap 1/2/3 follow-up hardening (allow-marker path allowlist, bare-pnpm
-shortcut closure, shell-guard workflow YAML coverage).
+See S5U-608 (four-vector threat model), S5U-611 (Gap 1/2/3 hardening), and
+S5U-655 (shell-terminator regex broadening).
 
-Scans:
-- every YAML under `.github/workflows/` and `.github/actions/` as plain
-  text (catches `run:` strings, `env:` values, composite actions, quoted
-  wrappers, any future workflow file);
-- every `scripts` entry in `apps/web/package.json`.
-
-Forbidden token regex (word-boundary bounded):
-    (^|[\\s"'`])(-u|--update-snapshots|--ignore-snapshots)([\\s=]|$)
-
-Exit 0 if clean, 1 on any violation. Fail-closed on unexpected errors.
+Scans every YAML under `.github/workflows/` and `.github/actions/` and
+every `scripts` entry in `apps/web/package.json`. Exit 0 if clean, 1 on
+any violation. Fail-closed on unexpected errors.
 
 Usage:
     python scripts/check_visual_gate_scope.py [--repo-root PATH]
@@ -30,7 +22,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 FORBIDDEN_TOKEN_RE = re.compile(
-    r"""(^|[\s"'`])(-u|--update-snapshots|--ignore-snapshots)([\s="'`]|$)""",
+    # S5U-655: shell punctuation terminators `;&|()<>,` extended into both
+    # classes; all eight chars are literal inside a Python `re` char class.
+    r"""(^|[\s"'`;&|()<>,])(-u|--update-snapshots|--ignore-snapshots)([\s="'`;&|()<>,]|$)""",
 )
 
 # `ALLOW_MARKER` is the legacy escape hatch used by this scanner and the
@@ -45,7 +39,10 @@ ALLOW_MARKER_PATHS: frozenset[str] = frozenset(
     {
         "scripts/check_visual_gate_scope.py",
         "scripts/check_test_e2e_flags.sh",
-        "apps/pipeline/tests/unit/test_check_visual_gate_scope.py",
+        # S5U-655 split: test files for this scanner. Documentation-only
+        # entries (these paths are never scanned by `_iter_github_files`).
+        "apps/pipeline/tests/unit/test_check_visual_gate_scope_workflows.py",
+        "apps/pipeline/tests/unit/test_check_visual_gate_scope_s5u611.py",
     }
 )
 
@@ -250,8 +247,9 @@ def _local_only_token_patterns(
     patterns: dict[str, re.Pattern[str]] = {}
     for name in effective:
         # Bounded: `test-visual-update-lib` must not match `test:visual:update`.
+        # S5U-655: shell terminators `;&|()<>,` mirror FORBIDDEN_TOKEN_RE.
         patterns[name] = re.compile(
-            r"""(^|[\s"'`])""" + re.escape(name) + r"""([\s"'`]|$)""",
+            r"""(^|[\s"'`;&|()<>,])""" + re.escape(name) + r"""([\s"'`;&|()<>,]|$)""",
         )
     return patterns
 
