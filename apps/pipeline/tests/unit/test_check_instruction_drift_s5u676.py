@@ -162,9 +162,7 @@ def test_leading_splitter_empty_segment_no_false_positive(
 # -- §4e Backtick exemption survives in segment context -------------------
 
 
-def test_backtick_quoted_claim_in_segment_still_exempt(
-    scanner: ModuleType, tmp_path: Path
-) -> None:
+def test_backtick_quoted_claim_in_segment_still_exempt(scanner: ModuleType, tmp_path: Path) -> None:
     """A claim inside backticks must remain exempt under per-segment
     scanning. The backtick-detection helper operates on the original line,
     so segment-relative offsets must be translated correctly.
