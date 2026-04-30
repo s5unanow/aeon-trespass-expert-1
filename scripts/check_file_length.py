@@ -43,8 +43,9 @@ KNOWN_VIOLATORS: dict[str, str] = {
     "apps/pipeline/tests/unit/test_check_visual_gate_scope.py": "S5U-655",
     "apps/pipeline/tests/unit/stages/render/test_page_builder.py": "S5U-677",  # 769 lines
     "apps/pipeline/tests/unit/stages/render/test_annotation_builder.py": "S5U-677",  # 728 lines
-    "apps/pipeline/tests/unit/test_check_threshold_changes.py": "S5U-656",
-    # 666 lines
+    # S5U-656 split: test_check_threshold_changes.py was 684 lines; replaced
+    # by test_check_threshold_changes_unit.py + _e2e_happy.py + _e2e_bypass.py
+    # (all under 400) and the grandfather entry removed.
     "apps/pipeline/tests/unit/stages/structure/test_real_block_builder.py": "S5U-677",
     # 577 lines
     "apps/pipeline/tests/unit/stages/structure/test_structure_regressions.py": "S5U-677",
