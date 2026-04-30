@@ -12,10 +12,11 @@ Exit code 0 if all files pass, 1 if any exceed the limit.
 
 S5U-663: test directories are now included in the scan. Prior to this change
 `apps/pipeline/tests` and `apps/web/tests` were silently excluded, which let
-two test files (S5U-655 test_check_visual_gate_scope.py @ 902 lines,
-S5U-656 test_check_threshold_changes.py @ 685 lines) grow past the 400-line
-ceiling unchecked. The unified ceiling applies to tests as well; existing
-over-limit files are grandfathered in ``KNOWN_VIOLATORS`` and must not grow.
+two test files (test_check_visual_gate_scope.py @ 902 lines,
+test_check_threshold_changes.py @ 685 lines) grow past the 400-line ceiling
+unchecked. The unified ceiling applies to tests as well; existing over-limit
+files are grandfathered in ``KNOWN_VIOLATORS`` and must not grow. Both
+originally-cited files have since been split (S5U-655, S5U-656).
 """
 
 from __future__ import annotations
@@ -40,7 +41,9 @@ from pathlib import Path
 KNOWN_VIOLATORS: dict[str, str] = {
     # Test-side grandfather (S5U-663, umbrella-tracked by S5U-677 post-S5U-669)
     "apps/pipeline/tests/unit/test_export_to_web.py": "S5U-677",  # 919 lines
-    "apps/pipeline/tests/unit/test_check_visual_gate_scope.py": "S5U-655",
+    # S5U-655 split: test_check_visual_gate_scope.py was 902 lines; replaced
+    # by 5 focused files (regex, workflows, package_json, cli, s5u611, s5u637)
+    # all under 400 and the grandfather entry removed.
     "apps/pipeline/tests/unit/stages/render/test_page_builder.py": "S5U-677",  # 769 lines
     "apps/pipeline/tests/unit/stages/render/test_annotation_builder.py": "S5U-677",  # 728 lines
     # S5U-656 split: test_check_threshold_changes.py was 684 lines; replaced

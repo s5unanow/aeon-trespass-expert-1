@@ -116,6 +116,32 @@ def guard() -> Iterator[ModuleType]:
         sys.modules.pop("check_threshold_changes", None)
 
 
+# ---------------------------------------------------------------------------
+# check_visual_gate_scope module-loader fixture (S5U-655 split-out)
+# ---------------------------------------------------------------------------
+
+_CVGS_SCRIPT_PATH = SCRIPT_DIR / "check_visual_gate_scope.py"
+
+
+@pytest.fixture()
+def scope(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
+    """Load scripts/check_visual_gate_scope.py as a fresh module per test.
+
+    Used by the S5U-655 split test files
+    (test_check_visual_gate_scope_*.py).
+    """
+    monkeypatch.syspath_prepend(str(SCRIPT_DIR))
+    spec = importlib.util.spec_from_file_location("check_visual_gate_scope", _CVGS_SCRIPT_PATH)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["check_visual_gate_scope"] = module
+    spec.loader.exec_module(module)
+    try:
+        yield module
+    finally:
+        sys.modules.pop("check_visual_gate_scope", None)
+
+
 @pytest.fixture()
 def cct_stub_fetcher(
     cct_mod: ModuleType,
