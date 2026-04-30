@@ -38,8 +38,6 @@ from pathlib import Path
 # S5U-663 follow-up umbrella S5U-677 (re-keyed in S5U-669 after S5U-663
 # itself shipped Done — a Done issue cannot function as a useful tracker).
 KNOWN_VIOLATORS: dict[str, str] = {
-    # Source-side (pre-existing)
-    "scripts/generate_golden_fixtures.py": "S5U-211",
     # Test-side grandfather (S5U-663, umbrella-tracked by S5U-677 post-S5U-669)
     "apps/pipeline/tests/unit/test_export_to_web.py": "S5U-677",  # 919 lines
     "apps/pipeline/tests/unit/test_check_visual_gate_scope.py": "S5U-655",
