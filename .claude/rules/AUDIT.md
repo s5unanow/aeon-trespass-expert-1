@@ -1,6 +1,6 @@
 # `.claude/rules/` drift audit
 
-**Last reviewed:** 2026-04-24 (S5U-724; CLAUDE.md retrospective extraction + new `merge-discipline.md` rule file)
+**Last reviewed:** 2026-04-29 (S5U-653; verified S5U-628 follow-up gaps already closed by S5U-694 + S5U-724/727)
 **Next review due:** 2026-07-18 (quarterly; manual — cadence unchanged)
 
 This file tracks whether each `.claude/rules/*.md` still matches the codebase.
@@ -171,3 +171,29 @@ agree.
   paragraph. Not a retroactive rule addition — the underlying rules
   are unchanged; only the prose location moved. Next full audit due
   2026-07-18.
+- 2026-04-29 (S5U-653): verification audit for the S5U-628 follow-up
+  drift filed 2026-04-19. Both gaps reported in S5U-653 are already
+  closed by intervening work and `check_instruction_drift.py` now
+  mechanically enforces the parities the issue called for:
+  (a) Safety-gate scope enumeration in CLAUDE.md (`step 6` /
+  "Safety-gate scope escalation (MUST)") includes
+  `.claude/skills/**/SKILL.md` edits in the canonical parenthetical.
+  Rule C (`scripts/_instruction_drift_rule_c.py`) extracts the
+  parenthetical and enforces every cited form in
+  `.claude/skills/**/SKILL.md` and `.claude/prompts/**.md` matches
+  byte-for-byte (or defers with `per CLAUDE.md`). Gap closed by
+  S5U-724 (canonical paragraph preserved) + S5U-727 (Rule C lifted
+  into a module).
+  (b) Path B check-count reference in CLAUDE.md `step 6` table reads
+  `walk review.md checks 1–25`; `.claude/skills/ship/SKILL.md:46`
+  reads `walk all 25 checks in `.claude/prompts/review.md``. The
+  authoritative numbered list in `.claude/prompts/review.md` runs
+  1–25. Rule A (claim drift) + Rule E (CI gate count drift) both
+  return clean on `main`:
+  `check_instruction_drift: OK (authoritative review checks: 1-25;
+  scanned 51 .md files)`. Gap closed by S5U-694 (drift detector
+  parity enforcement) + downstream maintenance. Audit limited to
+  drift verification; no rule-file edits. The only operational
+  occurrences of `1-2[1-4]` outside `_instruction_drift_rule_a.py`
+  examples and `test_check_instruction_drift*.py` fixtures are zero
+  (full repo grep). Next full audit still due 2026-07-18.
