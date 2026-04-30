@@ -2,12 +2,27 @@
 """Generate golden expected JSON fixtures for the walking skeleton.
 
 These are the expected outputs that integration tests compare against.
+
+The per-stage payload builders live in ``_golden_pipeline_payloads`` and the
+glossary payload in ``_golden_glossary_payload`` — split out per S5U-711 to
+keep this entry point under the 400-line ceiling.
 """
 
 import json
 from pathlib import Path
 
-from atr_pipeline.stages.glossary.registry_loader import load_concept_registry
+from _golden_glossary_payload import build_glossary_payload
+from _golden_pipeline_payloads import (
+    build_native_page,
+    build_page_ir_en,
+    build_page_ir_ru,
+    build_qa_summary,
+    build_render_page,
+    build_source_manifest,
+    build_symbol_matches,
+    build_translation_batch,
+    build_translation_result,
+)
 
 OUTPUT_DIR = (
     Path(__file__).resolve().parent.parent
@@ -28,424 +43,19 @@ def write_json(name: str, data: dict) -> None:  # type: ignore[type-arg]
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # --- source_manifest.json ---
-    write_json(
-        "source_manifest.json",
-        {
-            "schema_version": "source_manifest.v1",
-            "document_id": "walking_skeleton",
-            "source_pdf_sha256": "__DYNAMIC__",
-            "page_count": 1,
-            "pages": [{"page_id": "p0001", "page_number": 1, "raster_ref": None}],
-            "config_hash": "",
-            "extractor_version": "",
-        },
-    )
+    write_json("source_manifest.json", build_source_manifest())
+    write_json("native_page.p0001.json", build_native_page())
+    write_json("symbol_matches.p0001.json", build_symbol_matches())
+    write_json("page_ir.en.p0001.json", build_page_ir_en())
+    write_json("translation_batch.p0001.json", build_translation_batch())
+    write_json("translation_result.p0001.json", build_translation_result())
+    write_json("page_ir.ru.p0001.json", build_page_ir_ru())
+    write_json("render_page.p0001.json", build_render_page())
 
-    # --- native_page.p0001.json ---
-    write_json(
-        "native_page.p0001.json",
-        {
-            "schema_version": "native_page.v1",
-            "document_id": "walking_skeleton",
-            "page_id": "p0001",
-            "page_number": 1,
-            "dimensions_pt": {"width": 595.2, "height": 841.8},
-            "words": "__DYNAMIC__",
-            "spans": [],
-            "image_blocks": "__DYNAMIC__",
-            "extractor_meta": {"engine": "pymupdf"},
-        },
-    )
-
-    # --- symbol_matches.p0001.json ---
-    write_json(
-        "symbol_matches.p0001.json",
-        {
-            "schema_version": "symbol_match_set.v1",
-            "document_id": "walking_skeleton",
-            "page_id": "p0001",
-            "matches": [
-                {
-                    "symbol_id": "sym.progress",
-                    "instance_id": "syminst.p0001.01",
-                    "bbox": {"x0": 130.0, "y0": 112.0, "x1": 146.0, "y1": 128.0},
-                    "score": "__DYNAMIC__",
-                    "source_asset_id": "",
-                    "inline": True,
-                }
-            ],
-            "unmatched_candidates": 0,
-        },
-    )
-
-    # --- page_ir.en.p0001.json ---
-    write_json(
-        "page_ir.en.p0001.json",
-        {
-            "schema_version": "page_ir.v1",
-            "document_id": "walking_skeleton",
-            "page_id": "p0001",
-            "page_number": 1,
-            "language": "en",
-            "dimensions_pt": {"width": 595.2, "height": 841.8},
-            "section_hint": None,
-            "blocks": [
-                {
-                    "type": "heading",
-                    "block_id": "p0001.b001",
-                    "bbox": None,
-                    "level": 2,
-                    "children": [
-                        {
-                            "type": "text",
-                            "text": "Attack Test",
-                            "marks": [],
-                            "lang": "en",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "translatable": True,
-                    "style_hint": None,
-                    "source_ref": None,
-                    "annotations": None,
-                },
-                {
-                    "type": "paragraph",
-                    "block_id": "p0001.b002",
-                    "bbox": None,
-                    "children": [
-                        {
-                            "type": "text",
-                            "text": "Gain 1 ",
-                            "marks": [],
-                            "lang": "en",
-                            "source_word_ids": [],
-                        },
-                        {
-                            "type": "icon",
-                            "symbol_id": "sym.progress",
-                            "instance_id": "syminst.p0001.01",
-                            "bbox": None,
-                            "display_hint": {},
-                            "source_asset_id": "",
-                        },
-                        {
-                            "type": "text",
-                            "text": " Progress.",
-                            "marks": [],
-                            "lang": "en",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "translatable": True,
-                    "style_hint": None,
-                    "source_ref": None,
-                    "annotations": None,
-                },
-            ],
-            "assets": [],
-            "reading_order": ["p0001.b001", "p0001.b002"],
-            "confidence": None,
-            "qa_state": None,
-            "provenance": None,
-        },
-    )
-
-    # --- translation_batch.p0001.json ---
-    write_json(
-        "translation_batch.p0001.json",
-        {
-            "schema_version": "translation_batch.v1",
-            "batch_id": "tr.p0001.01",
-            "source_lang": "en",
-            "target_lang": "ru",
-            "prompt_profile": "translate_rules_ru.v1",
-            "segments": [
-                {
-                    "segment_id": "p0001.b001",
-                    "block_type": "heading",
-                    "source_inline": [
-                        {
-                            "type": "text",
-                            "text": "Attack Test",
-                            "marks": [],
-                            "lang": "en",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "context": {
-                        "page_id": "p0001",
-                        "section_path": [],
-                        "prev_heading": "",
-                        "parent_block_id": "",
-                        "row_index": None,
-                        "cell_index": None,
-                        "is_header_row": False,
-                        "is_header_cell": False,
-                    },
-                    "required_concepts": [],
-                    "forbidden_targets": [],
-                    "locked_nodes": [],
-                    "source_checksum": "",
-                },
-                {
-                    "segment_id": "p0001.b002",
-                    "block_type": "paragraph",
-                    "source_inline": [
-                        {
-                            "type": "text",
-                            "text": "Gain 1 ",
-                            "marks": [],
-                            "lang": "en",
-                            "source_word_ids": [],
-                        },
-                        {
-                            "type": "icon",
-                            "symbol_id": "sym.progress",
-                            "instance_id": "syminst.p0001.01",
-                            "bbox": None,
-                            "display_hint": {},
-                            "source_asset_id": "",
-                        },
-                        {
-                            "type": "text",
-                            "text": " Progress.",
-                            "marks": [],
-                            "lang": "en",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "context": {
-                        "page_id": "p0001",
-                        "section_path": [],
-                        "prev_heading": "Attack Test",
-                        "parent_block_id": "",
-                        "row_index": None,
-                        "cell_index": None,
-                        "is_header_row": False,
-                        "is_header_cell": False,
-                    },
-                    "required_concepts": ["concept.progress"],
-                    "forbidden_targets": [],
-                    "locked_nodes": ["sym.progress"],
-                    "source_checksum": "",
-                },
-            ],
-        },
-    )
-
-    # --- translation_result.p0001.json ---
-    write_json(
-        "translation_result.p0001.json",
-        {
-            "schema_version": "translation_result.v1",
-            "batch_id": "tr.p0001.01",
-            "segments": [
-                {
-                    "segment_id": "p0001.b001",
-                    "target_inline": [
-                        {
-                            "type": "text",
-                            "text": "Проверка атаки",
-                            "marks": [],
-                            "lang": "ru",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "concept_realizations": [],
-                },
-                {
-                    "segment_id": "p0001.b002",
-                    "target_inline": [
-                        {
-                            "type": "text",
-                            "text": "Получите 1 ",
-                            "marks": [],
-                            "lang": "ru",
-                            "source_word_ids": [],
-                        },
-                        {
-                            "type": "icon",
-                            "symbol_id": "sym.progress",
-                            "instance_id": "syminst.p0001.01",
-                            "bbox": None,
-                            "display_hint": {},
-                            "source_asset_id": "",
-                        },
-                        {
-                            "type": "text",
-                            "text": " Прогресс.",
-                            "marks": [],
-                            "lang": "ru",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "concept_realizations": [
-                        {"concept_id": "concept.progress", "surface_form": "Прогресс"},
-                    ],
-                },
-            ],
-        },
-    )
-
-    # --- page_ir.ru.p0001.json ---
-    write_json(
-        "page_ir.ru.p0001.json",
-        {
-            "schema_version": "page_ir.v1",
-            "document_id": "walking_skeleton",
-            "page_id": "p0001",
-            "page_number": 1,
-            "language": "ru",
-            "dimensions_pt": {"width": 595.2, "height": 841.8},
-            "section_hint": None,
-            "blocks": [
-                {
-                    "type": "heading",
-                    "block_id": "p0001.b001",
-                    "bbox": None,
-                    "level": 2,
-                    "children": [
-                        {
-                            "type": "text",
-                            "text": "Проверка атаки",
-                            "marks": [],
-                            "lang": "ru",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "translatable": True,
-                    "style_hint": None,
-                    "source_ref": None,
-                    "annotations": None,
-                },
-                {
-                    "type": "paragraph",
-                    "block_id": "p0001.b002",
-                    "bbox": None,
-                    "children": [
-                        {
-                            "type": "text",
-                            "text": "Получите 1 ",
-                            "marks": [],
-                            "lang": "ru",
-                            "source_word_ids": [],
-                        },
-                        {
-                            "type": "icon",
-                            "symbol_id": "sym.progress",
-                            "instance_id": "syminst.p0001.01",
-                            "bbox": None,
-                            "display_hint": {},
-                            "source_asset_id": "",
-                        },
-                        {
-                            "type": "text",
-                            "text": " Прогресс.",
-                            "marks": [],
-                            "lang": "ru",
-                            "source_word_ids": [],
-                        },
-                    ],
-                    "translatable": True,
-                    "style_hint": None,
-                    "source_ref": None,
-                    "annotations": None,
-                },
-            ],
-            "assets": [],
-            "reading_order": ["p0001.b001", "p0001.b002"],
-            "confidence": None,
-            "qa_state": None,
-            "provenance": None,
-        },
-    )
-
-    # --- render_page.p0001.json ---
-    write_json(
-        "render_page.p0001.json",
-        {
-            "schema_version": "render_page.v1",
-            "document_version": "",
-            "page": {
-                "id": "p0001",
-                "title": "Проверка атаки",
-                "section_path": [],
-                "source_page_number": 1,
-            },
-            "nav": {"prev": None, "next": None, "parent_section": ""},
-            "blocks": [
-                {
-                    "kind": "heading",
-                    "id": "p0001.b001",
-                    "level": 2,
-                    "children": [
-                        {"kind": "text", "text": "Проверка атаки", "marks": []},
-                    ],
-                },
-                {
-                    "kind": "paragraph",
-                    "id": "p0001.b002",
-                    "children": [
-                        {"kind": "text", "text": "Получите 1 ", "marks": []},
-                        {"kind": "icon", "symbol_id": "sym.progress", "alt": "Прогресс"},
-                        {"kind": "text", "text": " Прогресс.", "marks": []},
-                    ],
-                },
-            ],
-            "figures": {},
-            "glossary_mentions": ["concept.progress"],
-            "search": {
-                "raw_text": "Проверка атаки Получите 1 Прогресс",
-                "normalized_terms": ["проверка", "атака", "получить", "прогресс"],
-            },
-            "source_map": {
-                "document_id": "walking_skeleton",
-                "page_id": "p0001",
-                "block_refs": ["p0001.b001", "p0001.b002"],
-            },
-            "build_meta": None,
-        },
-    )
-
-    # --- glossary_payload.json ---
-    # All registry concepts are included; only concept.progress has page_refs
     repo_root = Path(__file__).resolve().parent.parent
-    registry = load_concept_registry(repo_root / "configs" / "glossary" / "concepts.toml")
-    glossary_entries = []
-    for concept in registry.concepts:
-        entry: dict[str, object] = {
-            "concept_id": concept.concept_id,
-            "preferred_term": concept.target.lemma,
-            "source_term": concept.source.lemma,
-            "aliases": list(concept.source.aliases),
-            "icon_binding": concept.icon_binding,
-            "notes": concept.notes or "",
-        }
-        glossary_entries.append(entry)
-    write_json(
-        "glossary_payload.json",
-        {"document_id": "walking_skeleton", "entries": glossary_entries},
-    )
+    write_json("glossary_payload.json", build_glossary_payload(repo_root))
 
-    # --- qa_summary.json ---
-    # The fixture represents the PUBLIC web bundle (PublicQASummaryV1 shape),
-    # not the internal QASummaryV1 artifact written to the pipeline store.
-    # Internal fields (run_id, record_refs, review_pack_ref, qa_metrics_ref)
-    # are deliberately absent per S5U-689 — their presence here would mean
-    # the fixture was blessing the pre-projection contract.
-    write_json(
-        "qa_summary.json",
-        {
-            "schema_version": "public_qa_summary.v1",
-            "document_id": "walking_skeleton",
-            "edition": "",
-            "counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
-            "waived_counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
-            "blocking": False,
-        },
-    )
+    write_json("qa_summary.json", build_qa_summary())
 
 
 if __name__ == "__main__":
