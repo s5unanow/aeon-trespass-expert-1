@@ -86,8 +86,12 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - `git checkout main && git pull && git checkout -b s5unanow/s5u-XXX-short-description`. Branch naming, direct commits to main, and dirty-tree-on-main are all enforced by hook.
 
 ### 3. Plan before coding
-- Cross-subsystem changes (pipeline + web, export + render, schemas + pipeline, etc.): read `.claude/prompts/plan.md` as the Agent prompt, save plan to `tmp/plan-s5u-<N>.md`.
-- Single-subsystem changes skip this — **except** safety-gate changes (hooks, review gates, CI checks, merge guards), which always require the plan to document adversarial scenarios.
+
+| Change shape                                                                  | Plan?                                                |
+|-------------------------------------------------------------------------------|------------------------------------------------------|
+| Single-subsystem, **not** safety-gate                                         | Skip                                                 |
+| Cross-subsystem (pipeline + web, export + render, schemas + pipeline, etc.)   | Run `.claude/prompts/plan.md` → `tmp/plan-s5u-<N>.md` |
+| Safety-gate (hooks, review gates, CI checks, merge guards) — any subsystem count | Run plan and document adversarial scenarios          |
 
 ### 4. Work on the branch
 - Commit with prefix `<issue-id>: description`. The 9 local gates run automatically before each commit via hook.
@@ -96,19 +100,27 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] Code changes directly address the Linear issue description
 - [ ] New/changed code has tests (unless pure config/docs change)
 - [ ] **New/changed tests verified red-before** — each new `def test_` (pytest) or `it(`/`test(` (vitest) needs a `Red-before confirmation:` line in the commit message or PR body citing a pre-fix SHA, failure excerpt, or "N/A — no production code change" carve-out. Authoritative form and SHA-resolution tripwire in `.claude/rules/hooks.md` § "Three-input test discipline".
-- [ ] **Coverage table (multi-bullet issues only)** — Linear issues with ≥3 explicit bullets across "Fix" + "Success criteria" need a Coverage table in the PR body — one row per bullet verbatim, mapping each to a commit/file or a deferred-to-followup row with a live Linear reference. See `.claude/prompts/linear-conventions.md` § "Coverage table format".
+- [ ] **Coverage table** — required when the rule fires (table below). Full format in `.claude/prompts/linear-conventions.md` § "Coverage table format".
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 18 gates — local green alone is not sufficient)
 - [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 
+| Linear issue shape                                                          | Coverage table?                                                |
+|-----------------------------------------------------------------------------|----------------------------------------------------------------|
+| `<3` explicit bullets across "Fix" + "Success criteria", or prose-only      | Exempt (reviewer judgment)                                     |
+| `≥3` bullets (nested sub-bullets count, per S5U-622)                        | Required: one row per bullet verbatim, OR `deferred to S5U-XXX` |
+
 ### 6. Independent fresh-eyes review (MANDATORY before PR)
 
-Review-path selection is **determined by whether the `Agent` tool is available in your direct tool list**, not by preference. Sub-agents spawned by `/build-loop`, `/coordinator`, `/next`, and `/ship` do NOT have the `Agent` tool; the top-level coordinator context does (S5U-628).
+Review-path selection is **determined by whether the `Agent` tool is in your direct tool list**, not by preference.
 
-**Path A — `Agent` tool available.** Spawn an independent review agent before creating a PR. Use `.claude/prompts/review.md` as the prompt. Brief the reviewer as a stranger — pass only Linear issue ID, branch name, working directory. Do NOT paste your rationale, commit messages, or draft PR body. The reviewer must emit the structured verdict block (`Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:` with ≥3 bullets, `Bug IDs filed:`) to `tmp/review-s5u-<N>.md`; the pre-PR hook (`pre-pr-check.sh`) enforces the contract. BLOCK → fix and re-review (delete stale artifact first). Carveout: the hook only intercepts local `gh pr create`; the GitHub web UI / REST API bypass it.
+| Is `Agent` in my direct tool list? | Path | What to do                                                                                                                                                                                                                |
+|------------------------------------|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Yes (top-level coordinator)        | A    | Spawn an independent review agent with `.claude/prompts/review.md`. Brief as a stranger (Linear ID, branch, cwd only — no rationale, commit messages, draft PR body). Reviewer writes `tmp/review-s5u-<N>.md`. BLOCK → fix and re-review (delete stale artifact first). |
+| No (sub-agent under `/build-loop`, `/coordinator`, `/next`, `/ship`) | B    | Inline self-review: close drafts, re-fetch the Linear issue, read the diff unanchored, walk review.md checks 1–25, produce `tmp/review-s5u-<N>.md` with the same structured verdict. Disclose the fallback in both the artifact and PR body. |
 
-**Path B — `Agent` tool NOT available (sub-agent fallback).** Perform maximum-independence inline self-review: close drafts, re-fetch the Linear issue, read the diff unanchored, walk review.md checks 1–25, produce `tmp/review-s5u-<N>.md` with the same structured verdict. Disclose the fallback in both the review artifact and PR body: `"Reviewed under Path B (Agent tool unavailable in this sub-agent context, per CLAUDE.md step 6 / S5U-628). Authoritative post-ship review is the top-level coordinator's responsibility."` The fallback is only valid when `Agent` is genuinely missing — claiming Path B at the top level to avoid the spawn is a safety-gate violation.
+Both paths must produce the same structured verdict (`Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:` with ≥3 bullets, `Bug IDs filed:`). The pre-PR hook (`pre-pr-check.sh`) enforces the artifact contract on local `gh pr create` (the GitHub web UI / REST API bypass it). Path B disclosure (paste verbatim into the review artifact and PR body): `"Reviewed under Path B (Agent tool unavailable in this sub-agent context, per CLAUDE.md step 6 / S5U-628). Authoritative post-ship review is the top-level coordinator's responsibility."` Claiming Path B at the top level to avoid the spawn is a safety-gate violation.
 
 **Safety-gate scope escalation (MUST):** any PR touching safety-gate scope (hooks, pre-commit checks, review gates, CI checks, merge guards, branch-protection-adjacent scripts, `.claude/skills/**/SKILL.md` edits) MUST be shipped via `/coordinator`, not via `/ship` / `/next` / `/build-loop` run as a lone worker. The coordinator spawns a separate post-ship fresh-eyes reviewer in a new sub-agent context — that reviewer is the authoritative gate. **Mechanical enforcement:** `pre-pr-check.sh` refuses `gh pr create` on safety-gate-scoped branches unless the GitHub API returns a `coordinator-ack` commit status (state=success, context=coordinator-ack) on the branch HEAD from a signer in `.claude/coordinator-signers.txt` (S5U-670). **Post-merge audit layer:** `.github/workflows/post-merge-coordinator-ack.yml` re-checks every `push` to `main` for safety-gate-scoped diffs and fails if no valid coordinator-ack is found (S5U-693). The workflow is not a required-check context — it is a durable audit signal the reviewer's check #16 cross-references. Full rationale (why file-marker was retired, why the coordinator-signers allowlist, how the post-merge audit closes the web-UI / REST bypass) in `.claude/rules/merge-discipline.md` § "Coordinator-ack mechanics".
 
