@@ -89,6 +89,33 @@ def mod() -> Iterator[ModuleType]:
         sys.modules.pop("check_post_merge_coordinator_ack", None)
 
 
+# ---------------------------------------------------------------------------
+# check_threshold_changes module-loader fixture (S5U-656 split-out)
+# ---------------------------------------------------------------------------
+
+_CTC_SCRIPT_PATH = SCRIPT_DIR / "check_threshold_changes.py"
+
+
+@pytest.fixture()
+def guard() -> Iterator[ModuleType]:
+    """Load scripts/check_threshold_changes.py as a fresh module per test.
+
+    Used by the S5U-656 split unit-test files
+    (test_check_threshold_changes_unit.py).
+    """
+    if str(SCRIPT_DIR) not in sys.path:
+        sys.path.insert(0, str(SCRIPT_DIR))
+    spec = importlib.util.spec_from_file_location("check_threshold_changes", _CTC_SCRIPT_PATH)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["check_threshold_changes"] = module
+    spec.loader.exec_module(module)
+    try:
+        yield module
+    finally:
+        sys.modules.pop("check_threshold_changes", None)
+
+
 @pytest.fixture()
 def cct_stub_fetcher(
     cct_mod: ModuleType,
