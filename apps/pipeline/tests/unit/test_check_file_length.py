@@ -140,7 +140,9 @@ def test_grandfathered_file_is_skipped(cfl: ModuleType, tmp_path: Path) -> None:
     invariant; no production change here.
     """
     # Use an existing grandfathered entry as the target relative path.
-    rel = "apps/pipeline/tests/unit/test_check_visual_gate_scope.py"
+    # Note: `test_check_visual_gate_scope.py` was grandfathered until S5U-655
+    # split it into 6 files; pick a still-grandfathered S5U-677 entry instead.
+    rel = "apps/pipeline/tests/unit/test_export_to_web.py"
     assert rel in cfl.KNOWN_VIOLATORS
     abs_path = tmp_path / rel
     abs_path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,10 @@
-"""S5U-637 rename / bare-shortcut closure tests for `check_visual_gate_scope.py`.
+"""S5U-637 closure tests + S5U-655 local-only-script terminator coverage.
 
-S5U-655 split: extracted from the original 902-line file.
+S5U-655 split: extracted from the original 902-line file. Adds shell-
+terminator coverage for the local-only-script matcher
+(`_local_only_token_patterns`) — the issue's worked examples
+(`pnpm test:visual:update;`, `bash -c "pnpm test:visual:update; echo ok"`,
+etc.) bypass the pre-S5U-655 narrow trailing class.
 """
 
 from __future__ import annotations
@@ -9,6 +13,8 @@ import json
 import textwrap
 from pathlib import Path
 from types import ModuleType
+
+import pytest
 
 # `scope` fixture is auto-discovered from `tests/unit/conftest.py` (S5U-655).
 
@@ -199,4 +205,97 @@ class TestS5U637RenameAndBareShortcut:
                   - run: pnpm test:visual-update
             """,
         )
+        assert scope.scan(tmp_path) == []
+
+
+# -- S5U-655: local-only-script shell-terminator coverage -----------------
+#
+# The pre-S5U-655 trailing class for the local-only-script matcher
+# (`_local_only_token_patterns`) was `[\\s"'`]|$` — too narrow. Real shell
+# vectors using `;`, `&`, `|`, `)`, `(`, `<`, `>`, `,` after the script
+# name bypassed the matcher. Each terminator gets a happy-path (BLOCK)
+# below; false-positive guards live in `TestS5U611BarePnpmShortcut`
+# (which already covers `test-visual-update-lib`, dashes, etc.).
+
+
+_PKG_WITH_LOCAL_ONLY: dict[str, str] = {
+    "test:e2e": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
+}
+
+
+def _wf_one_step(run_line: str) -> str:
+    """Build a minimal workflow YAML body with a single `run:` step."""
+    return textwrap.dedent(
+        f"""\
+        name: X
+        on: push
+        jobs:
+          j:
+            runs-on: ubuntu-latest
+            steps:
+              - run: {run_line}
+        """
+    )
+
+
+class TestLocalOnlyShellTerminator:
+    """Local-only-script matcher must catch every shell-terminator variant.
+
+    Each input has the script name immediately followed by the new
+    terminator (no intervening whitespace) so the test exercises the
+    new char-class additions specifically.
+    """
+
+    @pytest.mark.parametrize(
+        "run_line",
+        [
+            # `;` — issue worked example, no whitespace before terminator
+            "pnpm test:visual:update;",
+            # `;` inside quoted bash -c body — issue worked example
+            'bash -c "pnpm test:visual:update; echo ok"',
+            # `|` — pipe immediately after the script name
+            "pnpm test:visual:update|tee log",
+            # `)` — close of a wrapping subshell, no leading whitespace
+            "(pnpm test:visual:update)",
+            # `&` — chained command immediately after script name
+            "pnpm test:visual:update&& echo ok",
+            # `,` — comma-list of script names
+            "pnpm test:visual:update,test:e2e",
+            # `<` — input redirect immediately after script name
+            "pnpm test:visual:update<input.txt",
+            # `>` — output redirect immediately after script name
+            "pnpm test:visual:update>log.txt",
+        ],
+        ids=[
+            "semicolon",
+            "quoted-semicolon",
+            "pipe",
+            "rparen",
+            "amp",
+            "comma",
+            "lt-redir",
+            "gt-redir",
+        ],
+    )
+    def test_local_only_with_shell_terminator_blocked(
+        self, scope: ModuleType, tmp_path: Path, run_line: str
+    ) -> None:
+        write_pkg(tmp_path, _PKG_WITH_LOCAL_ONLY)
+        write_workflow(tmp_path, "sneaky.yml", _wf_one_step(run_line))
+        violations = scope.scan(tmp_path)
+        assert violations, (
+            f"local-only script with shell terminator must be blocked; "
+            f"got {[v.reason for v in violations]} for run_line={run_line!r}"
+        )
+
+    def test_dash_substring_still_clean(self, scope: ModuleType, tmp_path: Path) -> None:
+        """False-positive regression pin: dashes in `test-visual-update-lib`."""
+        write_pkg(tmp_path, _PKG_WITH_LOCAL_ONLY)
+        write_workflow(
+            tmp_path,
+            "lib.yml",
+            _wf_one_step("npm install --save test-visual-update-lib"),
+        )
+        # No `test:visual:update` token (dashes vs colons).
         assert scope.scan(tmp_path) == []

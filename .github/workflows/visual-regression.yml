@@ -38,9 +38,9 @@ jobs:
       # Defense in depth. The primary check is `visual-gate-scope / scan`
       # (a separate job in `ci.yml`) which scans all workflows and scripts.
       # This job-local guard keeps a fail-fast check right next to the
-      # Playwright invocation. Flags blocked: -u, --update-snapshots,
-      # --ignore-snapshots. See `scripts/check_test_e2e_flags.sh` and
-      # S5U-608 for the full threat model.
+      # Playwright invocation. See `scripts/check_test_e2e_flags.sh` and
+      # S5U-608 for the full threat model (flag enumeration intentionally
+      # not inlined here to avoid tripping the visual-gate-scope scanner).
       - name: Guard against in-CI baseline regeneration
         run: bash scripts/check_test_e2e_flags.sh
 
