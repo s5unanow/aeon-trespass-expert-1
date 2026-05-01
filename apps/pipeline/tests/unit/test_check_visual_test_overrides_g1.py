@@ -1,8 +1,9 @@
-"""G1 fail-closed defaults for `scripts/check_visual_test_overrides.py` (S5U-657).
+"""G1 fail-closed defaults for `scripts/check_visual_test_overrides.py` (S5U-657, S5U-757).
 
 Per `.claude/rules/guards.md` Rule G1, every degenerate-input case MUST exit
 non-zero with a clear message — except the documented one deviation: an empty
-`*.spec.ts` file list returns 0 with a stdout warning (see plan §4a).
+spec-file list (no file matching the Playwright `testMatch` family) returns 0
+with a stdout warning (see plan §4a).
 
 `overrides_mod` fixture is auto-discovered from `tests/unit/conftest.py`.
 """
@@ -57,13 +58,17 @@ class TestG1FailClosed:
         tmp_path: Path,
         capsys: pytest.CaptureFixture[str],
     ) -> None:
-        """Empty `*.spec.ts` list — documented G1 deviation: exit 0 with warning."""
+        """Empty spec-file list — documented G1 deviation: exit 0 with warning."""
         scan_dir = tmp_path / "e2e"
         scan_dir.mkdir(parents=True)
         rc = overrides_mod.main([str(scan_dir), "--repo-root", str(tmp_path)])
         captured = capsys.readouterr()
         assert rc == 0
-        assert "no `*.spec.ts` files found" in captured.out
+        assert "no spec files" in captured.out
+        # Message should advertise the broadened Playwright `testMatch` family
+        # (S5U-757) so anyone seeing the message in CI can understand the
+        # extension set the scanner now covers.
+        assert "spec,test" in captured.out
 
     def test_main_missing_scan_dir_exits_nonzero(
         self,

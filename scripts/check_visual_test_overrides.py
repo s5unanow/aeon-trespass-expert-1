@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Block per-test `maxDiffPixelRatio` overrides without a justification marker.
 
-Implements bullet 4 of S5U-608's fix sketch (S5U-657). Scans
-`apps/web/tests/e2e/**/*.spec.ts` for `maxDiffPixelRatio` overrides and
-fails if any line carrying that token does NOT have an immediately
-preceding `// visual-gate-override: allow reason=<non-empty>` comment.
+Implements bullet 4 of S5U-608's fix sketch (S5U-657), extended in S5U-757
+to close four syntactic-variant bypasses surfaced by the post-ship review of
+PR #364. Scans every Playwright-runnable spec file under `apps/web/tests/e2e/`
+for `maxDiffPixelRatio` overrides and fails if any line carrying that
+override does NOT have an immediately preceding
+`// visual-gate-override: allow reason=<non-empty>` comment.
 
 Per `.claude/rules/guards.md`:
 
@@ -12,18 +14,33 @@ Per `.claude/rules/guards.md`:
   scan dir, or an unreadable spec file each exit non-zero with a clear
   message. The legitimate-override allowlist is empty (no env-var or
   workflow-`if` overrides).
-- **Rule G2** (content-derived sets): the blocked set is "every line
-  whose body contains `maxDiffPixelRatio:` in any spec file under the
-  scan dir" — derived at scan time from file contents, not from a
-  hardcoded list of file or test names.
+- **Rule G2** (content-derived sets): the blocked set is content-derived in
+  two senses. (1) The in-scope file set is computed from Playwright's
+  default `testMatch` glob (`**/*.@(spec|test).?(c|m)[jt]s?(x)`), not a
+  hardcoded `.spec.ts`. (2) The match set is every line that exhibits an
+  ECMAScript object-literal binding of the `maxDiffPixelRatio` key —
+  bare-key colon, quoted-key colon, property shorthand, or computed-key
+  declaration site. The set is derived at scan time from the four
+  `PropertyDefinition` productions in the language grammar (see
+  `tmp/plan-s5u-757.md` §4a), not a single regex token.
+
+Detected forms:
+
+- Bare key:           `maxDiffPixelRatio: 0.5`
+- Quoted key:         `'maxDiffPixelRatio': 0.5` / `"maxDiffPixelRatio": 0.5`
+- Property shorthand: `{ maxDiffPixelRatio }` / `, maxDiffPixelRatio,`
+                      (single-line or multi-line with token on its own line
+                      bracketed by `,`/`}`)
+- Computed key:       `const k = 'maxDiffPixelRatio'` (the declaration site;
+                      the use site `{ [k]: 0.5 }` carries no token and is
+                      undetectable by static regex)
 
 Adjacency rule: walk backwards from the violation line over **blank
 lines only**; the first non-blank line MUST be the justification
 marker. A non-blank, non-marker line directly above the override line
 (e.g. another statement, a JSDoc comment that isn't the marker) is a
 violation. For multi-line `toHaveScreenshot(...)` calls, place the
-marker on the line immediately preceding the `maxDiffPixelRatio:`
-line:
+marker on the line immediately preceding the override line:
 
 ```ts
 await expect(content).toHaveScreenshot('foo.png', {
@@ -44,12 +61,76 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-# Content-derived match: any non-string declaration of `maxDiffPixelRatio:`
-# inside a spec file. We match the *line* containing the token; the rule is
-# enforced at the line level, not the AST level. False-positive on a token
-# inside a string literal is tolerated (worker can move the string or add
-# the marker comment) — see plan §4b "token inside string literal".
-OVERRIDE_TOKEN_RE = re.compile(r"\bmaxDiffPixelRatio\s*:")
+# Content-derived match set, one regex per ECMAScript PropertyDefinition shape
+# that can bind the `maxDiffPixelRatio` key (see `tmp/plan-s5u-757.md` §4a for
+# the spec citation). Any one match flags the line.
+#
+# The rule is enforced at the line level, not the AST level. False-positive on
+# a token inside a string literal that is NOT an actual override is tolerated
+# (worker can move the string or add the marker comment) — see plan §4b
+# "token inside string literal".
+#
+# (1) Bare-or-quoted key followed by colon: `maxDiffPixelRatio:`,
+#     `'maxDiffPixelRatio':`, `"maxDiffPixelRatio":`. The optional `['"]?`
+#     wrapping is symmetric — quoted forms must use matching quote types but a
+#     line-level scan accepts either pair (the regex is line-grained, not
+#     parse-tree-grained).
+OVERRIDE_BARE_OR_QUOTED_RE = re.compile(r"['\"]?\bmaxDiffPixelRatio\b['\"]?\s*:")
+
+# (2) Property shorthand: token sits adjacent to `{` or `,` (literal opening
+#     or a separator), and is followed by `,` or `}` (separator or close), with
+#     NO `:` or `=` after it. Two sub-forms:
+#       (a) inline: `{ ..., maxDiffPixelRatio, ... }` or `{ maxDiffPixelRatio }`
+#           — opener-or-comma BEFORE token, comma-or-brace AFTER token.
+#       (b) multi-line: token alone on its own line indented under a `{`,
+#           bracketed by trailing `,` or `}`.
+#     The negative-followed-by clause `(?![:=\w])` keeps `maxDiffPixelRatioFoo`
+#     and `maxDiffPixelRatio: 0.5` (the bare-key form, already covered by (1))
+#     out of this branch.
+OVERRIDE_SHORTHAND_INLINE_RE = re.compile(r"[\{,]\s*maxDiffPixelRatio\s*(?![:=\w])\s*[,}]")
+OVERRIDE_SHORTHAND_MULTILINE_RE = re.compile(r"^\s*maxDiffPixelRatio\s*(?![:=\w])\s*[,}]")
+
+# (3) Computed-key declaration site: `const k = 'maxDiffPixelRatio'` (or `let`
+#     / `var`). The use site `{ [k]: V }` carries no token, so a static
+#     detector must anchor on the binding. Closing-quote-immediately-after
+#     anchor (`['"]maxDiffPixelRatio['"]`) prevents false positives on prose
+#     strings that contain but are not equal to the token (see plan §4d).
+OVERRIDE_COMPUTED_DECL_RE = re.compile(
+    r"\b(?:const|let|var)\s+\w+\s*=\s*['\"]maxDiffPixelRatio['\"]"
+)
+
+# Tuple driving the per-line scan. Order is informational only; any-match
+# wins.
+OVERRIDE_REGEXES: tuple[re.Pattern[str], ...] = (
+    OVERRIDE_BARE_OR_QUOTED_RE,
+    OVERRIDE_SHORTHAND_INLINE_RE,
+    OVERRIDE_SHORTHAND_MULTILINE_RE,
+    OVERRIDE_COMPUTED_DECL_RE,
+)
+
+
+def _line_has_override(line: str) -> bool:
+    """Return True iff `line` matches any of the four override-shape regexes."""
+    return any(rx.search(line) for rx in OVERRIDE_REGEXES)
+
+
+# Playwright's default `testMatch` is `**/*.@(spec|test).?(c|m)[jt]s?(x)`, which
+# expands to twelve concrete extensions. The scanner enumerates the same set so
+# a renamed-extension bypass (the S5U-757 item-4 vector) is closed.
+SPEC_EXTENSIONS: tuple[str, ...] = (
+    "spec.ts",
+    "spec.tsx",
+    "spec.js",
+    "spec.jsx",
+    "spec.mjs",
+    "spec.cjs",
+    "test.ts",
+    "test.tsx",
+    "test.js",
+    "test.jsx",
+    "test.mjs",
+    "test.cjs",
+)
 
 # Justification marker: comment line shaped exactly like
 # `// visual-gate-override: allow reason=<non-empty>`. The `\S.*` clause
@@ -104,7 +185,7 @@ def _is_marker_line(line: str) -> bool:
 
 
 def _scan_spec_file(path: Path, repo_root: Path) -> list[Violation]:
-    """Scan one `.spec.ts` file for unjustified `maxDiffPixelRatio` overrides.
+    """Scan one spec file for unjustified `maxDiffPixelRatio` overrides.
 
     Fails closed (raises) on read error — propagated to the caller so the
     overall scan exits non-zero with a clear message (Rule G1).
@@ -118,7 +199,7 @@ def _scan_spec_file(path: Path, repo_root: Path) -> list[Violation]:
     rel = _rel(path, repo_root)
     violations: list[Violation] = []
     for i, line in enumerate(lines):
-        if not OVERRIDE_TOKEN_RE.search(line):
+        if not _line_has_override(line):
             continue
         # The override line itself, if it ALSO carries the marker on the
         # same line (rare but legitimate — `// visual-gate-override: allow
@@ -156,8 +237,19 @@ def _scan_spec_file(path: Path, repo_root: Path) -> list[Violation]:
 
 
 def _iter_spec_files(scan_dir: Path) -> list[Path]:
-    """Return every `*.spec.ts` under `scan_dir`, sorted for stable output."""
-    return sorted(scan_dir.rglob("*.spec.ts"))
+    """Return every Playwright-runnable spec file under `scan_dir`, sorted.
+
+    The set of in-scope extensions is derived from Playwright's default
+    `testMatch` glob (`**/*.@(spec|test).?(c|m)[jt]s?(x)`); see plan §4a.
+    Deduped via a `set` because `rglob` is per-extension and a file cannot
+    legitimately match two of these extensions, but the set protects against
+    accidental overlap.
+    """
+    seen: set[Path] = set()
+    for ext in SPEC_EXTENSIONS:
+        for path in scan_dir.rglob(f"*.{ext}"):
+            seen.add(path)
+    return sorted(seen)
 
 
 def scan(scan_dir: Path, repo_root: Path) -> list[Violation]:
@@ -192,7 +284,8 @@ def main(argv: list[str] | None = None) -> int:
         nargs="?",
         default=None,
         help=(
-            "Directory to scan for `*.spec.ts` files. Defaults to <repo_root>/apps/web/tests/e2e."
+            "Directory to scan for Playwright spec files (`*.{spec,test}.{ts,tsx,"
+            "js,jsx,mjs,cjs}`). Defaults to <repo_root>/apps/web/tests/e2e."
         ),
     )
     parser.add_argument(
@@ -229,7 +322,8 @@ def main(argv: list[str] | None = None) -> int:
         # bypass attempt that *removes* spec files would be visible in the
         # PR diff and is outside this guard's scope.
         print(
-            f"visual-test-overrides: no `*.spec.ts` files found under {scan_dir}; nothing to scan."
+            "visual-test-overrides: no spec files (`*.{spec,test}.{ts,tsx,js,jsx,"
+            f"mjs,cjs}}`) found under {scan_dir}; nothing to scan."
         )
         return 0
 
