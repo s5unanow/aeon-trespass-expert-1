@@ -41,7 +41,11 @@ class ExtractLayoutStage:
 
     @property
     def version(self) -> str:
-        return "1.0"
+        # S5U-589: bumped 1.0 -> 1.1 because LayoutPageV1 now persists
+        # `extraction_path` on every artifact. Cached events from the prior
+        # version produced no field on disk; the bump invalidates them so the
+        # structure stage can rely on the field being present.
+        return "1.1"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> ExtractLayoutResult:
         raster_provider = PageRasterProvider(
@@ -98,7 +102,21 @@ class ExtractLayoutStage:
         native: NativePageV1,
         raster_path: str | None,
     ) -> LayoutPageV1:
-        """Run primary extractor; escalate to OCR on hard pages or primary failure."""
+        """Run primary extractor; escalate to OCR on hard pages or primary failure.
+
+        Tags the returned layout with ``extraction_path`` so downstream
+        stages (StructureStage) can attribute fallback provenance to the
+        blocks they emit. S5U-589 — one of:
+
+        * ``"primary"``: clean Docling result kept (no OCR needed, or OCR
+          produced nothing usable so we fell back to the primary's zones).
+        * ``"ocr_fallback"``: OCR layout was selected because either the
+          primary failed entirely or it flagged the page as ``hard_page``,
+          and the OCR result has zones we can use.
+        * ``"extraction_failed"``: both primary and OCR produced nothing;
+          we synthesize a degenerate marker layout so the page never
+          silently presents as a clean R1.
+        """
         img = Path(raster_path) if raster_path else None
         dpi = ctx.config.extraction.layout.dpi
 
@@ -114,6 +132,7 @@ class ExtractLayoutStage:
 
         if not ExtractLayoutStage._needs_ocr(primary):
             assert primary is not None  # _needs_ocr returns True when primary is None
+            primary.extraction_path = "primary"
             return primary
 
         try:
@@ -128,9 +147,15 @@ class ExtractLayoutStage:
 
         if ocr is not None and ocr.zones:
             ctx.logger.info("Using OCR layout for hard page %s", native.page_id)
+            ocr.extraction_path = "ocr_fallback"
             return ocr
 
         if primary is not None:
+            # OCR was attempted (page was flagged hard) but didn't produce
+            # usable zones; we keep the primary's data. Mark as "primary"
+            # because the bytes the structure stage will see came from the
+            # primary extractor — OCR did not influence the output.
+            primary.extraction_path = "primary"
             return primary
 
         ctx.logger.warning(
@@ -158,6 +183,7 @@ class ExtractLayoutStage:
                 hard_page=True,
                 recommended_route="R2",
             ),
+            extraction_path="extraction_failed",
         )
 
     @staticmethod

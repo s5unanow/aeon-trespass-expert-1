@@ -59,7 +59,9 @@ def test_stage_implements_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "extract_layout"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.0"
+    # S5U-589: bumped 1.0 → 1.1 because LayoutPageV1 now persists
+    # ``extraction_path`` on every artifact.
+    assert stage.version == "1.1"
 
 
 def test_stage_produces_layout_artifacts(tmp_path: Path) -> None:

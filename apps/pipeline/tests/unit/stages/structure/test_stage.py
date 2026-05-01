@@ -64,7 +64,9 @@ def test_structure_implements_stage_protocol() -> None:
     assert stage.name == "structure"
     assert stage.scope == StageScope.DOCUMENT
     # S5U-733: bumped 1.4 → 1.5 for row re-inference + Option 2 fallback.
-    assert stage.version == "1.5"
+    # S5U-589: bumped 1.5 → 1.6 because resolved_page.v1 now persists
+    # FallbackProvenance on every block from a non-primary extraction path.
+    assert stage.version == "1.6"
 
 
 def test_structure_builds_ir(tmp_path: Path) -> None:

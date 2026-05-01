@@ -383,7 +383,9 @@ def test_route_provenance_roundtrip(tmp_path: Path) -> None:
     assert ir.provenance.extractor == "structure"
     # S5U-733 bumped StructureStage.version 1.4 → 1.5 (row re-inference in
     # _resolve_tables and Option 2 fallback when rows cannot be proven).
-    assert ir.provenance.version == "1.5"
+    # S5U-589 bumped 1.5 → 1.6 (FallbackProvenance populated on
+    # non-primary extraction paths).
+    assert ir.provenance.version == "1.6"
     assert "route:R2" in ir.provenance.evidence_ids
 
     assert ir.confidence is not None
