@@ -294,7 +294,12 @@ def test_e2e_failure_plain_function_exit_0(tmp_path: Path) -> None:
 
 
 def test_e2e_g1a_missing_base_ref_fails_closed(tmp_path: Path) -> None:
-    """G1a: unresolvable base ref → SystemExit non-zero with clear msg."""
+    """G1a: unresolvable base ref → SystemExit exit code 2 with clear msg.
+
+    Tightened in S5U-758 from `proc.returncode != 0` to `== 2` to match
+    the helper docstring's "2 — fail-closed degenerate input" contract.
+    Red-before evidence cited in the commit message.
+    """
     repo = tmp_path / "repo"
     _init_repo(repo)
     proc = subprocess.run(
@@ -312,7 +317,7 @@ def test_e2e_g1a_missing_base_ref_fails_closed(tmp_path: Path) -> None:
         capture_output=True,
         text=True,
     )
-    assert proc.returncode != 0
+    assert proc.returncode == 2, proc.stderr
     assert "cannot resolve ref" in proc.stderr
     assert "does-not-exist" in proc.stderr
 

@@ -17,7 +17,8 @@ and flags lines whose enclosing context matches one of the documented
 parametrize-equivalent shapes:
 
   - `@pytest.mark.parametrize(...)` (function- or class-level, stacked OK)
-  - bare `@parametrize(...)` (rare aliased import)
+  - `@mark.parametrize(...)` (after `from pytest import mark`)
+  - bare `@parametrize(...)` (after `from pytest.mark import parametrize`)
   - `@given(...)` (hypothesis strategy widening)
   - `@pytest.fixture(..., params=[...])` (parametrized fixture widening)
   - `pytest_generate_tests(metafunc)` body (test-data factory function)
@@ -33,7 +34,8 @@ Exit codes:
   0 — no parametrize-equivalent rows added
   1 — at least one parametrize-equivalent row added; reviewer must
       verify red-before evidence per .claude/rules/hooks.md
-  2 — fail-closed degenerate input (Rule G1): bad ref, git diff failure
+  2 — fail-closed degenerate input (Rule G1): bad ref, git diff failure,
+      git show failure on a `.py` file listed in `--name-only` output
 
 Scope: `.py` only. Vitest `.each` (`.ts` / `.tsx`) is out of scope; the
 reviewer prompt retains a line-grep fallback for those file types with
@@ -54,6 +56,7 @@ import subprocess
 import sys
 from collections.abc import Iterable
 from dataclasses import dataclass
+from typing import NoReturn
 
 _HUNK_HEADER_RE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
 
@@ -72,6 +75,12 @@ class Skip:
     reason: str
 
 
+def _fail_closed(message: str) -> NoReturn:
+    """Print `message` to stderr and exit 2 (Rule G1, matches docstring)."""
+    print(message, file=sys.stderr)
+    raise SystemExit(2)
+
+
 def _verify_ref_exists(ref: str) -> None:
     """Fail closed when `ref` does not resolve to a commit (Rule G1)."""
     result = subprocess.run(
@@ -81,7 +90,7 @@ def _verify_ref_exists(ref: str) -> None:
         check=False,
     )
     if result.returncode != 0:
-        raise SystemExit(
+        _fail_closed(
             f"ERROR: cannot resolve ref '{ref}' to a commit.\n"
             "  This usually means the CI checkout is shallow or the ref is\n"
             "  unfetched. Set fetch-depth: 0 on actions/checkout, or pass\n"
@@ -108,7 +117,7 @@ def _changed_python_files(base: str, head: str) -> list[str]:
     )
     if fallback.returncode == 0:
         return [line.strip() for line in fallback.stdout.splitlines() if line.strip()]
-    raise SystemExit(
+    _fail_closed(
         f"ERROR: git diff failed for both '{base}...{head}' and '{base} {head}'.\n"
         f"  primary stderr: {primary.stderr.strip()}\n"
         f"  fallback stderr: {fallback.stderr.strip()}"
@@ -131,7 +140,7 @@ def _added_lines_for(base: str, head: str, path: str) -> list[int]:
             check=False,
         )
     if result.returncode != 0:
-        raise SystemExit(
+        _fail_closed(
             f"ERROR: git diff failed for path {path!r}.\n  stderr: {result.stderr.strip()}"
         )
 
@@ -153,8 +162,15 @@ def _added_lines_for(base: str, head: str, path: str) -> list[int]:
     return added
 
 
-def _read_head_blob(head: str, path: str) -> str | None:
-    """Return file contents at `head:path` or None if deleted at head."""
+def _read_head_blob(head: str, path: str) -> str:
+    """Return file contents at `head:path`, fail closed on git-show failure.
+
+    Per .claude/rules/guards.md Rule G1: a `.py` path that surfaced in
+    `git diff --name-only` but cannot be read at head (deleted blob,
+    encoding issue, very large blob) is a degenerate input — the helper
+    cannot do its job for that file. Exit non-zero with stderr rather
+    than silently no-op.
+    """
     result = subprocess.run(
         ["git", "show", f"{head}:{path}"],
         capture_output=True,
@@ -162,7 +178,14 @@ def _read_head_blob(head: str, path: str) -> str | None:
         check=False,
     )
     if result.returncode != 0:
-        return None
+        _fail_closed(
+            f"ERROR: git show failed for path {path!r} at head {head!r}.\n"
+            "  This file appeared in `git diff --name-only` but its blob\n"
+            "  is unreadable at head (deleted at head, encoding issue, or\n"
+            "  oversized blob). Re-fetch the head ref or pass --head\n"
+            "  explicitly.\n"
+            f"  git show stderr: {result.stderr.strip()}"
+        )
     return result.stdout
 
 
@@ -183,7 +206,19 @@ def _decorator_context_label(decorator: ast.expr) -> str | None:
     ):
         return "pytest.mark.parametrize"
 
-    # bare @parametrize(...)
+    # @mark.parametrize(...) (after `from pytest import mark`)
+    # Tight: the `inner.attr == "parametrize"` clause prevents any other
+    # `@mark.foo(...)` (e.g., @mark.skipif) from matching, and the
+    # ast.Name shape distinguishes this from the dotted-Attribute form.
+    if (
+        isinstance(inner, ast.Attribute)
+        and inner.attr == "parametrize"
+        and isinstance(inner.value, ast.Name)
+        and inner.value.id == "mark"
+    ):
+        return "mark.parametrize"
+
+    # bare @parametrize(...) (after `from pytest.mark import parametrize`)
     if isinstance(inner, ast.Name) and inner.id == "parametrize":
         return "parametrize"
 
@@ -332,8 +367,6 @@ def main() -> int:
         if not added:
             continue
         head_src = _read_head_blob(args.head, path)
-        if head_src is None:
-            continue
         matches, skips = analyze_file(path, head_src, added)
         all_matches.extend(matches)
         all_skips.extend(skips)
