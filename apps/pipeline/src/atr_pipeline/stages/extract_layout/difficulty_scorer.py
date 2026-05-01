@@ -34,8 +34,8 @@ def compute_difficulty(
     # --- zone overlap ratio ---
     zone_overlap_ratio = _zone_overlap(zones) if len(zones) >= 2 else 0.0
 
-    # --- extractor agreement (stub until second extractor exists) ---
-    extractor_agreement = 1.0
+    # --- extractor agreement (S5U-580) ---
+    extractor_agreement = _compute_extractor_agreement(native, zones)
 
     # --- routing decision ---
     hard_page = False
@@ -53,10 +53,50 @@ def compute_difficulty(
         column_count=column_count,
         zone_overlap_ratio=zone_overlap_ratio,
         native_text_coverage=round(native_text_coverage, 4),
-        extractor_agreement=extractor_agreement,
+        extractor_agreement=round(extractor_agreement, 4),
         hard_page=hard_page,
         recommended_route=route,
     )
+
+
+def _compute_extractor_agreement(
+    native: NativePageV1,
+    zones: list[LayoutZone],
+) -> float:
+    """Word-zone recall: fraction of native PyMuPDF words whose center
+    falls inside at least one Docling/OCR layout zone (S5U-580).
+
+    Replaces the pre-S5U-580 hardcoded ``1.0`` placeholder. The metric
+    measures how well the secondary extractor (Docling layout, or
+    PaddleOCR fallback) explains the text PyMuPDF found natively. A
+    Docling pass that produces zones not covering the bulk of native
+    words is producing a divergent layout — pages with low recall fire
+    R3 (extractor disagreement) via the existing ``_LOW_AGREEMENT``
+    threshold (currently ``0.90``).
+
+    Edge cases:
+    * No native words: returns ``1.0`` (vacuous; nothing to disagree on).
+    * No zones: returns ``0.0`` (no zone explains any text — the case
+      where the secondary extractor produced nothing).
+    * Stub fallback (single page-spanning body zone): returns ``1.0``
+      because every word fits the zone — this preserves the
+      pre-S5U-580 behaviour for environments where Docling is not
+      installed (the stub is intentionally permissive).
+    """
+    if not native.words:
+        return 1.0
+    if not zones:
+        return 0.0
+    inside = 0
+    for w in native.words:
+        cx = (w.bbox.x0 + w.bbox.x1) / 2
+        cy = (w.bbox.y0 + w.bbox.y1) / 2
+        for z in zones:
+            zb = z.bbox
+            if zb.x0 <= cx <= zb.x1 and zb.y0 <= cy <= zb.y1:
+                inside += 1
+                break
+    return inside / len(native.words)
 
 
 def _detect_columns(native: NativePageV1) -> int:

@@ -41,11 +41,11 @@ class ExtractLayoutStage:
 
     @property
     def version(self) -> str:
-        # S5U-589: bumped 1.0 -> 1.1 because LayoutPageV1 now persists
-        # `extraction_path` on every artifact. Cached events from the prior
-        # version produced no field on disk; the bump invalidates them so the
-        # structure stage can rely on the field being present.
-        return "1.1"
+        # S5U-589 1.0 -> 1.1: LayoutPageV1 persists `extraction_path` per page.
+        # S5U-580 1.1 -> 1.2: difficulty.extractor_agreement carries a real
+        # word-zone recall metric (was hardcoded 1.0 — every cached pre-S5U-580
+        # event would report full agreement and never fire the R3 route).
+        return "1.2"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> ExtractLayoutResult:
         raster_provider = PageRasterProvider(

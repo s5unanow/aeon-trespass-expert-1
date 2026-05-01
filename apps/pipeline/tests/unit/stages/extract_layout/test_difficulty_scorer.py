@@ -38,7 +38,12 @@ def test_single_column_normal_coverage() -> None:
     """Page with enough text spread across the page should be easy."""
     # Words spanning the full width, covering significant page area
     words = [_word(50, y * 15, 560, y * 15 + 12) for y in range(5, 50)]
-    d = compute_difficulty(_page(words), [])
+    # S5U-580: a single body zone matching PyMuPDF's text region keeps
+    # extractor_agreement at 1.0 so this test exercises the R1 path.
+    # Pre-S5U-580 the agreement was hardcoded 1.0 regardless of zones;
+    # now it requires real zone coverage.
+    body = LayoutZone(zone_id="z1", kind="body", bbox=Rect(x0=0, y0=0, x1=612, y1=792))
+    d = compute_difficulty(_page(words), [body])
     assert d.hard_page is False
     assert d.column_count == 1
     assert d.recommended_route == "R1"
@@ -68,3 +73,77 @@ def test_nonoverlapping_zones() -> None:
     z2 = LayoutZone(zone_id="z2", kind="sidebar", bbox=Rect(x0=300, y0=0, x1=500, y1=400))
     d = compute_difficulty(_page([_word(50, 50, 100, 60)] * 20), [z1, z2])
     assert d.zone_overlap_ratio == 0.0
+
+
+# S5U-580 — extractor_agreement is real (was hardcoded 1.0).
+#
+# The metric is word-zone recall: fraction of native PyMuPDF words whose
+# centre falls inside at least one Docling/OCR zone. The pre-S5U-580 stub
+# always returned 1.0, so the R3 route (extractor disagreement) never
+# triggered. These tests pin the four edge cases plus the threshold-
+# crossing behaviour that flips the R3 route on.
+
+
+def test_agreement_full_coverage_when_words_inside_zones() -> None:
+    """All words inside a zone -> agreement 1.0 (no R3)."""
+    words = [_word(100, y * 15, 200, y * 15 + 12) for y in range(5, 45)]
+    body = LayoutZone(zone_id="z1", kind="body", bbox=Rect(x0=50, y0=50, x1=560, y1=740))
+    d = compute_difficulty(_page(words), [body])
+    assert d.extractor_agreement == 1.0
+    assert d.recommended_route != "R3"
+
+
+def test_agreement_zero_when_no_zones() -> None:
+    """No zones at all -> agreement 0.0 (the secondary extractor produced
+    nothing usable). Fires R3 because 0.0 < _LOW_AGREEMENT (0.90)."""
+    words = [_word(100, y * 15, 200, y * 15 + 12) for y in range(5, 50)]
+    d = compute_difficulty(_page(words), [])
+    assert d.extractor_agreement == 0.0
+    # Page is multi-routed: low coverage + no zones. With these inputs the
+    # earlier coverage check fires R2 first; only the threshold matters
+    # for the agreement metric itself.
+    assert d.hard_page is True
+
+
+def test_agreement_vacuous_one_when_no_words() -> None:
+    """No native words -> agreement 1.0 (vacuous; nothing to disagree on).
+
+    The page is still flagged hard via the native_text_coverage path —
+    the agreement metric is orthogonal to coverage.
+    """
+    body = LayoutZone(zone_id="z1", kind="body", bbox=Rect(x0=50, y0=50, x1=560, y1=740))
+    d = compute_difficulty(_page([]), [body])
+    assert d.extractor_agreement == 1.0
+
+
+def test_agreement_below_threshold_fires_r3() -> None:
+    """Half of native words outside the only zone -> agreement 0.5 -> R3 path.
+
+    Builds a page with full single-column text coverage (so R2 doesn't
+    pre-empt) and a single zone covering only the top half of the page.
+    Half the words have centres above the zone bottom and half below;
+    agreement lands ≈0.50, well under the 0.90 threshold.
+    """
+    # 60 words spread top-to-bottom; coverage high enough to clear R2's
+    # 0.30 floor, single column.
+    words = [_word(100, y * 12, 500, y * 12 + 10) for y in range(5, 65)]
+    # Zone covers only the top half of the page (y < 400).
+    top_half = LayoutZone(zone_id="z1", kind="body", bbox=Rect(x0=0, y0=0, x1=612, y1=400))
+    d = compute_difficulty(_page(words), [top_half])
+    assert 0.4 < d.extractor_agreement < 0.6
+    assert d.hard_page is True
+    assert d.recommended_route == "R3"
+
+
+def test_agreement_partial_zone_overlap() -> None:
+    """Zone covers ~80% of words -> agreement ~0.80 -> still under threshold.
+
+    Pins the metric arithmetic against a known split (12 in, 3 out -> 0.80)
+    and confirms 0.80 is still under the 0.90 threshold so this case does
+    fire R3.
+    """
+    inside = [_word(100 + i * 10, 100 + i * 10, 110 + i * 10, 110 + i * 10) for i in range(12)]
+    outside = [_word(700, 700 + i * 10, 800, 710 + i * 10) for i in range(3)]
+    zone = LayoutZone(zone_id="z1", kind="body", bbox=Rect(x0=0, y0=0, x1=300, y1=300))
+    d = compute_difficulty(_page(inside + outside), [zone])
+    assert d.extractor_agreement == 0.80

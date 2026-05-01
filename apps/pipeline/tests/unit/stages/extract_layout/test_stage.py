@@ -61,7 +61,9 @@ def test_stage_implements_protocol() -> None:
     assert stage.scope == StageScope.DOCUMENT
     # S5U-589: bumped 1.0 → 1.1 because LayoutPageV1 now persists
     # ``extraction_path`` on every artifact.
-    assert stage.version == "1.1"
+    # S5U-580: bumped 1.1 → 1.2 because difficulty.extractor_agreement is
+    # now a real metric (was hardcoded 1.0).
+    assert stage.version == "1.2"
 
 
 def test_stage_produces_layout_artifacts(tmp_path: Path) -> None:
