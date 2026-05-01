@@ -1,3 +1,11 @@
+## When to read this
+
+**Read when**: drafting a new ADR, starting a cross-system refactor, changing a schema/IR shape, or onboarding a new contributor.
+
+**Do NOT read when**: routine bugfix, single-stage change, web-only styling fix, single-module test addition. These tasks should rely on path-triggered `.claude/rules/*.md` for context instead — pulling this 2,700-line implementation-package doc on a one-file fix is exactly the front-loaded-context anti-pattern CLAUDE.md line 20 ("`docs/` Architecture docs (read on demand, not memorized)") was written to discourage.
+
+---
+
 Assumptions used for this implementation package
 
 No major flaw was found in the prior recommendation. This package stays consistent with the same IR-first modular monolith architecture.
