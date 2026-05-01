@@ -44,6 +44,19 @@ jobs:
       - name: Guard against in-CI baseline regeneration
         run: bash scripts/check_test_e2e_flags.sh
 
+      # S5U-657: implements bullet 4 of S5U-608's fix sketch — block
+      # per-test `maxDiffPixelRatio` overrides without an adjacent
+      # `// visual-gate-override: allow reason=<...>` comment. Wired
+      # as a job-step inside the already-required `visual-regression /
+      # visual` job; no branch-protection edit needed.
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Block unjustified per-test maxDiffPixelRatio overrides
+        run: python scripts/check_visual_test_overrides.py apps/web/tests/e2e
+
       - name: Run e2e and visual regression tests
         # CI=true (set by GitHub Actions automatically) makes Playwright fail
         # when a baseline PNG is missing instead of silently creating one.

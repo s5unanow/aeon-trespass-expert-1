@@ -142,6 +142,32 @@ def scope(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
         sys.modules.pop("check_visual_gate_scope", None)
 
 
+# ---------------------------------------------------------------------------
+# check_visual_test_overrides module-loader fixture (S5U-657)
+# ---------------------------------------------------------------------------
+
+_CVTO_SCRIPT_PATH = SCRIPT_DIR / "check_visual_test_overrides.py"
+
+
+@pytest.fixture()
+def overrides_mod(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
+    """Load scripts/check_visual_test_overrides.py as a fresh module per test.
+
+    Used by the S5U-657 split test files
+    (test_check_visual_test_overrides_*.py).
+    """
+    monkeypatch.syspath_prepend(str(SCRIPT_DIR))
+    spec = importlib.util.spec_from_file_location("check_visual_test_overrides", _CVTO_SCRIPT_PATH)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["check_visual_test_overrides"] = module
+    spec.loader.exec_module(module)
+    try:
+        yield module
+    finally:
+        sys.modules.pop("check_visual_test_overrides", None)
+
+
 @pytest.fixture()
 def cct_stub_fetcher(
     cct_mod: ModuleType,
