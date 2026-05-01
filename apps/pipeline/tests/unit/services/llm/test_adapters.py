@@ -1,54 +1,20 @@
 """Tests for LLM adapter error paths and response handling.
 
-All tests mock the SDK clients — no real network calls are made.
+All tests mock the SDK clients — no real network calls are made. The
+GeminiCLIAdapter (subprocess-based) lives in test_gemini_cli_adapter.py
+(split off in S5U-677); SDK adapters (OpenAI / Anthropic / Gemini SDK)
+remain here because they share the ``sys.modules``-patching idiom.
 """
 
 from __future__ import annotations
 
 import json
-import subprocess
 from types import ModuleType, SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
 
-from atr_schemas.page_ir_v1 import TextInline
-from atr_schemas.translation_batch_v1 import (
-    SegmentContext,
-    TranslationBatchV1,
-    TranslationSegment,
-)
-
-
-def _sample_batch() -> TranslationBatchV1:
-    return TranslationBatchV1(
-        batch_id="tr.p0001.01",
-        source_lang="en",
-        target_lang="ru",
-        segments=[
-            TranslationSegment(
-                segment_id="blk_001",
-                block_type="heading",
-                source_inline=[TextInline(text="Attack Test")],
-                context=SegmentContext(page_id="p0001"),
-            ),
-        ],
-    )
-
-
-def _valid_result_json(batch_id: str = "tr.p0001.01") -> str:
-    return json.dumps(
-        {
-            "batch_id": batch_id,
-            "segments": [
-                {
-                    "segment_id": "blk_001",
-                    "target_inline": [{"type": "text", "text": "Тест атаки"}],
-                    "concept_realizations": [],
-                },
-            ],
-        }
-    )
+from tests.unit.services.llm._translation_fixtures import sample_batch, valid_result_json
 
 
 def _mock_openai_module() -> tuple[ModuleType, MagicMock]:
@@ -142,7 +108,7 @@ def test_openai_empty_response_raises() -> None:
         mock_client.chat.completions.create.return_value = SimpleNamespace(choices=[choice])
 
         with pytest.raises(RuntimeError, match="OpenAI returned empty response"):
-            adapter.translate_batch(_sample_batch())
+            adapter.translate_batch(sample_batch())
 
 
 def test_openai_valid_response_returns_result() -> None:
@@ -155,13 +121,13 @@ def test_openai_valid_response_returns_result() -> None:
         from atr_pipeline.services.llm.openai_adapter import OpenAIAdapter
 
         adapter = OpenAIAdapter(model="gpt-4o")
-        choice = SimpleNamespace(message=SimpleNamespace(content=_valid_result_json()))
+        choice = SimpleNamespace(message=SimpleNamespace(content=valid_result_json()))
         mock_client.chat.completions.create.return_value = SimpleNamespace(
             choices=[choice],
             usage=None,
         )
 
-        resp = adapter.translate_batch(_sample_batch())
+        resp = adapter.translate_batch(sample_batch())
         assert resp.result.batch_id == "tr.p0001.01"
         assert len(resp.result.segments) == 1
         assert resp.meta.provider == "openai"
@@ -177,13 +143,13 @@ def test_openai_model_profile_override() -> None:
         from atr_pipeline.services.llm.openai_adapter import OpenAIAdapter
 
         adapter = OpenAIAdapter(model="gpt-4o")
-        choice = SimpleNamespace(message=SimpleNamespace(content=_valid_result_json()))
+        choice = SimpleNamespace(message=SimpleNamespace(content=valid_result_json()))
         mock_client.chat.completions.create.return_value = SimpleNamespace(
             choices=[choice],
             usage=None,
         )
 
-        adapter.translate_batch(_sample_batch(), model_profile="gpt-4o-mini")
+        adapter.translate_batch(sample_batch(), model_profile="gpt-4o-mini")
         call_kwargs = mock_client.chat.completions.create.call_args
         assert call_kwargs.kwargs["model"] == "gpt-4o-mini"
 
@@ -205,7 +171,7 @@ def test_anthropic_missing_tool_use_raises() -> None:
         mock_client.messages.create.return_value = SimpleNamespace(content=[text_block])
 
         with pytest.raises(RuntimeError, match="did not contain expected tool use"):
-            adapter.translate_batch(_sample_batch())
+            adapter.translate_batch(sample_batch())
 
 
 def test_anthropic_valid_tool_use_returns_result() -> None:
@@ -221,7 +187,7 @@ def test_anthropic_valid_tool_use_returns_result() -> None:
         tool_block = SimpleNamespace(
             type="tool_use",
             name="submit_translation",
-            input=json.loads(_valid_result_json()),
+            input=json.loads(valid_result_json()),
         )
         usage = SimpleNamespace(input_tokens=100, output_tokens=50)
         mock_client.messages.create.return_value = SimpleNamespace(
@@ -229,7 +195,7 @@ def test_anthropic_valid_tool_use_returns_result() -> None:
             usage=usage,
         )
 
-        resp = adapter.translate_batch(_sample_batch())
+        resp = adapter.translate_batch(sample_batch())
         assert resp.result.batch_id == "tr.p0001.01"
         assert len(resp.result.segments) == 1
         assert resp.meta.provider == "anthropic"
@@ -252,7 +218,7 @@ def test_gemini_empty_response_raises() -> None:
         mock_client.models.generate_content.return_value = SimpleNamespace(text=None)
 
         with pytest.raises(RuntimeError, match="Gemini returned empty response"):
-            adapter.translate_batch(_sample_batch())
+            adapter.translate_batch(sample_batch())
 
 
 def test_gemini_valid_response_returns_result() -> None:
@@ -266,11 +232,11 @@ def test_gemini_valid_response_returns_result() -> None:
 
         adapter = GeminiAdapter(model="gemini-2.5-flash")
         mock_client.models.generate_content.return_value = SimpleNamespace(
-            text=_valid_result_json(),
+            text=valid_result_json(),
             usage_metadata=None,
         )
 
-        resp = adapter.translate_batch(_sample_batch())
+        resp = adapter.translate_batch(sample_batch())
         assert resp.result.batch_id == "tr.p0001.01"
         assert len(resp.result.segments) == 1
         assert resp.meta.provider == "gemini"
@@ -303,107 +269,3 @@ def test_strip_additional_properties() -> None:
     items_list = props["items_list"]
     assert isinstance(items_list, dict)
     assert "additionalProperties" not in items_list["items"]
-
-
-# --- Gemini CLI adapter ---
-
-
-def test_gemini_cli_not_found_raises() -> None:
-    """GeminiCLIAdapter should raise RuntimeError when gemini is not on PATH."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash")
-    with (
-        patch("subprocess.run", side_effect=FileNotFoundError("gemini")),
-        pytest.raises(RuntimeError, match="gemini CLI not found"),
-    ):
-        adapter.translate_batch(_sample_batch())
-
-
-def test_gemini_cli_nonzero_exit_raises() -> None:
-    """Non-zero exit code should raise RuntimeError with stderr."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash")
-    proc = SimpleNamespace(returncode=1, stdout="", stderr="quota exceeded")
-    with (
-        patch("subprocess.run", return_value=proc),
-        pytest.raises(RuntimeError, match=r"exited with code 1.*quota exceeded"),
-    ):
-        adapter.translate_batch(_sample_batch())
-
-
-def test_gemini_cli_empty_output_raises() -> None:
-    """Empty stdout should raise RuntimeError."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash")
-    proc = SimpleNamespace(returncode=0, stdout="", stderr="")
-    with (
-        patch("subprocess.run", return_value=proc),
-        pytest.raises(RuntimeError, match="empty output"),
-    ):
-        adapter.translate_batch(_sample_batch())
-
-
-def test_gemini_cli_valid_response_returns_result() -> None:
-    """Valid JSON output should produce a TranslationResultV1."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash")
-    proc = SimpleNamespace(returncode=0, stdout=_valid_result_json(), stderr="")
-    with patch("subprocess.run", return_value=proc):
-        resp = adapter.translate_batch(_sample_batch())
-        assert resp.result.batch_id == "tr.p0001.01"
-        assert len(resp.result.segments) == 1
-        assert resp.meta.provider == "gemini-cli"
-
-
-def test_gemini_cli_model_profile_override() -> None:
-    """model_profile should override the default model in the CLI args."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash")
-    proc = SimpleNamespace(returncode=0, stdout=_valid_result_json(), stderr="")
-    with patch("subprocess.run", return_value=proc) as mock_run:
-        adapter.translate_batch(_sample_batch(), model_profile="gemini-2.5-pro")
-        args = mock_run.call_args[0][0]
-        assert "--model" in args
-        model_idx = args.index("--model")
-        assert args[model_idx + 1] == "gemini-2.5-pro"
-
-
-def test_gemini_cli_timeout_raises() -> None:
-    """Subprocess timeout should raise RuntimeError."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash", timeout_seconds=10)
-    with (
-        patch("subprocess.run", side_effect=subprocess.TimeoutExpired("gemini", 10)),
-        pytest.raises(RuntimeError, match="timed out"),
-    ):
-        adapter.translate_batch(_sample_batch())
-
-
-def test_gemini_cli_extracts_from_markdown_fence() -> None:
-    """JSON wrapped in markdown code fences should be extracted."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    fenced = f"```json\n{_valid_result_json()}\n```"
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash")
-    proc = SimpleNamespace(returncode=0, stdout=fenced, stderr="")
-    with patch("subprocess.run", return_value=proc):
-        resp = adapter.translate_batch(_sample_batch())
-        assert resp.result.batch_id == "tr.p0001.01"
-
-
-def test_gemini_cli_extracts_from_envelope() -> None:
-    """Response wrapped in an envelope should be extracted."""
-    from atr_pipeline.services.llm.gemini_cli_adapter import GeminiCLIAdapter
-
-    envelope = json.dumps({"response": _valid_result_json()})
-    adapter = GeminiCLIAdapter(model="gemini-2.5-flash")
-    proc = SimpleNamespace(returncode=0, stdout=envelope, stderr="")
-    with patch("subprocess.run", return_value=proc):
-        resp = adapter.translate_batch(_sample_batch())
-        assert resp.result.batch_id == "tr.p0001.01"
