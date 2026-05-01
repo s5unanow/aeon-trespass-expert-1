@@ -25,7 +25,12 @@ from atr_schemas.page_ir_v1 import (
     InlineNode,
     ParagraphBlock,
 )
-from atr_schemas.resolved_page_v1 import AnchorEdge, ResolvedBlock, ResolvedRegion
+from atr_schemas.resolved_page_v1 import (
+    AnchorEdge,
+    FallbackProvenance,
+    ResolvedBlock,
+    ResolvedRegion,
+)
 
 # Re-export for existing callers/tests that import these from
 # ``semantic_resolver``. The real implementations live in
@@ -54,8 +59,15 @@ def resolve_semantics(
     evidence: PageEvidenceV1 | None,
     cfg: StructureConfig,
     native: NativePageV1 | None = None,
+    extraction_path: str = "primary",
 ) -> SemanticResolution:
-    """Post-process blocks using region context for richer IR and anchor edges."""
+    """Post-process blocks using region context for richer IR and anchor edges.
+
+    ``extraction_path`` (S5U-589) carries the layout-stage attribution into
+    the resolved blocks: any value other than ``"primary"`` causes every
+    emitted ``ResolvedBlock`` to carry ``FallbackProvenance`` so audit
+    reporting can distinguish primary-path output from recovered output.
+    """
     if not blocks:
         return SemanticResolution()
 
@@ -71,7 +83,7 @@ def resolve_semantics(
     blocks, table_edges = _resolve_tables(blocks, evidence, cfg, native)
     edges.extend(table_edges)
     edges.extend(_build_region_edges(blocks, region_map))
-    resolved = _build_resolved_blocks(blocks, region_map)
+    resolved = _build_resolved_blocks(blocks, region_map, extraction_path=extraction_path)
     enriched = sum(1 for b in blocks if not isinstance(b, ParagraphBlock))
     total = len(blocks)
     conf = enriched / total if total > 0 else 1.0
@@ -328,17 +340,58 @@ from atr_pipeline.stages.structure.block_reorder import (  # noqa: E402, F401
     reorder_blocks_by_regions,
 )
 
+_FALLBACK_REASONS: dict[str, str] = {
+    "ocr_fallback": (
+        "Layout extracted via OCR fallback after the primary extractor "
+        "flagged the page as hard or returned no usable layout."
+    ),
+    "extraction_failed": (
+        "Both the primary layout extractor and the OCR fallback produced "
+        "no usable zones; resolved blocks carry the synthesized "
+        "extraction-failure marker."
+    ),
+}
+
+
+def _fallback_for(extraction_path: str) -> FallbackProvenance | None:
+    """Build the FallbackProvenance instance for a given extraction path.
+
+    Returns ``None`` for the clean primary path (the schema treats the
+    field as optional and audit reporting only counts non-None entries),
+    and a populated provenance object for any recognized fallback.
+    Unknown values produce a generic provenance carrying the verbatim
+    label so non-trivial routing can still be attributed without
+    silently dropping the signal.
+    """
+    if extraction_path == "primary":
+        return None
+    reason = _FALLBACK_REASONS.get(
+        extraction_path,
+        f"Layout was produced via the '{extraction_path}' route (non-primary).",
+    )
+    return FallbackProvenance(strategy=extraction_path, reason=reason)
+
 
 def _build_resolved_blocks(
     blocks: list[Block],
     region_map: dict[str, str],
+    *,
+    extraction_path: str = "primary",
 ) -> list[ResolvedBlock]:
-    """Emit ResolvedBlock entries for ResolvedPageV1."""
+    """Emit ResolvedBlock entries for ResolvedPageV1.
+
+    When the page came through a non-primary extraction route, every
+    resolved block carries the same ``FallbackProvenance`` so audit
+    counters and the ``MISSING_FALLBACK_PROVENANCE`` invariant both see
+    the recovery signal.
+    """
+    fallback = _fallback_for(extraction_path)
     return [
         ResolvedBlock(
             block_id=block.block_id,
             block_type=_block_type_from_block(block),
             region_id=_resolve_region_id(block, region_map),
+            fallback=fallback,
         )
         for block in blocks
     ]

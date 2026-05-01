@@ -194,6 +194,12 @@
       },
       "title": "Ocr Words",
       "type": "array"
+    },
+    "extraction_path": {
+      "default": "primary",
+      "description": "Which extraction route produced this layout. One of: 'primary' (Docling-only, no fallback selected), 'ocr_fallback' (PaddleOCR ran for a hard page and its zones were used in place of the primary extractor's), 'extraction_failed' (both primary and OCR produced nothing usable; layout is a degenerate marker page). Set by ExtractLayoutStage; consumed by StructureStage to populate FallbackProvenance on resolved blocks. Default 'primary' preserves backward compatibility with pre-S5U-589 artifacts.",
+      "title": "Extraction Path",
+      "type": "string"
     }
   },
   "required": [

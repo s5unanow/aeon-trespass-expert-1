@@ -69,10 +69,9 @@ class StructureStage:
 
     @property
     def version(self) -> str:
-        # S5U-733: _resolve_tables re-infers row structure from native spans
-        # and refuses promotion when rows can't be proven; bump invalidates
-        # cached PageIRV1 artifacts so the fix applies on re-run.
-        return "1.5"
+        # S5U-733 1.4 -> 1.5: _resolve_tables row re-inference + Option 2 fallback.
+        # S5U-589 1.5 -> 1.6: ResolvedBlock.fallback populated on non-primary paths.
+        return "1.6"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> StructureResult:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))
@@ -130,6 +129,7 @@ class StructureStage:
                 builder,
                 symbols,
                 furniture_map,
+                extraction_path=layout.extraction_path if layout else "primary",
             )
             ir.provenance = ProvenanceRef(
                 extractor="structure",
@@ -174,6 +174,7 @@ class StructureStage:
         builder: str,
         symbols: SymbolMatchSetV1 | None,
         furniture: FurnitureMap,
+        extraction_path: str = "primary",
     ) -> PageIRV1:
         regions, order, evidence = self._run_region_segmentation(ctx, native, page_id)
 
@@ -211,7 +212,8 @@ class StructureStage:
             )
 
             if regions:
-                sem = resolve_semantics(ir.blocks, regions, evidence, ctx.config.structure, native)
+                cfg = ctx.config.structure
+                sem = resolve_semantics(ir.blocks, regions, evidence, cfg, native, extraction_path)
                 reordered = (
                     reorder_blocks_by_regions(sem.blocks, regions, order.main_flow_order)
                     if order is not None

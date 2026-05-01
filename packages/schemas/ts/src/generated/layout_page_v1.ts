@@ -28,6 +28,10 @@ export type Flags = number;
  * OCR-derived text evidence populated by the hard-page fallback. Each entry corresponds to a detected text *line* (PaddleOCR emits line-level polygons, not per-word tokens). The field reuses WordEvidence for coordinate/text typing; downstream consumers should treat entries as line-level granularity.
  */
 export type OcrWords = WordEvidence[];
+/**
+ * Which extraction route produced this layout. One of: 'primary' (Docling-only, no fallback selected), 'ocr_fallback' (PaddleOCR ran for a hard page and its zones were used in place of the primary extractor's), 'extraction_failed' (both primary and OCR produced nothing usable; layout is a degenerate marker page). Set by ExtractLayoutStage; consumed by StructureStage to populate FallbackProvenance on resolved blocks. Default 'primary' preserves backward compatibility with pre-S5U-589 artifacts.
+ */
+export type ExtractionPath = string;
 
 /**
  * Secondary layout evidence for a single page.
@@ -40,6 +44,7 @@ export interface LayoutPageV1 {
   reading_order_candidates?: ReadingOrderCandidates;
   difficulty?: DifficultyScoreV1 | null;
   ocr_words?: OcrWords;
+  extraction_path?: ExtractionPath;
 }
 /**
  * A detected layout zone on a page.
