@@ -110,7 +110,7 @@ If the diff introduces a new occurrence of any of these shapes, the Must-refuse 
    - `os.system(...)`, `os.exec*` family (`execv`, `execvp`, etc.)
 4. **Schema deserialization boundary** — code that newly parses externally-sourced bytes/strings into Python objects:
    - Pydantic: `Model.model_validate_json(...)`, `Model.model_validate(...)`, plus the v1 holdovers `Model.parse_obj(...)` / `Model.parse_raw(...)`
-   - Untyped: `json.loads(...)` followed by direct field access (no schema), `tomllib.loads(...)` / `tomli.loads(...)`
+   - Untyped: `json.loads(...)` followed by direct field access (no schema), `tomllib.loads(...)` / `tomllib.load(...)` / `tomli.loads(...)` / `tomli.load(...)`
    - YAML / pickle / XML: `pickle.loads(...)` / `pickle.load(...)`, `yaml.load(...)` / `yaml.unsafe_load(...)`, even `yaml.safe_load(...)` over untrusted input, `xml.etree.ElementTree.fromstring(...)` / `lxml` (XXE)
    - Code-as-data: `eval(...)` / `exec(...)` on string input
 
