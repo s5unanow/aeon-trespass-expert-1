@@ -34,6 +34,13 @@ home = {
 `home.sessionVariables` writes to home-manager's env-only file, so the vars
 are available in non-interactive shells too (cron, launchd, IDE).
 
+After `rebuild`, new terminal tabs may still show the old env because of the
+`__HM_SESS_VARS_SOURCED` guard inherited from the parent terminal app —
+fully quit the terminal app (Cmd+Q kitty) and reopen, or run `unset
+__HM_SESS_VARS_SOURCED __HM_ZSH_SESS_VARS_SOURCED && exec zsh -l` in an
+existing shell. See `~/Models/README.md` § "Gotcha: after editing
+`home.sessionVariables`" for the full explanation.
+
 **Non-Nix Macs** (fallback) — append to `~/.zshrc`:
 
 ```bash
@@ -94,3 +101,4 @@ provider switching.
   EN→RU).
 * Linear issue `S5U-767` — this layout decision.
 * Linear issue `S5U-772` — make the env-var setup Nix-aware on this Mac.
+* Linear issue `S5U-773` — document the inherited-guard gotcha after `rebuild`.
