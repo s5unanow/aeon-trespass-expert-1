@@ -13,12 +13,32 @@ workstation. That file is not project-specific; this one is.
 └── ollama/             OLLAMA_MODELS — Ollama daemon-managed manifests + blobs
 ```
 
-Two env vars in `~/.zshrc` redirect every Python / CLI tool to this tree:
+Two env vars redirect every Python / CLI tool to this tree. Declare them in
+your shell environment.
+
+**This Mac (nix-darwin + home-manager via `~/dotfiles/`)** — add to the
+`home = { ... };` block in `~/dotfiles/home/default.nix` and apply with the
+existing `rebuild` alias (`sudo darwin-rebuild switch --flake ~/dotfiles`):
+
+```nix
+home.sessionVariables = {
+  HF_HOME = "$HOME/Models/huggingface";
+  OLLAMA_MODELS = "$HOME/Models/ollama";
+};
+```
+
+`home.sessionVariables` writes to home-manager's env-only file, so the vars
+are available in non-interactive shells too (cron, launchd, IDE).
+
+**Non-Nix Macs** (fallback) — append to `~/.zshrc`:
 
 ```bash
 export HF_HOME="$HOME/Models/huggingface"
 export OLLAMA_MODELS="$HOME/Models/ollama"
 ```
+
+See `~/Models/README.md` for verification commands and the full Nix-vs-bash
+rationale.
 
 ## What this pipeline expects
 
@@ -69,3 +89,4 @@ provider switching.
 * Linear epic `S5U-766` — parent (evaluate local open MT models for
   EN→RU).
 * Linear issue `S5U-767` — this layout decision.
+* Linear issue `S5U-772` — make the env-var setup Nix-aware on this Mac.
