@@ -16,14 +16,18 @@ workstation. That file is not project-specific; this one is.
 Two env vars redirect every Python / CLI tool to this tree. Declare them in
 your shell environment.
 
-**This Mac (nix-darwin + home-manager via `~/dotfiles/`)** — add to the
+**This Mac (nix-darwin + home-manager via `~/dotfiles/`)** — add inside the
 `home = { ... };` block in `~/dotfiles/home/default.nix` and apply with the
 existing `rebuild` alias (`sudo darwin-rebuild switch --flake ~/dotfiles`):
 
 ```nix
-home.sessionVariables = {
-  HF_HOME = "$HOME/Models/huggingface";
-  OLLAMA_MODELS = "$HOME/Models/ollama";
+home = {
+  # ... existing username, homeDirectory, stateVersion, packages ...
+
+  sessionVariables = {
+    HF_HOME = "$HOME/Models/huggingface";
+    OLLAMA_MODELS = "$HOME/Models/ollama";
+  };
 };
 ```
 
