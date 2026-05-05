@@ -3,7 +3,7 @@
 This document covers the operational surface for translation provider
 selection: switching the configured primary, the recommended deployment
 shape, and the opt-in Codex CLI smoke command. The pipeline supports
-five providers today: `mock`, `openai`, `anthropic`, `gemini`,
+six providers today: `mock`, `openai`, `anthropic`, `gemini`,
 `gemini-cli`, `codex-cli`. The two CLI providers are the only ones used
 for production translation runs.
 

@@ -35,7 +35,7 @@ export OLLAMA_MODELS="$HOME/Models/ollama"
 ## Current provider state
 
 No HF / MLX / Ollama provider exists in
-`apps/pipeline/src/atr_pipeline/services/llm/` yet. The five providers in
+`apps/pipeline/src/atr_pipeline/services/llm/` yet. The six providers in
 the factory registry today (`mock`, `openai`, `anthropic`, `gemini`,
 `gemini-cli`, `codex-cli`) either hit hosted APIs or shell out to external
 CLIs that manage their own auth and cache; none read `HF_HOME` or
