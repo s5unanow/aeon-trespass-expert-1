@@ -47,6 +47,38 @@ def write_report(results: list[PageResult], out_dir: Path) -> None:
         )
     lines.append("")
 
+    lines.extend(
+        [
+            "## Comparison vs S5U-775 baseline",
+            "",
+            "S5U-775 produced the side-by-side comparison across Sonnet / Opus /",
+            "Codex GPT-5.5 / TranslateGemma single-pass candidates. The full",
+            "human-review report (terminology votes, eyeball notes, latency",
+            "table) is at `tmp/translation-eval/comparison.md`. This POC report",
+            "deliberately does not duplicate that material — read it alongside.",
+            "",
+            "Per-page baseline files for direct side-by-side reading:",
+            "",
+        ]
+    )
+    for r in results:
+        lines.append(f"- Page {r.page}:")
+        lines.extend(
+            [
+                f"  - EN source: `tmp/translation-eval/page-{r.page}-en.txt`",
+                f"  - S5U-775 Sonnet: `tmp/translation-eval/page-{r.page}-ru-sonnet.txt`",
+                f"  - S5U-775 Opus: `tmp/translation-eval/page-{r.page}-ru-opus.txt`",
+                f"  - S5U-775 Codex: `tmp/translation-eval/page-{r.page}-ru-codex.txt`",
+                "  - S5U-775 TranslateGemma: "
+                f"`tmp/translation-eval/page-{r.page}-ru-translategemma.txt`",
+                "  - This POC synthesis (v1): "
+                f"`s5u-776-ensemble-poc/opus/page-{r.page}-synth-v1.txt`",
+                "  - This POC repair (v2, if any v1 findings): "
+                f"`s5u-776-ensemble-poc/opus/page-{r.page}-synth-v2.txt`",
+            ]
+        )
+    lines.append("")
+
     for r in results:
         lines.extend(
             [
