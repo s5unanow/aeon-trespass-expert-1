@@ -58,6 +58,15 @@ max-statements = 50
 # RUF001 in this test module lets the test data match the production
 # p0007 pairings verbatim.
 "apps/pipeline/tests/unit/stages/render/test_annotation_mapping.py" = ["RUF001"]
+# S5U-776: ensemble translation POC carries Cyrillic glossary,
+# forbidden-phrase, and few-shot data inline. Ambiguous-character lints
+# (RUF001 strings, RUF003 comments) fire on every Russian token and add
+# no value here.
+"scripts/translation_eval/rules.py" = ["RUF001", "RUF003"]
+"scripts/translation_eval/prompts.py" = ["RUF001", "RUF003"]
+"scripts/translation_eval/qa_checks.py" = ["RUF001", "RUF003"]
+"scripts/translation_eval/report.py" = ["RUF001"]
+"apps/pipeline/tests/unit/test_translation_eval_qa_checks.py" = ["RUF001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["atr_pipeline", "atr_schemas"]
