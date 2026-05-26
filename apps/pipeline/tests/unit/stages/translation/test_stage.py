@@ -70,8 +70,8 @@ def test_translation_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "translate"
     assert stage.scope == StageScope.DOCUMENT
-    # S5U-734 — bumped from 1.0 after per-cell table segments landed.
-    assert stage.version == "1.1"
+    # S5U-776 — bumped after narrative-group translation units landed.
+    assert stage.version == "1.2"
 
 
 def test_translation_translates_pages(tmp_path: Path) -> None:
@@ -93,6 +93,14 @@ def test_translation_translates_pages(tmp_path: Path) -> None:
     assert ru_dir.exists()
     jsons = list(ru_dir.glob("*.json"))
     assert len(jsons) == 1
+    ru_payload = json.loads(jsons[0].read_text())
+    assert [block["block_id"] for block in ru_payload["blocks"]] == ru_payload["reading_order"]
+    for block in ru_payload["blocks"]:
+        assert block["children"]
+        assert all(
+            child.get("target_section_id", "").startswith("translation-block:") is False
+            for child in block["children"]
+        )
 
 
 def test_translation_persists_metadata(tmp_path: Path) -> None:

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import json
 import logging
-import re
 import subprocess
 
 from atr_pipeline.services.llm.base import TranslationResponse, TranslationResponseMeta
+from atr_pipeline.services.llm.cli_result import extract_translation_result
 from atr_pipeline.services.llm.prompt_builder import (
     build_few_shot_examples,
     build_response_schema,
@@ -22,58 +22,13 @@ log = logging.getLogger(__name__)
 
 _DEFAULT_TIMEOUT_SECONDS = 300
 
-_FENCE_RE = re.compile(r"```(?:json)?\s*\n?(.*?)\n?\s*```", re.DOTALL)
-
 
 def _extract_result(raw: str) -> dict[str, object]:
     """Parse CLI output into a translation result dict.
 
     Handles direct JSON, markdown-fenced JSON, and response envelopes.
     """
-    text = raw.strip()
-
-    # Strip markdown code fences if present
-    fence_match = _FENCE_RE.search(text)
-    if fence_match:
-        text = fence_match.group(1).strip()
-
-    try:
-        data = json.loads(text)
-    except json.JSONDecodeError:
-        # Try to find the outermost JSON object in mixed output
-        start = text.find("{")
-        end = text.rfind("}") + 1
-        if start >= 0 and end > start:
-            try:
-                data = json.loads(text[start:end])
-            except json.JSONDecodeError:
-                msg = f"Gemini CLI output is not valid JSON: {text[:200]}"
-                raise RuntimeError(msg) from None
-        else:
-            msg = f"Gemini CLI output is not valid JSON: {text[:200]}"
-            raise RuntimeError(msg) from None
-
-    if not isinstance(data, dict):
-        msg = f"Gemini CLI output is not a JSON object: {type(data).__name__}"
-        raise RuntimeError(msg)
-
-    # Direct translation result
-    if "batch_id" in data and "segments" in data:
-        return data
-
-    # Response envelope — try common wrapper keys
-    for key in ("response", "text", "output"):
-        val = data.get(key)
-        if isinstance(val, str):
-            try:
-                inner = json.loads(val)
-            except json.JSONDecodeError:
-                continue
-            if isinstance(inner, dict) and "batch_id" in inner:
-                return inner
-
-    msg = "Gemini CLI output does not contain a valid translation result"
-    raise RuntimeError(msg)
+    return extract_translation_result(raw, provider_label="Gemini CLI")
 
 
 class GeminiCLIAdapter:

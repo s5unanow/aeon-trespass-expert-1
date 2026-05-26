@@ -15,7 +15,7 @@ from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 # Cross-namespace options (e.g. CLI options on an API provider) are rejected
 # at factory time when set to non-default values, so a config bug surfaces
 # before any LLM/subprocess call (S5U-746 "must refuse" — option leakage).
-_CLI_PROVIDERS: frozenset[str] = frozenset({"gemini-cli", "codex-cli"})
+_CLI_PROVIDERS: frozenset[str] = frozenset({"gemini-cli", "codex-cli", "agy-cli"})
 _API_PROVIDERS: frozenset[str] = frozenset({"openai", "anthropic", "gemini"})
 _NO_OPTIONS_PROVIDERS: frozenset[str] = frozenset({"mock"})
 
@@ -86,6 +86,72 @@ def _check_options_match_provider(
     raise ValueError(msg)
 
 
+def _create_codex_cli_adapter(
+    model: str,
+    options: TranslationProviderOptions,
+    concept_registry: ConceptRegistryV1 | None,
+) -> TranslatorAdapter:
+    from atr_pipeline.services.llm.codex_cli_adapter import CodexCLIAdapter
+
+    cli_opts = options.cli
+    kwargs: dict[str, object] = {
+        "model": model,
+        "concept_registry": concept_registry,
+        "timeout_seconds": cli_opts.timeout_seconds,
+    }
+    # Only forward CLI-specific knobs when explicitly set, so the
+    # adapter's documented defaults remain authoritative when the
+    # config doesn't override them. ``None`` is the "not set" sentinel
+    # for these fields on ``CLIProviderOptions``.
+    if cli_opts.reasoning_effort is not None:
+        kwargs["reasoning_effort"] = cli_opts.reasoning_effort
+    if cli_opts.sandbox is not None:
+        kwargs["sandbox"] = cli_opts.sandbox
+    if cli_opts.approval_policy is not None:
+        kwargs["approval_policy"] = cli_opts.approval_policy
+    if cli_opts.executable is not None:
+        kwargs["executable"] = cli_opts.executable
+    kwargs["json_events"] = cli_opts.json_mode
+    return CodexCLIAdapter(**kwargs)  # type: ignore[arg-type]
+
+
+def _create_agy_cli_adapter(
+    model: str,
+    options: TranslationProviderOptions,
+    concept_registry: ConceptRegistryV1 | None,
+) -> TranslatorAdapter:
+    from atr_pipeline.services.llm.agy_cli_adapter import AgyCLIAdapter
+
+    cli_opts = options.cli
+    default_cli = CLIProviderOptions()
+    unsupported: list[str] = []
+    if cli_opts.sandbox != default_cli.sandbox:
+        unsupported.append("sandbox")
+    if cli_opts.approval_policy != default_cli.approval_policy:
+        unsupported.append("approval_policy")
+    if cli_opts.json_mode != default_cli.json_mode:
+        unsupported.append("json_mode")
+    if cli_opts.output_file_mode != default_cli.output_file_mode:
+        unsupported.append("output_file_mode")
+    if unsupported:
+        msg = (
+            "agy-cli does not support these CLI options in non-interactive "
+            f"mode: {', '.join(unsupported)}"
+        )
+        raise ValueError(msg)
+
+    kwargs: dict[str, object] = {
+        "model": model,
+        "concept_registry": concept_registry,
+        "timeout_seconds": cli_opts.timeout_seconds,
+    }
+    if cli_opts.reasoning_effort is not None:
+        kwargs["reasoning_effort"] = cli_opts.reasoning_effort
+    if cli_opts.executable is not None:
+        kwargs["executable"] = cli_opts.executable
+    return AgyCLIAdapter(**kwargs)  # type: ignore[arg-type]
+
+
 def _create_single_adapter(
     provider: str,
     model: str,
@@ -154,28 +220,10 @@ def _create_single_adapter(
         )
 
     if provider == "codex-cli":
-        from atr_pipeline.services.llm.codex_cli_adapter import CodexCLIAdapter
+        return _create_codex_cli_adapter(model, options, concept_registry)
 
-        cli_opts = options.cli
-        kwargs: dict[str, object] = {
-            "model": model,
-            "concept_registry": concept_registry,
-            "timeout_seconds": cli_opts.timeout_seconds,
-        }
-        # Only forward CLI-specific knobs when explicitly set, so the
-        # adapter's documented defaults remain authoritative when the
-        # config doesn't override them. ``None`` is the "not set" sentinel
-        # for these fields on ``CLIProviderOptions``.
-        if cli_opts.reasoning_effort is not None:
-            kwargs["reasoning_effort"] = cli_opts.reasoning_effort
-        if cli_opts.sandbox is not None:
-            kwargs["sandbox"] = cli_opts.sandbox
-        if cli_opts.approval_policy is not None:
-            kwargs["approval_policy"] = cli_opts.approval_policy
-        if cli_opts.executable is not None:
-            kwargs["executable"] = cli_opts.executable
-        kwargs["json_events"] = cli_opts.json_mode
-        return CodexCLIAdapter(**kwargs)  # type: ignore[arg-type]
+    if provider == "agy-cli":
+        return _create_agy_cli_adapter(model, options, concept_registry)
 
     msg = f"Unknown translation provider: {provider!r}"
     raise ValueError(msg)

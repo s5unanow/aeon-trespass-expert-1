@@ -1,3 +1,4 @@
+# ruff: noqa: RUF001  — Cyrillic prompt examples are intentional.
 """Tests for LLM prompt construction."""
 
 import json
@@ -76,6 +77,14 @@ def test_system_prompt_contains_terminology() -> None:
     assert "Продвижение" in prompt
     assert "FORBIDDEN" in prompt
     assert "sym.progress" in prompt
+    assert "STYLE MEMORY" in prompt
+    assert "Но зажглись лишь немногие из них" in prompt
+    assert "Перейдите к 0068" in prompt
+    assert "с великим трепетом" in prompt
+    assert "обошло древний мегаполис" in prompt
+    assert "убожество великолепия" in prompt
+    assert "См. 0068" in prompt
+    assert "Минойц" not in prompt
 
 
 def test_system_prompt_without_registry() -> None:
@@ -94,6 +103,41 @@ def test_user_message_is_valid_json() -> None:
     assert data["batch_id"] == "tr.p0001.01"
     assert len(data["segments"]) == 2
     assert data["segments"][1]["locked_nodes"] == ["sym.progress"]
+    assert data["segments"][0]["source_context"]["next_segment_text"] == "Gain 1  Progress."
+    assert data["segments"][1]["source_context"]["prev_segment_text"] == "Attack Test"
+    assert data["segments"][0]["short_fragment_requires_context"] is True
+
+
+def test_user_message_marks_narrative_group_contract() -> None:
+    from atr_pipeline.stages.translation.planner import build_translation_batch
+    from atr_schemas.enums import LanguageCode
+    from atr_schemas.page_ir_v1 import HeadingBlock, PageIRV1, ParagraphBlock
+
+    batch = build_translation_batch(
+        PageIRV1(
+            document_id="test",
+            page_id="p0001",
+            page_number=1,
+            language=LanguageCode.EN,
+            blocks=[
+                HeadingBlock(block_id="h1", children=[TextInline(text="So it begins")]),
+                ParagraphBlock(block_id="p1", children=[TextInline(text="But only a few.")]),
+            ],
+            reading_order=["h1", "p1"],
+        )
+    )
+
+    data = json.loads(build_user_message(batch))
+    segment = data["segments"][0]
+
+    assert segment["translation_unit"] == "full_section"
+    assert "[h1]" in segment["section_source_text"]
+    assert "[p1]" in segment["section_source_text"]
+    assert "translation-block:" in segment["block_boundary_contract"]
+    assert any(
+        node["type"] == "xref" and node["target_section_id"] == "translation-block:h1"
+        for node in segment["source_inline"]
+    )
 
 
 def test_response_schema_structure() -> None:

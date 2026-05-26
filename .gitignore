@@ -29,6 +29,7 @@ node_modules/
 # IDE
 .vscode/
 .idea/
+.antigravitycli/
 .claude/*
 !.claude/settings.json
 !.claude/hooks/

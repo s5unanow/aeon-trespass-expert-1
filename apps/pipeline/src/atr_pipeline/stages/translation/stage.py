@@ -10,6 +10,10 @@ from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.llm.base import TranslatorAdapter
 from atr_pipeline.services.llm.factory import create_translator
 from atr_pipeline.stages.glossary.registry_loader import load_concept_registry
+from atr_pipeline.stages.translation.grouping import (
+    expand_grouped_batch,
+    expand_grouped_result,
+)
 from atr_pipeline.stages.translation.planner import build_translation_batch
 from atr_pipeline.stages.translation.validator import validate_translation
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
@@ -70,6 +74,19 @@ def _translated_by_id(result: TranslationResultV1) -> dict[str, TranslatedSegmen
 def _batch_seg_by_id(batch: TranslationBatchV1) -> dict[str, TranslationSegment]:
     """Index batch segments by their ``segment_id``."""
     return {seg.segment_id: seg for seg in batch.segments}
+
+
+def _expand_grouped_translation_batch(batch: TranslationBatchV1) -> TranslationBatchV1:
+    """Return a block-addressable batch for validation/rematerialization."""
+    return expand_grouped_batch(batch)
+
+
+def _expand_grouped_translation_result(
+    batch: TranslationBatchV1,
+    result: TranslationResultV1,
+) -> TranslationResultV1:
+    """Return a block-addressable result by splitting narrative-group outputs."""
+    return expand_grouped_result(batch, result)
 
 
 def _rebuild_structured_table(
@@ -193,10 +210,10 @@ class TranslationStage:
 
     @property
     def version(self) -> str:
-        # S5U-734 — planner now emits per-cell segments for structured
-        # TableBlocks and the re-materializer rebuilds row/cell structure
-        # in the RU IR. Bumped from 1.0 so cached runs re-execute.
-        return "1.1"
+        # S5U-776 — narrative prose now uses grouped translation units and
+        # split-back rematerialization. Bumped from 1.1 so cached per-block
+        # translations re-execute.
+        return "1.2"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
@@ -251,6 +268,8 @@ class TranslationStage:
         )
         response = translator.translate_batch(batch)
         result = response.result
+        expanded_batch = _expand_grouped_translation_batch(batch)
+        expanded_result = _expand_grouped_translation_result(batch, result)
 
         # Persist translation metadata for auditability
         meta_data: dict[str, object] = {
@@ -302,7 +321,7 @@ class TranslationStage:
             data=record_set,
         )
 
-        ru_blocks = _rematerialize_ru_blocks(en_ir, batch, result)
+        ru_blocks = _rematerialize_ru_blocks(en_ir, expanded_batch, expanded_result)
 
         ru_ir = PageIRV1(
             document_id=ctx.document_id,

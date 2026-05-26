@@ -6,6 +6,15 @@ through waivers, ``QASummaryV1``, and ``ReviewPackV1`` like rule-based findings.
 
 from __future__ import annotations
 
+from collections import Counter
+
+from atr_pipeline.stages.translation.grouping import (
+    expand_grouped_batch,
+    expand_grouped_result,
+    group_marker_ids,
+    split_group_source_segments,
+    text_before_first_group_marker,
+)
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1, ConceptV1, ValidationPolicy
 from atr_schemas.enums import QALayer, Severity
 from atr_schemas.page_ir_v1 import IconInline
@@ -19,6 +28,9 @@ CODE_ICON_COUNT_MISMATCH = "TRANSLATION_ICON_COUNT_MISMATCH"
 CODE_ICON_ORDER_MISMATCH = "TRANSLATION_ICON_ORDER_MISMATCH"
 CODE_GLOSSARY_FORBIDDEN_TARGET = "GLOSSARY_FORBIDDEN_TARGET"
 CODE_GLOSSARY_SURFACE_FORM_DRIFT = "GLOSSARY_SURFACE_FORM_DRIFT"
+CODE_GROUP_BOUNDARY_MISMATCH = "TRANSLATION_GROUP_BOUNDARY_MISMATCH"
+_expand_grouped_batch = expand_grouped_batch
+_expand_grouped_result = expand_grouped_result
 
 _SEVERITY_LOOKUP: dict[str, Severity] = {
     "info": Severity.INFO,
@@ -217,6 +229,63 @@ def _check_concept_realizations(
         )
 
 
+def _boundary_issue_detail(source: TranslationSegment, translated: TranslatedSegment) -> str:
+    """Return an empty string when group markers match; otherwise describe drift."""
+    expected = [s.segment_id for s in split_group_source_segments(source)]
+    actual = group_marker_ids(list(translated.target_inline))
+    details: list[str] = []
+    if actual != expected:
+        missing = [marker for marker in expected if marker not in actual]
+        extra = [marker for marker in actual if marker not in expected]
+        duplicates = sorted(marker for marker, count in Counter(actual).items() if count > 1)
+        if missing:
+            details.append(f"missing={missing}")
+        if extra:
+            details.append(f"extra={extra}")
+        if duplicates:
+            details.append(f"duplicates={duplicates}")
+        if not missing and not extra and not duplicates:
+            details.append(f"order expected={expected} actual={actual}")
+    prefix_text = text_before_first_group_marker(list(translated.target_inline))
+    if prefix_text:
+        details.append(f"text_before_first_marker={prefix_text[:80]!r}")
+    return "; ".join(details)
+
+
+def _check_group_boundaries(
+    batch: TranslationBatchV1,
+    result: TranslationResultV1,
+    *,
+    rec_ctx: _RecordContext,
+    records: list[QARecordV1],
+) -> None:
+    """Emit records when a narrative-group translation corrupts block markers."""
+    source_by_id = {s.segment_id: s for s in batch.segments}
+    for translated in result.segments:
+        source = source_by_id.get(translated.segment_id)
+        if source is None or source.block_type != "narrative_group":
+            continue
+        detail = _boundary_issue_detail(source, translated)
+        if not detail:
+            continue
+        expected = [s.segment_id for s in split_group_source_segments(source)]
+        actual = group_marker_ids(list(translated.target_inline))
+        records.append(
+            _make_record(
+                rec_ctx,
+                qa_id=_qa_id(rec_ctx.page_id, translated.segment_id, "group_boundary"),
+                code=CODE_GROUP_BOUNDARY_MISMATCH,
+                severity=Severity.ERROR,
+                entity_ref=translated.segment_id,
+                message=f"Narrative group boundary mismatch in {translated.segment_id}: {detail}",
+                values=(
+                    {"markers": expected},
+                    {"markers": actual, "detail": detail},
+                ),
+            )
+        )
+
+
 def validate_translation(
     batch: TranslationBatchV1,
     result: TranslationResultV1,
@@ -232,14 +301,17 @@ def validate_translation(
     downstream QA stage can aggregate, tally, and waive them uniformly.
     """
     records: list[QARecordV1] = []
-    source_segments = {s.segment_id: s for s in batch.segments}
+    expanded_batch = _expand_grouped_batch(batch)
+    expanded_result = _expand_grouped_result(batch, result)
+    source_segments = {s.segment_id: s for s in expanded_batch.segments}
     rec_ctx = _RecordContext(document_id=document_id, page_id=page_id)
+    _check_group_boundaries(batch, result, rec_ctx=rec_ctx, records=records)
 
     concept_map: dict[str, ConceptV1] = {}
     if concept_registry:
         concept_map = {c.concept_id: c for c in concept_registry.concepts}
 
-    for translated in result.segments:
+    for translated in expanded_result.segments:
         source = source_segments.get(translated.segment_id)
         if source is None:
             records.append(

@@ -43,8 +43,9 @@ class MockTranslator:
                     if source_text == "Attack Test"
                     else TextInline(text=source_text, lang=LanguageCode.RU),
                 ]
-            elif segment.block_type == "paragraph":
-                # Translate paragraph, preserving icon nodes
+            elif segment.block_type in {"paragraph", "narrative_group"}:
+                # Translate paragraph/prose groups, preserving non-text nodes
+                # (including narrative-group block-boundary xrefs).
                 for node in segment.source_inline:
                     if isinstance(node, IconInline):
                         target_inline.append(node)
