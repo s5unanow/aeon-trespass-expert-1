@@ -66,10 +66,10 @@ rationale.
 ## Current provider state
 
 No HF / MLX / Ollama provider exists in
-`apps/pipeline/src/atr_pipeline/services/llm/` yet. The six providers in
+`apps/pipeline/src/atr_pipeline/services/llm/` yet. The seven providers in
 the factory registry today (`mock`, `openai`, `anthropic`, `gemini`,
-`gemini-cli`, `codex-cli`) either hit hosted APIs or shell out to external
-CLIs that manage their own auth and cache; none read `HF_HOME` or
+`gemini-cli`, `codex-cli`, `agy-cli`) either hit hosted APIs or shell out
+to external CLIs that manage their own auth and cache; none read `HF_HOME` or
 `OLLAMA_MODELS`. See `docs/specs/translation-providers.md` for operational
 provider switching.
 

@@ -45,6 +45,16 @@ def test_translation_config_normalizes_codex_cli_casing() -> None:
         assert cfg.provider == "codex-cli"
 
 
+def test_translation_config_normalizes_agy_cli_casing() -> None:
+    """``AGY-CLI`` maps to the canonical provider name."""
+    cfg = TranslationConfig(
+        provider="AGY-CLI",
+        model_default="gemini-3-pro",
+        fallback_provider="",
+    )
+    assert cfg.provider == "agy-cli"
+
+
 # ── Unknown provider rejection ───────────────────────────────────────
 
 

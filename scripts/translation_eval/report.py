@@ -20,7 +20,7 @@ def write_report(results: list[PageResult], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     summary_header = (
         "| Page | QA findings (v1) | QA findings (v2) | "
-        "Sonnet wall (s) | Opus wall (s) | Total tokens |"
+        "AGY wall (s) | Opus wall (s) | Total tokens |"
     )
     lines: list[str] = [
         "# S5U-776 — ensemble translation POC (LOCAL ONLY)",
@@ -29,8 +29,8 @@ def write_report(results: list[PageResult], out_dir: Path) -> None:
         "direction, all generated translations and this report stay local",
         "under `tmp/translation-eval/s5u-776-ensemble-poc/` (gitignored).",
         "",
-        "Workflow: EN → Sonnet 3 variants → Opus synthesis → automated QA",
-        "→ TranslateGemma omission witness → Opus minimal repair → final.",
+        "Workflow: EN → AGY 3 variants → Opus synthesis → automated QA",
+        "→ TranslateGemma omission witness → Opus final editor → final.",
         "",
         "## Per-page summary",
         "",
@@ -38,12 +38,12 @@ def write_report(results: list[PageResult], out_dir: Path) -> None:
         "| --: | --: | --: | --: | --: | --: |",
     ]
     for r in results:
-        sonnet_wall = sum(c.wall_seconds for c in r.calls if c.stage.startswith("sonnet"))
+        agy_wall = sum(c.wall_seconds for c in r.calls if c.stage.startswith("agy"))
         opus_wall = sum(c.wall_seconds for c in r.calls if c.stage.startswith("opus"))
         total_tokens = sum(c.input_tokens + c.output_tokens for c in r.calls)
         lines.append(
             f"| {r.page} | {len(r.qa_v1)} | {len(r.qa_v2)} | "
-            f"{sonnet_wall:.1f} | {opus_wall:.1f} | {total_tokens} |"
+            f"{agy_wall:.1f} | {opus_wall:.1f} | {total_tokens} |"
         )
     lines.append("")
 
@@ -71,9 +71,10 @@ def write_report(results: list[PageResult], out_dir: Path) -> None:
                 f"  - S5U-775 Codex: `tmp/translation-eval/page-{r.page}-ru-codex.txt`",
                 "  - S5U-775 TranslateGemma: "
                 f"`tmp/translation-eval/page-{r.page}-ru-translategemma.txt`",
+                f"  - This POC AGY variants: `s5u-776-ensemble-poc/agy/page-{r.page}-*.txt`",
                 "  - This POC synthesis (v1): "
                 f"`s5u-776-ensemble-poc/opus/page-{r.page}-synth-v1.txt`",
-                "  - This POC repair (v2, if any v1 findings): "
+                "  - This POC final editor output (v2): "
                 f"`s5u-776-ensemble-poc/opus/page-{r.page}-synth-v2.txt`",
             ]
         )
@@ -106,14 +107,14 @@ def write_report(results: list[PageResult], out_dir: Path) -> None:
             lines.append("_(none)_")
         lines.append("")
 
-        if r.synth_v2 and r.qa_v1:
+        if r.synth_v2:
             lines.append(f"### QA findings on synth_v2 ({len(r.qa_v2)} total)")
             lines.append("")
             if r.qa_v2:
                 for f in r.qa_v2:
                     lines.append(f"- `{f.code}` — {f.detail}")
             else:
-                lines.append("_(none — repair pass cleared all findings)_")
+                lines.append("_(none — final editor output is clean under deterministic QA)_")
             lines.append("")
 
     (out_dir / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

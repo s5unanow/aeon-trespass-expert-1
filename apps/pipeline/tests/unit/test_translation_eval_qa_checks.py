@@ -179,6 +179,48 @@ def test_forbidden_adversarial_overlapping(qa_mod: ModuleType) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Style red flags
+# ---------------------------------------------------------------------------
+
+
+def test_style_red_flag_contextual_fragment_error(qa_mod: ModuleType) -> None:
+    ru = "Когда город озарился лампами.\n\nНо лишь немногих."
+    findings = qa_mod.find_style_red_flags(ru)
+    assert any(f.code == "style_red_flag" and "lamps" in f.detail for f in findings)
+
+
+def test_style_red_flag_gamebook_note_command(qa_mod: ModuleType) -> None:
+    ru = "Запомните «параграф 0003». (пока не переходите к нему!)"
+    findings = qa_mod.find_style_red_flags(ru)
+    assert any("Gamebook convention" in f.detail for f in findings)
+
+
+@pytest.mark.parametrize(
+    ("ru", "detail_part"),
+    [
+        ("на страже стоит Стража Рогатых", "Tautology"),
+        ("См. 0068.", "Gamebook navigation"),
+        ("к Минойцам подошли послы", "Demonym"),
+        ("к минойцам подошли послы", ""),
+        ("Минойцы: Дипломатия -1", ""),
+        ("Рогатого Города", "lowercase"),
+        ("До вашего слуха доносится знакомый звук натягиваемых тетив.", "Awkward collocation"),
+        ("На рассвете вы отправляете высадочный отряд.", "Context check"),
+    ],
+)
+def test_style_red_flags_cover_review_patterns(
+    qa_mod: ModuleType,
+    ru: str,
+    detail_part: str,
+) -> None:
+    findings = qa_mod.find_style_red_flags(ru)
+    if not detail_part:
+        assert findings == []
+    else:
+        assert any(detail_part in f.detail for f in findings)
+
+
+# ---------------------------------------------------------------------------
 # Coarse omission witness
 # ---------------------------------------------------------------------------
 
@@ -226,3 +268,9 @@ def test_all_checks_aggregates_and_skips_omission_when_no_witness(
     assert qa_mod.all_checks(en, ru, gemma_ru=None) == []
     # With identical witness → still clean.
     assert qa_mod.all_checks(en, ru, gemma_ru=ru) == []
+
+
+def test_all_checks_includes_style_red_flags(qa_mod: ModuleType) -> None:
+    findings = qa_mod.all_checks("See 0068.", "См. 0068.", gemma_ru=None)
+
+    assert any(f.code == "style_red_flag" for f in findings)

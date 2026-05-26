@@ -43,8 +43,9 @@ class MockTranslator:
                     if source_text == "Attack Test"
                     else TextInline(text=source_text, lang=LanguageCode.RU),
                 ]
-            elif segment.block_type == "paragraph":
-                # Translate paragraph, preserving icon nodes
+            elif segment.block_type in {"paragraph", "narrative_group"}:
+                # Translate paragraph/prose groups, preserving non-text nodes
+                # (including narrative-group block-boundary xrefs).
                 for node in segment.source_inline:
                     if isinstance(node, IconInline):
                         target_inline.append(node)
@@ -57,6 +58,7 @@ class MockTranslator:
                     elif node.type == "text" and hasattr(node, "text"):
                         text = node.text
                         # Simple mock translations
+                        text = text.replace("Attack Test", "Проверка атаки")
                         text = text.replace("Gain 1 ", "Получите 1 ")
                         text = text.replace(" Progress.", " Прогресс.")
                         target_inline.append(TextInline(text=text, lang=LanguageCode.RU))

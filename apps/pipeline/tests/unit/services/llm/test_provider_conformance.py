@@ -6,6 +6,7 @@ across every translation provider supported by the factory:
 * ``mock`` (built-in deterministic translator)
 * ``gemini-cli`` (subprocess-shaped, uses ``gemini`` on PATH)
 * ``codex-cli`` (subprocess-shaped, uses ``codex`` on PATH)
+* ``agy-cli`` (subprocess-shaped, uses ``agy`` on PATH)
 
 Adding a new provider is a one-row change: append a tuple to
 :data:`PROVIDER_CASES` whose ``adapter_factory`` builds a configured
@@ -128,6 +129,18 @@ def _codex_cli_subprocess_side(payload: str) -> Callable[..., subprocess.Complet
     return _side
 
 
+def _agy_cli_subprocess_side(payload: str) -> Callable[..., subprocess.CompletedProcess[str]]:
+    """``subprocess.run`` side-effect for agy-cli — returns *payload* on stdout."""
+
+    def _side(*args: object, **_kw: object) -> subprocess.CompletedProcess[str]:
+        argv = args[0] if args else []
+        assert isinstance(argv, list), "subprocess.run must be called with an argv list"
+        assert "--print" in argv
+        return subprocess.CompletedProcess(args=argv, returncode=0, stdout=payload, stderr="")
+
+    return _side
+
+
 # ── Per-provider adapter builders ────────────────────────────────────
 
 
@@ -168,6 +181,21 @@ def _build_codex_cli_adapter(payload: str) -> Iterator[TranslatorAdapter]:
         yield adapter
 
 
+def _build_agy_cli_adapter(payload: str) -> Iterator[TranslatorAdapter]:
+    """Yield an agy-cli adapter with subprocess.run mocked to return *payload*."""
+    config = TranslationConfig(
+        provider="agy-cli",
+        model_default="gemini-3-pro",
+        fallback_provider="",
+    )
+    adapter = create_translator(config)
+    with patch(
+        "atr_pipeline.services.llm.agy_cli_adapter.subprocess.run",
+        side_effect=_agy_cli_subprocess_side(payload),
+    ):
+        yield adapter
+
+
 # (provider_id, expected_provider_meta_string, adapter_builder, capabilities)
 #
 # Capabilities are a small dict of feature flags so the conformance grid
@@ -201,6 +229,12 @@ PROVIDER_CASES: list[
         "codex-cli",
         "codex-cli",
         _build_codex_cli_adapter,
+        {"supports_failure_injection": True, "validates_batch_id": True},
+    ),
+    (
+        "agy-cli",
+        "agy-cli",
+        _build_agy_cli_adapter,
         {"supports_failure_injection": True, "validates_batch_id": True},
     ),
 ]
@@ -345,12 +379,12 @@ def test_provider_conformance_error_message_is_bounded(
 
 
 def test_provider_conformance_grid_covers_required_providers() -> None:
-    """The conformance grid covers at least mock, gemini-cli, codex-cli.
+    """The conformance grid covers the required subprocess providers.
 
     Pins the S5U-748 success criterion: "Existing provider factory tests
-    cover at least mock, gemini-cli, and codex-cli." Adding a fourth
+    cover at least mock, gemini-cli, codex-cli, and agy-cli." Adding a fifth
     provider is a one-row change to PROVIDER_CASES; this assertion stays
     a ≥ check so additions don't tighten it artificially.
     """
     covered = {row[0] for row in PROVIDER_CASES}
-    assert {"mock", "gemini-cli", "codex-cli"} <= covered
+    assert {"mock", "gemini-cli", "codex-cli", "agy-cli"} <= covered

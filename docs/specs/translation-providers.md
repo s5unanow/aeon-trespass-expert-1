@@ -3,9 +3,9 @@
 This document covers the operational surface for translation provider
 selection: switching the configured primary, the recommended deployment
 shape, and the opt-in Codex CLI smoke command. The pipeline supports
-six providers today: `mock`, `openai`, `anthropic`, `gemini`,
-`gemini-cli`, `codex-cli`. The two CLI providers are the only ones used
-for production translation runs.
+seven providers today: `mock`, `openai`, `anthropic`, `gemini`,
+`gemini-cli`, `codex-cli`, `agy-cli`. The CLI providers are the only ones
+used for production translation runs.
 
 ## Recommended deployment shape (S5U-747)
 
@@ -47,13 +47,38 @@ fallback_model = "gemini-2.5-flash"
 timeout_seconds = 300
 ```
 
+### agy-cli primary (experimental)
+
+```toml
+[translation]
+provider = "agy-cli"
+model_default = "gemini-3-pro"
+fallback_provider = "codex-cli"
+fallback_model = "gpt-5.5"
+
+[translation.provider_options.cli]
+timeout_seconds = 900
+reasoning_effort = "high"
+```
+
+`agy-cli` shells out to `agy --print-timeout <N>s --print <prompt>`. As of the local
+AGY CLI v1 help surface, there is no non-interactive model/effort selector.
+The adapter records the requested `model_default` / `reasoning_effort` in
+metadata and embeds it in the prompt; the actual model profile must be selected
+in the user's Antigravity CLI/session configuration until AGY exposes stable
+flags.
+
 Field semantics:
 
 * `provider` and `fallback_provider` accept the canonical names listed
   above; case is normalized lower-case at config load.
-* `provider_options.cli` carries CLI-specific knobs (timeout, reasoning
-  effort, sandbox mode, approval policy). Cross-namespace leakage —
-  e.g. CLI options on an API provider — is rejected at factory time.
+* `provider_options.cli` carries CLI-specific knobs. For `agy-cli`, only
+  `executable`, `timeout_seconds`, and `reasoning_effort` are accepted;
+  `sandbox`, `approval_policy`, `json_mode=false`, and `output_file_mode=true`
+  are rejected because AGY v1 exposes no matching non-interactive controls.
+  `reasoning_effort` is a real Codex CLI config override and an AGY
+  prompt/metadata hint. Cross-namespace leakage — e.g. CLI options on an API
+  provider — is rejected at factory time.
 * The `approval_policy` allowlist is `{"never"}` only; any other value
   is interactive and unsafe for unattended pipeline runs.
 * The `sandbox` allowlist mirrors the upstream `[possible values:
@@ -104,8 +129,8 @@ test never writes to `packages/fixtures/`, never writes to
   no paid call happens.
 * Every other test in `tests/unit/services/llm/` mocks `subprocess.run`
   at the module boundary; no test outside `test_codex_cli_smoke.py`
-  shells out to a real `codex` or `gemini` binary.
+  shells out to a real `codex`, `gemini`, or `agy` binary.
 * Provider conformance tests in `test_provider_conformance.py` exercise
-  the full grid (mock, gemini-cli, codex-cli) with all external
+  the full grid (mock, gemini-cli, codex-cli, agy-cli) with all external
   surfaces mocked — they ride the default `pytest` invocation and
   guarantee provider-switching stays safe.

@@ -3,8 +3,8 @@
 Local-only proof of concept for the staged EN→RU translation workflow:
 
 ```
-EN → Sonnet 3 variants → Opus literary synthesis → automated QA →
-TranslateGemma omission witness → Opus minimal repair → human spot review
+EN → AGY 3 variants → Opus literary synthesis → automated QA →
+TranslateGemma omission witness → Opus final editor → human spot review
 ```
 
 This is not in the production pipeline path. The orchestrator runs over the
@@ -12,33 +12,49 @@ two-page sample shipped in `tmp/translation-eval/` (S5U-775 baseline) and
 writes all artefacts under `tmp/translation-eval/s5u-776-ensemble-poc/`,
 which is gitignored — outputs stay on the local machine.
 
+S5U-776 is closed as the original POC. For the closeout inventory and the
+follow-up boundary, see
+`docs/specs/s5u-776-translation-quality-closeout.md`. New calibration runs
+should write to a new non-destructive subfolder such as
+`tmp/translation-eval/s5u-776-ensemble-poc/style-v2/`.
+
 ## Layout
 
 ```
 scripts/translation_eval/
   rules.py               # glossary, forbidden phrases, bad/good examples
   qa_checks.py           # deterministic QA functions (pure, unit-tested)
-  prompts.py             # Sonnet variant + Opus synthesis/repair prompts
+  prompts.py             # AGY variant + Opus synthesis/final-editor prompts
   ensemble_poc.py        # CLI orchestrator
 ```
 
 ## Run
 
-The orchestrator needs `ANTHROPIC_API_KEY` and the `anthropic` SDK (already
-on the apps/pipeline dependency tree).
+The orchestrator needs:
+
+- `agy` on PATH for the three variant drafts.
+- `ANTHROPIC_API_KEY` and the `anthropic` SDK for Opus synthesis/final editing.
+
+AGY CLI v1 exposes `--print` / `--print-timeout`, but no non-interactive
+model-selection flag in `agy --help`. The runner records and requests the
+desired `Pro` + `high` profile in the prompt; the actual model must be selected
+in the user's Antigravity CLI/session configuration until AGY exposes a flag.
 
 ```bash
-ANTHROPIC_API_KEY=... uv run python scripts/translation_eval/ensemble_poc.py 1 2
+ANTHROPIC_API_KEY=... uv run python -m scripts.translation_eval.ensemble_poc 1 2
 ```
+
+Use `--opus-model` or `ANTHROPIC_OPUS_MODEL` to override the default
+documented Anthropic model snapshot.
 
 Output (gitignored):
 
 ```
 tmp/translation-eval/s5u-776-ensemble-poc/
   inputs/    page-{1,2}-en.txt        (copied for self-containment)
-  sonnet/    page-{1,2}-{lens}.txt    (literal-fidelity / literary-prose / idiomatic-natural)
+  agy/       page-{1,2}-{lens}.txt    (literal-fidelity / literary-prose / idiomatic-natural)
   opus/      page-{1,2}-synth-v1.txt  (Opus synthesis)
-  opus/      page-{1,2}-synth-v2.txt  (Opus minimal repair, only if v1 had findings)
+  opus/      page-{1,2}-synth-v2.txt  (Opus final editor output)
   qa/        page-{1,2}-qa-v{1,2}.json (QAFinding records)
   report.md
   memory-candidates.md

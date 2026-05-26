@@ -8,6 +8,7 @@ from atr_pipeline.stages.translation.validator import (
     CODE_ICON_COUNT_MISMATCH,
     CODE_ICON_ORDER_MISMATCH,
     CODE_UNKNOWN_SEGMENT,
+    _expand_grouped_batch,
     validate_translation,
 )
 from atr_schemas.concept_registry_v1 import (
@@ -93,9 +94,10 @@ def _page_ir() -> PageIRV1:
 def test_planner_injects_forbidden_targets() -> None:
     """Planner populates forbidden_targets from concept registry."""
     batch = build_translation_batch(_page_ir(), concept_registry=_registry())
+    block_batch = _expand_grouped_batch(batch)
 
     # blk_002 has icon sym.progress + text "Progress"
-    seg2 = next(s for s in batch.segments if s.segment_id == "blk_002")
+    seg2 = next(s for s in block_batch.segments if s.segment_id == "blk_002")
     assert "Продвижение" in seg2.forbidden_targets
     assert "Развитие" in seg2.forbidden_targets
 
@@ -103,9 +105,10 @@ def test_planner_injects_forbidden_targets() -> None:
 def test_planner_detects_text_concepts() -> None:
     """Planner finds concept matches in text (not just icons)."""
     batch = build_translation_batch(_page_ir(), concept_registry=_registry())
+    block_batch = _expand_grouped_batch(batch)
 
     # blk_001 heading contains "Stamina" which matches concept.stamina
-    seg1 = next(s for s in batch.segments if s.segment_id == "blk_001")
+    seg1 = next(s for s in block_batch.segments if s.segment_id == "blk_001")
     assert "concept.stamina" in seg1.required_concepts
     assert "Стамина" in seg1.forbidden_targets
 
@@ -113,8 +116,9 @@ def test_planner_detects_text_concepts() -> None:
 def test_planner_without_registry_still_works() -> None:
     """Planner works without a registry (backward compat)."""
     batch = build_translation_batch(_page_ir())
+    block_batch = _expand_grouped_batch(batch)
 
-    seg2 = next(s for s in batch.segments if s.segment_id == "blk_002")
+    seg2 = next(s for s in block_batch.segments if s.segment_id == "blk_002")
     # Icon-based concepts still detected
     assert "concept.progress" in seg2.required_concepts
     # But no forbidden targets from registry

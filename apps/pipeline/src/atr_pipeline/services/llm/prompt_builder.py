@@ -5,6 +5,10 @@ from __future__ import annotations
 
 import json
 
+from atr_pipeline.services.llm.prompt_style_memory import (
+    FORBIDDEN_STYLE_PHRASES,
+    STYLE_MEMORY,
+)
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1
 
@@ -29,6 +33,22 @@ RULES — follow every rule exactly:
    for Russian typography.
 5. Output valid JSON matching the schema exactly — no markdown, no \
    commentary, no extra keys.
+6. Produce publishable Russian, not merely structurally valid Russian. \
+   Preserve meaning, but recast syntax when Russian needs it: split \
+   overloaded sentences, resolve fragments from adjacent context, and \
+   choose idiomatic collocations over English word order.
+7. Use a mythic-fantasy / ancient-Greek gamebook register. Avoid modern \
+   administrative or business phrasing unless the source requires it. \
+   Demonyms and generic nouns are lowercase in running Russian prose \
+   unless they are true proper names or formal UI/card titles.
+8. For gamebook commands, "Note passage NNNN" means record/mark the \
+   passage for later; prefer "Отметьте" or "Запишите", not \
+   "Запомните". "See NNNN" means navigate to that passage; prefer \
+   "Перейдите к NNNN", not "См. NNNN". For short fragments such as \
+   "But only a few", use the adjacent context to restore the antecedent \
+   before translating.
+9. Do not add new plot facts, but do make concise implicit antecedents, \
+   physical causes, and scene relations explicit when Russian needs them.
 """
 
 
@@ -38,7 +58,7 @@ def build_system_prompt(
     concept_registry: ConceptRegistryV1 | None = None,
 ) -> str:
     """Build the system prompt with terminology constraints."""
-    parts = [_SYSTEM_PROMPT]
+    parts = [_SYSTEM_PROMPT, STYLE_MEMORY, FORBIDDEN_STYLE_PHRASES]
 
     if concept_registry and concept_registry.concepts:
         parts.append("\nTERMINOLOGY:")
@@ -59,12 +79,30 @@ def build_system_prompt(
 def build_user_message(batch: TranslationBatchV1) -> str:
     """Build the user message containing segments to translate."""
     segments_payload = []
-    for seg in batch.segments:
+    segment_texts = [_inline_text(seg.source_inline) for seg in batch.segments]
+    for idx, seg in enumerate(batch.segments):
         seg_dict: dict[str, object] = {
             "segment_id": seg.segment_id,
             "block_type": seg.block_type,
             "source_inline": [node.model_dump(mode="json") for node in seg.source_inline],
         }
+        if seg.block_type == "narrative_group":
+            seg_dict["translation_unit"] = "full_section"
+            seg_dict["section_source_text"] = _section_source_text(seg.source_inline)
+            seg_dict["block_boundary_contract"] = (
+                "Copy every xref marker whose target_section_id starts with "
+                "'translation-block:' unchanged. Translate the prose between "
+                "markers as one continuous section, then keep each translated "
+                "block after its corresponding marker."
+            )
+        source_context = {
+            "prev_segment_text": segment_texts[idx - 1] if idx > 0 else "",
+            "next_segment_text": segment_texts[idx + 1] if idx + 1 < len(segment_texts) else "",
+        }
+        if source_context["prev_segment_text"] or source_context["next_segment_text"]:
+            seg_dict["source_context"] = source_context
+        if _is_short_fragment(segment_texts[idx]):
+            seg_dict["short_fragment_requires_context"] = True
         if seg.locked_nodes:
             seg_dict["locked_nodes"] = seg.locked_nodes
         if seg.required_concepts:
@@ -83,6 +121,57 @@ def build_user_message(batch: TranslationBatchV1) -> str:
         ensure_ascii=False,
         indent=2,
     )
+
+
+def _inline_text(nodes: object) -> str:
+    """Return plain text from an inline-node sequence for prompt context."""
+    if not isinstance(nodes, list):
+        return ""
+    parts: list[str] = []
+    for node in nodes:
+        text = getattr(node, "text", None)
+        if isinstance(text, str):
+            parts.append(text)
+    return "".join(parts).strip()
+
+
+def _section_source_text(nodes: object) -> str:
+    """Return readable block-delimited text for narrative-group prompts."""
+    if not isinstance(nodes, list):
+        return ""
+    blocks: list[str] = []
+    current_label = ""
+    current_parts: list[str] = []
+
+    def flush() -> None:
+        if current_label or current_parts:
+            text = "".join(current_parts).strip()
+            if text:
+                blocks.append(f"[{current_label}]\n{text}" if current_label else text)
+
+    for node in nodes:
+        if getattr(node, "type", "") == "xref" and getattr(
+            node, "target_section_id", ""
+        ).startswith("translation-block:"):
+            flush()
+            current_label = getattr(node, "target_section_id", "").removeprefix(
+                "translation-block:"
+            )
+            current_parts = []
+            continue
+        text = getattr(node, "text", None)
+        if isinstance(text, str):
+            current_parts.append(text)
+        elif getattr(node, "type", "") == "line_break":
+            current_parts.append("\n")
+    flush()
+    return "\n\n".join(blocks)
+
+
+def _is_short_fragment(text: str) -> bool:
+    """True for source snippets likely to need neighboring context."""
+    words = [w for w in text.replace("—", " ").replace("-", " ").split() if w]
+    return 0 < len(words) <= 5
 
 
 def build_few_shot_examples() -> list[dict[str, str]]:

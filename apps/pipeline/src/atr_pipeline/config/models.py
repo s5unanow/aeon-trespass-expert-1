@@ -15,7 +15,7 @@ from atr_schemas.common import Rect
 # authored against S5U-746 ahead of the S5U-747 adapter landing, but the
 # factory raises until that adapter is wired up).
 _KNOWN_TRANSLATION_PROVIDERS: frozenset[str] = frozenset(
-    {"mock", "openai", "anthropic", "gemini", "gemini-cli", "codex-cli"},
+    {"mock", "openai", "anthropic", "gemini", "gemini-cli", "codex-cli", "agy-cli"},
 )
 
 # Providers for which an empty ``model_default`` is acceptable because the
@@ -88,7 +88,7 @@ class SymbolsConfig(BaseModel):
 
 
 class CLIProviderOptions(BaseModel):
-    """Options applicable to CLI-shaped providers (gemini-cli, codex-cli).
+    """Options applicable to CLI-shaped providers (gemini-cli, codex-cli, agy-cli).
 
     Each field is optional — the adapter applies its own documented default
     when a value is omitted. Unknown keys are rejected (``extra="forbid"``)
@@ -104,8 +104,9 @@ class CLIProviderOptions(BaseModel):
     """Subprocess timeout (seconds). Adapter must enforce this."""
 
     reasoning_effort: str | None = None
-    """Codex CLI ``--reasoning-effort`` value (``low`` / ``medium`` / ``high``).
-    Ignored by gemini-cli."""
+    """CLI reasoning-effort/profile value. Forwarded to codex-cli where it
+    is a real flag; embedded in agy-cli prompts because AGY v1 exposes no
+    model/effort flag. Ignored by gemini-cli."""
 
     sandbox: str | None = None
     """Codex CLI sandbox mode. Ignored by gemini-cli."""

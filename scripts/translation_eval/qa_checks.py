@@ -3,7 +3,7 @@
 All functions are pure: they take English source text plus a candidate
 Russian translation (and optional rule data) and return findings as plain
 data. The orchestrator (``ensemble_poc.py``) feeds the findings back into
-the Opus repair prompt.
+the Opus final-editor prompt.
 
 Findings classes:
 * missing passage refs (``0001``, ``0003``, ``0047`` …)
@@ -11,6 +11,7 @@ Findings classes:
 * missing mechanics tokens (``Wisdom (7+)``, ``Diplomacy -1`` …)
 * glossary term misses (EN term present in source but RU rendering absent)
 * forbidden phrases present in the candidate
+* known prose/style red flags from human review
 * coarse paragraph-coverage gap vs a TranslateGemma omission witness
 """
 
@@ -25,6 +26,44 @@ _PASSAGE_REF_RE = re.compile(r"\b0\d{3}\b")
 _PLACEHOLDER_RE = re.compile(r"\[[a-z][a-z\s]+\]")
 _WISDOM_RE = re.compile(r"\b([A-Z][a-z]+)\s*\((\d+)\+\)")
 _DIPLOMACY_RE = re.compile(r"\b([A-Z][a-z]+)\s*([+-])(\d+)")
+_STYLE_RED_FLAGS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"Но\s+лишь\s+немногих", re.IGNORECASE),
+        "Context error: 'few' refers to lamps/lights, not animate people.",
+    ),
+    (
+        re.compile(r"на\s+страже\s+стоит\s+Стража", re.IGNORECASE),
+        "Tautology: recast Horned Guard instead of 'guard stands on guard'.",
+    ),
+    (
+        re.compile(r"Запомните\s+«параграф", re.IGNORECASE),
+        "Gamebook convention: use 'Отметьте'/'Запишите' for Note passage.",
+    ),
+    (
+        re.compile(r"(?m)^\s*См\.\s+0\d{3}\.?\s*$"),
+        "Gamebook navigation: use 'Перейдите к NNNN' for standalone See refs.",
+    ),
+    (
+        re.compile(r"Рогатого\s+Города"),
+        "Generic noun should be lowercase in running prose: 'Рогатого города'.",
+    ),
+    (
+        re.compile(r"\b(?:с|к|о|об|для|у|над|под|перед|между)\s+Минойц"),
+        "Demonym should be lowercase in running Russian prose, but title/label "
+        "forms may stay uppercase.",
+    ),
+    (
+        re.compile(r"звук\s+натягиваемых\s+тетив", re.IGNORECASE),
+        "Awkward collocation: prefer 'звук натягиваемой тетивы' or a stronger "
+        "image such as 'треск натягиваемых тетив'.",
+    ),
+    (
+        re.compile(r"высадочный\s+отряд", re.IGNORECASE),
+        "Context check: 'высадочный отряд' is often too military/technical. "
+        "For clue-search or scouting scenes prefer 'поисковый отряд', "
+        "'разведывательный отряд', or 'отряд на берег'.",
+    ),
+)
 
 
 @dataclass(frozen=True)
@@ -137,6 +176,20 @@ def find_forbidden_phrases(
     return findings
 
 
+def find_style_red_flags(ru: str) -> list[QAFinding]:
+    """Return known prose failures learned from human review.
+
+    This is intentionally narrow: deterministic QA should catch repeated,
+    high-confidence bad patterns, while broader literary judgement stays with
+    the model editor / human review pass.
+    """
+    findings: list[QAFinding] = []
+    for pattern, detail in _STYLE_RED_FLAGS:
+        if pattern.search(ru):
+            findings.append(QAFinding(code="style_red_flag", detail=detail))
+    return findings
+
+
 def _split_paragraphs(text: str) -> list[str]:
     return [p.strip() for p in text.split("\n\n") if p.strip()]
 
@@ -202,6 +255,7 @@ def all_checks(
     findings.extend(find_missing_mechanics(en, ru))
     findings.extend(find_glossary_misses(en, ru))
     findings.extend(find_forbidden_phrases(ru))
+    findings.extend(find_style_red_flags(ru))
     if gemma_ru is not None:
         findings.extend(coarse_omission_witness(ru, gemma_ru))
     return findings
