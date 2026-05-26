@@ -124,11 +124,13 @@ STYLE MEMORY — learn these patterns:
 - EN: You hear the familiar sound of bowstrings tightening.
   BAD: До вашего слуха доносится знакомый звук натягиваемых тетив.
   GOOD: До вас доносится знакомый звук натягиваемой тетивы.
-  WHY: Russian normally treats this as one perceived sound/source; use plural only with a stronger image such as "треск натягиваемых тетив".
+  WHY: Russian normally treats this as one perceived sound/source; use plural
+       only with a stronger image such as "треск натягиваемых тетив".
 - EN: you send an away team to a mist-shrouded key
   BAD: вы отправляете высадочный отряд к окутанному туманом островку
   GOOD: вы отправляете поисковый отряд к окутанному туманом островку
-  WHY: choose the Russian noun by scene function. For clue-search use "поисковый" or "разведывательный"; reserve "высадочный" for landing/assault logistics.
+  WHY: choose the Russian noun by scene function. For clue-search use
+       "поисковый" or "разведывательный"; reserve "высадочный" for landing.
 - EN: The pier is all but deserted
   BAD: Пристань почти пустынна
   GOOD: Пристань почти безлюдна
