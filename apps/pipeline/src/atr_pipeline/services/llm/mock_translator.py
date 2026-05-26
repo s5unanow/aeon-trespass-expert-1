@@ -58,6 +58,7 @@ class MockTranslator:
                     elif node.type == "text" and hasattr(node, "text"):
                         text = node.text
                         # Simple mock translations
+                        text = text.replace("Attack Test", "Проверка атаки")
                         text = text.replace("Gain 1 ", "Получите 1 ")
                         text = text.replace(" Progress.", " Прогресс.")
                         target_inline.append(TextInline(text=text, lang=LanguageCode.RU))

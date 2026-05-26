@@ -15,6 +15,7 @@ from atr_pipeline.stages.render.page_builder import build_render_page
 from atr_pipeline.stages.structure.block_builder import build_page_ir_simple
 from atr_pipeline.stages.symbols.catalog_loader import load_symbol_catalog
 from atr_pipeline.stages.symbols.matcher import match_symbols
+from atr_pipeline.stages.translation.grouping import expand_grouped_batch, expand_grouped_result
 from atr_pipeline.stages.translation.planner import build_translation_batch
 from atr_pipeline.stages.translation.validator import validate_translation
 from atr_schemas.enums import LanguageCode
@@ -63,18 +64,23 @@ def test_walking_skeleton_end_to_end(tmp_path: Path) -> None:  # noqa: PLR0915
 
     # 4. Plan translation
     batch = build_translation_batch(en_ir)
-    assert len(batch.segments) == 2
+    assert len(batch.segments) == 1
+    assert batch.segments[0].block_type == "narrative_group"
 
     # 5. Mock translate
     translator = MockTranslator()
     response = translator.translate_batch(batch)
     result = response.result
-    assert len(result.segments) == 2
+    assert len(result.segments) == 1
     assert response.meta.provider == "mock"
 
     # 6. Validate translation
     records = validate_translation(batch, result)
     assert records == [], f"Translation validation failed: {records}"
+    expanded_result = expand_grouped_result(batch, result)
+    result = expanded_result
+    batch = expand_grouped_batch(batch)
+    assert len(result.segments) == 2
 
     # 7. Build Russian PageIR from translation result
     ru_blocks = []
