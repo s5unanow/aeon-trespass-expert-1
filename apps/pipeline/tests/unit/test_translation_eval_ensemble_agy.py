@@ -15,20 +15,26 @@ REPO = Path(__file__).resolve().parents[4]
 
 
 @pytest.fixture()
-def ensemble_mod() -> ModuleType:
+def agy_mod() -> ModuleType:
     repo_str = str(REPO)
     added = repo_str not in sys.path
     if added:
         sys.path.insert(0, repo_str)
     try:
-        return importlib.import_module("scripts.translation_eval.ensemble_poc")
+        return importlib.import_module("scripts.translation_eval.ensemble_agy")
     finally:
         if added:
             sys.path.remove(repo_str)
 
 
-def test_build_agy_argv_uses_print_timeout(ensemble_mod: ModuleType) -> None:
-    argv = ensemble_mod._build_agy_argv(  # type: ignore[attr-defined]
+@pytest.fixture()
+def ensemble_mod(agy_mod: ModuleType) -> ModuleType:
+    _ = agy_mod
+    return importlib.import_module("scripts.translation_eval.ensemble_poc")
+
+
+def test_build_agy_argv_uses_print_timeout(agy_mod: ModuleType) -> None:
+    argv = agy_mod.build_agy_argv(
         executable="/tmp/agy",
         prompt="translate",
         timeout="15m",
@@ -37,16 +43,14 @@ def test_build_agy_argv_uses_print_timeout(ensemble_mod: ModuleType) -> None:
     assert argv == ["/tmp/agy", "--print-timeout", "15m", "--print", "translate"]
 
 
-def test_duration_parser_accepts_agy_default_shape(ensemble_mod: ModuleType) -> None:
-    assert ensemble_mod._duration_to_seconds("5m0s") == 300  # type: ignore[attr-defined]
-    assert ensemble_mod._duration_to_seconds("15m") == 900  # type: ignore[attr-defined]
-    assert ensemble_mod._duration_to_seconds("900s") == 900  # type: ignore[attr-defined]
+def test_duration_parser_accepts_agy_default_shape(agy_mod: ModuleType) -> None:
+    assert agy_mod.duration_to_seconds("5m0s") == 300
+    assert agy_mod.duration_to_seconds("15m") == 900
+    assert agy_mod.duration_to_seconds("900s") == 900
 
 
-def test_agy_stdout_error_detection(ensemble_mod: ModuleType) -> None:
-    assert ensemble_mod._looks_like_agy_error(  # type: ignore[attr-defined]
-        "Error: timed out waiting for response"
-    )
+def test_agy_stdout_error_detection(agy_mod: ModuleType) -> None:
+    assert agy_mod.looks_like_agy_error("Error: timed out waiting for response")
 
 
 def test_process_page_runs_three_agy_variants_and_final_editor(

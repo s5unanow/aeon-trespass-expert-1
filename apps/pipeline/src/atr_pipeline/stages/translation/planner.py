@@ -83,8 +83,7 @@ def _apply_concepts(
     patterns: list[_ConceptRule],
     icon_forbidden: dict[str, list[str]],
 ) -> None:
-    """Populate ``locked_nodes`` / ``required_concepts`` / ``forbidden_targets``
-    on ``segment`` based on its inline content and the concept indices."""
+    """Populate concept constraints on ``segment`` from inline content."""
     for child in source_inline:
         if isinstance(child, IconInline):
             sid = child.symbol_id
@@ -131,9 +130,7 @@ def _emit_table_cell_segments(
     row_index = 0
     for row in block.children:
         if not isinstance(row, TableRowBlock):
-            # Legacy mixed content: skip flat inlines under a structured
-            # table so we don't generate untethered segments. They are
-            # not addressable per-cell and the common case is empty.
+            # Legacy mixed content: skip flat inlines under a structured table.
             continue
         if not row.translatable:
             row_index += 1

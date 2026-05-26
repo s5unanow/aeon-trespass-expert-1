@@ -32,7 +32,6 @@ import argparse
 import json
 import logging
 import os
-import re
 import subprocess
 import sys
 import time
@@ -42,6 +41,14 @@ from typing import Any
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.translation_eval.ensemble_agy import (
+        AGY_DEFAULT_TIMEOUT,
+        AGY_MODEL_PROFILE,
+        build_agy_argv,
+        build_agy_prompt,
+        duration_to_seconds,
+        looks_like_agy_error,
+    )
     from scripts.translation_eval.prompts import (
         TRANSLATION_VARIANTS,
         build_opus_repair_system_prompt,
@@ -53,6 +60,14 @@ if __package__ in {None, ""}:
     from scripts.translation_eval.qa_checks import QAFinding, all_checks
     from scripts.translation_eval.report import write_memory_candidates, write_report
 else:
+    from .ensemble_agy import (
+        AGY_DEFAULT_TIMEOUT,
+        AGY_MODEL_PROFILE,
+        build_agy_argv,
+        build_agy_prompt,
+        duration_to_seconds,
+        looks_like_agy_error,
+    )
     from .prompts import (
         TRANSLATION_VARIANTS,
         build_opus_repair_system_prompt,
@@ -68,12 +83,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 EVAL_DIR = REPO_ROOT / "tmp" / "translation-eval"
 OUT_ROOT = EVAL_DIR / "s5u-776-ensemble-poc"
 
-AGY_MODEL_PROFILE = "gemini-pro-high"
 DEFAULT_OPUS_MODEL = "claude-opus-4-20250514"
 MAX_TOKENS = 4096
-AGY_DEFAULT_TIMEOUT = "15m"
-_DURATION_PART_RE = re.compile(r"(?:(?P<h>\d+)h)?(?:(?P<m>\d+)m)?(?:(?P<s>\d+)s)?$")
-_AGY_ERROR_PREFIXES = ("error:", "fatal:")
 
 log = logging.getLogger("translation_eval.ensemble_poc")
 
@@ -144,42 +155,6 @@ def _call_anthropic(
     return text, call
 
 
-def _build_agy_prompt(system_prompt: str, user_message: str) -> str:
-    """Combine the variant system prompt and source text for ``agy --print``."""
-    return "\n\n".join(
-        [
-            system_prompt,
-            "AGY model profile requested by the pipeline: Pro model with high effort. "
-            "Use that profile if your current Antigravity CLI session supports it.",
-            "--- Source text to translate ---",
-            user_message.rstrip(),
-            "--- Output contract ---",
-            "Output only the Russian translation. Do not include commentary.",
-        ]
-    )
-
-
-def _build_agy_argv(
-    *,
-    executable: str,
-    prompt: str,
-    timeout: str,
-) -> list[str]:
-    """Build the current AGY v1 non-interactive argv.
-
-    Local ``agy --help`` exposes ``--print`` and ``--print-timeout`` but no
-    model/effort flags. Keep this isolated so future AGY model-selection flags
-    can be added in one place.
-    """
-    return [executable, "--print-timeout", timeout, "--print", prompt]
-
-
-def _looks_like_agy_error(text: str) -> bool:
-    """AGY can report internal failures on stdout while exiting 0."""
-    normalized = text.strip().lower()
-    return normalized.startswith(_AGY_ERROR_PREFIXES) or "timed out waiting" in normalized
-
-
 def _call_agy(
     *,
     stage: str,
@@ -189,15 +164,15 @@ def _call_agy(
     timeout: str,
 ) -> tuple[str, CallRecord]:
     log.info("calling %s (%s via %s) ...", stage, AGY_MODEL_PROFILE, executable)
-    prompt = _build_agy_prompt(system_prompt, user_message)
-    argv = _build_agy_argv(executable=executable, prompt=prompt, timeout=timeout)
+    prompt = build_agy_prompt(system_prompt, user_message)
+    argv = build_agy_argv(executable=executable, prompt=prompt, timeout=timeout)
     t0 = time.perf_counter()
     try:
         proc = subprocess.run(
             argv,
             capture_output=True,
             text=True,
-            timeout=_duration_to_seconds(timeout),
+            timeout=duration_to_seconds(timeout),
             check=False,
         )
     except subprocess.TimeoutExpired as exc:
@@ -217,7 +192,7 @@ def _call_agy(
     if not text:
         msg = "AGY CLI returned empty output"
         raise RuntimeError(msg)
-    if _looks_like_agy_error(text) or (proc.stderr and _looks_like_agy_error(proc.stderr)):
+    if looks_like_agy_error(text) or (proc.stderr and looks_like_agy_error(proc.stderr)):
         msg = f"AGY CLI reported an error: {(text or proc.stderr).strip()[:500]}"
         raise RuntimeError(msg)
 
@@ -230,25 +205,6 @@ def _call_agy(
     )
     log.info("  done in %.1fs", wall)
     return text, call
-
-
-def _duration_to_seconds(raw: str) -> int:
-    """Parse AGY-style duration strings such as ``15m`` / ``5m0s`` / ``900s``."""
-    value = raw.strip().lower()
-    if value.isdigit():
-        return int(value)
-    match = _DURATION_PART_RE.fullmatch(value)
-    if not match:
-        msg = f"unsupported duration: {raw!r}"
-        raise ValueError(msg)
-    hours = int(match.group("h") or 0)
-    minutes = int(match.group("m") or 0)
-    seconds = int(match.group("s") or 0)
-    total = hours * 3600 + minutes * 60 + seconds
-    if total <= 0:
-        msg = f"duration must be positive: {raw!r}"
-        raise ValueError(msg)
-    return total
 
 
 def _read_gemma_witness(page: int) -> str:
