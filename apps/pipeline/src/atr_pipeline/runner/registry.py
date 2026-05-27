@@ -12,6 +12,7 @@ from atr_pipeline.stages.qa.stage import QAStage
 from atr_pipeline.stages.render.stage import RenderStage
 from atr_pipeline.stages.structure.stage import StructureStage
 from atr_pipeline.stages.symbols.stage import SymbolsStage
+from atr_pipeline.stages.translation.critic_stage import TranslationStyleCriticStage
 from atr_pipeline.stages.translation.stage import TranslationStage
 
 
@@ -24,6 +25,7 @@ def build_stage_registry() -> dict[str, Stage]:
         "symbols": SymbolsStage(),
         "structure": StructureStage(),
         "translate": TranslationStage(),
+        "translation_style_critic": TranslationStyleCriticStage(),
         "render": RenderStage(),
         "qa": QAStage(),
         "chunk_export": ChunkExportStage(),

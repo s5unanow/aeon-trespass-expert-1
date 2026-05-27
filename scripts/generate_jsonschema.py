@@ -44,6 +44,7 @@ from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1
 from atr_schemas.translation_qa_record_set_v1 import TranslationQARecordSetV1
 from atr_schemas.translation_result_v1 import TranslationResultV1
+from atr_schemas.translation_style_critic_v1 import TranslationStyleCriticPageV1
 from atr_schemas.user_feedback_record_set_v1 import UserFeedbackRecordSetV1
 from atr_schemas.waiver_v1 import WaiverSetV1
 
@@ -84,6 +85,7 @@ MODELS = {
     "translation_batch_v1": TranslationBatchV1,
     "translation_qa_record_set_v1": TranslationQARecordSetV1,
     "translation_result_v1": TranslationResultV1,
+    "translation_style_critic_v1": TranslationStyleCriticPageV1,
     "user_feedback_record_set_v1": UserFeedbackRecordSetV1,
     "waiver_set_v1": WaiverSetV1,
 }

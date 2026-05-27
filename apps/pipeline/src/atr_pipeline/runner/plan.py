@@ -10,6 +10,7 @@ WALKING_SKELETON_STAGES = [
     "symbols",
     "structure",
     "translate",
+    "translation_style_critic",
     "render",
     "qa",
     "chunk_export",

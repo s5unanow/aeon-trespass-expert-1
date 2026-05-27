@@ -1,0 +1,86 @@
+{
+  "$defs": {
+    "Severity": {
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "TranslationStyleCriticFindingV1": {
+      "additionalProperties": false,
+      "description": "A single paragraph-local Russian readability/style finding.",
+      "properties": {
+        "paragraph_id": {
+          "minLength": 1,
+          "title": "Paragraph Id",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        },
+        "suggestions": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Suggestions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "paragraph_id",
+        "severity",
+        "quote",
+        "why",
+        "suggestions"
+      ],
+      "title": "TranslationStyleCriticFindingV1",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Style critic findings for one translated page.",
+  "properties": {
+    "schema_version": {
+      "default": "translation_style_critic.v1",
+      "pattern": "^translation_style_critic\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "title": "Page Id",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/TranslationStyleCriticFindingV1"
+      },
+      "title": "Findings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id"
+  ],
+  "title": "TranslationStyleCriticPageV1",
+  "type": "object"
+}

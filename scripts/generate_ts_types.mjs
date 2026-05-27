@@ -52,6 +52,7 @@ const PRIMARY_TYPES = {
   symbol_match_set_v1: 'SymbolMatchSetV1',
   translation_batch_v1: 'TranslationBatchV1',
   translation_result_v1: 'TranslationResultV1',
+  translation_style_critic_v1: 'TranslationStyleCriticPageV1',
   waiver_set_v1: 'WaiverSetV1',
 };
 

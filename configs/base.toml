@@ -37,6 +37,10 @@ fallback_model = "gemini-2.5-flash"
 temperature = 0.0
 batch_size = 24
 prompt_profile = "translate_rules_ru.v1"
+style_critic_enabled = true
+style_critic_provider = ""          # empty = inherit translation.provider
+style_critic_model = ""             # empty = inherit model_hard/model_default
+style_critic_reasoning_effort = "high"
 
 # Provider-specific options live in the per-document config so the mock
 # fixture documents that override ``provider = "mock"`` don't inherit
