@@ -18,6 +18,7 @@ Three categories are tracked separately, as the issue asks:
 Sources:
 * S5U-775 ``tmp/translation-eval/comparison.md`` — terminology vote.
 * S5U-776 issue body — bad/good phrase pairs and forbidden outputs.
+* S5U-797 review-memory artifact — accepted page-1 reviewer entries.
 """
 
 from __future__ import annotations
@@ -84,6 +85,8 @@ FORBIDDEN_PHRASES: tuple[str, ...] = (
     "Они не видят вашей стойкости",
     "См. 0068",
     "звук натягиваемых тетив",
+    "отправить на берег высадочный отряд",
+    "вооружённый эскорт",
 )
 
 
@@ -239,13 +242,14 @@ BAD_GOOD_EXAMPLES: tuple[BadGoodExample, ...] = (
         "'треск натягиваемых тетив'.",
     ),
     BadGoodExample(
-        en="you send an away team to a mist-shrouded key",
-        bad_ru="вы отправляете высадочный отряд к окутанному туманом островку",
-        good_ru="вы отправляете поисковый отряд к окутанному туманом островку",
-        why="'Away team' is a function, not always a military landing unit. "
-        "When the scene beat is following clues or searching, prefer "
-        "'поисковый отряд' or 'разведывательный отряд'; reserve "
-        "'высадочный отряд' for actual landing/assault logistics.",
+        en="you decide to send a landing party ashore to meet the Minoans",
+        bad_ru="вы решаете отправить на берег высадочный отряд",
+        good_ru="вы решаете отправить на берег передовой отряд для встречи с минойцами",
+        why="'Landing party' names a scene function, not always a military "
+        "landing unit. For diplomatic shore contact prefer 'передовой отряд' "
+        "or 'отряд на берег'; for clue-search/scouting use 'поисковый отряд' "
+        "or 'разведывательный отряд'. Reserve 'высадочный отряд' for actual "
+        "landing/assault logistics.",
     ),
     BadGoodExample(
         en="The pier is all but deserted",
@@ -380,8 +384,11 @@ BAD_GOOD_EXAMPLES: tuple[BadGoodExample, ...] = (
 
 REVIEWER_RUBRIC: tuple[str, ...] = (
     "semantic fidelity — every English clause is preserved",
-    "natural Russian — no calques or word-for-word artefacts",
+    "natural Russian — after meaning is locked, ignore English syntax when "
+    "Russian cadence needs it",
     "genre/register — archaic/mythic Greek tone, not modern news/business",
+    "scene-function terminology — render party/team labels by narrative role, "
+    "not fixed military labels",
     "terminology — glossary terms render consistently within and across pages",
     "mechanics preservation — passage refs, bracket placeholders, "
     "Wisdom (N+), Diplomacy +/-N kept verbatim",

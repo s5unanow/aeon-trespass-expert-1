@@ -60,8 +60,9 @@ _STYLE_RED_FLAGS: tuple[tuple[re.Pattern[str], str], ...] = (
     (
         re.compile(r"высадочный\s+отряд", re.IGNORECASE),
         "Context check: 'высадочный отряд' is often too military/technical. "
-        "For clue-search or scouting scenes prefer 'поисковый отряд', "
-        "'разведывательный отряд', or 'отряд на берег'.",
+        "For shore contact prefer 'передовой отряд' or 'отряд на берег'; "
+        "for clue-search or scouting prefer 'поисковый отряд' or "
+        "'разведывательный отряд'.",
     ),
 )
 

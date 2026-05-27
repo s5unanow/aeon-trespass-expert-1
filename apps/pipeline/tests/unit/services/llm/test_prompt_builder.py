@@ -2,6 +2,8 @@
 """Tests for LLM prompt construction."""
 
 import json
+from collections.abc import Mapping
+from typing import cast
 
 from atr_pipeline.services.llm.prompt_builder import (
     build_response_schema,
@@ -84,6 +86,8 @@ def test_system_prompt_contains_terminology() -> None:
     assert "обошло древний мегаполис" in prompt
     assert "убожество великолепия" in prompt
     assert "См. 0068" in prompt
+    assert "передовой отряд" in prompt
+    assert "ignore English syntax" in prompt
     assert "Минойц" not in prompt
 
 
@@ -142,13 +146,16 @@ def test_user_message_marks_narrative_group_contract() -> None:
 
 def test_response_schema_structure() -> None:
     schema = build_response_schema()
+    properties = cast(Mapping[str, object], schema["properties"])
 
     assert schema["type"] == "object"
-    assert "batch_id" in schema["properties"]
-    assert "segments" in schema["properties"]
-    seg_items = schema["properties"]["segments"]["items"]
-    assert "target_inline" in seg_items["properties"]
-    assert "concept_realizations" in seg_items["properties"]
+    assert "batch_id" in properties
+    assert "segments" in properties
+    segments = cast(Mapping[str, object], properties["segments"])
+    seg_items = cast(Mapping[str, object], segments["items"])
+    seg_properties = cast(Mapping[str, object], seg_items["properties"])
+    assert "target_inline" in seg_properties
+    assert "concept_realizations" in seg_properties
 
 
 def test_factory_creates_mock() -> None:

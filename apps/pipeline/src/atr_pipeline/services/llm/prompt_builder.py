@@ -36,7 +36,9 @@ RULES — follow every rule exactly:
 6. Produce publishable Russian, not merely structurally valid Russian. \
    Preserve meaning, but recast syntax when Russian needs it: split \
    overloaded sentences, resolve fragments from adjacent context, and \
-   choose idiomatic collocations over English word order.
+   choose idiomatic collocations over English word order. After source \
+   meaning, mechanics, and glossary terms are locked, ignore English syntax \
+   when needed for natural Russian rhythm.
 7. Use a mythic-fantasy / ancient-Greek gamebook register. Avoid modern \
    administrative or business phrasing unless the source requires it. \
    Demonyms and generic nouns are lowercase in running Russian prose \
@@ -46,7 +48,10 @@ RULES — follow every rule exactly:
    "Запомните". "See NNNN" means navigate to that passage; prefer \
    "Перейдите к NNNN", not "См. NNNN". For short fragments such as \
    "But only a few", use the adjacent context to restore the antecedent \
-   before translating.
+   before translating. For party/team labels, choose Russian nouns by scene \
+   function: diplomatic contact → "передовой отряд" or "отряд на берег"; \
+   clue-search → "поисковый отряд"; scouting → "разведывательный отряд"; \
+   reserve "высадочный отряд" for actual landing/assault logistics.
 9. Do not add new plot facts, but do make concise implicit antecedents, \
    physical causes, and scene relations explicit when Russian needs them.
 """
