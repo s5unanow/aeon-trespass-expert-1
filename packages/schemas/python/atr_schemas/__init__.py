@@ -122,6 +122,10 @@ from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1, SymbolEntry
 from atr_schemas.symbol_match_set_v1 import SymbolMatch, SymbolMatchSetV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
 from atr_schemas.translation_result_v1 import TranslatedSegment, TranslationResultV1
+from atr_schemas.translation_style_critic_v1 import (
+    TranslationStyleCriticFindingV1,
+    TranslationStyleCriticPageV1,
+)
 from atr_schemas.waiver_v1 import WaiverSetV1, WaiverV1
 
 __all__ = [
@@ -254,6 +258,8 @@ __all__ = [
     "TranslationBatchV1",
     "TranslationResultV1",
     "TranslationSegment",
+    "TranslationStyleCriticFindingV1",
+    "TranslationStyleCriticPageV1",
     "UnknownBlock",
     "WaiverSetV1",
     "WaiverV1",

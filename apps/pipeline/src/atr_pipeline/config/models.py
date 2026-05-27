@@ -167,6 +167,10 @@ class TranslationConfig(BaseModel):
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     batch_size: int = Field(default=24, ge=1)
     prompt_profile: str = "translate_rules_ru.v1"
+    style_critic_enabled: bool = True
+    style_critic_provider: str = ""
+    style_critic_model: str = ""
+    style_critic_reasoning_effort: str = "high"
     max_retries: int = Field(default=2, ge=0)
     retry_delay_seconds: float = Field(default=1.0, ge=0.0)
 
@@ -188,6 +192,12 @@ class TranslationConfig(BaseModel):
                 "fallback_provider",
                 self.fallback_provider.lower(),
             )
+        if self.style_critic_provider:
+            object.__setattr__(
+                self,
+                "style_critic_provider",
+                self.style_critic_provider.lower(),
+            )
 
         # Reject unknown provider names early — before any LLM/subprocess
         # call. The factory may further reject reserved names (e.g.
@@ -206,7 +216,6 @@ class TranslationConfig(BaseModel):
                 f"Known providers: {sorted(_KNOWN_TRANSLATION_PROVIDERS)}"
             )
             raise ValueError(msg)
-
         # Require ``model_default`` for non-mock, non-Gemini-family providers.
         # Gemini-family adapters apply a documented default when the field
         # is empty; mock has no real call. Anything else is a config bug.
