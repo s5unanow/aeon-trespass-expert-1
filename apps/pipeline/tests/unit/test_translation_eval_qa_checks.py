@@ -178,6 +178,17 @@ def test_forbidden_adversarial_overlapping(qa_mod: ModuleType) -> None:
     assert any(f.detail == "Гвардия" for f in findings)
 
 
+def test_forbidden_promotes_review_memory_scene_terms(qa_mod: ModuleType) -> None:
+    ru = (
+        "После недолгих споров вы решаете отправить на берег высадочный отряд "
+        "и выделить послам вооружённый эскорт."
+    )
+    details = [f.detail for f in qa_mod.find_forbidden_phrases(ru)]
+
+    assert "отправить на берег высадочный отряд" in details
+    assert "вооружённый эскорт" in details
+
+
 # ---------------------------------------------------------------------------
 # Style red flags
 # ---------------------------------------------------------------------------

@@ -80,11 +80,12 @@ STYLE MEMORY — learn these patterns:
   GOOD: До вас доносится знакомый звук натягиваемой тетивы.
   WHY: Russian normally treats this as one perceived sound/source; use plural
        only with a stronger image such as "треск натягиваемых тетив".
-- EN: you send an away team to a mist-shrouded key
-  BAD: вы отправляете высадочный отряд к окутанному туманом островку
-  GOOD: вы отправляете поисковый отряд к окутанному туманом островку
-  WHY: choose the Russian noun by scene function. For clue-search use
-       "поисковый" or "разведывательный"; reserve "высадочный" for landing.
+- EN: you decide to send a landing party ashore to meet the Minoans
+  BAD: вы решаете отправить на берег высадочный отряд
+  GOOD: вы решаете отправить на берег передовой отряд для встречи с минойцами
+  WHY: choose the Russian noun by scene function. For diplomatic shore contact
+       use "передовой отряд" or "отряд на берег"; for clue-search/scouting use
+       "поисковый" or "разведывательный"; reserve "высадочный" for assault.
 - EN: The pier is all but deserted
   BAD: Пристань почти пустынна
   GOOD: Пристань почти безлюдна
@@ -181,4 +182,6 @@ FORBIDDEN STYLE PHRASES — do not emit these rejected forms:
 - Они не видят вашей стойкости
 - См. 0068
 - звук натягиваемых тетив
+- отправить на берег высадочный отряд
+- вооружённый эскорт
 """
