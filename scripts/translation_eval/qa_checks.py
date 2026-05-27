@@ -1,18 +1,10 @@
 """Deterministic QA checks for ensemble translation candidates.
 
-All functions are pure: they take English source text plus a candidate
-Russian translation (and optional rule data) and return findings as plain
-data. The orchestrator (``ensemble_poc.py``) feeds the findings back into
-the Opus final-editor prompt.
+All functions are pure and return findings as plain data. The orchestrator
+(``ensemble_poc.py``) feeds them back into the Opus final-editor prompt.
 
-Findings classes:
-* missing passage refs (``0001``, ``0003``, ``0047`` …)
-* missing bracket placeholders (``[horned symbol]``)
-* missing mechanics tokens (``Wisdom (7+)``, ``Diplomacy -1`` …)
-* glossary term misses (EN term present in source but RU rendering absent)
-* forbidden phrases present in the candidate
-* known prose/style red flags from human review
-* coarse paragraph-coverage gap vs a TranslateGemma omission witness
+Checks cover missing refs/placeholders/mechanics, glossary misses, forbidden
+phrases, Russian style red flags, and coarse omission-vs-witness gaps.
 """
 
 from __future__ import annotations
@@ -26,6 +18,41 @@ _PASSAGE_REF_RE = re.compile(r"\b0\d{3}\b")
 _PLACEHOLDER_RE = re.compile(r"\[[a-z][a-z\s]+\]")
 _WISDOM_RE = re.compile(r"\b([A-Z][a-z]+)\s*\((\d+)\+\)")
 _DIPLOMACY_RE = re.compile(r"\b([A-Z][a-z]+)\s*([+-])(\d+)")
+_SENTENCE_SPLIT_RE = re.compile(r"(?<!См\.)(?<=[.!?…])\s+|\n+")
+_WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё]+")
+_LEADING_PUNCT_RE = re.compile(r"^[\s\"'«»„“”()—–-]+")
+_NAVIGATION_RE = re.compile(
+    r"\b(?:Перейдите\s+к|См\.\s*0\d{3}|Смотрите\s+0\d{3}|"
+    r"Отметьте\s+«?параграф|Запомните\s+«?параграф)\b",
+    re.IGNORECASE,
+)
+_MECHANICS_RE = re.compile(
+    r"\b(?:Дипломатия|Мудрость|Прозрение|Выживание|Минойцы|"
+    r"Рогоприсягнувшие|Слава|Жизнь|Судьба|Урон)\b|[+-]\d|"
+    r"\(\s*\d+\+\s*\)|\\(?:mathbf|boldsymbol)",
+    re.IGNORECASE,
+)
+_MECHANICS_COMMAND_RE = re.compile(
+    r"^\s*(?:Получите|Потеряйте|Вернитесь|Возвращайтесь|"
+    r"Лидер\s+отряда\s+получает)\b",
+    re.IGNORECASE,
+)
+_OUTCOME_LABEL_RE = re.compile(r"^\s*(?:Успех|Провал|Ничья|\d+\+:)\b", re.IGNORECASE)
+_HARD_OPENERS = ("Вы", "И", "Но", "Затем", "Это", "Когда")
+_YOU_VERB_SUFFIXES = (
+    "аете",
+    "яете",
+    "ете",
+    "ите",
+    "ёте",
+    "аетесь",
+    "яетесь",
+    "етесь",
+    "итесь",
+)
+_STYLE_WINDOW = 5
+_STYLE_CLUSTER_THRESHOLD = 3
+_SHORT_SENTENCE_WORD_LIMIT = 4
 _STYLE_RED_FLAGS: tuple[tuple[re.Pattern[str], str], ...] = (
     (
         re.compile(r"Но\s+лишь\s+немногих", re.IGNORECASE),
@@ -53,16 +80,41 @@ _STYLE_RED_FLAGS: tuple[tuple[re.Pattern[str], str], ...] = (
         "forms may stay uppercase.",
     ),
     (
-        re.compile(r"звук\s+натягиваемых\s+тетив", re.IGNORECASE),
+        re.compile(r"звук\w*\s+натягива\w+\s+тетив\w*", re.IGNORECASE),
         "Awkward collocation: prefer 'звук натягиваемой тетивы' or a stronger "
         "image such as 'треск натягиваемых тетив'.",
     ),
     (
-        re.compile(r"высадочный\s+отряд", re.IGNORECASE),
+        re.compile(r"\bвысадочн\w*\s+отряд\w*\b", re.IGNORECASE),
         "Context check: 'высадочный отряд' is often too military/technical. "
-        "For shore contact prefer 'передовой отряд' or 'отряд на берег'; "
-        "for clue-search or scouting prefer 'поисковый отряд' or "
-        "'разведывательный отряд'.",
+        "Choose the Russian term by scene function: for shore contact prefer "
+        "'передовой отряд' or 'отряд на берег'; for clue-search or scouting "
+        "prefer 'поисковый отряд' or 'разведывательный отряд'.",
+    ),
+    (
+        re.compile(r"\bимеет\s+значени[ея]\b", re.IGNORECASE),
+        "Stiff register: 'имеет значение' usually calques 'matters'. Recast "
+        "the emphasis as 'важна/важно/важен' or a concrete action.",
+    ),
+    (
+        re.compile(r"\bобраща\w*\s+к\s+ним\b", re.IGNORECASE),
+        "Generic speech verb: in public prophetic address prefer 'взывает к "
+        "ним' or another scene-specific verb instead of flat 'обращается к ним'.",
+    ),
+    (
+        re.compile(r"\bгруб\w*\s+пробуждени\w*\b", re.IGNORECASE),
+        "Stiff register: 'грубое пробуждение' is a literal calque. Prefer "
+        "'тяжелое пробуждение' or a concrete description of the ordeal.",
+    ),
+    (
+        re.compile(r"\bметрополи\w*\b", re.IGNORECASE),
+        "modern administrative register: 'метрополия' breaks mythic prose. "
+        "Prefer 'город', 'оплот', or a concrete place noun that fits the scene.",
+    ),
+    (
+        re.compile(r"\bускоря\w*\s+шаг\b", re.IGNORECASE),
+        "Awkward movement collocation: prefer 'прибавляете шагу' or recast "
+        "the sentence around the character's urgency.",
     ),
 )
 
@@ -73,12 +125,15 @@ class QAFinding:
     detail: str
 
 
-def find_missing_passage_refs(en: str, ru: str) -> list[QAFinding]:
-    """Return refs that appear in EN but not in RU.
+@dataclass(frozen=True)
+class _StyleSentence:
+    opener: str | None
+    word_count: int
+    is_you_verb: bool
 
-    Refs are 4-digit zero-padded tokens like ``0001``. Detection is plain
-    substring presence — RU is allowed to embed the ref anywhere.
-    """
+
+def find_missing_passage_refs(en: str, ru: str) -> list[QAFinding]:
+    """Return 4-digit passage refs that appear in EN but not in RU."""
     refs_en = sorted(set(_PASSAGE_REF_RE.findall(en)))
     return [QAFinding(code="missing_passage_ref", detail=ref) for ref in refs_en if ref not in ru]
 
@@ -90,16 +145,7 @@ def find_missing_placeholders(en: str, ru: str) -> list[QAFinding]:
 
 
 def find_missing_mechanics(en: str, ru: str) -> list[QAFinding]:
-    """Return mechanics tokens that should be preserved but appear missing.
-
-    Two shapes are supported and reported individually:
-
-    * ``Wisdom (7+)`` — the parenthesised number+'+' suffix. RU is required
-      to contain ``(N+)`` (with the same N) somewhere; the Russian rendering
-      of the stat name is checked separately by the glossary check.
-    * ``Diplomacy -1`` / ``Diplomacy +2`` — the ``±N`` suffix. RU must
-      contain ``±N`` with the same sign and number.
-    """
+    """Return missing ``(N+)`` thresholds and ``±N`` modifiers from EN."""
     findings: list[QAFinding] = []
 
     for stat, threshold in _WISDOM_RE.findall(en):
@@ -130,19 +176,10 @@ def find_glossary_misses(
     ru: str,
     glossary: tuple[GlossaryEntry, ...] = GLOSSARY,
 ) -> list[QAFinding]:
-    """Return glossary entries whose EN term appears in the source page
-    but whose canonical RU rendering does not appear in the candidate.
+    """Return EN-side glossary terms whose RU rendering is absent.
 
-    Matching:
-    * EN side: case-insensitive whole-word/substring (so 'Wisdom' matches
-      both 'Wisdom (7+)' and the bare 'Wisdom').
-    * RU side: case-insensitive substring. Russian morphology (declension)
-      is allowed — the check looks for the *stem* form by stripping the
-      trailing inflectional letters from short stems is **not** applied
-      here; we instead check for the canonical RU surface form OR a
-      reasonable noun-stem prefix. Concretely we look for the first
-      ``min(len(ru_term), 5)`` characters of the canonical RU (lowered),
-      which is enough to pass declined forms like *Кносса* vs *Кносс*.
+    RU matching accepts a short canonical prefix, enough for simple declension
+    such as ``Кносс`` → ``Кносса``.
     """
     en_lower = en.lower()
     ru_lower = ru.lower()
@@ -188,7 +225,119 @@ def find_style_red_flags(ru: str) -> list[QAFinding]:
     for pattern, detail in _STYLE_RED_FLAGS:
         if pattern.search(ru):
             findings.append(QAFinding(code="style_red_flag", detail=detail))
+
+    style_sentences = _style_sentences(ru)
+    findings.extend(_find_repeated_openers(style_sentences))
+    findings.extend(_find_you_verb_cadence(style_sentences))
+    findings.extend(_find_short_sentence_clusters(style_sentences))
     return findings
+
+
+def _style_sentences(text: str) -> list[_StyleSentence]:
+    sentences: list[_StyleSentence] = []
+    for raw_sentence in _SENTENCE_SPLIT_RE.split(text):
+        sentence = raw_sentence.strip()
+        if not sentence or _is_mechanics_or_navigation_sentence(sentence):
+            continue
+        words = _WORD_RE.findall(sentence)
+        sentences.append(
+            _StyleSentence(
+                opener=_sentence_opener(sentence),
+                word_count=len(words),
+                is_you_verb=_starts_with_you_verb(sentence),
+            )
+        )
+    return sentences
+
+
+def _sentence_opener(sentence: str) -> str | None:
+    normalized = _LEADING_PUNCT_RE.sub("", sentence)
+    match = _WORD_RE.match(normalized)
+    if match is None:
+        return None
+    first_word = match.group(0).lower()
+    for opener in _HARD_OPENERS:
+        if first_word == opener.lower():
+            return opener
+    return None
+
+
+def _starts_with_you_verb(sentence: str) -> bool:
+    normalized = _LEADING_PUNCT_RE.sub("", sentence)
+    match = re.match(r"(?i)^вы\s+(?:не\s+)?(?P<verb>[А-Яа-яЁё]+)\b", normalized)
+    if match is None:
+        return False
+    verb = match.group("verb").lower()
+    return verb.endswith(_YOU_VERB_SUFFIXES)
+
+
+def _is_mechanics_or_navigation_sentence(sentence: str) -> bool:
+    if _NAVIGATION_RE.search(sentence):
+        return True
+    if _OUTCOME_LABEL_RE.match(sentence) and len(_WORD_RE.findall(sentence)) <= 2:
+        return True
+    if ":" in sentence and _MECHANICS_RE.search(sentence):
+        return True
+    if _MECHANICS_RE.search(sentence) and re.search(r"[+-]\d|\(\s*\d+\+\s*\)|\\", sentence):
+        return True
+    return bool(_MECHANICS_COMMAND_RE.match(sentence) and _MECHANICS_RE.search(sentence))
+
+
+def _find_repeated_openers(sentences: list[_StyleSentence]) -> list[QAFinding]:
+    findings: list[QAFinding] = []
+    for opener in _HARD_OPENERS:
+        if _has_window_cluster([sentence.opener == opener for sentence in sentences]):
+            findings.append(
+                QAFinding(
+                    code="style_red_flag",
+                    detail=(
+                        f"Cadence cluster: repeated opener '{opener}' appears at least "
+                        f"{_STYLE_CLUSTER_THRESHOLD} times within {_STYLE_WINDOW} prose "
+                        "sentences. Vary the rhythm by moving time/place first, merging "
+                        "clauses, or choosing a concrete subject."
+                    ),
+                )
+            )
+    return findings
+
+
+def _find_you_verb_cadence(sentences: list[_StyleSentence]) -> list[QAFinding]:
+    if not _has_window_cluster([sentence.is_you_verb for sentence in sentences]):
+        return []
+    return [
+        QAFinding(
+            code="style_red_flag",
+            detail=(
+                "Cadence cluster: repeated 'Вы + verb' sentence starts make the "
+                "Russian read translated. Recast one or more sentences with an "
+                "initial circumstance, a concrete noun subject, or a combined clause."
+            ),
+        )
+    ]
+
+
+def _find_short_sentence_clusters(sentences: list[_StyleSentence]) -> list[QAFinding]:
+    is_short = [0 < sentence.word_count <= _SHORT_SENTENCE_WORD_LIMIT for sentence in sentences]
+    if not _has_window_cluster(is_short):
+        return []
+    return [
+        QAFinding(
+            code="style_red_flag",
+            detail=(
+                "Cadence cluster: too many short prose sentences in one passage. "
+                "Outside mechanics/navigation, combine beats or restore antecedents "
+                "so the Russian paragraph has literary flow."
+            ),
+        )
+    ]
+
+
+def _has_window_cluster(matches: list[bool]) -> bool:
+    for start in range(len(matches)):
+        window = matches[start : start + _STYLE_WINDOW]
+        if sum(window) >= _STYLE_CLUSTER_THRESHOLD:
+            return True
+    return False
 
 
 def _split_paragraphs(text: str) -> list[str]:
@@ -200,19 +349,7 @@ def coarse_omission_witness(
     gemma_ru: str,
     drop_ratio: float = 0.20,
 ) -> list[QAFinding]:
-    """Return a finding when the candidate has materially fewer paragraphs
-    or characters than the Gemma omission witness.
-
-    This is the cheap, model-agnostic omission check the issue asks for.
-    Gemma's known property (from S5U-775) is that it preserves paragraph
-    and sentence count exactly; if the candidate is meaningfully shorter
-    than Gemma, that's a coverage signal worth probing.
-
-    Two thresholds:
-
-    * paragraph count delta > 0 → flag.
-    * char-count drop > ``drop_ratio`` (default 20 %) → flag.
-    """
+    """Return paragraph/character-count drops against a Gemma witness."""
     findings: list[QAFinding] = []
 
     cand_paragraphs = _split_paragraphs(candidate_ru)
@@ -245,11 +382,7 @@ def all_checks(
     ru: str,
     gemma_ru: str | None = None,
 ) -> list[QAFinding]:
-    """Run every check on a candidate and return the aggregated list.
-
-    ``gemma_ru`` is optional — when absent, the omission-witness comparison
-    is skipped. The other five checks always run.
-    """
+    """Run every check and return the aggregated findings."""
     findings: list[QAFinding] = []
     findings.extend(find_missing_passage_refs(en, ru))
     findings.extend(find_missing_placeholders(en, ru))

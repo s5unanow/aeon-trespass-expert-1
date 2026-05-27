@@ -231,6 +231,91 @@ def test_style_red_flags_cover_review_patterns(
         assert any(detail_part in f.detail for f in findings)
 
 
+@pytest.mark.parametrize(
+    ("ru", "detail_part"),
+    [
+        ("Лишь Истина имеет значение, пусть она и горька!", "важна"),
+        ("Он обращается к ним, словно жрец древних времён.", "взывает"),
+        ("После твоего грубого пробуждения все изменилось.", "тяжелое пробуждение"),
+        ("Перед вами островная метрополия.", "modern administrative"),
+        ("Вы ускоряете шаг; у вас нет терпения.", "прибавляете шагу"),
+        ("До вас доносится знакомый звук натягивающихся тетив.", "натягиваемой тетивы"),
+        ("На рассвете вы отправляете высадочный отряд к острову.", "scene function"),
+    ],
+)
+def test_style_red_flags_detect_register_and_collocation_variants(
+    qa_mod: ModuleType,
+    ru: str,
+    detail_part: str,
+) -> None:
+    findings = qa_mod.find_style_red_flags(ru)
+
+    assert any(detail_part in f.detail for f in findings)
+
+
+def test_style_red_flags_detect_repeated_hard_openers(qa_mod: ModuleType) -> None:
+    ru = (
+        "Вы входите в притихший город. "
+        "Вы слушаете шорохи в переулках. "
+        "Ночь сгущается над крышами. "
+        "Вы ждёте ответа у дворцовых ворот."
+    )
+
+    findings = qa_mod.find_style_red_flags(ru)
+
+    assert any("repeated opener 'Вы'" in f.detail for f in findings)
+
+
+def test_style_red_flags_detect_you_verb_cadence_cluster(qa_mod: ModuleType) -> None:
+    ru = (
+        "Вы входите в притихший город. "
+        "Вы слышите шаги за спиной. "
+        "На площади гаснут последние огни. "
+        "Вы замечаете движение у ворот."
+    )
+
+    findings = qa_mod.find_style_red_flags(ru)
+
+    assert any("Вы + verb" in f.detail for f in findings)
+
+
+def test_style_red_flags_detect_short_sentence_cluster_in_prose(qa_mod: ModuleType) -> None:
+    ru = "Тишина. Ветер стих. Вы ждёте. Ответа нет. Темнота давит."
+
+    findings = qa_mod.find_style_red_flags(ru)
+
+    assert any("short prose sentences" in f.detail for f in findings)
+
+
+def test_style_red_flags_ignore_short_mechanics_navigation_cluster(
+    qa_mod: ModuleType,
+) -> None:
+    ru = (
+        "Провал. Минойцы: Дипломатия -1. "
+        "Рогоприсягнувшие: Дипломатия +1. "
+        "Перейдите к 0068. Получите +1 Славу."
+    )
+
+    assert qa_mod.find_style_red_flags(ru) == []
+
+
+def test_all_checks_flags_known_current_output_style_examples(
+    qa_mod: ModuleType,
+) -> None:
+    ru = (
+        "Старый жрец заботился о вас после вашего грубого пробуждения. "
+        "Только Истина имеет значение, хоть она и горька! "
+        "Это страх сковывает метрополию."
+    )
+
+    findings = qa_mod.all_checks("", ru, gemma_ru=None)
+    details = "\n".join(f.detail for f in findings)
+
+    assert "грубое пробуждение" in details
+    assert "имеет значение" in details
+    assert "метрополия" in details
+
+
 # ---------------------------------------------------------------------------
 # Coarse omission witness
 # ---------------------------------------------------------------------------
