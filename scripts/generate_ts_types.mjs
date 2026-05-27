@@ -53,6 +53,7 @@ const PRIMARY_TYPES = {
   translation_batch_v1: 'TranslationBatchV1',
   translation_result_v1: 'TranslationResultV1',
   translation_style_critic_v1: 'TranslationStyleCriticPageV1',
+  translation_style_repair_v1: 'TranslationStyleRepairPageV1',
   waiver_set_v1: 'WaiverSetV1',
 };
 

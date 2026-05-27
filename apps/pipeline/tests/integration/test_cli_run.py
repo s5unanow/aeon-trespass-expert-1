@@ -28,6 +28,7 @@ _EXPECTED_STAGES = frozenset(
         "structure",
         "translate",
         "translation_style_critic",
+        "translation_style_repair",
         "render",
         "qa",
     }

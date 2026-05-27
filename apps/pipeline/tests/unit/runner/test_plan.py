@@ -22,7 +22,8 @@ def test_default_includes_translate() -> None:
     stages = resolve_stage_range()
     assert "translate" in stages
     assert stages.index("translate") < stages.index("translation_style_critic")
-    assert stages.index("translation_style_critic") < stages.index("render")
+    assert stages.index("translation_style_critic") < stages.index("translation_style_repair")
+    assert stages.index("translation_style_repair") < stages.index("render")
 
 
 def test_edition_en_excludes_translate() -> None:
@@ -30,6 +31,7 @@ def test_edition_en_excludes_translate() -> None:
     stages = resolve_stage_range(edition="en")
     assert "translate" not in stages
     assert "translation_style_critic" not in stages
+    assert "translation_style_repair" not in stages
     assert stages == SOURCE_ONLY_STAGES
 
 

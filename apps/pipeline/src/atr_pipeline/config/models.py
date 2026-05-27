@@ -7,23 +7,11 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from atr_schemas.common import Rect
-
-# Translation provider canonical names — known to the config layer.
-# A name listed here is *accepted* by Pydantic validation; the factory may
-# still reject it (e.g. ``codex-cli`` is reserved here so configs can be
-# authored against S5U-746 ahead of the S5U-747 adapter landing, but the
-# factory raises until that adapter is wired up).
-_KNOWN_TRANSLATION_PROVIDERS: frozenset[str] = frozenset(
-    {"mock", "openai", "anthropic", "gemini", "gemini-cli", "codex-cli", "agy-cli"},
+from atr_pipeline.config.translation_providers import (
+    translation_provider_requires_model,
+    validate_translation_provider_name,
 )
-
-# Providers for which an empty ``model_default`` is acceptable because the
-# adapter applies a documented default model (currently the Gemini family).
-_PROVIDERS_WITH_DEFAULT_MODEL: frozenset[str] = frozenset({"gemini", "gemini-cli"})
-
-# Providers that do not require a model at all (mock has no real call).
-_PROVIDERS_WITHOUT_MODEL: frozenset[str] = frozenset({"mock"})
+from atr_schemas.common import Rect
 
 
 class DocumentConfig(BaseModel):
@@ -171,6 +159,10 @@ class TranslationConfig(BaseModel):
     style_critic_provider: str = ""
     style_critic_model: str = ""
     style_critic_reasoning_effort: str = "high"
+    style_repair_enabled: bool = True
+    style_repair_provider: str = ""
+    style_repair_model: str = ""
+    style_repair_reasoning_effort: str = "high"
     max_retries: int = Field(default=2, ge=0)
     retry_delay_seconds: float = Field(default=1.0, ge=0.0)
 
@@ -198,44 +190,31 @@ class TranslationConfig(BaseModel):
                 "style_critic_provider",
                 self.style_critic_provider.lower(),
             )
+        if self.style_repair_provider:
+            object.__setattr__(
+                self,
+                "style_repair_provider",
+                self.style_repair_provider.lower(),
+            )
 
         # Reject unknown provider names early — before any LLM/subprocess
         # call. The factory may further reject reserved names (e.g.
         # ``codex-cli`` until its adapter lands) but this layer is the
         # strict allowlist gate for the config surface.
-        if self.provider not in _KNOWN_TRANSLATION_PROVIDERS:
-            msg = (
-                f"Unknown translation provider: {self.provider!r}. "
-                f"Known providers: {sorted(_KNOWN_TRANSLATION_PROVIDERS)}"
-            )
-            raise ValueError(msg)
-        if self.fallback_provider and self.fallback_provider not in _KNOWN_TRANSLATION_PROVIDERS:
-            msg = (
-                f"Unknown translation fallback_provider: "
-                f"{self.fallback_provider!r}. "
-                f"Known providers: {sorted(_KNOWN_TRANSLATION_PROVIDERS)}"
-            )
-            raise ValueError(msg)
+        validate_translation_provider_name("provider", self.provider)
+        validate_translation_provider_name("fallback_provider", self.fallback_provider)
+        validate_translation_provider_name("style_repair_provider", self.style_repair_provider)
         # Require ``model_default`` for non-mock, non-Gemini-family providers.
         # Gemini-family adapters apply a documented default when the field
         # is empty; mock has no real call. Anything else is a config bug.
-        if (
-            self.provider not in _PROVIDERS_WITHOUT_MODEL
-            and self.provider not in _PROVIDERS_WITH_DEFAULT_MODEL
-            and not self.model_default
-        ):
+        if translation_provider_requires_model(self.provider) and not self.model_default:
             msg = (
                 f"Provider {self.provider!r} requires a non-empty "
                 f"model_default — no documented default exists for this "
                 f"provider."
             )
             raise ValueError(msg)
-        if (
-            self.fallback_provider
-            and self.fallback_provider not in _PROVIDERS_WITHOUT_MODEL
-            and self.fallback_provider not in _PROVIDERS_WITH_DEFAULT_MODEL
-            and not self.fallback_model
-        ):
+        if translation_provider_requires_model(self.fallback_provider) and not self.fallback_model:
             msg = (
                 f"Fallback provider {self.fallback_provider!r} requires a "
                 f"non-empty fallback_model — no documented default exists "

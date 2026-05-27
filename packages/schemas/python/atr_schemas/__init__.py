@@ -126,6 +126,10 @@ from atr_schemas.translation_style_critic_v1 import (
     TranslationStyleCriticFindingV1,
     TranslationStyleCriticPageV1,
 )
+from atr_schemas.translation_style_repair_v1 import (
+    TranslationStyleRepairChangeV1,
+    TranslationStyleRepairPageV1,
+)
 from atr_schemas.waiver_v1 import WaiverSetV1, WaiverV1
 
 __all__ = [
@@ -260,6 +264,8 @@ __all__ = [
     "TranslationSegment",
     "TranslationStyleCriticFindingV1",
     "TranslationStyleCriticPageV1",
+    "TranslationStyleRepairChangeV1",
+    "TranslationStyleRepairPageV1",
     "UnknownBlock",
     "WaiverSetV1",
     "WaiverV1",

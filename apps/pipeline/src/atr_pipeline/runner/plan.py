@@ -11,6 +11,7 @@ WALKING_SKELETON_STAGES = [
     "structure",
     "translate",
     "translation_style_critic",
+    "translation_style_repair",
     "render",
     "qa",
     "chunk_export",
