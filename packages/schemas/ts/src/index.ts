@@ -38,6 +38,7 @@ export * as translationBatchV1 from './generated/translation_batch_v1';
 export * as translationQaRecordSetV1 from './generated/translation_qa_record_set_v1';
 export * as translationResultV1 from './generated/translation_result_v1';
 export * as translationStyleCriticV1 from './generated/translation_style_critic_v1';
+export * as translationStyleRepairV1 from './generated/translation_style_repair_v1';
 export * as userFeedbackRecordSetV1 from './generated/user_feedback_record_set_v1';
 export * as waiverSetV1 from './generated/waiver_set_v1';
 
@@ -75,4 +76,5 @@ export type { SymbolMatchSetV1 } from './generated/symbol_match_set_v1';
 export type { TranslationBatchV1 } from './generated/translation_batch_v1';
 export type { TranslationResultV1 } from './generated/translation_result_v1';
 export type { TranslationStyleCriticPageV1 } from './generated/translation_style_critic_v1';
+export type { TranslationStyleRepairPageV1 } from './generated/translation_style_repair_v1';
 export type { WaiverSetV1 } from './generated/waiver_set_v1';

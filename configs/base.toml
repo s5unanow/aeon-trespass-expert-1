@@ -41,6 +41,10 @@ style_critic_enabled = true
 style_critic_provider = ""          # empty = inherit translation.provider
 style_critic_model = ""             # empty = inherit model_hard/model_default
 style_critic_reasoning_effort = "high"
+style_repair_enabled = true
+style_repair_provider = ""          # empty = inherit critic/provider
+style_repair_model = ""             # empty = inherit critic/model_hard/model_default
+style_repair_reasoning_effort = "high"
 
 # Provider-specific options live in the per-document config so the mock
 # fixture documents that override ``provider = "mock"`` don't inherit

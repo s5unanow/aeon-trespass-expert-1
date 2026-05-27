@@ -1,0 +1,112 @@
+{
+  "$defs": {
+    "TranslationStyleRepairChangeV1": {
+      "additionalProperties": false,
+      "description": "One paragraph changed by the targeted style repair stage.",
+      "properties": {
+        "paragraph_id": {
+          "minLength": 1,
+          "title": "Paragraph Id",
+          "type": "string"
+        },
+        "block_type": {
+          "default": "",
+          "title": "Block Type",
+          "type": "string"
+        },
+        "before_text": {
+          "title": "Before Text",
+          "type": "string"
+        },
+        "after_text": {
+          "title": "After Text",
+          "type": "string"
+        },
+        "finding_quotes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Finding Quotes",
+          "type": "array"
+        },
+        "diff": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Diff",
+          "type": "array"
+        }
+      },
+      "required": [
+        "paragraph_id",
+        "before_text",
+        "after_text"
+      ],
+      "title": "TranslationStyleRepairChangeV1",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Per-page report for targeted Russian paragraph repair.",
+  "properties": {
+    "schema_version": {
+      "default": "translation_style_repair.v1",
+      "pattern": "^translation_style_repair\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "page_id": {
+      "title": "Page Id",
+      "type": "string"
+    },
+    "source_critic_findings_count": {
+      "minimum": 0,
+      "title": "Source Critic Findings Count",
+      "type": "integer"
+    },
+    "repaired_paragraph_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Repaired Paragraph Ids",
+      "type": "array"
+    },
+    "skipped_paragraph_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Skipped Paragraph Ids",
+      "type": "array"
+    },
+    "changes": {
+      "items": {
+        "$ref": "#/$defs/TranslationStyleRepairChangeV1"
+      },
+      "title": "Changes",
+      "type": "array"
+    },
+    "post_repair_translation_qa_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Post Repair Translation Qa Count",
+      "type": "integer"
+    },
+    "post_repair_style_qa_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Post Repair Style Qa Count",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "document_id",
+    "page_id",
+    "source_critic_findings_count"
+  ],
+  "title": "TranslationStyleRepairPageV1",
+  "type": "object"
+}
