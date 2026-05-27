@@ -120,6 +120,9 @@ def test_codex_critic_parses_schema_valid_json() -> None:
         assert last_msg_path is not None
         assert schema_path is not None
         assert Path(schema_path).is_file()
+        schema = json.loads(Path(schema_path).read_text(encoding="utf-8"))
+        assert "schema_version" in schema["required"]
+        assert sorted(schema["required"]) == sorted(schema["properties"])
         Path(last_msg_path).write_text(payload, encoding="utf-8")
         return subprocess.CompletedProcess(args=argv, returncode=0, stdout="", stderr="")
 

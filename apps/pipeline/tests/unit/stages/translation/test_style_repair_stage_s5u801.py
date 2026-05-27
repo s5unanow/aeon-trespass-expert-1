@@ -3,7 +3,10 @@
 
 from __future__ import annotations
 
+import json
+import subprocess
 from pathlib import Path
+from unittest.mock import patch
 
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
@@ -29,6 +32,7 @@ from atr_schemas.translation_style_critic_v1 import (
     TranslationStyleCriticPageV1,
 )
 from atr_schemas.translation_style_repair_v1 import TranslationStyleRepairPageV1
+from tests.unit.services.llm._codex_cli_helpers import argv_value_after
 
 
 def _repo_root() -> Path:
@@ -231,6 +235,37 @@ def test_style_repair_production_config_uses_codex_55_high() -> None:
     assert isinstance(repair, CodexRussianStyleRepair)
     assert repair._model == "gpt-5.5"
     assert repair._reasoning_effort == "high"
+
+
+def test_codex_style_repair_writes_codex_strict_schema() -> None:
+    payload = json.dumps(
+        {"document_id": "doc", "page_id": "p0001", "repairs": []},
+        ensure_ascii=False,
+    )
+
+    def _side(*args: object, **_kwargs: object) -> subprocess.CompletedProcess[str]:
+        argv = args[0]
+        assert isinstance(argv, list)
+        last_msg_path = argv_value_after(argv, "--output-last-message")
+        schema_path = argv_value_after(argv, "--output-schema")
+        assert last_msg_path is not None
+        assert schema_path is not None
+        schema = json.loads(Path(schema_path).read_text(encoding="utf-8"))
+        assert "repairs" in schema["required"]
+        assert sorted(schema["required"]) == sorted(schema["properties"])
+        Path(last_msg_path).write_text(payload, encoding="utf-8")
+        return subprocess.CompletedProcess(args=argv, returncode=0, stdout="", stderr="")
+
+    repair = CodexRussianStyleRepair(model="gpt-5.5", reasoning_effort="high")
+    request = RepairPageRequest(document_id="doc", page_id="p0001", paragraphs=[])
+
+    with patch(
+        "atr_pipeline.services.llm.russian_style_repair_codex.subprocess.run",
+        side_effect=_side,
+    ):
+        response = repair.repair_page(request)
+
+    assert response.result.repairs == []
 
 
 def test_style_repair_changes_only_flagged_paragraph_and_reports_ids(tmp_path: Path) -> None:

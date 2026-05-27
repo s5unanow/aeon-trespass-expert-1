@@ -26,6 +26,7 @@ scripts/translation_eval/
   qa_checks.py           # deterministic QA functions (pure, unit-tested)
   prompts.py             # AGY variant + Opus synthesis/final-editor prompts
   ensemble_poc.py        # CLI orchestrator
+  improved_rerun.py      # S5U-802 Codex rerun + critic/repair artifacts
 ```
 
 ## Run
@@ -58,6 +59,28 @@ tmp/translation-eval/s5u-776-ensemble-poc/
   qa/        page-{1,2}-qa-v{1,2}.json (QAFinding records)
   report.md
   memory-candidates.md
+```
+
+## S5U-802 improved rerun
+
+S5U-802 reruns the S5U-776 calibration sample through the promoted rules,
+deterministic style QA, Codex style critic, and targeted paragraph repair.
+It is Codex CLI backed and writes a new non-destructive subfolder:
+
+```bash
+uv run python -m scripts.translation_eval.improved_rerun 1 2
+```
+
+Output (gitignored):
+
+```text
+tmp/translation-eval/s5u-776-ensemble-poc/style-v2/
+  final/page-{1,2}-ru-final.txt
+  qa/page-{1,2}-qa-{v1,editor,final}.json
+  critic/page-{1,2}-critic.json
+  repair/page-{1,2}-repair-report.json
+  report.md
+  comparison.md
 ```
 
 ## TranslateGemma omission witness

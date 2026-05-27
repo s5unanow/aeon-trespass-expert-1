@@ -10,6 +10,7 @@ import tempfile
 from pathlib import Path
 from typing import Final
 
+from atr_pipeline.services.llm.codex_schema import codex_strict_schema
 from atr_pipeline.services.llm.russian_style_critic import (
     CriticPageRequest,
     RussianStyleCriticMeta,
@@ -128,7 +129,10 @@ class CodexRussianStyleCritic:
         schema_path = tmp_path / "style_critic.schema.json"
         last_msg_path = tmp_path / "last_message.txt"
         schema_path.write_text(
-            json.dumps(TranslationStyleCriticPageV1.model_json_schema(), ensure_ascii=False),
+            json.dumps(
+                codex_strict_schema(TranslationStyleCriticPageV1.model_json_schema()),
+                ensure_ascii=False,
+            ),
             encoding="utf-8",
         )
         argv = self._build_argv(
