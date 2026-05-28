@@ -216,7 +216,10 @@ def test_style_red_flag_gamebook_note_command(qa_mod: ModuleType) -> None:
         ("Минойцы: Дипломатия -1", ""),
         ("Рогатого Города", "lowercase"),
         ("До вашего слуха доносится знакомый звук натягиваемых тетив.", "Awkward collocation"),
-        ("На рассвете вы отправляете высадочный отряд.", "Context check"),
+        (
+            "На рассвете вы отправляете на берег высадочный отряд.",
+            "Context check",
+        ),
     ],
 )
 def test_style_red_flags_cover_review_patterns(
@@ -240,7 +243,7 @@ def test_style_red_flags_cover_review_patterns(
         ("Перед вами островная метрополия.", "modern administrative"),
         ("Вы ускоряете шаг; у вас нет терпения.", "прибавляете шагу"),
         ("До вас доносится знакомый звук натягивающихся тетив.", "натягиваемой тетивы"),
-        ("На рассвете вы отправляете высадочный отряд к острову.", "scene function"),
+        ("На рассвете вы отправляете на берег высадочный отряд.", "scene function"),
     ],
 )
 def test_style_red_flags_detect_register_and_collocation_variants(
@@ -258,7 +261,9 @@ def test_style_red_flags_detect_repeated_hard_openers(qa_mod: ModuleType) -> Non
         "Вы входите в притихший город. "
         "Вы слушаете шорохи в переулках. "
         "Ночь сгущается над крышами. "
-        "Вы ждёте ответа у дворцовых ворот."
+        "Вы ждёте ответа у дворцовых ворот. "
+        "Факелы меркнут за спиной. "
+        "Вы замечаете движение."
     )
 
     findings = qa_mod.find_style_red_flags(ru)
@@ -271,7 +276,9 @@ def test_style_red_flags_detect_you_verb_cadence_cluster(qa_mod: ModuleType) -> 
         "Вы входите в притихший город. "
         "Вы слышите шаги за спиной. "
         "На площади гаснут последние огни. "
-        "Вы замечаете движение у ворот."
+        "Вы замечаете движение у ворот. "
+        "Ветер несёт запах дыма. "
+        "Вы ждёте ответа."
     )
 
     findings = qa_mod.find_style_red_flags(ru)
