@@ -101,6 +101,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] New/changed code has tests (unless pure config/docs change)
 - [ ] **New/changed tests verified red-before** — each new `def test_` (pytest) or `it(`/`test(` (vitest) needs a `Red-before confirmation:` line in the commit message or PR body citing a pre-fix SHA, failure excerpt, or "N/A — no production code change" carve-out. Authoritative form and SHA-resolution tripwire in `.claude/rules/hooks.md` § "Three-input test discipline".
 - [ ] **Coverage table** — required when the rule fires (table below). Full format in `.claude/prompts/linear-conventions.md` § "Coverage table format".
+- [ ] **No task-created tech debt or shortcuts remain** — before PR, re-read `git diff main...HEAD` and remove any shortcuts introduced by this branch: temporary code, TODO/FIXME placeholders, duplicated one-off logic, hardcoded test-only assumptions, swallowed errors, skipped validation, narrow parsing where a structured API exists, or incomplete cleanup. If a tradeoff is intentionally deferred, it must be explicitly documented in the Linear issue/PR and linked to a follow-up issue; otherwise it is a blocker.
 - [ ] No violations of the **NEVER** list (see below)
 - [ ] Local gates pass: `make lint && make typecheck && make test`
 - [ ] CI green after push (all 18 gates — local green alone is not sufficient)
