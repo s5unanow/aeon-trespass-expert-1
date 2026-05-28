@@ -27,6 +27,7 @@ scripts/translation_eval/
   prompts.py             # AGY variant + Opus synthesis/final-editor prompts
   ensemble_poc.py        # CLI orchestrator
   improved_rerun.py      # S5U-802 Codex rerun + critic/repair artifacts
+  docx_rollout.py        # S5U-803 stabilized DOCX sample rollout
 ```
 
 ## Run
@@ -82,6 +83,37 @@ tmp/translation-eval/s5u-776-ensemble-poc/style-v2/
   report.md
   comparison.md
 ```
+
+## S5U-803 DOCX rollout
+
+S5U-803 applies the stabilized all-Codex pipeline to the extracted DOCX sample
+under `tmp/translation-eval/give-me-original-text-now/inputs/source-en-clean.txt`.
+It writes a new non-destructive local artifact folder:
+
+```bash
+uv run python -m scripts.translation_eval.docx_rollout
+```
+
+Output (gitignored):
+
+```text
+tmp/translation-eval/give-me-original-text-now/s5u-803-stabilized/
+  inputs/source-en-clean.txt
+  variants/{literal-fidelity,literary-prose,idiomatic-natural}.txt
+  synthesis/synth-v1.txt
+  editor/editor.txt
+  final/synth-v2.txt
+  qa/qa-{v1,editor,final}.json
+  critic/critic.json
+  repair/repair-report.json
+  report.md
+```
+
+Use `--style-reference tmp/translation-eval/give-me-original-text-now/gemini/synth-v2.txt`
+only when Gemini should serve as an advisory Russian rhythm reference. The
+Codex editor remains authoritative for source structure, mechanics, and
+terminology. Full threshold rationale and workflow guidance live in
+`docs/specs/s5u-803-translation-quality-rollout.md`.
 
 ## TranslateGemma omission witness
 
