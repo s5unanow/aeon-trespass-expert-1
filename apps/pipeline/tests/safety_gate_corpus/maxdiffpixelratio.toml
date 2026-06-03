@@ -192,16 +192,37 @@ await expect(page).toHaveScreenshot('a.png');
 """
 
 # --------------------------------------------------------------------------- #
-# known_residual — cannot be caught by a line-level scanner (no AST/dataflow) #
+# known_residual — runtime string-assembly/manipulation CLASS. A line scanner  #
+# cannot follow runtime string ops; the exact token never appears as a         #
+# contiguous quote-delimited literal. Tracked for AST/dataflow closure by      #
+# S5U-823. Flip each to `block` when a tree-sitter detector lands.             #
 # --------------------------------------------------------------------------- #
 
 [[case]]
 id = "S5U-759-D-runtime-concatenation"
 expect = "known_residual"
-note = """Token assembled at runtime from fragments; never appears contiguously.
-Requires dataflow/AST analysis. Flip to `block` if a tree-sitter detector lands."""
+note = "token assembled at runtime from fragments; never appears contiguously"
 snippet = """
 const prefix = 'maxDiff';
 const k = `${prefix}PixelRatio`;
+await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
+"""
+
+[[case]]
+id = "S5U-823-runtime-slice"
+expect = "known_residual"
+note = """surfaced by independent review of the keystone PR: the literal is padded
+so the token is not adjacent to a quote delimiter, then sliced at runtime"""
+snippet = """
+const k = '_maxDiffPixelRatio_'.slice(1, -1);
+await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
+"""
+
+[[case]]
+id = "S5U-823-runtime-replace"
+expect = "known_residual"
+note = "padding stripped at runtime via .replace; token not contiguous as written"
+snippet = """
+const k = 'PADmaxDiffPixelRatio'.replace('PAD', '');
 await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
 """

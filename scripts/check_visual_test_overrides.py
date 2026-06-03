@@ -36,12 +36,22 @@ added to it as `block` cases (not patched in as new regexes), and the
 detector implementation must satisfy it. A future `tree-sitter-typescript`
 AST detector is a documented option gated behind the same corpus.
 
-Accepted residual (S5U-789; recorded as `known_residual` in the corpus):
+Accepted residual CLASS — runtime string assembly/manipulation (S5U-789;
+recorded as `known_residual` in the corpus, tracked for AST closure by
+S5U-823): any construction where the **exact** token does not appear as a
+contiguous quote-delimited literal escapes a line scanner. This is not just
+concatenation — it includes:
 
-- **Runtime concatenation**: ``const k = `${prefix}PixelRatio`;``. The token
-  is assembled at runtime from fragments and never appears contiguously, so
-  no line-level scanner can see it without dataflow/AST analysis. Flip to a
-  `block` case if a future AST detector lands.
+- **Concatenation**: ``const k = `${prefix}PixelRatio`;`` (no contiguous token).
+- **Slicing / substring**: ``'_maxDiffPixelRatio_'.slice(1, -1)`` — the literal
+  is padded so the token is not adjacent to a delimiter.
+- **Replace / char-code assembly**: ``'maxDiffPixelRatioX'.replace('X', '')``,
+  ``String.fromCharCode(...)``, etc.
+
+Closing this class requires AST/dataflow analysis (S5U-823); a line scanner
+fundamentally cannot follow runtime string ops. The detector therefore claims
+only to close binding shapes that pass the **exact** token as a contiguous
+quote-delimited string literal, regardless of how it is then bound.
 
 (The S5U-759 "multi-line array-literal" residual is now *closed*: the token
 still appears as a contiguous string literal on its own line, which
@@ -99,9 +109,13 @@ from pathlib import Path
 #        - S5U-763  `function f(k = 'maxDiffPixelRatio')`
 #        - S5U-764  `opts['maxDiffPixelRatio'] = 0.5`
 #      It also closes the former S5U-759 multi-line-array residual: the token
-#      still appears contiguously on its own line. The sole accepted residual
-#      is runtime concatenation (``const k = `${p}PixelRatio` ``), which has no
-#      contiguous token — recorded as `known_residual` in the corpus.
+#      still appears contiguously on its own line. The accepted residual is the
+#      runtime string-assembly/manipulation CLASS — concatenation
+#      (``const k = `${p}PixelRatio` ``), slicing (``'_maxDiffPixelRatio_'.slice``),
+#      replace, char-code assembly — where the exact token is never a contiguous
+#      quote-delimited literal. A line scanner cannot follow runtime string ops;
+#      these are recorded as `known_residual` in the corpus and tracked for
+#      AST-based closure by S5U-823.
 OVERRIDE_STRING_LITERAL_RE = re.compile(r"(['\"\x60])maxDiffPixelRatio\1")
 
 # (P2) Bare (UNQUOTED) object-literal key followed by a colon:
