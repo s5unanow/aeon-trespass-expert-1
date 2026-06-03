@@ -88,7 +88,7 @@ Coordinator rule: if any `Critical` item exists, the issue is logged as BUG rega
 ### 5. Optional second-pass Opus review
 If enabled, after a Sonnet first-pass PASS/BUG, spawn an Opus reviewer with the same brief plus:
 - List of already-filed bugs (don't re-file)
-- Explicit probe list appropriate to the change type (safety-gate = adversarial bypass probes, schema = contract direction, correctness-critical = end-to-end flow trace)
+- Explicit probe list appropriate to the change type (safety-gate = adversarial bypass probes — and for a corpus-backed detector per `apps/pipeline/tests/safety_gate_corpus/*.toml`, confirm any reviewer-found syntactic bypass was added to that corpus as a `block` case (or a corpus follow-up issue was opened), never patched in as a one-off regex per S5U-789; schema = contract direction; correctness-critical = end-to-end flow trace)
 - Title bugs `S5U-XXX follow-up (second review): <defect>`
 
 Opus second-pass consistently finds issues Sonnet misses, especially on safety gates and complex correctness paths.

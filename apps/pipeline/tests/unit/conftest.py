@@ -168,6 +168,33 @@ def overrides_mod(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
         sys.modules.pop("check_visual_test_overrides", None)
 
 
+# ---------------------------------------------------------------------------
+# check_detector_corpus_coverage module-loader fixture (S5U-789)
+# ---------------------------------------------------------------------------
+
+_CDCC_SCRIPT_PATH = SCRIPT_DIR / "check_detector_corpus_coverage.py"
+
+
+@pytest.fixture()
+def corpus_cov(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
+    """Load scripts/check_detector_corpus_coverage.py as a fresh module per test.
+
+    Used by test_check_detector_corpus_coverage.py (S5U-789).
+    """
+    monkeypatch.syspath_prepend(str(SCRIPT_DIR))
+    spec = importlib.util.spec_from_file_location(
+        "check_detector_corpus_coverage", _CDCC_SCRIPT_PATH
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["check_detector_corpus_coverage"] = module
+    spec.loader.exec_module(module)
+    try:
+        yield module
+    finally:
+        sys.modules.pop("check_detector_corpus_coverage", None)
+
+
 @pytest.fixture()
 def cct_stub_fetcher(
     cct_mod: ModuleType,

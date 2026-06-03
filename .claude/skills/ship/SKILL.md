@@ -45,6 +45,8 @@ Do **NOT** paste into the brief: your own commit rationale, deviations list, PR 
 
 Follow the maximum-independence inline self-review checklist in CLAUDE.md step 6: close draft notes, re-fetch the Linear issue, re-read the diff unanchored, walk all 25 checks in `.claude/prompts/review.md`, and write the same structured verdict artifact. Disclose the fallback in both the artifact and PR body. Do not use Path B if `Agent` is actually available; do not use Path B to bypass `/coordinator` escalation on safety-gate changes.
 
+**Corpus-backed detectors (S5U-789):** if the diff fixes a bypass of a detector named in some `apps/pipeline/tests/safety_gate_corpus/*.toml` `detector_sources`, the bypass MUST be added to that corpus as a `block` case (or a corpus follow-up issue opened) — never patched in as a one-off regex. `check_detector_corpus_coverage.py` fails CI if a detector source changes without its corpus changing. (Such a detector is a `scripts/check_*.py`, so the change is safety-gate scope and is hard-stopped to `/coordinator` by the check above regardless.)
+
 ### Artifact + verdict (both paths)
 
 The review output is saved to `tmp/review-s5u-<NUMBER>.md` with a structured `## Verdict` section containing `Verdict:`, `Critical:`, `Warning:`, `Suggestion:`, `Probes run:`, and `Bug IDs filed:` fields.

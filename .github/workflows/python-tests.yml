@@ -104,6 +104,20 @@ jobs:
             --base origin/${{ github.base_ref || 'main' }} --head HEAD \
             --pr-body-file /tmp/pr_body.md
 
+      # S5U-789: a safety-gate detector source must not change without a
+      # matching update to its named adversarial corpus. The corpus is the
+      # contract — reviewer-found bypasses are added as `block` cases, not
+      # patched in as one-off regexes (the pattern that produced the
+      # S5U-650/757/759/760-764 follow-up treadmill). Wired as a step inside
+      # `python / test` (no new branch-protection context), like the threshold
+      # loosening guard. Fail-closed on unresolvable base ref / parse error /
+      # missing corpus dir (.claude/rules/guards.md Rule G1).
+      - name: Detector corpus coverage guard
+        if: github.event_name == 'pull_request'
+        run: |
+          uv run python scripts/check_detector_corpus_coverage.py \
+            --base origin/${{ github.base_ref || 'main' }} --head HEAD
+
       - name: Test
         run: uv run pytest --tb=short
 
