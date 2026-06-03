@@ -257,19 +257,21 @@ class TestBypassE:
         violations = overrides_mod.scan(scan_dir, tmp_path)
         assert violations == [], [v.format() for v in violations]
 
-    def test_multiline_array_documented_residual(
+    def test_multiline_array_now_blocked_s5u789(
         self, overrides_mod: ModuleType, tmp_path: Path
     ) -> None:
-        """Multi-line array literal with token on its own line — DOCUMENTED RESIDUAL.
+        """Multi-line array literal with token on its own line — NOW BLOCKED (S5U-789).
 
-        Per plan §4d Fix 4 adversarial edge: line-grained scanner cannot
-        catch a multi-line array literal where the `const keys = [`
-        opener and the `'maxDiffPixelRatio',` element are on different
-        lines. The bare-or-quoted regex requires `:` after the closing
-        quote, which is absent here (the line ends with `,`).
+        This was a documented residual under the binding-shape regex set:
+        the `OVERRIDE_ARRAY_LITERAL_DECL_RE` required `const keys = [` and the
+        token on the *same* line. S5U-789 reworked the detector to anchor on
+        the token-as-string-literal (`OVERRIDE_STRING_LITERAL_RE`), which
+        matches `'maxDiffPixelRatio'` on its own line regardless of where the
+        `[` opener sits — closing the residual.
 
-        N/A — no production code change in this PR will close this gap;
-        scanner behavior is invariant pre- and post-fix.
+        Red-before: at `0a290f1` (branch base, pre-S5U-789) `scan()` returned
+        `[]` for this input (the old residual). Post-rework it returns one
+        violation on line 2.
         """
         scan_dir = tmp_path / "e2e"
         write_spec(
@@ -281,8 +283,9 @@ class TestBypassE:
             "await expect(page).toHaveScreenshot('a.png', { [keys[0]]: 0.5 });\n",
         )
         violations = overrides_mod.scan(scan_dir, tmp_path)
-        # Pinned residual: scanner does NOT flag this multi-line shape.
-        assert violations == [], [v.format() for v in violations]
+        # Token appears contiguously on line 2 → P1 (OVERRIDE_STRING_LITERAL_RE).
+        assert len(violations) == 1, [v.format() for v in violations]
+        assert violations[0].line == 2
 
 
 # False-positive regression — new regexes must not break existing FP defenses.

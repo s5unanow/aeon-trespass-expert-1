@@ -1,0 +1,207 @@
+# Named adversarial corpus for the maxDiffPixelRatio visual-override gate.
+#
+# Detector: scripts/check_visual_test_overrides.py
+# Harness:  apps/pipeline/tests/unit/test_check_visual_test_overrides_corpus.py
+# Coverage: scripts/check_detector_corpus_coverage.py (a change to any
+#           `detector_sources` file with no change to THIS file fails CI).
+#
+# This corpus is the CONTRACT (S5U-789). Reviewer-found syntactic bypasses are
+# added here as `block` cases — NOT patched in as one-off regexes. The detector
+# implementation (regex today, possibly a tree-sitter AST tomorrow) must satisfy
+# every case below.
+#
+# `expect` is one of:
+#   block          — the detector MUST flag this (>=1 violation).
+#   allow          — the detector MUST NOT flag this (0 violations).
+#   known_residual — the detector does NOT catch this yet; the harness asserts
+#                    0 violations so a future detector upgrade that closes the
+#                    residual will surface here and the case can flip to `block`.
+
+policy = "maxdiffpixelratio"
+detector_sources = ["scripts/check_visual_test_overrides.py"]
+
+# --------------------------------------------------------------------------- #
+# block — canonical object-literal forms                                      #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "canonical-bare-key"
+expect = "block"
+snippet = """
+await expect(page).toHaveScreenshot('a.png', { maxDiffPixelRatio: 0.5 });
+"""
+
+[[case]]
+id = "quoted-key"
+expect = "block"
+snippet = """
+await expect(page).toHaveScreenshot('a.png', { 'maxDiffPixelRatio': 0.5 });
+"""
+
+[[case]]
+id = "property-shorthand"
+expect = "block"
+snippet = """
+const maxDiffPixelRatio = 0.5;
+await expect(page).toHaveScreenshot('a.png', { maxDiffPixelRatio });
+"""
+
+[[case]]
+id = "computed-key-declaration"
+expect = "block"
+snippet = """
+const k = 'maxDiffPixelRatio';
+await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
+"""
+
+[[case]]
+id = "inline-computed-key"
+expect = "block"
+snippet = """
+await expect(page).toHaveScreenshot('a.png', { ['maxDiffPixelRatio']: 0.5 });
+"""
+
+[[case]]
+id = "array-literal-single-line"
+expect = "block"
+snippet = """
+const keys = ['maxDiffPixelRatio'];
+await expect(page).toHaveScreenshot('a.png', { [keys[0]]: 0.5 });
+"""
+
+# --------------------------------------------------------------------------- #
+# block — binding-shape bypasses surfaced by post-merge review (S5U-760..764) #
+# Each closed by OVERRIDE_STRING_LITERAL_RE (token as a contiguous string),   #
+# independent of the binding mechanism.                                       #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-760-map-set"
+expect = "block"
+note = "Map.set runtime API binding"
+snippet = """
+const m = new Map();
+m.set('maxDiffPixelRatio', 0.5);
+await expect(page).toHaveScreenshot('a.png', Object.fromEntries(m));
+"""
+
+[[case]]
+id = "S5U-761-tagged-template"
+expect = "block"
+note = "tagged template literal RHS"
+snippet = """
+const k = String.raw`maxDiffPixelRatio`;
+await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
+"""
+
+[[case]]
+id = "S5U-762-reassignment"
+expect = "block"
+note = "plain re-assignment, no declaration keyword"
+snippet = """
+let k;
+k = `maxDiffPixelRatio`;
+await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
+"""
+
+[[case]]
+id = "S5U-763-function-default-param"
+expect = "block"
+note = "function default-parameter binding"
+snippet = """
+function f(k = 'maxDiffPixelRatio') {
+  return { [k]: 0.5 };
+}
+await expect(page).toHaveScreenshot('a.png', f());
+"""
+
+[[case]]
+id = "S5U-764-computed-property-assignment"
+expect = "block"
+note = "bracketed-string property assignment to an existing object"
+snippet = """
+const opts = {};
+opts['maxDiffPixelRatio'] = 0.5;
+await expect(page).toHaveScreenshot('a.png', opts);
+"""
+
+[[case]]
+id = "S5U-759-multiline-array-now-closed"
+expect = "block"
+note = "former residual; token appears contiguously on its own line"
+snippet = """
+const keys = [
+  'maxDiffPixelRatio',
+];
+await expect(page).toHaveScreenshot('a.png', { [keys[0]]: 0.5 });
+"""
+
+# --------------------------------------------------------------------------- #
+# block — tolerated false positives (S5U-789 FP tradeoff, recorded openly)    #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "fp-tolerated-tocontain-assertion"
+expect = "block"
+note = """Tolerated FP: this asserts ON the key name rather than overriding the
+threshold, but the token-anchored detector cannot distinguish the two at the
+line level. The author moves the string or adds the marker. Recorded as a
+`block` case so the tradeoff is explicit, not hidden."""
+snippet = """
+expect(Object.keys(opts)).toContain('maxDiffPixelRatio');
+"""
+
+# --------------------------------------------------------------------------- #
+# allow — legitimate code the detector MUST NOT flag                          #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "allow-no-token"
+expect = "allow"
+snippet = """
+await expect(page).toHaveScreenshot('a.png');
+"""
+
+[[case]]
+id = "allow-unquoted-prose-mention"
+expect = "allow"
+note = "token not wrapped in a string delimiter and not an object key"
+snippet = """
+// the maxDiffPixelRatio config lives in apps/web/playwright.config.ts
+await expect(page).toHaveScreenshot('a.png');
+"""
+
+[[case]]
+id = "allow-marker-carveout"
+expect = "allow"
+note = "justification marker on the immediately preceding line"
+snippet = """
+await expect(page).toHaveScreenshot('a.png', {
+  // visual-gate-override: allow reason=intentional ascii-art drift
+  maxDiffPixelRatio: 0.05,
+});
+"""
+
+[[case]]
+id = "allow-similar-but-distinct-identifier"
+expect = "allow"
+note = "word-boundary guard: maxDiffPixelRatioFoo is a different identifier"
+snippet = """
+const maxDiffPixelRatioFoo = 0.5;
+await expect(page).toHaveScreenshot('a.png');
+"""
+
+# --------------------------------------------------------------------------- #
+# known_residual — cannot be caught by a line-level scanner (no AST/dataflow) #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-759-D-runtime-concatenation"
+expect = "known_residual"
+note = """Token assembled at runtime from fragments; never appears contiguously.
+Requires dataflow/AST analysis. Flip to `block` if a tree-sitter detector lands."""
+snippet = """
+const prefix = 'maxDiff';
+const k = `${prefix}PixelRatio`;
+await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
+"""

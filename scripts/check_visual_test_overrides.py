@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Block per-test `maxDiffPixelRatio` overrides without a justification marker.
 
-S5U-657 (bullet 4 of S5U-608); extended S5U-757 (4 bypasses) and S5U-759
-(5 more bypasses). Scans every Playwright-runnable spec file under
-`apps/web/tests/e2e/` for `maxDiffPixelRatio` overrides and fails if any
-line carrying that override does NOT have an immediately preceding
-`// visual-gate-override: allow reason=<non-empty>` comment.
+S5U-657 (bullet 4 of S5U-608); extended S5U-757 / S5U-759. **Reworked
+S5U-789** from a binding-shape regex enumeration into a token-anchored
+*semantic* detector backed by a named adversarial corpus
+(`apps/pipeline/tests/safety_gate_corpus/maxdiffpixelratio.toml`). Scans
+every Playwright-runnable spec file under `apps/web/tests/e2e/` and fails if
+any line carrying a `maxDiffPixelRatio` override does NOT have an
+immediately preceding `// visual-gate-override: allow reason=<non-empty>`
+comment.
 
 Per `.claude/rules/guards.md`:
 
@@ -13,26 +16,43 @@ Per `.claude/rules/guards.md`:
   unreadable spec file each exit non-zero. No env-var or workflow-`if`
   overrides.
 - **Rule G2** (content-derived sets): the in-scope file set is computed from
-  Playwright's default `testMatch` glob, not a hardcoded `.spec.ts`. The
-  match set is every line that exhibits an ECMAScript object-literal
-  binding of the `maxDiffPixelRatio` key — bare/quoted-colon, shorthand,
-  computed-key declaration (string OR template-literal RHS, S5U-759 A),
-  inline computed-key (S5U-759 B/C), or array-literal declaration RHS
-  (S5U-759 E). Derived from the `PropertyDefinition` productions in the
-  ECMA-262 grammar (see `tmp/plan-s5u-759.md` §4a).
+  Playwright's default `testMatch` glob, not a hardcoded `.spec.ts`.
 
-Documented residuals (S5U-759, plan §4d):
+Semantic shift (S5U-789): the override fires at runtime whenever the
+`maxDiffPixelRatio` key reaches the screenshot options — and in *every*
+binding shape the post-merge follow-ups found (S5U-760 `Map.set`, S5U-761
+tagged-template, S5U-762 reassignment, S5U-763 function default-param,
+S5U-764 computed-property assignment), the token appears as a **contiguous
+string literal**. So the detector anchors on the token-as-string-literal
+(`OVERRIDE_STRING_LITERAL_RE`) independent of the binding mechanism, instead
+of enumerating one regex per binding shape. This collapses the prior
+declaration/inline-computed-key/array-literal regexes into one pattern that
+also closes any future binding shape that wraps the token in a string.
+The two *unquoted* object-literal forms (bare key, shorthand) keep their own
+patterns because there is no delimiter to anchor on.
 
-- **Bypass D — template-literal concatenation**:
-  ``const k = `${prefix}PixelRatio`;``. The token is constructed at runtime
-  from substring fragments and never appears as a contiguous string in the
-  file. Static line-regex CANNOT detect this without an AST-based analyzer.
-  A complete fix requires `tree-sitter-typescript` or `acorn` — substantial
-  supply-chain and CI-cost addition. Accepted as residual; file a follow-up
-  if exploited.
-- **Multi-line array-literal**: `const keys = [\\n  'maxDiffPixelRatio',\\n];`.
-  Line-grained scanner can't see across newlines; line-2 has `,` not `:`.
-  Same acceptance — follow-up if exploited.
+The named corpus is the contract: reviewer-found syntactic bypasses are
+added to it as `block` cases (not patched in as new regexes), and the
+detector implementation must satisfy it. A future `tree-sitter-typescript`
+AST detector is a documented option gated behind the same corpus.
+
+Accepted residual (S5U-789; recorded as `known_residual` in the corpus):
+
+- **Runtime concatenation**: ``const k = `${prefix}PixelRatio`;``. The token
+  is assembled at runtime from fragments and never appears contiguously, so
+  no line-level scanner can see it without dataflow/AST analysis. Flip to a
+  `block` case if a future AST detector lands.
+
+(The S5U-759 "multi-line array-literal" residual is now *closed*: the token
+still appears as a contiguous string literal on its own line, which
+`OVERRIDE_STRING_LITERAL_RE` matches.)
+
+FP tradeoff (intentional, S5U-789): the token-anchored detector flags any
+line containing the literal string `"maxDiffPixelRatio"` even when it is not
+an override (e.g. asserting on the key name). This trades the old
+"low-FP-but-misses-new-shapes" behavior for "catches all binding shapes; FP
+is marker-resolvable." Consistent with the long-standing philosophy below
+that a string-literal FP is tolerated (move the string or add the marker).
 
 Adjacency rule: walk backwards from the violation line over blank lines
 only; the first non-blank line MUST be the justification marker. The
@@ -57,82 +77,63 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-# Content-derived match set, one regex per ECMAScript PropertyDefinition shape
-# that can bind the `maxDiffPixelRatio` key (see `tmp/plan-s5u-757.md` §4a for
-# the spec citation). Any one match flags the line.
+# Token-anchored semantic detector (S5U-789). The override fires whenever the
+# `maxDiffPixelRatio` key reaches the screenshot options; the binding mechanism
+# is irrelevant. Three patterns express the policy:
 #
 # The rule is enforced at the line level, not the AST level. False-positive on
 # a token inside a string literal that is NOT an actual override is tolerated
-# (worker can move the string or add the marker comment) — see plan §4b
-# "token inside string literal".
+# (worker can move the string or add the marker comment) — see the module
+# docstring "FP tradeoff".
 #
-# (1) Bare-or-quoted key followed by colon: `maxDiffPixelRatio:`,
-#     `'maxDiffPixelRatio':`, `"maxDiffPixelRatio":`. The optional `['"]?`
-#     wrapping is symmetric — quoted forms must use matching quote types but a
-#     line-level scan accepts either pair (the regex is line-grained, not
-#     parse-tree-grained).
+# (P1) Token as a contiguous STRING LITERAL in any delimiter:
+#      `'maxDiffPixelRatio'`, `"maxDiffPixelRatio"`, `` `maxDiffPixelRatio` ``.
+#      The backreference `\1` requires a *matching* opening/closing delimiter
+#      pair. This single pattern subsumes the former computed-key declaration,
+#      inline-computed-key, and array-literal regexes AND closes every binding
+#      shape the post-merge follow-ups found, because in each one the token
+#      appears wrapped in a string literal regardless of how it is then bound:
+#        - S5U-760  `m.set('maxDiffPixelRatio', 0.5)`
+#        - S5U-761  ``String.raw`maxDiffPixelRatio` ``
+#        - S5U-762  ``k = `maxDiffPixelRatio` ``
+#        - S5U-763  `function f(k = 'maxDiffPixelRatio')`
+#        - S5U-764  `opts['maxDiffPixelRatio'] = 0.5`
+#      It also closes the former S5U-759 multi-line-array residual: the token
+#      still appears contiguously on its own line. The sole accepted residual
+#      is runtime concatenation (``const k = `${p}PixelRatio` ``), which has no
+#      contiguous token — recorded as `known_residual` in the corpus.
+OVERRIDE_STRING_LITERAL_RE = re.compile(r"(['\"\x60])maxDiffPixelRatio\1")
+
+# (P2) Bare (UNQUOTED) object-literal key followed by a colon:
+#      `maxDiffPixelRatio:`. The quoted-key forms `'maxDiffPixelRatio':` /
+#      `"maxDiffPixelRatio":` are already covered by P1; the optional `['"]?`
+#      wrapping is retained only so this single pattern still matches both.
 OVERRIDE_BARE_OR_QUOTED_RE = re.compile(r"['\"]?\bmaxDiffPixelRatio\b['\"]?\s*:")
 
-# (2) Property shorthand: token sits adjacent to `{` or `,` (literal opening
-#     or a separator), and is followed by `,` or `}` (separator or close), with
-#     NO `:` or `=` after it. Two sub-forms:
-#       (a) inline: `{ ..., maxDiffPixelRatio, ... }` or `{ maxDiffPixelRatio }`
-#           — opener-or-comma BEFORE token, comma-or-brace AFTER token.
-#       (b) multi-line: token alone on its own line indented under a `{`,
-#           bracketed by trailing `,` or `}`.
-#     The negative-followed-by clause `(?![:=\w])` keeps `maxDiffPixelRatioFoo`
-#     and `maxDiffPixelRatio: 0.5` (the bare-key form, already covered by (1))
-#     out of this branch.
+# (P3) Property shorthand: token sits adjacent to `{` or `,` (literal opening
+#      or a separator), and is followed by `,` or `}` (separator or close),
+#      with NO `:` or `=` after it. Two sub-forms:
+#        (a) inline: `{ ..., maxDiffPixelRatio, ... }` or `{ maxDiffPixelRatio }`
+#            — opener-or-comma BEFORE token, comma-or-brace AFTER token.
+#        (b) multi-line: token alone on its own line indented under a `{`,
+#            bracketed by trailing `,` or `}`.
+#      The negative-followed-by clause `(?![:=\w])` keeps `maxDiffPixelRatioFoo`
+#      and the bare-key form (already covered by P2) out of this branch.
 OVERRIDE_SHORTHAND_INLINE_RE = re.compile(r"[\{,]\s*maxDiffPixelRatio\s*(?![:=\w])\s*[,}]")
 OVERRIDE_SHORTHAND_MULTILINE_RE = re.compile(r"^\s*maxDiffPixelRatio\s*(?![:=\w])\s*[,}]")
 
-# (3) Computed-key declaration site: `const k = 'maxDiffPixelRatio'` (or `let`
-#     / `var`), with single-quote, double-quote, or BACKTICK delimiters.
-#     The use site `{ [k]: V }` carries no token, so a static detector must
-#     anchor on the binding. Closing-delimiter-immediately-after anchor
-#     (`[\x60'"]maxDiffPixelRatio[\x60'"]`) prevents false positives on prose
-#     strings that contain but are not equal to the token (see plan §4d).
-#     S5U-759 Bypass A: backtick (`\x60`) added to the quote class to admit
-#     ECMAScript template-literal `NoSubstitutionTemplate` delimiters.
-OVERRIDE_COMPUTED_DECL_RE = re.compile(
-    r"\b(?:const|let|var)\s+\w+\s*=\s*[\x60'\"]maxDiffPixelRatio[\x60'\"]"
-)
-
-# (4) Inline computed-key form (S5U-759 Bypasses B and C): the `{ ['…']: V }`
-#     and `{ [`…`]: V }` shapes. Anchor: the closing delimiter is followed by
-#     `]` then `:`. This is distinct from the bare-or-quoted form (which has
-#     `['"]?token['"]?\s*:` — closing delimiter directly before `:`, no `]`).
-#     The presence of `\s*\]\s*:` after the closing delimiter is the static
-#     surface that distinguishes a computed-key use site from a property
-#     access (`obj['…']`, no `]:` follows in that case unless the access is
-#     itself the key of an enclosing object — vanishingly rare in practice).
-OVERRIDE_INLINE_COMPUTED_KEY_RE = re.compile(r"[\x60'\"]maxDiffPixelRatio[\x60'\"]\s*\]\s*:")
-
-# (5) Array-literal declaration RHS (S5U-759 Bypass E): the
-#     `const keys = ['…', …]` shape. Anchor: `<name> = [` followed by any
-#     non-`]` characters, then a delimiter+token+delimiter triple. Admits the
-#     token at any index (index 0 OR index N>0). The `[^\]]*` class restricts
-#     the match to a single array literal opener — no nested arrays cross the
-#     boundary, no greedy match across multiple `]`. Backtick included in the
-#     delimiter class for symmetry with the computed-decl form.
-OVERRIDE_ARRAY_LITERAL_DECL_RE = re.compile(
-    r"\b(?:const|let|var)\s+\w+\s*=\s*\[[^\]]*[\x60'\"]maxDiffPixelRatio[\x60'\"]"
-)
-
 # Tuple driving the per-line scan. Order is informational only; any-match
-# wins.
+# wins (violations are counted per line, not per match).
 OVERRIDE_REGEXES: tuple[re.Pattern[str], ...] = (
+    OVERRIDE_STRING_LITERAL_RE,
     OVERRIDE_BARE_OR_QUOTED_RE,
     OVERRIDE_SHORTHAND_INLINE_RE,
     OVERRIDE_SHORTHAND_MULTILINE_RE,
-    OVERRIDE_COMPUTED_DECL_RE,
-    OVERRIDE_INLINE_COMPUTED_KEY_RE,
-    OVERRIDE_ARRAY_LITERAL_DECL_RE,
 )
 
 
 def _line_has_override(line: str) -> bool:
-    """Return True iff `line` matches any of the four override-shape regexes."""
+    """Return True iff `line` matches any override-shape pattern (P1-P3)."""
     return any(rx.search(line) for rx in OVERRIDE_REGEXES)
 
 
