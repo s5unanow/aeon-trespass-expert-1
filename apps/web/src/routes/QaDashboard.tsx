@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router';
-import type { publicQaRecordSetV1 } from '@atr/schemas';
+import type { publicQaRecordSetV1, QAMetricsV1 } from '@atr/schemas';
 import { loadQa, type QaBundle } from '../lib/api/loadQa';
+import { loadQaMetrics } from '../lib/api/loadQaMetrics';
+import { QaMetricsCards } from '../components/nav/QaMetricsCards';
 
 type PublicQARecordV1 = publicQaRecordSetV1.PublicQARecordV1;
 
@@ -38,6 +40,7 @@ export function QaDashboard() {
   const { documentId, edition } = useParams<{ documentId: string; edition: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [bundle, setBundle] = useState<QaBundle | null>(null);
+  const [metrics, setMetrics] = useState<QAMetricsV1 | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const severity = searchParams.get('severity') ?? 'all';
@@ -60,6 +63,29 @@ export function QaDashboard() {
       })
       .catch((e: Error) => {
         if (!stale && e.name !== 'AbortError') setError(e.message);
+      });
+    return () => {
+      stale = true;
+      controller.abort();
+    };
+  }, [documentId, edition]);
+
+  // Metrics load is independent of the findings table and fully optional
+  // (S5U-874): qa_metrics.json is absent for older runs and for editions
+  // whose QA stage emitted no metrics. A missing/failed fetch leaves
+  // `metrics` null so the dashboard degrades gracefully — the findings
+  // table below is never blocked on it.
+  useEffect(() => {
+    if (!documentId || !edition) return;
+    const controller = new AbortController();
+    let stale = false;
+    setMetrics(null);
+    loadQaMetrics(documentId, edition, controller.signal)
+      .then((data) => {
+        if (!stale) setMetrics(data);
+      })
+      .catch(() => {
+        /* metrics are optional; absence leaves the health cards hidden. */
       });
     return () => {
       stale = true;
@@ -177,6 +203,8 @@ export function QaDashboard() {
           {filtered.length} of {totalAll} findings
         </p>
       </header>
+
+      {metrics && <QaMetricsCards metrics={metrics} />}
 
       {filtered.length === 0 ? (
         <p className="qa-empty">No findings match the current filters.</p>

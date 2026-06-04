@@ -78,6 +78,24 @@ describe('QaDashboard', () => {
     cleanup();
   });
 
+  // QAMetricsV1 payload as written verbatim by scripts/_export_qa.py.
+  const metrics = {
+    schema_version: 'qa_metrics.v1',
+    document_id: 'test_doc',
+    edition: 'ru',
+    pages_total: 10,
+    pages_with_findings: 4,
+    clean_page_rate: 0.6,
+    findings_by_severity: { info: 1, warning: 2, error: 1, critical: 0 },
+    findings_by_layer: { terminology: 2, structure: 2 },
+    findings_by_code_top10: [{ code: 'UNTRANSLATED', count: 2 }],
+    waived_count: 1,
+    blocking_count: 0,
+    avg_findings_per_page: 0.4,
+  };
+
+  // Default mock: summary + records present, qa_metrics.json absent (404).
+  // This mirrors the RU edition today, which ships no metrics artifact.
   function mockQa() {
     fetchSpy.mockImplementation((url: RequestInfo | URL) => {
       const u = String(url);
@@ -85,6 +103,24 @@ describe('QaDashboard', () => {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(summary) } as Response);
       if (u.endsWith('qa_records.json'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve(records) } as Response);
+      return Promise.resolve({ ok: false, status: 404 } as Response);
+    });
+  }
+
+  // Metrics-present variant: qa_metrics.json resolves alongside the table data.
+  function mockQaWithMetrics() {
+    fetchSpy.mockImplementation((url: RequestInfo | URL) => {
+      const u = String(url);
+      if (u.endsWith('qa_summary.json'))
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(summary) } as Response);
+      if (u.endsWith('qa_records.json'))
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(records) } as Response);
+      if (u.endsWith('qa_metrics.json'))
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve(metrics),
+        } as Response);
       return Promise.resolve({ ok: false, status: 404 } as Response);
     });
   }
@@ -173,5 +209,33 @@ describe('QaDashboard', () => {
     await waitFor(() => {
       expect(screen.getByRole('alert')).toBeDefined();
     });
+  });
+
+  it('renders the QA health cards when qa_metrics.json is present', async () => {
+    mockQaWithMetrics();
+    renderDashboard();
+
+    await waitFor(() => {
+      expect(screen.getByText('Block exceeds limit')).toBeDefined();
+    });
+    await waitFor(() => {
+      expect(screen.getByLabelText('QA health summary')).toBeDefined();
+    });
+    // clean_page_rate 0.6 → 60%; blocking_count 0; top code from metrics.
+    expect(screen.getByText('60%')).toBeDefined();
+    expect(screen.getByText('Top codes')).toBeDefined();
+  });
+
+  it('degrades gracefully (no health cards, table intact) when qa_metrics.json is absent', async () => {
+    mockQa(); // qa_metrics.json → 404
+    renderDashboard();
+
+    await waitFor(() => {
+      expect(screen.getByText('Block exceeds limit')).toBeDefined();
+    });
+    // Findings table still renders fully (must-not-break).
+    expect(screen.getByText(/3 of 4 findings/)).toBeDefined();
+    // Health summary is absent — the dashboard does not throw or block.
+    expect(screen.queryByLabelText('QA health summary')).toBeNull();
   });
 });
