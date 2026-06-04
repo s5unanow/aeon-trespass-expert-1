@@ -59,7 +59,17 @@ class PublishStage:
         # a blocking run cannot be served from cache without re-evaluating the
         # gate (the S5U-662 stale-cache failure mode). A refusal raises before
         # any artifact write, so the blocking case is never cached at all.
-        return "1.1"
+        #
+        # 1.1 -> 1.2 (S5U-894): ``run()`` now stamps the draft label
+        # (``review_only_draft`` / ``blocking_qa_codes`` / ``review_pack_ref``)
+        # into the on-disk BuildManifestV1. This is a new persisted side-effect
+        # of ``run()`` (per ``.claude/rules/pipeline.md`` stage-cache rule): a
+        # publish event cached under v1.1 carries an unlabeled manifest, so a
+        # cache hit would short-circuit ``run()`` and silently omit the label
+        # for a draft bundle. The bump invalidates every v1.1 publish event so
+        # the labeled manifest is always (re)written. A regression test
+        # exercises the cache-hit path and asserts the label persists.
+        return "1.2"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         """Fold the run's QA-gate state into the publish cache key (S5U-870).
@@ -123,6 +133,16 @@ class PublishStage:
                 run_id=ctx.run_id,
                 source_pdf_sha256=source_sha or "",
                 edition="en" if ctx.edition == "en" else "ru",
+                # S5U-894 — stamp the loud draft label into the on-disk manifest
+                # so a review-only draft bundle is self-describing (mirrors
+                # ``make export``'s ``stamp_draft_provenance``). ``is_draft`` is
+                # True only when blocking AND the explicit escape hatch was used;
+                # a clean release leaves these fields at their unlabeled defaults.
+                # ``review_pack_ref`` is surfaced on every bundle (draft or clean)
+                # so the published bundle always points at its review pack.
+                review_only_draft=gate_result.is_draft,
+                blocking_qa_codes=gate_result.blocking_codes if gate_result.is_draft else [],
+                review_pack_ref=gate_result.review_pack_ref,
             ),
         )
 

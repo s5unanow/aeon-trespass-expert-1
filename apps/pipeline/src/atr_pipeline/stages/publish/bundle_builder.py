@@ -31,6 +31,12 @@ class BundleRefs(BaseModel):
     run_id: str = ""
     source_pdf_sha256: str = ""
     edition: str = "ru"
+    # S5U-894 — review-only draft label, stamped into the on-disk
+    # BuildManifestV1 so the bundle is self-describing (matches ``make export``'s
+    # ``provenance`` stamp). Defaults leave a clean release unlabeled.
+    review_only_draft: bool = False
+    blocking_qa_codes: list[str] = Field(default_factory=list)
+    review_pack_ref: str = ""
 
 
 def _copy_ref_artifact(
@@ -172,7 +178,10 @@ def build_release_bundle(
             shutil.rmtree(app_dir)
         shutil.copytree(web_dist, app_dir)
 
-    # Content-addressed build identity
+    # Content-addressed build identity. The S5U-894 draft-label fields are
+    # deliberately NOT part of ``build_id`` (they are release metadata, not
+    # content), so a draft and a clean build of the same artifacts share build
+    # identity while differing in their loud on-disk label.
     build_id = _compute_build_id(refs)
     manifest = BuildManifestV1(
         build_id=build_id,
@@ -184,6 +193,9 @@ def build_release_bundle(
         generated_at=datetime.now(UTC).isoformat(),
         pipeline_version=pipeline_version,
         files=files,
+        review_only_draft=refs.review_only_draft,
+        blocking_qa_codes=refs.blocking_qa_codes,
+        review_pack_ref=refs.review_pack_ref,
     )
 
     # Write manifest into edition directory

@@ -81,9 +81,14 @@ def stamp_draft_provenance(provenance: dict[str, str], gate_result: QAGateResult
     """Stamp the draft disposition into the bundle manifest provenance.
 
     A no-op for non-draft bundles. For drafts, marks the bundle so the web side
-    and any downstream auditor can see it was built over blocking QA.
+    and any downstream auditor can see it was built over blocking QA. Mirrors
+    PublishStage's BuildManifestV1 draft label (S5U-894) so the two publish
+    surfaces agree: ``review_only_draft`` + ``blocking_qa_codes`` mark the
+    draft, and ``review_pack_ref`` points the bundle at its review pack.
     """
     if gate_result.is_draft:
         provenance["review_only_draft"] = "true"
         provenance["blocking_qa_codes"] = ",".join(gate_result.blocking_codes)
+        if gate_result.review_pack_ref:
+            provenance["review_pack_ref"] = gate_result.review_pack_ref
     return provenance
