@@ -90,6 +90,21 @@ def _pick_summary_for_edition(summary_dir: Path, edition: str) -> Path | None:
     return None
 
 
+def _unlink_stale_qa_companions(out_dir: Path) -> None:
+    """Remove stale QA companion files the current run will not (re)write.
+
+    Stale-companion cleanup (S5U-892): on a ref-bound re-export where the bound
+    run carries no QA summary, any ``qa_summary.json`` / ``qa_records.json`` /
+    ``qa_metrics.json`` left by a prior run's export must be deleted. The reader
+    fetches these fixed paths unconditionally (``loadQa`` → ``qa_summary.json``
+    + ``qa_records.json``), so a leftover file is a cross-run splice — run-B
+    pages served with run-A QA. ``missing_ok=True`` keeps the cleanup idempotent
+    for a fresh edition with no prior export.
+    """
+    for name in ("qa_summary.json", "qa_records.json", "qa_metrics.json"):
+        (out_dir / name).unlink(missing_ok=True)
+
+
 def _load_records(artifact_root: Path, record_refs: list[str]) -> list[dict]:
     """Resolve each relative ref to its JSON payload.
 
@@ -138,6 +153,9 @@ def export_qa(
     elif ref_bound:
         # Run-bound export with no QA artifact for this run — QA was not part of
         # the resolved run. Skip rather than mtime-splicing a foreign summary.
+        # Remove any QA companions a prior run's export left in place, else the
+        # reader splices run-A QA over this run's pages (S5U-892).
+        _unlink_stale_qa_companions(out_dir)
         print(f"  [{edition.upper()}] Run carries no QA summary, skipping QA export")
         return 0
     else:
@@ -198,7 +216,15 @@ def _export_metrics(
     Returns ``True`` when a metrics artifact was written, ``False`` otherwise
     (older runs emit no metrics, or the ref points at a missing file; both
     are non-fatal — export continues without metrics).
+
+    Stale-companion cleanup (S5U-892): on every ``False`` return the prior run's
+    ``qa_metrics.json`` is removed, so a re-export whose summary carries QA but
+    no metrics (legacy run, or a ``qa_metrics_ref`` whose file is gone) does not
+    leave run-A metrics spliced over run-B's QA bundle. ``missing_ok=True``
+    keeps the cleanup idempotent. The ``True`` paths overwrite the file in
+    place, so no stale state survives there.
     """
+    metrics_out = out_dir / "qa_metrics.json"
     ref = summary.get("qa_metrics_ref", "") or ""
     if ref:
         target = artifact_root / ref
@@ -206,19 +232,22 @@ def _export_metrics(
             # The summary claims a specific artifact but it's gone — log and
             # skip rather than silently substituting a stray. This is an
             # artifact-store corruption case, not a legacy-data case.
+            metrics_out.unlink(missing_ok=True)
             print(f"  [{edition.upper()}] qa_metrics_ref={ref!r} missing; skipping metrics")
             return False
         payload = json.loads(target.read_text())
-        (out_dir / "qa_metrics.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2))
+        metrics_out.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
         return True
 
     # Legacy fallback (summary has no ref field — pre-S5U-641 artifact).
     metrics_dir = artifact_root / doc_id / "qa_metrics.v1" / "document" / doc_id
     if not metrics_dir.is_dir():
+        metrics_out.unlink(missing_ok=True)
         return False
     latest = _pick_summary_for_edition(metrics_dir, edition)
     if latest is None:
+        metrics_out.unlink(missing_ok=True)
         return False
     payload = json.loads(latest.read_text())
-    (out_dir / "qa_metrics.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2))
+    metrics_out.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
     return True

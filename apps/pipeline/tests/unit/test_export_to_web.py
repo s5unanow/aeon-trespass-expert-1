@@ -103,6 +103,23 @@ class TestExportGlossary:
         export_module.export_glossary("doc", "en", None, doc_public)
         assert not (doc_public / "en" / "data" / "glossary.json").exists()
 
+    def test_none_path_removes_stale_glossary(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """S5U-892: a run with no glossary must DELETE a prior run's glossary.json.
+
+        The reader fetches the fixed path ``data/glossary.json``, so leaving run
+        A's glossary in place when run B carries none is a cross-run splice.
+        """
+        doc_public = tmp_path / "public"
+        data_dir = doc_public / "en" / "data"
+        data_dir.mkdir(parents=True)
+        (data_dir / "glossary.json").write_text(json.dumps({"entries": [{"id": "stale"}]}))
+
+        export_module.export_glossary("doc", "en", None, doc_public)
+
+        assert not (data_dir / "glossary.json").exists()
+
 
 class TestParseArgs:
     def test_defaults(self, export_module: ModuleType) -> None:

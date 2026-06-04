@@ -84,6 +84,77 @@ def test_legacy_none_summary_still_scans_dir(qa_module: ModuleType, tmp_path: Pa
     assert (doc_public / "ru" / "data" / "qa_summary.json").exists()
 
 
+def test_ref_bound_none_summary_removes_stale_qa_companions(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """S5U-892: ref_bound + summary_path=None must DELETE prior-run QA companions.
+
+    The reader fetches ``qa_summary.json`` / ``qa_records.json`` /
+    ``qa_metrics.json`` at fixed paths, so a run that carries no QA must not
+    leave a prior run's files in place (cross-run splice).
+    """
+    doc_id = "doc1"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+    out_dir = doc_public / "ru" / "data"
+    out_dir.mkdir(parents=True)
+    # Plant stale companions from a prior run's export.
+    (out_dir / "qa_summary.json").write_text(json.dumps({"run_id": "run_a"}))
+    (out_dir / "qa_records.json").write_text(json.dumps({"records": []}))
+    (out_dir / "qa_metrics.json").write_text(json.dumps({"run_id": "run_a"}))
+
+    count = qa_module.export_qa(
+        artifact_root, doc_id, "ru", doc_public, summary_path=None, ref_bound=True
+    )
+
+    assert count == 0
+    assert not (out_dir / "qa_summary.json").exists()
+    assert not (out_dir / "qa_records.json").exists()
+    assert not (out_dir / "qa_metrics.json").exists()
+
+
+def test_summary_without_metrics_removes_stale_qa_metrics(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """S5U-892: a run whose summary carries QA but no metrics must drop stale qa_metrics.json.
+
+    Models a re-export where run B has a QA summary but no metrics artifact
+    (legacy summary, no ``qa_metrics_ref``). Run A's ``qa_metrics.json`` must be
+    removed; the freshly-written ``qa_summary.json`` / ``qa_records.json``
+    overwrite run A's in place.
+    """
+    doc_id = "doc1"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+    out_dir = doc_public / "ru" / "data"
+    out_dir.mkdir(parents=True)
+    (out_dir / "qa_metrics.json").write_text(json.dumps({"run_id": "run_a"}))
+
+    bound = artifact_root / doc_id / "qa" / "document" / doc_id / "run_b.json"
+    bound.parent.mkdir(parents=True, exist_ok=True)
+    bound.write_text(
+        json.dumps(
+            {
+                "schema_version": "qa_summary.v1",
+                "document_id": doc_id,
+                "run_id": "run_b",
+                "edition": "ru",
+                "counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+                "waived_counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+                "blocking": False,
+                "record_refs": [],
+                "review_pack_ref": "",
+            }
+        )
+    )
+
+    qa_module.export_qa(artifact_root, doc_id, "ru", doc_public, summary_path=bound, ref_bound=True)
+
+    # Summary/records were (re)written; the stale metrics file is gone.
+    assert (out_dir / "qa_summary.json").exists()
+    assert not (out_dir / "qa_metrics.json").exists()
+
+
 def test_ref_bound_explicit_summary_path_exported(qa_module: ModuleType, tmp_path: Path) -> None:
     """A supplied summary_path is exported verbatim under ref_bound mode."""
     doc_id = "doc1"

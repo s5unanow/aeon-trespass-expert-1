@@ -199,16 +199,23 @@ def export_glossary(
     """Export the run-bound glossary payload to the web bundle.
 
     ``glossary_path`` is resolved from the run's render result
-    (``glossary_ref``). When the run carries no glossary ref the export skips
-    cleanly. When the ref is set but the file is absent the caller has already
-    refused (see :func:`_resolve_glossary_path`) — we never mtime-fall-back to
-    a stray glossary from another run (S5U-869, fail-closed per guards.md G1).
+    (``glossary_ref``). When the ref is set but the file is absent the caller has
+    already refused (see :func:`_resolve_glossary_path`) — we never mtime-fall-
+    back to a stray glossary from another run (S5U-869, fail-closed per G1).
+
+    Stale-companion cleanup (S5U-892): when the bound run carries no glossary,
+    any ``glossary.json`` from a prior run's export is removed (the reader
+    fetches the fixed path unconditionally — a leftover is a cross-run splice),
+    mirroring the ``render_page.*.json`` unlink in :func:`export_pages`.
     """
+    out = doc_public / edition / "data"
     if glossary_path is None:
+        # Remove a prior run's glossary.json (missing_ok: nothing to clean on a
+        # fresh edition), else the reader splices it over this run's pages.
+        (out / "glossary.json").unlink(missing_ok=True)
         print(f"  [{edition.upper()}] No glossary artifact for run, skipping")
         return
     data = json.loads(glossary_path.read_text())
-    out = doc_public / edition / "data"
     out.mkdir(parents=True, exist_ok=True)
     atomic_write_text(
         out / "glossary.json",
