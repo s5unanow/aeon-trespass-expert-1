@@ -46,6 +46,9 @@ def test_load_json_artifact(tmp_path: Path) -> None:
     assert summary.counts.error == 2
 
 
+_BLOCK_ON = {"error", "critical"}
+
+
 def test_qa_gate_blocks_on_blocking_summary(tmp_path: Path) -> None:
     """_check_qa_gate raises Exit(1) when QA summary is blocking."""
     artifact_root = tmp_path / "artifacts"
@@ -53,7 +56,7 @@ def test_qa_gate_blocks_on_blocking_summary(tmp_path: Path) -> None:
     run_data = {"qa_summary_ref": qa_ref, "run_manifest_ref": None}
 
     with pytest.raises(ClickExit) as exc_info:
-        _check_qa_gate(artifact_root, run_data)
+        _check_qa_gate(artifact_root, run_data, block_on=_BLOCK_ON)
     assert exc_info.value.exit_code == 1
 
 
@@ -63,14 +66,24 @@ def test_qa_gate_passes_on_clean_summary(tmp_path: Path) -> None:
     qa_ref = _write_qa_summary(artifact_root, blocking=False)
     run_data = {"qa_summary_ref": qa_ref, "run_manifest_ref": None}
 
-    _check_qa_gate(artifact_root, run_data)
+    _check_qa_gate(artifact_root, run_data, block_on=_BLOCK_ON)
 
 
-def test_qa_gate_skips_when_no_qa_ref(tmp_path: Path) -> None:
-    """_check_qa_gate skips gracefully when run has no qa_summary_ref."""
-    run_data = {"qa_summary_ref": None, "run_manifest_ref": None}
+def test_qa_gate_fails_closed_when_no_qa_ref(tmp_path: Path) -> None:
+    """_check_qa_gate fails closed (Exit 1) when the run has no qa_summary_ref.
 
-    _check_qa_gate(tmp_path, run_data)
+    S5U-893: the legacy behaviour was to echo "skipping QA gate" and PROCEED,
+    diverging from PublishStage / ``make export`` (which route through the shared
+    ``evaluate_qa_gate`` and refuse on ``summary is None``). The gate now routes
+    through the same shared gate and fails closed, so a no-summary run can no
+    longer be released via ``atr release``. This test previously asserted the
+    skip; it now pins the harmonized fail-closed contract (Rule G1).
+    """
+    run_data: dict[str, str | None] = {"qa_summary_ref": None, "run_manifest_ref": None}
+
+    with pytest.raises(ClickExit) as exc_info:
+        _check_qa_gate(tmp_path, run_data, block_on=_BLOCK_ON)
+    assert exc_info.value.exit_code == 1
 
 
 def test_seed_run_with_qa_ref(tmp_path: Path) -> None:
