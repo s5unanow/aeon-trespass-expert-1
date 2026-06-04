@@ -77,6 +77,23 @@
       },
       "title": "Files",
       "type": "array"
+    },
+    "review_only_draft": {
+      "default": false,
+      "title": "Review Only Draft",
+      "type": "boolean"
+    },
+    "blocking_qa_codes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Blocking Qa Codes",
+      "type": "array"
+    },
+    "review_pack_ref": {
+      "default": "",
+      "title": "Review Pack Ref",
+      "type": "string"
     }
   },
   "required": [

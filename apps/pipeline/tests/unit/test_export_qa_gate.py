@@ -211,6 +211,9 @@ def test_export_review_only_produces_draft(export_module: ModuleType, tmp_path: 
     manifest = json.loads((documents_root / "doc1" / "en" / "manifest.json").read_text())
     assert manifest["provenance"]["review_only_draft"] == "true"
     assert "GLUED_TEXT" in manifest["provenance"]["blocking_qa_codes"]
+    # S5U-894: the export draft also points at its review pack, mirroring the
+    # PublishStage BuildManifestV1.review_pack_ref — the two surfaces agree.
+    assert manifest["provenance"]["review_pack_ref"] == "doc1/review_pack.v1/document/doc1/rp.json"
 
 
 def test_export_allows_when_not_blocking(export_module: ModuleType, tmp_path: Path) -> None:

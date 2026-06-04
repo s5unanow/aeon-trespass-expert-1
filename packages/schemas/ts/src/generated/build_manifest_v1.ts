@@ -13,6 +13,9 @@ export type Path = string;
 export type Sha256 = string;
 export type SizeBytes = number;
 export type Files = ReleaseFile[];
+export type ReviewOnlyDraft = boolean;
+export type BlockingQaCodes = string[];
+export type ReviewPackRef = string;
 
 /**
  * Manifest for a published static release.
@@ -28,6 +31,9 @@ export interface BuildManifestV1 {
   generated_at?: GeneratedAt;
   pipeline_version?: PipelineVersion;
   files?: Files;
+  review_only_draft?: ReviewOnlyDraft;
+  blocking_qa_codes?: BlockingQaCodes;
+  review_pack_ref?: ReviewPackRef;
 }
 /**
  * A file included in the release bundle.

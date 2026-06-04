@@ -268,6 +268,86 @@ def test_manifest_written_atomically(tmp_path: Path) -> None:
     assert parsed["build_id"].startswith("build_")
 
 
+def test_draft_label_stamped_into_manifest(tmp_path: Path) -> None:
+    """S5U-894: draft-label refs flow into the on-disk BuildManifestV1.
+
+    Red-before: at 7f7a251 BundleRefs has no draft fields and BuildManifestV1
+    has no draft fields, so these refs cannot be passed and the manifest cannot
+    carry the label.
+    """
+    artifact_root = tmp_path / "artifacts"
+    ref_p1 = _write_render_page(artifact_root, "doc1", "p1")
+
+    manifest = build_release_bundle(
+        document_id="doc1",
+        artifact_root=artifact_root,
+        output_dir=tmp_path / "release",
+        refs=BundleRefs(
+            render_pages={"p1": ref_p1},
+            review_only_draft=True,
+            blocking_qa_codes=["GLUED_TEXT", "DEAD_PAGE_REF"],
+            review_pack_ref="doc1/review_pack.v1/document/doc1/rp.json",
+        ),
+    )
+
+    assert manifest.review_only_draft is True
+    assert manifest.blocking_qa_codes == ["GLUED_TEXT", "DEAD_PAGE_REF"]
+    assert manifest.review_pack_ref == "doc1/review_pack.v1/document/doc1/rp.json"
+
+    # Persisted to disk, not just the in-memory object.
+    on_disk = json.loads((tmp_path / "release" / "ru" / "manifest.json").read_text())
+    assert on_disk["review_only_draft"] is True
+    assert on_disk["review_pack_ref"] == "doc1/review_pack.v1/document/doc1/rp.json"
+
+
+def test_clean_bundle_has_no_draft_label(tmp_path: Path) -> None:
+    """S5U-894: a clean (non-draft) build leaves the label at its defaults."""
+    artifact_root = tmp_path / "artifacts"
+    ref_p1 = _write_render_page(artifact_root, "doc1", "p1")
+
+    manifest = build_release_bundle(
+        document_id="doc1",
+        artifact_root=artifact_root,
+        output_dir=tmp_path / "release",
+        refs=BundleRefs(render_pages={"p1": ref_p1}),
+    )
+
+    assert manifest.review_only_draft is False
+    assert manifest.blocking_qa_codes == []
+    assert manifest.review_pack_ref == ""
+
+
+def test_draft_label_does_not_change_build_id(tmp_path: Path) -> None:
+    """S5U-894: the draft label is metadata, not content — build_id is unchanged.
+
+    A draft and a clean build of the SAME artifacts must share build identity;
+    only their loud on-disk label differs.
+    """
+    artifact_root = tmp_path / "artifacts"
+    ref_p1 = _write_render_page(artifact_root, "doc1", "p1")
+
+    clean = build_release_bundle(
+        document_id="doc1",
+        artifact_root=artifact_root,
+        output_dir=tmp_path / "clean",
+        refs=BundleRefs(render_pages={"p1": ref_p1}),
+    )
+    draft = build_release_bundle(
+        document_id="doc1",
+        artifact_root=artifact_root,
+        output_dir=tmp_path / "draft",
+        refs=BundleRefs(
+            render_pages={"p1": ref_p1},
+            review_only_draft=True,
+            blocking_qa_codes=["GLUED_TEXT"],
+            review_pack_ref="doc1/review_pack.v1/document/doc1/rp.json",
+        ),
+    )
+
+    assert clean.build_id == draft.build_id
+    assert clean.content_version == draft.content_version
+
+
 def test_raster_refs_affect_build_id(tmp_path: Path) -> None:
     """Raster refs contribute to content-addressed build_id."""
     artifact_root = tmp_path / "artifacts"
