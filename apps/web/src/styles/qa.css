@@ -90,6 +90,106 @@
   color: var(--color-text-muted);
 }
 
+/* --- QA health summary cards (S5U-874) --- */
+
+.qa-metrics {
+  margin-bottom: var(--space-6);
+}
+
+.qa-metrics-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-3);
+}
+
+.qa-metrics-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+
+.qa-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.qa-metric-card-alert {
+  border-color: #d9534f;
+}
+
+.qa-metric-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.qa-metric-card-alert .qa-metric-value {
+  color: #d9534f;
+}
+
+.qa-metric-label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.qa-metric-sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.qa-metric-dist {
+  list-style: none;
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.qa-metric-dist-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.qa-metric-dist-count {
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.qa-metric-dist-row.qa-count-error .qa-metric-dist-count,
+.qa-metric-dist-row.qa-count-critical .qa-metric-dist-count {
+  color: #d9534f;
+}
+
+.qa-metric-dist-row.qa-count-warning .qa-metric-dist-count {
+  color: #e0a200;
+}
+
+.qa-metric-code {
+  font-family: var(--font-mono, monospace);
+  font-size: var(--text-xs);
+}
+
+.qa-metric-dist-empty {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
 .qa-table {
   width: 100%;
   border-collapse: collapse;
