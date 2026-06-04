@@ -67,158 +67,19 @@ def _make_render_page(
     }
 
 
-class TestPickLatest:
-    def test_picks_most_recently_modified(self, tmp_path: Path, export_module: ModuleType) -> None:
-        """The newest file by mtime wins, regardless of content."""
-        import os
-
-        old = tmp_path / "old.json"
-        old.write_text('{"v": "old"}')
-        os.utime(old, (1_000_000, 1_000_000))
-
-        new = tmp_path / "new.json"
-        new.write_text('{"v": "new"}')
-        os.utime(new, (2_000_000, 2_000_000))
-
-        result = export_module._pick_latest([old, new])
-        assert result == {"v": "new"}
-
-    def test_newer_filtered_facsimile_beats_stale_unfiltered(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        """Regression: newer quality-filtered artifact must beat stale one with more annotations."""
-        import os
-
-        stale = tmp_path / "stale.json"
-        stale.write_text(
-            json.dumps(
-                {
-                    "presentation_mode": "facsimile",
-                    "facsimile": {"annotations": [{"text": "T"}] * 56},
-                    "blocks": [],
-                }
-            )
-        )
-        os.utime(stale, (1_000_000, 1_000_000))
-
-        filtered = tmp_path / "filtered.json"
-        filtered.write_text(
-            json.dumps(
-                {
-                    "presentation_mode": "facsimile",
-                    "facsimile": {"annotations": [{"text": "T"}] * 31},
-                    "blocks": [],
-                }
-            )
-        )
-        os.utime(filtered, (2_000_000, 2_000_000))
-
-        result = export_module._pick_latest([stale, filtered])
-        assert result is not None
-        assert len(result["facsimile"]["annotations"]) == 31
-
-    def test_filters_by_edition(self, tmp_path: Path, export_module: ModuleType) -> None:
-        """Only artifacts whose document_version matches the edition are selected."""
-        import os
-
-        en_artifact = tmp_path / "en.json"
-        en_artifact.write_text(json.dumps({"document_version": "en", "lang": "en"}))
-        os.utime(en_artifact, (1_000_000, 1_000_000))
-
-        ru_artifact = tmp_path / "ru.json"
-        ru_artifact.write_text(json.dumps({"document_version": "ru", "lang": "ru"}))
-        os.utime(ru_artifact, (2_000_000, 2_000_000))
-
-        # Requesting EN should pick the EN artifact even though RU is newer
-        result = export_module._pick_latest([en_artifact, ru_artifact], "en")
-        assert result is not None
-        assert result["document_version"] == "en"
-
-        # Requesting RU should pick the RU artifact
-        result = export_module._pick_latest([en_artifact, ru_artifact], "ru")
-        assert result is not None
-        assert result["document_version"] == "ru"
-
-    def test_empty_document_version_matches_when_no_tagged_artifacts(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        """Pre-S5U-402 artifacts with empty document_version match any edition
-        when no tagged artifacts exist for the page."""
-        import os
-
-        legacy = tmp_path / "legacy.json"
-        legacy.write_text(json.dumps({"document_version": "", "data": "ok"}))
-        os.utime(legacy, (1_000_000, 1_000_000))
-
-        result = export_module._pick_latest([legacy], "en")
-        assert result is not None
-        assert result["data"] == "ok"
-
-    def test_untagged_rejected_when_tagged_artifact_exists(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        """Regression S5U-437: untagged artifacts must not match an edition
-        when a tagged artifact for a *different* edition exists — the tag
-        proves the page has edition-specific content."""
-        import os
-
-        # Untagged artifact (older — from before edition tagging)
-        untagged = tmp_path / "legacy.json"
-        untagged.write_text(json.dumps({"document_version": "", "data": "stale-ru-content"}))
-        os.utime(untagged, (1_000_000, 1_000_000))
-
-        # Tagged RU artifact (newer)
-        tagged_ru = tmp_path / "tagged_ru.json"
-        tagged_ru.write_text(json.dumps({"document_version": "ru", "data": "ru-content"}))
-        os.utime(tagged_ru, (2_000_000, 2_000_000))
-
-        # EN request: exact match absent, untagged fallback blocked by tag
-        result = export_module._pick_latest([untagged, tagged_ru], "en")
-        assert result is None
-
-        # RU request: exact match found
-        result = export_module._pick_latest([untagged, tagged_ru], "ru")
-        assert result is not None
-        assert result["document_version"] == "ru"
-
-    def test_no_matching_edition_returns_none(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        """When no artifact matches the edition, return None."""
-        import os
-
-        ru_only = tmp_path / "ru.json"
-        ru_only.write_text(json.dumps({"document_version": "ru"}))
-        os.utime(ru_only, (1_000_000, 1_000_000))
-
-        result = export_module._pick_latest([ru_only], "en")
-        assert result is None
-
-
 class TestExportGlossary:
-    def test_picks_most_recently_modified_payload(
+    """``export_glossary`` is now ref-bound (S5U-869): it takes the single
+    glossary artifact path resolved from the exported run, not an mtime-glob
+    over a directory. Selection lives in ``_export_run`` (see test_export_run).
+    """
+
+    def test_exports_resolved_glossary_payload(
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
-        """Regression for S5U-583: export must follow mtime, not alphabetical order.
-
-        ``export_glossary`` previously used ``sorted(...)[0]``, which picked
-        the alphabetically-first content hash. After concepts.toml grew from
-        30 to 192 entries, re-running the pipeline produced a fresh glossary
-        payload but the stale 30-entry one still won the alphabetical sort.
-        """
-        import os
-
-        glossary_src = tmp_path / "glossary_payload.v1" / "document" / "ato_core_v1_1"
-        glossary_src.mkdir(parents=True)
-
-        stale = glossary_src / "aaaa_stale.json"
-        stale.write_text(
-            json.dumps({"schema_version": "glossary_payload.v1", "entries": [{"id": "x"}]})
-        )
-        os.utime(stale, (1_000_000, 1_000_000))
-
-        fresh = glossary_src / "bbbb_fresh.json"
-        fresh.write_text(
+        """The explicitly-resolved glossary path is written verbatim to the bundle."""
+        glossary_path = tmp_path / "glossary_payload.v1" / "ato_core_v1_1" / "abc123.json"
+        glossary_path.parent.mkdir(parents=True)
+        glossary_path.write_text(
             json.dumps(
                 {
                     "schema_version": "glossary_payload.v1",
@@ -226,28 +87,20 @@ class TestExportGlossary:
                 }
             )
         )
-        os.utime(fresh, (2_000_000, 2_000_000))
-
-        # Flip the alphabetical order so it would pick stale if sorted by name.
-        alpha_first = glossary_src / "0000_older.json"
-        alpha_first.write_text(json.dumps({"schema_version": "glossary_payload.v1", "entries": []}))
-        os.utime(alpha_first, (500_000, 500_000))
 
         doc_public = tmp_path / "public" / "ato_core_v1_1"
         (doc_public / "en" / "data").mkdir(parents=True)
 
-        export_module.export_glossary("ato_core_v1_1", "en", glossary_src, doc_public)
+        export_module.export_glossary("ato_core_v1_1", "en", glossary_path, doc_public)
 
         exported = json.loads((doc_public / "en" / "data" / "glossary.json").read_text())
         assert len(exported["entries"]) == 192
 
-    def test_missing_artifact_skips_quietly(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        missing = tmp_path / "nope"
+    def test_none_path_skips_quietly(self, tmp_path: Path, export_module: ModuleType) -> None:
+        """A run carrying no glossary ref (path=None) skips without writing."""
         doc_public = tmp_path / "public"
         (doc_public / "en" / "data").mkdir(parents=True)
-        export_module.export_glossary("doc", "en", missing, doc_public)
+        export_module.export_glossary("doc", "en", None, doc_public)
         assert not (doc_public / "en" / "data" / "glossary.json").exists()
 
 
@@ -338,30 +191,30 @@ class TestWriteDocumentIndex:
 
 
 class TestExportPages:
-    def _setup_render_artifacts(
+    """``export_pages`` now receives ref-bound render-page payloads (S5U-869):
+    a ``{page_id: page_data}`` dict already selected from one run. Selection is
+    the run resolver's job (see test_export_run); these tests pin the
+    transformation/navigation/manifest behaviour that ``export_pages`` owns.
+    """
+
+    def _make_pages(
         self,
-        tmp_path: Path,
-        doc_id: str,
         pages: list[str],
         has_cyrillic: bool = False,
         edition: str = "",
-    ) -> Path:
-        """Create fake render artifacts and return the render_src path."""
-        render_src = tmp_path / "artifacts" / doc_id / "render_page.v1" / "page"
-        for pid in pages:
-            page_dir = render_src / pid
-            page_dir.mkdir(parents=True, exist_ok=True)
-            data = _make_render_page(pid, has_cyrillic=has_cyrillic, edition=edition)
-            (page_dir / "hash_001.json").write_text(json.dumps(data))
-        return render_src
+    ) -> dict[str, dict]:
+        """Build a ref-bound ``{page_id: page_data}`` map for export_pages."""
+        return {
+            pid: _make_render_page(pid, has_cyrillic=has_cyrillic, edition=edition) for pid in pages
+        }
 
     def test_en_edition_writes_to_edition_subdir(
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
-        render_src = self._setup_render_artifacts(tmp_path, "doc1", ["p0001", "p0002"])
+        render_pages = self._make_pages(["p0001", "p0002"])
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+        export_module.export_pages("doc1", "en", render_pages, doc_public, {})
 
         assert (doc_public / "en" / "data" / "render_page.p0001.json").exists()
         assert (doc_public / "en" / "data" / "render_page.p0002.json").exists()
@@ -372,40 +225,69 @@ class TestExportPages:
     def test_ru_edition_writes_to_edition_subdir(
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
-        render_src = self._setup_render_artifacts(tmp_path, "doc1", ["p0001"], has_cyrillic=True)
+        render_pages = self._make_pages(["p0001"], has_cyrillic=True)
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
-        export_module.export_pages("doc1", "ru", render_src, doc_public, {})
+        export_module.export_pages("doc1", "ru", render_pages, doc_public, {})
 
         assert (doc_public / "ru" / "data" / "render_page.p0001.json").exists()
         assert (doc_public / "ru" / "manifest.json").exists()
 
     def test_manifest_contains_page_list(self, tmp_path: Path, export_module: ModuleType) -> None:
-        render_src = self._setup_render_artifacts(tmp_path, "doc1", ["p0001", "p0002"])
+        render_pages = self._make_pages(["p0001", "p0002"])
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+        export_module.export_pages("doc1", "en", render_pages, doc_public, {})
 
         manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
         assert manifest["document_id"] == "doc1"
         page_ids = [p["page_id"] for p in manifest["pages"]]
         assert page_ids == ["p0001", "p0002"]
 
-    def test_both_editions_coexist(self, tmp_path: Path, export_module: ModuleType) -> None:
-        render_src = self._setup_render_artifacts(tmp_path, "doc1", ["p0001"])
+    def test_provenance_stamped_into_manifest(
+        self, tmp_path: Path, export_module: ModuleType
+    ) -> None:
+        """S5U-869: run provenance is stamped into the exported manifest."""
+        render_pages = self._make_pages(["p0001"])
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+        provenance = {
+            "run_id": "run_abc123",
+            "git_commit": "deadbeef",
+            "edition": "en",
+            "source_pdf_sha256": "f00d",
+        }
+
+        export_module.export_pages("doc1", "en", render_pages, doc_public, {}, provenance)
+
+        manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
+        assert manifest["provenance"] == provenance
+
+    def test_no_provenance_key_when_absent(self, tmp_path: Path, export_module: ModuleType) -> None:
+        """Manifest omits the provenance key when none is supplied (legacy callers)."""
+        render_pages = self._make_pages(["p0001"])
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
-        export_module.export_pages("doc1", "ru", render_src, doc_public, {})
+        export_module.export_pages("doc1", "en", render_pages, doc_public, {})
+
+        manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
+        assert "provenance" not in manifest
+
+    def test_both_editions_coexist(self, tmp_path: Path, export_module: ModuleType) -> None:
+        doc_public = tmp_path / "web" / "documents" / "doc1"
+
+        export_module.export_pages("doc1", "en", self._make_pages(["p0001"]), doc_public, {})
+        export_module.export_pages(
+            "doc1", "ru", self._make_pages(["p0001"], has_cyrillic=True), doc_public, {}
+        )
 
         assert (doc_public / "en" / "manifest.json").exists()
         assert (doc_public / "ru" / "manifest.json").exists()
 
     def test_navigation_links(self, tmp_path: Path, export_module: ModuleType) -> None:
-        render_src = self._setup_render_artifacts(tmp_path, "doc1", ["p0001", "p0002", "p0003"])
+        render_pages = self._make_pages(["p0001", "p0002", "p0003"])
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+        export_module.export_pages("doc1", "en", render_pages, doc_public, {})
 
         p1 = json.loads((doc_public / "en" / "data" / "render_page.p0001.json").read_text())
         assert p1["nav"]["prev"] is None
@@ -423,27 +305,25 @@ class TestExportPages:
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
         """Facsimile pages skip postprocessing and image injection."""
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-        page_dir = render_src / "p0007"
-        page_dir.mkdir(parents=True, exist_ok=True)
-        facsimile_page = {
-            "schema_version": "1.0",
-            "presentation_mode": "facsimile",
-            "page": {"page_id": "p0007", "title": "Components"},
-            "blocks": [{"kind": "paragraph", "id": "p0007.b1", "children": []}],
-            "facsimile": {
-                "raster_src": "rasters/p0007__150dpi.png",
-                "raster_src_hires": "rasters/p0007__300dpi.png",
-                "width_px": 1240,
-                "height_px": 1754,
-            },
+        render_pages = {
+            "p0007": {
+                "schema_version": "1.0",
+                "presentation_mode": "facsimile",
+                "page": {"page_id": "p0007", "title": "Components"},
+                "blocks": [{"kind": "paragraph", "id": "p0007.b1", "children": []}],
+                "facsimile": {
+                    "raster_src": "rasters/p0007__150dpi.png",
+                    "raster_src_hires": "rasters/p0007__300dpi.png",
+                    "width_px": 1240,
+                    "height_px": 1754,
+                },
+            }
         }
-        (page_dir / "hash_001.json").write_text(json.dumps(facsimile_page))
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
         # Pass image data — should NOT be injected for facsimile page
         images = {"p0007": [{"asset_id": "img0051", "src": "/img.png", "alt": "x"}]}
-        export_module.export_pages("doc1", "en", render_src, doc_public, images)
+        export_module.export_pages("doc1", "en", render_pages, doc_public, images)
 
         exported = json.loads((doc_public / "en" / "data" / "render_page.p0007.json").read_text())
         assert exported["presentation_mode"] == "facsimile"
@@ -452,105 +332,17 @@ class TestExportPages:
         # No synthetic figure blocks injected
         assert not any(b.get("asset_id") == "img0051" for b in exported.get("blocks", []))
 
-    def test_export_picks_latest_artifact_not_highest_annotation_count(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        """Regression S5U-392: newer quality-filtered artifact must win over stale one."""
-        import os
-
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-        page_dir = render_src / "p0007"
-        page_dir.mkdir(parents=True, exist_ok=True)
-
-        # Stale artifact: 56 unfiltered annotations (older mtime)
-        stale = {
-            "schema_version": "1.0",
-            "presentation_mode": "facsimile",
-            "page": {"page_id": "p0007", "title": "Components"},
-            "blocks": [],
-            "facsimile": {
-                "raster_src": "rasters/p0007__150dpi.png",
-                "annotations": [{"text": f"a{i}", "bbox": {}} for i in range(56)],
-            },
-        }
-        stale_path = page_dir / "hash_stale.json"
-        stale_path.write_text(json.dumps(stale))
-        os.utime(stale_path, (1_000_000, 1_000_000))
-
-        # Newer artifact: 31 quality-filtered annotations (newer mtime)
-        filtered = {
-            "schema_version": "1.0",
-            "presentation_mode": "facsimile",
-            "page": {"page_id": "p0007", "title": "Components"},
-            "blocks": [],
-            "facsimile": {
-                "raster_src": "rasters/p0007__150dpi.png",
-                "annotations": [{"text": f"a{i}", "bbox": {}} for i in range(31)],
-            },
-        }
-        filtered_path = page_dir / "hash_filtered.json"
-        filtered_path.write_text(json.dumps(filtered))
-        os.utime(filtered_path, (2_000_000, 2_000_000))
-
-        doc_public = tmp_path / "web" / "documents" / "doc1"
-        export_module.export_pages("doc1", "ru", render_src, doc_public, {})
-
-        exported = json.loads((doc_public / "ru" / "data" / "render_page.p0007.json").read_text())
-        assert len(exported["facsimile"]["annotations"]) == 31
-
-    def test_edition_filter_skips_wrong_language(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        """Regression S5U-402: exporting --edition=en must not pick a RU artifact."""
-        import os
-
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-        page_dir = render_src / "p0001"
-        page_dir.mkdir(parents=True, exist_ok=True)
-
-        # EN artifact (older)
-        en_data = _make_render_page("p0001", edition="en")
-        en_path = page_dir / "hash_en.json"
-        en_path.write_text(json.dumps(en_data))
-        os.utime(en_path, (1_000_000, 1_000_000))
-
-        # RU artifact (newer — would win without edition filtering)
-        ru_data = _make_render_page("p0001", has_cyrillic=True, edition="ru")
-        ru_path = page_dir / "hash_ru.json"
-        ru_path.write_text(json.dumps(ru_data))
-        os.utime(ru_path, (2_000_000, 2_000_000))
-
-        doc_public = tmp_path / "web" / "documents" / "doc1"
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
-
-        exported = json.loads((doc_public / "en" / "data" / "render_page.p0001.json").read_text())
-        # Must contain English text, not Russian
-        block_text = exported["blocks"][0]["children"][0]["text"]
-        assert block_text == "Example text"
-
     def test_empty_pages_excluded_from_manifest(
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
         """Regression S5U-431: pages with 0 blocks must not appear in the manifest."""
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-
-        # p0001: normal page with blocks
-        p1_dir = render_src / "p0001"
-        p1_dir.mkdir(parents=True, exist_ok=True)
-        (p1_dir / "h1.json").write_text(json.dumps(_make_render_page("p0001")))
-
-        # p0002: empty page (0 blocks, like a blank cover)
-        p2_dir = render_src / "p0002"
-        p2_dir.mkdir(parents=True, exist_ok=True)
-        (p2_dir / "h2.json").write_text(json.dumps(_make_render_page("p0002", block_count=0)))
-
-        # p0003: normal page with blocks
-        p3_dir = render_src / "p0003"
-        p3_dir.mkdir(parents=True, exist_ok=True)
-        (p3_dir / "h3.json").write_text(json.dumps(_make_render_page("p0003")))
-
+        render_pages = {
+            "p0001": _make_render_page("p0001"),
+            "p0002": _make_render_page("p0002", block_count=0),
+            "p0003": _make_render_page("p0003"),
+        }
         doc_public = tmp_path / "web" / "documents" / "doc1"
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+        export_module.export_pages("doc1", "en", render_pages, doc_public, {})
 
         manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
         page_ids = [p["page_id"] for p in manifest["pages"]]
@@ -570,96 +362,49 @@ class TestExportPages:
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
         """Facsimile pages with 0 blocks are valid — content is the raster image."""
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-        page_dir = render_src / "p0007"
-        page_dir.mkdir(parents=True, exist_ok=True)
-        facsimile_page = {
-            "schema_version": "1.0",
-            "presentation_mode": "facsimile",
-            "document_version": "",
-            "page": {"page_id": "p0007", "title": "Components"},
-            "blocks": [],
-            "facsimile": {
-                "raster_src": "rasters/p0007__150dpi.png",
-                "raster_src_hires": "rasters/p0007__300dpi.png",
-            },
+        render_pages = {
+            "p0007": {
+                "schema_version": "1.0",
+                "presentation_mode": "facsimile",
+                "document_version": "",
+                "page": {"page_id": "p0007", "title": "Components"},
+                "blocks": [],
+                "facsimile": {
+                    "raster_src": "rasters/p0007__150dpi.png",
+                    "raster_src_hires": "rasters/p0007__300dpi.png",
+                },
+            }
         }
-        (page_dir / "h1.json").write_text(json.dumps(facsimile_page))
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
+        export_module.export_pages("doc1", "en", render_pages, doc_public, {})
 
         manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
         assert [p["page_id"] for p in manifest["pages"]] == ["p0007"]
         assert (doc_public / "en" / "data" / "render_page.p0007.json").exists()
 
-    def test_nav_links_skip_filtered_pages(self, tmp_path: Path, export_module: ModuleType) -> None:
-        """Navigation links reference only pages that were actually exported."""
-        import os
-
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-
-        # p0001: EN only
-        p1_dir = render_src / "p0001"
-        p1_dir.mkdir(parents=True, exist_ok=True)
-        p1 = p1_dir / "h1.json"
-        p1.write_text(json.dumps(_make_render_page("p0001", edition="en")))
-        os.utime(p1, (1_000_000, 1_000_000))
-
-        # p0002: RU only (no EN artifact — should be skipped for EN export)
-        p2_dir = render_src / "p0002"
-        p2_dir.mkdir(parents=True, exist_ok=True)
-        p2 = p2_dir / "h2.json"
-        p2.write_text(json.dumps(_make_render_page("p0002", has_cyrillic=True, edition="ru")))
-        os.utime(p2, (1_000_000, 1_000_000))
-
-        # p0003: EN only
-        p3_dir = render_src / "p0003"
-        p3_dir.mkdir(parents=True, exist_ok=True)
-        p3 = p3_dir / "h3.json"
-        p3.write_text(json.dumps(_make_render_page("p0003", edition="en")))
-        os.utime(p3, (1_000_000, 1_000_000))
-
-        doc_public = tmp_path / "web" / "documents" / "doc1"
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
-
-        # p0002 should not be exported
-        assert not (doc_public / "en" / "data" / "render_page.p0002.json").exists()
-
-        # p0001 → next should be p0003 (skipping p0002)
-        e1 = json.loads((doc_public / "en" / "data" / "render_page.p0001.json").read_text())
-        assert e1["nav"]["prev"] is None
-        assert e1["nav"]["next"] == "p0003"
-
-        # p0003 → prev should be p0001 (skipping p0002)
-        e3 = json.loads((doc_public / "en" / "data" / "render_page.p0003.json").read_text())
-        assert e3["nav"]["prev"] == "p0001"
-        assert e3["nav"]["next"] is None
-
     def test_bare_figure_ids_rewritten_during_export(
         self, tmp_path: Path, export_module: ModuleType
     ) -> None:
         """Regression S5U-438: bare imgNNNN asset IDs must be namespaced during export."""
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-        page_dir = render_src / "p0020"
-        page_dir.mkdir(parents=True, exist_ok=True)
-        page_data = {
-            "schema_version": "1.0",
-            "document_version": "",
-            "page": {"page_id": "p0020", "title": "Test page"},
-            "blocks": [
-                {"kind": "figure", "id": "p0020.b002", "asset_id": "img0000", "children": []},
-                {
-                    "kind": "paragraph",
-                    "id": "p0020.b001",
-                    "children": [{"kind": "text", "text": "Some text"}],
+        render_pages = {
+            "p0020": {
+                "schema_version": "1.0",
+                "document_version": "",
+                "page": {"page_id": "p0020", "title": "Test page"},
+                "blocks": [
+                    {"kind": "figure", "id": "p0020.b002", "asset_id": "img0000", "children": []},
+                    {
+                        "kind": "paragraph",
+                        "id": "p0020.b001",
+                        "children": [{"kind": "text", "text": "Some text"}],
+                    },
+                ],
+                "figures": {
+                    "img0000": {"src": "img0000", "alt": "img0000"},
                 },
-            ],
-            "figures": {
-                "img0000": {"src": "img0000", "alt": "img0000"},
-            },
+            }
         }
-        (page_dir / "hash_001.json").write_text(json.dumps(page_data))
         doc_public = tmp_path / "web" / "documents" / "doc1"
 
         # Pass namespaced page_images (simulates extract_images() output)
@@ -672,7 +417,7 @@ class TestExportPages:
                 }
             ]
         }
-        export_module.export_pages("doc1", "en", render_src, doc_public, page_images)
+        export_module.export_pages("doc1", "en", render_pages, doc_public, page_images)
 
         exported = json.loads((doc_public / "en" / "data" / "render_page.p0020.json").read_text())
         # No bare imgNNNN keys should remain in figures
@@ -687,57 +432,6 @@ class TestExportPages:
         # The figure entry should have a valid src from page_images
         fig_entry = exported["figures"]["p0020.img0000"]
         assert fig_entry["src"] == "/documents/doc1/images/p0020.img0000.jpeg"
-
-    def test_untagged_facsimile_excluded_when_tagged_ru_exists(
-        self, tmp_path: Path, export_module: ModuleType
-    ) -> None:
-        """Regression S5U-437: EN export must not pick an untagged facsimile
-        that contains RU content when a tagged RU facsimile also exists."""
-        import os
-
-        render_src = tmp_path / "artifacts" / "doc1" / "render_page.v1" / "page"
-        page_dir = render_src / "p0007"
-        page_dir.mkdir(parents=True, exist_ok=True)
-
-        # Untagged facsimile with RU content (pre-S5U-402)
-        untagged = {
-            "schema_version": "1.0",
-            "presentation_mode": "facsimile",
-            "document_version": "",
-            "page": {"page_id": "p0007", "title": "Components"},
-            "blocks": [
-                {
-                    "kind": "paragraph",
-                    "id": "p0007.b1",
-                    "children": [{"kind": "text", "text": "Пример"}],
-                }
-            ],
-            "facsimile": {"raster_src": "rasters/p0007__150dpi.png"},
-        }
-        up = page_dir / "hash_old.json"
-        up.write_text(json.dumps(untagged))
-        os.utime(up, (1_000_000, 1_000_000))
-
-        # Tagged RU facsimile (newer)
-        tagged_ru = {
-            **untagged,
-            "document_version": "ru",
-        }
-        rp = page_dir / "hash_ru.json"
-        rp.write_text(json.dumps(tagged_ru))
-        os.utime(rp, (2_000_000, 2_000_000))
-
-        doc_public = tmp_path / "web" / "documents" / "doc1"
-        export_module.export_pages("doc1", "en", render_src, doc_public, {})
-
-        # p0007 must NOT appear in EN export
-        assert not (doc_public / "en" / "data" / "render_page.p0007.json").exists()
-        manifest = json.loads((doc_public / "en" / "manifest.json").read_text())
-        assert all(p["page_id"] != "p0007" for p in manifest["pages"])
-
-        # RU export should still work
-        export_module.export_pages("doc1", "ru", render_src, doc_public, {})
-        assert (doc_public / "ru" / "data" / "render_page.p0007.json").exists()
 
 
 class TestNamespaceBareFigures:

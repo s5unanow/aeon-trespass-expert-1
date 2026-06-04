@@ -110,20 +110,42 @@ def export_qa(
     doc_id: str,
     edition: str,
     doc_public: Path,
+    summary_path: Path | None = None,
+    *,
+    ref_bound: bool = False,
 ) -> int:
     """Write qa_summary.json + qa_records.json to the edition data dir.
 
     Returns the number of records exported. Returns 0 (and prints a notice)
     if no summary artifact is found.
+
+    Ref-bound mode (S5U-869): callers pass ``ref_bound=True`` together with the
+    QA summary artifact resolved from the *single* exported run. In this mode
+    the legacy mtime-based ``_pick_summary_for_edition`` directory scan is never
+    used: a supplied ``summary_path`` is exported verbatim, and ``summary_path
+    is None`` means "the run carried no QA artifact" → skip QA, **never**
+    mtime-fall-back to another run's summary. The caller refuses (non-zero exit)
+    when a bound run advertises a QA summary whose file is missing on disk
+    (``resolve_qa_summary_path``), so this function never sees a stray summary.
+
+    Legacy mode (``ref_bound=False``, ``summary_path=None``) preserves the
+    directory-scan path for callers that have not migrated to run binding.
     """
-    summary_dir = artifact_root / doc_id / "qa" / "document" / doc_id
     out_dir = doc_public / edition / "data"
 
-    if not summary_dir.is_dir():
-        print(f"  [{edition.upper()}] No QA summary dir at {summary_dir}, skipping")
+    if summary_path is not None:
+        latest: Path | None = summary_path
+    elif ref_bound:
+        # Run-bound export with no QA artifact for this run — QA was not part of
+        # the resolved run. Skip rather than mtime-splicing a foreign summary.
+        print(f"  [{edition.upper()}] Run carries no QA summary, skipping QA export")
         return 0
-
-    latest = _pick_summary_for_edition(summary_dir, edition)
+    else:
+        summary_dir = artifact_root / doc_id / "qa" / "document" / doc_id
+        if not summary_dir.is_dir():
+            print(f"  [{edition.upper()}] No QA summary dir at {summary_dir}, skipping")
+            return 0
+        latest = _pick_summary_for_edition(summary_dir, edition)
     if latest is None:
         print(f"  [{edition.upper()}] No QA summary artifacts for edition, skipping")
         return 0
