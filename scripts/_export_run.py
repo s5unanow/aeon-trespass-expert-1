@@ -329,3 +329,29 @@ def resolve_qa_summary_path(resolved: ResolvedRun, artifact_root: Path) -> Path 
         )
         raise RunResolutionError(msg)
     return path
+
+
+def load_qa_records(record_refs: list[str], artifact_root: Path) -> list[dict[str, object]]:
+    """Load the QA record payloads referenced by the resolved run's QA summary.
+
+    Used by the blocking-QA export gate (S5U-870) to name blocking codes/pages.
+    Ref-bound to the resolved run's ``record_refs`` (no mtime selection). A
+    missing/unreadable record artifact is skipped with a warning rather than
+    refusing — the gate still refuses on a blocking summary even when individual
+    records cannot be named (it only degrades the refusal message). The gate
+    decision itself never depends on this list being complete.
+    """
+    records: list[dict[str, object]] = []
+    for ref in record_refs:
+        path = artifact_root / ref
+        if not path.is_file():
+            logger.warning("QA record artifact %s missing on disk; skipping for naming", ref)
+            continue
+        try:
+            data = json.loads(path.read_text())
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.warning("QA record artifact %s unreadable: %s", ref, exc)
+            continue
+        if isinstance(data, dict):
+            records.append(data)
+    return records

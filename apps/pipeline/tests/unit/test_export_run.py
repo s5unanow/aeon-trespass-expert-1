@@ -11,6 +11,7 @@ byte-identical re-export from the same run.
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 from collections.abc import Iterator
 from pathlib import Path
@@ -280,6 +281,41 @@ class TestResolveRunFailClosed:
         resolved = run_module.resolve_run(registry_path, "doc1", artifact_root=artifact_root)
         with pytest.raises(run_module.RunResolutionError, match="missing"):
             run_module.load_run_pages(resolved, artifact_root)
+
+
+class TestLoadQARecords:
+    """``load_qa_records`` (S5U-870) — ref-bound record loader for gate naming."""
+
+    def test_loads_present_records(self, repo: tuple[Path, Path], run_module: ModuleType) -> None:
+        _registry_path, artifact_root = repo
+        ref = "doc1/qa_record.v1/page/p0001/rec.json"
+        path = artifact_root / ref
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "qa_record.v1",
+                    "qa_id": "qa.X.p0001",
+                    "layer": "structure",
+                    "severity": "error",
+                    "code": "X",
+                    "page_id": "p0001",
+                }
+            )
+        )
+        records = run_module.load_qa_records([ref], artifact_root)
+        assert len(records) == 1
+        assert records[0]["code"] == "X"
+
+    def test_missing_record_is_skipped_not_raised(
+        self, repo: tuple[Path, Path], run_module: ModuleType
+    ) -> None:
+        """A missing record ref is skipped (gate still refuses; only naming degrades)."""
+        _registry_path, artifact_root = repo
+        records = run_module.load_qa_records(
+            ["doc1/qa_record.v1/page/p0001/gone.json"], artifact_root
+        )
+        assert records == []
 
 
 class TestCrossRunIsolation:

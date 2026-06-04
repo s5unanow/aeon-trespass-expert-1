@@ -122,6 +122,32 @@ def _register_render_event(ctx: StageContext, render_result: RenderResult) -> No
     )
 
 
+def _register_qa_event(ctx: StageContext, qa_summary: QASummaryV1) -> None:
+    """Register a 'qa' stage event so the S5U-870 publish gate can resolve it.
+
+    The fixture runs ``QAStage().run`` directly (not ``execute_stage``), so no qa
+    event exists; PublishStage's gate reads the run's QA summary from that event.
+    """
+    ref = ctx.artifact_store.put_json(
+        document_id=ctx.document_id,
+        schema_family="qa",
+        scope="document",
+        entity_id=ctx.document_id,
+        data=qa_summary,
+    )
+    event_id = record_stage_start(
+        ctx.registry_conn,
+        run_id=ctx.run_id,
+        stage_name="qa",
+        scope="document",
+        entity_id=ctx.document_id,
+        cache_key="e2e_qa",
+    )
+    record_stage_finish(
+        ctx.registry_conn, event_id=event_id, status="completed", artifact_ref=ref.relative_path
+    )
+
+
 def _read_render_page(store: ArtifactStore, doc_id: str, page_id: str) -> RenderPageV1:
     page_dir = store.root / doc_id / "render_page.v1" / "page" / page_id
     jsons = sorted(page_dir.glob("*.json"))
@@ -183,6 +209,7 @@ def e2e_run(request: pytest.FixtureRequest, tmp_path: Path) -> E2EResult:
     render_result = RenderStage().run(ctx, None)
     _register_render_event(ctx, render_result)
     qa_summary = QAStage().run(ctx, None)
+    _register_qa_event(ctx, qa_summary)
     return E2EResult(doc_id=doc_id, render_result=render_result, qa_summary=qa_summary, ctx=ctx)
 
 

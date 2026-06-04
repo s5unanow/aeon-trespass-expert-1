@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import re
 import sys
 from pathlib import Path
 
@@ -26,6 +25,11 @@ from _export_blocks import (  # noqa: E402
 )
 from _export_images import extract_images, resolve_source_pdf  # noqa: E402
 from _export_qa import export_qa  # noqa: E402
+from _export_qa_gate import (  # noqa: E402
+    draft_banner,
+    enforce_export_qa_gate,
+    stamp_draft_provenance,
+)
 from _export_run import (  # noqa: E402
     ResolvedRun,
     RunResolutionError,
@@ -34,9 +38,11 @@ from _export_run import (  # noqa: E402
     resolve_qa_summary_path,
     resolve_run,
 )
+from _export_toc import extract_toc_sections  # noqa: E402
 from _export_validation import run_export_validation  # noqa: E402
 
 from atr_pipeline.config import load_document_config  # noqa: E402
+from atr_pipeline.stages.publish.qa_gate import QAGateError, QAGateResult  # noqa: E402
 from atr_pipeline.store.atomic_write import atomic_write_text  # noqa: E402
 
 logger = logging.getLogger(__name__)
@@ -47,64 +53,6 @@ __all__ = ["extract_images", "resolve_source_pdf"]
 
 ARTIFACT_ROOT = REPO / "artifacts"
 REGISTRY_PATH = REPO / "var" / "registry.db"
-
-
-_TOC_ENTRY_RE = re.compile(r"(.+?)\.{3,}\s*(\d+)")
-
-
-def _parse_toc_entries(data_dir: Path) -> list[tuple[str, int]]:
-    """Extract (title, printed_page_number) pairs from TOC paragraphs."""
-    entries: list[tuple[str, int]] = []
-    for render_file in sorted(data_dir.glob("render_page.*.json")):
-        page_data = json.loads(render_file.read_text())
-        for block in page_data.get("blocks", []):
-            if block.get("kind") != "paragraph":
-                continue
-            matches = _TOC_ENTRY_RE.findall(text_content(block))
-            if len(matches) >= 2:
-                entries.extend((t.strip(), int(n)) for t, n in matches)
-    return entries
-
-
-def _match_toc_by_title(
-    toc_entries: list[tuple[str, int]], pages_meta: list[dict]
-) -> tuple[set[str], int]:
-    """Match TOC entries to pages by normalized title; return (section_pids, offset)."""
-    title_lookup: dict[str, tuple[str, int]] = {}
-    for pm in pages_meta:
-        title = pm.get("title", "").strip().lower()
-        if title:
-            title_lookup[title] = (pm["page_id"], int(pm["page_id"].lstrip("p")))
-
-    section_pids: set[str] = set()
-    offset = 0
-    for title, printed_num in toc_entries:
-        match = title_lookup.get(title.lower())
-        if match:
-            if not section_pids:
-                offset = match[1] - printed_num
-            section_pids.add(match[0])
-    return section_pids, offset
-
-
-def _extract_toc_sections(data_dir: Path, pages_meta: list[dict]) -> tuple[set[str], int]:
-    """Parse TOC, match to manifest pages, return (section_page_ids, page_offset)."""
-    toc_entries = _parse_toc_entries(data_dir)
-    if not toc_entries:
-        return set(), 0
-
-    section_pids, offset = _match_toc_by_title(toc_entries, pages_meta)
-    if section_pids:
-        return section_pids, offset
-
-    # Fallback: titles differ (e.g. translated) — try candidate offsets by page number
-    titled_pids = {pm["page_id"] for pm in pages_meta if pm.get("title", "").strip()}
-    for candidate in range(4):
-        matched = {f"p{n + candidate:04d}" for _, n in toc_entries}
-        if matched <= titled_pids:
-            return matched, candidate
-
-    return set(), 0
 
 
 _KIND_MAP = {
@@ -224,7 +172,7 @@ def export_pages(
         )
 
     # Derive sections and page offset from TOC entries
-    section_pids, page_offset = _extract_toc_sections(data_dir, pages_meta)
+    section_pids, page_offset = extract_toc_sections(data_dir, pages_meta)
     for pm in pages_meta:
         pm["depth"] = 0 if pm["page_id"] in section_pids else 1
 
@@ -281,6 +229,20 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "for the document/edition). Refuses if the run is missing or unfinished."
         ),
     )
+    parser.add_argument(
+        "--review-only",
+        dest="review_only",
+        action="store_true",
+        default=False,
+        help=(
+            "Escape hatch for the blocking-QA export gate: export a clearly-marked "
+            "DRAFT bundle over blocking QA findings (for human review) instead of "
+            "refusing. Default is to refuse on blocking QA. Must be passed "
+            "explicitly on the command line — there is no env-var toggle "
+            "(guards.md G1: an env-only override that flips the default is a "
+            "gate bypass)."
+        ),
+    )
     return parser.parse_args(argv)
 
 
@@ -319,9 +281,18 @@ def _export_edition(
     doc_public: Path,
     page_images: dict[str, list[dict]],
     facsimile_override_pids: list[str],
+    *,
+    gate_result: QAGateResult,
 ) -> bool:
-    """Export one edition's bundle from a single resolved run. Returns validation OK."""
+    """Export one edition's bundle from a single resolved run. Returns validation OK.
+
+    ``gate_result`` is the already-evaluated blocking-QA gate decision for this
+    edition (a refusal would have raised before this point). When it is a
+    review-only draft, the bundle is loudly labeled.
+    """
     print(f"Exporting {edition.upper()} render pages from run {resolved.run_id}...")
+    if gate_result.is_draft:
+        print(draft_banner(edition, gate_result))
     render_pages = load_run_pages(resolved, ARTIFACT_ROOT)
 
     facsimile_pids = [
@@ -331,7 +302,8 @@ def _export_edition(
         print(f"  Exporting rasters for {len(facsimile_pids)} facsimile pages...")
         export_facsimile_rasters(doc_id, doc_public, ARTIFACT_ROOT, sorted(facsimile_pids))
 
-    export_pages(doc_id, edition, render_pages, doc_public, page_images, resolved.provenance())
+    provenance = stamp_draft_provenance(resolved.provenance(), gate_result)
+    export_pages(doc_id, edition, render_pages, doc_public, page_images, provenance)
     export_glossary(doc_id, edition, resolve_glossary_path(resolved, ARTIFACT_ROOT), doc_public)
     export_qa(
         ARTIFACT_ROOT,
@@ -351,6 +323,10 @@ def main(argv: list[str] | None = None) -> None:
     args = _parse_args(argv)
     doc_id: str = args.doc
     run_id: str | None = args.run_id
+    # review_only is honored ONLY from the explicit argparse flag. There is no
+    # env-var read here — an ambient toggle must NOT flip the gate's default
+    # (guards.md G1; the issue's "must refuse" env-var-bypass row).
+    review_only: bool = args.review_only
     editions = ["en", "ru"] if args.edition == "all" else [args.edition]
 
     documents_root = REPO / "apps" / "web" / "public" / "documents"
@@ -377,11 +353,30 @@ def main(argv: list[str] | None = None) -> None:
                 run_id=run_id,
                 edition=edition,
             )
+            # Blocking-QA gate (S5U-870): refuse before writing any bundle when
+            # the resolved run has blocking, non-waived QA findings — unless
+            # --review-only was explicitly passed (loud draft instead).
+            gate_result = enforce_export_qa_gate(
+                doc_id,
+                edition,
+                resolved,
+                artifact_root=ARTIFACT_ROOT,
+                review_only=review_only,
+            )
             if not _export_edition(
-                doc_id, edition, resolved, doc_public, page_images, facsimile_override_pids
+                doc_id,
+                edition,
+                resolved,
+                doc_public,
+                page_images,
+                facsimile_override_pids,
+                gate_result=gate_result,
             ):
                 validation_ok = False
     except RunResolutionError as exc:
+        print(f"Export refused: {exc}")
+        sys.exit(1)
+    except QAGateError as exc:
         print(f"Export refused: {exc}")
         sys.exit(1)
 
