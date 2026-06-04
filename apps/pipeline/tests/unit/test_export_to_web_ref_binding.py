@@ -77,11 +77,17 @@ def _seed_run(  # noqa: PLR0913 — keyword-only test fixture builder
     git_commit: str,
     page_text: str,
     page_ids: tuple[str, ...] = ("p0001",),
+    with_qa: bool = True,
+    with_glossary: bool = False,
 ) -> None:
     """Seed a complete run: render result + page artifacts + registry rows.
 
     Built on the shared ``_export_run_fixtures`` scaffolding; this only adds the
     on-disk render-page payloads the exporter renders into the bundle.
+
+    ``with_qa`` / ``with_glossary`` (S5U-892) toggle whether the run carries a
+    QA summary / glossary artifact, so a test can model a run B that lacks the
+    companions a run A wrote and assert the re-export removes the stale files.
     """
     render_ref = f"doc1/render/document/doc1/{run_id}.json"
     page_refs: dict[str, str] = {}
@@ -106,24 +112,37 @@ def _seed_run(  # noqa: PLR0913 — keyword-only test fixture builder
                 }
             )
         )
-    write_render_result(artifact_root, render_ref, {"page_refs": page_refs})
-    # Attach a non-blocking QA summary so the S5U-870 export gate allows; these
-    # tests exercise ref-binding, not the QA gate (the gate has its own suite in
-    # test_export_qa_gate.py).
-    qa_ref = f"doc1/qa/document/doc1/{run_id}.json"
-    qa_path = artifact_root / qa_ref
-    qa_path.parent.mkdir(parents=True, exist_ok=True)
-    qa_path.write_text(
-        json.dumps(
-            {
-                "schema_version": "qa_summary.v1",
-                "document_id": "doc1",
-                "run_id": run_id,
-                "edition": edition,
-                "blocking": False,
-            }
+    render_result: dict[str, object] = {"page_refs": page_refs}
+    if with_glossary:
+        glossary_ref = f"doc1/glossary/document/doc1/{run_id}.json"
+        render_result["glossary_ref"] = glossary_ref
+        glossary_path = artifact_root / glossary_ref
+        glossary_path.parent.mkdir(parents=True, exist_ok=True)
+        glossary_path.write_text(
+            json.dumps({"entries": [{"term": f"term-{run_id}", "definition": page_text}]})
         )
-    )
+    write_render_result(artifact_root, render_ref, render_result)
+    qa_ref: str | None = None
+    if with_qa:
+        # Attach a non-blocking QA summary so the S5U-870 export gate allows;
+        # these tests exercise ref-binding, not the QA gate (the gate has its own
+        # suite in test_export_qa_gate.py).
+        qa_ref = f"doc1/qa/document/doc1/{run_id}.json"
+        qa_path = artifact_root / qa_ref
+        qa_path.parent.mkdir(parents=True, exist_ok=True)
+        qa_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "qa_summary.v1",
+                    "document_id": "doc1",
+                    "run_id": run_id,
+                    "edition": edition,
+                    "blocking": False,
+                    "record_refs": [],
+                    "review_pack_ref": "",
+                }
+            )
+        )
     add_run(
         conn,
         run_id=run_id,
@@ -236,6 +255,71 @@ def test_two_runs_no_cross_run_splice(export_module: ModuleType, tmp_path: Path)
         (documents_root / "doc1" / "en" / "data" / "render_page.p0001.json").read_text()
     )
     assert page_a["blocks"][0]["children"][0]["text"] == "OLD-A-CONTENT"
+
+
+def test_reexport_removes_stale_companions_when_run_b_lacks_them(
+    export_module: ModuleType, tmp_path: Path
+) -> None:
+    """S5U-892: a ref-bound re-export must delete companion files the bound run lacks.
+
+    Run A carries a glossary; run B does not (but carries QA, so the S5U-870
+    fail-closed export gate allows the export — a run with *no* QA summary is
+    refused upstream by that gate, so the glossary/metrics leftovers are the
+    reachable cross-run-splice surface here). Exporting B (latest-complete
+    default) must remove run A's ``glossary.json`` and the stale
+    ``qa_metrics.json`` from the edition data dir, otherwise the reader (which
+    fetches fixed paths) splices run-A glossary/metrics over run-B's pages.
+    """
+    conn = init_registry(tmp_path / "registry.db")
+    _seed_run(
+        export_module.ARTIFACT_ROOT,
+        conn,
+        run_id="run_a",
+        started_at="2026-01-01T00:00:00",
+        edition="en",
+        git_commit="commit_a",
+        page_text="OLD-A-CONTENT",
+        with_qa=True,
+        with_glossary=True,
+    )
+    conn.close()
+    documents_root = tmp_path / "apps" / "web" / "public" / "documents"
+    data_dir = documents_root / "doc1" / "en" / "data"
+
+    # Export run A: glossary present.
+    export_module.main(["--doc", "doc1", "--edition", "en", "--run-id", "run_a"])
+    assert (data_dir / "glossary.json").exists()
+    # Seed a stale qa_metrics.json as if run A had emitted metrics (the seeded
+    # summary carries no metrics ref, so the exporter never writes one — we plant
+    # it directly to model the prior-run leftover the cleanup must remove).
+    (data_dir / "qa_metrics.json").write_text(json.dumps({"run_id": "run_a"}))
+
+    # Add the newer run B with QA but NO glossary, then re-export (default
+    # latest-complete resolves to run B).
+    conn = sqlite3.connect(str(tmp_path / "registry.db"))
+    conn.row_factory = sqlite3.Row
+    _seed_run(
+        export_module.ARTIFACT_ROOT,
+        conn,
+        run_id="run_b",
+        started_at="2026-02-01T00:00:00",
+        edition="en",
+        git_commit="commit_b",
+        page_text="NEW-B-CONTENT",
+        with_qa=True,
+        with_glossary=False,
+    )
+    conn.close()
+
+    export_module.main(["--doc", "doc1", "--edition", "en"])
+
+    manifest = json.loads((documents_root / "doc1" / "en" / "manifest.json").read_text())
+    assert manifest["provenance"]["run_id"] == "run_b"
+    # Run B's QA summary is exported fresh (overwrites run A's in place).
+    assert (data_dir / "qa_summary.json").exists()
+    # The stale run-A companions B does not carry must be GONE — not spliced.
+    assert not (data_dir / "glossary.json").exists()
+    assert not (data_dir / "qa_metrics.json").exists()
 
 
 def test_edition_isolation_en_excludes_ru(export_module: ModuleType, tmp_path: Path) -> None:
