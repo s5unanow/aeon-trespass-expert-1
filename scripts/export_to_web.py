@@ -301,13 +301,15 @@ def _export_edition(
     if gate_result.is_draft:
         print(draft_banner(edition, gate_result))
     render_pages = load_run_pages(resolved, ARTIFACT_ROOT)
-
     facsimile_pids = [
         pid for pid, data in render_pages.items() if data.get("presentation_mode") == "facsimile"
     ]
     if facsimile_pids:
         print(f"  Exporting rasters for {len(facsimile_pids)} facsimile pages...")
-        export_facsimile_rasters(doc_id, doc_public, ARTIFACT_ROOT, sorted(facsimile_pids))
+        # Run-bound (S5U-891): rasters come from resolved.raster_refs, not a global scan.
+        export_facsimile_rasters(
+            doc_public, ARTIFACT_ROOT, sorted(facsimile_pids), resolved.raster_refs
+        )
 
     provenance = stamp_draft_provenance(resolved.provenance(), gate_result)
     export_pages(doc_id, edition, render_pages, doc_public, page_images, provenance)
