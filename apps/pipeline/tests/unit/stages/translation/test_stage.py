@@ -70,8 +70,9 @@ def test_translation_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "translate"
     assert stage.scope == StageScope.DOCUMENT
-    # S5U-776 — bumped after narrative-group translation units landed.
-    assert stage.version == "1.2"
+    # S5U-871 — bumped after missing/duplicate segment-coverage records
+    # were added to the persisted translation QA record set.
+    assert stage.version == "1.3"
 
 
 def test_translation_translates_pages(tmp_path: Path) -> None:

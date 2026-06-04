@@ -213,7 +213,11 @@ class TranslationStage:
         # S5U-776 — narrative prose now uses grouped translation units and
         # split-back rematerialization. Bumped from 1.1 so cached per-block
         # translations re-execute.
-        return "1.2"
+        # S5U-871 — validator now emits TRANSLATION_MISSING_SEGMENT /
+        # TRANSLATION_DUPLICATE_SEGMENT records into the persisted
+        # translation_qa_record_set.v1 artifact; bumped from 1.2 so cached
+        # pages re-run and surface the new coverage findings.
+        return "1.3"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
