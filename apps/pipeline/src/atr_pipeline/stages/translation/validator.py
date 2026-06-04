@@ -15,8 +15,21 @@ from atr_pipeline.stages.translation.grouping import (
     split_group_source_segments,
     text_before_first_group_marker,
 )
+from atr_pipeline.stages.translation.record_builder import (
+    RecordContext,
+    coerce_severity,
+    make_record,
+    normalize_segment_id,
+    qa_id,
+)
+from atr_pipeline.stages.translation.segment_coverage import (
+    CODE_DUPLICATE_SEGMENT,
+    CODE_MISSING_SEGMENT,
+    check_segment_coverage,
+    groups_with_boundary_findings,
+)
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1, ConceptV1, ValidationPolicy
-from atr_schemas.enums import QALayer, Severity
+from atr_schemas.enums import Severity
 from atr_schemas.page_ir_v1 import IconInline
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
@@ -29,66 +42,28 @@ CODE_ICON_ORDER_MISMATCH = "TRANSLATION_ICON_ORDER_MISMATCH"
 CODE_GLOSSARY_FORBIDDEN_TARGET = "GLOSSARY_FORBIDDEN_TARGET"
 CODE_GLOSSARY_SURFACE_FORM_DRIFT = "GLOSSARY_SURFACE_FORM_DRIFT"
 CODE_GROUP_BOUNDARY_MISMATCH = "TRANSLATION_GROUP_BOUNDARY_MISMATCH"
+# Re-exported for callers that import the missing/duplicate codes from the
+# validator (the historical single import surface for translation QA codes).
+__all__ = [
+    "CODE_DUPLICATE_SEGMENT",
+    "CODE_GLOSSARY_FORBIDDEN_TARGET",
+    "CODE_GLOSSARY_SURFACE_FORM_DRIFT",
+    "CODE_GROUP_BOUNDARY_MISMATCH",
+    "CODE_ICON_COUNT_MISMATCH",
+    "CODE_ICON_ORDER_MISMATCH",
+    "CODE_MISSING_SEGMENT",
+    "CODE_UNKNOWN_SEGMENT",
+    "validate_translation",
+]
 _expand_grouped_batch = expand_grouped_batch
 _expand_grouped_result = expand_grouped_result
-
-_SEVERITY_LOOKUP: dict[str, Severity] = {
-    "info": Severity.INFO,
-    "warning": Severity.WARNING,
-    "error": Severity.ERROR,
-    "critical": Severity.CRITICAL,
-}
-
-
-def _coerce_severity(raw: str, default: Severity = Severity.WARNING) -> Severity:
-    """Map a validation-policy severity string onto a ``Severity`` enum."""
-    return _SEVERITY_LOOKUP.get(raw.strip().lower(), default)
-
-
-class _RecordContext:
-    """Document/page coordinates reused by every finding on a page."""
-
-    __slots__ = ("document_id", "page_id")
-
-    def __init__(self, document_id: str, page_id: str | None) -> None:
-        self.document_id = document_id
-        self.page_id = page_id
-
-
-def _make_record(
-    rec_ctx: _RecordContext,
-    *,
-    qa_id: str,
-    code: str,
-    severity: Severity,
-    entity_ref: str | None,
-    message: str,
-    values: tuple[object, object] = (None, None),
-) -> QARecordV1:
-    """Construct a ``QARecordV1`` with the translation validator defaults.
-
-    ``values`` is an ``(expected, actual)`` tuple, collapsed into a single
-    keyword argument to keep the parameter count small.
-    """
-    expected, actual = values
-    return QARecordV1(
-        qa_id=qa_id,
-        layer=QALayer.TERMINOLOGY,
-        severity=severity,
-        code=code,
-        document_id=rec_ctx.document_id,
-        page_id=rec_ctx.page_id,
-        entity_ref=entity_ref,
-        message=message,
-        expected=expected,
-        actual=actual,
-    )
-
-
-def _qa_id(page_id: str | None, segment_id: str, suffix: str) -> str:
-    """Build a stable ``qa_id`` for a translation finding."""
-    page_part = page_id or "doc"
-    return f"qa.{page_part}.translation.{segment_id}.{suffix}"
+# Backward-compatible private aliases (helpers moved to ``record_builder`` in
+# S5U-871 to keep this file under the 400-line ceiling).
+_RecordContext = RecordContext
+_make_record = make_record
+_qa_id = qa_id
+_coerce_severity = coerce_severity
+_normalize_segment_id = normalize_segment_id
 
 
 def _check_icon_parity(
@@ -303,16 +278,23 @@ def validate_translation(
     records: list[QARecordV1] = []
     expanded_batch = _expand_grouped_batch(batch)
     expanded_result = _expand_grouped_result(batch, result)
-    source_segments = {s.segment_id: s for s in expanded_batch.segments}
+    source_segments = {_normalize_segment_id(s.segment_id): s for s in expanded_batch.segments}
     rec_ctx = _RecordContext(document_id=document_id, page_id=page_id)
     _check_group_boundaries(batch, result, rec_ctx=rec_ctx, records=records)
+    check_segment_coverage(
+        expanded_batch,
+        expanded_result,
+        excluded_ids=groups_with_boundary_findings(batch, records),
+        rec_ctx=rec_ctx,
+        records=records,
+    )
 
     concept_map: dict[str, ConceptV1] = {}
     if concept_registry:
         concept_map = {c.concept_id: c for c in concept_registry.concepts}
 
     for translated in expanded_result.segments:
-        source = source_segments.get(translated.segment_id)
+        source = source_segments.get(_normalize_segment_id(translated.segment_id))
         if source is None:
             records.append(
                 _make_record(
