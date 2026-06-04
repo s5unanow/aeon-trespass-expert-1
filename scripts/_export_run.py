@@ -155,6 +155,19 @@ def _resolve_run_row(
                 f"refusing to export a partial bundle."
             )
             raise RunResolutionError(msg)
+        # An explicit --run-id must not be exported into a mismatched edition
+        # bundle (e.g. an EN run forced into the ru/ directory under
+        # --edition all). A run whose own edition is 'all' satisfies any
+        # request; otherwise the requested edition must equal the run's.
+        run_edition = row["edition"] or "all"
+        if edition is not None and run_edition not in (edition, "all"):
+            msg = (
+                f"--run-id {run_id!r} is an {run_edition!r}-edition run but a "
+                f"{edition!r} export was requested; refusing to splice a run "
+                f"across editions. Export {run_edition!r} explicitly "
+                f"(--edition {run_edition})."
+            )
+            raise RunResolutionError(msg)
         return cast("sqlite3.Row", row)
 
     row = _latest_complete_run(conn, document_id, edition)

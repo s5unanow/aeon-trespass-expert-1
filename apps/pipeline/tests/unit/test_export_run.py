@@ -181,6 +181,25 @@ class TestResolveRunFailClosed:
                 registry_path, "doc1", artifact_root=artifact_root, run_id="run_a"
             )
 
+    def test_run_id_edition_mismatch_refuses(
+        self, repo: tuple[Path, Path], run_module: ModuleType
+    ) -> None:
+        """An explicit EN --run-id requested for a RU export must refuse the splice."""
+        registry_path, artifact_root = repo
+        conn = init_registry(registry_path)
+        add_run(
+            conn,
+            run_id="run_en",
+            started_at="2026-01-01T00:00:00",
+            edition="en",
+            render_ref="doc1/render/document/doc1/en.json",
+        )
+        conn.close()
+        with pytest.raises(run_module.RunResolutionError, match="across editions"):
+            run_module.resolve_run(
+                registry_path, "doc1", artifact_root=artifact_root, run_id="run_en", edition="ru"
+            )
+
     def test_failed_run_not_picked_as_latest(
         self, repo: tuple[Path, Path], run_module: ModuleType
     ) -> None:
