@@ -128,11 +128,16 @@ def export_qa(
     summary_path: Path | None = None,
     *,
     ref_bound: bool = False,
+    edition_dir: Path | None = None,
 ) -> int:
     """Write qa_summary.json + qa_records.json to the edition data dir.
 
     Returns the number of records exported. Returns 0 (and prints a notice)
     if no summary artifact is found.
+
+    ``edition_dir`` overrides the default ``doc_public / edition`` target so the
+    two-phase commit (S5U-890) can build into a staging dir before the atomic
+    swap.
 
     Ref-bound mode (S5U-869): callers pass ``ref_bound=True`` together with the
     QA summary artifact resolved from the *single* exported run. In this mode
@@ -146,7 +151,8 @@ def export_qa(
     Legacy mode (``ref_bound=False``, ``summary_path=None``) preserves the
     directory-scan path for callers that have not migrated to run binding.
     """
-    out_dir = doc_public / edition / "data"
+    base_dir = doc_public / edition if edition_dir is None else edition_dir
+    out_dir = base_dir / "data"
 
     if summary_path is not None:
         latest: Path | None = summary_path
