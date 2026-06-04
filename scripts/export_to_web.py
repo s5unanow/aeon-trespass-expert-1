@@ -6,7 +6,9 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 _SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -14,16 +16,17 @@ REPO = _SCRIPTS_DIR.parent
 sys.path.insert(0, str(REPO / "apps" / "pipeline" / "src"))
 sys.path.insert(0, str(_SCRIPTS_DIR))
 
-from _export_blocks import (  # noqa: E402
-    export_facsimile_rasters,
-    inject_image_figures,
-    namespace_bare_figures,
-    postprocess_blocks,
-    rewrite_facsimile_urls,
-    rewrite_figure_urls,
-    text_content,
+from _export_blocks import export_facsimile_rasters  # noqa: E402
+from _export_commit import (  # noqa: E402
+    ExportCommitError,
+    StagedEdition,
+    build_edition_into_staging,
+    cleanup_staging,
+    commit_staged,
+    reset_staging,
 )
 from _export_images import extract_images, resolve_source_pdf  # noqa: E402
+from _export_pages import export_glossary, export_pages  # noqa: E402
 from _export_qa import export_qa  # noqa: E402
 from _export_qa_gate import (  # noqa: E402
     draft_banner,
@@ -38,12 +41,10 @@ from _export_run import (  # noqa: E402
     resolve_qa_summary_path,
     resolve_run,
 )
-from _export_toc import extract_toc_sections  # noqa: E402
 from _export_validation import run_export_validation  # noqa: E402
 
 from atr_pipeline.config import load_document_config  # noqa: E402
 from atr_pipeline.stages.publish.qa_gate import QAGateError, QAGateResult  # noqa: E402
-from atr_pipeline.store.atomic_write import atomic_write_text  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -53,14 +54,6 @@ __all__ = ["extract_images", "resolve_source_pdf"]
 
 ARTIFACT_ROOT = REPO / "artifacts"
 REGISTRY_PATH = REPO / "var" / "registry.db"
-
-
-_KIND_MAP = {
-    "list_item": "list_items",
-    "figure": "figures",
-    "heading": "headings",
-    "paragraph": "paragraphs",
-}
 
 
 def _load_facsimile_override_pids(doc_id: str) -> list[str]:
@@ -90,138 +83,6 @@ def _load_facsimile_override_pids(doc_id: str) -> list[str]:
         for pid, override in config.render.page_overrides.items()
         if override.presentation_mode == "facsimile"
     )
-
-
-def _count_block_stats(blocks: list[dict], stats: dict) -> None:
-    """Accumulate block kind counts into stats dict."""
-    for b in blocks:
-        key = _KIND_MAP.get(b.get("kind", ""))
-        if key:
-            stats[key] += 1
-        if b.get("kind") == "paragraph" and len(text_content(b)) > 800:
-            stats["long_paras"] += 1
-
-
-def export_pages(
-    doc_id: str,
-    edition: str,
-    render_pages: dict[str, dict],
-    doc_public: Path,
-    page_images: dict[str, list[dict]],
-    provenance: dict[str, str] | None = None,
-) -> None:
-    """Export ref-bound render pages with navigation and image figures.
-
-    ``render_pages`` maps page_id → already-resolved render-page payload,
-    selected from a single pipeline run (S5U-869) rather than picked by mtime.
-    All artifact selection happens upstream in ``_export_run.resolve_run`` so
-    this function only transforms + writes; it never enumerates the artifact
-    store or chooses between competing artifacts.
-    """
-    edition_dir = doc_public / edition
-    data_dir = edition_dir / "data"
-    data_dir.mkdir(parents=True, exist_ok=True)
-
-    # Remove stale render_page files from prior exports
-    for stale in data_dir.glob("render_page.*.json"):
-        stale.unlink()
-
-    exported: list[tuple[str, dict]] = []  # (page_id, data) for exported pages
-    pages_meta = []
-    stats = {"list_items": 0, "figures": 0, "headings": 0, "paragraphs": 0, "long_paras": 0}
-
-    for pid in sorted(render_pages):
-        best = render_pages[pid]
-
-        # Rewrite legacy bare imgNNNN asset IDs to namespaced pid.imgNNNN
-        namespace_bare_figures(best, pid)
-
-        # Rewrite pipeline-relative figure src paths for all page types
-        rewrite_figure_urls(best, doc_id)
-
-        if best.get("presentation_mode") == "facsimile":
-            rewrite_facsimile_urls(best, doc_id)
-        else:
-            best["blocks"] = postprocess_blocks(best.get("blocks", []))
-            inject_image_figures(best, pid, page_images.get(pid, []))
-
-        # Skip pages with no renderable content (e.g. blank cover pages)
-        is_facsimile = best.get("presentation_mode") == "facsimile"
-        if not is_facsimile and not best.get("blocks"):
-            continue
-
-        _count_block_stats(best.get("blocks", []), stats)
-        exported.append((pid, best))
-
-    # Inject navigation using only the actually-exported page list
-    exported_ids = [pid for pid, _ in exported]
-    for i, (pid, best) in enumerate(exported):
-        best["nav"] = {
-            "prev": exported_ids[i - 1] if i > 0 else None,
-            "next": exported_ids[i + 1] if i < len(exported_ids) - 1 else None,
-            "parent_section": "",
-        }
-        (data_dir / f"render_page.{pid}.json").write_text(
-            json.dumps(best, ensure_ascii=False, indent=2)
-        )
-        pages_meta.append(
-            {
-                "page_id": pid,
-                "title": best.get("page", {}).get("title", ""),
-            }
-        )
-
-    # Derive sections and page offset from TOC entries
-    section_pids, page_offset = extract_toc_sections(data_dir, pages_meta)
-    for pm in pages_meta:
-        pm["depth"] = 0 if pm["page_id"] in section_pids else 1
-
-    # Edition-scoped manifest, stamped with run provenance (S5U-869) so the
-    # web side and reviewers can see which single run produced this bundle.
-    manifest: dict = {"document_id": doc_id, "page_offset": page_offset, "pages": pages_meta}
-    if provenance:
-        manifest["provenance"] = provenance
-    atomic_write_text(
-        edition_dir / "manifest.json",
-        json.dumps(manifest, ensure_ascii=False, indent=2),
-    )
-    print(f"  [{edition.upper()}] TOC sections: {len(section_pids)}, page_offset: {page_offset}")
-
-    total = stats["headings"] + stats["paragraphs"] + stats["list_items"] + stats["figures"]
-    print(f"  [{edition.upper()}] Exported {len(pages_meta)} pages, {total} blocks:")
-    for k, v in stats.items():
-        print(f"    {k}: {v}")
-
-
-def export_glossary(
-    doc_id: str, edition: str, glossary_path: Path | None, doc_public: Path
-) -> None:
-    """Export the run-bound glossary payload to the web bundle.
-
-    ``glossary_path`` is resolved from the run's render result
-    (``glossary_ref``). When the ref is set but the file is absent the caller has
-    already refused (see :func:`_resolve_glossary_path`) — we never mtime-fall-
-    back to a stray glossary from another run (S5U-869, fail-closed per G1).
-
-    Stale-companion cleanup (S5U-892): when the bound run carries no glossary,
-    any ``glossary.json`` from a prior run's export is removed (the reader
-    fetches the fixed path unconditionally — a leftover is a cross-run splice),
-    mirroring the ``render_page.*.json`` unlink in :func:`export_pages`.
-    """
-    out = doc_public / edition / "data"
-    if glossary_path is None:
-        # Remove a prior run's glossary.json (missing_ok: nothing to clean on a
-        # fresh edition), else the reader splices it over this run's pages.
-        (out / "glossary.json").unlink(missing_ok=True)
-        print(f"  [{edition.upper()}] No glossary artifact for run, skipping")
-        return
-    data = json.loads(glossary_path.read_text())
-    out.mkdir(parents=True, exist_ok=True)
-    atomic_write_text(
-        out / "glossary.json",
-        json.dumps(data, ensure_ascii=False, indent=2),
-    )
-    print(f"  [{edition.upper()}] Exported glossary with {len(data.get('entries', []))} entries")
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -281,51 +142,142 @@ def write_document_index(documents_root: Path) -> None:
     print(f"Wrote document index: {len(entries)} document(s)")
 
 
-def _export_edition(
+@dataclass(frozen=True)
+class ResolvedEdition:
+    """Phase-1 result for one edition: a single run with every bound ref proven.
+
+    Built by :func:`_resolve_edition` *before any write*. Resolving every ref
+    (pages, glossary, QA summary) here is what makes the export fail-closed
+    (S5U-890): a missing glossary/page/QA file refuses up front, and resolving
+    *all* requested editions before building any of them prevents the EN-before-RU
+    cross-edition split.
+    """
+
+    edition: str
+    resolved: ResolvedRun
+    gate_result: QAGateResult
+    render_pages: dict[str, dict]
+    glossary_path: Path | None
+    qa_summary_path: Path | None
+
+
+def _resolve_edition(
     doc_id: str,
     edition: str,
-    resolved: ResolvedRun,
-    doc_public: Path,
+    run_id: str | None,
+    *,
+    review_only: bool,
+) -> ResolvedEdition:
+    """Phase 1: resolve a run and prove every bound artifact exists — no writes.
+
+    Ref-binds the edition to a single complete run (S5U-869), runs the
+    blocking-QA gate (S5U-870), and eagerly resolves the page / glossary / QA
+    refs so a missing file refuses here (S5U-890) instead of after the bundle is
+    partially written. Raises ``RunResolutionError`` / ``QAGateError`` on any
+    degenerate input (guards.md Rule G1).
+    """
+    resolved = resolve_run(
+        REGISTRY_PATH,
+        doc_id,
+        artifact_root=ARTIFACT_ROOT,
+        run_id=run_id,
+        edition=edition,
+    )
+    gate_result = enforce_export_qa_gate(
+        doc_id,
+        edition,
+        resolved,
+        artifact_root=ARTIFACT_ROOT,
+        review_only=review_only,
+    )
+    render_pages = load_run_pages(resolved, ARTIFACT_ROOT)
+    # Pull glossary + QA-summary ref resolution into the pre-write gate (S5U-890):
+    # both must prove the referenced file exists before any edition is built.
+    glossary_path = resolve_glossary_path(resolved, ARTIFACT_ROOT)
+    qa_summary_path = resolve_qa_summary_path(resolved, ARTIFACT_ROOT)
+    return ResolvedEdition(
+        edition=edition,
+        resolved=resolved,
+        gate_result=gate_result,
+        render_pages=render_pages,
+        glossary_path=glossary_path,
+        qa_summary_path=qa_summary_path,
+    )
+
+
+def _build_edition(
+    doc_id: str,
+    re_edition: ResolvedEdition,
+    staging_dir: Path,
+    staged_rasters_dir: Path,
     page_images: dict[str, list[dict]],
     facsimile_override_pids: list[str],
-    *,
-    gate_result: QAGateResult,
 ) -> bool:
-    """Export one edition's bundle from a single resolved run. Returns validation OK.
+    """Phase 2: build one resolved edition into ``staging_dir``. Returns validation OK.
 
-    ``gate_result`` is the already-evaluated blocking-QA gate decision for this
-    edition (a refusal would have raised before this point). When it is a
-    review-only draft, the bundle is loudly labeled.
+    Writes rasters into ``staged_rasters_dir`` and pages/glossary/QA into
+    ``staging_dir`` (a direct child of ``doc_public``), then runs
+    ``run_export_validation`` against the staged dir. Nothing live is touched —
+    the caller swaps staging into place only after every edition validates.
     """
-    print(f"Exporting {edition.upper()} render pages from run {resolved.run_id}...")
-    if gate_result.is_draft:
-        print(draft_banner(edition, gate_result))
-    render_pages = load_run_pages(resolved, ARTIFACT_ROOT)
+    edition, resolved = re_edition.edition, re_edition.resolved
+    staged_doc_public = doc_public_for(staging_dir)
+    print(f"Staging {edition.upper()} render pages from run {resolved.run_id}...")
+    if re_edition.gate_result.is_draft:
+        print(draft_banner(edition, re_edition.gate_result))
     facsimile_pids = [
-        pid for pid, data in render_pages.items() if data.get("presentation_mode") == "facsimile"
+        pid
+        for pid, data in re_edition.render_pages.items()
+        if data.get("presentation_mode") == "facsimile"
     ]
     if facsimile_pids:
-        print(f"  Exporting rasters for {len(facsimile_pids)} facsimile pages...")
-        # Run-bound (S5U-891): rasters come from resolved.raster_refs, not a global scan.
+        print(f"  Staging rasters for {len(facsimile_pids)} facsimile pages...")
+        # Run-bound (S5U-891): rasters come from resolved.raster_refs, not a global
+        # scan. A missing raster ref raises here — still pre-swap (S5U-890).
         export_facsimile_rasters(
-            doc_public, ARTIFACT_ROOT, sorted(facsimile_pids), resolved.raster_refs
+            staged_doc_public,
+            ARTIFACT_ROOT,
+            sorted(facsimile_pids),
+            resolved.raster_refs,
+            rasters_dir=staged_rasters_dir,
         )
 
-    provenance = stamp_draft_provenance(resolved.provenance(), gate_result)
-    export_pages(doc_id, edition, render_pages, doc_public, page_images, provenance)
-    export_glossary(doc_id, edition, resolve_glossary_path(resolved, ARTIFACT_ROOT), doc_public)
+    provenance = stamp_draft_provenance(resolved.provenance(), re_edition.gate_result)
+    export_pages(
+        doc_id,
+        edition,
+        re_edition.render_pages,
+        staged_doc_public,
+        page_images,
+        provenance,
+        edition_dir=staging_dir,
+    )
+    export_glossary(
+        doc_id, edition, re_edition.glossary_path, staged_doc_public, edition_dir=staging_dir
+    )
     export_qa(
         ARTIFACT_ROOT,
         doc_id,
         edition,
-        doc_public,
-        summary_path=resolve_qa_summary_path(resolved, ARTIFACT_ROOT),
+        staged_doc_public,
+        summary_path=re_edition.qa_summary_path,
         ref_bound=True,
+        edition_dir=staging_dir,
     )
 
-    edition_dir = doc_public / edition
-    manifest = json.loads((edition_dir / "manifest.json").read_text())
-    return run_export_validation(edition_dir, manifest["pages"], facsimile_override_pids)
+    manifest = json.loads((staging_dir / "manifest.json").read_text())
+    return run_export_validation(staging_dir, manifest["pages"], facsimile_override_pids)
+
+
+def doc_public_for(staging_dir: Path) -> Path:
+    """Parent ``doc_public`` of a staging/edition dir.
+
+    ``validate_asset_existence`` derives ``doc_public = data_dir.parent.parent``
+    and resolves ``/documents/...`` figure src paths against the live shared
+    ``images/`` dir under it; the staging dir is a direct child of ``doc_public``
+    so this parent is the same live ``doc_public`` the assets live under.
+    """
+    return staging_dir.parent
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -348,51 +300,56 @@ def main(argv: list[str] | None = None) -> None:
     if facsimile_override_pids:
         print(f"Config-allowlisted facsimile pages: {', '.join(facsimile_override_pids)}")
 
-    validation_ok = True
+    pid = os.getpid()
+    staged_rasters_dir = doc_public / f".stage-rasters-{pid}"
     try:
-        for edition in editions:
-            # Ref-bind each edition to a single complete run (S5U-869): an
-            # explicit --run-id pins the exact run; otherwise the latest
-            # complete run for this document/edition is used. Every artifact
-            # comes from that one run — no mtime selection, no cross-run splice.
-            resolved = resolve_run(
-                REGISTRY_PATH,
-                doc_id,
-                artifact_root=ARTIFACT_ROOT,
-                run_id=run_id,
-                edition=edition,
+        # Phase 1 — resolve + validate ALL editions before any write (S5U-890).
+        resolved_editions = [
+            _resolve_edition(doc_id, edition, run_id, review_only=review_only)
+            for edition in editions
+        ]
+        # Phase 2 — build each edition into its own staging dir (no live mutation).
+        reset_staging(doc_public, editions, pid, staged_rasters_dir)
+        staged: list[StagedEdition] = []
+        for resolved_edition in resolved_editions:
+
+            def _build(target: Path, re_edition: ResolvedEdition = resolved_edition) -> bool:
+                return _build_edition(
+                    doc_id,
+                    re_edition,
+                    target,
+                    staged_rasters_dir,
+                    page_images,
+                    facsimile_override_pids,
+                )
+
+            staged.append(
+                build_edition_into_staging(doc_public, resolved_edition.edition, pid, _build)
             )
-            # Blocking-QA gate (S5U-870): refuse before writing any bundle when
-            # the resolved run has blocking, non-waived QA findings — unless
-            # --review-only was explicitly passed (loud draft instead).
-            gate_result = enforce_export_qa_gate(
-                doc_id,
-                edition,
-                resolved,
-                artifact_root=ARTIFACT_ROOT,
-                review_only=review_only,
-            )
-            if not _export_edition(
-                doc_id,
-                edition,
-                resolved,
-                doc_public,
-                page_images,
-                facsimile_override_pids,
-                gate_result=gate_result,
-            ):
-                validation_ok = False
+        # Phase 3 — atomically swap every staged edition (+ rasters) into place.
+        commit_staged(
+            staged,
+            doc_public=doc_public,
+            pid=pid,
+            staged_rasters=staged_rasters_dir if staged_rasters_dir.is_dir() else None,
+        )
     except RunResolutionError as exc:
+        cleanup_staging(doc_public, editions, pid, staged_rasters_dir)
         print(f"Export refused: {exc}")
         sys.exit(1)
     except QAGateError as exc:
+        cleanup_staging(doc_public, editions, pid, staged_rasters_dir)
         print(f"Export refused: {exc}")
         sys.exit(1)
-
-    write_document_index(documents_root)
-    if not validation_ok:
-        print("Export validation FAILED — see errors above.")
+    except ExportCommitError as exc:
+        cleanup_staging(doc_public, editions, pid, staged_rasters_dir)
+        print(str(exc))
         sys.exit(1)
+
+    # Reaching here means every edition built, validated, and swapped atomically
+    # (commit_staged raises ExportCommitError on any staged-validation failure,
+    # caught above with the live bundle left untouched).
+    write_document_index(documents_root)
     print("Done.")
 
 

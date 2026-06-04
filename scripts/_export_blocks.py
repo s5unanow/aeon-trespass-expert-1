@@ -264,6 +264,8 @@ def export_facsimile_rasters(
     artifact_root: Path,
     facsimile_page_ids: list[str],
     raster_refs: dict[str, dict[int, str]],
+    *,
+    rasters_dir: Path | None = None,
 ) -> None:
     """Copy a resolved run's facsimile rasters to the web public directory.
 
@@ -279,12 +281,16 @@ def export_facsimile_rasters(
     raster ref is missing on disk raises :class:`RunResolutionError`. There is
     **no** silent fall-back to a global scan — a partial/cross-run raster bundle
     is a worse failure state than refusing.
+
+    ``rasters_dir`` overrides the default ``doc_public / "rasters"`` target so the
+    two-phase commit (S5U-890) can copy into a staging rasters dir before the
+    atomic swap — a missing raster ref then refuses *before* any live mutation.
     """
     from _export_run import RunResolutionError
 
     if not facsimile_page_ids:
         return
-    rasters_dir = doc_public / "rasters"
+    rasters_dir = doc_public / "rasters" if rasters_dir is None else rasters_dir
     rasters_dir.mkdir(parents=True, exist_ok=True)
     copied = 0
 
