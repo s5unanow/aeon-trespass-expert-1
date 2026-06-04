@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import re
 import sys
 from pathlib import Path
@@ -25,32 +26,27 @@ from _export_blocks import (  # noqa: E402
 )
 from _export_images import extract_images, resolve_source_pdf  # noqa: E402
 from _export_qa import export_qa  # noqa: E402
+from _export_run import (  # noqa: E402
+    ResolvedRun,
+    RunResolutionError,
+    load_run_pages,
+    resolve_glossary_path,
+    resolve_qa_summary_path,
+    resolve_run,
+)
 from _export_validation import run_export_validation  # noqa: E402
 
 from atr_pipeline.config import load_document_config  # noqa: E402
-from atr_pipeline.store.edition_selection import (  # noqa: E402
-    pick_latest_for_edition,
-)
+from atr_pipeline.store.atomic_write import atomic_write_text  # noqa: E402
+
+logger = logging.getLogger(__name__)
 
 # Re-exports for S5U-688 regression tests and downstream callers that want to
 # import the helpers from the main entry script.
 __all__ = ["extract_images", "resolve_source_pdf"]
 
 ARTIFACT_ROOT = REPO / "artifacts"
-
-
-def _pick_latest(jsons: list[Path], edition: str = "") -> dict | None:
-    """Edition-aware selection across raw artifact paths.
-
-    Thin wrapper around
-    :func:`atr_pipeline.store.edition_selection.pick_latest_for_edition`
-    so the exporter and the QA stage share a single source of truth for
-    the two-tier ``document_version`` selection policy (S5U-731).
-    Kept as a module-level symbol because existing tests in
-    ``apps/pipeline/tests/unit/test_export_to_web.py::TestPickLatest``
-    import it through the script module.
-    """
-    return pick_latest_for_edition(jsons, edition)
+REGISTRY_PATH = REPO / "var" / "registry.db"
 
 
 _TOC_ENTRY_RE = re.compile(r"(.+?)\.{3,}\s*(\d+)")
@@ -161,11 +157,19 @@ def _count_block_stats(blocks: list[dict], stats: dict) -> None:
 def export_pages(
     doc_id: str,
     edition: str,
-    render_src: Path,
+    render_pages: dict[str, dict],
     doc_public: Path,
     page_images: dict[str, list[dict]],
+    provenance: dict[str, str] | None = None,
 ) -> None:
-    """Export render pages with navigation and image figures."""
+    """Export ref-bound render pages with navigation and image figures.
+
+    ``render_pages`` maps page_id → already-resolved render-page payload,
+    selected from a single pipeline run (S5U-869) rather than picked by mtime.
+    All artifact selection happens upstream in ``_export_run.resolve_run`` so
+    this function only transforms + writes; it never enumerates the artifact
+    store or chooses between competing artifacts.
+    """
     edition_dir = doc_public / edition
     data_dir = edition_dir / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
@@ -174,22 +178,12 @@ def export_pages(
     for stale in data_dir.glob("render_page.*.json"):
         stale.unlink()
 
-    all_page_ids = sorted(d.name for d in render_src.iterdir() if d.is_dir())
     exported: list[tuple[str, dict]] = []  # (page_id, data) for exported pages
     pages_meta = []
     stats = {"list_items": 0, "figures": 0, "headings": 0, "paragraphs": 0, "long_paras": 0}
 
-    for pid in all_page_ids:
-        page_dir = render_src / pid
-        jsons = list(page_dir.glob("*.json"))
-        if not jsons:
-            continue
-
-        # Pick the latest artifact matching this edition — the most recent
-        # pipeline run always has the best quality (filtered annotations, etc.).
-        best = _pick_latest(jsons, edition)
-        if best is None:
-            continue
+    for pid in sorted(render_pages):
+        best = render_pages[pid]
 
         # Rewrite legacy bare imgNNNN asset IDs to namespaced pid.imgNNNN
         namespace_bare_figures(best, pid)
@@ -234,9 +228,15 @@ def export_pages(
     for pm in pages_meta:
         pm["depth"] = 0 if pm["page_id"] in section_pids else 1
 
-    # Edition-scoped manifest
-    manifest = {"document_id": doc_id, "page_offset": page_offset, "pages": pages_meta}
-    (edition_dir / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+    # Edition-scoped manifest, stamped with run provenance (S5U-869) so the
+    # web side and reviewers can see which single run produced this bundle.
+    manifest: dict = {"document_id": doc_id, "page_offset": page_offset, "pages": pages_meta}
+    if provenance:
+        manifest["provenance"] = provenance
+    atomic_write_text(
+        edition_dir / "manifest.json",
+        json.dumps(manifest, ensure_ascii=False, indent=2),
+    )
     print(f"  [{edition.upper()}] TOC sections: {len(section_pids)}, page_offset: {page_offset}")
 
     total = stats["headings"] + stats["paragraphs"] + stats["list_items"] + stats["figures"]
@@ -245,18 +245,27 @@ def export_pages(
         print(f"    {k}: {v}")
 
 
-def export_glossary(doc_id: str, edition: str, glossary_src: Path, doc_public: Path) -> None:
-    """Export glossary payload to web bundle (same glossary for all editions)."""
-    files = list(glossary_src.glob("*.json")) if glossary_src.exists() else []
-    if not files:
-        print(f"  [{edition.upper()}] No glossary artifact found, skipping")
+def export_glossary(
+    doc_id: str, edition: str, glossary_path: Path | None, doc_public: Path
+) -> None:
+    """Export the run-bound glossary payload to the web bundle.
+
+    ``glossary_path`` is resolved from the run's render result
+    (``glossary_ref``). When the run carries no glossary ref the export skips
+    cleanly. When the ref is set but the file is absent the caller has already
+    refused (see :func:`_resolve_glossary_path`) — we never mtime-fall-back to
+    a stray glossary from another run (S5U-869, fail-closed per guards.md G1).
+    """
+    if glossary_path is None:
+        print(f"  [{edition.upper()}] No glossary artifact for run, skipping")
         return
-    # Pick the most recently written artifact so partial reruns propagate.
-    latest = max(files, key=lambda p: p.stat().st_mtime)
-    data = json.loads(latest.read_text())
+    data = json.loads(glossary_path.read_text())
     out = doc_public / edition / "data"
     out.mkdir(parents=True, exist_ok=True)
-    (out / "glossary.json").write_text(json.dumps(data, ensure_ascii=False, indent=2))
+    atomic_write_text(
+        out / "glossary.json",
+        json.dumps(data, ensure_ascii=False, indent=2),
+    )
     print(f"  [{edition.upper()}] Exported glossary with {len(data.get('entries', []))} entries")
 
 
@@ -264,6 +273,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Export pipeline artifacts to web viewer")
     parser.add_argument("--doc", default="ato_core_v1_1", help="Document ID")
     parser.add_argument("--edition", choices=["en", "ru", "all"], default="all", help="Edition")
+    parser.add_argument(
+        "--run-id",
+        default=None,
+        help=(
+            "Pin export to a specific complete run (default: latest complete run "
+            "for the document/edition). Refuses if the run is missing or unfinished."
+        ),
+    )
     return parser.parse_args(argv)
 
 
@@ -295,54 +312,78 @@ def write_document_index(documents_root: Path) -> None:
     print(f"Wrote document index: {len(entries)} document(s)")
 
 
+def _export_edition(
+    doc_id: str,
+    edition: str,
+    resolved: ResolvedRun,
+    doc_public: Path,
+    page_images: dict[str, list[dict]],
+    facsimile_override_pids: list[str],
+) -> bool:
+    """Export one edition's bundle from a single resolved run. Returns validation OK."""
+    print(f"Exporting {edition.upper()} render pages from run {resolved.run_id}...")
+    render_pages = load_run_pages(resolved, ARTIFACT_ROOT)
+
+    facsimile_pids = [
+        pid for pid, data in render_pages.items() if data.get("presentation_mode") == "facsimile"
+    ]
+    if facsimile_pids:
+        print(f"  Exporting rasters for {len(facsimile_pids)} facsimile pages...")
+        export_facsimile_rasters(doc_id, doc_public, ARTIFACT_ROOT, sorted(facsimile_pids))
+
+    export_pages(doc_id, edition, render_pages, doc_public, page_images, resolved.provenance())
+    export_glossary(doc_id, edition, resolve_glossary_path(resolved, ARTIFACT_ROOT), doc_public)
+    export_qa(
+        ARTIFACT_ROOT,
+        doc_id,
+        edition,
+        doc_public,
+        summary_path=resolve_qa_summary_path(resolved, ARTIFACT_ROOT),
+        ref_bound=True,
+    )
+
+    edition_dir = doc_public / edition
+    manifest = json.loads((edition_dir / "manifest.json").read_text())
+    return run_export_validation(edition_dir, manifest["pages"], facsimile_override_pids)
+
+
 def main(argv: list[str] | None = None) -> None:
     args = _parse_args(argv)
     doc_id: str = args.doc
+    run_id: str | None = args.run_id
     editions = ["en", "ru"] if args.edition == "all" else [args.edition]
 
-    render_src = ARTIFACT_ROOT / doc_id / "render_page.v1" / "page"
     documents_root = REPO / "apps" / "web" / "public" / "documents"
     doc_public = documents_root / doc_id
 
-    if not render_src.exists():
-        print(f"No render artifacts found at {render_src}")
-        sys.exit(1)
-
     print("Extracting images from PDF...")
     page_images = extract_images(doc_id, doc_public, repo_root=REPO)
-
-    # Collect facsimile page IDs from render artifacts
-    facsimile_pids: list[str] = []
-    for pid_dir in sorted(render_src.iterdir()):
-        if not pid_dir.is_dir():
-            continue
-        if any(
-            json.loads(jf.read_text()).get("presentation_mode") == "facsimile"
-            for jf in pid_dir.glob("*.json")
-        ):
-            facsimile_pids.append(pid_dir.name)
-
-    if facsimile_pids:
-        print(f"Exporting rasters for {len(facsimile_pids)} facsimile pages...")
-        export_facsimile_rasters(doc_id, doc_public, ARTIFACT_ROOT, facsimile_pids)
-
-    glossary_src = ARTIFACT_ROOT / doc_id / "glossary_payload.v1" / "document" / doc_id
 
     facsimile_override_pids = _load_facsimile_override_pids(doc_id)
     if facsimile_override_pids:
         print(f"Config-allowlisted facsimile pages: {', '.join(facsimile_override_pids)}")
 
     validation_ok = True
-    for edition in editions:
-        print(f"Exporting {edition.upper()} render pages...")
-        export_pages(doc_id, edition, render_src, doc_public, page_images)
-        export_glossary(doc_id, edition, glossary_src, doc_public)
-        export_qa(ARTIFACT_ROOT, doc_id, edition, doc_public)
-
-        edition_dir = doc_public / edition
-        manifest = json.loads((edition_dir / "manifest.json").read_text())
-        if not run_export_validation(edition_dir, manifest["pages"], facsimile_override_pids):
-            validation_ok = False
+    try:
+        for edition in editions:
+            # Ref-bind each edition to a single complete run (S5U-869): an
+            # explicit --run-id pins the exact run; otherwise the latest
+            # complete run for this document/edition is used. Every artifact
+            # comes from that one run — no mtime selection, no cross-run splice.
+            resolved = resolve_run(
+                REGISTRY_PATH,
+                doc_id,
+                artifact_root=ARTIFACT_ROOT,
+                run_id=run_id,
+                edition=edition,
+            )
+            if not _export_edition(
+                doc_id, edition, resolved, doc_public, page_images, facsimile_override_pids
+            ):
+                validation_ok = False
+    except RunResolutionError as exc:
+        print(f"Export refused: {exc}")
+        sys.exit(1)
 
     write_document_index(documents_root)
     if not validation_ok:

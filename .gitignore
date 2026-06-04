@@ -74,6 +74,7 @@ apps/web/public/documents/*
 var/*.db
 var/*.db-journal
 var/*.db-wal
+var/*.db-shm
 
 # Secrets
 .env.local
