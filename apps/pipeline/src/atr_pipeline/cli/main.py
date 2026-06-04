@@ -56,11 +56,26 @@ def run_cmd(
     to_stage: str = typer.Option("qa", "--to", help="Last stage"),
     edition: str = typer.Option("all", "--edition", help="'en' (source-only) or 'all'"),
     pages: str = typer.Option("", "--pages", help="Page filter: '15' or '15,18-20'"),
+    review_only: bool = typer.Option(
+        False,
+        "--review-only",
+        help=(
+            "PublishStage QA-gate escape hatch: build a DRAFT bundle over "
+            "blocking QA instead of refusing (explicit flag only, no env toggle)."
+        ),
+    ),
 ) -> None:
     """Run pipeline stages for a document."""
     from atr_pipeline.cli.commands.run import run as _run
 
-    _run(doc=doc, from_stage=from_stage, to_stage=to_stage, edition=edition, pages=pages)
+    _run(
+        doc=doc,
+        from_stage=from_stage,
+        to_stage=to_stage,
+        edition=edition,
+        pages=pages,
+        review_only=review_only,
+    )
 
 
 @app.command(name="release")

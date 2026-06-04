@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import logging
+import sqlite3
 import uuid
+from pathlib import Path
 
 import typer
 
@@ -36,6 +38,16 @@ def run(
     to_stage: str = typer.Option("qa", "--to", help="Last stage to run"),
     edition: str = typer.Option("all", "--edition", help="Edition: 'en' (source-only) or 'all'"),
     pages: str = typer.Option("", "--pages", help="Page filter: '15' or '15,18-20'"),
+    review_only: bool = typer.Option(
+        False,
+        "--review-only",
+        help=(
+            "Escape hatch for the PublishStage QA gate: build a clearly-marked "
+            "DRAFT bundle over blocking QA findings (for human review) instead "
+            "of refusing. Default is to refuse on blocking QA. Must be passed "
+            "explicitly on the CLI — there is no env-var toggle (guards.md G1)."
+        ),
+    ),
 ) -> None:
     """Run a range of pipeline stages for a document."""
     config = load_document_config(doc)
@@ -70,8 +82,14 @@ def run(
         logger=logger,
         edition=edition,
         page_filter=page_filter,
+        publish_review_only=review_only,
     )
 
+    if review_only:
+        typer.echo(
+            "REVIEW-ONLY: PublishStage will build a DRAFT bundle over blocking QA "
+            "if present — do not release it as-is."
+        )
     if page_filter:
         typer.echo(f"Page filter: {sorted(page_filter)}")
     typer.echo(f"Running stages: {' → '.join(stages)}")
@@ -108,28 +126,16 @@ def run(
 
     status = "failed" if has_errors else "completed"
     try:
-        finish_run(conn, run_id=run_id, status=status, qa_summary_ref=qa_summary_ref)
-
-        manifest_ref = store.put_json(
-            document_id=doc,
-            schema_family="run_manifest.v1",
-            scope="run",
-            entity_id=run_id,
-            data=build_run_manifest(conn, run_id=run_id),
-        )
-        set_run_manifest_ref(conn, run_id=run_id, ref=manifest_ref.relative_path)
-
-        # Write flat run_summary.json at artifact root for LLM observability
-        atomic_write_text(
-            config.artifact_root / "run_summary.json",
-            build_run_summary(
-                conn,
-                run_id=run_id,
-                document_id=doc,
-                stages_requested=stages,
-                page_filter=page_filter,
-            ).model_dump_json(indent=2)
-            + "\n",
+        _finalize_run(
+            conn,
+            store=store,
+            doc=doc,
+            run_id=run_id,
+            status=status,
+            qa_summary_ref=qa_summary_ref,
+            stages=stages,
+            page_filter=page_filter,
+            artifact_root=config.artifact_root,
         )
     finally:
         detach_run_log_handler(log_handler)
@@ -139,3 +145,41 @@ def run(
         typer.echo(f"Run {run_id} finished with errors.")
         raise typer.Exit(1)
     typer.echo(f"Run {run_id} completed successfully.")
+
+
+def _finalize_run(  # noqa: PLR0913 — cohesive run-finalization plumbing
+    conn: sqlite3.Connection,
+    *,
+    store: ArtifactStore,
+    doc: str,
+    run_id: str,
+    status: str,
+    qa_summary_ref: str | None,
+    stages: list[str],
+    page_filter: frozenset[str] | None,
+    artifact_root: Path,
+) -> None:
+    """Finish the run, persist its manifest, and write the flat run summary."""
+    finish_run(conn, run_id=run_id, status=status, qa_summary_ref=qa_summary_ref)
+
+    manifest_ref = store.put_json(
+        document_id=doc,
+        schema_family="run_manifest.v1",
+        scope="run",
+        entity_id=run_id,
+        data=build_run_manifest(conn, run_id=run_id),
+    )
+    set_run_manifest_ref(conn, run_id=run_id, ref=manifest_ref.relative_path)
+
+    # Write flat run_summary.json at artifact root for LLM observability
+    atomic_write_text(
+        artifact_root / "run_summary.json",
+        build_run_summary(
+            conn,
+            run_id=run_id,
+            document_id=doc,
+            stages_requested=stages,
+            page_filter=page_filter,
+        ).model_dump_json(indent=2)
+        + "\n",
+    )

@@ -35,6 +35,18 @@ def export_module(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[M
     """Import export_to_web.py with ARTIFACT_ROOT/REGISTRY_PATH/doc_public redirected to tmp."""
     sys.path.insert(0, str(REPO / "apps" / "pipeline" / "src"))
     sys.path.insert(0, str(SCRIPTS_DIR))
+    # The S5U-870 blocking-QA gate reads the QA config via _export_qa_gate; patch
+    # it to the default so the fake "doc1" needs no real document config. These
+    # tests seed a non-blocking QA summary (see _seed_run) so the gate allows.
+    gate_spec = importlib.util.spec_from_file_location(
+        "_export_qa_gate", SCRIPTS_DIR / "_export_qa_gate.py"
+    )
+    assert gate_spec is not None and gate_spec.loader is not None
+    gate_mod = importlib.util.module_from_spec(gate_spec)
+    sys.modules["_export_qa_gate"] = gate_mod
+    gate_spec.loader.exec_module(gate_mod)
+    monkeypatch.setattr(gate_mod, "resolve_block_on", lambda doc_id: {"error", "critical"})
+
     spec = importlib.util.spec_from_file_location("export_to_web", SCRIPT_PATH)
     assert spec is not None and spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
@@ -52,6 +64,7 @@ def export_module(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[M
     monkeypatch.setattr(mod, "_load_facsimile_override_pids", lambda doc_id: [])
     yield mod
     sys.modules.pop("export_to_web", None)
+    sys.modules.pop("_export_qa_gate", None)
 
 
 def _seed_run(  # noqa: PLR0913 — keyword-only test fixture builder
@@ -94,6 +107,23 @@ def _seed_run(  # noqa: PLR0913 — keyword-only test fixture builder
             )
         )
     write_render_result(artifact_root, render_ref, {"page_refs": page_refs})
+    # Attach a non-blocking QA summary so the S5U-870 export gate allows; these
+    # tests exercise ref-binding, not the QA gate (the gate has its own suite in
+    # test_export_qa_gate.py).
+    qa_ref = f"doc1/qa/document/doc1/{run_id}.json"
+    qa_path = artifact_root / qa_ref
+    qa_path.parent.mkdir(parents=True, exist_ok=True)
+    qa_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "qa_summary.v1",
+                "document_id": "doc1",
+                "run_id": run_id,
+                "edition": edition,
+                "blocking": False,
+            }
+        )
+    )
     add_run(
         conn,
         run_id=run_id,
@@ -101,6 +131,7 @@ def _seed_run(  # noqa: PLR0913 — keyword-only test fixture builder
         edition=edition,
         git_commit=git_commit,
         render_ref=render_ref,
+        qa_summary_ref=qa_ref,
     )
 
 

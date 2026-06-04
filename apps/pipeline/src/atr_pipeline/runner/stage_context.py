@@ -24,6 +24,12 @@ class StageContext:
     logger: logging.Logger = field(default_factory=lambda: logging.getLogger("atr_pipeline"))
     edition: str = "all"
     page_filter: frozenset[str] | None = None
+    # S5U-870 — explicit, reviewer-visible escape hatch for the PublishStage QA
+    # gate. Default False (gate refuses on blocking QA). Set ONLY from the
+    # ``atr run --review-only`` CLI flag — never from an ambient env var, per
+    # guards.md G1 (an env-only toggle that flips the gate's default is itself
+    # a gate bypass).
+    publish_review_only: bool = False
 
     def filter_pages(self, page_ids: list[str]) -> list[str]:
         """Apply page_filter if set, preserving order."""

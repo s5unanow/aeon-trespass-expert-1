@@ -160,6 +160,68 @@ def _ok_with_hash(name: str, content_hash: str) -> StageResult:
     return StageResult(stage_name=name, cache_key="k", cached=False, artifact_ref=ref)
 
 
+def _run_capture_ctx(tmp_path: Path, extra_args: list[str]) -> Any:
+    """Invoke ``atr run`` with *extra_args* and return the StageContext kwargs.
+
+    Patches ``StageContext`` so we can assert how the CLI wires its options
+    (e.g. ``--review-only`` -> ``publish_review_only``) into the context.
+    """
+    cfg = _mock_config(tmp_path)
+    names = ["ingest"]
+    captured: dict[str, Any] = {}
+
+    def _capture_ctx(*a: Any, **kw: Any) -> Any:
+        captured.update(kw)
+        return MagicMock(page_filter=None, filter_pages=lambda x: x)
+
+    with (
+        patch(f"{_MOD}.load_document_config", return_value=cfg),
+        patch(f"{_MOD}.open_registry"),
+        patch(f"{_MOD}.ArtifactStore"),
+        patch(f"{_MOD}.start_run"),
+        patch(f"{_MOD}.finish_run"),
+        patch(f"{_MOD}.update_run_provenance"),
+        patch(f"{_MOD}.git_head", return_value="abc123"),
+        patch(f"{_MOD}.build_run_manifest", return_value={}),
+        patch(f"{_MOD}.set_run_manifest_ref"),
+        patch(f"{_MOD}.build_run_summary"),
+        patch(f"{_MOD}.atomic_write_text"),
+        patch(f"{_MOD}.attach_run_log_handler", return_value=MagicMock()),
+        patch(f"{_MOD}.detach_run_log_handler"),
+        patch(f"{_MOD}.build_stage_registry", return_value={"ingest": MagicMock()}),
+        patch(f"{_MOD}.resolve_stage_range", return_value=names),
+        patch(f"{_MOD}.execute_stage", return_value=_ok("ingest")),
+        patch(f"{_MOD}.SourceManifestV1"),
+        patch(f"{_MOD}.StageContext", side_effect=_capture_ctx),
+    ):
+        cli_result = runner.invoke(app, ["run", "--doc", "test", *extra_args])
+
+    return cli_result, captured
+
+
+def test_run_review_only_threads_into_context(tmp_path: Path) -> None:
+    """``--review-only`` sets publish_review_only=True on the StageContext.
+
+    Red-before: at 2b078bc the CLI has no --review-only option and StageContext
+    has no publish_review_only field, so the flag cannot be threaded.
+    """
+    cli_result, captured = _run_capture_ctx(tmp_path, ["--review-only"])
+    assert cli_result.exit_code == 0
+    assert captured["publish_review_only"] is True
+    assert "REVIEW-ONLY" in cli_result.stdout
+
+
+def test_run_default_publish_review_only_is_false(tmp_path: Path) -> None:
+    """Without the flag, publish_review_only defaults to False (gate not bypassed).
+
+    Red-before: same as above — the field does not exist at 2b078bc.
+    """
+    cli_result, captured = _run_capture_ctx(tmp_path, [])
+    assert cli_result.exit_code == 0
+    assert captured["publish_review_only"] is False
+    assert "REVIEW-ONLY" not in cli_result.stdout
+
+
 def test_run_threads_upstream_refs(tmp_path: Path) -> None:
     """Each stage receives accumulated upstream artifact content hashes."""
     names = ["ingest", "structure", "render"]
