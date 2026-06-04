@@ -66,6 +66,35 @@ class ResolvedRun(BaseModel):
         return {str(k): str(v) for k, v in raw.items()} if isinstance(raw, dict) else {}
 
     @property
+    def raster_refs(self) -> dict[str, dict[int, str]]:
+        """Per-page facsimile raster refs bound to this run (S5U-891).
+
+        Mirrors the render result's ``raster_refs`` (``RenderResult`` field at
+        ``stages/render/stage.py``): ``{page_id: {dpi: relative_path}}``, where
+        each ``relative_path`` is a ref under the artifact root. JSON object keys
+        are strings, so the inner ``dpi`` keys are coerced back to ``int``;
+        malformed (non-int dpi, non-dict inner) entries are dropped rather than
+        raising here — the consuming exporter fails closed on a *missing on disk*
+        ref, which is the S5U-891 hazard.
+        """
+        raw = self.render_result.get("raster_refs", {})
+        if not isinstance(raw, dict):
+            return {}
+        out: dict[str, dict[int, str]] = {}
+        for page_id, levels in raw.items():
+            if not isinstance(levels, dict):
+                continue
+            page_levels: dict[int, str] = {}
+            for dpi, ref in levels.items():
+                try:
+                    page_levels[int(dpi)] = str(ref)
+                except (TypeError, ValueError):
+                    continue
+            if page_levels:
+                out[str(page_id)] = page_levels
+        return out
+
+    @property
     def glossary_ref(self) -> str:
         ref = self.render_result.get("glossary_ref", "")
         return str(ref) if ref else ""

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import re
 import shutil
 from pathlib import Path
@@ -261,44 +260,51 @@ def validate_figure_refs(page_data: dict, pid: str) -> list[str]:
 
 
 def export_facsimile_rasters(
-    doc_id: str,
     doc_public: Path,
     artifact_root: Path,
     facsimile_page_ids: list[str],
+    raster_refs: dict[str, dict[int, str]],
 ) -> None:
-    """Copy rasters for facsimile pages to web public directory."""
+    """Copy a resolved run's facsimile rasters to the web public directory.
+
+    Run-bound (S5U-891): rasters are copied from the resolved run's per-page
+    ``raster_refs`` (``{page_id: {dpi: relative_path}}``, threaded from
+    ``ResolvedRun.raster_refs``) — each ``relative_path`` is resolved against
+    ``artifact_root``. This replaces the prior global selection (last-write-wins
+    ``release/rasters`` dir, then the lexicographically-last ``raster_meta.v1``
+    file), which could splice run A's render page with run B's raster PNG.
+
+    Fail-closed contract (`.claude/rules/guards.md` Rule G1, consistent with
+    ``load_run_pages`` / ``resolve_glossary_path``): a facsimile page whose
+    raster ref is missing on disk raises :class:`RunResolutionError`. There is
+    **no** silent fall-back to a global scan — a partial/cross-run raster bundle
+    is a worse failure state than refusing.
+    """
+    from _export_run import RunResolutionError
+
     if not facsimile_page_ids:
         return
     rasters_dir = doc_public / "rasters"
     rasters_dir.mkdir(parents=True, exist_ok=True)
     copied = 0
 
-    # Prefer release bundle rasters
-    release_rasters = artifact_root / doc_id / "release" / "rasters"
-
     for pid in facsimile_page_ids:
-        for dpi in (150, 300):
-            fname = f"{pid}__{dpi}dpi.png"
-            if release_rasters.exists():
-                src = release_rasters / fname
-                if src.exists():
-                    shutil.copy2(src, rasters_dir / fname)
-                    copied += 1
-                    continue
-
-            # Fallback: resolve from raster_meta.v1
-            meta_dir = artifact_root / doc_id / "raster_meta.v1" / "page" / pid
-            if not meta_dir.exists():
-                continue
-            meta_files = sorted(meta_dir.glob("*.json"))
-            if not meta_files:
-                continue
-            meta = json.loads(meta_files[-1].read_text())
-            for level in meta.get("levels", []):
-                if level.get("dpi") == dpi:
-                    src = artifact_root / level["relative_path"]
-                    if src.exists():
-                        shutil.copy2(src, rasters_dir / fname)
-                        copied += 1
+        page_levels = raster_refs.get(pid)
+        if not page_levels:
+            msg = (
+                f"Facsimile page {pid!r} has no raster refs in the resolved run; "
+                f"refusing to export (no global-scan fall-back to another run's raster)."
+            )
+            raise RunResolutionError(msg)
+        for dpi, ref in sorted(page_levels.items()):
+            src = artifact_root / ref
+            if not src.is_file():
+                msg = (
+                    f"Facsimile page {pid!r} raster {ref!r} ({dpi}dpi) is missing on disk; "
+                    f"refusing to export (no global-scan fall-back to another run's raster)."
+                )
+                raise RunResolutionError(msg)
+            shutil.copy2(src, rasters_dir / f"{pid}__{dpi}dpi.png")
+            copied += 1
 
     print(f"  Copied {copied} raster files for {len(facsimile_page_ids)} facsimile pages")
