@@ -155,6 +155,111 @@ def test_summary_without_metrics_removes_stale_qa_metrics(
     assert not (out_dir / "qa_metrics.json").exists()
 
 
+def _seed_stray_metrics(artifact_root: Path, doc_id: str, run_id: str) -> Path:
+    """Seed a metrics file in the canonical qa_metrics dir that mtime-scan would find."""
+    metrics = {
+        "schema_version": "qa_metrics.v1",
+        "document_id": doc_id,
+        "run_id": run_id,
+        "edition": "ru",
+        "totals": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+    }
+    path = artifact_root / doc_id / "qa_metrics.v1" / "document" / doc_id / f"{run_id}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(metrics))
+    return path
+
+
+def test_ref_bound_legacy_summary_skips_metrics_without_mtime_fallback(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """S5U-888: ref_bound + a legacy summary (no qa_metrics_ref) must NOT mtime-splice metrics.
+
+    The bound summary predates S5U-641 and carries no ``qa_metrics_ref``. A
+    stray metrics file produced by a *different* run sits in the global
+    ``qa_metrics.v1`` directory with a newer mtime. In run-bound mode the
+    legacy mtime directory scan is run-agnostic and would splice that foreign
+    run's metrics into the bundle — the exact cross-run hazard S5U-869 closed
+    for the other artifact classes. The export must skip metrics instead.
+    """
+    doc_id = "doc1"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+
+    # Bound summary: legacy shape — no qa_metrics_ref field.
+    bound = artifact_root / doc_id / "qa" / "document" / doc_id / "run_bound.json"
+    bound.parent.mkdir(parents=True, exist_ok=True)
+    bound.write_text(
+        json.dumps(
+            {
+                "schema_version": "qa_summary.v1",
+                "document_id": doc_id,
+                "run_id": "run_bound",
+                "edition": "ru",
+                "counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+                "waived_counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+                "blocking": False,
+                "record_refs": [],
+                "review_pack_ref": "",
+            }
+        )
+    )
+
+    # A stray metrics file from an unrelated newer run — mtime scan would pick it.
+    _seed_stray_metrics(artifact_root, doc_id, "run_stray")
+
+    count = qa_module.export_qa(
+        artifact_root, doc_id, "ru", doc_public, summary_path=bound, ref_bound=True
+    )
+
+    assert count == 0
+    # Summary itself is exported (it IS the bound run's summary)...
+    assert (doc_public / "ru" / "data" / "qa_summary.json").exists()
+    # ...but the foreign-run metrics file must NOT be spliced in.
+    assert not (doc_public / "ru" / "data" / "qa_metrics.json").exists()
+
+
+def test_ref_bound_legacy_summary_drops_stale_qa_metrics(
+    qa_module: ModuleType, tmp_path: Path
+) -> None:
+    """S5U-888: ref_bound + legacy summary must drop a prior export's qa_metrics.json.
+
+    Even when the mtime scan is refused, a leftover ``qa_metrics.json`` from a
+    prior run's export must be removed so the reader does not splice run-A
+    metrics over the bound run's QA bundle.
+    """
+    doc_id = "doc1"
+    artifact_root = tmp_path / "artifacts"
+    doc_public = tmp_path / "public" / doc_id
+    out_dir = doc_public / "ru" / "data"
+    out_dir.mkdir(parents=True)
+    (out_dir / "qa_metrics.json").write_text(json.dumps({"run_id": "run_a"}))
+
+    bound = artifact_root / doc_id / "qa" / "document" / doc_id / "run_bound.json"
+    bound.parent.mkdir(parents=True, exist_ok=True)
+    bound.write_text(
+        json.dumps(
+            {
+                "schema_version": "qa_summary.v1",
+                "document_id": doc_id,
+                "run_id": "run_bound",
+                "edition": "ru",
+                "counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+                "waived_counts": {"info": 0, "warning": 0, "error": 0, "critical": 0},
+                "blocking": False,
+                "record_refs": [],
+                "review_pack_ref": "",
+            }
+        )
+    )
+    _seed_stray_metrics(artifact_root, doc_id, "run_stray")
+
+    qa_module.export_qa(artifact_root, doc_id, "ru", doc_public, summary_path=bound, ref_bound=True)
+
+    assert (out_dir / "qa_summary.json").exists()
+    assert not (out_dir / "qa_metrics.json").exists()
+
+
 def test_ref_bound_explicit_summary_path_exported(qa_module: ModuleType, tmp_path: Path) -> None:
     """A supplied summary_path is exported verbatim under ref_bound mode."""
     doc_id = "doc1"
