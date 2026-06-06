@@ -102,6 +102,56 @@ def test_structure_config_document_override() -> None:
     assert cfg.structure.paragraph_gap_factor == 1.5
 
 
+def test_ato_core_s5u706_presentation_mode_overrides() -> None:
+    """S5U-706 — p0040/p0067/p0074 flip to article; p0082 stays facsimile.
+
+    p0040 (movement-example prose), p0067 (Ranged/Reach/Reflex keyword rules),
+    and p0074 (Hekaton/Cyclonus tile-requirement lists) render as readable
+    article content, so each carries an explicit ``presentation_mode = "article"``
+    override (removing the override is not enough — the auto heuristic still
+    classifies these hard/low-coverage pages as facsimile). p0082 is the
+    "in-game Symbols" glossary whose multi-column icon-to-label grid cannot
+    survive structure recovery, so it keeps its facsimile override.
+
+    The well-facsimile pages (p0006/p0007) and the S5U-699 article pages
+    (p0075/p0076) are pinned here as no-regression anchors.
+    """
+    cfg = load_document_config("ato_core_v1_1", repo_root=_repo_root())
+    overrides = cfg.render.page_overrides
+
+    # Flipped to article by S5U-706.
+    for pid in ("p0040", "p0067", "p0074"):
+        assert pid in overrides, f"{pid} override missing"
+        assert overrides[pid].presentation_mode == "article", f"{pid} must be article after S5U-706"
+
+    # Genuinely image-dominant — must stay facsimile.
+    assert overrides["p0082"].presentation_mode == "facsimile"
+    assert overrides["p0006"].presentation_mode == "facsimile"
+    assert overrides["p0007"].presentation_mode == "facsimile"
+
+    # S5U-699 article pages — must not regress.
+    assert overrides["p0075"].presentation_mode == "article"
+    assert overrides["p0076"].presentation_mode == "article"
+
+
+def test_ato_core_facsimile_allowlist_excludes_flipped_pages() -> None:
+    """S5U-706 — the publish-guard facsimile allowlist no longer contains the
+    flipped pages, so the S5U-699 guard would re-trip if their substantial
+    payload were re-marked facsimile.
+
+    Mirrors ``scripts/export_to_web.py::_load_facsimile_override_pids``: the
+    allowlist is exactly the set of pages whose override is facsimile.
+    """
+    cfg = load_document_config("ato_core_v1_1", repo_root=_repo_root())
+    facsimile_pids = {
+        pid for pid, ov in cfg.render.page_overrides.items() if ov.presentation_mode == "facsimile"
+    }
+    # Flipped pages must NOT be allowlisted any more.
+    assert facsimile_pids.isdisjoint({"p0040", "p0067", "p0074"})
+    # p0082 and the genuine facsimile pages remain allowlisted.
+    assert {"p0006", "p0007", "p0082"} <= facsimile_pids
+
+
 def test_ato_core_inherits_codex_cli_translation_defaults() -> None:
     """S5U-747 — ato_core_v1_1 picks up codex-cli flat keys from base.toml
     and codex-specific provider_options from its own document config."""

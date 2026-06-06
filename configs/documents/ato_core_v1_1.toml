@@ -69,20 +69,38 @@ presentation_mode = "article"
 title = "Tree of Knowledge (continued)"
 
 # S5U-699 — the publish-time guard in `scripts/_export_validation.py` also
-# detects the same facsimile/structured-payload mismatch on p0040, p0067,
-# p0074, and p0082. These pages are OUT OF SCOPE for S5U-699 (which
-# explicitly scopes p0075/p0076). They are allowlisted as facsimile below
-# so the guard does not break the export. Tracked in S5U-706 — remove
-# the override and re-run once each page's article-mode output is verified
-# readable.
+# detected the same facsimile/structured-payload mismatch on p0040, p0067,
+# p0074, and p0082. These were OUT OF SCOPE for S5U-699 (which explicitly
+# scoped p0075/p0076) and were temporarily allowlisted as facsimile.
+#
+# S5U-706 — evaluated each page's realized render payload + the rendered
+# reader output (Playwright screenshot of /documents/ato_core_v1_1/en/<pid>).
+# The auto heuristic (hard_page + native_text_coverage < threshold) still
+# mis-classifies these as facsimile, so the three readable pages get an
+# explicit `presentation_mode = "article"` override (removing the override is
+# NOT enough — the default for these hard/low-coverage pages is still
+# facsimile). p0082 keeps its facsimile override:
+#   * p0040 — 2 clean prose paragraphs (movement example) + diagram step
+#     callouts. Renders as readable article. -> article.
+#   * p0067 — Ranged/Reach/Reflex/Reposition/Reinforce keyword rules, list
+#     items, and pushback narrative. Readable article. -> article.
+#   * p0074 — Hekaton/Cyclonus level-8+ tile-requirement lists + Burden
+#     level-5+ heading. Readable line-level article. -> article.
+#   * p0082 — "in-game Symbols" glossary. The source is a multi-column icon
+#     legend; structure recovery collapses columns onto single rows
+#     ("Danger Attack die Red die Potential" = four distinct symbols) and the
+#     inline icons are misaligned to their labels. Article mode renders as
+#     scrambled, mis-paired text with no usable icon-to-name grid, so this
+#     page stays FACSIMILE (the raster scan preserves the legend layout).
+#     Kept in the facsimile allowlist so the S5U-699 publish guard stays green.
 [render.page_overrides.p0040]
-presentation_mode = "facsimile"
+presentation_mode = "article"
 
 [render.page_overrides.p0067]
-presentation_mode = "facsimile"
+presentation_mode = "article"
 
 [render.page_overrides.p0074]
-presentation_mode = "facsimile"
+presentation_mode = "article"
 
 [render.page_overrides.p0082]
 presentation_mode = "facsimile"
