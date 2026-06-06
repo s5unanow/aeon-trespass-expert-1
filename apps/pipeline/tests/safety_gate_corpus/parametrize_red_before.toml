@@ -1,0 +1,308 @@
+# Named adversarial corpus for the parametrize red-before gate (S5U-819).
+#
+# Detector: scripts/check_parametrize_red_before.py
+# Harness:  apps/pipeline/tests/unit/test_check_parametrize_red_before_corpus.py
+# Coverage: scripts/check_detector_corpus_coverage.py (a change to any
+#           `detector_sources` file with no change to THIS file fails CI).
+#
+# This corpus is the CONTRACT (S5U-789). Reviewer-found syntactic bypasses are
+# added here as `block` cases — NOT patched in as one-off regexes. The detector
+# implementation (an enclosing-context AST walk today) must satisfy every case.
+#
+# The detector's production entry point is `analyze_file(path, head_source,
+# added_lines) -> (matches, skips)`. The harness drives it over each snippet as
+# the head source with EVERY non-blank line treated as an added line (the whole
+# snippet is "the diff"). Semantics per `expect`:
+#   block          — the detector MUST flag this (>=1 Match) with NO parse Skip
+#                    (a Skip on a `block`/`allow` case is a corpus typo, caught).
+#   allow          — the detector MUST NOT flag this (0 Match, 0 Skip).
+#   known_residual — the detector does NOT flag this today; the harness asserts
+#                    0 Match so a future detector upgrade that closes the residual
+#                    surfaces here and the case can flip to `block`.
+#
+# Vector coverage (S5U-819 §4): pytest `@parametrize`, the `@mark.parametrize`
+# and bare `@parametrize` import-alias renames (Rule G2), class-level and stacked
+# decorators, `@pytest.fixture(params=...)`, hypothesis `@given`,
+# `pytest_generate_tests`, the S5U-650 multiline bare-row miss (block regression),
+# and the vitest `.each` `.ts` out-of-scope residual (known_residual).
+
+policy = "parametrize_red_before"
+detector_sources = ["scripts/check_parametrize_red_before.py"]
+
+# --------------------------------------------------------------------------- #
+# block — canonical pytest parametrize surfaces                               #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "pytest-mark-parametrize-row"
+expect = "block"
+note = "canonical @pytest.mark.parametrize row addition"
+snippet = """
+import pytest
+
+
+@pytest.mark.parametrize('a,b', [
+    (1, 2),
+    (3, 4),
+])
+def test_x(a, b):
+    pass
+"""
+
+[[case]]
+id = "mark-parametrize-alias"
+expect = "block"
+note = """Rule G2 rename/alias: `from pytest import mark; @mark.parametrize(...)`.
+Same behavior as the canonical form reached through a different import name —
+content-derived AST match, not a hardcoded decorator-name string (S5U-758)."""
+snippet = """
+from pytest import mark
+
+
+@mark.parametrize('a,b', [
+    (1, 2),
+    (3, 4),
+])
+def test_x(a, b):
+    pass
+"""
+
+[[case]]
+id = "bare-parametrize-alias"
+expect = "block"
+note = """Rule G2 alias: `from pytest.mark import parametrize; @parametrize(...)`.
+The bare-Name decorator form."""
+snippet = """
+from pytest.mark import parametrize
+
+
+@parametrize('a,b', [
+    (1, 2),
+    (3, 4),
+])
+def test_x(a, b):
+    pass
+"""
+
+[[case]]
+id = "class-level-parametrize"
+expect = "block"
+note = "class-level decorator labels the inner method via innermost->outermost walk"
+snippet = """
+import pytest
+
+
+@pytest.mark.parametrize('a,b', [
+    (1, 2),
+    (3, 4),
+])
+class TestFoo:
+    def test_x(self, a, b):
+        pass
+"""
+
+[[case]]
+id = "stacked-parametrize-decorators"
+expect = "block"
+note = "row added inside the second of two stacked parametrize decorators"
+snippet = """
+import pytest
+
+
+@pytest.mark.parametrize('a', [1, 2])
+@pytest.mark.parametrize('b', [
+    3,
+    4,
+])
+def test_x(a, b):
+    pass
+"""
+
+[[case]]
+id = "fixture-params-widening"
+expect = "block"
+note = "@pytest.fixture(params=[...]) parametrized-fixture widening"
+snippet = """
+import pytest
+
+
+@pytest.fixture(params=[
+    'a',
+    'b',
+])
+def my_fixture(request):
+    return request.param
+"""
+
+[[case]]
+id = "given-strategy-widening"
+expect = "block"
+note = "hypothesis @given(...) strategy widening"
+snippet = """
+from hypothesis import given, strategies as st
+
+
+@given(st.one_of(
+    st.integers(),
+    st.text(),
+))
+def test_x(value):
+    pass
+"""
+
+[[case]]
+id = "pytest-generate-tests-body"
+expect = "block"
+note = "data lives in the pytest_generate_tests body, not a decorator"
+snippet = """
+def pytest_generate_tests(metafunc):
+    cases = [
+        ('a', 1),
+        ('b', 2),
+    ]
+    metafunc.parametrize('name,value', cases)
+"""
+
+# --------------------------------------------------------------------------- #
+# block — S5U-650 named regressions: multiline bare-row miss + equivalent      #
+# vector. The added rows carry NO decorator/call token on their own line, so   #
+# the pre-S5U-650 line-grep silently passed them. The AST detector flags them   #
+# by ENCLOSING CONTEXT. If the detector regressed to a line-grep these would    #
+# return 0 matches and the harness would go red.                                #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-650-multiline-row"
+expect = "block"
+note = """S5U-650 regression: a branch-extending tuple row `("new_case", expected),`
+with no parametrize/.each/@given token on the added line. Pre-S5U-650 line-grep
+missed it; the enclosing-context AST walk flags it."""
+snippet = """
+import pytest
+
+
+@pytest.mark.parametrize('a,b', [
+    (1, 2),
+    ('new_case', 99),
+])
+def test_x(a, b):
+    pass
+"""
+
+[[case]]
+id = "S5U-650-given-multiline-row"
+expect = "block"
+note = """S5U-650 equivalent-vector regression: @given strategy widened across lines
+where the added strategy lines contain NO `@given` token. Same enclosing-context
+miss as the parametrize multiline row, on the hypothesis vector."""
+snippet = """
+from hypothesis import given, strategies as st
+
+
+@given(
+    st.one_of(
+        st.integers(),
+        st.text(),
+        st.booleans(),
+    )
+)
+def test_x(value):
+    pass
+"""
+
+# --------------------------------------------------------------------------- #
+# allow — legitimate code the detector MUST NOT flag (happy-path + the genuine #
+# fixture/data-extension carve-out + false-positive guards).                   #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "plain-function-body"
+expect = "allow"
+note = """the genuine fixture/data-extension carve-out: a list extended inside a
+plain (undecorated) function body is NOT a parametrize vector."""
+snippet = """
+def test_foo():
+    cases = [
+        1,
+        2,
+    ]
+    assert cases == [1, 2]
+"""
+
+[[case]]
+id = "fixture-no-params-not-flagged"
+expect = "allow"
+note = """false-positive guard: @pytest.fixture WITHOUT a params= kwarg is an
+ordinary fixture, not a parametrized one — must not flag the body list."""
+snippet = """
+import pytest
+
+
+@pytest.fixture
+def my_fixture():
+    data = [
+        'a',
+        'b',
+    ]
+    return data
+"""
+
+[[case]]
+id = "mark-skipif-not-flagged"
+expect = "allow"
+note = """false-positive guard: @mark.skipif must NOT match. The detector's
+`attr == 'parametrize'` clause keeps any other @mark.X decorator out."""
+snippet = """
+from pytest import mark
+
+
+@mark.skipif(True, reason='nope')
+def test_y():
+    pass
+"""
+
+[[case]]
+id = "parametrize-lookalike-custom-decorator"
+expect = "allow"
+note = """acknowledged out-of-scope residual recorded as allow: a CUSTOM
+`@myteam.parametrize` wrapper is NOT the canonical pytest/hypothesis surface, so
+the content-derived AST match does not fire. The reviewer prose-fallback covers
+this case (detector docstring: 'when in doubt, ask for red-before evidence')."""
+snippet = """
+import myteam
+
+
+@myteam.parametrize('a', [
+    1,
+    2,
+])
+def test_x(a):
+    pass
+"""
+
+# --------------------------------------------------------------------------- #
+# known_residual — vitest `.each` is out of scope for the `.py`-only AST        #
+# detector. `_changed_python_files` filters to `*.py`, so a `.ts`/`.tsx` spec   #
+# never reaches `analyze_file` in production; the reviewer prompt keeps a        #
+# line-grep fallback for `.ts` whose multi-line `.each` token-outside-the-       #
+# diff-window limitation is the documented residual (.claude/rules/hooks.md).   #
+# Driven through `analyze_file` here the JS source is not valid Python and the   #
+# detector stays SILENT (0 matches). Flip to `block` if/when a TS-AST detector   #
+# lands. See S5U-789 for the cross-language rollout.                            #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-650-vitest-each-multiline-out-of-scope"
+expect = "known_residual"
+note = """vitest multi-line test.each([...]) row addition. The `.py`-only AST
+detector does not cover `.ts`; the reviewer line-grep fallback misses the
+multi-line `.each` whose `.each(` token sits outside the diff window. Detector
+stays silent (0 matches) — pinned so a future TS-AST upgrade can flip it."""
+snippet = """
+test.each([
+  ['a', 1],
+  ['b', 2],
+])('case %s', (n, v) => {
+  expect(n).toBe(v);
+});
+"""
