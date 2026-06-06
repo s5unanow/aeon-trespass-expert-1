@@ -61,6 +61,10 @@ def export_module(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[M
     monkeypatch.setattr(mod, "REPO", tmp_path)
     # Skip PDF image extraction (no PDF in the fixture) and facsimile override config.
     monkeypatch.setattr(mod, "extract_images", lambda *a, **k: {})
+    # The S5U-889 on-disk-PDF binding check resolves doc config + reads the PDF;
+    # these fixtures seed no doc1 config / PDF, so stub it to a no-op here (image
+    # binding is exercised in test_export_to_web_image_binding).
+    monkeypatch.setattr(mod, "verify_source_pdf_sha", lambda *a, **k: None)
     monkeypatch.setattr(mod, "_load_facsimile_override_pids", lambda doc_id: [])
     yield mod
     sys.modules.pop("export_to_web", None)
