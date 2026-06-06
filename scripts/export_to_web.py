@@ -127,7 +127,9 @@ def _build_document_index(documents_root: Path) -> list[dict]:
         if not doc_dir.is_dir() or doc_dir.name.startswith("."):
             continue
         editions = sorted(
-            d.name for d in doc_dir.iterdir() if d.is_dir() and (d / "manifest.json").exists()
+            d.name
+            for d in doc_dir.iterdir()
+            if d.is_dir() and not d.name.startswith(".") and (d / "manifest.json").exists()
         )
         if editions:
             entries.append({"document_id": doc_dir.name, "editions": editions})
