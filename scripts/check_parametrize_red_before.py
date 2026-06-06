@@ -2,44 +2,34 @@
 """Detect added Python lines that fall inside a parametrize-equivalent context.
 
 S5U-650: closes the gap where the previous reviewer-side line-grep missed
-multiline row additions like
+multiline row additions like `+        ("new_case", expected),` inside an
+existing `@pytest.mark.parametrize` block — the added line carries no
+decorator/call token, so the line-grep silently passed.
 
-    +        ("new_case", expected),
+This helper walks each changed `.py` file's head-version AST, maps every
+`+`-prefixed diff line to the enclosing `FunctionDef` / `AsyncFunctionDef` /
+`ClassDef` (decorators included in the line range), and flags lines whose
+enclosing context matches a documented parametrize-equivalent shape:
+`@pytest.mark.parametrize` (function/class-level, stacked OK), `@mark.parametrize`
+(`from pytest import mark`), bare `@parametrize` (`from pytest.mark import
+parametrize`), `@given` (hypothesis), `@pytest.fixture(..., params=[...])`, and
+the `pytest_generate_tests(metafunc)` body. The full case contract lives in the
+`parametrize_red_before` corpus.
 
-inside an existing `@pytest.mark.parametrize` block. The added line itself
-carries no decorator/call token, so the line-grep silently passed and the
-row shipped without red-before evidence.
+The detector is content-derived (.claude/rules/guards.md Rule G2): it inspects
+decorator AST shape, not a hardcoded decorator-name list. S5U-920 extends this
+by resolving `import ... as <alias>` renames to their canonical binding (see
+`_parametrize_ast.collect_import_aliases`), so `from pytest import mark as m2;
+@m2.parametrize` flags by content, not surface name. A custom user-defined
+wrapper (`@my_team.parametrize`) is an acknowledged out-of-scope residual
+covered by the reviewer prose-fallback.
 
-This helper walks each changed `.py` file's AST in the head version, maps
-every `+`-prefixed diff line to the enclosing `FunctionDef` /
-`AsyncFunctionDef` / `ClassDef` (decorators included in the line range),
-and flags lines whose enclosing context matches one of the documented
-parametrize-equivalent shapes:
-
-  - `@pytest.mark.parametrize(...)` (function- or class-level, stacked OK)
-  - `@mark.parametrize(...)` (after `from pytest import mark`)
-  - bare `@parametrize(...)` (after `from pytest.mark import parametrize`)
-  - `@given(...)` (hypothesis strategy widening)
-  - `@pytest.fixture(..., params=[...])` (parametrized fixture widening)
-  - `pytest_generate_tests(metafunc)` body (test-data factory function)
-
-The detector is content-derived (.claude/rules/guards.md Rule G2): it
-inspects decorator AST shape, not a hardcoded list of decorator-name
-strings beyond the canonical pytest/hypothesis surface. A custom
-user-defined parametrize wrapper (e.g., `@my_team.parametrize`) is an
-acknowledged out-of-scope residual; the reviewer prose-fallback covers
-that case ("when in doubt, ask the worker for red-before evidence").
-
-Exit codes:
-  0 — no parametrize-equivalent rows added
-  1 — at least one parametrize-equivalent row added; reviewer must
-      verify red-before evidence per .claude/rules/hooks.md
-  2 — fail-closed degenerate input (Rule G1): bad ref, git diff failure,
-      git show failure on a `.py` file listed in `--name-only` output
+Exit codes: 0 — none added; 1 — >=1 added (reviewer must verify red-before per
+.claude/rules/hooks.md); 2 — fail-closed degenerate input (Rule G1: bad ref,
+git diff failure, git show failure on a listed `.py` file).
 
 Scope: `.py` only. Vitest `.each` (`.ts` / `.tsx`) is out of scope; the
-reviewer prompt retains a line-grep fallback for those file types with
-the limitation documented.
+reviewer prompt retains a line-grep fallback for those file types.
 
 Usage:
     uv run python scripts/check_parametrize_red_before.py \\
@@ -56,7 +46,14 @@ import subprocess
 import sys
 from collections.abc import Iterable
 from dataclasses import dataclass
+from pathlib import Path
 from typing import NoReturn
+
+# Sibling helper (S5U-920). Make the scripts dir importable whether this file is
+# run as a script or loaded via spec_from_file_location in the corpus harness.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from _parametrize_ast import collect_import_aliases, decorator_context_label
 
 _HUNK_HEADER_RE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
 
@@ -189,60 +186,6 @@ def _read_head_blob(head: str, path: str) -> str:
     return result.stdout
 
 
-def _decorator_context_label(decorator: ast.expr) -> str | None:
-    """Return a short label if `decorator` matches a parametrize-equivalent shape.
-
-    Content-derived AST match per .claude/rules/guards.md Rule G2 over
-    the canonical pytest / hypothesis decorator vocabulary.
-    """
-    inner = decorator.func if isinstance(decorator, ast.Call) else decorator
-
-    # @pytest.mark.parametrize(...)
-    if (
-        isinstance(inner, ast.Attribute)
-        and inner.attr == "parametrize"
-        and isinstance(inner.value, ast.Attribute)
-        and inner.value.attr == "mark"
-    ):
-        return "pytest.mark.parametrize"
-
-    # @mark.parametrize(...) (after `from pytest import mark`)
-    # Tight: the `inner.attr == "parametrize"` clause prevents any other
-    # `@mark.foo(...)` (e.g., @mark.skipif) from matching, and the
-    # ast.Name shape distinguishes this from the dotted-Attribute form.
-    if (
-        isinstance(inner, ast.Attribute)
-        and inner.attr == "parametrize"
-        and isinstance(inner.value, ast.Name)
-        and inner.value.id == "mark"
-    ):
-        return "mark.parametrize"
-
-    # bare @parametrize(...) (after `from pytest.mark import parametrize`)
-    if isinstance(inner, ast.Name) and inner.id == "parametrize":
-        return "parametrize"
-
-    # @given(...) (hypothesis)
-    if isinstance(inner, ast.Name) and inner.id == "given":
-        return "given"
-    if isinstance(inner, ast.Attribute) and inner.attr == "given":
-        return "given"
-
-    # @pytest.fixture(..., params=[...]) — only flag if `params=` keyword
-    # is present (otherwise it's an ordinary fixture, not parametrized).
-    if isinstance(decorator, ast.Call):
-        is_fixture = (
-            isinstance(inner, ast.Attribute)
-            and inner.attr == "fixture"
-            and isinstance(inner.value, ast.Name)
-            and inner.value.id == "pytest"
-        ) or (isinstance(inner, ast.Name) and inner.id == "fixture")
-        if is_fixture and any(kw.arg == "params" for kw in decorator.keywords):
-            return "pytest.fixture(params=...)"
-
-    return None
-
-
 def _node_line_range(node: ast.AST) -> tuple[int, int] | None:
     """Return (start, end) line range for a def/class node, decorators included."""
     if not hasattr(node, "lineno"):
@@ -269,6 +212,7 @@ class _ContextNode:
 
 def _collect_contexts(tree: ast.AST) -> list[_ContextNode]:
     """Collect FunctionDef/AsyncFunctionDef/ClassDef + parametrize label."""
+    aliases = collect_import_aliases(tree)
     contexts: list[_ContextNode] = []
     for node in ast.walk(tree):
         if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
@@ -279,7 +223,7 @@ def _collect_contexts(tree: ast.AST) -> list[_ContextNode]:
         start, end = rng
         label: str | None = None
         for d in node.decorator_list:
-            lab = _decorator_context_label(d)
+            lab = decorator_context_label(d, aliases)
             if lab is not None:
                 label = lab
                 break

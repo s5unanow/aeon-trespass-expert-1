@@ -35,7 +35,10 @@
 # and the vitest `.each` `.ts` out-of-scope residual (known_residual).
 
 policy = "parametrize_red_before"
-detector_sources = ["scripts/check_parametrize_red_before.py"]
+detector_sources = [
+    "scripts/check_parametrize_red_before.py",
+    "scripts/_parametrize_ast.py",
+]
 
 # --------------------------------------------------------------------------- #
 # block — canonical pytest parametrize surfaces                               #
@@ -85,6 +88,48 @@ from pytest.mark import parametrize
 
 
 @parametrize('a,b', [
+    (1, 2),
+    (3, 4),
+])
+def test_x(a, b):
+    pass
+"""
+
+[[case]]
+id = "mark-as-alias-rename"
+expect = "block"
+note = """Rule G2 import-RENAME: `from pytest import mark as m2; @m2.parametrize(...)`
+(S5U-920). Distinct from `mark-parametrize-alias` (which imports `mark` under its own
+name): here the binding is RENAMED via `import ... as`, so a name-anchored `id == "mark"`
+check (the pre-S5U-920 detector) returned 0 matches — the alias-bypass class S5U-789
+exists to close. The detector resolves the `as`-alias to its canonical `pytest.mark`
+target before the name check, so this flags by content, not surface name."""
+snippet = """
+from pytest import mark as m2
+
+
+@m2.parametrize('a,b', [
+    (1, 2),
+    (3, 4),
+])
+def test_x(a, b):
+    pass
+"""
+
+[[case]]
+id = "import-pytest-mark-as-alias"
+expect = "block"
+note = """Rule G2 import-RENAME (dotted form): `import pytest.mark as pm; @pm.parametrize(...)`
+(S5U-920). The pre-S5U-920 detector returned 0 matches because the root Name `pm` is
+neither `mark` nor `parametrize`. The detector resolves the `as`-alias `pm -> pytest.mark`
+and flags `@pm.parametrize` as the canonical `mark.parametrize` surface. Contrast
+`import pytest as pt; @pt.mark.parametrize` which was already caught via the dotted
+`.attr` chain — this case covers the alias-on-the-submodule form that bypassed it."""
+snippet = """
+import pytest.mark as pm
+
+
+@pm.parametrize('a,b', [
     (1, 2),
     (3, 4),
 ])
