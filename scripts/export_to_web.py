@@ -25,7 +25,11 @@ from _export_commit import (  # noqa: E402
     commit_staged,
     reset_staging,
 )
-from _export_images import extract_images, resolve_source_pdf  # noqa: E402
+from _export_images import (  # noqa: E402
+    extract_images,
+    resolve_source_pdf,
+    verify_source_pdf_sha,
+)
 from _export_pages import export_glossary, export_pages  # noqa: E402
 from _export_qa import export_qa  # noqa: E402
 from _export_qa_gate import (  # noqa: E402
@@ -293,9 +297,6 @@ def main(argv: list[str] | None = None) -> None:
     documents_root = REPO / "apps" / "web" / "public" / "documents"
     doc_public = documents_root / doc_id
 
-    print("Extracting images from PDF...")
-    page_images = extract_images(doc_id, doc_public, repo_root=REPO)
-
     facsimile_override_pids = _load_facsimile_override_pids(doc_id)
     if facsimile_override_pids:
         print(f"Config-allowlisted facsimile pages: {', '.join(facsimile_override_pids)}")
@@ -308,6 +309,20 @@ def main(argv: list[str] | None = None) -> None:
             _resolve_edition(doc_id, edition, run_id, review_only=review_only)
             for edition in editions
         ]
+        # Ref-bind images (S5U-889): images are re-extracted run-agnostically from
+        # the configured PDF, so verify the on-disk PDF matches the resolved
+        # run(s)' recorded source_pdf_sha256 BEFORE extracting — refusing
+        # (RunResolutionError, fail-closed per guards.md G1) if the PDF was
+        # swapped after the run rendered against it. Done after phase-1
+        # resolution (the recorded shas live on the resolved runs) and before
+        # any write, so a mismatch leaves the prior bundle untouched.
+        verify_source_pdf_sha(
+            doc_id,
+            (re_edition.resolved.source_pdf_sha256 for re_edition in resolved_editions),
+            repo_root=REPO,
+        )
+        print("Extracting images from PDF...")
+        page_images = extract_images(doc_id, doc_public, repo_root=REPO)
         # Phase 2 — build each edition into its own staging dir (no live mutation).
         reset_staging(doc_public, editions, pid, staged_rasters_dir)
         staged: list[StagedEdition] = []
