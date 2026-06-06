@@ -11,8 +11,16 @@
 #
 # The detector's production entry point is `analyze_file(path, head_source,
 # added_lines) -> (matches, skips)`. The harness drives it over each snippet as
-# the head source with EVERY non-blank line treated as an added line (the whole
-# snippet is "the diff"). Semantics per `expect`:
+# the head source. By default EVERY non-blank line is treated as an added line
+# (the whole snippet is "the diff"). A case MAY instead declare an explicit
+# `added_lines = [...]` list of 1-based line numbers — this models a REAL diff in
+# which only those rows are `+`-added and the rest (decorators, imports) are
+# UNCHANGED context. This is required for the S5U-650 multiline-bare-row cases: if
+# the whole snippet were fed, the token-bearing decorator line would satisfy a
+# pre-S5U-650 line-grep and the case would FALSE-PASS (S5U-921). Feeding only the
+# token-less added row makes the enclosing-context AST walk load-bearing — a
+# line-grep regression returns 0 matches and the harness goes red. Semantics per
+# `expect`:
 #   block          — the detector MUST flag this (>=1 Match) with NO parse Skip
 #                    (a Skip on a `block`/`allow` case is a corpus typo, caught).
 #   allow          — the detector MUST NOT flag this (0 Match, 0 Skip).
@@ -174,9 +182,19 @@ def pytest_generate_tests(metafunc):
 [[case]]
 id = "S5U-650-multiline-row"
 expect = "block"
+# added_lines models the REAL diff (S5U-921): only line 6 — the branch-extending
+# bare-tuple row `('new_case', 99),` — is `+`-added; the @pytest.mark.parametrize
+# decorator on line 4 is UNCHANGED context. That row carries NO parametrize token,
+# so a line-grep regression (the pre-S5U-650 behavior) returns 0 matches and the
+# harness goes RED — which is the whole point. Only the enclosing-context AST walk
+# flags it. Without added_lines the harness fed the whole snippet (incl. the
+# decorator line), so a line-grep matched the decorator and the case false-passed.
+added_lines = [6]
 note = """S5U-650 regression: a branch-extending tuple row `("new_case", expected),`
 with no parametrize/.each/@given token on the added line. Pre-S5U-650 line-grep
-missed it; the enclosing-context AST walk flags it."""
+missed it; the enclosing-context AST walk flags it. `added_lines = [6]` feeds ONLY
+that token-less row, so a line-grep regression returns 0 matches and the harness
+goes red (S5U-921)."""
 snippet = """
 import pytest
 
@@ -192,9 +210,17 @@ def test_x(a, b):
 [[case]]
 id = "S5U-650-given-multiline-row"
 expect = "block"
+# added_lines models the REAL diff (S5U-921): only line 8 — the widened strategy
+# row `st.booleans(),` — is `+`-added; the `@given(` decorator (line 4) and the
+# `from hypothesis import given` line (line 1) are UNCHANGED context. The added row
+# carries NO `@given` token, so a line-grep regression returns 0 matches and the
+# harness goes RED. Only the enclosing-context AST walk flags it.
+added_lines = [8]
 note = """S5U-650 equivalent-vector regression: @given strategy widened across lines
 where the added strategy lines contain NO `@given` token. Same enclosing-context
-miss as the parametrize multiline row, on the hypothesis vector."""
+miss as the parametrize multiline row, on the hypothesis vector. `added_lines = [8]`
+feeds ONLY the token-less widened-strategy row, so a line-grep regression returns 0
+matches and the harness goes red (S5U-921)."""
 snippet = """
 from hypothesis import given, strategies as st
 
