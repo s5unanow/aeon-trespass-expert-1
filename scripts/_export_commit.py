@@ -201,7 +201,10 @@ def commit_staged(
     swapped and :class:`ExportCommitError` is raised (the live bundle stays
     byte-identical to before). On a swap-time ``OSError`` after one or more
     editions have already swapped, every swapped dir is rolled back from its
-    backup before re-raising, so no half-swapped cross-edition state persists.
+    backup, then the failure is wrapped in :class:`ExportCommitError` so the
+    caller's refusal path runs ``cleanup_staging`` and emits a clean
+    "Export refused: ..." message instead of leaking an uncaught traceback +
+    orphaned ``.stage-*`` / ``.backup-*`` litter (S5U-899).
     """
     failed = [s.edition for s in staged_editions if not s.validation_ok]
     if failed:
@@ -233,7 +236,14 @@ def commit_staged(
                     backup_dir,
                     restore_exc,
                 )
-        raise
+        # Wrap the raw OSError so the caller's ExportCommitError refusal path runs
+        # cleanup_staging and prints a clean message — a bare re-raise would
+        # propagate uncaught past main's except clauses, skip cleanup, and leave
+        # this pid's .stage-*/.backup-* dirs orphaned (S5U-899 Gap 1).
+        raise ExportCommitError(
+            f"Export refused: swap failed ({exc}); rolled back {len(swapped)} swapped "
+            f"edition(s) — live bundle restored, no partial bundle published."
+        ) from exc
     # Every swap succeeded — discard the parked backups and any staging dir that
     # was not swapped (an empty rasters staging dir for a no-facsimile export).
     for _, backup_dir in swapped:
