@@ -194,7 +194,9 @@ def export_qa(
         json.dumps(public_records.model_dump(mode="json"), ensure_ascii=False, indent=2)
     )
 
-    metrics_exported = _export_metrics(artifact_root, doc_id, edition, out_dir, summary)
+    metrics_exported = _export_metrics(
+        artifact_root, doc_id, edition, out_dir, summary, ref_bound=ref_bound
+    )
     metrics_note = " + metrics" if metrics_exported else ""
     print(f"  [{edition.upper()}] Exported QA summary + {len(records)} records{metrics_note}")
     return len(records)
@@ -206,6 +208,8 @@ def _export_metrics(
     edition: str,
     out_dir: Path,
     summary: dict,
+    *,
+    ref_bound: bool = False,
 ) -> bool:
     """Write qa_metrics.json for the metrics artifact paired with *summary*.
 
@@ -216,8 +220,19 @@ def _export_metrics(
        authoritative summary with a stray metrics file from an interrupted
        prior run.
     2. Fall back to latest-by-mtime edition-matched selection **only** for
-       legacy summaries (pre-S5U-641) that have no ``qa_metrics_ref``.
-       This preserves export behavior for older artifact stores.
+       legacy summaries (pre-S5U-641) that have no ``qa_metrics_ref`` **and
+       only in legacy (``ref_bound=False``) export mode**. This preserves
+       export behavior for older artifact stores while keeping run-bound
+       exports run-pure.
+
+    Ref-bound mode (S5U-888): when ``ref_bound=True`` and the bound summary
+    carries no ``qa_metrics_ref`` (a legacy summary predating S5U-641), the
+    mtime directory scan is **refused** — it is run-agnostic and can splice a
+    metrics file produced by a *different* pipeline run than the bundle is
+    bound to, re-introducing the exact cross-run hazard S5U-869 closed for the
+    other artifact classes. This mirrors the ``summary_path is None`` handling
+    in ``export_qa``: skip rather than mtime-splice a foreign run's artifact,
+    and drop any stale ``qa_metrics.json`` a prior export left in place.
 
     Returns ``True`` when a metrics artifact was written, ``False`` otherwise
     (older runs emit no metrics, or the ref points at a missing file; both
@@ -244,6 +259,17 @@ def _export_metrics(
         payload = json.loads(target.read_text())
         metrics_out.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
         return True
+
+    if ref_bound:
+        # Run-bound export, but the bound summary is legacy (no qa_metrics_ref).
+        # Refuse the run-agnostic mtime scan — it can splice a different run's
+        # metrics file. Skip metrics and drop any stale companion (S5U-888).
+        metrics_out.unlink(missing_ok=True)
+        print(
+            f"  [{edition.upper()}] Bound summary has no qa_metrics_ref "
+            "(legacy); skipping metrics rather than mtime-splicing"
+        )
+        return False
 
     # Legacy fallback (summary has no ref field — pre-S5U-641 artifact).
     metrics_dir = artifact_root / doc_id / "qa_metrics.v1" / "document" / doc_id
