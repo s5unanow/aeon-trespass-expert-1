@@ -37,21 +37,28 @@ detector implementation must satisfy it. A future `tree-sitter-typescript`
 AST detector is a documented option gated behind the same corpus.
 
 Accepted residual CLASS — runtime string assembly/manipulation (S5U-789;
-recorded as `known_residual` in the corpus, tracked for AST closure by
-S5U-823): any construction where the **exact** token does not appear as a
-contiguous quote-delimited literal escapes a line scanner. This is not just
-concatenation — it includes:
+recorded as `known_residual` in the corpus, AST closure documented under
+S5U-823): any construction where the **runtime override key is not statically
+equal to a contiguous, delimiter-adjacent ``'maxDiffPixelRatio'`` literal**
+escapes a line scanner. The boundary is NOT "the token never appears
+contiguously" — in the slice/substring/replace siblings the token DOES appear
+contiguously, just padded away from the delimiter; the padding is stripped at
+runtime. What unites the class is that the resolved key cannot be read off the
+line without evaluating a runtime string op:
 
-- **Concatenation**: ``const k = `${prefix}PixelRatio`;`` (no contiguous token).
-- **Slicing / substring**: ``'_maxDiffPixelRatio_'.slice(1, -1)`` — the literal
-  is padded so the token is not adjacent to a delimiter.
-- **Replace / char-code assembly**: ``'maxDiffPixelRatioX'.replace('X', '')``,
-  ``String.fromCharCode(...)``, etc.
+- **Concatenation**: ``const k = `${prefix}PixelRatio`;`` (token never contiguous).
+- **Slice / substring**: ``'_maxDiffPixelRatio_'.slice(1, -1)`` /
+  ``'zmaxDiffPixelRatioz'.substring(1, 18)`` (padded literal).
+- **Replace / char-code**: ``'maxDiffPixelRatioPADDING'.replace('PADDING', '')``.
 
-Closing this class requires AST/dataflow analysis (S5U-823); a line scanner
-fundamentally cannot follow runtime string ops. The detector therefore claims
-only to close binding shapes that pass the **exact** token as a contiguous
-quote-delimited string literal, regardless of how it is then bound.
+S5U-823 evaluated and rejected a regex tightening: a "token as a substring of
+any string literal" widening false-positives on legitimately-distinct string
+keys (``'maxDiffPixelRatioFoo'``) and on error/URL/doc strings mentioning the
+token, so it cannot separate the bypass from the `allow` cases — see
+``tmp/plan-s5u-823.md`` §4a. Closing the class needs AST/dataflow; a line
+scanner cannot follow runtime string ops. The detector therefore closes only
+binding shapes that pass the **exact** token as a contiguous, delimiter-adjacent
+quote-delimited literal, regardless of how it is then bound.
 
 (The S5U-759 "multi-line array-literal" residual is now *closed*: the token
 still appears as a contiguous string literal on its own line, which
@@ -110,12 +117,12 @@ from pathlib import Path
 #        - S5U-764  `opts['maxDiffPixelRatio'] = 0.5`
 #      It also closes the former S5U-759 multi-line-array residual: the token
 #      still appears contiguously on its own line. The accepted residual is the
-#      runtime string-assembly/manipulation CLASS — concatenation
-#      (``const k = `${p}PixelRatio` ``), slicing (``'_maxDiffPixelRatio_'.slice``),
-#      replace, char-code assembly — where the exact token is never a contiguous
-#      quote-delimited literal. A line scanner cannot follow runtime string ops;
-#      these are recorded as `known_residual` in the corpus and tracked for
-#      AST-based closure by S5U-823.
+#      runtime string-assembly/manipulation CLASS — concatenation, slice,
+#      substring, replace, char-code — where the runtime key is not statically
+#      equal to a contiguous *delimiter-adjacent* literal (in slice/substring/
+#      replace the token IS contiguous, just padded away from the delimiter).
+#      Recorded as `known_residual`; AST closure and the rejected regex-widening
+#      analysis are documented in the module docstring (S5U-823).
 OVERRIDE_STRING_LITERAL_RE = re.compile(r"(['\"\x60])maxDiffPixelRatio\1")
 
 # (P2) Bare (UNQUOTED) object-literal key followed by a colon:
