@@ -154,6 +154,53 @@ canonical forms the probe is tuned for are `git commit -n`, `git commit
 ("committed", "committing") does **not** match; the probe surfaces documented
 vectors, not paraphrases.
 
+### Machine contract — corpus-backed detector (S5U-822)
+
+The token enumeration above is the policy's prose source of truth, and the
+reviewer's review.md #22 probe is the merge-time gate. S5U-822 adds a third,
+**defense-in-depth** layer: a content-derived detector with a named adversarial
+corpus, so the policy has a machine contract that goes red if the token set
+regresses.
+
+- **Detector**: `scripts/check_hook_bypass_tokens.py` — a content-derived
+  (Rule G2) scanner over a text blob (commit messages + PR body). Public entry
+  point `scan(text) -> list[Violation]`. Each token class above is matched by a
+  behavioral regex (the `--no-verify` flag on *any* command, the `-n`
+  word-proximity probe, `<NAME>=` env-var assignments, `chmod -x`/`rm` on
+  `.git/hooks`, the `core.hooksPath` substring, and the no-op-replacement prose
+  forms), **not** a hardcoded list of literal command strings — so a wrapper,
+  spacing variant, or short-flag alias is caught by content. Fail-closed
+  (Rule G1): `main()` exits non-zero on no input / an unreadable file / an
+  unresolvable `--commit-range`.
+- **Corpus**: `apps/pipeline/tests/safety_gate_corpus/hook_bypass.toml` — a
+  `block` case for every token in the enumeration above, `allow` cases for the
+  documented non-matching paraphrases (English inflections, bare `no-verify`
+  noun-phrase, empty `SKIP=`), and `known_residual` cases for the two
+  out-of-scope forms (the bracketed `[core]\n  hooksPath = …` gitconfig-file
+  form and cross-line mutation prose). Reviewer-found bypasses are added here as
+  `block` cases, not patched in as one-off regexes (S5U-789).
+- **Contract test**: `apps/pipeline/tests/unit/test_check_hook_bypass_corpus.py`
+  drives the real `scan()` over every corpus case. The
+  `detector-corpus-coverage` guard (`scripts/check_detector_corpus_coverage.py`)
+  binds the detector to the corpus — a future edit to the detector requires a
+  corpus diff.
+
+**CI-gating decision (S5U-822): the detector runs as a corpus-driven contract
+test inside the existing `python / test` job (via `uv run pytest`); it is NOT a
+new required-check context, and it is NOT wired as a diff/commit-scanning CI
+step that blocks merge on a real PR's text. The review.md #22 prose probe
+remains the merge-time reviewer gate.** Rationale: (1) disclosure grading
+(the `## Hook bypass disclosure` heading awareness and the docs-citation
+false-positive carve-outs) is the reviewer's job — a blunt CI grep would
+false-positive on PRs that edit this very rule file or the corpus; (2) adding a
+new required-check context is itself a branch-protection change with the
+append-only-endpoint hazard (`.claude/rules/visual-verify.md` "branch-protection
+append rule"), avoided entirely here; (3) the contract test inside `python /
+test` already gives the policy a machine contract that fails CI on regression,
+which meets the S5U-789 acceptance bar. This mirrors how
+`check_visual_test_overrides.py` and the coverage guard are wired (steps inside
+`python / test`, no new context).
+
 ### Residuals (not probe-detectable)
 
 The probe does NOT detect:

@@ -1,0 +1,244 @@
+# Named adversarial corpus for the hook-bypass token detector (S5U-822, child of
+# S5U-789).
+#
+# Detector: scripts/check_hook_bypass_tokens.py
+# Harness:  apps/pipeline/tests/unit/test_check_hook_bypass_corpus.py
+# Coverage: scripts/check_detector_corpus_coverage.py (a change to any
+#           `detector_sources` file with no change to THIS file fails CI).
+#
+# This corpus is the CONTRACT (S5U-789). The hook-bypass policy previously had no
+# script — only the prose-token grep in `.claude/prompts/review.md` check #22,
+# backed by the token enumeration in `.claude/rules/hooks.md` § "Hook-bypass
+# token enumeration". S5U-822 gives it a machine contract. Reviewer-found
+# bypasses are added here as `block` cases — NOT patched in as one-off regexes.
+#
+# CI-gating decision (S5U-822, recorded in `.claude/rules/hooks.md`): this
+# corpus-driven contract test runs inside the existing `python / test` job; the
+# detector is defense-in-depth, NOT a new required-check context, and the
+# review.md #22 prose probe STAYS as the merge-time reviewer gate.
+#
+# Single-detector corpus (no `probe` discriminator — like maxdiffpixelratio /
+# parametrize_red_before). The contract test drives the REAL `scan(text)` entry
+# point over each snippet.
+#
+# `expect` is one of:
+#   block          — `scan()` MUST return >=1 violation (the token is caught).
+#   allow          — `scan()` MUST return 0 violations (legitimate / documented
+#                    non-matching paraphrase).
+#   known_residual — `scan()` returns 0 today; the harness asserts the documented
+#                    gap so a future detector upgrade that closes the residual
+#                    surfaces here and the case can flip to `block`.
+
+policy = "hook_bypass"
+detector_sources = ["scripts/check_hook_bypass_tokens.py"]
+
+# --------------------------------------------------------------------------- #
+# block — CLI flag bypasses (.claude/rules/hooks.md "CLI flag bypasses")       #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "cli-no-verify"
+expect = "block"
+note = "canonical `git commit --no-verify` (hooks.md CLI flag)"
+snippet = "git commit --no-verify -m 'S5U-822: wip'"
+
+[[case]]
+id = "cli-no-verify-bare"
+expect = "block"
+note = """G2 rename/wrapper: the `--no-verify` flag on a NON-`git commit` command
+surface (a wrapper tool). The flag, not the command name, is the content
+signature — a hardcoded `git commit --no-verify` literal list would miss this."""
+snippet = "mytool commit --no-verify"
+
+[[case]]
+id = "cli-amend-no-verify"
+expect = "block"
+note = "`git commit --amend --no-verify` (hooks.md CLI flag) — subsumed by the --no-verify signature"
+snippet = "git commit --amend --no-verify"
+
+[[case]]
+id = "cli-short-n"
+expect = "block"
+note = "`git commit -n` short flag (hooks.md CLI flag) via word-proximity to `commit`"
+snippet = "git commit -n -m 'S5U-822: wip'"
+
+[[case]]
+id = "cli-short-n-crossline"
+expect = "block"
+note = """S5U-648 cross-line proximity: `-n` within 80 chars of `commit` across a
+blank line. The pre-S5U-648 anchored form required `git commit` on the same
+line as `-n`; the proximity window catches the multi-line prose vector."""
+snippet = "the hook hung so I passed -n to\n\ngit commit on the retry"
+
+[[case]]
+id = "cli-short-n-rebase"
+expect = "block"
+note = """G2 alias on a different git verb: `git rebase -i -n HEAD~3`. The `-n`
+proximity probe fires on `rebase`/`merge`, not just `commit`."""
+snippet = "git rebase -i -n HEAD~3"
+
+# --------------------------------------------------------------------------- #
+# block — environment-variable bypasses (hooks.md "Environment-variable")      #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "env-husky-0"
+expect = "block"
+note = "`HUSKY=0` disables the husky hook runner (hooks.md env-var)"
+snippet = "HUSKY=0 git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-husky-extra-space"
+expect = "block"
+note = """G2 spacing variant: `HUSKY=0` followed by multiple spaces still matches
+the word-boundary env regex — whitespace between the assignment and the command
+is not part of the signature."""
+snippet = "HUSKY=0   git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-lefthook-0"
+expect = "block"
+note = "`LEFTHOOK=0` disables the lefthook hook runner (hooks.md env-var)"
+snippet = "LEFTHOOK=0 git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-skip-hook"
+expect = "block"
+note = "`SKIP=<hook>` selective skip (hooks.md env-var) — requires a value (`pre-commit`)"
+snippet = "SKIP=pre-commit git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-hook-bypass"
+expect = "block"
+note = "`HOOK_BYPASS=` any value — documentary form of intent (hooks.md env-var)"
+snippet = "HOOK_BYPASS=1 git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-no-verify-var"
+expect = "block"
+note = "`NO_VERIFY=` any value (hooks.md env-var)"
+snippet = "NO_VERIFY=1 git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-coordinator-ack-source"
+expect = "block"
+note = """`COORDINATOR_ACK_STATUS_SOURCE=` (S5U-672): the removed test-only env-var
+override of the pre-PR coordinator-ack gate. Any reference is an attempted-bypass
+event regardless of hook state — the detector surfaces intent, not hook state."""
+snippet = "COORDINATOR_ACK_STATUS_SOURCE=/tmp/forged.json gh pr create"
+
+# --------------------------------------------------------------------------- #
+# block — hook-file mutation (hooks.md "Hook-file mutation")                   #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "mut-chmod-x"
+expect = "block"
+note = "`chmod -x .git/hooks/pre-commit` disables the hook (hooks.md hook-file mutation)"
+snippet = "chmod -x .git/hooks/pre-commit"
+
+[[case]]
+id = "mut-rm-hook"
+expect = "block"
+note = "`rm .git/hooks/pre-commit` removes the hook (hooks.md hook-file mutation)"
+snippet = "rm .git/hooks/pre-commit"
+
+[[case]]
+id = "mut-noop-replace"
+expect = "block"
+note = """no-op hook replacement (hooks.md hook-file mutation: `exit 0` stub),
+expressed in the same-line prose the review.md #22 probe is tuned for:
+`overwrote .git/hooks/pre-commit with a no-op exit 0`."""
+snippet = "overwrote .git/hooks/pre-commit with a no-op exit 0 stub"
+
+# --------------------------------------------------------------------------- #
+# block — hook-path redirection (hooks.md "Hook-path redirection")            #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "redirect-config-hookspath"
+expect = "block"
+note = "`git config core.hooksPath …` redirection (hooks.md hook-path redirection)"
+snippet = "git config core.hooksPath /tmp/empty-hooks"
+
+[[case]]
+id = "redirect-c-hookspath"
+expect = "block"
+note = """G2 short-flag alias: `git -c core.hooksPath=… commit` — the same redirect
+via the inline `-c` config form. The `core.hooksPath` substring signature catches
+both `git config core.hooksPath /x` and `git -c core.hooksPath=/x commit`
+(review.md #22 line 200 rationale)."""
+snippet = "git -c core.hooksPath=/tmp/empty-hooks commit -m 'S5U-822: wip'"
+
+# --------------------------------------------------------------------------- #
+# allow — legitimate text / documented non-matching paraphrases the detector   #
+# MUST NOT flag (hooks.md "Canonical forms for the probe regex").              #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "allow-clean-commit"
+expect = "allow"
+note = "false-positive guard: an ordinary clean commit message must NOT match"
+snippet = "git commit -m 'S5U-822: add hook-bypass detector and corpus'"
+
+[[case]]
+id = "allow-english-inflection"
+expect = "allow"
+note = """hooks.md "Canonical forms": English-inflected prose ("committed",
+"committing") does NOT match. `\\bcommit\\b` requires the exact word and there is
+no isolated `-n` token here, so the `-n` proximity probe stays silent."""
+snippet = "I committed the change after the hooks ran and they all passed"
+
+[[case]]
+id = "allow-no-verify-noun-phrase"
+expect = "allow"
+note = """deliberate narrower-than-prose-probe anchor (S5U-822 decision): the
+detector anchors C1 on the canonical `--no-verify` (leading double-dash). A bare
+hyphenated noun `no-verify` with no `--` is NOT the canonical CLI form, so it is
+`allow`. review.md #22 includes a bare `no-verify` alternative for the reviewer
+grep, but this defense-in-depth detector keeps the tighter anchor to hold the
+false-positive rate down. Recorded openly as an allow so the choice is auditable."""
+snippet = "ran the no-verify check manually and it was green"
+
+[[case]]
+id = "allow-skip-empty"
+expect = "allow"
+note = """S5U-822 value-presence decision: `SKIP=\\S` requires a non-empty value
+(the documented form is `SKIP=<hook>`, which always carries a hook name). Bare
+`SKIP=` with no value is too collision-prone to match, so it is `allow`. Pins the
+value-presence decision."""
+snippet = "SKIP= git commit -m 'no hook named, empty assignment'"
+
+[[case]]
+id = "allow-similar-env-var"
+expect = "allow"
+note = """word-boundary guard: `MY_HUSKY=0` is a different identifier — the left
+word-boundary `(?<![\\w])` before `HUSKY=0` keeps the longer name out."""
+snippet = "MY_HUSKY=0 echo unrelated"
+
+# --------------------------------------------------------------------------- #
+# known_residual — documented out-of-scope forms the detector does NOT catch   #
+# today. Pinned so a future detector upgrade that closes the residual surfaces  #
+# here and the case can flip to `block`.                                       #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "residual-gitconfig-file-form"
+expect = "known_residual"
+note = """hooks.md marks the bracketed gitconfig-file form `[core]\\n  hooksPath =
+…` OUT OF SCOPE: the probe corpus is commit messages + PR body, not on-disk
+`.git/config`. The detector's `core.hooksPath` (dotted) signature requires the
+contiguous dotted form; the `[core]` section + indented `hooksPath =` form has no
+`core.hooksPath` substring, so the detector stays silent. Flip to `block` if a
+future on-disk-config detector lands."""
+snippet = "[core]\n  hooksPath = /tmp/empty-hooks"
+
+[[case]]
+id = "residual-crossline-mutation-prose"
+expect = "known_residual"
+note = """review.md #22 line 218: `.` in POSIX ERE / the per-line scan does not
+cross newlines. A prose paraphrase that SPLITS the verb (`replaced`) from the
+target (`.git/hooks/pre-commit`) across a blank line is missed by the per-line
+prose probe. (Contrast `mut-noop-replace`, where both are on the same line.)
+Documented residual; flip to `block` if a future multi-line detector lands."""
+snippet = "I replaced the hook\n\nfile at .git/hooks/pre-commit with an exit 0 stub"
