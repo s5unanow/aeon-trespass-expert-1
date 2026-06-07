@@ -25,13 +25,28 @@ VALID_EXPECT = frozenset({"block", "allow", "known_residual"})
 # Optional per-case discriminator naming which detector entry point a
 # multi-detector corpus drives the snippet through (S5U-821). The
 # parametrize / maxdiffpixelratio corpora are single-detector and leave it
-# ``None``; the boundary-shape corpus sets it per case.
+# ``None``; the boundary-shape and instruction-drift corpora set it per case.
+#
+# S5U-820 added the instruction-drift family probes (``claim_count`` …
+# ``tomli_arm``): each names one rule's public ``scan_*`` entry point in
+# ``scripts/_instruction_drift_rule_*.py`` (plus ``tomli_arm`` for the
+# boundary-shape deserialization arm read live from
+# ``.claude/prompts/review.md``). Adding an enum value is additive; an
+# unknown probe still fails closed (see ``_parse_probe``).
 VALID_PROBE = frozenset(
     {
         "forbidden_flag",
         "local_only_token",
         "segment_splitter",
         "ci_section_fence",
+        # S5U-820 instruction-drift family.
+        "claim_count",
+        "retired_term",
+        "safety_gate_scope",
+        "ci_gate_count",
+        "ci_inline_enum",
+        "tilde_fence",
+        "tomli_arm",
     }
 )
 

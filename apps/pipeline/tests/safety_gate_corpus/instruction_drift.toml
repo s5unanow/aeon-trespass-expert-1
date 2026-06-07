@@ -1,0 +1,402 @@
+# Named adversarial corpus for the instruction-drift detector family
+# (S5U-820, child of S5U-789). LARGEST-surface child: six fail-closed rules.
+#
+# Detectors (multi-detector corpus — each case names its `probe`):
+#   scripts/check_instruction_drift.py        orchestrator (traversal + exit code)
+#   scripts/_instruction_drift_rule_a.py      Rule A: check-count claim drift
+#   scripts/_instruction_drift_rule_b.py      Rule B: retired-term references
+#   scripts/_instruction_drift_rule_c.py      Rule C: safety-gate-scope parity
+#   scripts/_instruction_drift_rule_e.py      Rule E: CI gate-count parity
+#   scripts/_instruction_drift_rule_f.py      Rule F: CI inline-enumeration ban
+#   scripts/_instruction_drift_rule_g.py      Rule G: CLAUDE.md tilde-fence guard
+#   .claude/prompts/review.md                 boundary-shape deserialization regex
+#                                             (owns the tomli-arm parity check; S5U-756)
+#
+# Rule D (warning-only advisory) is intentionally NOT covered: it never changes
+# the exit code, so there is no fail-closed block/allow behavior to pin.
+#
+# Harness:  apps/pipeline/tests/unit/test_instruction_drift_corpus.py
+# Coverage: scripts/check_detector_corpus_coverage.py (a change to any
+#           `detector_sources` file with no change to THIS file fails CI).
+#
+# This corpus is the CONTRACT (S5U-789). Reviewer-found syntactic bypasses are
+# added here as `block` cases — NOT patched in as one-off regexes. The detectors
+# above must satisfy every case.
+#
+# Each `[[case]]` carries a `probe` discriminator naming the detector entry point
+# the harness drives the snippet through:
+#   claim_count       -> _instruction_drift_rule_a.py::scan_claim_drift; the
+#                        snippet is one DOC line scanned against an authoritative
+#                        check count of 25 (any int != the cases' claimed Ns).
+#                        (Distinct from boundary_shape's `segment_splitter` probe,
+#                        which exercises the SAME function for the S5U-676
+#                        per-segment exemption vector; this probe pins the
+#                        count-drift / structural-exemption / backtick-exemption
+#                        policy. The function is the shared binding detector_source.)
+#   retired_term      -> _instruction_drift_rule_b.py::scan_retired_terms.
+#   safety_gate_scope -> _instruction_drift_rule_c.py::scan_safety_gate_scope; the
+#                        canonical enumeration is read LIVE from CLAUDE.md by the
+#                        harness (extract_canonical_safety_gate_list).
+#   ci_gate_count     -> _instruction_drift_rule_e.py::scan_ci_gate_claims.
+#   ci_inline_enum    -> _instruction_drift_rule_f.py::scan_ci_body_inline_enumeration.
+#   tilde_fence       -> _instruction_drift_rule_g.py::scan_claude_md_tilde_fences.
+#   tomli_arm         -> the live `tomli\.loads?\(` arm read from
+#                        .claude/prompts/review.md, grepped against the snippet.
+#
+# `expect` semantics:
+#   block          — the detector MUST catch the drift (>=1 message / regex match).
+#   allow          — the detector MUST NOT flag legitimate / exempt input (0 msgs).
+#   known_residual — the detector does NOT catch it today; the harness asserts the
+#                    documented gap (0 msgs). It auto-flips RED when a future fix
+#                    starts catching it, forcing promotion to `block`.
+
+policy = "instruction_drift"
+detector_sources = [
+    "scripts/check_instruction_drift.py",
+    "scripts/_instruction_drift_rule_a.py",
+    "scripts/_instruction_drift_rule_b.py",
+    "scripts/_instruction_drift_rule_c.py",
+    "scripts/_instruction_drift_rule_e.py",
+    "scripts/_instruction_drift_rule_f.py",
+    "scripts/_instruction_drift_rule_g.py",
+    ".claude/prompts/review.md",
+]
+
+# --------------------------------------------------------------------------- #
+# Rule A — check-count claim drift (scripts/_instruction_drift_rule_a.py).      #
+# A stale `checks 1-N` / `all N checks` claim that disagrees with the           #
+# authoritative review.md max-check count is drift. Structural sub-ranges and   #
+# backtick/quote examples are exempt. Block cases go red if the count compare   #
+# or the claim scan is gutted.                                                  #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-820-A-block-stale-range"
+expect = "block"
+probe = "claim_count"
+note = """`walk checks 1-21 to verify` — a stale range claim (21) disagreeing
+with the authoritative count (25). Reverting scan_claim_drift to a no-op makes
+this case go red."""
+snippet = "walk checks 1-21 to verify"
+
+[[case]]
+id = "S5U-820-A-block-stale-all"
+expect = "block"
+probe = "claim_count"
+note = """`all 21 checks must pass` — the `all N checks` claim form, stale (21
+!= 25). Pins the second claim regex (`_CLAIM_ALL_RE`)."""
+snippet = "all 21 checks must pass"
+
+[[case]]
+id = "S5U-820-A-allow-correct-count"
+expect = "allow"
+probe = "claim_count"
+note = """false-positive guard: `checks 1-25 run` matches the authoritative
+count exactly, so no drift is reported."""
+snippet = "checks 1-25 run"
+
+[[case]]
+id = "S5U-820-A-allow-structural-subrange"
+expect = "allow"
+probe = "claim_count"
+note = """exemption guard: `Checks 1-13 always run` is a structural sub-range
+template (S5U-667/676), not a total-count claim — exempt even though 13 != 25."""
+snippet = "Checks 1-13 always run"
+
+[[case]]
+id = "S5U-820-A-allow-backtick-example"
+expect = "allow"
+probe = "claim_count"
+note = """exemption guard: a claim enclosed in backticks (`` `checks 1-21` ``) is
+a quoted example documenting the regex, not a live count claim — exempt."""
+snippet = "the `checks 1-21` example"
+
+# --------------------------------------------------------------------------- #
+# Rule B — retired-term references (scripts/_instruction_drift_rule_b.py).      #
+# A fresh `.md` mention of a retired stack (e.g. tesseract) without a nearby    #
+# retirement scoping marker is drift. Block goes red if RETIRED_TERMS is        #
+# emptied or the scoping window is widened to always-true.                      #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-820-B-block-bare-tesseract"
+expect = "block"
+probe = "retired_term"
+note = """`We should use Tesseract for OCR.` — a retired term mentioned with no
+retirement scoping marker within +/-2 lines. Gutting RETIRED_TERMS makes this
+case go red."""
+snippet = "We should use Tesseract for OCR."
+
+[[case]]
+id = "S5U-820-B-allow-scoped"
+expect = "allow"
+probe = "retired_term"
+note = """exemption guard: `Tesseract was retired (S5U-592).` carries the
+scoping marker `retired` on the same line — exempt."""
+snippet = "Tesseract was retired (S5U-592)."
+
+[[case]]
+id = "S5U-820-B-allow-no-retired-term"
+expect = "allow"
+probe = "retired_term"
+note = """false-positive guard: ordinary prose with no retired term must not be
+flagged."""
+snippet = "We use the native PDF text layer."
+
+# --------------------------------------------------------------------------- #
+# Rule C — safety-gate-scope parenthetical parity                              #
+# (scripts/_instruction_drift_rule_c.py). A skill/prompt re-citing the          #
+# `safety-gate scope (...)` enumeration must match CLAUDE.md byte-for-byte or   #
+# defer with `per CLAUDE.md`. The harness reads the LIVE canonical from         #
+# CLAUDE.md, so a trimmed list is real drift. Block goes red if the parity      #
+# scan is disabled or the `per CLAUDE.md` deferral is loosened.                 #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-820-C-block-trimmed-list"
+expect = "block"
+probe = "safety_gate_scope"
+note = """`safety-gate scope (hooks, CI checks)` — a trimmed enumeration that
+neither matches the live CLAUDE.md canonical nor defers with `per CLAUDE.md`.
+A worker following this skill would under-escalate. Gutting
+scan_safety_gate_scope makes this case go red."""
+snippet = "safety-gate scope (hooks, CI checks)"
+
+[[case]]
+id = "S5U-820-C-allow-defers"
+expect = "allow"
+probe = "safety_gate_scope"
+note = """exemption guard: a trimmed list that defers with `per CLAUDE.md` on the
+same line is allowed (the skill points back at the authoritative source)."""
+snippet = "safety-gate scope (hooks) per CLAUDE.md"
+
+# Note: the byte-for-byte-canonical `allow` case is built by the harness from the
+# LIVE CLAUDE.md enumeration (it cannot be a static snippet — the canonical text
+# evolves). See test_instruction_drift_corpus.py::test_rule_c_exact_canonical_allows.
+
+# --------------------------------------------------------------------------- #
+# Rule E — CI gate-count parity (scripts/_instruction_drift_rule_e.py). The CI  #
+# header `9 + N extra`, the max enumerated item L, and every `all K gates`      #
+# claim must agree (N = L-8, K = L+1). Block goes red if either parity check    #
+# is removed.                                                                   #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-820-E-block-header-mismatch"
+expect = "block"
+probe = "ci_gate_count"
+note = """header claims `9 + 1 extra` but the enumeration reaches item 10
+(=> `9 + 2 extra`). The header-vs-enumeration parity fires."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 1 extra) — runs
+
+9. local
+10. gate-a
+
+- all 11 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-820-E-block-all-k-mismatch"
+expect = "block"
+probe = "ci_gate_count"
+note = """consistent header/enumeration (`9 + 2 extra`, max item 10) but a stale
+`all 99 gates` claim (should be 11). Pins the `all K gates` parity arm
+independently of the header arm."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 2 extra) — runs
+
+9. local
+10. gate-a
+
+- all 99 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-820-E-allow-consistent"
+expect = "allow"
+probe = "ci_gate_count"
+note = """false-positive guard: header `9 + 2 extra`, items 9 & 10 (max L=10),
+`all 11 gates` (= L+1). All three claims agree — no drift."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 2 extra) — runs
+
+9. local
+10. gate-a
+
+- all 11 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-820-E-known_residual-gap"
+expect = "known_residual"
+probe = "ci_gate_count"
+note = """DOCUMENTED OPEN RESIDUAL (rule_e.py docstring "Known limitation"): the
+max-item-number approach does not detect non-contiguous gaps. Items 9, 10, 12
+(missing 11) with header `9 + 4 extra` (max L=12 => extras 4) and `all 13 gates`
+(= L+1) are internally consistent against the MAX, so scan_ci_gate_claims returns
+0 messages — the gap is undetected. Declaring this `block` would FAIL today. If a
+future fix adds sequence-contiguity validation, the slice will fire and this case
+auto-flips RED, forcing promotion to `block`."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 4 extra) — runs
+
+9. local
+10. a
+12. c
+
+- all 13 gates pass — required for merge.
+"""
+
+# --------------------------------------------------------------------------- #
+# Rule F — CI inline-enumeration ban (scripts/_instruction_drift_rule_f.py).    #
+# A CI body list-item line that compresses `X. ... <sep> Y. ...` (sep in        #
+# `/ , and`) is forbidden — Rule E's line-start regex would silently miss the   #
+# second marker. Block goes red if the inline-enum scan is gutted or the        #
+# separator set is narrowed.                                                    #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-820-F-block-slash-compression"
+expect = "block"
+probe = "ci_inline_enum"
+note = """`10. a / 11. b` on one CI-body list-item line — the `/` separator
+compresses item 11 into item 10's line, invisible to Rule E."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 2 extra) — runs
+
+9. local
+10. a / 11. b
+
+- all 11 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-820-F-block-and-compression"
+expect = "block"
+probe = "ci_inline_enum"
+note = """`10. a and 11. b` — the `and` separator vocabulary. Narrowing the
+separator set to drop `and` re-opens this vector."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 2 extra) — runs
+
+9. local
+10. a and 11. b
+
+- all 11 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-820-F-allow-separate-lines"
+expect = "allow"
+probe = "ci_inline_enum"
+note = """false-positive guard: items 10 and 11 each on their own line — the
+legal shape Rule F requires. No compression separator, no flag."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 2 extra) — runs
+
+9. local
+10. a
+11. b
+
+- all 11 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-820-F-allow-prose-period"
+expect = "allow"
+probe = "ci_inline_enum"
+note = """false-positive guard: prose periods inside a list-item body
+(`PR #307. Rule G1.`) produce `\\d+\\. ` tokens that are NOT preceded by a list
+separator, so Rule F must not fire on them."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 1 extra) — runs
+
+9. local
+10. references PR #307. Rule G1. text follows.
+
+- all 11 gates pass — required for merge.
+"""
+
+# --------------------------------------------------------------------------- #
+# Rule G — CLAUDE.md tilde-fence guard (scripts/_instruction_drift_rule_g.py).  #
+# An active `~~~` fence in CLAUDE.md (outside a backtick fence) is forbidden     #
+# because Rule E/F's shared walk_with_fence_state does NOT honor tildes —        #
+# re-opens the S5U-742 bypass class. Block goes red if the guard is removed.     #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-820-G-block-active-tilde"
+expect = "block"
+probe = "tilde_fence"
+note = """an active `~~~markdown` fence at line start in CLAUDE.md, outside any
+backtick fence. Removing scan_claude_md_tilde_fences makes this case go red."""
+snippet = """# CLAUDE.md
+
+~~~markdown
+### heading inside tilde fence
+~~~
+"""
+
+[[case]]
+id = "S5U-820-G-allow-tilde-in-backtick"
+expect = "allow"
+probe = "tilde_fence"
+note = """false-positive guard: a `~~~`-shaped line INSIDE a backtick-fenced code
+block is content (a documented example), not an active markdown fence — the
+shared walker skips it, so Rule G must not fire."""
+snippet = """# CLAUDE.md
+
+```markdown
+~~~
+inner content
+~~~
+```
+"""
+
+[[case]]
+id = "S5U-820-G-allow-no-tilde"
+expect = "allow"
+probe = "tilde_fence"
+note = "false-positive guard: plain CLAUDE.md text with no tilde fence."
+snippet = """# CLAUDE.md
+
+plain text with no fence
+"""
+
+# --------------------------------------------------------------------------- #
+# S5U-756 — tomli-arm parity in the boundary-shape deserialization regex on     #
+# .claude/prompts/review.md. S5U-652 added `tomli\.loads\(` (string form only); #
+# S5U-756 fixed the asymmetry to `tomli\.loads?\(` so the file-form             #
+# `tomli.load(fp)` over an untrusted TOML file is ALSO matched — for parity     #
+# with the pickle/json/tomllib arms. The harness reads the LIVE regex arm from  #
+# review.md and greps each snippet, so reverting the `?` makes the file-form     #
+# case go red while the string-form case stays green (arm-specific, not blanket).#
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-756-tomli-load-file-form"
+expect = "block"
+probe = "tomli_arm"
+note = """`tomli.load(fp)` — the file-form deserializer over an untrusted TOML
+file. Pre-S5U-756 the arm required the literal `s` in `loads`, so this bypassed
+the boundary-shape probe. Reverting `tomli\\.loads?\\(` to `tomli\\.loads\\(` in
+review.md makes THIS case go red (and only this one)."""
+snippet = "data = tomli.load(open(untrusted_path, 'rb'))"
+
+[[case]]
+id = "S5U-756-tomli-loads-string-form"
+expect = "block"
+probe = "tomli_arm"
+note = """no-regression pin: `tomli.loads(text)` — the string form covered since
+S5U-652. Stays green under the S5U-756 revert (proving the file-form case is
+arm-specific, not a blanket failure)."""
+snippet = "data = tomli.loads(text)"
