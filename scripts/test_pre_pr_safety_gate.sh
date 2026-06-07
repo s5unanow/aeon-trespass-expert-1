@@ -227,13 +227,41 @@ run_case_combined "1b S5U-922 extracted detector helper (_parametrize_ast.py)" \
 run_case_combined "1b S5U-922 instruction-drift rule helper (_rule_a.py)" \
   "scripts/_instruction_drift_rule_a.py" "yes"
 
-# G2 no-over-capture: benign underscore helpers are NOT in any corpus → OUT.
+# G2 no-over-capture: benign underscore helpers are neither corpus-declared nor
+# imported by an in-scope detector → OUT (still, after S5U-926).
 run_case_combined "1b S5U-922 benign underscore helper not over-captured (_export_blocks.py)" \
   "scripts/_export_blocks.py" "no"
 
-# rule D is specifically NOT a detector_source (only a,b,c,e,f,g are) → OUT.
-run_case_combined "1b S5U-922 non-detector rule helper (_instruction_drift_rule_d.py)" \
-  "scripts/_instruction_drift_rule_d.py" "no"
+# =========================================================================
+# Layer 1c (S5U-926): import-graph detector-helper scope
+# =========================================================================
+#
+# S5U-922 only put corpus-DECLARED helpers in scope. Load-bearing helpers that
+# are IMPORTED by an in-scope check_* detector but declared in no corpus escaped
+# scope — the exact bug-class S5U-922 was filed to close, for different files.
+# S5U-926 folds in the transitive sibling-import closure of every in-scope
+# detector (scripts/_detector_source_scope.py::import_graph_scope), so these
+# helpers are now in the live --list and MUST match here too.
+#
+# S5U-926 REVERSAL: this assertion previously expected rule_d OUT ("rule D is
+# specifically NOT a detector_source"). rule_d IS imported + called by
+# check_instruction_drift.py, so the import-graph layer now scopes it IN. The
+# prior assumption is reversed.
+run_case_combined "1c S5U-926 import-graph helper (_instruction_drift_rule_d.py)" \
+  "scripts/_instruction_drift_rule_d.py" "yes"
+
+# _linear_client backs the REQUIRED coverage-table-scan CI check (imported by
+# check_coverage_table.py) — highest-stakes of the escaping helpers.
+run_case_combined "1c S5U-926 import-graph helper (_linear_client.py)" \
+  "scripts/_linear_client.py" "yes"
+
+# The three code-erosion helpers imported by check_code_erosion.py.
+run_case_combined "1c S5U-926 import-graph helper (_erosion_report_fmt.py)" \
+  "scripts/_erosion_report_fmt.py" "yes"
+run_case_combined "1c S5U-926 import-graph helper (_hotspot_budgets.py)" \
+  "scripts/_hotspot_budgets.py" "yes"
+run_case_combined "1c S5U-926 import-graph helper (_repo_summary.py)" \
+  "scripts/_repo_summary.py" "yes"
 
 # Mixed adversarial: a benign-only-looking diff that smuggles an escaping
 # detector helper alongside pipeline code → MUST trigger on the helper.
