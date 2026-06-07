@@ -57,6 +57,17 @@ note = "`git commit --amend --no-verify` (hooks.md CLI flag) — subsumed by the
 snippet = "git commit --amend --no-verify"
 
 [[case]]
+id = "cli-no-verify-uppercase"
+expect = "block"
+note = """S5U-957 case-folding parity: review.md #22 uses `grep -inE` (case-INsensitive),
+so `--NO-VERIFY` in a commit message / PR body is MATCHed by #22 but was MISSed by the
+case-sensitive detector. `CLI_NO_VERIFY_RE` now carries `re.IGNORECASE` so the machine
+contract matches #22. (git option parsing is itself case-sensitive — `--NO-VERIFY`
+would not disable hooks in a real shell — but the detector scans PROSE for documented
+bypass INTENT, which #22 catches; parity requires the detector catch it too.)"""
+snippet = "git commit --NO-VERIFY"
+
+[[case]]
 id = "cli-short-n"
 expect = "block"
 note = "`git commit -n` short flag (hooks.md CLI flag) via word-proximity to `commit`"
@@ -96,10 +107,27 @@ is not part of the signature."""
 snippet = "HUSKY=0   git commit -m 'S5U-822: wip'"
 
 [[case]]
+id = "env-husky-lowercase"
+expect = "block"
+note = """S5U-957 case-folding parity: `husky=0` is MATCHed by review.md #22's
+`grep -inE` but was MISSed by the case-sensitive detector. `ENV_HUSKY_RE` now
+carries `re.IGNORECASE`. The `=0` literal is case-agnostic (`0` has no case), so
+the disable-value pin holds: `husky=1` still does NOT match."""
+snippet = "husky=0 git commit -m 'wip'"
+
+[[case]]
 id = "env-lefthook-0"
 expect = "block"
 note = "`LEFTHOOK=0` disables the lefthook hook runner (hooks.md env-var)"
 snippet = "LEFTHOOK=0 git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-lefthook-lowercase"
+expect = "block"
+note = """S5U-957 case-folding parity: `lefthook=0` is MATCHed by #22's `grep -inE`
+but was MISSed by the case-sensitive detector. `ENV_LEFTHOOK_RE` now carries
+`re.IGNORECASE`; the `=0` disable-value pin is unaffected."""
+snippet = "lefthook=0 git commit -m 'wip'"
 
 [[case]]
 id = "env-skip-hook"
@@ -108,10 +136,27 @@ note = "`SKIP=<hook>` selective skip (hooks.md env-var) — requires a value (`p
 snippet = "SKIP=pre-commit git commit -m 'S5U-822: wip'"
 
 [[case]]
+id = "env-skip-lowercase"
+expect = "block"
+note = """S5U-957 case-folding parity: `skip=ruff` is MATCHed by #22's `grep -inE`
+but was MISSed by the case-sensitive detector. `ENV_SKIP_RE` now carries
+`re.IGNORECASE`; the value-presence requirement (`=\\S`, owned by S5U-958) is
+unchanged — bare `skip=` with no value still does NOT match."""
+snippet = "skip=ruff git commit -m 'wip'"
+
+[[case]]
 id = "env-hook-bypass"
 expect = "block"
 note = "`HOOK_BYPASS=` any value — documentary form of intent (hooks.md env-var)"
 snippet = "HOOK_BYPASS=1 git commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "env-hook-bypass-lowercase"
+expect = "block"
+note = """S5U-957 case-folding parity: `hook_bypass=1` is MATCHed by #22's
+`grep -inE` but was MISSed by the case-sensitive detector. `ENV_HOOK_BYPASS_RE`
+now carries `re.IGNORECASE`."""
+snippet = "hook_bypass=1 git commit -m 'wip'"
 
 [[case]]
 id = "env-no-verify-var"
@@ -120,12 +165,30 @@ note = "`NO_VERIFY=` any value (hooks.md env-var)"
 snippet = "NO_VERIFY=1 git commit -m 'S5U-822: wip'"
 
 [[case]]
+id = "env-no-verify-var-lowercase"
+expect = "block"
+note = """S5U-957 case-folding parity: `no_verify=1` is MATCHed by #22's `grep -inE`
+but was MISSed by the case-sensitive detector. `ENV_NO_VERIFY_RE` now carries
+`re.IGNORECASE`."""
+snippet = "no_verify=1 git commit -m 'wip'"
+
+[[case]]
 id = "env-coordinator-ack-source"
 expect = "block"
 note = """`COORDINATOR_ACK_STATUS_SOURCE=` (S5U-672): the removed test-only env-var
 override of the pre-PR coordinator-ack gate. Any reference is an attempted-bypass
 event regardless of hook state — the detector surfaces intent, not hook state."""
 snippet = "COORDINATOR_ACK_STATUS_SOURCE=/tmp/forged.json gh pr create"
+
+[[case]]
+id = "env-coordinator-ack-lowercase"
+expect = "block"
+note = """S5U-957 case-folding parity (the sharpest miss): `coordinator_ack_status_source=`
+is MATCHed by #22's `grep -inE` but was MISSed by the case-sensitive detector.
+hooks.md/#22 say "any reference to this identifier … is an attempted-bypass event
+regardless of hook state" — a worker writing the lowercase form evaded the machine
+contract. `ENV_COORDINATOR_ACK_RE` now carries `re.IGNORECASE`."""
+snippet = "coordinator_ack_status_source=/tmp/forged.json gh pr create"
 
 # --------------------------------------------------------------------------- #
 # block — hook-file mutation (hooks.md "Hook-file mutation")                   #
@@ -169,6 +232,24 @@ via the inline `-c` config form. The `core.hooksPath` substring signature catche
 both `git config core.hooksPath /x` and `git -c core.hooksPath=/x commit`
 (review.md #22 line 200 rationale)."""
 snippet = "git -c core.hooksPath=/tmp/empty-hooks commit -m 'S5U-822: wip'"
+
+[[case]]
+id = "redirect-config-hookspath-uppercase"
+expect = "block"
+note = """S5U-957 case-folding parity: `git config CORE.HOOKSPATH /tmp` is MATCHed
+by #22's `grep -inE 'core\\.hooksPath'` but was MISSed by the case-sensitive
+detector. `HOOKSPATH_REDIRECT_RE` now carries `re.IGNORECASE`."""
+snippet = "git config CORE.HOOKSPATH /tmp"
+
+[[case]]
+id = "redirect-c-hookspath-uppercase"
+expect = "block"
+note = """S5U-957 case-folding parity: `git -c CORE.HOOKSPATH=/dev/null commit` is
+MATCHed by #22's `grep -inE 'core\\.hooksPath'` but was MISSed by the
+case-sensitive detector. `HOOKSPATH_REDIRECT_RE` now carries `re.IGNORECASE`. The
+bracketed `[core]\\n hooksPath` residual still has no contiguous `core.hooksPath`
+substring, so it stays `known_residual` (case-folding does not change that)."""
+snippet = "git -c CORE.HOOKSPATH=/dev/null commit -m 'wip'"
 
 # --------------------------------------------------------------------------- #
 # allow — legitimate text / documented non-matching paraphrases the detector   #
