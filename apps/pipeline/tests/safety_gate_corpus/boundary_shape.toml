@@ -1,0 +1,307 @@
+# Named adversarial corpus for the boundary-shape / fenced-section safety-gate
+# probes (S5U-821, child of S5U-789).
+#
+# Detectors (multi-detector corpus — each case names its `probe`):
+#   scripts/check_visual_gate_scope.py     forbidden-flag + local-only token regex
+#   scripts/check_test_e2e_flags.sh        shell-side forbidden-flag terminator pattern
+#   scripts/_instruction_drift_rule_a.py   segment-splitter (per-segment claim scan)
+#   scripts/_instruction_drift_rule_e.py   CommonMark fence walker / _ci_section_body slice
+#
+# Harness:  apps/pipeline/tests/unit/test_boundary_shape_corpus.py
+# Coverage: scripts/check_detector_corpus_coverage.py (a change to any
+#           `detector_sources` file with no change to THIS file fails CI).
+#
+# This corpus is the CONTRACT (S5U-789). Reviewer-found syntactic bypasses are
+# added here as `block` cases — NOT patched in as one-off regexes. The four
+# detectors above must satisfy every case.
+#
+# Each `[[case]]` carries a `probe` discriminator naming the detector entry
+# point the harness drives the snippet through:
+#   forbidden_flag    -> check_visual_gate_scope.py::_contains_forbidden_flag
+#                        AND the real `pattern=` line read from
+#                        check_test_e2e_flags.sh (both surfaces, S5U-655).
+#   local_only_token  -> check_visual_gate_scope.py::_local_only_token_patterns()
+#   segment_splitter  -> _instruction_drift_rule_a.py::scan_claim_drift (S5U-676).
+#   ci_section_fence  -> _instruction_drift_rule_e.py::_ci_section_body; the
+#                        snippet carries a `### CI (GitHub Actions, 9 + N extra)`
+#                        header and the case's `probe_target` is the enumerated
+#                        item the fence-aware slice must reach (block) or must
+#                        NOT reach (known_residual).
+#
+# `expect` semantics:
+#   block          — the detector MUST catch the bypass (>=1 match / fires /
+#                    slice reaches the probe_target).
+#   allow          — the detector MUST NOT flag legitimate input.
+#   known_residual — the detector does NOT catch it today; the harness asserts
+#                    the documented gap (no match / probe_target unreachable). It
+#                    auto-flips red when a future fix starts catching it, forcing
+#                    promotion to `block`.
+
+policy = "boundary_shape"
+detector_sources = [
+    "scripts/check_visual_gate_scope.py",
+    "scripts/check_test_e2e_flags.sh",
+    "scripts/_instruction_drift_rule_a.py",
+    "scripts/_instruction_drift_rule_e.py",
+]
+
+# --------------------------------------------------------------------------- #
+# S5U-655 — forbidden-flag shell terminators. Pre-S5U-655 the regex required   #
+# the flag to be followed by whitespace/quote/backtick/`=`/EOL, so a shell     #
+# terminator (`;`, `&&`, `)`) right after the flag bypassed both scanners.     #
+# S5U-655 extended the boundary class to `;&|()<>,`. These `block` cases go     #
+# red if the terminator broadening is reverted on either surface.              #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-655-semicolon-after-short-flag"
+expect = "block"
+probe = "forbidden_flag"
+note = """`-u;` — Playwright `-u` short flag immediately followed by `;`.
+Pre-S5U-655 the trailing boundary class was `[\\s="'`]`, so the `;` terminator
+slipped through both check_visual_gate_scope.py and check_test_e2e_flags.sh."""
+snippet = "pnpm exec playwright test -u; echo ok"
+
+[[case]]
+id = "S5U-655-ampersand-after-update-snapshots"
+expect = "block"
+probe = "forbidden_flag"
+note = """`--update-snapshots&&` — long flag followed by a shell `&&` chain.
+Reverting the `&` from the terminator class re-opens this bypass."""
+snippet = "playwright test --update-snapshots&& echo ok"
+
+[[case]]
+id = "S5U-655-close-paren-after-ignore-snapshots"
+expect = "block"
+probe = "forbidden_flag"
+note = """`--ignore-snapshots)` — flag terminated by a subshell `)`.
+Closes the `( ... )` command-grouping vector."""
+snippet = "(playwright test --ignore-snapshots)"
+
+[[case]]
+id = "S5U-655-canonical-trailing-eol"
+expect = "block"
+probe = "forbidden_flag"
+note = "canonical pre-S5U-655 form (flag at EOL) — must still be caught."
+snippet = "pnpm exec playwright test --update-snapshots"
+
+[[case]]
+id = "S5U-655-no-forbidden-flag"
+expect = "allow"
+probe = "forbidden_flag"
+note = """false-positive guard: an ordinary playwright invocation with no
+update/ignore flag must NOT be flagged. `--reporter`, `-c`, etc. are fine."""
+snippet = "pnpm exec playwright test --reporter=line"
+
+[[case]]
+id = "S5U-655-substring-not-a-flag"
+expect = "allow"
+probe = "forbidden_flag"
+note = """false-positive guard: `--update-snapshots-dir` is a different token —
+the trailing boundary requires a terminator, so the embedded `-dir` suffix
+keeps it from matching `--update-snapshots`."""
+snippet = "playwright test --update-snapshots-dir=foo"
+
+# --------------------------------------------------------------------------- #
+# S5U-655 (local-only token) — the `_local_only_token_patterns` boundary class  #
+# was broadened in lockstep so `pnpm test:visual:update;` is caught.           #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-655-local-only-semicolon-terminator"
+expect = "block"
+probe = "local_only_token"
+note = """`pnpm test:visual:update;` — the sanctioned local-only updater invoked
+in a workflow with a trailing `;`. Pre-S5U-655 the name regex required a
+whitespace/quote terminator, so the `;` bypassed the bare-shortcut check."""
+snippet = "pnpm test:visual:update; echo done"
+
+[[case]]
+id = "S5U-655-local-only-in-bash-c"
+expect = "block"
+probe = "local_only_token"
+note = """`bash -c "pnpm test:visual:update; echo ok"` — same token inside a
+`bash -c` wrapper, terminated by `;` inside the quoted command."""
+snippet = 'bash -c "pnpm test:visual:update; echo ok"'
+
+[[case]]
+id = "S5U-655-local-only-substring-not-token"
+expect = "allow"
+probe = "local_only_token"
+note = """false-positive guard: `test:visual:update-lib` is a different script
+name — the word-boundary regex must NOT match the colon-separated token as a
+substring of a longer name."""
+snippet = "pnpm test:visual:update-lib"
+
+# --------------------------------------------------------------------------- #
+# S5U-676 — segment splitter. The S5U-667 helper exempted the WHOLE line if    #
+# ANY `.;:`-separated segment matched the structural sub-range template, so a   #
+# stale claim in a prose segment + a structural template in a sibling segment   #
+# bypassed Rule A. S5U-676 scans each segment independently. These cases drive  #
+# scripts/_instruction_drift_rule_a.py::scan_claim_drift (NOT rule_e — the      #
+# segment splitter physically lives in rule_a, so that file is the binding      #
+# detector_source even though the issue text grouped it loosely under rule_e).  #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-676-stale-claim-in-prose-segment"
+expect = "block"
+probe = "segment_splitter"
+note = """`When a new trigger fires, walk checks 1-21: Checks 1-13 always run.`
+The first `:`-segment carries a stale `checks 1-21` claim; the second is a
+structural sub-range. Pre-S5U-676 the structural sibling exempted the whole
+line. Per-segment scanning flags the stale prose-segment claim."""
+snippet = "When a new trigger fires, walk checks 1-21: Checks 1-13 always run."
+
+[[case]]
+id = "S5U-676-comma-continuation-after-structural"
+expect = "block"
+probe = "segment_splitter"
+note = """`Checks 1-13 always run, but walk checks 1-21 in edge cases.`
+Comma is intentionally NOT a splitter; the end-anchored structural regex
+(S5U-676) refuses the prose continuation, so the segment is claim-scanned and
+the stale `checks 1-21` fires."""
+snippet = "Checks 1-13 always run, but walk checks 1-21 in edge cases."
+
+[[case]]
+id = "S5U-676-both-segments-structural"
+expect = "allow"
+probe = "segment_splitter"
+note = """happy path: `Checks 1-13 always run. Checks 14-21 are conditional.`
+Both `.`-segments match the structural sub-range template, so both are exempt
+and no claim drift is reported."""
+snippet = "Checks 1-13 always run. Checks 14-21 are conditional."
+
+# --------------------------------------------------------------------------- #
+# S5U-742 / S5U-743 — fence walker. _ci_section_body must NOT terminate the CI  #
+# body slice at a `## `/`### ` heading that lives INSIDE a fenced code block.   #
+# S5U-742 closed the single-3-backtick-fence case; S5U-743 closed the          #
+# length-blind toggle that mis-tracked a 4-backtick wrapper containing a        #
+# 3-backtick inner fence. `probe_target` is the enumerated item the slice must  #
+# reach (proof the in-fence heading did NOT truncate it).                       #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-742-heading-inside-3-backtick-fence"
+expect = "block"
+probe = "ci_section_fence"
+probe_target = "12. another-real-gate"
+note = """`### Section header in example` inside a 3-backtick fenced block in the
+CI body. Pre-S5U-742 the slice terminated at that in-fence heading, hiding
+`12. another-real-gate` and every later enumerated item. The fence-aware walker
+keeps the slice open until the fence closes; the slice reaches item 12."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 1 extra) — runs
+
+9. local-only
+
+Example template:
+
+```markdown
+### Section header in example
+- bullets
+```
+
+10. real-gate-a / 11. compressed-and-invisible
+12. another-real-gate
+
+- all 10 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-743-nested-4-backtick-wrapper"
+expect = "block"
+probe = "ci_section_fence"
+probe_target = "13. real-gate"
+note = """4-backtick wrapper containing a 3-backtick inner fence with a `### `
+heading inside it (the canonical "show a fenced block in docs" idiom).
+Pre-S5U-743 the length-blind toggle treated the inner 3-backtick line as a
+close, exposing the in-fence `### ` which truncated the slice. The
+fence-length-aware walker keeps the 4-backtick fence open until a >=4-backtick
+close; the slice reaches item 13."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 4 extra) — runs
+
+9. local-only
+
+````markdown
+Here's how to write a fenced code block in markdown:
+
+```python
+### inside python block
+def foo(): pass
+```
+
+End of code-block-in-docs example.
+````
+
+10. real-gate
+11. real-gate
+12. real-gate
+13. real-gate
+
+- all 14 gates pass — required for merge.
+"""
+
+[[case]]
+id = "S5U-742-heading-outside-fence-still-terminates"
+expect = "allow"
+probe = "ci_section_fence"
+probe_target = "10. should-be-cut-off"
+note = """false-positive guard: a `## `/`### ` heading OUTSIDE any fence MUST
+still terminate the slice (the walker is not supposed to swallow real section
+boundaries). Here `## Real next section` terminates the body before
+`10. should-be-cut-off`, so the probe_target is correctly UNREACHABLE — which
+for an `allow` case is the expected behavior (slice terminates as designed).
+This pins that the fence-awareness did not break normal termination."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 0 extra) — runs
+
+9. local-only
+
+## Real next section
+
+10. should-be-cut-off
+"""
+
+# --------------------------------------------------------------------------- #
+# S5U-744 — tilde-fence asymmetry. walk_with_fence_state intentionally does     #
+# NOT honor `~~~` fences (documented in its docstring). A `### ` inside a tilde  #
+# fence in the CI body therefore STILL truncates the slice — a genuine open     #
+# residual at the walker layer, mechanically backstopped elsewhere (the         #
+# S5U-744 sentinel test + Rule G's CLAUDE.md tilde-fence guard in               #
+# scripts/_instruction_drift_rule_g.py). This is `known_residual`, NOT `block`: #
+# declaring it `block` (probe_target reachable) would FAIL today. If a future   #
+# fix extends the walker to honor `~~~`, the slice will reach the target and    #
+# this case auto-flips RED, forcing promotion to `block`.                       #
+# --------------------------------------------------------------------------- #
+
+[[case]]
+id = "S5U-744-tilde-fence-not-honored"
+expect = "known_residual"
+probe = "ci_section_fence"
+probe_target = "10. should-be-cut-off"
+note = """`~~~markdown ... ~~~` tilde fence containing a `### ` heading in the CI
+body. walk_with_fence_state does not track tilde fences, so the in-fence `### `
+is treated as plain content and truncates the slice — `10. should-be-cut-off`
+is NOT reached. Documented open residual (S5U-744); backstopped by the S5U-744
+sentinel test and Rule G's CLAUDE.md tilde-fence guard. Auto-flips red if the
+walker is ever taught to honor `~~~`, forcing promotion to `block`."""
+snippet = """# CLAUDE.md
+
+### CI (GitHub Actions, 9 + 1 extra) — runs
+
+9. local-only
+
+~~~markdown
+### Section header in tilde fence
+- bullets
+~~~
+
+10. should-be-cut-off
+
+- all 10 gates pass — required for merge.
+"""

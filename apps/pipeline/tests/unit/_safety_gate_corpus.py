@@ -22,6 +22,19 @@ from pathlib import Path
 
 VALID_EXPECT = frozenset({"block", "allow", "known_residual"})
 
+# Optional per-case discriminator naming which detector entry point a
+# multi-detector corpus drives the snippet through (S5U-821). The
+# parametrize / maxdiffpixelratio corpora are single-detector and leave it
+# ``None``; the boundary-shape corpus sets it per case.
+VALID_PROBE = frozenset(
+    {
+        "forbidden_flag",
+        "local_only_token",
+        "segment_splitter",
+        "ci_section_fence",
+    }
+)
+
 
 @dataclass(frozen=True)
 class CorpusCase:
@@ -35,6 +48,14 @@ class CorpusCase:
     token-bearing decorator/import line is detectable only by enclosing context,
     not by a line-grep over the added line's own text. When ``None``, a harness
     is free to treat the whole snippet as the diff.
+
+    ``probe`` (optional, S5U-821) names which detector entry point a
+    multi-detector corpus drives the snippet through (one of ``VALID_PROBE``).
+    ``probe_target`` (optional) is a substring the harness asserts is present
+    (``block``) or absent (``known_residual``) in a slice the probe produces —
+    used by the ``ci_section_fence`` probe to assert which enumerated item the
+    fence-aware ``_ci_section_body`` slice reaches. Both are ``None`` for the
+    single-detector corpora.
     """
 
     policy: str
@@ -43,6 +64,8 @@ class CorpusCase:
     snippet: str
     note: str | None
     added_lines: tuple[int, ...] | None
+    probe: str | None = None
+    probe_target: str | None = None
 
 
 def corpus_dir() -> Path:
@@ -87,6 +110,37 @@ def _parse_added_lines(
     return tuple(parsed)
 
 
+def _parse_probe(
+    raw_probe: object, raw_target: object, *, path: Path, case_id: str
+) -> tuple[str | None, str | None]:
+    """Validate the optional ``probe`` / ``probe_target`` fields (fail-closed G1).
+
+    A malformed probe is a worse failure state than an absent one: an unknown
+    probe value, a non-string probe, or a non-string ``probe_target`` must raise
+    rather than silently degrade to the whole-snippet single-detector path
+    (which would let a boundary-shape case run against the wrong detector and
+    false-pass). ``None`` (key absent) is the only "single-detector" signal.
+    """
+    if raw_probe is None:
+        if raw_target is not None:
+            raise ValueError(
+                f"corpus {path} case {case_id!r} sets `probe_target` without a "
+                "`probe`; the target is meaningless without a probe to slice"
+            )
+        return None, None
+    if not isinstance(raw_probe, str) or raw_probe not in VALID_PROBE:
+        raise ValueError(
+            f"corpus {path} case {case_id!r} has unknown probe={raw_probe!r}; "
+            f"must be one of {sorted(VALID_PROBE)}"
+        )
+    if raw_target is not None and (not isinstance(raw_target, str) or not raw_target):
+        raise ValueError(
+            f"corpus {path} case {case_id!r} has `probe_target`={raw_target!r}; "
+            "must be a non-empty string when set"
+        )
+    return raw_probe, raw_target
+
+
 def load_corpus(policy: str) -> list[CorpusCase]:
     """Load and validate every case for ``policy``. Raise on any defect."""
     path = corpus_dir() / f"{policy}.toml"
@@ -125,6 +179,9 @@ def load_corpus(policy: str) -> list[CorpusCase]:
         added_lines = _parse_added_lines(
             raw.get("added_lines"), snippet=snippet, path=path, case_id=case_id
         )
+        probe, probe_target = _parse_probe(
+            raw.get("probe"), raw.get("probe_target"), path=path, case_id=case_id
+        )
         cases.append(
             CorpusCase(
                 policy=policy,
@@ -133,6 +190,8 @@ def load_corpus(policy: str) -> list[CorpusCase]:
                 snippet=snippet,
                 note=raw.get("note"),
                 added_lines=added_lines,
+                probe=probe,
+                probe_target=probe_target,
             )
         )
     return cases
