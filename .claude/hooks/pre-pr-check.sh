@@ -229,9 +229,17 @@ fi
 # detector_sources — is unioned in below so extracted detector helpers like
 # scripts/_parametrize_ast.py (which match no name clause) are in scope without a
 # regex edit.
+#
+# S5U-927: the corpus .toml files (apps/pipeline/tests/safety_gate_corpus/*.toml)
+# are themselves in the STATIC clause — a self-protection clause, analogous to
+# scripts/_detector_source_scope.py. The corpus cannot protect itself via the
+# content-derived union it FEEDS: a worker could drop a detector_sources entry to
+# shrink the union, and the shrink itself would be unprotected (the chained
+# corpus-drop bypass). Putting the corpus dir in static scope forces any corpus
+# edit through coordinator-ack.
 CHANGED_FILES=$(git diff --name-only "$BASE_REF"...HEAD)
 SAFETY_GATE_DIFF=$(echo "$CHANGED_FILES" \
-  | grep -E '^(\.claude/hooks/|\.claude/prompts/review\.md$|\.claude/prompts/codex-review\.md$|\.claude/coordinator-signers\.txt$|\.github/workflows/|\.github/actions/|\.claude/skills/.+/SKILL\.md$|scripts/check_[^/]+\.(sh|py)$|scripts/pre-[^/]+\.(sh|py)$|scripts/test_pre_pr_safety_gate\.sh$|scripts/_detector_source_scope\.py$|CLAUDE\.md$)' \
+  | grep -E '^(\.claude/hooks/|\.claude/prompts/review\.md$|\.claude/prompts/codex-review\.md$|\.claude/coordinator-signers\.txt$|\.github/workflows/|\.github/actions/|\.claude/skills/.+/SKILL\.md$|scripts/check_[^/]+\.(sh|py)$|scripts/pre-[^/]+\.(sh|py)$|scripts/test_pre_pr_safety_gate\.sh$|scripts/_detector_source_scope\.py$|apps/pipeline/tests/safety_gate_corpus/.+\.toml$|CLAUDE\.md$)' \
   || true)
 
 # --- S5U-922: content-derived detector-source layer ---
