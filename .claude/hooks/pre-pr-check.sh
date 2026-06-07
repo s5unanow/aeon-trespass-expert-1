@@ -220,9 +220,54 @@ fi
 
 # `BASE_REF` resolved above. Drop `2>/dev/null` here — per G1, `git diff`
 # errors should propagate and fail the gate, not silently empty the match set.
-SAFETY_GATE_DIFF=$(git diff --name-only "$BASE_REF"...HEAD \
-  | grep -E '^(\.claude/hooks/|\.claude/prompts/review\.md$|\.claude/prompts/codex-review\.md$|\.claude/coordinator-signers\.txt$|\.github/workflows/|\.github/actions/|\.claude/skills/.+/SKILL\.md$|scripts/check_[^/]+\.(sh|py)$|scripts/pre-[^/]+\.(sh|py)$|scripts/test_pre_pr_safety_gate\.sh$|CLAUDE\.md$)' \
+#
+# This grep is the NAME-DERIVED layer (stable documented surfaces). It MUST stay
+# on a single grep line whose anchored-alternation form the test harness
+# (scripts/test_pre_pr_safety_gate.sh) extracts verbatim, and its body MUST
+# match SAFETY_GATE_REGEX in scripts/check_post_merge_coordinator_ack.py verbatim.
+# The CONTENT-DERIVED layer (S5U-922) — the union of every corpus's
+# detector_sources — is unioned in below so extracted detector helpers like
+# scripts/_parametrize_ast.py (which match no name clause) are in scope without a
+# regex edit.
+CHANGED_FILES=$(git diff --name-only "$BASE_REF"...HEAD)
+SAFETY_GATE_DIFF=$(echo "$CHANGED_FILES" \
+  | grep -E '^(\.claude/hooks/|\.claude/prompts/review\.md$|\.claude/prompts/codex-review\.md$|\.claude/coordinator-signers\.txt$|\.github/workflows/|\.github/actions/|\.claude/skills/.+/SKILL\.md$|scripts/check_[^/]+\.(sh|py)$|scripts/pre-[^/]+\.(sh|py)$|scripts/test_pre_pr_safety_gate\.sh$|scripts/_detector_source_scope\.py$|CLAUDE\.md$)' \
   || true)
+
+# --- S5U-922: content-derived detector-source layer ---
+# Compute the union of every corpus's detector_sources via the shared helper
+# (scripts/_detector_source_scope.py) and add any changed path that is a declared
+# detector source to the safety-gate match set. Per .claude/rules/guards.md Rule
+# G2, this is content-derived (the corpus contract), not a name pattern — so a
+# benign scripts/_export_*.py is NOT over-captured, and a future extracted
+# detector helper declared in a corpus is automatically in scope.
+#
+# Per Rule G1, the helper fails closed: if `uv run python` errors (uv missing,
+# corpus unparseable, missing detector_sources), the hook BLOCKs rather than
+# silently passing. We capture stdout and the exit status explicitly (no
+# `|| true`), so a non-zero exit propagates to the BLOCK branch below.
+if ! DETECTOR_SCOPE=$(uv run python scripts/_detector_source_scope.py --list 2>&1); then
+  echo "BLOCKED: cannot compute content-derived detector-source safety-gate scope."
+  echo ""
+  echo "Helper output (scripts/_detector_source_scope.py --list):"
+  echo "$DETECTOR_SCOPE" | sed 's/^/  /'
+  echo ""
+  echo "Per .claude/rules/guards.md Rule G1, a guard that cannot read its"
+  echo "content-derived scope (uv missing, corpus TOML unparseable, missing"
+  echo "detector_sources) fails closed. Fix the corpus / toolchain and retry."
+  exit 1
+fi
+
+if [ -n "$DETECTOR_SCOPE" ]; then
+  # For each changed file that is a declared detector source, fold it into the
+  # safety-gate match set (deduplicated). `grep -Fxf` matches each changed path
+  # exactly against the detector-source list (fixed strings, full-line).
+  DETECTOR_HITS=$(echo "$CHANGED_FILES" | grep -Fxf <(echo "$DETECTOR_SCOPE") || true)
+  if [ -n "$DETECTOR_HITS" ]; then
+    SAFETY_GATE_DIFF=$(printf '%s\n%s\n' "$SAFETY_GATE_DIFF" "$DETECTOR_HITS" \
+      | grep -vE '^[[:space:]]*$' | sort -u || true)
+  fi
+fi
 
 if [ -n "$SAFETY_GATE_DIFF" ]; then
   # --- S5U-670: fetch coordinator-ack commit status from GitHub API ---

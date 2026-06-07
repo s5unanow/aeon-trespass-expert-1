@@ -96,6 +96,58 @@ def test_safety_gate_regex_matches_renamed_script(mod: ModuleType) -> None:
 
 
 # ---------------------------------------------------------------------------
+# S5U-922: content-derived detector-source layer
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        "scripts/_parametrize_ast.py",
+        "scripts/_instruction_drift_rule_a.py",
+        "scripts/_instruction_drift_rule_g.py",
+    ],
+)
+def test_safety_gate_hits_includes_extracted_detector_helpers(mod: ModuleType, path: str) -> None:
+    """S5U-922 (the bug): underscore-prefixed detector helpers match NEITHER name
+    clause but ARE declared in a corpus `detector_sources`, so the content-derived
+    union puts them in scope. `safety_gate_hits` resolves the real-repo corpus.
+    """
+    hits = mod.safety_gate_hits([path])
+    assert hits == [path], f"expected {path!r} in content-derived safety-gate scope"
+
+
+def test_safety_gate_hits_excludes_benign_underscore_helpers(mod: ModuleType) -> None:
+    """G2: content-derived (not name-pattern) so benign `scripts/_*` are NOT captured.
+
+    A name-pattern broadening (`scripts/_[^/]+\\.py$`) would over-capture these;
+    the corpus-union does not, because they are not declared detector_sources.
+    """
+    benign = [
+        "scripts/_export_blocks.py",
+        "scripts/_golden_pipeline_payloads.py",
+        "scripts/_instruction_drift_rule_d.py",  # rule D is NOT a detector_source
+    ]
+    assert mod.safety_gate_hits(benign) == []
+
+
+def test_safety_gate_hits_meta_helper_self_protected(mod: ModuleType) -> None:
+    """The scope-helper itself is matched by the static regex (not via a corpus)."""
+    assert mod.safety_gate_hits(["scripts/_detector_source_scope.py"]) == [
+        "scripts/_detector_source_scope.py"
+    ]
+
+
+def test_safety_gate_hits_fails_closed_on_malformed_corpus(mod: ModuleType, tmp_path: Path) -> None:
+    """G1: a malformed corpus makes safety_gate_hits raise (audit converts to exit 1)."""
+    corpus = tmp_path / "apps" / "pipeline" / "tests" / "safety_gate_corpus"
+    corpus.mkdir(parents=True, exist_ok=True)
+    (corpus / "broken.toml").write_text("= = invalid [[[", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="detector-source safety-gate scope"):
+        mod.safety_gate_hits(["scripts/_parametrize_ast.py"], root=tmp_path)
+
+
+# ---------------------------------------------------------------------------
 # G1: fail-closed defaults
 # ---------------------------------------------------------------------------
 

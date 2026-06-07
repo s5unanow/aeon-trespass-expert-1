@@ -147,6 +147,82 @@ apps/pipeline/src/foo.py"
 run_case "mixed diff (triggers on hook)" "$MIXED_PATHS" "yes"
 
 # =========================================================================
+# Layer 1b (S5U-922): content-derived detector-source scope
+# =========================================================================
+#
+# The hook augments the name-derived static-regex match with the union of every
+# corpus's `detector_sources` (scripts/_detector_source_scope.py --list). This
+# closes the underscore-prefix bypass: scripts/_parametrize_ast.py holds
+# load-bearing detector logic but matches NEITHER static clause. Here we
+# replicate the hook's combined matcher (static regex OR detector-source
+# membership) and assert the content-derived layer pulls the escaping helpers
+# into scope while leaving benign underscore helpers out (Rule G2 — no
+# over-capture). The helper is invoked live so a corpus change is picked up
+# automatically.
+
+# Fail closed (G1) if the helper cannot compute the scope (uv missing, corpus
+# unparseable). This mirrors the hook's own fail-closed behavior.
+if ! DETECTOR_SCOPE_LIST=$(cd "$REPO_ROOT" && uv run python scripts/_detector_source_scope.py --list 2>&1); then
+  echo "FAIL [layer 1b]: detector-source scope helper failed (fail-closed):"
+  echo "$DETECTOR_SCOPE_LIST" | sed 's/^/       /'
+  exit 1
+fi
+
+# run_case_combined: a path is in scope if it matches the static SAFETY_REGEX OR
+# is a member of the live detector-source list. Mirrors the hook's union.
+run_case_combined() {
+  local label="$1"
+  local paths="$2"
+  local expect_match="$3"  # "yes" or "no"
+
+  local static_hit detector_hit combined
+  static_hit=$(echo "$paths" | grep -E "$SAFETY_REGEX" || true)
+  detector_hit=$(echo "$paths" | grep -Fxf <(echo "$DETECTOR_SCOPE_LIST") || true)
+  combined=$(printf '%s\n%s\n' "$static_hit" "$detector_hit" \
+    | grep -vE '^[[:space:]]*$' | sort -u || true)
+
+  if [ "$expect_match" = "yes" ]; then
+    if [ -z "$combined" ]; then
+      echo "FAIL [$label]: expected a combined safety-gate match, got none."
+      echo "$paths" | sed 's/^/    /'
+      return 1
+    fi
+    echo "OK   [$label]: matched as expected (static+detector union)"
+    echo "$combined" | sed 's/^/       /'
+  else
+    if [ -n "$combined" ]; then
+      echo "FAIL [$label]: expected no match, got:"
+      echo "$combined" | sed 's/^/       /'
+      return 1
+    fi
+    echo "OK   [$label]: no match as expected"
+  fi
+}
+
+# The bug (S5U-922): extracted detector helper, underscore prefix, no name match,
+# but declared in a corpus → MUST be in scope via the content-derived layer.
+run_case_combined "1b S5U-922 extracted detector helper (_parametrize_ast.py)" \
+  "scripts/_parametrize_ast.py" "yes"
+
+# Sibling escaping helpers: the instruction-drift rule modules.
+run_case_combined "1b S5U-922 instruction-drift rule helper (_rule_a.py)" \
+  "scripts/_instruction_drift_rule_a.py" "yes"
+
+# G2 no-over-capture: benign underscore helpers are NOT in any corpus → OUT.
+run_case_combined "1b S5U-922 benign underscore helper not over-captured (_export_blocks.py)" \
+  "scripts/_export_blocks.py" "no"
+
+# rule D is specifically NOT a detector_source (only a,b,c,e,f,g are) → OUT.
+run_case_combined "1b S5U-922 non-detector rule helper (_instruction_drift_rule_d.py)" \
+  "scripts/_instruction_drift_rule_d.py" "no"
+
+# Mixed adversarial: a benign-only-looking diff that smuggles an escaping
+# detector helper alongside pipeline code → MUST trigger on the helper.
+run_case_combined "1b S5U-922 mixed (pipeline + escaping detector helper)" \
+  "apps/pipeline/src/foo.py
+scripts/_parametrize_ast.py" "yes"
+
+# =========================================================================
 # Layer 2 (S5U-666): base-ref resolution (pure-function, synthetic repo)
 # =========================================================================
 
