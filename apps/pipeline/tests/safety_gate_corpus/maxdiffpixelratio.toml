@@ -192,16 +192,31 @@ await expect(page).toHaveScreenshot('a.png');
 """
 
 # --------------------------------------------------------------------------- #
-# known_residual — runtime string-assembly/manipulation CLASS. A line scanner  #
-# cannot follow runtime string ops; the exact token never appears as a         #
-# contiguous quote-delimited literal. Tracked for AST/dataflow closure by      #
-# S5U-823. Flip each to `block` when a tree-sitter detector lands.             #
+# known_residual — runtime string-assembly/manipulation CLASS. A line scanner   #
+# cannot follow runtime string ops, so the EXACT runtime override key is not    #
+# statically equal to a contiguous delimiter-wrapped `'maxDiffPixelRatio'`      #
+# literal. NOTE: the boundary is NOT "the token never appears contiguously" —   #
+# in the slice/substring/replace siblings below the token DOES appear           #
+# contiguously inside a *padded* literal (`'_maxDiffPixelRatio_'`), but the     #
+# padding sits between the quote delimiter and the token, and is stripped at    #
+# runtime. What unites the class is that the resolved runtime key cannot be     #
+# read off the source line without dataflow/AST evaluation. A naive "token as   #
+# a substring of any string literal" widening cannot close these without        #
+# false-positiving on legitimately-distinct string keys (e.g.                   #
+# `'maxDiffPixelRatioFoo'`) and on error/URL/doc strings that merely mention    #
+# the token — see plan-s5u-823.md §4a. Tracked for AST/dataflow closure by the  #
+# documented future tree-sitter-typescript detector. Flip each to `block` when  #
+# that detector lands.                                                          #
 # --------------------------------------------------------------------------- #
 
 [[case]]
 id = "S5U-759-D-runtime-concatenation"
 expect = "known_residual"
-note = "token assembled at runtime from fragments; never appears contiguously"
+note = """token assembled at runtime from fragments; here the token never appears
+contiguously at all (concatenation). The broader residual boundary is that the
+runtime key is not statically equal to the contiguous delimiter-wrapped token —
+see the slice/substring/replace siblings where the token IS contiguous yet still
+escapes a line scanner."""
 snippet = """
 const prefix = 'maxDiff';
 const k = `${prefix}PixelRatio`;
@@ -211,17 +226,33 @@ await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
 [[case]]
 id = "S5U-823-runtime-slice"
 expect = "known_residual"
-note = """surfaced by independent review of the keystone PR: the literal is padded
-so the token is not adjacent to a quote delimiter, then sliced at runtime"""
+note = """surfaced by independent review of the keystone PR: the token DOES appear
+contiguously, but the literal is padded (`'_maxDiffPixelRatio_'`) so the token is
+not adjacent to a quote delimiter; the padding is sliced off at runtime. The
+runtime key is `maxDiffPixelRatio` but that is not statically equal to a
+delimiter-wrapped literal on the line."""
 snippet = """
 const k = '_maxDiffPixelRatio_'.slice(1, -1);
 await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
 """
 
 [[case]]
+id = "S5U-823-runtime-substring"
+expect = "known_residual"
+note = """substring sibling of the slice case (issue S5U-823 confirmed-bypass list):
+padded literal `'zmaxDiffPixelRatioz'`, padding stripped via .substring at runtime.
+Token appears contiguously but not delimiter-adjacent."""
+snippet = """
+const k = 'zmaxDiffPixelRatioz'.substring(1, 18);
+await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
+"""
+
+[[case]]
 id = "S5U-823-runtime-replace"
 expect = "known_residual"
-note = "padding stripped at runtime via .replace; token not contiguous as written"
+note = """padding stripped at runtime via .replace; token appears contiguously inside
+a padded literal but is not delimiter-adjacent. Runtime key resolves to
+maxDiffPixelRatio without being a statically-contiguous delimiter-wrapped literal."""
 snippet = """
 const k = 'PADmaxDiffPixelRatio'.replace('PAD', '');
 await expect(page).toHaveScreenshot('a.png', { [k]: 0.5 });
