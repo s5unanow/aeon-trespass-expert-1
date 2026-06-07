@@ -102,3 +102,54 @@ def test_added_lines_scalar_not_list_fails_closed(_patched_corpus_dir: Path) -> 
     _write_corpus(_patched_corpus_dir, "6")
     with pytest.raises(ValueError, match="non-empty list"):
         load_corpus("demo_policy")
+
+
+# ---------------------------------------------------------------------------
+# probe enum (S5U-820 added the instruction-drift family probe values). The
+# loader validates `probe` against VALID_PROBE and fails closed (Rule G1) on an
+# unknown value — never silently degrading a multi-detector case to the
+# whole-snippet single-detector path.
+# ---------------------------------------------------------------------------
+
+
+def _write_probe_corpus(tmp_path: Path, probe_literal: str) -> None:
+    """Write a one-case corpus carrying a raw TOML ``probe`` value."""
+    body = "\n".join(
+        [
+            'policy = "demo_policy"',
+            "[[case]]",
+            'id = "c1"',
+            'expect = "block"',
+            f"probe = {probe_literal}",
+            'snippet = "x"',
+        ]
+    )
+    corpus_dir = tmp_path / "safety_gate_corpus"
+    corpus_dir.mkdir()
+    (corpus_dir / "demo_policy.toml").write_text(body + "\n", encoding="utf-8")
+
+
+@pytest.mark.parametrize(
+    "probe",
+    [
+        "claim_count",
+        "retired_term",
+        "safety_gate_scope",
+        "ci_gate_count",
+        "ci_inline_enum",
+        "tilde_fence",
+        "tomli_arm",
+    ],
+)
+def test_instruction_drift_probe_values_validate(_patched_corpus_dir: Path, probe: str) -> None:
+    """Each S5U-820 instruction-drift probe value is accepted by the loader."""
+    _write_probe_corpus(_patched_corpus_dir, f'"{probe}"')
+    (case,) = load_corpus("demo_policy")
+    assert case.probe == probe
+
+
+def test_unknown_probe_fails_closed(_patched_corpus_dir: Path) -> None:
+    """An unknown probe value raises rather than silently degrading (Rule G1)."""
+    _write_probe_corpus(_patched_corpus_dir, '"not_a_real_probe"')
+    with pytest.raises(ValueError, match="unknown probe"):
+        load_corpus("demo_policy")
