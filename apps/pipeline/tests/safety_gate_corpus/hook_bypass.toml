@@ -28,6 +28,47 @@
 #   known_residual — `scan()` returns 0 today; the harness asserts the documented
 #                    gap so a future detector upgrade that closes the residual
 #                    surfaces here and the case can flip to `block`.
+#
+# NOTE on the harness branch split (test_check_hook_bypass_corpus.py:97-103):
+# `allow` and `known_residual` are asserted IDENTICALLY — both require
+# `scan()` to return ZERO violations. The only difference is intent: `allow`
+# pins a legitimate true-negative that must stay silent; `known_residual` pins a
+# block-side MISS that should flip to `block` once a future detector closes it.
+# Neither case type can model an FP where the detector FIRES on benign text —
+# that requires the absent fourth class "fires-but-benign" (see "Inherited
+# false-positive surface" below).
+#
+# --------------------------------------------------------------------------- #
+# Inherited false-positive surface (S5U-959) — NOT encodable as corpus cases.  #
+# --------------------------------------------------------------------------- #
+#
+# The detector inherits two false-positive surfaces from the review.md #22
+# prose probe it mirrors. Both make `scan()` FIRE on benign text:
+#
+#   1. `-n` parallelism proximity — `pytest -n 4`, `pytest -n auto`, etc. within
+#      the 80-char window of a git verb (`commit`/`merge`/`rebase`) fire
+#      `cli_short_n` even though the `-n` is the test-runner parallelism flag,
+#      not `git commit -n`. (With NO verb in proximity the detector stays silent
+#      — see the `allow-n-parallel-*` true-negative cases below, which pin the
+#      SAFE side of this boundary.)
+#   2. Documentary token mentions — a PR/commit/doc that *quotes* a banned token
+#      (`--no-verify`, `HUSKY=0`, `core.hooksPath`, …) to describe the policy —
+#      including THIS feature's own diff editing hooks.md / review.md / this
+#      corpus — fires the matching class. Self-scan over the project's own docs:
+#      hooks.md -> 19, hook_bypass.toml -> 49, review.md -> 16 hits.
+#
+# These FPs CANNOT be pinned as corpus cases: `block` asserts the detector
+# fires (so a "block" on benign `pytest -n 4` would falsely brand it a bypass),
+# and `allow` / `known_residual` both assert the detector stays SILENT (so they
+# fail when the detector fires). No `expect` value means "fires today but is
+# benign by reviewer judgment." This is exactly why the detector is wired as a
+# CONTRACT-TEST-ONLY defense-in-depth layer and `main()` is NOT run against real
+# PR commit-range / PR-body text in CI (CI-gating decision, S5U-822;
+# `.claude/rules/hooks.md` § "Machine contract"). The review.md #22 reviewer
+# gate absorbs both FP surfaces with human judgment / the docs-citation
+# carve-out. Wiring `main()` against real PR text would require porting that
+# reviewer carve-out logic into the detector FIRST — a future, separate effort
+# (deliberately out of scope for S5U-959; see the issue).
 
 policy = "hook_bypass"
 detector_sources = ["scripts/check_hook_bypass_tokens.py"]
@@ -303,6 +344,28 @@ expect = "allow"
 note = """word-boundary guard: `MY_HUSKY=0` is a different identifier — the left
 word-boundary `(?<![\\w])` before `HUSKY=0` keeps the longer name out."""
 snippet = "MY_HUSKY=0 echo unrelated"
+
+[[case]]
+id = "allow-n-parallel-no-verb"
+expect = "allow"
+note = """S5U-959 FP-boundary pin (SAFE side): benign `pytest -n 4` test-runner
+parallelism with NO git verb (`commit`/`merge`/`rebase`) inside the
+`CLI_SHORT_N_RE` 80-char proximity window. `cli_short_n` requires a verb near the
+isolated `-n`, so this stays SILENT — the legitimate true-negative. This pins the
+boundary so a future detector change that widens `-n` to fire WITHOUT a nearby
+verb flips this case red. (The UNSAFE side — `-n` parallelism that happens to sit
+within 80 chars of a verb — IS a firing FP and is documented in the corpus
+header's "Inherited false-positive surface" section, not encodable as a case.)"""
+snippet = "Ran pytest -n 4 for a faster parallel test run."
+
+[[case]]
+id = "allow-n-parallel-auto-no-verb"
+expect = "allow"
+note = """S5U-959 FP-boundary pin (SAFE side, `auto` form): `pytest -n auto` with
+no git verb in the 80-char proximity window stays SILENT. Same boundary as
+`allow-n-parallel-no-verb`; pins that the `auto` argument form (not just numeric
+`-n 4`) is also a clean true-negative when no verb is nearby."""
+snippet = "pytest -n auto sped up the local suite."
 
 # --------------------------------------------------------------------------- #
 # known_residual — documented out-of-scope forms the detector does NOT catch   #
