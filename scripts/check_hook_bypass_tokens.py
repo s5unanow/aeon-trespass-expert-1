@@ -56,7 +56,8 @@ review.md #22 probe set and the hooks.md enumeration):
   ("committed") do NOT match (review.md #22 line 209).
 * ``env_husky``              — ``HUSKY=0``.
 * ``env_lefthook``           — ``LEFTHOOK=0``.
-* ``env_skip``               — ``SKIP=<hook>`` (selective skip; requires a value).
+* ``env_skip``               — ``SKIP=`` (selective skip; any value incl. the
+  bare empty ``SKIP=`` form — S5U-958 parity with review.md #22).
 * ``env_hook_bypass``        — ``HOOK_BYPASS=`` (any value).
 * ``env_no_verify``          — ``NO_VERIFY=`` (any value).
 * ``env_coordinator_ack``    — ``COORDINATOR_ACK_STATUS_SOURCE=`` (S5U-672).
@@ -124,17 +125,22 @@ CLI_SHORT_N_RE = re.compile(
 
 # C3-C8 — env-var bypass assignments. Each is the var name at a left word
 # boundary followed by `=`. HUSKY/LEFTHOOK pin `=0` (the documented disable
-# value); SKIP requires a non-empty value (bare `SKIP=` is too collision-prone —
-# recorded as an `allow`); HOOK_BYPASS / NO_VERIFY / COORDINATOR_ACK_STATUS_SOURCE
-# match any value (hooks.md: "any value; documentary form of intent").
+# value); SKIP matches `SKIP=` with ANY value, including the bare empty form
+# `SKIP=` (S5U-958: parity with review.md #22's bare `SKIP=` grep alternative —
+# the prior `SKIP=\S` value-presence narrowing classified bare `SKIP=` as `allow`
+# while #22 CRITICALs on it, a detector/probe divergence); HOOK_BYPASS /
+# NO_VERIFY / COORDINATOR_ACK_STATUS_SOURCE match any value (hooks.md: "any
+# value; documentary form of intent").
 # `re.IGNORECASE` (S5U-957) gives parity with review.md #22's `grep -inE`, which
 # matches the lowercase/mixed-case forms (`husky=0`, `no_verify=1`,
 # `coordinator_ack_status_source=…`). The `=0` disable-value pin on HUSKY/LEFTHOOK
 # is unaffected (`0` has no case), so `husky=1` still does NOT match; the left
-# word-boundary `(?<![\w])` still keeps a longer identifier (`MY_HUSKY=0`) out.
+# word-boundary `(?<![\w])` still keeps a longer identifier (`MY_HUSKY=0`,
+# `MY_SKIP=`, `ANTI_SKIP=`) out — only a `SKIP=` not preceded by a word char
+# (incl `_`/digit/alpha) matches.
 ENV_HUSKY_RE = re.compile(r"(?<![\w])HUSKY=0\b", re.IGNORECASE)
 ENV_LEFTHOOK_RE = re.compile(r"(?<![\w])LEFTHOOK=0\b", re.IGNORECASE)
-ENV_SKIP_RE = re.compile(r"(?<![\w])SKIP=\S", re.IGNORECASE)
+ENV_SKIP_RE = re.compile(r"(?<![\w])SKIP=", re.IGNORECASE)
 ENV_HOOK_BYPASS_RE = re.compile(r"(?<![\w])HOOK_BYPASS=", re.IGNORECASE)
 ENV_NO_VERIFY_RE = re.compile(r"(?<![\w])NO_VERIFY=", re.IGNORECASE)
 ENV_COORDINATOR_ACK_RE = re.compile(r"(?<![\w])COORDINATOR_ACK_STATUS_SOURCE=", re.IGNORECASE)

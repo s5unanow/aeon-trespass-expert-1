@@ -139,10 +139,26 @@ snippet = "SKIP=pre-commit git commit -m 'S5U-822: wip'"
 id = "env-skip-lowercase"
 expect = "block"
 note = """S5U-957 case-folding parity: `skip=ruff` is MATCHed by #22's `grep -inE`
-but was MISSed by the case-sensitive detector. `ENV_SKIP_RE` now carries
-`re.IGNORECASE`; the value-presence requirement (`=\\S`, owned by S5U-958) is
-unchanged — bare `skip=` with no value still does NOT match."""
+but was MISSed by the case-sensitive detector. `ENV_SKIP_RE` carries
+`re.IGNORECASE`. (Pre-S5U-958 this note also pinned the `=\\S` value-presence
+requirement; S5U-958 dropped `\\S` so bare `skip=` now matches too — see
+`block-skip-empty`.)"""
 snippet = "skip=ruff git commit -m 'wip'"
+
+[[case]]
+id = "block-skip-empty"
+expect = "block"
+note = """S5U-958 contract parity (flipped from `allow-skip-empty`): bare `SKIP=`
+with no value. review.md #22's line-199 grep includes a bare `SKIP=` alternative
+(no value required) and CRITICALs on `SKIP= git commit`, but the pre-S5U-958
+detector required a non-empty value (`SKIP=\\S`) and classified bare `SKIP=` as
+`allow` — a detector/probe divergence: the machine contract green-lit a vector
+the merge-time reviewer gate blocks. S5U-958 dropped `\\S` from `ENV_SKIP_RE`
+(now `(?<![\\w])SKIP=`) so the detector matches #22. The left word-boundary
+`(?<![\\w])` still excludes longer identifiers (`MY_SKIP=`, `ANTI_SKIP=`,
+`_SKIP=`) — confirmed by the S5U-958 false-positive analysis — so dropping `\\S`
+introduces no new false positives on benign `SKIP`-adjacent names."""
+snippet = "SKIP= git commit -m 'no hook named, empty assignment'"
 
 [[case]]
 id = "env-hook-bypass"
@@ -280,15 +296,6 @@ hyphenated noun `no-verify` with no `--` is NOT the canonical CLI form, so it is
 grep, but this defense-in-depth detector keeps the tighter anchor to hold the
 false-positive rate down. Recorded openly as an allow so the choice is auditable."""
 snippet = "ran the no-verify check manually and it was green"
-
-[[case]]
-id = "allow-skip-empty"
-expect = "allow"
-note = """S5U-822 value-presence decision: `SKIP=\\S` requires a non-empty value
-(the documented form is `SKIP=<hook>`, which always carries a hook name). Bare
-`SKIP=` with no value is too collision-prone to match, so it is `allow`. Pins the
-value-presence decision."""
-snippet = "SKIP= git commit -m 'no hook named, empty assignment'"
 
 [[case]]
 id = "allow-similar-env-var"
