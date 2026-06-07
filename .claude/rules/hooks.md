@@ -176,10 +176,34 @@ regresses.
 - **Corpus**: `apps/pipeline/tests/safety_gate_corpus/hook_bypass.toml` — a
   `block` case for every token in the enumeration above, `allow` cases for the
   documented non-matching paraphrases (English inflections, bare `no-verify`
-  noun-phrase, empty `SKIP=`), and `known_residual` cases for the two
-  out-of-scope forms (the bracketed `[core]\n  hooksPath = …` gitconfig-file
-  form and cross-line mutation prose). Reviewer-found bypasses are added here as
-  `block` cases, not patched in as one-off regexes (S5U-789).
+  noun-phrase, similar-but-longer env-var names, and the S5U-959 benign `-n`
+  parallelism true-negatives `pytest -n 4` / `pytest -n auto` with no git verb
+  in the proximity window), and `known_residual` cases for the two out-of-scope
+  forms (the bracketed `[core]\n  hooksPath = …` gitconfig-file form and
+  cross-line mutation prose). Reviewer-found bypasses are added here as `block`
+  cases, not patched in as one-off regexes (S5U-789). Note the corpus' bare
+  `SKIP=` case is `block` (S5U-958 parity with review.md #22), not `allow`.
+- **Inherited false-positive surface (S5U-959)**: the detector mirrors the
+  review.md #22 prose probe and therefore inherits its two false-positive
+  surfaces — (1) the `-n` parallelism proximity FP (`pytest -n 4` / `pytest -n
+  auto` *within* the 80-char window of `commit`/`merge`/`rebase` fires
+  `cli_short_n`) and (2) documentary token mentions (a PR/commit/doc that quotes
+  `--no-verify`, `HUSKY=0`, `core.hooksPath`, … to describe the policy —
+  including this rule file, review.md, and the corpus itself — fires the matching
+  class). Both make `scan()` FIRE on benign text, so neither is encodable as a
+  corpus case: `block` asserts the detector fires (so it would falsely brand the
+  benign text a bypass) while `allow` / `known_residual` both assert silence (so
+  they fail when the detector fires) — there is no `expect` value for
+  "fires-but-benign." The corpus pins only the SAFE side of the `-n` boundary
+  (the no-verb `allow-n-parallel-*` true-negatives); the firing side is
+  documented in the corpus header's "Inherited false-positive surface" section.
+  This inherited FPR is the concrete reason the detector is wired
+  contract-test-only (see the CI-gating decision below): a real-PR scan would
+  false-positive on every PR that edits this rule file or the corpus. Wiring
+  `main()` against real PR commit-range / PR-body text would require porting the
+  review.md #22 reviewer carve-out (the `## Hook bypass disclosure`-heading
+  awareness and the docs-citation carve-out) into the detector FIRST — a future,
+  separate effort, deliberately out of scope.
 - **Contract test**: `apps/pipeline/tests/unit/test_check_hook_bypass_corpus.py`
   drives the real `scan()` over every corpus case. The
   `detector-corpus-coverage` guard (`scripts/check_detector_corpus_coverage.py`)
