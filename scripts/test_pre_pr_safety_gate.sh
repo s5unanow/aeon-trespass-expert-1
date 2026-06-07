@@ -123,6 +123,13 @@ run_case "coordinator-signers.txt edit (S5U-670)" "$FAILURE_PATHS_7" "yes"
 FAILURE_PATHS_8="scripts/test_pre_pr_safety_gate.sh"
 run_case "test_pre_pr_safety_gate.sh edit (S5U-670)" "$FAILURE_PATHS_8" "yes"
 
+# S5U-927: a safety-gate corpus .toml edit (e.g. dropping a detector_sources
+# entry) is itself safety-gate-scoped via the static self-protection clause.
+# This closes the chained corpus-drop bypass: the corpus feeds the
+# content-derived union, so it cannot protect itself via that union.
+FAILURE_PATHS_9="apps/pipeline/tests/safety_gate_corpus/parametrize_red_before.toml"
+run_case "corpus .toml edit (S5U-927 self-protection)" "$FAILURE_PATHS_9" "yes"
+
 ADV_PATHS_1="docs/hooks-overview.md
 docs/safety-gate-policy.md"
 run_case "docs about hooks (must NOT match)" "$ADV_PATHS_1" "no"
@@ -140,6 +147,18 @@ run_case "non-SKILL.md file inside a skill dir" "$ADV_PATHS_4" "no"
 
 ADV_PATHS_5="CLAUDE.md.bak"
 run_case "CLAUDE.md.bak (not CLAUDE.md)" "$ADV_PATHS_5" "no"
+
+# S5U-927 adversarial: the corpus clause is scoped to `safety_gate_corpus/.+\.toml$`
+# only. Near-misses must NOT match (Rule G2 — no over-capture of normal flow).
+ADV_PATHS_6="apps/pipeline/tests/safety_gate_corpus/README.md"
+run_case "corpus README.md (not .toml, must NOT match)" "$ADV_PATHS_6" "no"
+
+ADV_PATHS_7="configs/base.toml
+apps/pipeline/tests/other_dir/foo.toml"
+run_case "non-corpus .toml (must NOT match)" "$ADV_PATHS_7" "no"
+
+ADV_PATHS_8="apps/pipeline/tests/safety_gate_corpus/parametrize_red_before.toml.bak"
+run_case "corpus .toml.bak (\$ anchors .toml, must NOT match)" "$ADV_PATHS_8" "no"
 
 MIXED_PATHS="apps/web/src/App.tsx
 .claude/hooks/pre-commit-check.sh

@@ -42,9 +42,8 @@ from _detector_source_scope import DetectorScopeError, detector_source_scope
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
-# Safety-gate scope regex (NAME-DERIVED) — MUST match the grep in
-# .claude/hooks/pre-pr-check.sh verbatim. CONTENT-DERIVED corpus detector_sources
-# are unioned on top in `safety_gate_hits` (S5U-922).
+# Safety-gate regex (NAME-DERIVED) — MUST match the pre-pr-check.sh grep verbatim
+# (sync-guard test). S5U-922 unions corpus detector_sources; S5U-927 .toml = STATIC.
 SAFETY_GATE_REGEX = re.compile(
     r"^("
     r"\.claude/hooks/|"
@@ -58,6 +57,7 @@ SAFETY_GATE_REGEX = re.compile(
     r"scripts/pre-[^/]+\.(sh|py)$|"
     r"scripts/test_pre_pr_safety_gate\.sh$|"
     r"scripts/_detector_source_scope\.py$|"
+    r"apps/pipeline/tests/safety_gate_corpus/.+\.toml$|"
     r"CLAUDE\.md$"
     r")"
 )
