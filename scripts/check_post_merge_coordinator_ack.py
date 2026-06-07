@@ -2,19 +2,18 @@
 """Post-merge coordinator-ack audit (S5U-693).
 
 Runs on every push to `main` via `.github/workflows/post-merge-coordinator-ack.yml`.
-If the merged push touches safety-gate scope (per the regex in
-`.claude/hooks/pre-pr-check.sh` line 224), the script queries the GitHub API
-for a `coordinator-ack` commit status on the PR HEAD SHA and fails the
-workflow when no valid ack exists. This is an audit-trail gate, not a merge
-gate — branch-protection required contexts only apply at PR time. A red run
-is a durable signal that complements the pre-PR hook (which only intercepts
-local `gh pr create`).
+If the merged push touches safety-gate scope (the name-derived regex below plus
+the content-derived corpus `detector_sources` union, S5U-922 — kept in sync with
+`.claude/hooks/pre-pr-check.sh`), the script queries the GitHub API for a
+`coordinator-ack` commit status on the PR HEAD SHA and fails the workflow when no
+valid ack exists. This is an audit-trail gate, not a merge gate — branch
+protection only applies at PR time. A red run is a durable signal that
+complements the pre-PR hook (which only intercepts local `gh pr create`).
 
 Per `.claude/rules/guards.md` Rule G1, every degenerate input exits non-zero:
-missing/unresolvable base ref, `git diff` failure, `gh api` non-zero,
-malformed JSON, missing/empty allowlist. Per Rule G2, the safety-gate check
-is path-regex-matched (not a name list); renames within a matching pattern
-remain matched.
+missing/unresolvable base ref, `git diff` failure, `gh api` non-zero, malformed
+JSON, missing/empty allowlist, malformed corpus. Per Rule G2, scope is
+path-regex + content-derived corpus union (not a hardcoded name list).
 
 Usage:
     python scripts/check_post_merge_coordinator_ack.py \\
@@ -37,12 +36,15 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
+# Shared content-derived detector-source scope helper (S5U-922).
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _detector_source_scope import DetectorScopeError, detector_source_scope
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
-# Safety-gate scope regex — MUST match the one in
-# .claude/hooks/pre-pr-check.sh line 224 verbatim (modulo ERE/Python
-# engine differences: here we use Python re, which understands the same
-# character-class and anchor syntax). Any change here must be mirrored there.
+# Safety-gate scope regex (NAME-DERIVED) — MUST match the grep in
+# .claude/hooks/pre-pr-check.sh verbatim. CONTENT-DERIVED corpus detector_sources
+# are unioned on top in `safety_gate_hits` (S5U-922).
 SAFETY_GATE_REGEX = re.compile(
     r"^("
     r"\.claude/hooks/|"
@@ -55,6 +57,7 @@ SAFETY_GATE_REGEX = re.compile(
     r"scripts/check_[^/]+\.(sh|py)$|"
     r"scripts/pre-[^/]+\.(sh|py)$|"
     r"scripts/test_pre_pr_safety_gate\.sh$|"
+    r"scripts/_detector_source_scope\.py$|"
     r"CLAUDE\.md$"
     r")"
 )
@@ -119,9 +122,19 @@ def diff_paths(base: str, head: str, cwd: Path) -> list[str]:
     return [line.strip() for line in out.splitlines() if line.strip()]
 
 
-def safety_gate_hits(paths: list[str]) -> list[str]:
-    """Filter paths to the safety-gate subset."""
-    return [p for p in paths if SAFETY_GATE_REGEX.match(p)]
+def safety_gate_hits(paths: list[str], *, root: Path = REPO_ROOT) -> list[str]:
+    """Filter paths to the safety-gate subset (S5U-922 content-derived union).
+
+    In scope = matches ``SAFETY_GATE_REGEX`` (name-derived) OR is a declared
+    corpus ``detector_sources`` entry. Malformed corpus → ``RuntimeError`` (G1).
+    """
+    try:
+        scope = detector_source_scope(repo_root=root)
+    except DetectorScopeError as exc:
+        raise RuntimeError(
+            f"BLOCKED: cannot compute detector-source safety-gate scope: {exc}"
+        ) from exc
+    return [p for p in paths if SAFETY_GATE_REGEX.match(p) or p in scope]
 
 
 def load_allowlist(root: Path) -> list[str]:
@@ -205,10 +218,9 @@ def fetch_statuses(repo: str, sha: str) -> list[StatusEntry]:
 def _parse_pull_numbers(raw: str) -> list[int]:
     """Parse /commits/<sha>/pulls JSON into PR numbers; [] on any malformed shape.
 
-    The caller treats empty as "no PRs found this attempt" and either retries
-    or falls back to the merge-commit-SHA status check. The pass/fail-deciding
-    `/statuses` endpoint is NOT this permissive — see `fetch_statuses` for the
-    G1 fail-closed parser.
+    The caller treats empty as "no PRs found this attempt" and either retries or
+    falls back to the merge-commit-SHA status check. The pass/fail-deciding
+    `/statuses` endpoint is NOT this permissive — `fetch_statuses` fails closed.
     """
     try:
         data = json.loads(raw)
@@ -236,17 +248,13 @@ def fetch_pull_numbers_for_commit(
 ) -> list[int]:
     """Find PR numbers whose merge commit equals sha, with retry-with-backoff.
 
-    GitHub's `/commits/<sha>/pulls` is eventually consistent after a squash
-    merge (S5U-728: PR #320 audit ran ~0.9s after merge SHA f711b9d landed and
-    got `[]` despite a valid PR-HEAD coordinator-ack). Exponential backoff
-    lets the index settle. Empty `[]` AND transient `RuntimeError` from
-    `_gh_api` are both retried; returning `[]` after the budget is exhausted
-    preserves the legitimate force-push / direct-push pathway where no PR is
-    associated. The pass/fail decision happens in `fetch_statuses`, which is
-    NOT permissive — persistent API outage there raises and fails closed (G1).
-
-    Worst-case wait at defaults: 2+4+8+16 = 30s across 5 attempts. `sleeper`
-    is parameterized for tests; resolved at call time so test patches on
+    GitHub's `/commits/<sha>/pulls` is eventually consistent after a squash merge
+    (S5U-728: PR #320 audit ran ~0.9s after merge and got `[]` despite a valid
+    PR-HEAD ack). Exponential backoff lets the index settle. Empty `[]` AND
+    transient `RuntimeError` from `_gh_api` are both retried; returning `[]` after
+    the budget preserves the legitimate force-push / direct-push pathway. The
+    pass/fail decision happens in `fetch_statuses`, which fails closed (G1).
+    `sleeper` is parameterized for tests and resolved at call time so patches on
     `mod.time.sleep` work (default-arg binding would bypass the patch).
     """
     if max_retries < 1:
