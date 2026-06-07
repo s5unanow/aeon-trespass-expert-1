@@ -51,6 +51,10 @@
 #                    starts catching it, forcing promotion to `block`.
 
 policy = "instruction_drift"
+# coverage-waiver: S5U-924 review.md edit is confined to the check #5 red-before
+# mislabeled-citation prose (a new sub-bullet under the SHA-resolution tripwire),
+# orthogonal to the live `tomli\.loads?\(` arm the `tomli_arm` probe binds to.
+# No new instruction_drift detector behavior to pin — no `[[case]]` warranted.
 detector_sources = [
     "scripts/check_instruction_drift.py",
     "scripts/_instruction_drift_rule_a.py",
