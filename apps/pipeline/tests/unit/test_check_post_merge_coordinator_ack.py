@@ -120,13 +120,14 @@ def test_safety_gate_hits_includes_extracted_detector_helpers(mod: ModuleType, p
 def test_safety_gate_hits_excludes_benign_underscore_helpers(mod: ModuleType) -> None:
     """G2: content-derived (not name-pattern) so benign `scripts/_*` are NOT captured.
 
-    A name-pattern broadening (`scripts/_[^/]+\\.py$`) would over-capture these;
-    the corpus-union does not, because they are not declared detector_sources.
+    S5U-926: `_instruction_drift_rule_d.py` was REMOVED from this benign list —
+    it is imported by `check_instruction_drift.py`, so the import-graph layer now
+    puts it IN scope (see `..._includes_load_bearing_helpers` in the audit
+    companion file). Only genuinely non-imported, non-declared helpers remain.
     """
     benign = [
         "scripts/_export_blocks.py",
         "scripts/_golden_pipeline_payloads.py",
-        "scripts/_instruction_drift_rule_d.py",  # rule D is NOT a detector_source
     ]
     assert mod.safety_gate_hits(benign) == []
 

@@ -60,15 +60,53 @@ def test_real_corpus_union_includes_extracted_detector_helpers() -> None:
         assert f"scripts/_instruction_drift_rule_{letter}.py" in scope
 
 
-def test_real_corpus_union_excludes_benign_underscore_helpers() -> None:
-    """G2: a name-pattern broadening would over-capture these; content-derived does not."""
+def test_corpus_layer_excludes_import_only_helpers() -> None:
+    """The CORPUS layer alone does not declare the import-only helpers.
+
+    This pins the layer boundary: `_linear_client` / `_instruction_drift_rule_d`
+    are NOT in the corpus `detector_sources` union — they reach scope only via the
+    import-graph layer (asserted separately). A future PR that wants the corpus
+    layer to also declare them is free to, but the safety guarantee must not
+    depend on it (that dependency was the S5U-926 bug).
+    """
+    mod = _load()
+    corpus = mod.corpus_source_scope(repo_root=REPO)
+    assert "scripts/_linear_client.py" not in corpus
+    assert "scripts/_instruction_drift_rule_d.py" not in corpus
+
+
+def test_full_scope_includes_load_bearing_import_only_helpers() -> None:
+    """S5U-926: helpers imported by an in-scope detector but NOT in any corpus.
+
+    Reverses the S5U-922 assumption (the prior version of this file asserted
+    `_linear_client` / `_instruction_drift_rule_d` were "benign / NOT
+    over-captured"). The import-graph layer now folds every load-bearing helper
+    imported by a `check_*`/`pre-*` detector into the full scope.
+    """
+    mod = _load()
+    scope = mod.detector_source_scope(repo_root=REPO)
+    for helper in (
+        "scripts/_instruction_drift_rule_d.py",  # imported by check_instruction_drift
+        "scripts/_erosion_report_fmt.py",  # imported by check_code_erosion
+        "scripts/_hotspot_budgets.py",  # imported by check_code_erosion
+        "scripts/_repo_summary.py",  # imported by check_code_erosion
+        "scripts/_linear_client.py",  # imported by check_coverage_table
+    ):
+        assert helper in scope, f"{helper} must be in the content-derived scope"
+
+
+def test_real_scope_excludes_non_imported_underscore_helpers() -> None:
+    """G2: a name-pattern broadening would over-capture these; content-derived does not.
+
+    These helpers are neither declared in a corpus nor imported by any in-scope
+    detector, so they stay OUT of the full scope — the import-graph layer does
+    not over-capture.
+    """
     mod = _load()
     scope = mod.detector_source_scope(repo_root=REPO)
     for benign in (
         "scripts/_export_blocks.py",
         "scripts/_golden_pipeline_payloads.py",
-        "scripts/_linear_client.py",
-        "scripts/_instruction_drift_rule_d.py",  # rule D is NOT a detector_source
     ):
         assert benign not in scope, f"{benign} should NOT be over-captured"
 
@@ -86,6 +124,109 @@ def test_absent_corpus_dir_returns_empty_set(tmp_path: Path) -> None:
     """
     mod = _load()
     assert mod.detector_source_scope(repo_root=tmp_path) == frozenset()
+
+
+# ---------------------------------------------------------------------------
+# S5U-926: import-graph layer (synthetic repos)
+# ---------------------------------------------------------------------------
+
+
+def _write_script(scripts_dir: Path, name: str, body: str) -> None:
+    scripts_dir.mkdir(parents=True, exist_ok=True)
+    (scripts_dir / name).write_text(body, encoding="utf-8")
+
+
+def test_import_graph_captures_directly_imported_helper(tmp_path: Path) -> None:
+    """A sibling _helper imported by a check_* detector is captured."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(scripts, "check_foo.py", "from _foo_helper import bar\n")
+    _write_script(scripts, "_foo_helper.py", "def bar() -> None: ...\n")
+    scope = mod.import_graph_scope(repo_root=tmp_path)
+    assert scope == frozenset({"scripts/_foo_helper.py"})
+
+
+def test_import_graph_captures_transitive_helper(tmp_path: Path) -> None:
+    """A helper imported only by another helper (not a detector) is captured."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(scripts, "check_foo.py", "from _foo_helper import bar\n")
+    _write_script(scripts, "_foo_helper.py", "from _deep_helper import baz\n")
+    _write_script(scripts, "_deep_helper.py", "def baz() -> None: ...\n")
+    scope = mod.import_graph_scope(repo_root=tmp_path)
+    assert scope == frozenset({"scripts/_foo_helper.py", "scripts/_deep_helper.py"})
+
+
+def test_import_graph_captures_type_checking_and_aliased_imports(tmp_path: Path) -> None:
+    """TYPE_CHECKING-guarded and `import _x as y` imports are still captured (AST)."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "from typing import TYPE_CHECKING\n"
+        "import _aliased as al\n"
+        "if TYPE_CHECKING:\n"
+        "    from _typecheck_only import T\n",
+    )
+    _write_script(scripts, "_aliased.py", "X = 1\n")
+    _write_script(scripts, "_typecheck_only.py", "T = int\n")
+    scope = mod.import_graph_scope(repo_root=tmp_path)
+    assert scope == frozenset({"scripts/_aliased.py", "scripts/_typecheck_only.py"})
+
+
+def test_import_graph_excludes_future_stdlib_and_thirdparty(tmp_path: Path) -> None:
+    """`__future__`, stdlib, and third-party imports are NOT captured (no scripts/X.py)."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "from __future__ import annotations\nimport os\nimport re\nimport pydantic\n",
+    )
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
+
+
+def test_import_graph_excludes_non_imported_helper(tmp_path: Path) -> None:
+    """A sibling _helper that no detector imports stays OUT (no over-capture)."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(scripts, "check_foo.py", "import os\n")
+    _write_script(scripts, "_unused_helper.py", "X = 1\n")
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
+
+
+def test_import_graph_ignores_underscore_import_without_sibling_file(tmp_path: Path) -> None:
+    """An `import _ghost` with no scripts/_ghost.py resolves to nothing (no phantom)."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(scripts, "check_foo.py", "import _ghost\n")
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
+
+
+def test_import_graph_absent_scripts_dir_returns_empty_set(tmp_path: Path) -> None:
+    """Absent scripts/ dir degrades to empty set (synthetic-repo carve-out, G1 carve)."""
+    mod = _load()
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
+
+
+def test_import_graph_unparseable_detector_fails_closed(tmp_path: Path) -> None:
+    """G1: a detector source with a SyntaxError fails closed."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(scripts, "check_foo.py", "def broken(:\n")  # syntax error
+    with pytest.raises(mod.DetectorScopeError, match="cannot parse detector source"):
+        mod.import_graph_scope(repo_root=tmp_path)
+
+
+def test_import_graph_unparseable_helper_fails_closed(tmp_path: Path) -> None:
+    """G1: a transitively-reached helper with a SyntaxError fails closed."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(scripts, "check_foo.py", "from _bad_helper import x\n")
+    _write_script(scripts, "_bad_helper.py", "def broken(:\n")  # syntax error
+    with pytest.raises(mod.DetectorScopeError, match="cannot parse detector source"):
+        mod.import_graph_scope(repo_root=tmp_path)
 
 
 # ---------------------------------------------------------------------------

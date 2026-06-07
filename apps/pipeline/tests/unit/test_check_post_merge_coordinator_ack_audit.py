@@ -271,3 +271,31 @@ def test_audit_ack_with_later_failure_is_revoked(mod: ModuleType, tmp_path: Path
     with patch.object(mod, "_gh_api", side_effect=_fake_gh):
         rc = mod.audit(repo="owner/repo", base=base, head=head, root=tmp_path)
     assert rc == 1
+
+
+# ---------------------------------------------------------------------------
+# S5U-926: load-bearing import-only helpers are post-merge safety-gate hits
+# ---------------------------------------------------------------------------
+
+
+def test_safety_gate_hits_includes_load_bearing_helpers(mod: ModuleType) -> None:
+    """S5U-926: helpers imported by an in-scope detector but in NO corpus ARE hits.
+
+    Reverses the S5U-922 assumption (the prior
+    `test_safety_gate_hits_excludes_benign_underscore_helpers` asserted rule_d
+    was benign). Each of these five is imported by an in-scope `check_*` detector
+    yet declared in no corpus, so it escaped scope after S5U-922. The
+    import-graph layer folds them in: `_linear_client` backs the REQUIRED
+    `coverage-table-scan` CI check; the three erosion helpers back
+    `check_code_erosion`; rule_d is the lone instruction-drift sibling that was
+    excluded (a/b/c/e/f/g were corpus-declared). The post-merge audit must see
+    them as in-scope so a lone edit cannot bypass coordinator-ack.
+    """
+    helpers = [
+        "scripts/_instruction_drift_rule_d.py",
+        "scripts/_erosion_report_fmt.py",
+        "scripts/_hotspot_budgets.py",
+        "scripts/_repo_summary.py",
+        "scripts/_linear_client.py",
+    ]
+    assert sorted(mod.safety_gate_hits(helpers)) == sorted(helpers)
