@@ -31,8 +31,20 @@ Per ``.claude/rules/guards.md``:
 - **Rule G2** (content-derived sets): the blocked set is whatever matches the
   behavioral token-class regexes below, NOT a hardcoded list of literal command
   strings. A wrapper/rename (``mytool commit --no-verify``), spacing variant
-  (``HUSKY=0   git commit``), or short-flag alias (``-n``, ``-c
-  core.hooksPath=``) is caught by content, not surface name.
+  (``HUSKY=0   git commit``), short-flag alias (``-n``, ``-c
+  core.hooksPath=``), or case-folded form (``husky=0``, ``--NO-VERIFY``,
+  ``CORE.HOOKSPATH`` — S5U-957) is caught by content, not surface name.
+
+Case-folding parity (S5U-957): the env-var classes, the ``core.hooksPath``
+redirect, and the ``--no-verify`` long flag are compiled with ``re.IGNORECASE``
+to mirror the review.md #22 reviewer probe's ``grep -inE`` (the ``-i`` is
+case-insensitive). Before S5U-957 the detector was case-SENSITIVE on these,
+so lowercase/mixed-case forms that #22 caught (``husky=0``,
+``coordinator_ack_status_source=…``, ``git config CORE.HOOKSPATH``,
+``git commit --NO-VERIFY``) silently passed the detector — false assurance.
+The ``-n`` short flag (C2) is deliberately left case-SENSITIVE: git ``-n`` (no
+hooks) and ``-N`` (``--intent-to-add``) are different flags, and #22's ``-n``
+Perl probe is itself case-sensitive, so parity requires no IGNORECASE there.
 
 Token classes (one content signature per behavioral class, mirroring the
 review.md #22 probe set and the hooks.md enumeration):
@@ -92,7 +104,11 @@ from pathlib import Path
 # wrapper/rename (`mytool commit --no-verify`) since the flag, not the command,
 # is the signature. The leading `--` is required: a bare `no-verify` noun-phrase
 # is the canonical-form-narrowing `allow` case (see module docstring).
-CLI_NO_VERIFY_RE = re.compile(r"(?<![\w-])--no-verify(?![\w-])")
+# `re.IGNORECASE` (S5U-957) gives parity with review.md #22's `grep -inE`, which
+# matches `--NO-VERIFY` / `--No-Verify` in prose; the detector scans commit
+# messages + PR body for documented bypass INTENT, not executable shell, so a
+# case-folded flag (which git itself would not honor) is still an intent signal.
+CLI_NO_VERIFY_RE = re.compile(r"(?<![\w-])--no-verify(?![\w-])", re.IGNORECASE)
 
 # C2 — `-n` short flag (alias of `--no-verify`) in word-proximity to a git verb.
 # Mirrors review.md #22 line 207: an 80-char window either direction, with the
@@ -111,12 +127,17 @@ CLI_SHORT_N_RE = re.compile(
 # value); SKIP requires a non-empty value (bare `SKIP=` is too collision-prone —
 # recorded as an `allow`); HOOK_BYPASS / NO_VERIFY / COORDINATOR_ACK_STATUS_SOURCE
 # match any value (hooks.md: "any value; documentary form of intent").
-ENV_HUSKY_RE = re.compile(r"(?<![\w])HUSKY=0\b")
-ENV_LEFTHOOK_RE = re.compile(r"(?<![\w])LEFTHOOK=0\b")
-ENV_SKIP_RE = re.compile(r"(?<![\w])SKIP=\S")
-ENV_HOOK_BYPASS_RE = re.compile(r"(?<![\w])HOOK_BYPASS=")
-ENV_NO_VERIFY_RE = re.compile(r"(?<![\w])NO_VERIFY=")
-ENV_COORDINATOR_ACK_RE = re.compile(r"(?<![\w])COORDINATOR_ACK_STATUS_SOURCE=")
+# `re.IGNORECASE` (S5U-957) gives parity with review.md #22's `grep -inE`, which
+# matches the lowercase/mixed-case forms (`husky=0`, `no_verify=1`,
+# `coordinator_ack_status_source=…`). The `=0` disable-value pin on HUSKY/LEFTHOOK
+# is unaffected (`0` has no case), so `husky=1` still does NOT match; the left
+# word-boundary `(?<![\w])` still keeps a longer identifier (`MY_HUSKY=0`) out.
+ENV_HUSKY_RE = re.compile(r"(?<![\w])HUSKY=0\b", re.IGNORECASE)
+ENV_LEFTHOOK_RE = re.compile(r"(?<![\w])LEFTHOOK=0\b", re.IGNORECASE)
+ENV_SKIP_RE = re.compile(r"(?<![\w])SKIP=\S", re.IGNORECASE)
+ENV_HOOK_BYPASS_RE = re.compile(r"(?<![\w])HOOK_BYPASS=", re.IGNORECASE)
+ENV_NO_VERIFY_RE = re.compile(r"(?<![\w])NO_VERIFY=", re.IGNORECASE)
+ENV_COORDINATOR_ACK_RE = re.compile(r"(?<![\w])COORDINATOR_ACK_STATUS_SOURCE=", re.IGNORECASE)
 
 # C9-C10 — hook-file mutation. `.*` between the command and `.git/hooks` covers
 # extra flags / path forms (`chmod -x ./.git/hooks/pre-commit`, etc.).
@@ -133,8 +154,11 @@ HOOK_NOOP_PHRASE_RE = re.compile(r"no[- ]op.{0,40}(?:hook|pre-commit)")
 # `git config core.hooksPath /x` AND `git -c core.hooksPath=/x commit`
 # (review.md #22 line 200). The bracketed `[core]\n hooksPath = ...` gitconfig
 # form has no contiguous `core.hooksPath` substring and is the documented
-# out-of-scope `known_residual`.
-HOOKSPATH_REDIRECT_RE = re.compile(r"core\.hooksPath")
+# out-of-scope `known_residual` — case-folding does not change that.
+# `re.IGNORECASE` (S5U-957) gives parity with review.md #22's `grep -inE`, which
+# matches `CORE.HOOKSPATH` / `Core.HooksPath`. Git config keys are themselves
+# case-insensitive in their section/name, so these are real redirect forms.
+HOOKSPATH_REDIRECT_RE = re.compile(r"core\.hooksPath", re.IGNORECASE)
 
 
 # Ordered (token_class, compiled_regex) tuple driving the per-line scan. Order
