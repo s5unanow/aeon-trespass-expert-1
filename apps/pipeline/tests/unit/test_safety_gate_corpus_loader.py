@@ -153,3 +153,79 @@ def test_unknown_probe_fails_closed(_patched_corpus_dir: Path) -> None:
     _write_probe_corpus(_patched_corpus_dir, '"not_a_real_probe"')
     with pytest.raises(ValueError, match="unknown probe"):
         load_corpus("demo_policy")
+
+
+# ---------------------------------------------------------------------------
+# `_parse_probe` Rule G1 fail-closed branches (S5U-923). Each malformed
+# `probe` / `probe_target` shape must raise a ValueError whose message names
+# the offending case id, never silently degrade to the whole-snippet
+# single-detector path (which would run a multi-detector case against the wrong
+# detector and false-pass). Mirrors the `added_lines` G1 tests above.
+# ---------------------------------------------------------------------------
+
+
+def _write_probe_target_corpus(
+    tmp_path: Path, *, probe_literal: str | None, target_literal: str | None
+) -> None:
+    """Write a one-case corpus carrying raw TOML ``probe`` / ``probe_target``.
+
+    Each literal is emitted only when not ``None`` so a test can write a
+    ``probe_target`` with no ``probe`` (and vice versa) to exercise each branch.
+    """
+    body = [
+        'policy = "demo_policy"',
+        "[[case]]",
+        'id = "c1"',
+        'expect = "block"',
+    ]
+    if probe_literal is not None:
+        body.append(f"probe = {probe_literal}")
+    if target_literal is not None:
+        body.append(f"probe_target = {target_literal}")
+    body.append('snippet = "x"')
+    corpus_dir = tmp_path / "safety_gate_corpus"
+    corpus_dir.mkdir()
+    (corpus_dir / "demo_policy.toml").write_text("\n".join(body) + "\n", encoding="utf-8")
+
+
+def test_probe_target_without_probe_fails_closed(_patched_corpus_dir: Path) -> None:
+    """A `probe_target` with no `probe` is meaningless and must raise (Rule G1)."""
+    _write_probe_target_corpus(_patched_corpus_dir, probe_literal=None, target_literal='"item-3"')
+    with pytest.raises(ValueError, match=r"case 'c1' sets `probe_target` without a"):
+        load_corpus("demo_policy")
+
+
+def test_probe_non_string_fails_closed(_patched_corpus_dir: Path) -> None:
+    """A non-string `probe` cannot be in VALID_PROBE and must raise (Rule G1)."""
+    _write_probe_corpus(_patched_corpus_dir, "42")
+    with pytest.raises(ValueError, match=r"case 'c1' has unknown probe"):
+        load_corpus("demo_policy")
+
+
+def test_probe_unknown_value_fails_closed(_patched_corpus_dir: Path) -> None:
+    """An unknown `probe` value raises, naming the offending case id (Rule G1)."""
+    _write_probe_corpus(_patched_corpus_dir, '"not_a_real_probe"')
+    with pytest.raises(ValueError, match=r"case 'c1' has unknown probe"):
+        load_corpus("demo_policy")
+
+
+def test_probe_target_empty_string_fails_closed(_patched_corpus_dir: Path) -> None:
+    """An empty-string `probe_target` (with a valid probe) must raise (Rule G1)."""
+    _write_probe_target_corpus(
+        _patched_corpus_dir, probe_literal='"forbidden_flag"', target_literal='""'
+    )
+    with pytest.raises(
+        ValueError, match=r"case 'c1' has `probe_target`=.*non-empty string when set"
+    ):
+        load_corpus("demo_policy")
+
+
+def test_probe_target_non_string_fails_closed(_patched_corpus_dir: Path) -> None:
+    """A non-string `probe_target` (with a valid probe) must raise (Rule G1)."""
+    _write_probe_target_corpus(
+        _patched_corpus_dir, probe_literal='"forbidden_flag"', target_literal="7"
+    )
+    with pytest.raises(
+        ValueError, match=r"case 'c1' has `probe_target`=.*non-empty string when set"
+    ):
+        load_corpus("demo_policy")
