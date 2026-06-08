@@ -12,6 +12,7 @@ from atr_pipeline.stages.structure.block_filter import (
 from atr_pipeline.stages.structure.table_resolver import (
     _bbox_overlap,
     _resolve_tables,
+    callout_inline_children,
 )
 from atr_schemas.common import Rect
 from atr_schemas.enums import AnchorEdgeKind, BlockType, RegionKind
@@ -253,11 +254,9 @@ def _promote_callouts(
             group.append(blocks[j])
             j += 1
 
-        # Merge children from all blocks into a single CalloutBlock
-        all_children: list[InlineNode] = []
-        for b in group:
-            children: list[InlineNode] = getattr(b, "children", [])
-            all_children.extend(children)
+        # Merge grouped blocks' children into one inline run for the callout,
+        # flattening any TableBlock rows to inlines (S5U-1007).
+        all_children: list[InlineNode] = callout_inline_children(group)
 
         # Compute union bbox
         bboxes: list[Rect] = [b.bbox for b in group if getattr(b, "bbox", None) is not None]  # type: ignore[misc]
