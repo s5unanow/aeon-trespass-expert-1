@@ -310,6 +310,7 @@ class CodexCLIAdapter:
             try:
                 proc = subprocess.run(
                     argv,
+                    stdin=subprocess.DEVNULL,
                     capture_output=True,
                     text=True,
                     timeout=self._timeout,
