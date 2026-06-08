@@ -17,8 +17,33 @@ from atr_schemas.enums import AnchorEdgeKind
 from atr_schemas.evidence_primitives_v1 import EvidenceTableCandidate
 from atr_schemas.native_page_v1 import NativePageV1
 from atr_schemas.page_evidence_v1 import PageEvidenceV1
-from atr_schemas.page_ir_v1 import Block, ParagraphBlock, TableBlock
+from atr_schemas.page_ir_v1 import (
+    Block,
+    InlineNode,
+    ParagraphBlock,
+    TableBlock,
+    iter_table_inlines,
+)
 from atr_schemas.resolved_page_v1 import AnchorEdge
+
+
+def callout_inline_children(blocks: list[Block]) -> list[InlineNode]:
+    """Flatten callout-region blocks into a single inline run (S5U-1007).
+
+    ``CalloutBlock.children`` is the inline-only union, but a ``TableBlock``
+    grouped into a callout region carries ``TableRowBlock`` children. A callout
+    renders as a flat inline run (``RenderCalloutBlock`` is inline-only), so
+    flatten any table via ``iter_table_inlines`` to preserve all cell text/icon
+    content without dropping segments.
+    """
+    out: list[InlineNode] = []
+    for block in blocks:
+        if isinstance(block, TableBlock):
+            out.extend(iter_table_inlines(block))
+        else:
+            children: list[InlineNode] = getattr(block, "children", [])
+            out.extend(children)
+    return out
 
 
 def _bbox_overlap(a: Rect, b: Rect) -> float:
