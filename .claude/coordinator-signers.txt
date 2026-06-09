@@ -13,7 +13,11 @@
 # stamps the field from the authenticated OAuth token. So the only way a
 # `coordinator-ack` status arrives on a commit with `creator.login=s5unanow`
 # is for `s5unanow`'s authenticated `gh` session to have posted it — which is
-# exactly what the coordinator skill does before spawning the worker.
+# exactly what the coordinator skill does in its post-push handshake (S5U-1077):
+# the coordinator spawns the worker, the worker branches/commits/pushes and
+# reports its pushed HEAD SHA, the coordinator posts the ack on that reported
+# HEAD, and only then is the PR created. A status cannot be stamped on a SHA
+# that does not yet exist, so there is no "before spawning the worker" step.
 #
 # Expanding this allowlist is a safety-gate edit (the file path is inside
 # .claude/, which is covered by the hook's safety-gate regex). Treat a PR
