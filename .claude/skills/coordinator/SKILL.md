@@ -16,12 +16,14 @@ Orchestrate a batch of Linear issues through ship + independent review + bug tri
 
 1. **How many issues** to ship (default: 5)
 2. **Linear filter** (default: Backlog, unassigned, project ATE1, priority order Urgent → High → Normal)
-3. **Worker model** (default: Opus)
-4. **Reviewer model** (default: Opus for safety-critical changes; Sonnet is cheaper first-pass and usable for simple work)
+3. **Worker model** (default: Opus as a *floor* — never silently downgrade a worker below the Opus tier; a stronger tier is fine, a weaker one is not)
+4. **Reviewer model** (default: the strongest available model tier for **safety-gate scope** — adversarial review is one of the costliest failure surfaces and the cheapest to upgrade; Opus tier otherwise. A cheaper tier such as Sonnet is acceptable **only** as a first pass on simple, non-safety-gate work, and **only** when followed by a strongest-tier second pass — see step 5)
 5. **On review-found bug**: (a) stop the run, (b) mark Urgent in Linear and continue — **default (b)**
-6. **Second-pass Opus review** after a Sonnet first pass? (default: no, unless user explicitly wants two-pass)
+6. **Strongest-tier second-pass review** after a cheaper first pass? (default: no, unless the first pass ran on a sub-Opus tier or the user explicitly wants two-pass)
 
 Skip any question the user has already answered.
+
+> **Capability-tier model policy (not hardcoded generations).** Model generations change faster than this skill doc, so express the policy in tiers, not names: the **coordinator itself** and **safety-gate reviewers** run on the *strongest available model tier* (as of 2026-06-09 that is Fable); **workers** default to the **Opus tier as a floor** (a stronger tier is fine; never silently downgrade below it). Concretely: orchestration/judgment failures and missed adversarial review findings are the costliest and the cheapest to upgrade — there is one coordinator and a handful of reviewers versus a fleet of workers, so spending the top tier there is the best marginal use of capability. Cross-vendor Codex review is unchanged.
 
 ## The loop — sequential, one issue at a time
 
@@ -94,13 +96,13 @@ Coordinator rule: if any `Critical` item exists, the issue is logged as BUG rega
 - Default (b): bugs are Urgent in Linear, run continues to next issue
 - (a) variant: stop run, report to user, let them decide
 
-### 5. Optional second-pass Opus review
-If enabled, after a Sonnet first-pass PASS/BUG, spawn an Opus reviewer with the same brief plus:
+### 5. Optional strongest-tier second-pass review
+If enabled, after a cheaper-tier first-pass PASS/BUG, spawn a **strongest-tier** reviewer (the top available model tier — see the capability-tier policy above) with the same brief plus:
 - List of already-filed bugs (don't re-file)
 - Explicit probe list appropriate to the change type (safety-gate = adversarial bypass probes — and for a corpus-backed detector per `apps/pipeline/tests/safety_gate_corpus/*.toml`, confirm any reviewer-found syntactic bypass was added to that corpus as a `block` case (or a corpus follow-up issue was opened), never patched in as a one-off regex per S5U-789; schema = contract direction; correctness-critical = end-to-end flow trace)
 - Title bugs `S5U-XXX follow-up (second review): <defect>`
 
-Opus second-pass consistently finds issues Sonnet misses, especially on safety gates and complex correctness paths.
+A stronger-model second pass consistently finds issues the first pass misses, especially on safety gates and complex correctness paths — which is why safety-gate reviewers should run on the strongest tier in the first place.
 
 ## Safety-gate / corpus CI gotchas
 
@@ -122,7 +124,7 @@ Two CI gates have bitten coordinator runs and are easy to miss mid-run. Brief wo
 At end of run:
 - Table: issue | PR | merge SHA | review verdict (PASS / BUG → list IDs)
 - Total merged, total bugs filed
-- Observations: patterns across workers/reviewers (e.g., "3 of 5 cross-system issues produced bugs on first review; second-pass Opus caught 7 more gaps on top")
+- Observations: patterns across workers/reviewers (e.g., "3 of 5 cross-system issues produced bugs on first review; the strongest-tier second pass caught 7 more gaps on top")
 - Any process deviations noticed (worker skipped mandatory step, rule doc stale, etc.)
 
 ## Rules
@@ -137,6 +139,6 @@ At end of run:
 
 Under the current harness, sub-agents spawned by `/build-loop`, `/next`, and `/ship` do NOT have the `Agent` tool available, so their pre-PR review is a lone-worker inline self-review (CLAUDE.md step 6 Path B). That fallback is acceptable for feature/polish changes but **not** for safety-gate scope per CLAUDE.md (which includes `.claude/skills/` SKILL.md edits as an operational path).
 
-Per CLAUDE.md step 6, safety-gate PRs MUST be shipped via `/coordinator`. The coordinator's step-3 reviewer subagent — spawned *after* merge, with only evidence (merge SHA, PR URL, Linear ID) and an explicit "you are not the worker" reminder — is the authoritative fresh-eyes gate for this class of change. Treat any safety-gate issue that arrives here as a high-priority candidate for the second-pass Opus review option.
+Per CLAUDE.md step 6, safety-gate PRs MUST be shipped via `/coordinator`. The coordinator's step-3 reviewer subagent — spawned *after* merge, with only evidence (merge SHA, PR URL, Linear ID) and an explicit "you are not the worker" reminder — is the authoritative fresh-eyes gate for this class of change. Run that reviewer on the strongest available tier (per the capability-tier policy above), and treat any safety-gate issue that arrives here as a high-priority candidate for the strongest-tier second-pass review option.
 
 **Coordinator-ack signal (S5U-647 → S5U-670):** per the step-1 handshake, the coordinator posts a `coordinator-ack` commit status to GitHub on the worker's pushed HEAD SHA — after the push, before PR creation (whether the resumed worker or the coordinator itself runs `gh pr create`). This is the machine-enforced signal that the coordinator flow is in play — `pre-pr-check.sh` refuses `gh pr create` on safety-gate-scoped branches unless the GH API returns a `coordinator-ack` status with `state=success` and `creator.login` ∈ `.claude/coordinator-signers.txt`, closing the lone-worker bypass that the former user-override clause in `/ship` enabled. The status is the coordinator's *commitment* to run the step-3 reviewer; failing to run the reviewer after the worker merges is a coordinator-level safety-gate violation. The prior file-marker mechanism (`tmp/.coordinator-ack-s5u-<N>`) was worker-forgeable (S5U-670 retrospective: 7 of 7 PRs in the 2026-04-20 coordinator run had worker-written markers) and has been removed — only GH-API-authenticated commit statuses count.
