@@ -129,6 +129,7 @@ class AgyCLIAdapter:
                 text=True,
                 timeout=self._timeout,
                 check=False,
+                stdin=subprocess.DEVNULL,
             )
         except subprocess.TimeoutExpired as exc:
             msg = f"AGY CLI timed out after {self._timeout}s"
