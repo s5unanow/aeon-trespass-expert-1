@@ -229,16 +229,19 @@ def test_user_assign_to_non_import_callable_not_over_captured(tmp_path: Path) ->
 
 
 # ---------------------------------------------------------------------------
-# S5U-1100 carve-out: relative dynamic literal is OUT OF SCOPE — pin unchanged
+# S5U-1100: relative dynamic literal now resolved (was an S5U-1098 carve-out)
 # ---------------------------------------------------------------------------
 
 
-def test_relative_dynamic_literal_behavior_unchanged_s5u_1100(tmp_path: Path) -> None:
-    """S5U-1100 (OPEN, out of scope): `import_module("._h", package="scripts")` unchanged.
+def test_relative_dynamic_literal_resolved_s5u_1100(tmp_path: Path) -> None:
+    """S5U-1100: `import_module("._h", package="scripts")` now resolves the sibling.
 
-    This shape silently escapes (frozenset()) and is owned by S5U-1100. This
-    pin asserts S5U-1098 does NOT change its behavior (neither fix it nor make
-    it raise). Boundary-pin, not red-before.
+    This shape silently escaped (frozenset()) under S5U-1098, pinned here as an
+    out-of-scope carve-out owned by S5U-1100. S5U-1100 resolves it: the constant
+    `package="scripts"` anchor strips the leading dot and routes `_dyn_helper`
+    through `_dotted_candidate_names`, so the helper lands IN scope. Full
+    coverage (positional package, fail-closed variants, over-capture guard) lives
+    in `test_detector_source_scope_dynamic.py`; this is the boundary flip.
     """
     mod = _load()
     scripts = tmp_path / "scripts"
@@ -248,7 +251,7 @@ def test_relative_dynamic_literal_behavior_unchanged_s5u_1100(tmp_path: Path) ->
         "import importlib\n_h = importlib.import_module('._dyn_helper', package='scripts')\n",
     )
     _write_script(scripts, "_dyn_helper.py", "X = 1\n")
-    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset({"scripts/_dyn_helper.py"})
 
 
 # ---------------------------------------------------------------------------

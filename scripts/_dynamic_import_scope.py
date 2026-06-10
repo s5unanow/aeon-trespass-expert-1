@@ -46,8 +46,14 @@ user-defined ``def im(...)`` produces neither, so it is never folded.
   is single-file AST only.
 - **Container-mediated rebind** (``d = {"f": import_module}; d["f"]("_h")``,
   ``getattr(importlib, "import_module")("_h")``) is NOT resolved.
-- **Relative dynamic literal** ``import_module("._helper", package="scripts")``
-  is owned by S5U-1100 (open) and intentionally left unchanged here.
+- **Relative dynamic literal** ``import_module("._helper", package="scripts")`` is
+  resolved (S5U-1100): a single-level relative literal anchored on the constant
+  ``package="scripts"`` strips the leading dot and routes through the dotted-candidate
+  resolver (``"._helper"`` -> ``_helper``); package absent / non-constant / any other
+  constant / multi-level (``".._h"``) fails closed (``DetectorScopeError``), mirroring
+  the non-constant module-name branch. The builtin ``__import__`` has no string
+  ``package`` anchor (it uses an integer ``level``), so a leading-dot literal there
+  fails closed too.
 - **Bespoke loaders** (``exec`` / ``runpy`` / custom importlib machinery) are the
   pre-existing S5U-996 residual. Backstop for all of these: corpus declaration.
 - A non-import callable that is *named* ``import_module`` / ``__import__`` (or an
@@ -65,6 +71,11 @@ import ast
 # bare name (``import_module`` via ``from importlib import import_module``) or an
 # attribute (``importlib.import_module``).
 _DYNAMIC_IMPORT_NAMES = frozenset({"import_module", "__import__"})
+
+# The flat-sibling package anchor the deriver models (``scripts/_*.py``). A
+# relative dynamic literal resolves only when its ``package`` argument is this
+# exact constant (S5U-1100).
+_SCRIPTS_PACKAGE = "scripts"
 
 
 class DetectorScopeError(RuntimeError):
@@ -164,6 +175,68 @@ def _has_kwargs_splat(node: ast.Call) -> bool:
     return any(kw.arg is None for kw in node.keywords)
 
 
+# Sentinel: ``_package_arg`` returns this when the ``package`` argument is absent
+# entirely, distinguishing "no anchor at all" from "anchor present but non-constant".
+_PACKAGE_ABSENT = object()
+
+
+def _package_arg(node: ast.Call) -> object | None:
+    """Return the ``package`` anchor of an ``import_module`` call (S5U-1100).
+
+    ``importlib.import_module(name, package=None)`` — ``package`` is the SECOND
+    positional argument (``node.args[1]``) or the ``package=`` keyword. Returns the
+    constant string value when it is a string literal; ``None`` when the anchor is
+    present but non-constant (variable / f-string / non-str); ``_PACKAGE_ABSENT``
+    when there is no ``package`` argument at all. The caller distinguishes these:
+    a constant ``"scripts"`` resolves, every other state fails closed.
+    """
+    pkg: ast.expr | None = None
+    if len(node.args) >= 2:
+        pkg = node.args[1]
+    else:
+        pkg = next((kw.value for kw in node.keywords if kw.arg == "package"), None)
+    if pkg is None:
+        return _PACKAGE_ABSENT
+    if isinstance(pkg, ast.Constant) and isinstance(pkg.value, str):
+        return pkg.value
+    return None  # present but non-constant — statically irreducible
+
+
+def _resolve_relative_literal(
+    literal: str,
+    node: ast.Call,
+    rel: str,
+    dotted_candidates: object,
+) -> set[str]:
+    """Resolve a leading-dot dynamic literal against its ``package`` anchor (S5U-1100).
+
+    A relative dynamic literal (``import_module("._h", package="scripts")``) is
+    statically resolvable ONLY when ``package`` is the constant ``"scripts"`` and
+    the literal is a single-level relative reference (one leading dot). In that case
+    the dot is stripped and the remainder routed through ``_dotted_candidate_names``
+    exactly like the absolute path (``"._h"`` -> ``"_h"``). Every other state —
+    package absent / non-constant / a constant other than ``"scripts"`` / multi-level
+    relative (``".._h"``, which escapes the flat ``scripts/_*.py`` sibling model) —
+    is statically irreducible for the flat-sibling deriver, so it fails closed
+    (``DetectorScopeError``) per .claude/rules/guards.md Rule G1, mirroring the
+    non-constant module-name branch.
+    """
+    package = _package_arg(node)
+    callable_name = _call_func_name(node)
+    leading = len(literal) - len(literal.lstrip("."))
+    if package == _SCRIPTS_PACKAGE and leading == 1:
+        # ``"._h"`` -> ``"_h"`` -> route through the dotted-candidate resolver.
+        return dotted_candidates(literal.lstrip("."))  # type: ignore[operator,no-any-return]
+    raise DetectorScopeError(
+        f"detector source {rel} line {node.lineno}: dynamic import "
+        f"({callable_name}) with a relative module name {literal!r} cannot resolve "
+        "a sibling helper statically unless `package` is the constant 'scripts' and "
+        "the reference is single-level (one leading dot). Per .claude/rules/guards.md "
+        "Rule G1, fail closed: make the import static (`from _helper import ...`) OR "
+        "declare the helper in a corpus `detector_sources` list."
+    )
+
+
 def dynamic_helper_names(
     source: str,
     rel: str,
@@ -208,7 +281,12 @@ def dynamic_helper_names(
             # Plain zero-arg call of a recognized-named callable imports nothing.
             continue
         if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
-            names |= dotted_candidates(arg.value)  # type: ignore[operator]
+            if arg.value.startswith("."):
+                # Relative literal (``import_module("._h", package="scripts")``):
+                # resolve against the ``package`` anchor or fail closed (S5U-1100).
+                names |= _resolve_relative_literal(arg.value, node, rel, dotted_candidates)
+            else:
+                names |= dotted_candidates(arg.value)  # type: ignore[operator]
             continue
         # Non-constant module name: statically irreducible. Fail closed (G1).
         raise DetectorScopeError(

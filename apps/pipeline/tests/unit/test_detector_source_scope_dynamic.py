@@ -248,3 +248,129 @@ def test_import_graph_dynamic_dotted_missing_helper_no_phantom(tmp_path: Path) -
         "import importlib\n_h = importlib.import_module('scripts._ghost')\n",
     )
     assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
+
+
+# ---------------------------------------------------------------------------
+# Relative dynamic literal (S5U-1100): import_module("._helper", package="scripts")
+# ---------------------------------------------------------------------------
+
+
+def test_import_graph_captures_relative_dynamic_keyword_package(tmp_path: Path) -> None:
+    """S5U-1100: `import_module("._h", package="scripts")` resolves _h (was OUT pre-fix).
+
+    `"._h".split(".")` is `["", "_h"]`; pre-fix the empty first component was dropped
+    by the leading-`_` gate and `_h` never yielded — silent escape. Reading the
+    constant `package="scripts"` anchor, stripping the dot, and routing `_h` through
+    `_dotted_candidate_names` captures the sibling.
+    """
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('._real_helper', package='scripts')\n",
+    )
+    _write_script(scripts, "_real_helper.py", "X = 1\n")
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset({"scripts/_real_helper.py"})
+
+
+def test_import_graph_captures_relative_dynamic_positional_package(tmp_path: Path) -> None:
+    """S5U-1100: `package` as the SECOND POSITIONAL arg (args[1]) is read like the keyword.
+
+    `importlib.import_module(name, package=None)` — package is positional-or-keyword.
+    A keyword-only reader would miss `import_module("._h", "scripts")` and fall back
+    to silent ignore; reading `node.args[1]` closes that.
+    """
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('._real_helper', 'scripts')\n",
+    )
+    _write_script(scripts, "_real_helper.py", "X = 1\n")
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset({"scripts/_real_helper.py"})
+
+
+def test_import_graph_relative_dynamic_no_package_fails_closed(tmp_path: Path) -> None:
+    """G1: a relative literal with NO package anchor is irreducible → fail closed."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('._real_helper')\n",
+    )
+    _write_script(scripts, "_real_helper.py", "X = 1\n")
+    with pytest.raises(mod.DetectorScopeError, match="relative module name"):
+        mod.import_graph_scope(repo_root=tmp_path)
+
+
+def test_import_graph_relative_dynamic_variable_package_fails_closed(tmp_path: Path) -> None:
+    """G1: a non-constant `package` anchor is irreducible → fail closed."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\npkg = 'scripts'\n"
+        "_h = importlib.import_module('._real_helper', package=pkg)\n",
+    )
+    _write_script(scripts, "_real_helper.py", "X = 1\n")
+    with pytest.raises(mod.DetectorScopeError, match="relative module name"):
+        mod.import_graph_scope(repo_root=tmp_path)
+
+
+def test_import_graph_relative_dynamic_other_constant_package_no_over_capture(
+    tmp_path: Path,
+) -> None:
+    """Over-capture guard: `package="foo"` names foo._bar, NOT a scripts sibling.
+
+    A naive "strip dots, route regardless of package" impl would capture the
+    existing scripts/_bar.py. The fix fails closed on any constant package other
+    than "scripts", so _bar is NOT over-captured.
+    """
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('._bar', package='foo')\n",
+    )
+    _write_script(scripts, "_bar.py", "X = 1\n")  # exists but must NOT be captured
+    with pytest.raises(mod.DetectorScopeError, match="relative module name"):
+        mod.import_graph_scope(repo_root=tmp_path)
+
+
+def test_import_graph_relative_dunder_import_fails_closed(tmp_path: Path) -> None:
+    """G1: `__import__("._h")` has no string `package` anchor → fail closed.
+
+    The builtin `__import__(name, globals, locals, fromlist, level)` uses an
+    integer `level` for relative imports, not a string anchor; a leading-dot
+    literal is a runtime error and names no sibling. The deriver fails closed
+    rather than silently ignoring it.
+    """
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(scripts, "check_foo.py", "_h = __import__('._real_helper')\n")
+    _write_script(scripts, "_real_helper.py", "X = 1\n")
+    with pytest.raises(mod.DetectorScopeError, match="relative module name"):
+        mod.import_graph_scope(repo_root=tmp_path)
+
+
+def test_import_graph_relative_dynamic_multi_dot_fails_closed(tmp_path: Path) -> None:
+    """G1: a multi-level relative literal `".._h"` escapes the flat-sibling model.
+
+    `package="scripts"` + two leading dots resolves above the scripts package,
+    which `scripts/_*.py` cannot represent → fail closed.
+    """
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('.._real_helper', package='scripts')\n",
+    )
+    _write_script(scripts, "_real_helper.py", "X = 1\n")
+    with pytest.raises(mod.DetectorScopeError, match="relative module name"):
+        mod.import_graph_scope(repo_root=tmp_path)
