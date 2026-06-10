@@ -59,9 +59,12 @@ the message on stderr):
 - A detector source the import-graph walk cannot read (``OSError``) or parse
   (``SyntaxError``). A detector the scope-deriver cannot read is NOT silently
   dropped from the walk — fail closed.
-- A dynamic import (``import_module`` / ``__import__``) with a non-constant
-  module name (variable / f-string): statically irreducible, fail closed
-  rather than silently under-capture (S5U-996).
+- A dynamic import (``import_module`` / ``__import__``, incl. aliased / rebound
+  forms — S5U-1098) with a non-constant module name (variable / f-string) OR a
+  ``**kwargs`` splat with no resolvable ``name`` (S5U-1098): statically
+  irreducible, fail closed rather than silently under-capture (S5U-996).
+  ``_dynamic_import_scope.dynamic_helper_names`` owns this logic; see that
+  module's docstring for the recognized-callable derivation and residuals.
 
 The ONLY non-raising degenerate cases are an **absent** corpus directory and an
 **absent** ``scripts/`` directory: that means the caller is not running against
@@ -83,6 +86,8 @@ import sys
 import tomllib
 from pathlib import Path
 
+from _dynamic_import_scope import DetectorScopeError, dynamic_helper_names
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CORPUS_DIR = Path("apps/pipeline/tests/safety_gate_corpus")
 DEFAULT_SCRIPTS_DIR = Path("scripts")
@@ -91,10 +96,6 @@ DEFAULT_SCRIPTS_DIR = Path("scripts")
 # protects: scripts/check_*.py and scripts/pre-*.py). The import-graph walk
 # starts from these and follows sibling scripts/_*.py imports transitively.
 DETECTOR_GLOBS = ("check_*.py", "pre-*.py")
-
-
-class DetectorScopeError(RuntimeError):
-    """Raised when a corpus or detector source is present but unreadable (G1)."""
 
 
 def corpus_source_scope(
@@ -146,11 +147,6 @@ def corpus_source_scope(
 # third-party dotted modules (``from foo.bar import x`` still yields only ``foo``).
 _SCRIPTS_PACKAGE = "scripts"
 
-# Dynamic-import callables the content scan recognizes (S5U-996). Matched as a
-# bare name (``import_module`` via ``from importlib import import_module``) or an
-# attribute (``importlib.import_module``). See ``_dynamic_helper_names``.
-_DYNAMIC_IMPORT_NAMES = frozenset({"import_module", "__import__"})
-
 
 def _dotted_candidate_names(dotted: str) -> set[str]:
     """Yield resolvable sibling-module candidates from a dotted module name.
@@ -167,73 +163,14 @@ def _dotted_candidate_names(dotted: str) -> set[str]:
     return names
 
 
-def _call_func_name(node: ast.Call) -> str | None:
-    """Return the callable's rightmost identifier, else None.
-
-    ``import_module(...)`` and ``importlib.import_module(...)`` both surface as
-    ``import_module`` (``ast.Name`` / ``ast.Attribute``).
-    """
-    func = node.func
-    if isinstance(func, ast.Name):
-        return func.id
-    if isinstance(func, ast.Attribute):
-        return func.attr
-    return None
-
-
-def _dynamic_import_arg(node: ast.Call) -> ast.expr | None:
-    """Return the module-name arg of a dynamic-import call (positional or ``name=``).
-
-    Both callables name the first param ``name``, so the keyword form
-    (``import_module(name="_h")``) is handled like the positional, not skipped.
-    """
-    if node.args:
-        return node.args[0]
-    return next((kw.value for kw in node.keywords if kw.arg == "name"), None)
-
-
-def _dynamic_helper_names(source: str, rel: str) -> set[str]:
-    """Return sibling-helper names reached via dynamic import in *source* (S5U-996).
-
-    Scans every ``ast.Call`` to ``import_module`` / ``__import__`` (arg via
-    ``_dynamic_import_arg``). A string literal is routed through
-    ``_dotted_candidate_names`` exactly like the static path (S5U-1097), so
-    ``import_module("scripts._helper")`` yields ``_helper`` not the dropped
-    ``scripts``; the ``_sibling_helper_path`` file-existence + leading-``_`` gate
-    prevents phantom / over-capture (``"pydantic"`` drops). A non-constant arg
-    (variable / f-string) fails closed (``DetectorScopeError``) not under-captured.
-    """
-    names: set[str] = set()
-    tree = ast.parse(source)
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Call):
-            continue
-        if _call_func_name(node) not in _DYNAMIC_IMPORT_NAMES:
-            continue
-        arg = _dynamic_import_arg(node)
-        if arg is None:
-            continue
-        if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
-            names |= _dotted_candidate_names(arg.value)
-            continue
-        # Non-constant module name: statically irreducible. Fail closed (G1).
-        raise DetectorScopeError(
-            f"detector source {rel} line {node.lineno}: dynamic import "
-            f"({_call_func_name(node)}) with a non-constant module name cannot "
-            "resolve a sibling helper statically. Per .claude/rules/guards.md "
-            "Rule G1, fail closed: make the import static (`from _helper import "
-            "...`) OR declare the helper in a corpus `detector_sources` list."
-        )
-    return names
-
-
 def _imported_module_names(source: str, rel: str) -> set[str]:
     """Return the sibling-module candidate names imported by *source* (AST-based).
 
     Walks every ``import`` / ``from … import`` node (incl. TYPE_CHECKING /
     function-nested — any static edge is load-bearing) via
     ``_dotted_candidate_names``, then folds in dynamic imports via
-    ``_dynamic_helper_names``. The caller resolves names against ``scripts/_*.py``.
+    ``dynamic_helper_names`` (``_dynamic_import_scope``). The caller resolves
+    names against ``scripts/_*.py``.
     """
     names: set[str] = set()
     tree = ast.parse(source)
@@ -246,7 +183,7 @@ def _imported_module_names(source: str, rel: str) -> set[str]:
         # (sys.path.insert + `from _x import ...`).
         elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
             names |= _dotted_candidate_names(node.module)
-    names |= _dynamic_helper_names(source, rel)
+    names |= dynamic_helper_names(source, rel, _dotted_candidate_names)
     return names
 
 
