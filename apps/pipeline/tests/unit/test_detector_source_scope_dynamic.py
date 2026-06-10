@@ -194,3 +194,57 @@ def test_import_graph_dynamic_fstring_arg_fails_closed(tmp_path: Path) -> None:
     )
     with pytest.raises(mod.DetectorScopeError, match="non-constant module name"):
         mod.import_graph_scope(repo_root=tmp_path)
+
+
+# ---------------------------------------------------------------------------
+# Dynamic + dotted (S5U-1097): import_module("scripts._helper")
+# ---------------------------------------------------------------------------
+
+
+def test_import_graph_captures_dynamic_dotted_scripts_helper_literal(tmp_path: Path) -> None:
+    """S5U-1097: `import_module("scripts._helper")` resolves _helper (was OUT pre-fix).
+
+    The dotted literal does not start with `_`, so the pre-fix
+    `startswith("_")` / `split(".")[0]` branch silently ignored it. Routing the
+    literal through `_dotted_candidate_names` (like the static path) yields the
+    `scripts`-package second component `_real_helper`.
+    """
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('scripts._real_helper')\n",
+    )
+    _write_script(scripts, "_real_helper.py", "X = 1\n")
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset({"scripts/_real_helper.py"})
+
+
+def test_import_graph_dynamic_dotted_non_scripts_not_over_captured(tmp_path: Path) -> None:
+    """Over-capture guard: dynamic `import_module("foo._bar")` yields only `foo`.
+
+    The `scripts`-package second-component rule keys on the exact first part
+    `scripts`; `foo._bar` does not get it, so the existing scripts/_bar.py is
+    NOT captured. (Mirrors the static `..._non_scripts_package_not_over_captured`.)
+    """
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('foo._bar')\n",
+    )
+    _write_script(scripts, "_bar.py", "X = 1\n")  # exists but must NOT be captured
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
+
+
+def test_import_graph_dynamic_dotted_missing_helper_no_phantom(tmp_path: Path) -> None:
+    """Phantom guard: dynamic dotted 2nd-component with no file → no capture."""
+    mod = _load()
+    scripts = tmp_path / "scripts"
+    _write_script(
+        scripts,
+        "check_foo.py",
+        "import importlib\n_h = importlib.import_module('scripts._ghost')\n",
+    )
+    assert mod.import_graph_scope(repo_root=tmp_path) == frozenset()
