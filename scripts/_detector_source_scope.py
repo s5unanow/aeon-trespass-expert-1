@@ -28,6 +28,16 @@ never a hardcoded name list:
    ``_hotspot_budgets.py``, ``_repo_summary.py``, and ``_linear_client.py`` out
    of scope after S5U-922.
 
+   The walk covers three edge styles (S5U-996 closed the latter two blind
+   spots): bare sibling (``from _helper import f`` / ``import _helper as y``,
+   incl. TYPE_CHECKING); dotted package (``from scripts._helper import f``, see
+   ``_dotted_candidate_names``); and dynamic (``import_module("_helper")`` /
+   ``__import__("_helper")``, see ``_dynamic_helper_names`` + G1 below).
+   **Residual (S5U-996):** a helper loaded via a bespoke mechanism that is
+   neither ``import_module`` / ``__import__`` nor a static ``import`` (custom
+   loader, ``exec``, ``runpy``) is invisible to the AST scan; backstop is corpus
+   declaration — the analogue of the S5U-926 shell-detector residual.
+
 Both layers are content-derived: the corpus union is the declared contract; the
 import graph is the actual ``ast`` import edges. A helper rename is auto-tracked
 (the detector's import statement must change, or the detector breaks); a benign
@@ -49,6 +59,9 @@ the message on stderr):
 - A detector source the import-graph walk cannot read (``OSError``) or parse
   (``SyntaxError``). A detector the scope-deriver cannot read is NOT silently
   dropped from the walk — fail closed.
+- A dynamic import (``import_module`` / ``__import__``) with a non-constant
+  module name (variable / f-string): statically irreducible, fail closed
+  rather than silently under-capture (S5U-996).
 
 The ONLY non-raising degenerate cases are an **absent** corpus directory and an
 **absent** ``scripts/`` directory: that means the caller is not running against
@@ -127,26 +140,113 @@ def corpus_source_scope(
     return frozenset(sources)
 
 
-def _imported_module_names(source: str) -> set[str]:
-    """Return the top-level module names imported by *source* (AST-based).
+# Package the sibling helpers live under, so dotted ``scripts._helper`` resolves
+# the sibling ``_helper`` instead of escaping as the first component ``scripts``
+# (S5U-996). Special-casing only this one package avoids over-capturing arbitrary
+# third-party dotted modules (``from foo.bar import x`` still yields only ``foo``).
+_SCRIPTS_PACKAGE = "scripts"
 
-    Walks every ``import X`` / ``import X as Y`` / ``from X import …`` node,
-    including those nested in ``if TYPE_CHECKING:`` blocks and functions — any
-    static import edge is a load-bearing dependency for scope purposes. Only the
-    first dotted component is returned (``from _pkg.sub import …`` → ``_pkg``);
-    the caller resolves these against sibling ``scripts/_*.py`` files.
+# Dynamic-import callables the content scan recognizes (S5U-996). Matched as a
+# bare name (``import_module`` via ``from importlib import import_module``) or an
+# attribute (``importlib.import_module``). See ``_dynamic_helper_names``.
+_DYNAMIC_IMPORT_NAMES = frozenset({"import_module", "__import__"})
+
+
+def _dotted_candidate_names(dotted: str) -> set[str]:
+    """Yield resolvable sibling-module candidates from a dotted module name.
+
+    Always yields the first component; when it is the ``scripts`` package, also
+    yields the second so ``scripts._helper`` resolves ``_helper`` (S5U-996). The
+    ``_sibling_helper_path`` file-existence gate drops any non-existent component
+    (no phantom capture).
+    """
+    parts = dotted.split(".")
+    names = {parts[0]}
+    if parts[0] == _SCRIPTS_PACKAGE and len(parts) >= 2:
+        names.add(parts[1])
+    return names
+
+
+def _call_func_name(node: ast.Call) -> str | None:
+    """Return the callable's rightmost identifier, else None.
+
+    ``import_module(...)`` and ``importlib.import_module(...)`` both surface as
+    ``import_module`` (``ast.Name`` / ``ast.Attribute``).
+    """
+    func = node.func
+    if isinstance(func, ast.Name):
+        return func.id
+    if isinstance(func, ast.Attribute):
+        return func.attr
+    return None
+
+
+def _dynamic_import_arg(node: ast.Call) -> ast.expr | None:
+    """Return the module-name arg of a dynamic-import call (positional or ``name=``).
+
+    Both callables name the first param ``name``, so the keyword form
+    (``import_module(name="_h")``) is handled like the positional, not skipped.
+    """
+    if node.args:
+        return node.args[0]
+    return next((kw.value for kw in node.keywords if kw.arg == "name"), None)
+
+
+def _dynamic_helper_names(source: str, rel: str) -> set[str]:
+    """Return sibling-helper names reached via dynamic import in *source* (S5U-996).
+
+    Scans every ``ast.Call`` to ``import_module`` / ``__import__`` (arg via
+    ``_dynamic_import_arg``). A ``_``-leading string literal is yielded (folded
+    into scope like a static edge; file-existence gate applies); a non-``_``
+    literal (``import_module("pydantic")``) is ignored; a non-constant arg
+    (variable / f-string) is statically irreducible and fails closed
+    (``DetectorScopeError``, naming *rel*) not silently under-captured (S5U-926).
+    """
+    names: set[str] = set()
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        if _call_func_name(node) not in _DYNAMIC_IMPORT_NAMES:
+            continue
+        arg = _dynamic_import_arg(node)
+        if arg is None:
+            continue
+        if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+            if arg.value.startswith("_"):
+                names.add(arg.value.split(".")[0])
+            continue
+        # Non-constant module name: statically irreducible. Fail closed (G1).
+        raise DetectorScopeError(
+            f"detector source {rel} line {node.lineno}: dynamic import "
+            f"({_call_func_name(node)}) with a non-constant module name cannot "
+            "resolve a sibling helper statically. Per .claude/rules/guards.md "
+            "Rule G1, fail closed: make the import static (`from _helper import "
+            "...`) OR declare the helper in a corpus `detector_sources` list."
+        )
+    return names
+
+
+def _imported_module_names(source: str, rel: str) -> set[str]:
+    """Return the sibling-module candidate names imported by *source* (AST-based).
+
+    Walks every ``import`` / ``from … import`` node (incl. TYPE_CHECKING /
+    function-nested — any static edge is load-bearing) via
+    ``_dotted_candidate_names``, then folds in dynamic imports via
+    ``_dynamic_helper_names``. The caller resolves names against ``scripts/_*.py``.
     """
     names: set[str] = set()
     tree = ast.parse(source)
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                names.add(alias.name.split(".")[0])
+                names |= _dotted_candidate_names(alias.name)
         # Skip relative imports (level > 0) — they don't name a sibling by bare
         # module name; the scripts/ helpers use absolute sibling imports
         # (sys.path.insert + `from _x import ...`).
         elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
-            names.add(node.module.split(".")[0])
+            names |= _dotted_candidate_names(node.module)
+    names |= _dynamic_helper_names(source, rel)
     return names
 
 
@@ -189,7 +289,8 @@ def import_graph_scope(
     worklist: list[Path] = []
     for glob in DETECTOR_GLOBS:
         for detector in sorted(abs_scripts_dir.glob(glob)):
-            for name in _imported_module_names(_read_python(detector, root)):
+            det_rel = _rel_posix(detector, root)
+            for name in _imported_module_names(_read_python(detector, root), det_rel):
                 helper = _sibling_helper_path(name, abs_scripts_dir)
                 if helper is not None:
                     worklist.append(helper)
@@ -202,7 +303,8 @@ def import_graph_scope(
         if helper in captured:
             continue
         captured.add(helper)
-        for name in _imported_module_names(_read_python(helper, root)):
+        helper_rel = _rel_posix(helper, root)
+        for name in _imported_module_names(_read_python(helper, root), helper_rel):
             nxt = _sibling_helper_path(name, abs_scripts_dir)
             if nxt is not None and nxt not in captured:
                 worklist.append(nxt)
@@ -210,9 +312,14 @@ def import_graph_scope(
     return frozenset(p.relative_to(root).as_posix() for p in captured)
 
 
+def _rel_posix(path: Path, root: Path) -> str:
+    """Return *path* as a repo-relative POSIX string (or absolute if outside root)."""
+    return (path.relative_to(root) if path.is_relative_to(root) else path).as_posix()
+
+
 def _read_python(path: Path, root: Path) -> str:
     """Read and pre-parse a Python source for the import walk. Fail closed (G1)."""
-    rel = path.relative_to(root) if path.is_relative_to(root) else path
+    rel = _rel_posix(path, root)
     try:
         source = path.read_text(encoding="utf-8")
     except OSError as exc:
