@@ -54,8 +54,12 @@
 #   2. Documentary token mentions — a PR/commit/doc that *quotes* a banned token
 #      (`--no-verify`, `HUSKY=0`, `core.hooksPath`, …) to describe the policy —
 #      including THIS feature's own diff editing hooks.md / review.md / this
-#      corpus — fires the matching class. Self-scan over the project's own docs:
-#      hooks.md -> 19, hook_bypass.toml -> 49, review.md -> 16 hits.
+#      corpus — fires the matching class. Self-scan over the project's own
+#      hook-policy docs (hooks.md, this corpus, review.md) fires many hits —
+#      every quoted token counts. The exact tally drifts on every corpus
+#      `[[case]]` addition and every doc edit that quotes a token, so no
+#      concrete number is pinned here (S5U-995: the prior hardcoded counts were
+#      inaccurate and self-staling).
 #
 # These FPs CANNOT be pinned as corpus cases: `block` asserts the detector
 # fires (so a "block" on benign `pytest -n 4` would falsely brand it a bypass),
