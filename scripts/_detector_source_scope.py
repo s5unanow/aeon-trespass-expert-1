@@ -196,11 +196,12 @@ def _dynamic_helper_names(source: str, rel: str) -> set[str]:
     """Return sibling-helper names reached via dynamic import in *source* (S5U-996).
 
     Scans every ``ast.Call`` to ``import_module`` / ``__import__`` (arg via
-    ``_dynamic_import_arg``). A ``_``-leading string literal is yielded (folded
-    into scope like a static edge; file-existence gate applies); a non-``_``
-    literal (``import_module("pydantic")``) is ignored; a non-constant arg
-    (variable / f-string) is statically irreducible and fails closed
-    (``DetectorScopeError``, naming *rel*) not silently under-captured (S5U-926).
+    ``_dynamic_import_arg``). A string literal is routed through
+    ``_dotted_candidate_names`` exactly like the static path (S5U-1097), so
+    ``import_module("scripts._helper")`` yields ``_helper`` not the dropped
+    ``scripts``; the ``_sibling_helper_path`` file-existence + leading-``_`` gate
+    prevents phantom / over-capture (``"pydantic"`` drops). A non-constant arg
+    (variable / f-string) fails closed (``DetectorScopeError``) not under-captured.
     """
     names: set[str] = set()
     tree = ast.parse(source)
@@ -213,8 +214,7 @@ def _dynamic_helper_names(source: str, rel: str) -> set[str]:
         if arg is None:
             continue
         if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
-            if arg.value.startswith("_"):
-                names.add(arg.value.split(".")[0])
+            names |= _dotted_candidate_names(arg.value)
             continue
         # Non-constant module name: statically irreducible. Fail closed (G1).
         raise DetectorScopeError(
