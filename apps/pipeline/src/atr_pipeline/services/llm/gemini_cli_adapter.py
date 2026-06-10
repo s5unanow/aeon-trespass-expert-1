@@ -97,6 +97,7 @@ class GeminiCLIAdapter:
                 text=True,
                 timeout=self._timeout,
                 check=False,
+                stdin=subprocess.DEVNULL,
             )
         except subprocess.TimeoutExpired as exc:
             msg = f"Gemini CLI timed out after {self._timeout}s"
