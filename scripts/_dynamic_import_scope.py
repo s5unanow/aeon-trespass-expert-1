@@ -15,37 +15,48 @@ refusal + post-merge audit, the same as the deriver it serves. (Verified by the
 ``--list`` output containing ``scripts/_dynamic_import_scope.py`` and by a
 real-repo regression test.)
 
-## Recognized-callable set is content-derived per file (S5U-1098, Rule G2)
+## Recognized-callable set is content-derived per file (S5U-1098/1102, Rule G2)
 
 S5U-996 matched dynamic-import calls by callable name only against the frozen
-set ``{"import_module", "__import__"}``. Three semantically-``import_module`` /
-``__import__`` shapes escaped silently — a Rule-G2 name-derived weakness where a
-rename / rebind bypasses a content-protecting guard:
+set ``{"import_module", "__import__"}`` — a name-derived weakness where a rename /
+rebind bypasses the guard. ``_dynamic_import_callables(tree, rel)`` instead derives,
+per source file, the set of local names bound to ``import_module`` / ``__import__``:
+the seed plus every ``ImportFrom`` ``asname`` that binds one of them (``from
+importlib import import_module as im``), plus every foldable rebind that rebinds a
+``Name`` to an already-recognized callable, to a fixpoint (so intra-file ordering
+is irrelevant). Foldable rebinds (S5U-1098/1102): simple ``Assign``
+(``imp = __import__``), chained ``Assign`` (``a = b = import_module``), and
+``AnnAssign`` (``im: object = import_module``). Over-capture guard: a name folds
+ONLY when an ``import`` alias or a foldable rebind whose RHS is recognized binds it
+— a user ``def im(...)`` or ``f = os.getcwd`` produces neither, so neither folds.
 
-1. **Aliased import** — ``from importlib import import_module as im`` then
-   ``im("_h")``. The callable name ``im`` is not in the frozen set.
-2. **Rebound name** — ``imp = __import__`` (or ``f = importlib.import_module``)
-   then ``imp("_h")`` / ``f("_h")``.
-3. ``**kwargs`` **call shape** — ``import_module(**k)``: no positional, no
-   ``name=`` keyword, so the module name is statically irreducible (exactly like
-   the variable-arg case that already fails closed) yet it fell through silently.
+## Open-ended binding shapes fail closed, not silently escape (S5U-1102)
 
-``_dynamic_import_callables(tree)`` derives, per source file, the set of local
-names that are bound to ``import_module`` / ``__import__`` — the seed
-``{"import_module", "__import__"}`` plus every ``ImportFrom`` / ``Import``
-``asname`` that binds one of them, plus every simple ``Assign`` that rebinds a
-name to an already-recognized callable (to a fixpoint, so intra-file ordering
-is irrelevant). The over-capture guard: a name is folded ONLY when an actual
-``import`` alias or an ``Assign`` whose RHS is a recognized callable binds it — a
-user-defined ``def im(...)`` produces neither, so it is never folded.
+Folding handles the statically-resolvable simple/chained/annotated rebinds. The
+genuinely open-ended remainder — tuple-unpack (``im, _ = import_module, None``),
+walrus (``(im := import_module)("_h")``), default-arg (``def f(im=import_module)``),
+decorator, dict/list containment, lambda body, callback-arg — is NOT enumerated
+shape-by-shape (this was the fifth review cycle finding ever-narrower shapes).
+Instead ``_assert_no_unmodeled_callable_ref`` walks every ``Name`` / ``Attribute``
+that *references* a recognized callable and FAILS CLOSED (``DetectorScopeError``)
+on any reference outside a modeled position (a folded RHS, or a direct-call
+``func``). Every future novel binding shape becomes a loud refusal pointing the
+author at a static import or a corpus declaration. The over-strictness cost is
+accepted (e.g. passing ``import_module`` as a callback is now refused) — for a gate
+deriving WHICH helpers are in coordinator-ack scope, fail-closed is Rule-G1-correct.
 
 ## Residuals (honest static-analysis boundary)
 
 - **Cross-file** alias/rebind (the alias is imported from another module, or a
   callable is rebound in module A and used in module B) is NOT resolved — this
   is single-file AST only.
-- **Container-mediated rebind** (``d = {"f": import_module}; d["f"]("_h")``,
-  ``getattr(importlib, "import_module")("_h")``) is NOT resolved.
+- **Container-mediated rebind** is PARTIALLY strengthened (S5U-1102). A literal
+  whose body names the callable (``d = {"f": import_module}``, ``lst =
+  [import_module]``) now FAILS CLOSED at the binding site — the catch-all sees the
+  recognized ``Name`` in the literal. But ``getattr(importlib, "import_module")``
+  carries the callable as a string ``Constant`` (not a ``Name``/``Attribute``
+  reference), so it remains an un-refused, un-resolved residual, as does the
+  string-keyed subscript read ``d["f"]("_h")`` once the value left the literal.
 - **Relative dynamic literal** ``import_module("._helper", package="scripts")`` is
   resolved (S5U-1100): a single-level relative literal anchored on the constant
   ``package="scripts"`` strips the leading dot and routes through the dotted-candidate
@@ -60,6 +71,13 @@ user-defined ``def im(...)`` produces neither, so it is never folded.
   alias thereof) and called with ``**kwargs`` now fails closed — a conservative
   false-positive accepted because such a name collision is itself a red flag and
   fail-closed is the Rule-G1-correct direction for a statically irreducible call.
+- **Non-simple binding of a recognized callable** (tuple-unpack, walrus,
+  default-arg, decorator, container literal, lambda body, callback arg) is no
+  longer a residual: it FAILS CLOSED via ``_assert_no_unmodeled_callable_ref``
+  (S5U-1102). The accepted over-strictness: any reference to a recognized callable
+  outside a folded RHS or a direct-call ``func`` is refused, even legitimately
+  passing ``import_module`` as a callback. The escape hatch is a static import or
+  a corpus declaration.
 """
 
 from __future__ import annotations
@@ -115,16 +133,87 @@ def _expr_recognized_name(expr: ast.expr, recognized: set[str]) -> bool:
     return False
 
 
-def _dynamic_import_callables(tree: ast.AST) -> frozenset[str]:
+def _simple_rebinds(tree: ast.AST) -> list[tuple[ast.Name, ast.expr]]:
+    """Collect statically-foldable ``(target_name_node, rhs_value)`` rebinds.
+
+    A rebind folds when a plain ``Name`` target is bound to an expression whose
+    recognized-ness ``_expr_recognized_name`` can decide. Three foldable constructs
+    (S5U-1098, S5U-1102): simple ``Assign`` (``imp = __import__``), chained
+    ``Assign`` (``a = b = import_module`` — iterate ALL ``Name`` targets), and
+    ``AnnAssign`` (``im: object = import_module``). Both the target ``Name`` (the
+    binding site) and the RHS value node double as modeled positions: once folded,
+    the catch-all treats each as such so neither is flagged as an escape.
+    """
+    rebinds: list[tuple[ast.Name, ast.expr]] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    rebinds.append((target, node.value))
+        elif (
+            isinstance(node, ast.AnnAssign)
+            and isinstance(node.target, ast.Name)
+            and node.value is not None
+        ):
+            rebinds.append((node.target, node.value))
+    return rebinds
+
+
+def _assert_no_unmodeled_callable_ref(
+    tree: ast.AST, recognized: set[str], modeled: set[int], rel: str
+) -> None:
+    """Fail closed on any recognized-callable reference outside a modeled position.
+
+    Closes the open-ended binding class (S5U-1102): tuple-unpack, walrus, default
+    args, decorators, dict/list containment, lambda bodies — anything that BINDS or
+    routes a recognized callable through a construct the fold does not model. We do
+    not enumerate shapes; instead we walk every ``Name``/``Attribute`` that *refers*
+    to a recognized callable and refuse any whose node id is not in *modeled*.
+
+    Modeled (allowed) positions are collected by the caller into *modeled*:
+    - the RHS ``value`` of a folding Assign/AnnAssign (``imp = __import__``),
+    - the ``func`` of a direct ``Call`` (``import_module(...)`` / ``im(...)``).
+
+    A bare ``Name`` is recognized when its ``id`` is in *recognized*; an
+    ``Attribute`` when its ``attr`` is a seed name AND its ``value`` is a Name (the
+    ``importlib.import_module`` module-access form). Import-statement internals are
+    ``ast.alias`` (no ``Name``) and string mentions are ``ast.Constant`` — neither
+    is walked, so a plain ``from importlib import import_module`` and a docstring
+    ``"import_module"`` never trip the refusal. Per Rule G1 the over-strict
+    direction is correct: a non-modeled binding must not silently under-capture.
+    """
+    for node in ast.walk(tree):
+        is_ref = (isinstance(node, ast.Name) and node.id in recognized) or (
+            isinstance(node, ast.Attribute)
+            and node.attr in _DYNAMIC_IMPORT_NAMES
+            and isinstance(node.value, ast.Name)
+        )
+        if is_ref and id(node) not in modeled:
+            raise DetectorScopeError(
+                f"detector source {rel}: a recognized dynamic-import callable "
+                "(import_module / __import__ / a folded alias) is referenced in a "
+                "binding/escape position the scope deriver cannot model statically "
+                "(tuple-unpack, walrus, default arg, decorator, container literal, "
+                "lambda body, callback arg, …). Per .claude/rules/guards.md Rule G1, "
+                "fail closed: make the import static (`from _helper import ...`) OR "
+                "declare the helper in a corpus `detector_sources` list."
+            )
+
+
+def _dynamic_import_callables(tree: ast.AST, rel: str) -> frozenset[str]:
     """Derive the per-file set of local names bound to import_module / __import__.
 
     Content-derived (Rule G2): the seed ``{"import_module", "__import__"}`` plus
-    every ``import`` ``asname`` that binds one of them, plus every simple
-    ``Assign`` whose RHS is an already-recognized callable. Assign folding runs
-    to a fixpoint so intra-file ordering (``ast.walk`` is BFS, not source order)
-    cannot leave an alias-of-alias unresolved.
+    every ``import`` ``asname`` that binds one of them, plus every foldable rebind
+    (simple / chained ``Assign`` and ``AnnAssign``) whose RHS is an
+    already-recognized callable. Folding runs to a fixpoint so intra-file ordering
+    (``ast.walk`` is BFS, not source order) cannot leave an alias-of-alias
+    unresolved. After folding, ``_assert_no_unmodeled_callable_ref`` fails closed
+    on any recognized-callable reference outside a modeled position (S5U-1102),
+    converting every open-ended binding shape from a silent escape into a refusal.
     """
     recognized: set[str] = set(_DYNAMIC_IMPORT_NAMES)
+    modeled: set[int] = set()
 
     # Pass 1 — import aliases. ``from importlib import import_module as im`` and
     # ``from builtins import __import__ as imp`` bind a local alias; fold it.
@@ -137,22 +226,32 @@ def _dynamic_import_callables(tree: ast.AST) -> frozenset[str]:
                 if alias.name in _DYNAMIC_IMPORT_NAMES and alias.asname:
                     recognized.add(alias.asname)
 
-    # Pass 2 — simple Assign rebinds, to a fixpoint. ``imp = __import__``,
+    # Pass 2 — foldable rebinds (simple / chained Assign, AnnAssign), to a fixpoint.
+    # ``imp = __import__``, ``a = b = import_module``, ``im: object = import_module``,
     # ``g = im`` (alias-of-alias), ``f = importlib.import_module``.
-    assigns: list[tuple[str, ast.expr]] = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Assign) and len(node.targets) == 1:
-            target = node.targets[0]
-            if isinstance(target, ast.Name):
-                assigns.append((target.id, node.value))
+    rebinds = _simple_rebinds(tree)
     changed = True
     while changed:
         changed = False
-        for name, value in assigns:
-            if name not in recognized and _expr_recognized_name(value, recognized):
-                recognized.add(name)
+        for target, value in rebinds:
+            if target.id not in recognized and _expr_recognized_name(value, recognized):
+                recognized.add(target.id)
                 changed = True
+    # A folded rebind's target Name (the binding site) and its RHS value node are
+    # both modeled positions, so the catch-all does not flag ``imp = __import__`` /
+    # ``f = importlib.import_module`` / ``im: object = import_module``. Only rebinds
+    # that actually folded count — an unrecognized RHS contributes nothing.
+    for target, value in rebinds:
+        if target.id in recognized and _expr_recognized_name(value, recognized):
+            modeled.add(id(target))
+            modeled.add(id(value))
+    # The ``func`` of a direct call is a modeled position (the call is what we
+    # resolve downstream): ``import_module(...)`` / ``im(...)`` / ``il.import_module(...)``.
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and _call_func_name(node) in recognized:
+            modeled.add(id(node.func))
 
+    _assert_no_unmodeled_callable_ref(tree, recognized, modeled, rel)
     return frozenset(recognized)
 
 
@@ -258,7 +357,7 @@ def dynamic_helper_names(
     recognized-named callable (``import_module()``) is ignored — it imports
     nothing.
     """
-    callables = _dynamic_import_callables(ast.parse(source))
+    callables = _dynamic_import_callables(ast.parse(source), rel)
     names: set[str] = set()
     for node in ast.walk(ast.parse(source)):
         if not isinstance(node, ast.Call):
