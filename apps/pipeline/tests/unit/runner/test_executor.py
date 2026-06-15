@@ -6,10 +6,13 @@ from pydantic import BaseModel
 
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
+from atr_pipeline.registry.events import record_stage_finish, record_stage_start
 from atr_pipeline.registry.runs import start_run
+from atr_pipeline.runner.cache_keys import build_cache_key
 from atr_pipeline.runner.executor import execute_stage
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.utils.hashing import content_hash
 from atr_schemas.enums import StageScope
 
 
@@ -195,3 +198,96 @@ def test_extra_cache_inputs_change_key(tmp_path: Path) -> None:
     assert result_v1.cache_key != result_v2.cache_key
     assert result_v1.cache_key == result_v1_again.cache_key
     assert result_v1_again.cached
+
+
+def test_cache_hit_with_missing_artifact_reexecutes(tmp_path: Path) -> None:
+    """S5U-1221: a cache hit whose artifact is gone from the store must
+    re-run the stage, not return a dangling cached ref.
+
+    The registry (``var/registry.db``) and the artifact store
+    (``artifacts/``) can diverge — partial cleanup, ``make clean``
+    (``rm -rf artifacts/*`` leaves ``var/`` intact), or a fresh checkout
+    with a copied DB. On divergence a cache hit previously short-circuited
+    ``run()`` and returned a ref to a file that no longer exists; downstream
+    stages then failed with confusing "missing artifacts" errors and nothing
+    self-healed. The executor must detect the missing artifact and fall
+    through to re-execute.
+    """
+    ctx = _make_ctx(tmp_path)
+
+    # First run: cache miss, artifact written.
+    result1 = execute_stage(DummyStage(), ctx, input_hashes=["fixed_input"])
+    assert result1.success
+    assert not result1.cached
+    assert result1.artifact_ref is not None
+    assert ctx.artifact_store.has(result1.artifact_ref)
+
+    # Simulate artifact loss (e.g. ``make clean`` wiped artifacts/ but left
+    # the registry DB behind).
+    artifact_file = ctx.artifact_store.get_path(result1.artifact_ref)
+    artifact_file.unlink()
+    assert not ctx.artifact_store.has(result1.artifact_ref)
+
+    # Second run with identical inputs: registry still has the cached event,
+    # but the artifact is gone — the executor must re-run, not serve a
+    # dangling cache hit.
+    result2 = execute_stage(DummyStage(), ctx, input_hashes=["fixed_input"])
+    assert result2.success
+    assert not result2.cached, (
+        "Cache hit returned despite the cached artifact being deleted from "
+        "the store — the executor served a dangling ref instead of re-running."
+    )
+    assert result2.artifact_ref is not None
+    assert ctx.artifact_store.has(result2.artifact_ref), (
+        "Re-execution did not regenerate the artifact on disk."
+    )
+
+
+def test_cache_hit_with_unparseable_ref_reexecutes(tmp_path: Path) -> None:
+    """S5U-1221 (adversarial): a cached event whose stored ``artifact_ref``
+    string cannot be parsed back into an :class:`ArtifactRef` must re-run,
+    not return ``cached=True`` with ``artifact_ref=None``.
+
+    A short/garbled ref string (fewer than 5 path segments) parses to
+    ``None``. The prior behaviour returned a cached result with a null ref,
+    which is just a differently-shaped dangling hit. The executor must treat
+    an unparseable ref as a cache miss and fall through to re-execute.
+    """
+    ctx = _make_ctx(tmp_path)
+
+    # Forge a 'completed' event whose artifact_ref string is unparseable
+    # (too few path segments for ``_parse_artifact_ref``), keyed identically
+    # to what the live DummyStage invocation will compute.
+    stage = DummyStage()
+    cache_key = build_cache_key(
+        stage_name=stage.name,
+        stage_version=stage.version,
+        schema_version="v1",
+        config_hash=content_hash(ctx.config.model_dump(mode="json")),
+        input_hashes=["fixed_input"],
+    )
+    event_id = record_stage_start(
+        ctx.registry_conn,
+        run_id=ctx.run_id,
+        stage_name=stage.name,
+        scope=stage.scope.value,
+        entity_id=ctx.document_id,
+        cache_key=cache_key,
+    )
+    record_stage_finish(
+        ctx.registry_conn,
+        event_id=event_id,
+        status="completed",
+        artifact_ref="garbled-ref",  # unparseable: < 5 segments
+        duration_ms=0,
+    )
+
+    result = execute_stage(DummyStage(), ctx, input_hashes=["fixed_input"])
+    assert result.success
+    assert result.cache_key == cache_key
+    assert not result.cached, (
+        "Cache hit returned for an event with an unparseable artifact_ref — "
+        "the executor must re-run instead of returning cached/dangling."
+    )
+    assert result.artifact_ref is not None
+    assert ctx.artifact_store.has(result.artifact_ref)
