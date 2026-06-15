@@ -3,12 +3,38 @@
 # Receives CLAUDE_TOOL_INPUT as JSON with the Bash command
 set -euo pipefail
 
-# Only intercept git commit commands
-if ! echo "$CLAUDE_TOOL_INPUT" | grep -q 'git commit'; then
+# Extract the Bash command from the JSON envelope. jq is an established hard
+# dependency of the hook stack (pre-pr-check.sh fails closed without it); if it
+# is somehow absent we fall back to scanning the raw envelope, which is
+# fail-closed for the trigger (more likely to TRIGGER, never to skip a commit).
+COMMAND=""
+if command -v jq >/dev/null 2>&1; then
+  COMMAND=$(printf '%s' "${CLAUDE_TOOL_INPUT:-}" \
+    | jq -r '.command // .tool_input.command // empty' 2>/dev/null || true)
+fi
+# Empty extraction (jq missing, no .command field, or malformed JSON): fall back
+# to the raw envelope so a git-commit buried in malformed input is still caught.
+if [ -z "$COMMAND" ]; then
+  COMMAND="${CLAUDE_TOOL_INPUT:-}"
+fi
+
+# Only intercept git commit commands. Flag-tolerant: the literal substring
+# `grep -q 'git commit'` was defeated by any flag between `git` and `commit`
+# (`git -C <p> commit`, `git --no-pager commit`, `git -c k=v commit`). We match
+# the word `git` preceding the word `commit` so every flag form is caught. The
+# accepted residual is the inverse FP — a command that merely *mentions* both
+# words (e.g. `echo "how to git commit"`) also triggers; closing FN vectors is
+# the goal, not eliminating that pre-existing FP (see plans/002).
+if ! printf '%s' "$COMMAND" | grep -qE '\bgit\b.*\bcommit\b'; then
   exit 0
 fi
 
-cd /Users/s5una/projects/aeon-trespass-expert-1
+# Resolve the repo root from the harness env (set for hooks) with a git
+# fallback for manual invocation. This makes the hook validate the tree being
+# committed in any worktree / second clone, not a hardcoded primary checkout.
+# G1: if neither resolves (not in a repo), git rev-parse fails and
+# `set -euo pipefail` aborts non-zero — fail-closed, correct for a commit gate.
+cd "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}"
 
 # -- Guard 1: Never commit on main --
 BRANCH=$(git branch --show-current)
@@ -26,11 +52,10 @@ if ! echo "$BRANCH" | grep -qiE '^s5unanow/s5u-[0-9]+-'; then
   exit 1
 fi
 
-# Skip quality gates for amend (minor fixups, gates already passed on original commit)
-if echo "$CLAUDE_TOOL_INPUT" | grep -q -- '--amend'; then
-  echo "Branch guards passed (skipping quality gates for amend)."
-  exit 0
-fi
+# NOTE: the `--amend` quality-gate skip is intentionally positioned AFTER Gate 0
+# (the secret/credential scan) below. An amend can stage arbitrary new content
+# (a fresh .env, an sk- key), so the secret scan must run unconditionally; only
+# the slower quality gates 1-8 are skipped for amends. See plans/002.
 
 # -- Truncated output helper --
 # Success: one-line summary. Failure: first 30 lines + count of truncated lines.
@@ -95,6 +120,15 @@ if [ "$SECRETS_FOUND" -ne 0 ]; then
   exit 1
 fi
 echo "  ✓ [0/9] secret guard"
+
+# Skip the slower quality gates (1-8) for amends — gates already passed on the
+# original commit and amends are typically minor fixups. Gate 0 (above) has
+# already scanned any newly staged content, so a secret introduced by the amend
+# is still blocked. The branch guards and secret scan ran unconditionally.
+if printf '%s' "$COMMAND" | grep -q -- '--amend'; then
+  echo "Branch guards + secret scan passed (skipping quality gates 1-8 for amend)."
+  exit 0
+fi
 
 # -- Advisory: schema model change reminder --
 SCHEMA_MODELS_STAGED=$(git diff --cached --name-only -- 'packages/schemas/python/' | grep '\.py$' || true)
