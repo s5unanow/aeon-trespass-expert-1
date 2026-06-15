@@ -9,23 +9,11 @@ from pathlib import Path
 
 
 def atomic_write_bytes(path: Path, data: bytes) -> None:
-    """Write data atomically by writing to a temp file, then renaming.
-
-    ``write(2)`` may write fewer bytes than requested (signal interruption;
-    >INT_MAX buffers on some platforms for huge rasters), so the payload is
-    written in a loop until every byte is on disk — a short write must never be
-    renamed into place as a truncated-but-"committed" artifact. The temp file is
-    then ``fsync``'d before the rename so a crash after ``os.replace`` cannot
-    expose a zero-length file (durable rename, undurable data).
-    """
+    """Write data atomically by writing to a temp file, then renaming."""
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_path = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
     try:
-        view = memoryview(data)
-        written = 0
-        while written < len(view):
-            written += os.write(fd, view[written:])
-        os.fsync(fd)
+        os.write(fd, data)
         os.close(fd)
         os.replace(tmp_path, path)
     except BaseException:
