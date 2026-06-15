@@ -480,11 +480,22 @@ class TestPreCommitCheckFailOpenStructural:
         )
 
     def test_trigger_not_literal_substring(self) -> None:
-        """The trigger must not be the flag-fragile literal `grep -q 'git commit'` (vector 3)."""
-        content = PRE_COMMIT_CHECK.read_text()
-        assert "grep -q 'git commit'" not in content, (
+        """The trigger must not be the flag-fragile literal `grep -q 'git commit'` (vector 3).
+
+        Comment lines (which legitimately quote the retired pattern to explain
+        the fix) are excluded; only an active code line using the literal
+        substring match is a violation.
+        """
+        code_lines = [
+            ln
+            for ln in PRE_COMMIT_CHECK.read_text().splitlines()
+            if not ln.lstrip().startswith("#")
+        ]
+        offenders = [ln for ln in code_lines if "grep -q 'git commit'" in ln]
+        assert not offenders, (
             "Literal substring trigger is defeated by `git -C <p> commit`, "
-            "`git --no-pager commit`, etc. Use a flag-tolerant detector."
+            f"`git --no-pager commit`, etc. Use a flag-tolerant detector. "
+            f"Offending line(s): {offenders}"
         )
 
     def test_amend_skip_appears_after_gate_0(self) -> None:
