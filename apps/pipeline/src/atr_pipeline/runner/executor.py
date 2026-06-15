@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sqlite3
 import time
 
 from pydantic import BaseModel
@@ -54,7 +55,7 @@ def execute_stage(
 
     # Check cache
     cached_event = find_cached_event(ctx.registry_conn, cache_key=cache_key)
-    if cached_event is not None:
+    if cached_event is not None and _cached_artifact_present(stage, ctx, cached_event):
         cached_ref_str = cached_event["artifact_ref"]
         ctx.logger.info("Cache hit for %s (key=%s)", stage.name, cache_key)
 
@@ -136,6 +137,50 @@ def execute_stage(
             cached=False,
             error=str(exc),
         )
+
+
+def _cached_artifact_present(
+    stage: Stage,
+    ctx: StageContext,
+    cached_event: sqlite3.Row,
+) -> bool:
+    """Return True only if the cached event's artifact still exists on disk.
+
+    The registry (``var/registry.db``) and the artifact store (``artifacts/``)
+    can diverge — partial cleanup, ``make clean`` (``rm -rf artifacts/*``
+    leaves ``var/`` intact), or a fresh checkout with a copied DB. A cache hit
+    whose artifact is gone must NOT be served (it returns a dangling ref and
+    downstream stages fail with confusing "missing artifacts" errors); instead
+    the executor must fall through and re-run the stage so it self-heals.
+
+    A cached event whose ``artifact_ref`` is empty/missing or cannot be parsed
+    back into an :class:`ArtifactRef` is likewise treated as not-present — the
+    prior behaviour of returning ``cached=True`` with a null/dangling ref is a
+    silent-wrong-output hazard (S5U-1221).
+    """
+    cached_ref_str = cached_event["artifact_ref"]
+    if not cached_ref_str or not isinstance(cached_ref_str, str):
+        ctx.logger.warning(
+            "Cache hit for %s but cached event has no artifact_ref; re-running stage",
+            stage.name,
+        )
+        return False
+    ref = _parse_artifact_ref(cached_ref_str)
+    if ref is None:
+        ctx.logger.warning(
+            "Cache hit for %s but artifact_ref %r is unparseable; re-running stage",
+            stage.name,
+            cached_ref_str,
+        )
+        return False
+    if not ctx.artifact_store.has(ref):
+        ctx.logger.warning(
+            "Cache hit for %s but artifact missing on disk (ref=%s); re-running stage",
+            stage.name,
+            cached_ref_str,
+        )
+        return False
+    return True
 
 
 def _parse_artifact_ref(ref_str: str) -> ArtifactRef | None:

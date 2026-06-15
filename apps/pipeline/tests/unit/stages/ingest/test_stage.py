@@ -45,7 +45,7 @@ def test_ingest_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "ingest"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.1"
+    assert stage.version == "1.2"  # S5U-1221: PDF content hash folded into cache key
 
 
 def test_ingest_produces_manifest(tmp_path: Path) -> None:

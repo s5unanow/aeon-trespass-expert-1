@@ -9,6 +9,7 @@ from atr_pipeline.services.pdf.image_extractor import extract_page_images
 from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
 from atr_pipeline.stages.ingest.manifest_builder import build_manifest
 from atr_pipeline.stages.ingest.pdf_fingerprint import fingerprint_pdf
+from atr_pipeline.utils.hashing import sha256_file
 from atr_schemas.enums import StageScope
 from atr_schemas.page_images_v1 import PageImageEntry, PageImagesV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
@@ -27,16 +28,46 @@ class IngestStage:
 
     @property
     def version(self) -> str:
-        # 1.0 -> 1.1 (S5U-730): IngestStage now emits a per-page
-        # ``page_images.v1`` manifest after the PDF image-extraction
-        # loop. The manifest is consumed by the QA stage's
-        # ``_filter_publishable_pages`` to align the dead-page-ref
-        # suppression set with the web exporter's image-injection rescue
-        # behaviour. Per ``.claude/rules/pipeline.md`` §
-        # "Stage-output cache invalidation", a new artifact write in
-        # ``run()`` requires a version bump in the same PR plus a
-        # cache-hit regression test.
-        return "1.1"
+        # 1.1 -> 1.2 (S5U-1221): IngestStage now contributes
+        # ``extra_cache_inputs`` that fold the source-PDF *content* hash
+        # into the cache key (the config hash only carries the PDF
+        # *path*; ``fingerprint_pdf`` ran only inside ``run()``, i.e. on a
+        # cache miss). Without this, swapping the PDF at the configured
+        # path cache-hit the stale ``SourceManifestV1`` and the whole
+        # downstream chain silently reflected the previous PDF. The bump
+        # invalidates every 1.1 ingest event so a re-run recomputes the
+        # cache key from the current PDF bytes. Per ``.claude/rules/pipeline.md``
+        # § "Stage-output cache invalidation", a cache-key composition change
+        # warrants a version bump in the same PR so the change is
+        # self-documenting and the reviewer cache-hit probe stays quiet.
+        # 1.0 -> 1.1 (S5U-730): IngestStage emits a per-page
+        # ``page_images.v1`` manifest after the PDF image-extraction loop,
+        # consumed by the QA stage's ``_filter_publishable_pages``.
+        return "1.2"
+
+    def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
+        """Fold the source-PDF content hash into the ingest cache key (S5U-1221).
+
+        ``DocumentBuildConfig`` carries the PDF *path*, not its bytes, and
+        ``fingerprint_pdf`` runs only inside :meth:`run` (on a cache miss). The
+        executor checks the cache *before* calling ``run``, so a replaced PDF at
+        the same path would otherwise cache-hit the stale ``SourceManifestV1``
+        and every downstream stage would cache-hit in turn — the whole run
+        silently reflecting the previous PDF (an S5U-662-class hazard;
+        previously only the web export caught it via ``verify_source_pdf_sha``,
+        S5U-889). Hashing the file bytes here invalidates ingest — and the
+        downstream chain — whenever the source PDF changes.
+
+        Uses a plain ``sha256_file`` rather than ``fingerprint_pdf`` to avoid a
+        full PyMuPDF parse on every invocation (the page count is recomputed in
+        :meth:`run`). A missing PDF returns the ``pdf_sha256:missing`` sentinel
+        rather than raising — :meth:`run` already raises ``FileNotFoundError``
+        with a clear message and remains the authoritative failure point.
+        """
+        pdf_path = ctx.config.source_pdf_path
+        if not pdf_path.exists():
+            return ["pdf_sha256:missing"]
+        return [f"pdf_sha256:{sha256_file(pdf_path)}"]
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> SourceManifestV1:
         pdf_path = ctx.config.source_pdf_path
