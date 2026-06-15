@@ -447,3 +447,232 @@ class TestPreCommitCheckToolchain:
     def test_script_has_set_euo_pipefail(self) -> None:
         content = PRE_COMMIT_CHECK.read_text()
         assert "set -euo pipefail" in content
+
+
+class TestPreCommitCheckFailOpenStructural:
+    """S5U-1222: structural guards against the three fail-open vectors.
+
+    1. The `--amend` early-exit must sit AFTER Gate 0 (secret scan), so an
+       amend that stages a fresh secret is still scanned.
+    2. No hardcoded `/Users/` path — the hook must resolve the repo root from
+       the harness env / git, so worktrees and second clones validate the
+       tree being committed.
+    3. The trigger must not be the literal substring match `grep -q 'git
+       commit'`, which is defeated by any flag between `git` and `commit`.
+    """
+
+    def test_no_hardcoded_users_path(self) -> None:
+        """No absolute /Users/ path may remain (vector 2)."""
+        content = PRE_COMMIT_CHECK.read_text()
+        assert "/Users/" not in content, (
+            "Hardcoded /Users/ path found; hook must resolve repo root from "
+            "CLAUDE_PROJECT_DIR / git rev-parse --show-toplevel."
+        )
+
+    def test_cd_resolves_repo_root_dynamically(self) -> None:
+        """The cd target must derive from CLAUDE_PROJECT_DIR or git, not a literal."""
+        content = PRE_COMMIT_CHECK.read_text()
+        assert "CLAUDE_PROJECT_DIR" in content, (
+            "Hook must honor CLAUDE_PROJECT_DIR for the repo-root cd."
+        )
+        assert "git rev-parse --show-toplevel" in content, (
+            "Hook must fall back to git rev-parse --show-toplevel when CLAUDE_PROJECT_DIR is unset."
+        )
+
+    def test_trigger_not_literal_substring(self) -> None:
+        """The trigger must not be the flag-fragile literal `grep -q 'git commit'` (vector 3)."""
+        content = PRE_COMMIT_CHECK.read_text()
+        assert "grep -q 'git commit'" not in content, (
+            "Literal substring trigger is defeated by `git -C <p> commit`, "
+            "`git --no-pager commit`, etc. Use a flag-tolerant detector."
+        )
+
+    def test_amend_skip_appears_after_gate_0(self) -> None:
+        """The `--amend` quality-gate skip must be positioned after Gate 0 (vector 1).
+
+        Mirrors the plan's machine-checkable done criterion
+        `awk '/--amend/{a=NR} /Gate 0/{g=NR} END{exit !(a>g)}'`.
+        """
+        lines = PRE_COMMIT_CHECK.read_text().splitlines()
+        gate0_line = next(
+            (i for i, ln in enumerate(lines) if "Gate 0" in ln),
+            None,
+        )
+        amend_skip_line = next(
+            (i for i, ln in enumerate(lines) if "--amend" in ln and "grep" in ln),
+            None,
+        )
+        assert gate0_line is not None, "Could not locate the 'Gate 0' marker comment."
+        assert amend_skip_line is not None, "Could not locate the `--amend` grep guard."
+        assert amend_skip_line > gate0_line, (
+            f"--amend skip (line {amend_skip_line + 1}) must come AFTER the "
+            f"Gate 0 secret scan (line {gate0_line + 1}); otherwise an amend "
+            f"bypasses the secret guard."
+        )
+
+
+def _run_pre_commit_hook(
+    repo: Path,
+    command: str,
+    *,
+    project_dir: Path | None = None,
+) -> subprocess.CompletedProcess[str]:
+    """Invoke the real pre-commit hook against a temp git repo.
+
+    The hook reads CLAUDE_TOOL_INPUT (JSON) and cd's into CLAUDE_PROJECT_DIR.
+    Pointing CLAUDE_PROJECT_DIR at the temp repo lets us exercise the trigger,
+    branch guards, and Gate 0 hermetically — gates 1-8 are never reached in
+    these scenarios because either Gate 0 exits first (secret staged) or the
+    amend-skip exits right after Gate 0 (clean amend).
+    """
+    env = {
+        "CLAUDE_TOOL_INPUT": f'{{"command": {command!r}}}'.replace("'", '"'),
+        "CLAUDE_PROJECT_DIR": str(project_dir or repo),
+        "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+        "HOME": os.environ.get("HOME", str(repo)),
+    }
+    return subprocess.run(
+        ["bash", str(PRE_COMMIT_CHECK)],
+        capture_output=True,
+        text=True,
+        env=env,
+        timeout=30,
+    )
+
+
+def _init_feature_repo(repo: Path) -> None:
+    """Init a git repo on a valid feature branch with one base commit."""
+    subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    runners = dict(cwd=repo, check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(repo), "config", "user.email", "t@t.t"], **runners)
+    subprocess.run(["git", "-C", str(repo), "config", "user.name", "tester"], **runners)
+    subprocess.run(
+        ["git", "-C", str(repo), "checkout", "-q", "-b", "s5unanow/s5u-1222-temp"],
+        **runners,
+    )
+    base = repo / "base.txt"
+    base.write_text("base\n")
+    subprocess.run(["git", "-C", str(repo), "add", "base.txt"], **runners)
+    subprocess.run(
+        ["git", "-C", str(repo), "commit", "-q", "-m", "base"],
+        **runners,
+    )
+
+
+class TestPreCommitCheckAmendSecretScan:
+    """S5U-1222 vector 1 (behavioral): amend must not bypass Gate 0."""
+
+    def test_amend_staging_secret_is_blocked(self, tmp_path: Path) -> None:
+        """`git commit --amend` staging a fresh .env → BLOCKED by Gate 0 (S1)."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        # Stage a fresh .env with an sk- key — both filename and content trip Gate 0.
+        (repo / ".env").write_text("API_KEY=sk-abcdefgh12345678901234\n")
+        subprocess.run(["git", "-C", str(repo), "add", ".env"], check=True, capture_output=True)
+        result = _run_pre_commit_hook(repo, "git commit --amend --no-edit")
+        assert result.returncode != 0, (
+            "amend staging a secret must be BLOCKED by Gate 0; "
+            f"stdout={result.stdout!r} stderr={result.stderr!r}"
+        )
+        assert "BLOCKED" in result.stdout, result.stdout
+
+    def test_amend_without_secrets_skips_quality_gates(self, tmp_path: Path) -> None:
+        """`git commit --amend` with no staged secrets → Gate 0 passes, gates 1-8 skipped (S2)."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        (repo / "benign.txt").write_text("hello\n")
+        subprocess.run(
+            ["git", "-C", str(repo), "add", "benign.txt"],
+            check=True,
+            capture_output=True,
+        )
+        result = _run_pre_commit_hook(repo, "git commit --amend --no-edit")
+        assert result.returncode == 0, (
+            f"clean amend must pass; stdout={result.stdout!r} stderr={result.stderr!r}"
+        )
+        # Skip message must mention the secret scan ran (accurate skip message).
+        assert "secret scan" in result.stdout.lower(), (
+            f"clean-amend skip message must state the secret scan ran: {result.stdout!r}"
+        )
+
+
+class TestPreCommitCheckTrigger:
+    """S5U-1222 vector 3 (behavioral): flag-tolerant trigger.
+
+    Each adversarial form must trigger the hook (reach the branch guards),
+    which here means it cd's into the temp repo and runs Guard 1/2 + Gate 0.
+    We assert the hook does NOT silently exit 0 as a no-op (it must reach the
+    gate machinery). A non-commit command must be a clean no-op exit 0.
+    """
+
+    def test_git_dash_c_path_commit_triggers(self, tmp_path: Path) -> None:
+        """`git -C <path> commit` must trigger (S3) — staged secret proves Gate 0 ran."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        (repo / ".env").write_text("API_KEY=sk-abcdefgh12345678901234\n")
+        subprocess.run(["git", "-C", str(repo), "add", ".env"], check=True, capture_output=True)
+        result = _run_pre_commit_hook(repo, "git -C /some/path commit -m x")
+        assert result.returncode != 0 and "BLOCKED" in result.stdout, (
+            f"`git -C ... commit` must reach Gate 0; stdout={result.stdout!r}"
+        )
+
+    def test_git_no_pager_commit_triggers(self, tmp_path: Path) -> None:
+        """`git --no-pager commit` must trigger (S4)."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        (repo / ".env").write_text("API_KEY=sk-abcdefgh12345678901234\n")
+        subprocess.run(["git", "-C", str(repo), "add", ".env"], check=True, capture_output=True)
+        result = _run_pre_commit_hook(repo, "git --no-pager commit -m x")
+        assert result.returncode != 0 and "BLOCKED" in result.stdout, (
+            f"`git --no-pager commit` must reach Gate 0; stdout={result.stdout!r}"
+        )
+
+    def test_git_dash_c_config_commit_triggers(self, tmp_path: Path) -> None:
+        """`git -c k=v commit` (incl. core.hooksPath) must trigger (S4)."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        (repo / ".env").write_text("API_KEY=sk-abcdefgh12345678901234\n")
+        subprocess.run(["git", "-C", str(repo), "add", ".env"], check=True, capture_output=True)
+        result = _run_pre_commit_hook(repo, "git -c core.hooksPath=/dev/null commit -m x")
+        assert result.returncode != 0 and "BLOCKED" in result.stdout, (
+            f"`git -c k=v commit` must reach Gate 0; stdout={result.stdout!r}"
+        )
+
+    def test_non_commit_command_is_noop(self, tmp_path: Path) -> None:
+        """A command that does not run git commit must be a clean no-op (exit 0)."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        # Even with a staged secret, `git status` must NOT trigger the scan.
+        (repo / ".env").write_text("API_KEY=sk-abcdefgh12345678901234\n")
+        subprocess.run(["git", "-C", str(repo), "add", ".env"], check=True, capture_output=True)
+        result = _run_pre_commit_hook(repo, "git status")
+        assert result.returncode == 0, (
+            f"non-commit command must be a no-op exit 0; stdout={result.stdout!r}"
+        )
+        assert "BLOCKED" not in result.stdout
+
+    def test_empty_tool_input_is_clean_noop(self, tmp_path: Path) -> None:
+        """Empty CLAUDE_TOOL_INPUT must exit 0 cleanly under set -euo pipefail (S7, G1)."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        result = subprocess.run(
+            ["bash", str(PRE_COMMIT_CHECK)],
+            capture_output=True,
+            text=True,
+            env={
+                "CLAUDE_TOOL_INPUT": "",
+                "CLAUDE_PROJECT_DIR": str(repo),
+                "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+            },
+            timeout=10,
+        )
+        assert result.returncode == 0, (
+            f"empty CLAUDE_TOOL_INPUT must exit 0; stderr={result.stderr!r}"
+        )
