@@ -71,10 +71,19 @@ def validate_export_completeness(
     return errors
 
 
-def validate_asset_existence(data_dir: Path) -> list[str]:
+def validate_asset_existence(data_dir: Path, images_dir: Path | None = None) -> list[str]:
     """Check that figure src paths in render pages resolve to existing files.
 
     Returns a list of error messages (empty = valid).
+
+    ``images_dir`` (S5U-1223): during a staged build the extracted images live in
+    a staging dir, not yet at the live ``/documents/{doc_id}/images/`` path the
+    figure ``src`` advertises (the swap is in phase 3, after this validation). So
+    when ``images_dir`` is given, an ``.../images/{fname}`` src is resolved
+    against ``images_dir`` by basename instead of the live web-public path. Other
+    src classes (e.g. ``/documents/{doc_id}/rasters/...``) still resolve against
+    the live web-public root, matching the staged-rasters validation that
+    predates this change.
     """
     errors: list[str] = []
     doc_public = data_dir.parent.parent  # .../documents/doc_id
@@ -95,7 +104,10 @@ def validate_asset_existence(data_dir: Path) -> list[str]:
                 continue
             # src paths are relative to web public root: /documents/...
             if src.startswith("/documents/"):
-                asset_path = doc_public.parent.parent / src.lstrip("/")
+                if images_dir is not None and "/images/" in src:
+                    asset_path = images_dir / Path(src).name
+                else:
+                    asset_path = doc_public.parent.parent / src.lstrip("/")
                 if not asset_path.exists():
                     errors.append(f"{pid}: figure '{aid}' src '{src}' not found on disk")
 
@@ -231,12 +243,18 @@ def run_export_validation(
     edition_dir: Path,
     pages_meta: list[dict],
     facsimile_override_pids: Iterable[str] = (),
+    images_dir: Path | None = None,
 ) -> bool:
     """Run all export validation checks. Returns True if no errors found.
 
     ``facsimile_override_pids`` is the set of page IDs explicitly marked as
     ``presentation_mode = "facsimile"`` by the document TOML config; it is
     consumed by the S5U-699 presentation-mode / payload consistency guard.
+
+    ``images_dir`` (S5U-1223): the staging dir the extracted images were written
+    into. Passed through to ``validate_asset_existence`` so figure ``src`` paths
+    are checked against the staged images (not yet swapped live) during a staged
+    build. ``None`` preserves the legacy live-path resolution.
     """
     data_dir = edition_dir / "data"
     edition = edition_dir.name.upper()
@@ -248,7 +266,7 @@ def run_export_validation(
     if completeness_errors:
         ok = False
 
-    asset_errors = validate_asset_existence(data_dir)
+    asset_errors = validate_asset_existence(data_dir, images_dir)
     for err in asset_errors:
         print(f"  ERROR [{edition}]: {err}")
     if asset_errors:

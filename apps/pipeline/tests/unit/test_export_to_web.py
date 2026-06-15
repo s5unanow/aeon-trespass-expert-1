@@ -206,6 +206,39 @@ class TestWriteDocumentIndex:
         index = json.loads((docs_root / "index.json").read_text())
         assert index == {"documents": [{"document_id": "doc1", "editions": ["en"]}]}
 
+    def test_index_written_atomically(
+        self, tmp_path: Path, export_module: ModuleType, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """S5U-1223: index.json must route through ``atomic_write_text``.
+
+        A plain ``Path.write_text`` leaves a truncated index on a mid-write crash;
+        the reader's ``DocumentIndexPage`` then fails to parse it (and renders "No
+        documents found"). This pins the live index onto the same atomic-write
+        helper the rest of the pipeline's artifact outputs use.
+        """
+        docs_root = tmp_path / "documents"
+        (docs_root / "doc1" / "en").mkdir(parents=True)
+        (docs_root / "doc1" / "en" / "manifest.json").write_text("{}")
+
+        calls: list[tuple[Path, str]] = []
+        real = export_module.atomic_write_text
+
+        def _spy(path: Path, text: str) -> None:
+            calls.append((path, text))
+            real(path, text)
+
+        monkeypatch.setattr(export_module, "atomic_write_text", _spy)
+        export_module.write_document_index(docs_root)
+
+        assert calls, "write_document_index did not route through atomic_write_text"
+        written_path, written_text = calls[0]
+        assert written_path == docs_root / "index.json"
+        assert json.loads(written_text) == {
+            "documents": [{"document_id": "doc1", "editions": ["en"]}]
+        }
+        # And the on-disk index is the atomically-written payload.
+        assert json.loads((docs_root / "index.json").read_text()) == json.loads(written_text)
+
 
 class TestExportPages:
     """``export_pages`` now receives ref-bound render-page payloads (S5U-869):

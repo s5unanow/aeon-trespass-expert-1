@@ -101,7 +101,11 @@ def resolve_source_pdf(doc_id: str, *, repo_root: Path | None = None) -> tuple[P
 
 
 def extract_images(
-    doc_id: str, doc_public: Path, *, repo_root: Path | None = None
+    doc_id: str,
+    doc_public: Path,
+    target_dir: Path | None = None,
+    *,
+    repo_root: Path | None = None,
 ) -> dict[str, list[dict]]:
     """Extract images from the document's configured source PDF.
 
@@ -109,6 +113,15 @@ def extract_images(
     (``configs/documents/{doc_id}.toml``) — never from a repo-global
     constant (S5U-688). Emits ``{}`` when the configured PDF is missing so
     non-ATO exports do not silently inherit ATO imagery.
+
+    ``target_dir`` is the directory the decoded image bytes are written into.
+    The exporter passes a *staging* dir here (S5U-1223) so a phase-2 validation
+    refusal never leaves the live ``images/`` dir mutated; the staged dir is
+    swapped atomically into place alongside the editions. When omitted it
+    defaults to the live ``doc_public / "images"`` for backward compatibility.
+    The returned ``page_images`` ``src`` URLs are always the published
+    ``/documents/{doc_id}/images/{fname}`` path regardless of the on-disk write
+    location — only the build-time write target changes.
     """
     pdf_path, page_count = resolve_source_pdf(doc_id, repo_root=repo_root)
     if page_count == 0:
@@ -117,7 +130,7 @@ def extract_images(
 
     from atr_pipeline.services.pdf.image_extractor import extract_page_images
 
-    img_dir = doc_public / "images"
+    img_dir = target_dir if target_dir is not None else doc_public / "images"
     img_dir.mkdir(parents=True, exist_ok=True)
     page_images: dict[str, list[dict]] = {}
     total = 0

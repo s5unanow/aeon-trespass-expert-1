@@ -95,6 +95,8 @@ def _staging_and_backup_dirs(doc_public: Path, editions: list[str], pid: int) ->
         dirs.append(doc_public / f"{_BACKUP_PREFIX}{edition}-{pid}")
     dirs.append(doc_public / f"{_STAGE_PREFIX}rasters-{pid}")
     dirs.append(doc_public / f"{_BACKUP_PREFIX}rasters-{pid}")
+    dirs.append(doc_public / f"{_STAGE_PREFIX}images-{pid}")
+    dirs.append(doc_public / f"{_BACKUP_PREFIX}images-{pid}")
     return dirs
 
 
@@ -188,23 +190,49 @@ def _swap_rasters(
     swapped.append((live_rasters, backup_rasters))
 
 
+def _swap_images(
+    doc_public: Path, staged_images: Path | None, pid: int, swapped: list[tuple[Path, Path]]
+) -> None:
+    """Swap the doc-scoped ``images/`` dir from staging into place, if any.
+
+    Mirrors :func:`_swap_rasters` (S5U-1223): images are extracted into a staged
+    dir during the build so a phase-2 validation refusal cannot leave the live
+    ``images/`` dir mutated. Only swaps when the staged dir actually holds image
+    files — a run whose configured PDF yields no images stages an empty dir, and
+    swapping that over the live ``images/`` would delete a prior run's images the
+    current bundle still references via ``/documents/{doc_id}/images/...`` URLs.
+    """
+    if staged_images is None or not staged_images.is_dir() or not any(staged_images.iterdir()):
+        return
+    live_images = doc_public / "images"
+    backup_images = doc_public / f"{_BACKUP_PREFIX}images-{pid}"
+    _swap_dir(staged_images, live_images, backup_images)
+    swapped.append((live_images, backup_images))
+
+
 def commit_staged(
     staged_editions: list[StagedEdition],
     *,
     doc_public: Path,
     pid: int,
     staged_rasters: Path | None,
+    staged_images: Path | None = None,
 ) -> None:
-    """Atomically swap every staged edition (+ rasters) into the live bundle.
+    """Atomically swap every staged edition (+ rasters + images) into the live bundle.
 
     All-or-nothing: if any edition failed validation in staging, nothing is
     swapped and :class:`ExportCommitError` is raised (the live bundle stays
     byte-identical to before). On a swap-time ``OSError`` after one or more
-    editions have already swapped, every swapped dir is rolled back from its
+    dirs have already swapped, every swapped dir is rolled back from its
     backup, then the failure is wrapped in :class:`ExportCommitError` so the
     caller's refusal path runs ``cleanup_staging`` and emits a clean
     "Export refused: ..." message instead of leaking an uncaught traceback +
     orphaned ``.stage-*`` / ``.backup-*`` litter (S5U-899).
+
+    ``staged_images`` (S5U-1223) is the doc-scoped staging dir the decoded PDF
+    images were written into; it swaps atomically with the editions/rasters so a
+    phase-2 refusal never leaves the live ``images/`` partially updated, and a
+    swap-time failure rolls it back alongside the rest.
     """
     failed = [s.edition for s in staged_editions if not s.validation_ok]
     if failed:
@@ -212,6 +240,8 @@ def commit_staged(
             _cleanup_path(s.staging_dir)
         if staged_rasters is not None:
             _cleanup_path(staged_rasters)
+        if staged_images is not None:
+            _cleanup_path(staged_images)
         raise ExportCommitError(
             f"Export validation FAILED for edition(s) {', '.join(failed)}; "
             f"refusing to publish — live bundle left unchanged."
@@ -219,6 +249,7 @@ def commit_staged(
 
     swapped: list[tuple[Path, Path]] = []  # (live_dir, backup_dir) for rollback
     try:
+        _swap_images(doc_public, staged_images, pid, swapped)
         _swap_rasters(doc_public, staged_rasters, pid, swapped)
         for s in staged_editions:
             _, _, backup_dir = stage_paths(doc_public, s.edition, pid)
@@ -245,11 +276,14 @@ def commit_staged(
             f"edition(s) — live bundle restored, no partial bundle published."
         ) from exc
     # Every swap succeeded — discard the parked backups and any staging dir that
-    # was not swapped (an empty rasters staging dir for a no-facsimile export).
+    # was not swapped (an empty rasters/images staging dir for a
+    # no-facsimile / no-image export).
     for _, backup_dir in swapped:
         _cleanup_path(backup_dir)
     if staged_rasters is not None:
         _cleanup_path(staged_rasters)
+    if staged_images is not None:
+        _cleanup_path(staged_images)
 
 
 class ExportCommitError(Exception):

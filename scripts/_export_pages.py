@@ -11,7 +11,9 @@ two-phase commit can build into a staging dir before the atomic swap. The
 staging dir must stay a direct child of ``doc_public`` so
 ``_export_validation.validate_asset_existence`` (which derives
 ``doc_public = data_dir.parent.parent``) still resolves figure src paths against
-the live shared ``images/`` dir.
+the live shared bundle root. (Since S5U-1223 the ``images/`` dir is itself
+staged and validated via ``validate_asset_existence``'s ``images_dir`` arg
+during the build; other src classes still resolve against the live root.)
 """
 
 from __future__ import annotations
@@ -74,7 +76,8 @@ def export_pages(
     ``edition_dir`` overrides the default ``doc_public / edition`` target so the
     two-phase commit (S5U-890) can build into a staging dir; it must stay a
     direct child of ``doc_public`` so ``validate_asset_existence`` still resolves
-    figure src paths against the live shared ``images/`` dir.
+    figure src paths against the live shared bundle root (images are validated
+    against the staged ``images/`` dir during the build since S5U-1223).
     """
     edition_dir = doc_public / edition if edition_dir is None else edition_dir
     data_dir = edition_dir / "data"

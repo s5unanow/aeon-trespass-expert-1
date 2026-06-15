@@ -49,6 +49,7 @@ from _export_validation import run_export_validation  # noqa: E402
 
 from atr_pipeline.config import load_document_config  # noqa: E402
 from atr_pipeline.stages.publish.qa_gate import QAGateError, QAGateResult  # noqa: E402
+from atr_pipeline.store.atomic_write import atomic_write_text  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -142,8 +143,13 @@ def _build_document_index(documents_root: Path) -> list[dict]:
 def write_document_index(documents_root: Path) -> None:
     """Write /documents/index.json listing all exported documents and editions."""
     entries = _build_document_index(documents_root)
-    (documents_root / "index.json").write_text(
-        json.dumps({"documents": entries}, ensure_ascii=False, indent=2)
+    # Atomic write (S5U-1223): a plain write_text leaves a truncated index.json on
+    # a mid-write crash, which the reader's DocumentIndexPage fails to parse. Route
+    # through the same atomic helper the rest of the pipeline's artifact outputs
+    # use (temp file + fsync + os.replace).
+    atomic_write_text(
+        documents_root / "index.json",
+        json.dumps({"documents": entries}, ensure_ascii=False, indent=2),
     )
     print(f"Wrote document index: {len(entries)} document(s)")
 
@@ -216,6 +222,7 @@ def _build_edition(
     re_edition: ResolvedEdition,
     staging_dir: Path,
     staged_rasters_dir: Path,
+    staged_images_dir: Path,
     page_images: dict[str, list[dict]],
     facsimile_override_pids: list[str],
 ) -> bool:
@@ -225,6 +232,11 @@ def _build_edition(
     ``staging_dir`` (a direct child of ``doc_public``), then runs
     ``run_export_validation`` against the staged dir. Nothing live is touched —
     the caller swaps staging into place only after every edition validates.
+
+    ``staged_images_dir`` (S5U-1223) is the staging dir the extracted images were
+    written into; it is passed to ``run_export_validation`` so figure ``src``
+    assets validate against the staged images (which are swapped live only in
+    phase 3, after every edition validates).
     """
     edition, resolved = re_edition.edition, re_edition.resolved
     staged_doc_public = doc_public_for(staging_dir)
@@ -272,7 +284,10 @@ def _build_edition(
     )
 
     manifest = json.loads((staging_dir / "manifest.json").read_text())
-    return run_export_validation(staging_dir, manifest["pages"], facsimile_override_pids)
+    images_dir = staged_images_dir if staged_images_dir.is_dir() else None
+    return run_export_validation(
+        staging_dir, manifest["pages"], facsimile_override_pids, images_dir=images_dir
+    )
 
 
 def doc_public_for(staging_dir: Path) -> Path:
@@ -305,6 +320,7 @@ def main(argv: list[str] | None = None) -> None:
 
     pid = os.getpid()
     staged_rasters_dir = doc_public / f".stage-rasters-{pid}"
+    staged_images_dir = doc_public / f".stage-images-{pid}"
     try:
         # Phase 1 — resolve + validate ALL editions before any write (S5U-890).
         resolved_editions = [
@@ -323,10 +339,14 @@ def main(argv: list[str] | None = None) -> None:
             (re_edition.resolved.source_pdf_sha256 for re_edition in resolved_editions),
             repo_root=REPO,
         )
-        print("Extracting images from PDF...")
-        page_images = extract_images(doc_id, doc_public, repo_root=REPO)
-        # Phase 2 — build each edition into its own staging dir (no live mutation).
+        # Phase 2 — build each edition + extract images into staging (no live
+        # mutation). reset_staging clears any leftover .stage-*/.backup-* dirs of
+        # this pid first; images are written into staged_images_dir so a phase-2
+        # validation refusal leaves the live images/ dir untouched (S5U-1223) —
+        # the staged images swap atomically with the editions in phase 3.
         reset_staging(doc_public, editions, pid, staged_rasters_dir)
+        print("Extracting images from PDF...")
+        page_images = extract_images(doc_id, doc_public, staged_images_dir, repo_root=REPO)
         staged: list[StagedEdition] = []
         for resolved_edition in resolved_editions:
 
@@ -336,6 +356,7 @@ def main(argv: list[str] | None = None) -> None:
                     re_edition,
                     target,
                     staged_rasters_dir,
+                    staged_images_dir,
                     page_images,
                     facsimile_override_pids,
                 )
@@ -343,12 +364,13 @@ def main(argv: list[str] | None = None) -> None:
             staged.append(
                 build_edition_into_staging(doc_public, resolved_edition.edition, pid, _build)
             )
-        # Phase 3 — atomically swap every staged edition (+ rasters) into place.
+        # Phase 3 — atomically swap every staged edition (+ rasters + images).
         commit_staged(
             staged,
             doc_public=doc_public,
             pid=pid,
             staged_rasters=staged_rasters_dir if staged_rasters_dir.is_dir() else None,
+            staged_images=staged_images_dir if staged_images_dir.is_dir() else None,
         )
     except RunResolutionError as exc:
         cleanup_staging(doc_public, editions, pid, staged_rasters_dir)
