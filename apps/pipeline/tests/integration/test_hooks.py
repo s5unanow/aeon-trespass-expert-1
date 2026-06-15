@@ -551,23 +551,25 @@ def _run_pre_commit_hook(
     )
 
 
+def _git(repo: Path, *args: str) -> None:
+    """Run a git command in `repo`, raising on failure (output captured)."""
+    subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=True,
+        capture_output=True,
+    )
+
+
 def _init_feature_repo(repo: Path) -> None:
     """Init a git repo on a valid feature branch with one base commit."""
-    subprocess.run(["git", "init", "-q", str(repo)], check=True)
-    runners = dict(cwd=repo, check=True, capture_output=True)
-    subprocess.run(["git", "-C", str(repo), "config", "user.email", "t@t.t"], **runners)
-    subprocess.run(["git", "-C", str(repo), "config", "user.name", "tester"], **runners)
-    subprocess.run(
-        ["git", "-C", str(repo), "checkout", "-q", "-b", "s5unanow/s5u-1222-temp"],
-        **runners,
-    )
+    subprocess.run(["git", "init", "-q", str(repo)], check=True, capture_output=True)
+    _git(repo, "config", "user.email", "t@t.t")
+    _git(repo, "config", "user.name", "tester")
+    _git(repo, "checkout", "-q", "-b", "s5unanow/s5u-1222-temp")
     base = repo / "base.txt"
     base.write_text("base\n")
-    subprocess.run(["git", "-C", str(repo), "add", "base.txt"], **runners)
-    subprocess.run(
-        ["git", "-C", str(repo), "commit", "-q", "-m", "base"],
-        **runners,
-    )
+    _git(repo, "add", "base.txt")
+    _git(repo, "commit", "-q", "-m", "base")
 
 
 class TestPreCommitCheckAmendSecretScan:
