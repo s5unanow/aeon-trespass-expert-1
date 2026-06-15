@@ -125,6 +125,59 @@ class TestValidateAssetExistence:
         errors = validate_asset_existence(export_dir / "data")
         assert any("missing asset" in e for e in errors)
 
+    def test_images_dir_resolves_staged_image_by_basename(
+        self, export_dir: Path, tmp_path: Path
+    ) -> None:
+        """S5U-1223: a ``/documents/.../images/`` src resolves against ``images_dir``.
+
+        During a staged build the extracted image lives in a staging dir, not at
+        the live web-public path. With ``images_dir`` given, an images src that
+        exists in the staging dir passes (it is checked by basename there) even
+        though the live path does not exist yet.
+        """
+        from _export_validation import validate_asset_existence
+
+        render_data = {
+            "page": {"id": "p0001", "title": "Test"},
+            "blocks": [{"kind": "figure", "asset_id": "p0001.img0001"}],
+            "figures": {
+                "p0001.img0001": {
+                    "src": "/documents/doc/images/p0001.img0001.jpeg",
+                    "alt": "x",
+                }
+            },
+        }
+        (export_dir / "data" / "render_page.p0001.json").write_text(json.dumps(render_data))
+        staged_images = tmp_path / ".stage-images-123"
+        staged_images.mkdir()
+        (staged_images / "p0001.img0001.jpeg").write_bytes(b"img")
+
+        errors = validate_asset_existence(export_dir / "data", staged_images)
+        assert errors == []
+
+    def test_images_dir_reports_image_absent_from_staging(
+        self, export_dir: Path, tmp_path: Path
+    ) -> None:
+        """An images src whose basename is absent from ``images_dir`` errors."""
+        from _export_validation import validate_asset_existence
+
+        render_data = {
+            "page": {"id": "p0001", "title": "Test"},
+            "blocks": [{"kind": "figure", "asset_id": "p0001.img0001"}],
+            "figures": {
+                "p0001.img0001": {
+                    "src": "/documents/doc/images/p0001.img0001.jpeg",
+                    "alt": "x",
+                }
+            },
+        }
+        (export_dir / "data" / "render_page.p0001.json").write_text(json.dumps(render_data))
+        staged_images = tmp_path / ".stage-images-123"
+        staged_images.mkdir()  # empty — the referenced image was never extracted
+
+        errors = validate_asset_existence(export_dir / "data", staged_images)
+        assert any("not found on disk" in e for e in errors)
+
 
 class TestValidateTitleQuality:
     def test_pass_for_good_titles(self) -> None:
