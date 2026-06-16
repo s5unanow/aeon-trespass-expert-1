@@ -1,10 +1,11 @@
 """Tests for the immutable artifact store."""
 
+import json
 import os
 import time
 from pathlib import Path
 
-from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.store.artifact_store import ArtifactStore, latest_sort_key
 
 
 def test_put_and_get_json(tmp_path: Path) -> None:
@@ -322,3 +323,78 @@ def test_resolve_latest_path_returns_none_when_missing(tmp_path: Path) -> None:
         glob_pattern="*.png",
     )
     assert result is None
+
+
+def _write_tied_artifacts(tmp_path: Path) -> tuple[ArtifactStore, Path, Path]:
+    """Two distinct-content artifacts for one entity sharing an identical mtime.
+
+    Returns (store, lexicographically-smaller-name path, larger-name path).
+    Used by the S5U-1229 deterministic-tiebreak tests: with equal mtime the
+    pre-fix ``max(key=mtime)`` returned an arbitrary (glob-order-dependent)
+    winner; the fix breaks the tie by filename so the winner is reproducible.
+    """
+    store = ArtifactStore(tmp_path / "artifacts")
+    ref_a = store.put_json(
+        document_id="doc", schema_family="s.v1", scope="page", entity_id="p0001", data={"v": "A"}
+    )
+    ref_b = store.put_json(
+        document_id="doc", schema_family="s.v1", scope="page", entity_id="p0001", data={"v": "B"}
+    )
+    path_a = store.get_path(ref_a)
+    path_b = store.get_path(ref_b)
+    # Force an exact mtime tie (the bug condition: fast runs / coarse FS mtime /
+    # os.utime-on-reuse can produce equal mtimes for distinct artifacts).
+    tied = time.time() - 50
+    os.utime(path_a, (tied, tied))
+    os.utime(path_b, (tied, tied))
+    lo, hi = sorted([path_a, path_b], key=lambda p: p.name)
+    return store, lo, hi
+
+
+def test_latest_sort_key_breaks_mtime_tie_by_filename(tmp_path: Path) -> None:
+    """S5U-1229 unit: ``latest_sort_key`` includes the filename so equal-mtime
+    files sort deterministically; a higher mtime still dominates the name.
+
+    Red-before: the pre-fix selection used ``key=lambda p: p.stat().st_mtime``
+    — a bare float that is *equal* for tied files, so ``max`` fell back to
+    input/glob order (arbitrary). This key makes the comparison total.
+    """
+    a = tmp_path / "aaa.json"
+    b = tmp_path / "bbb.json"
+    a.write_text("{}")
+    b.write_text("{}")
+    tied = time.time() - 50
+    os.utime(a, (tied, tied))
+    os.utime(b, (tied, tied))
+
+    # Equal mtime → filename decides; "bbb" > "aaa".
+    assert max([a, b], key=latest_sort_key) == b
+    assert max([b, a], key=latest_sort_key) == b  # input-order independent
+
+    # A strictly newer mtime still wins regardless of (smaller) filename.
+    os.utime(a, (tied + 10, tied + 10))
+    assert max([a, b], key=latest_sort_key) == a
+
+
+def test_load_latest_json_deterministic_on_mtime_tie(tmp_path: Path) -> None:
+    """S5U-1229 integration: two distinct artifacts with equal mtime resolve
+    to the lexicographically-max filename, stably across repeated calls.
+
+    Falsifiable companion to the unit test above: this pins the end-to-end
+    behavior through ``glob`` → ``max`` so a future refactor that drops the
+    filename tiebreak (reverting to glob-order-arbitrary) would surface here
+    whenever the FS happens to glob the lex-max name first.
+    """
+    store, lo, hi = _write_tied_artifacts(tmp_path)
+    expected_v = json.loads(hi.read_text())["v"]
+
+    results = [
+        store.load_latest_json(
+            document_id="doc", schema_family="s.v1", scope="page", entity_id="p0001"
+        )
+        for _ in range(5)
+    ]
+    assert all(r is not None and r["v"] == expected_v for r in results)
+    # Sanity: the two files genuinely differ and we actually picked the max name.
+    assert lo.name < hi.name
+    assert json.loads(lo.read_text())["v"] != expected_v
