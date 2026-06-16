@@ -105,5 +105,9 @@ def test_translation_stage_cache_hit_preserves_artifacts(tmp_path: Path) -> None
             "translation_meta.v1",
             "translation_qa_record_set.v1",
             "page_ir.v1.ru",
+            # S5U-1228 — the per-page resume record written from inside
+            # TranslationStage.run(); the 1.5 -> 1.6 bump exists to invalidate
+            # cached pages so this artifact is no longer silently absent.
+            "translation_resume.v1",
         },
     )

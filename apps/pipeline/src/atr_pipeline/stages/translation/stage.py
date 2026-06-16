@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import cast
-
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
@@ -14,48 +12,21 @@ from atr_pipeline.stages.translation.grouping import (
     expand_grouped_batch,
     expand_grouped_result,
 )
+from atr_pipeline.stages.translation.page_state import (
+    en_ir_content_hash,
+    load_resume_state,
+    persist_resume_state,
+)
 from atr_pipeline.stages.translation.planner import build_translation_batch
+from atr_pipeline.stages.translation.rematerialize import rematerialize_ru_blocks
 from atr_pipeline.stages.translation.validator import validate_translation
+from atr_pipeline.store.artifact_ref import ArtifactRef
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.enums import LanguageCode, StageScope
-from atr_schemas.page_ir_v1 import (
-    Block,
-    CalloutBlock,
-    CaptionBlock,
-    FigureBlock,
-    HeadingBlock,
-    InlineNode,
-    ListBlock,
-    ListItemBlock,
-    PageIRV1,
-    ParagraphBlock,
-    TableBlock,
-    TableCellBlock,
-    TableChild,
-    TableRowBlock,
-)
-from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
+from atr_schemas.page_ir_v1 import PageIRV1
+from atr_schemas.translation_batch_v1 import TranslationBatchV1
 from atr_schemas.translation_qa_record_set_v1 import TranslationQARecordSetV1
-from atr_schemas.translation_result_v1 import TranslatedSegment, TranslationResultV1
-
-_BLOCK_TYPE_MAP: dict[str, type[BaseModel]] = {
-    "heading": HeadingBlock,
-    "paragraph": ParagraphBlock,
-    "list": ListBlock,
-    "list_item": ListItemBlock,
-    "table": TableBlock,
-    "callout": CalloutBlock,
-    "figure": FigureBlock,
-    "caption": CaptionBlock,
-}
-
-# Structural metadata fields to copy from source block (beyond block_id + children).
-_STRUCTURAL_FIELDS: dict[str, list[str]] = {
-    "heading": ["level"],
-    "list": ["ordered"],
-    "callout": ["variant"],
-    "figure": ["asset_id"],
-}
+from atr_schemas.translation_result_v1 import TranslationResultV1
 
 
 class TranslationResult(BaseModel):
@@ -75,16 +46,6 @@ class TranslationResult(BaseModel):
     page_refs: dict[str, str] = Field(default_factory=dict)
 
 
-def _translated_by_id(result: TranslationResultV1) -> dict[str, TranslatedSegment]:
-    """Index translated segments by their ``segment_id``."""
-    return {seg.segment_id: seg for seg in result.segments}
-
-
-def _batch_seg_by_id(batch: TranslationBatchV1) -> dict[str, TranslationSegment]:
-    """Index batch segments by their ``segment_id``."""
-    return {seg.segment_id: seg for seg in batch.segments}
-
-
 def _expand_grouped_translation_batch(batch: TranslationBatchV1) -> TranslationBatchV1:
     """Return a block-addressable batch for validation/rematerialization."""
     return expand_grouped_batch(batch)
@@ -96,109 +57,6 @@ def _expand_grouped_translation_result(
 ) -> TranslationResultV1:
     """Return a block-addressable result by splitting narrative-group outputs."""
     return expand_grouped_result(batch, result)
-
-
-def _rebuild_structured_table(
-    src_block: TableBlock,
-    *,
-    batch_by_id: dict[str, TranslationSegment],
-    translated_by_id: dict[str, TranslatedSegment],
-) -> TableBlock:
-    """S5U-734 — reassemble a structured RU ``TableBlock`` from per-cell segments.
-
-    Preserves the EN row/cell structure (block ids, header flags, row ordering).
-    Missing translations leave the cell structurally present with empty
-    ``children`` rather than collapsing the row.
-    """
-    new_rows: list[TableChild] = []
-    for row in src_block.children:
-        if not isinstance(row, TableRowBlock):
-            # Legacy mixed-content child; pass through unchanged. The
-            # planner skipped these, so there is no translation to apply.
-            new_rows.append(row)
-            continue
-        new_cells: list[TableCellBlock] = []
-        for cell in row.cells:
-            translated = translated_by_id.get(cell.block_id)
-            target_inline: list[InlineNode] = (
-                list(translated.target_inline) if translated is not None else []
-            )
-            new_cells.append(
-                TableCellBlock(
-                    block_id=cell.block_id,
-                    bbox=cell.bbox,
-                    header=cell.header,
-                    children=target_inline,
-                    translatable=cell.translatable,
-                    source_ref=cell.source_ref,
-                )
-            )
-        new_rows.append(
-            TableRowBlock(
-                block_id=row.block_id,
-                bbox=row.bbox,
-                header=row.header,
-                cells=new_cells,
-                translatable=row.translatable,
-                source_ref=row.source_ref,
-            )
-        )
-    # Silence unused-variable warnings from the batch index — the source of
-    # truth for structure is the EN source block; the batch mapping is
-    # retained for future use (e.g., untranslatable-cell policy).
-    _ = batch_by_id
-    return TableBlock(
-        block_id=src_block.block_id,
-        bbox=src_block.bbox,
-        children=new_rows,
-        translatable=src_block.translatable,
-        source_ref=src_block.source_ref,
-    )
-
-
-def _rematerialize_ru_blocks(
-    en_ir: PageIRV1,
-    batch: TranslationBatchV1,
-    result: TranslationResultV1,
-) -> list[Block]:
-    """Rebuild the RU ``PageIRV1.blocks`` from the EN source IR and the
-    translation result. Structured tables are reassembled per S5U-734; other
-    blocks retain their prior single-segment re-materialization path.
-    """
-    translated_by_id = _translated_by_id(result)
-    batch_by_id = _batch_seg_by_id(batch)
-
-    ru_blocks: list[Block] = []
-    for src_block in en_ir.blocks:
-        # Structured TableBlock — per-cell re-assembly.
-        if isinstance(src_block, TableBlock) and any(
-            isinstance(c, TableRowBlock) for c in src_block.children
-        ):
-            ru_blocks.append(
-                _rebuild_structured_table(
-                    src_block,
-                    batch_by_id=batch_by_id,
-                    translated_by_id=translated_by_id,
-                )
-            )
-            continue
-
-        # Non-table or legacy flat table — use the top-level segment.
-        translated = translated_by_id.get(src_block.block_id)
-        if translated is None:
-            continue
-
-        block_cls = _BLOCK_TYPE_MAP.get(src_block.type, ParagraphBlock)
-        kwargs: dict[str, object] = {
-            "block_id": src_block.block_id,
-            "children": list(translated.target_inline),
-            "bbox": src_block.bbox,
-        }
-        for field in _STRUCTURAL_FIELDS.get(src_block.type, []):
-            kwargs[field] = getattr(src_block, field)
-        ru_blocks.append(cast(Block, block_cls(**kwargs)))
-
-    return ru_blocks
 
 
 class TranslationStage:
@@ -232,7 +90,11 @@ class TranslationStage:
         # S5U-1227 1.4 -> 1.5: TranslationResult carries content-bearing
         # page_refs (was count-only), so downstream stages re-key on changed RU
         # IR even at an unchanged page count. Per .claude/rules/pipeline.md (S5U-662).
-        return "1.5"
+        # S5U-1228 1.5 -> 1.6: run() now persists a per-page
+        # translation_resume.v1 record (new observable side-effect) enabling
+        # mid-run failure resume. Bumped so cached pages re-run and emit the
+        # resume artifact. Per .claude/rules/pipeline.md (S5U-662).
+        return "1.6"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
@@ -249,7 +111,7 @@ class TranslationStage:
                 ctx.logger.warning("Skipping %s: missing EN IR", page_id)
                 continue
 
-            warnings, ru_ir_ref = self._translate_page(
+            warnings, ru_ir_ref = self._process_page(
                 ctx,
                 en_ir,
                 page_id,
@@ -270,7 +132,7 @@ class TranslationStage:
             page_refs=page_refs,
         )
 
-    def _translate_page(
+    def _process_page(
         self,
         ctx: StageContext,
         en_ir: PageIRV1,
@@ -278,10 +140,48 @@ class TranslationStage:
         translator: TranslatorAdapter,
         concept_reg: ConceptRegistryV1 | None,
     ) -> tuple[int, str]:
+        """Resume-aware per-page driver (S5U-1228).
+
+        If a valid resume record exists for this page (EN IR unchanged, RU IR
+        still on disk), skip the LLM call and reuse the cached translation —
+        this is what lets a retry resume from the first incomplete page rather
+        than re-translating completed ones. Otherwise translate, then persist
+        the resume record after the RU IR is durably written.
+
+        Returns ``(warning_count, ru_ir_relative_path)`` for
+        ``TranslationResult.page_refs`` (S5U-1227), identical on the resumed and
+        freshly-translated paths.
+        """
+        en_hash = en_ir_content_hash(en_ir)
+        cached = load_resume_state(ctx, page_id, expected_en_hash=en_hash)
+        if cached is not None:
+            ctx.logger.info("Resumed %s from cache (skipping LLM)", page_id)
+            return cached.warning_count, cached.ru_ir_ref
+
+        warnings, ru_ir_ref = self._translate_page(ctx, en_ir, page_id, translator, concept_reg)
+        persist_resume_state(
+            ctx,
+            page_id=page_id,
+            en_ir_hash=en_hash,
+            ru_ir_ref=ru_ir_ref,
+            warning_count=warnings,
+        )
+        return warnings, ru_ir_ref.relative_path
+
+    def _translate_page(
+        self,
+        ctx: StageContext,
+        en_ir: PageIRV1,
+        page_id: str,
+        translator: TranslatorAdapter,
+        concept_reg: ConceptRegistryV1 | None,
+    ) -> tuple[int, ArtifactRef]:
         """Translate a single page and store the RU IR.
 
-        Returns ``(warning_count, ru_ir_relative_path)`` — the content-addressed
-        ``page_ir.v1.ru`` path (fed into ``TranslationResult.page_refs``).
+        Returns ``(warning_count, ru_ir_ref)`` — the content-addressed
+        ``page_ir.v1.ru`` ref (its ``relative_path`` feeds
+        ``TranslationResult.page_refs``; the ref also threads into the resume
+        record so a resumed run can rebuild ``page_refs`` without re-translating).
         """
         ctx.logger.info("Translating %s", page_id)
 
@@ -349,7 +249,7 @@ class TranslationStage:
             data=record_set,
         )
 
-        ru_blocks = _rematerialize_ru_blocks(en_ir, expanded_batch, expanded_result)
+        ru_blocks = rematerialize_ru_blocks(en_ir, expanded_batch, expanded_result)
 
         ru_ir = PageIRV1(
             document_id=ctx.document_id,
@@ -368,7 +268,7 @@ class TranslationStage:
             entity_id=page_id,
             data=ru_ir,
         )
-        return len(qa_records), ru_ref.relative_path
+        return len(qa_records), ru_ref
 
     @staticmethod
     def _resolve_page_ids(ctx: StageContext) -> list[str]:

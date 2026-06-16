@@ -1,7 +1,7 @@
 """S5U-734 — RU re-materializer tests for per-cell TableBlock translation.
 
 Complements ``test_table_cell_segments_s5u734.py`` (planner-level tests) by
-exercising ``_rematerialize_ru_blocks`` and the full ``TranslationStage`` on
+exercising ``rematerialize_ru_blocks`` and the full ``TranslationStage`` on
 pages with structured ``TableBlock`` IR.
 """
 
@@ -19,10 +19,8 @@ from atr_pipeline.stages.ingest.stage import IngestStage
 from atr_pipeline.stages.structure.stage import StructureStage
 from atr_pipeline.stages.symbols.stage import SymbolsStage
 from atr_pipeline.stages.translation.planner import build_translation_batch
-from atr_pipeline.stages.translation.stage import (
-    TranslationStage,
-    _rematerialize_ru_blocks,
-)
+from atr_pipeline.stages.translation.rematerialize import rematerialize_ru_blocks
+from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import (
@@ -238,7 +236,7 @@ def test_rematerializer_handles_missing_cell_translation() -> None:
     )
     batch = build_translation_batch(en_ir)
 
-    ru_blocks = _rematerialize_ru_blocks(en_ir, batch, result)
+    ru_blocks = rematerialize_ru_blocks(en_ir, batch, result)
     tables = [b for b in ru_blocks if isinstance(b, TableBlock)]
     assert len(tables) == 1
     rows = [c for c in tables[0].children if isinstance(c, TableRowBlock)]
@@ -265,7 +263,7 @@ def test_rematerializer_flat_table_still_emits_flat_table() -> None:
     )
     batch = build_translation_batch(en_ir)
 
-    ru_blocks = _rematerialize_ru_blocks(en_ir, batch, result)
+    ru_blocks = rematerialize_ru_blocks(en_ir, batch, result)
     tables = [b for b in ru_blocks if isinstance(b, TableBlock)]
     assert len(tables) == 1
     tbl = tables[0]

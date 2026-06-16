@@ -4,10 +4,10 @@
 from __future__ import annotations
 
 from atr_pipeline.stages.translation.planner import build_translation_batch
+from atr_pipeline.stages.translation.rematerialize import rematerialize_ru_blocks
 from atr_pipeline.stages.translation.stage import (
     _expand_grouped_translation_batch,
     _expand_grouped_translation_result,
-    _rematerialize_ru_blocks,
 )
 from atr_pipeline.stages.translation.validator import (
     CODE_GLOSSARY_SURFACE_FORM_DRIFT,
@@ -93,7 +93,7 @@ def test_grouped_translation_splits_back_to_original_blocks() -> None:
 
     expanded_batch = _expand_grouped_translation_batch(batch)
     expanded_result = _expand_grouped_translation_result(batch, result)
-    ru_blocks = _rematerialize_ru_blocks(en_ir, expanded_batch, expanded_result)
+    ru_blocks = rematerialize_ru_blocks(en_ir, expanded_batch, expanded_result)
 
     by_id = {block.block_id: block for block in ru_blocks}
     assert [n.text for n in by_id["h1"].children if hasattr(n, "text")] == [
