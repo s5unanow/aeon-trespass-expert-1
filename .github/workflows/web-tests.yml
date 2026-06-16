@@ -9,15 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # S5U-1224: pnpm/action-setup runs BEFORE setup-node so pnpm is on PATH
+      # when `cache: 'pnpm'` resolves the store path (documented ordering).
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install

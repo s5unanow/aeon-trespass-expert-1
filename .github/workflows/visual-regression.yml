@@ -6,9 +6,16 @@ on:
 # Prevent stale-run races: if a newer commit arrives on the same ref while an
 # older visual-regression run is still queued or running, cancel the older one
 # so only the latest HEAD's result ever writes a required-check status.
+# S5U-1224: the cancel is now guarded so it NEVER fires on a `main` push run —
+# the required main-HEAD-green merge check (CLAUDE.md step 9) and the post-merge
+# coordinator-ack audit (S5U-693) both depend on main runs completing. On main,
+# `github.ref == 'refs/heads/main'` so the expression is false (no cancel); on
+# PR/feature refs it is true (supersede stale runs). The group stays keyed on
+# `github.ref` (distinct from ci.yml's `ci-` group), so parent and child can
+# never cancel across each other.
 concurrency:
   group: visual-regression-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   visual:
@@ -16,18 +23,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # S5U-1224: pnpm/action-setup runs BEFORE setup-node so pnpm is on PATH
+      # when `cache: 'pnpm'` resolves the store path (documented ordering).
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
+
+      # S5U-1224: cache the Chromium download keyed on the resolved
+      # @playwright/test version. A version bump rolls the key automatically, so
+      # a stale browser is never paired with a new runner (which would produce
+      # flaky visual diffs). On a cache MISS the next step downloads exactly as
+      # today; on a HIT it re-verifies/installs OS deps quickly. The gate's
+      # correctness never depends on a hit (pure speedup).
+      - name: Resolve Playwright version
+        id: pw
+        working-directory: apps/web
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
 
       - name: Install Playwright browsers
         run: pnpm --filter @atr/web exec playwright install --with-deps chromium
