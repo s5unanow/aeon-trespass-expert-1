@@ -66,7 +66,9 @@ def test_structure_implements_stage_protocol() -> None:
     # S5U-733: bumped 1.4 → 1.5 for row re-inference + Option 2 fallback.
     # S5U-589: bumped 1.5 → 1.6 because resolved_page.v1 now persists
     # FallbackProvenance on every block from a non-primary extraction path.
-    assert stage.version == "1.6"
+    # S5U-1227: bumped 1.6 → 1.7 after StructureResult became content-bearing
+    # (page_refs), changing the summary artifact shape.
+    assert stage.version == "1.7"
 
 
 def test_structure_builds_ir(tmp_path: Path) -> None:

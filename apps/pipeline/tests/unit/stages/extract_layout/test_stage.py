@@ -63,7 +63,9 @@ def test_stage_implements_protocol() -> None:
     # ``extraction_path`` on every artifact.
     # S5U-580: bumped 1.1 → 1.2 because difficulty.extractor_agreement is
     # now a real metric (was hardcoded 1.0).
-    assert stage.version == "1.2"
+    # S5U-1227: bumped 1.2 → 1.3 after ExtractLayoutResult became content-bearing
+    # (page_refs), changing the summary artifact shape.
+    assert stage.version == "1.3"
 
 
 def test_stage_produces_layout_artifacts(tmp_path: Path) -> None:

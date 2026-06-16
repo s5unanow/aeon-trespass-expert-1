@@ -16,12 +16,22 @@ from atr_schemas.native_page_v1 import NativePageV1
 
 
 class ExtractLayoutResult(BaseModel):
-    """Summary of layout extraction across all pages."""
+    """Summary of layout extraction across all pages.
+
+    ``page_refs`` maps each processed ``page_id`` to the *content-addressed*
+    relative path of its persisted ``layout_page.v1`` artifact (the path embeds
+    the per-page content hash). This makes the summary content-bearing rather
+    than count-only: the summary artifact's own content hash — threaded into the
+    next stage's cache key via ``upstream_refs`` — changes whenever any per-page
+    layout changes, even if ``pages_processed`` / ``total_zones`` stay equal.
+    Mirrors ``RenderResult.page_refs`` (S5U-1227).
+    """
 
     document_id: str
     pages_processed: int = Field(default=0, ge=0)
     hard_pages: int = Field(default=0, ge=0)
     total_zones: int = Field(default=0, ge=0)
+    page_refs: dict[str, str] = Field(default_factory=dict)
 
 
 class ExtractLayoutStage:
@@ -45,7 +55,13 @@ class ExtractLayoutStage:
         # S5U-580 1.1 -> 1.2: difficulty.extractor_agreement carries a real
         # word-zone recall metric (was hardcoded 1.0 — every cached pre-S5U-580
         # event would report full agreement and never fire the R3 route).
-        return "1.2"
+        # S5U-1227 1.2 -> 1.3: ExtractLayoutResult now carries content-bearing
+        # ``page_refs`` (page_id -> layout_page.v1 content-addressed path)
+        # instead of being count-only. The summary artifact's content hash now
+        # changes when any per-page layout changes, so downstream stages no
+        # longer cache-hit on stale upstream content when the page count is
+        # unchanged. Bumped per .claude/rules/pipeline.md (S5U-662).
+        return "1.3"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> ExtractLayoutResult:
         raster_provider = PageRasterProvider(
@@ -58,6 +74,7 @@ class ExtractLayoutStage:
         pages_processed = 0
         hard_pages = 0
         total_zones = 0
+        page_refs: dict[str, str] = {}
 
         for page_id in page_ids:
             native = self._load_native_page(ctx, page_id)
@@ -69,7 +86,7 @@ class ExtractLayoutStage:
             raster_path = str(raster) if raster else None
             layout = self._extract(ctx, native, raster_path)
 
-            ctx.artifact_store.put_json(
+            layout_ref = ctx.artifact_store.put_json(
                 document_id=ctx.document_id,
                 schema_family="layout_page.v1",
                 scope="page",
@@ -79,6 +96,7 @@ class ExtractLayoutStage:
 
             pages_processed += 1
             total_zones += len(layout.zones)
+            page_refs[page_id] = layout_ref.relative_path
             if layout.difficulty and layout.difficulty.hard_page:
                 hard_pages += 1
 
@@ -94,6 +112,7 @@ class ExtractLayoutStage:
             pages_processed=pages_processed,
             hard_pages=hard_pages,
             total_zones=total_zones,
+            page_refs=page_refs,
         )
 
     @staticmethod

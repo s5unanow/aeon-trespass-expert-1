@@ -59,11 +59,20 @@ _STRUCTURAL_FIELDS: dict[str, list[str]] = {
 
 
 class TranslationResult(BaseModel):
-    """Summary of translation across all pages."""
+    """Summary of translation across all pages.
+
+    ``page_refs`` maps each translated ``page_id`` to the content-addressed
+    relative path of its RU ``page_ir.v1.ru`` artifact (the path embeds the
+    per-page content hash). This makes the summary content-bearing rather than
+    count-only: its own content hash — threaded into the next stage's cache key
+    via ``upstream_refs`` — changes whenever any per-page RU IR changes, even at
+    an unchanged page count. Mirrors ``RenderResult.page_refs`` (S5U-1227).
+    """
 
     document_id: str
     pages_translated: int = Field(ge=0)
     validation_warnings: int = Field(ge=0)
+    page_refs: dict[str, str] = Field(default_factory=dict)
 
 
 def _translated_by_id(result: TranslationResultV1) -> dict[str, TranslatedSegment]:
@@ -211,8 +220,7 @@ class TranslationStage:
     @property
     def version(self) -> str:
         # S5U-776 — narrative prose now uses grouped translation units and
-        # split-back rematerialization. Bumped from 1.1 so cached per-block
-        # translations re-execute.
+        # split-back rematerialization (1.1 -> 1.2; cached per-block re-execute).
         # S5U-871 — validator now emits TRANSLATION_MISSING_SEGMENT /
         # TRANSLATION_DUPLICATE_SEGMENT records into the persisted
         # translation_qa_record_set.v1 artifact; bumped from 1.2 so cached
@@ -221,7 +229,10 @@ class TranslationStage:
         # fallback provider's pre-fallback error, set by FallbackTranslator).
         # Bumped from 1.3 so cached pages re-run and the field is no longer
         # silently absent on pre-existing runs (the S5U-997 blocker).
-        return "1.4"
+        # S5U-1227 1.4 -> 1.5: TranslationResult carries content-bearing
+        # page_refs (was count-only), so downstream stages re-key on changed RU
+        # IR even at an unchanged page count. Per .claude/rules/pipeline.md (S5U-662).
+        return "1.5"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
@@ -230,6 +241,7 @@ class TranslationStage:
 
         pages_translated = 0
         total_warnings = 0
+        page_refs: dict[str, str] = {}
 
         for page_id in page_ids:
             en_ir = self._load_en_ir(ctx, page_id)
@@ -237,7 +249,7 @@ class TranslationStage:
                 ctx.logger.warning("Skipping %s: missing EN IR", page_id)
                 continue
 
-            warnings = self._translate_page(
+            warnings, ru_ir_ref = self._translate_page(
                 ctx,
                 en_ir,
                 page_id,
@@ -246,16 +258,16 @@ class TranslationStage:
             )
             pages_translated += 1
             total_warnings += warnings
+            page_refs[page_id] = ru_ir_ref
 
         ctx.logger.info(
-            "Translated %d pages (%d validation warnings)",
-            pages_translated,
-            total_warnings,
+            "Translated %d pages (%d validation warnings)", pages_translated, total_warnings
         )
         return TranslationResult(
             document_id=ctx.document_id,
             pages_translated=pages_translated,
             validation_warnings=total_warnings,
+            page_refs=page_refs,
         )
 
     def _translate_page(
@@ -265,8 +277,12 @@ class TranslationStage:
         page_id: str,
         translator: TranslatorAdapter,
         concept_reg: ConceptRegistryV1 | None,
-    ) -> int:
-        """Translate a single page and store the RU IR. Returns warning count."""
+    ) -> tuple[int, str]:
+        """Translate a single page and store the RU IR.
+
+        Returns ``(warning_count, ru_ir_relative_path)`` — the content-addressed
+        ``page_ir.v1.ru`` path (fed into ``TranslationResult.page_refs``).
+        """
         ctx.logger.info("Translating %s", page_id)
 
         batch = build_translation_batch(
@@ -345,14 +361,14 @@ class TranslationStage:
             reading_order=en_ir.reading_order,
         )
 
-        ctx.artifact_store.put_json(
+        ru_ref = ctx.artifact_store.put_json(
             document_id=ctx.document_id,
             schema_family="page_ir.v1.ru",
             scope="page",
             entity_id=page_id,
             data=ru_ir,
         )
-        return len(qa_records)
+        return len(qa_records), ru_ref.relative_path
 
     @staticmethod
     def _resolve_page_ids(ctx: StageContext) -> list[str]:
