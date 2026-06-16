@@ -1,11 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { loadQa } from '../../src/lib/api/loadQa';
+import { clearQaCache, loadQa } from '../../src/lib/api/loadQa';
 
 describe('loadQa', () => {
   const fetchSpy = vi.spyOn(globalThis, 'fetch');
 
   afterEach(() => {
     fetchSpy.mockReset();
+    clearQaCache();
   });
 
   it('fetches summary and records and returns a bundle', async () => {
@@ -68,5 +69,54 @@ describe('loadQa', () => {
     });
     const bundle = await loadQa('d', 'ru');
     expect(bundle.records).toEqual([]);
+  });
+
+  // --- S5U-1225: module-level promise cache ---
+
+  function okBundle() {
+    return (url: RequestInfo | URL) => {
+      const u = String(url);
+      if (u.endsWith('qa_summary.json')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({}) } as Response);
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ records: [] }),
+      } as Response);
+    };
+  }
+
+  it('fetches the bundle once and shares it across repeat calls', async () => {
+    fetchSpy.mockImplementation(okBundle());
+
+    const first = await loadQa('test_doc', 'ru');
+    const second = await loadQa('test_doc', 'ru');
+
+    // Two files per bundle (summary + records), fetched exactly once.
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+    expect(second).toBe(first);
+  });
+
+  it('fetches separately for different document/edition keys', async () => {
+    fetchSpy.mockImplementation(okBundle());
+
+    await loadQa('test_doc', 'ru');
+    await loadQa('test_doc', 'en');
+
+    // Two keys × two files each.
+    expect(fetchSpy).toHaveBeenCalledTimes(4);
+  });
+
+  it('does not cache a rejected load — a retry refetches', async () => {
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 500 } as Response);
+    fetchSpy.mockResolvedValueOnce({ ok: false, status: 500 } as Response);
+    await expect(loadQa('test_doc', 'ru')).rejects.toThrow(/Failed to load QA/);
+
+    fetchSpy.mockImplementation(okBundle());
+    const retried = await loadQa('test_doc', 'ru');
+
+    // Two failed fetches + two successful retry fetches.
+    expect(fetchSpy).toHaveBeenCalledTimes(4);
+    expect(retried.records).toEqual([]);
   });
 });

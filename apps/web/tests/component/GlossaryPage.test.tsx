@@ -2,6 +2,7 @@ import { cleanup, render, screen, waitFor, fireEvent } from '@testing-library/re
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { GlossaryPage } from '../../src/routes/GlossaryPage';
+import { clearGlossaryCache } from '../../src/lib/api/loadGlossary';
 import type { glossaryPayloadV1 } from '@atr/schemas';
 
 const sampleGlossary: glossaryPayloadV1.GlossaryPayloadV1 = {
@@ -56,6 +57,7 @@ describe('GlossaryPage', () => {
 
   afterEach(() => {
     fetchSpy.mockReset();
+    clearGlossaryCache();
     cleanup();
   });
 

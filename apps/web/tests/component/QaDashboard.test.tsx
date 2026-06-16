@@ -2,6 +2,7 @@ import { cleanup, render, screen, waitFor, fireEvent } from '@testing-library/re
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { QaDashboard } from '../../src/routes/QaDashboard';
+import { clearQaCache } from '../../src/lib/api/loadQa';
 
 // Mocks match the public DTO shapes written by scripts/_export_qa.py
 // (PublicQASummaryV1 / PublicQARecordSetV1). Internal fields such as
@@ -75,6 +76,7 @@ describe('QaDashboard', () => {
 
   afterEach(() => {
     fetchSpy.mockReset();
+    clearQaCache();
     cleanup();
   });
 
