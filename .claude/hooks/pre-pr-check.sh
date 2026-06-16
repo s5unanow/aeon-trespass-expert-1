@@ -2,8 +2,17 @@
 # Claude Code PreToolUse hook: block PR creation without review agent artifact
 set -euo pipefail
 
+# S5U-1247: normalize CR/LF to spaces (then squeeze whitespace runs) before the
+# line-oriented trigger grep so a multi-line `gh pr create` cannot straddle a line
+# and skip the gate. This hook reads the RAW envelope (no `jq` decode), so the
+# harness today JSON-escapes any newline (harmless no-op); this is defense-in-depth
+# if a real newline ever reaches the input. The squeeze (`tr -s ' '`) collapses the
+# resulting double-space so the multi-word substring `gh pr create` still matches.
+# Sibling parity with pre-commit-check.sh.
+TOOL_INPUT_ONELINE=$(printf '%s' "${CLAUDE_TOOL_INPUT:-}" | tr '\n\r' '  ' | tr -s ' ')
+
 # Only intercept gh pr create commands
-if ! echo "$CLAUDE_TOOL_INPUT" | grep -q 'gh pr create'; then
+if ! printf '%s' "$TOOL_INPUT_ONELINE" | grep -q 'gh pr create'; then
   exit 0
 fi
 

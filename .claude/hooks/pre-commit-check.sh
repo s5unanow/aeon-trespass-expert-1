@@ -18,6 +18,17 @@ if [ -z "$COMMAND" ]; then
   COMMAND="${CLAUDE_TOOL_INPUT:-}"
 fi
 
+# S5U-1247: normalize newlines to spaces BEFORE the (line-oriented) trigger grep.
+# jq -r '.command' DECODES a JSON `\n` escape into a REAL newline byte, so a
+# multi-line command — most naturally a shell line-continuation `git \<newline>
+# commit -m x` (the shell strips the backslash-newline and runs a normal
+# `git commit`) — straddled a newline and the line-oriented `grep` could not span
+# it. The hook then `exit 0`d before reaching ANY guard, including Gate 0 (the
+# secret scan). Collapsing CR and LF to spaces folds the command onto one logical
+# line so `\bgit\b.*\bcommit\b` (and the `--amend` skip grep below) span it. Both
+# the trigger and the `--amend` skip use $COMMAND_ONELINE for uniformity.
+COMMAND_ONELINE=$(printf '%s' "$COMMAND" | tr '\n\r' '  ')
+
 # Only intercept git commit commands. Flag-tolerant: the literal substring
 # `grep -q 'git commit'` was defeated by any flag between `git` and `commit`
 # (`git -C <p> commit`, `git --no-pager commit`, `git -c k=v commit`). We match
@@ -25,7 +36,7 @@ fi
 # accepted residual is the inverse FP — a command that merely *mentions* both
 # words (e.g. `echo "how to git commit"`) also triggers; closing FN vectors is
 # the goal, not eliminating that pre-existing FP (see plans/002).
-if ! printf '%s' "$COMMAND" | grep -qE '\bgit\b.*\bcommit\b'; then
+if ! printf '%s' "$COMMAND_ONELINE" | grep -qE '\bgit\b.*\bcommit\b'; then
   exit 0
 fi
 
@@ -125,7 +136,7 @@ echo "  ✓ [0/9] secret guard"
 # original commit and amends are typically minor fixups. Gate 0 (above) has
 # already scanned any newly staged content, so a secret introduced by the amend
 # is still blocked. The branch guards and secret scan ran unconditionally.
-if printf '%s' "$COMMAND" | grep -q -- '--amend'; then
+if printf '%s' "$COMMAND_ONELINE" | grep -q -- '--amend'; then
   echo "Branch guards + secret scan passed (skipping quality gates 1-8 for amend)."
   exit 0
 fi
