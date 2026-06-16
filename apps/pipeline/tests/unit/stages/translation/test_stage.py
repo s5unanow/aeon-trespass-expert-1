@@ -72,7 +72,9 @@ def test_translation_implements_stage_protocol() -> None:
     assert stage.scope == StageScope.DOCUMENT
     # S5U-871 — bumped after missing/duplicate segment-coverage records
     # were added to the persisted translation QA record set.
-    assert stage.version == "1.3"
+    # S5U-1226 — bumped to 1.4 after translation_meta.v1 began persisting
+    # ``primary_error`` (a new observable side-effect of run()).
+    assert stage.version == "1.4"
 
 
 def test_translation_translates_pages(tmp_path: Path) -> None:

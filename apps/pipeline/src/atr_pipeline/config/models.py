@@ -339,6 +339,15 @@ class QAConfig(BaseModel):
     block_publish_on: list[str] = Field(default_factory=lambda: ["error", "critical"])
     waivers_dir: str = "waivers"
 
+    # S5U-1226 — emit a TRANSLATION_FALLBACK_RATE_HIGH QA record when the
+    # fraction of pages whose winning provider was the *fallback* exceeds this
+    # threshold. The record severity is ``fallback_rate_severity`` (WARNING by
+    # default, so a draft is surfaced but not newly blocked). Set to a value
+    # >= 1.0 to disable the gate (a rate can never exceed 1.0). The default of
+    # 0.25 means "alert when more than a quarter of pages silently fell back".
+    fallback_rate_warn_threshold: float = Field(default=0.25, ge=0.0)
+    fallback_rate_severity: Literal["info", "warning", "error", "critical"] = "warning"
+
 
 class DocumentBuildConfig(BaseModel):
     """Full resolved configuration for building a document."""

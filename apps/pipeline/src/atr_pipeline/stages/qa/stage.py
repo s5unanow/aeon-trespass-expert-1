@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 from atr_pipeline.eval.confidence_policy import load_confidence_bands
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.stages.qa.fallback_alert import apply_fallback_alert
 from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
 from atr_pipeline.stages.qa.publishable import filter_publishable_pages
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
@@ -19,6 +20,7 @@ from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
 from atr_pipeline.store.edition_selection import load_latest_json_for_edition
 from atr_schemas.enums import QALayer, Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
+from atr_schemas.qa_metrics_v1 import FallbackSummary
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1, SeverityCounts
 from atr_schemas.render_page_v1 import RenderPageV1
@@ -43,46 +45,14 @@ class QAStage:
 
     @property
     def version(self) -> str:
-        # 1.3 -> 1.4 (S5U-704): new ``flat_table`` rule flags TableBlocks
-        # that lack RenderTableRowBlock structure. The version bump
-        # invalidates cached QA runs so previously-missing
-        # FLAT_TABLE_NO_ROWS records now appear for the full page set.
-        # 1.4 -> 1.5 (S5U-705): ``chart_title_merge_rule`` now writes the
-        # real document_id into ``QARecordV1.document_id`` (sourced from
-        # ``source_ir.document_id``) instead of the page_id that the S5U-698
-        # introduction erroneously plumbed via ``render_page.source_map``.
-        # Cached QA records from v1.4 carry the wrong document_id value, so
-        # the version bump forces a re-run so downstream consumers that
-        # join/group by document_id see the corrected value.
-        # 1.5 -> 1.6 (S5U-735): seven more rules (dead_page_ref,
-        # decorative_icon, duplicate_content, flat_table, glued_text,
-        # leaked_identifier, paragraph_length) now read ``document_id``
-        # from the new ``RenderSourceMap.document_id`` field; the
-        # chart_title_merge rule is reconciled to the same source.
-        # Cached QA records from v1.5 carry the page id in
-        # ``QARecordV1.document_id`` for these rules; the bump forces
-        # a re-run so per-document rollups see the corrected value.
-        # 1.6 -> 1.7 (S5U-736): new ``table_structure_parity`` rule asserts
-        # EN<->RU TableBlock row/cell parity (S5U-734 follow-up). Cached
-        # QA runs from v1.6 miss the new TABLE_PARITY_* records; the bump
-        # invalidates them so the new rule fires on the full page set.
-        # 1.7 -> 1.8 (S5U-730): ``_filter_publishable_pages`` now reads
-        # the new ``page_images.v1`` manifest emitted by IngestStage and
-        # accepts pages whose render is empty but which carry ≥1 image
-        # meeting the web exporter's ``min_width=100, min_height=100``
-        # threshold (the page is rescued by ``inject_image_figures`` at
-        # export). Cached QA runs from v1.7 carry the narrower
-        # publishability set, so the bump invalidates them so dead-page-ref
-        # suppression aligns with reader reality on image-rescued pages.
-        # 1.8 -> 1.9 (S5U-731): ``_load_render`` and ``_filter_publishable_pages``
-        # now route through ``store.edition_selection.load_latest_json_for_edition``
-        # which honors the exporter's two-tier ``document_version`` policy.
-        # On mixed EN/RU artifact dirs (the common case after a full
-        # pipeline run) cached QA runs from v1.8 may have evaluated rules
-        # against a different-edition render than the reader publishes;
-        # the bump invalidates them so the QA records align with the
-        # exporter's edition-isolated view.
-        return "1.9"
+        # Part of the executor cache key; bump on any new observable side-effect
+        # of run(). The full bump history (1.0 → 1.10) with per-bump rationale
+        # is the authoritative record in
+        # ``tests/unit/stages/qa/test_stage_version.py``'s module docstring.
+        # Latest: 1.9 -> 1.10 (S5U-1226) — run-level translation-fallback
+        # summary folded into ``qa_metrics.v1`` + a TRANSLATION_FALLBACK_RATE_HIGH
+        # QA record when the fallback rate exceeds the configured threshold.
+        return "1.10"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set from the artifact
@@ -146,6 +116,21 @@ class QAStage:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
 
+        # S5U-1226 — run-level provider-fallback aggregate + alert. Computed
+        # from the per-page translation_meta.v1 artifacts the translate stage
+        # persists. The summary feeds qa_metrics; an over-threshold rate emits
+        # a document-scope QA record that flows through waivers/blocking like
+        # any other finding.
+        fallback_summary = apply_fallback_alert(
+            store=ctx.artifact_store,
+            document_id=ctx.document_id,
+            page_ids=page_ids,
+            threshold=ctx.config.qa.fallback_rate_warn_threshold,
+            severity=ctx.config.qa.fallback_rate_severity,
+            logger=ctx.logger,
+            all_records=all_records,
+        )
+
         waivers_dir = ctx.config.repo_root / ctx.config.qa.waivers_dir
         waivers = load_waivers(waivers_dir, ctx.document_id)
         if waivers:
@@ -188,23 +173,13 @@ class QAStage:
             blocking,
         )
 
-        metrics = compute_qa_metrics(
-            document_id=ctx.document_id,
-            run_id=ctx.run_id,
-            edition=ctx.edition,
+        metrics_ref = self._write_metrics(
+            ctx,
             page_ids=page_ids,
-            records=all_records,
+            all_records=all_records,
             block_on=block_on,
+            fallback_summary=fallback_summary,
         )
-        metrics_ref = ctx.artifact_store.put_json(
-            document_id=ctx.document_id,
-            schema_family="qa_metrics.v1",
-            scope="document",
-            entity_id=ctx.document_id,
-            data=metrics,
-        )
-        ctx.logger.info("QA metrics written: %s", metrics_ref.relative_path)
-        ctx.logger.info("%s", format_metrics_digest(metrics))
 
         return QASummaryV1(
             document_id=ctx.document_id,
@@ -219,8 +194,43 @@ class QAStage:
             # the export layer can pick the ref-bound file instead of the
             # latest-by-mtime metrics, which could be a stray from an
             # interrupted prior run.
-            qa_metrics_ref=metrics_ref.relative_path,
+            qa_metrics_ref=metrics_ref,
         )
+
+    @staticmethod
+    def _write_metrics(
+        ctx: StageContext,
+        *,
+        page_ids: list[str],
+        all_records: list[QARecordV1],
+        block_on: set[str],
+        fallback_summary: FallbackSummary,
+    ) -> str:
+        """Compute, attach the fallback aggregate to, persist, and log the
+        ``qa_metrics.v1`` artifact. Returns the relative artifact ref.
+        """
+        metrics = compute_qa_metrics(
+            document_id=ctx.document_id,
+            run_id=ctx.run_id,
+            edition=ctx.edition,
+            page_ids=page_ids,
+            records=all_records,
+            block_on=block_on,
+        )
+        # S5U-1226 — attach the run-level fallback aggregate. Kept off
+        # ``compute_qa_metrics``'s signature to hold its param count under the
+        # lint ceiling; the model field is mutable.
+        metrics.translation_fallback = fallback_summary
+        metrics_ref = ctx.artifact_store.put_json(
+            document_id=ctx.document_id,
+            schema_family="qa_metrics.v1",
+            scope="document",
+            entity_id=ctx.document_id,
+            data=metrics,
+        )
+        ctx.logger.info("QA metrics written: %s", metrics_ref.relative_path)
+        ctx.logger.info("%s", format_metrics_digest(metrics))
+        return metrics_ref.relative_path
 
     @staticmethod
     def _persist_records(ctx: StageContext, records: list[QARecordV1]) -> list[str]:

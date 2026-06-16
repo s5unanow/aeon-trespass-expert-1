@@ -115,7 +115,10 @@ def test_qa_implements_stage_protocol() -> None:
     # which honors the exporter's two-tier ``document_version`` policy. On
     # mixed EN/RU artifact dirs cached v1.8 events would still load
     # whichever render is newest by mtime — potentially the wrong edition.
-    assert stage.version == "1.9"
+    # 1.9 → 1.10 in S5U-1226: the stage folds a run-level translation-fallback
+    # summary into qa_metrics.v1 and emits a TRANSLATION_FALLBACK_RATE_HIGH
+    # record when the fallback rate exceeds the configured threshold.
+    assert stage.version == "1.10"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:

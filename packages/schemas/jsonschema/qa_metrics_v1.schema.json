@@ -1,5 +1,34 @@
 {
   "$defs": {
+    "FallbackSummary": {
+      "description": "Run-level translation provider-fallback aggregate (S5U-1226).\n\nThe translate stage records ``fallback_used`` + ``primary_error`` per page\nin the ``translation_meta.v1`` artifact; the QA stage folds those into this\naggregate so a whole-run quality degradation (\"N/M pages used the fallback\nprovider\") is visible in the persisted QA metrics instead of being buried\nin per-page metadata. ``pages_with_meta`` is the denominator — only pages\nthat actually have a translation_meta artifact count toward the rate, so a\nsource-only (EN) QA run reports ``pages_with_meta == 0`` and a 0.0 rate.",
+      "properties": {
+        "pages_with_meta": {
+          "default": 0,
+          "title": "Pages With Meta",
+          "type": "integer"
+        },
+        "fallback_pages": {
+          "default": 0,
+          "title": "Fallback Pages",
+          "type": "integer"
+        },
+        "fallback_rate": {
+          "default": 0.0,
+          "title": "Fallback Rate",
+          "type": "number"
+        },
+        "primary_errors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Primary Errors",
+          "type": "array"
+        }
+      },
+      "title": "FallbackSummary",
+      "type": "object"
+    },
     "FindingCodeCount": {
       "description": "Count of QA findings grouped by rule code.",
       "properties": {
@@ -120,6 +149,9 @@
       "default": 0.0,
       "title": "Avg Findings Per Page",
       "type": "number"
+    },
+    "translation_fallback": {
+      "$ref": "#/$defs/FallbackSummary"
     }
   },
   "required": [

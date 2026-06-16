@@ -217,7 +217,11 @@ class TranslationStage:
         # TRANSLATION_DUPLICATE_SEGMENT records into the persisted
         # translation_qa_record_set.v1 artifact; bumped from 1.2 so cached
         # pages re-run and surface the new coverage findings.
-        return "1.3"
+        # S5U-1226 — translation_meta.v1 now persists ``primary_error`` (the
+        # fallback provider's pre-fallback error, set by FallbackTranslator).
+        # Bumped from 1.3 so cached pages re-run and the field is no longer
+        # silently absent on pre-existing runs (the S5U-997 blocker).
+        return "1.4"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
@@ -288,6 +292,10 @@ class TranslationStage:
             "source_checksums": {s.segment_id: s.source_checksum for s in batch.segments},
             "fallback_used": response.meta.extra.get("fallback_used", False),
             "attempts": response.meta.extra.get("attempts", 1),
+            # S5U-1226 — persist the primary provider's pre-fallback error so a
+            # silent provider fallback is diagnosable from the run. Set by
+            # FallbackTranslator only on the fallback path; ``None`` otherwise.
+            "primary_error": response.meta.extra.get("primary_error"),
         }
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,

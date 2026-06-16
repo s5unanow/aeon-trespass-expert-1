@@ -11,15 +11,59 @@ Aggregation is a single O(records) pass. No record field is mutated.
 from __future__ import annotations
 
 from collections import Counter
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime
 
 from atr_schemas.enums import Severity
-from atr_schemas.qa_metrics_v1 import FindingCodeCount, QAMetricsV1
+from atr_schemas.qa_metrics_v1 import FallbackSummary, FindingCodeCount, QAMetricsV1
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import SeverityCounts
 
 TOP_CODE_LIMIT = 10
+TOP_PRIMARY_ERROR_LIMIT = 5
+
+
+def compute_fallback_summary(
+    metas: Iterable[Mapping[str, object]],
+) -> FallbackSummary:
+    """Aggregate per-page ``translation_meta.v1`` payloads into a run-level
+    provider-fallback summary (S5U-1226).
+
+    ``metas`` is the set of translation_meta dicts that actually exist on disk
+    (one per translated page). Each carries ``fallback_used`` (bool) and
+    ``primary_error`` (str | None). The denominator is ``len(metas)`` — pages
+    with no translation_meta artifact are simply not in the iterable, so a
+    source-only (EN) QA run passes an empty iterable and gets a 0.0 rate.
+
+    Distinct primary errors are collected (first-seen order, deduplicated) and
+    capped at ``TOP_PRIMARY_ERROR_LIMIT`` so a 83-page run that all fell back
+    on the same error doesn't bloat the artifact.
+    """
+    pages_with_meta = 0
+    fallback_pages = 0
+    seen_errors: list[str] = []
+    seen_set: set[str] = set()
+
+    for meta in metas:
+        pages_with_meta += 1
+        if not bool(meta.get("fallback_used", False)):
+            continue
+        fallback_pages += 1
+        primary_error = meta.get("primary_error")
+        if isinstance(primary_error, str) and primary_error.strip():
+            normalized = primary_error.strip()
+            if normalized not in seen_set:
+                seen_set.add(normalized)
+                if len(seen_errors) < TOP_PRIMARY_ERROR_LIMIT:
+                    seen_errors.append(normalized)
+
+    fallback_rate = fallback_pages / pages_with_meta if pages_with_meta > 0 else 0.0
+    return FallbackSummary(
+        pages_with_meta=pages_with_meta,
+        fallback_pages=fallback_pages,
+        fallback_rate=fallback_rate,
+        primary_errors=seen_errors,
+    )
 
 
 def compute_qa_metrics(
@@ -113,11 +157,14 @@ def _increment_severity(counts: SeverityCounts, severity: Severity) -> None:
 def format_metrics_digest(metrics: QAMetricsV1) -> str:
     """Render a single-line digest suitable for CI logs / CLI output."""
     sev = metrics.findings_by_severity
+    fb = metrics.translation_fallback
     return (
         f"QA metrics: pages={metrics.pages_total} "
         f"clean_rate={metrics.clean_page_rate:.3f} "
         f"avg={metrics.avg_findings_per_page:.2f}/pg "
         f"info={sev.info} warning={sev.warning} error={sev.error} "
         f"critical={sev.critical} blocking={metrics.blocking_count} "
-        f"waived={metrics.waived_count}"
+        f"waived={metrics.waived_count} "
+        f"fallback={fb.fallback_pages}/{fb.pages_with_meta} "
+        f"({fb.fallback_rate:.3f})"
     )
