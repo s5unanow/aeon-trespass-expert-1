@@ -169,17 +169,17 @@ def _assert_no_unmodeled_callable_ref(
     Assign/AnnAssign (``imp = __import__``) and the ``func`` of a direct ``Call``.
 
     A bare ``Name`` is recognized when its ``id`` is a *recognized* key; an
-    ``Attribute`` when its ``attr`` is a seed name AND its ``value`` is a Name (the
-    ``importlib.import_module`` module-access form). Import-statement internals are
-    ``ast.alias`` and string mentions are ``ast.Constant`` — neither is walked, so a
-    plain ``from importlib import import_module`` and a docstring ``"import_module"``
-    never trip the refusal. Per Rule G1 the over-strict direction is correct.
+    ``Attribute`` when its ``attr`` is a seed name, **value-agnostically** — any chain
+    depth (``importlib.import_module`` AND ``a.b.import_module``), mirroring the fold's
+    ``_expr_recognized_seed`` so the two recognizers agree (S5U-1110: a pre-1110
+    ``value is a Name`` clause let a multi-level chain fold yet silently escape here).
+    Import internals are ``ast.alias`` and string mentions are ``ast.Constant`` —
+    neither is walked, so a plain import and a docstring ``"import_module"`` never trip
+    the refusal. Per Rule G1 the over-strict direction is correct.
     """
     for node in ast.walk(tree):
         is_ref = (isinstance(node, ast.Name) and node.id in recognized) or (
-            isinstance(node, ast.Attribute)
-            and node.attr in _DYNAMIC_IMPORT_NAMES
-            and isinstance(node.value, ast.Name)
+            isinstance(node, ast.Attribute) and node.attr in _DYNAMIC_IMPORT_NAMES
         )
         if is_ref and id(node) not in modeled:
             raise DetectorScopeError(

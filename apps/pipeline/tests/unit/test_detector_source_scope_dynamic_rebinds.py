@@ -217,6 +217,48 @@ def test_lambda_body_bare_ref_fails_closed(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# S5U-1110 — multi-level attribute (`a.b.import_module`) in non-fold positions
+# must fail closed, mirroring the value-agnostic fold recognizer. Pre-1110 the
+# catch-all's Attribute branch required `value` be a `Name` (single-level only),
+# so a multi-level chain folded in a simple-assign yet silently escaped here.
+# ---------------------------------------------------------------------------
+
+_MLA = "import a.b\n"  # the multi-level attribute preamble (`a.b.import_module`)
+
+
+def test_multi_level_attr_tuple_fails_closed(tmp_path: Path) -> None:
+    """`im, _ = a.b.import_module, None` + `im("_h")` fails closed (multi-level attr).
+
+    Red-before: at pre-fix main (2f93172) this returned frozenset() — the catch-all's
+    `isinstance(node.value, ast.Name)` clause made the multi-level Attribute reference
+    invisible, so it silently escaped (no capture, no raise). Local run at 2f93172:
+    `tuple multi-level: set()`.
+    """
+    with pytest.raises(_load().DetectorScopeError, match="binding/escape position"):
+        _scope_of(tmp_path, _MLA + "im, other = a.b.import_module, None\n_h = im('_dyn_helper')\n")
+
+
+def test_multi_level_attr_walrus_fails_closed(tmp_path: Path) -> None:
+    """`(im := a.b.import_module)("_h")` fails closed (multi-level attr walrus).
+
+    Red-before: at pre-fix main (2f93172) this returned frozenset() (silent escape).
+    Local run at 2f93172: `walrus multi-level: set()`.
+    """
+    with pytest.raises(_load().DetectorScopeError, match="binding/escape position"):
+        _scope_of(tmp_path, _MLA + "_h = (im := a.b.import_module)('_dyn_helper')\n")
+
+
+def test_multi_level_attr_default_arg_fails_closed(tmp_path: Path) -> None:
+    """`def f(im=a.b.import_module): return im("_h")` fails closed (multi-level attr).
+
+    Red-before: at pre-fix main (2f93172) this returned frozenset() (silent escape).
+    Local run at 2f93172: `defaultarg multi-level: set()`.
+    """
+    with pytest.raises(_load().DetectorScopeError, match="binding/escape position"):
+        _scope_of(tmp_path, _MLA + "def f(im=a.b.import_module):\n    return im('_dyn_helper')\n")
+
+
+# ---------------------------------------------------------------------------
 # False-positive / over-capture guards — must NOT raise, must NOT over-capture
 # (boundary-pins: pass in BOTH pre- and post-fix states; NOT red-before)
 # ---------------------------------------------------------------------------
@@ -258,6 +300,23 @@ def test_attribute_rhs_fold_still_resolves(tmp_path: Path) -> None:
     scope = _scope_of(
         tmp_path,
         "import importlib\nf = importlib.import_module\n_h = f('_dyn_helper')\n",
+    )
+    assert scope == frozenset({"scripts/_dyn_helper.py"})
+
+
+def test_multi_level_attr_simple_assign_still_resolves(tmp_path: Path) -> None:
+    """Symmetry pin: `im = a.b.import_module` + `im("_h")` still folds + resolves.
+
+    The fold's `_expr_recognized_seed` recognizes an Attribute value-agnostically, so a
+    multi-level chain folds in a simple-assign position. S5U-1110 widens the catch-all
+    to match — this pin locks the symmetry: the modeled fold path must NOT regress when
+    the catch-all widens. Passes in BOTH pre- and post-fix states (pre-fix already
+    captured it: local run at 2f93172 `simpleasn multi-level: {'_helper'}`), so this is
+    a boundary-pin, NOT red-before.
+    """
+    scope = _scope_of(
+        tmp_path,
+        "import a.b\nim = a.b.import_module\n_h = im('_dyn_helper')\n",
     )
     assert scope == frozenset({"scripts/_dyn_helper.py"})
 
