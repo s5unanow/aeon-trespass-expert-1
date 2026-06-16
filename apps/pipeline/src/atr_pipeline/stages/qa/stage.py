@@ -8,7 +8,7 @@ from atr_pipeline.eval.confidence_policy import load_confidence_bands
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.qa.fallback_alert import apply_fallback_alert
 from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
-from atr_pipeline.stages.qa.publishable import filter_publishable_pages
+from atr_pipeline.stages.qa.publishable import RenderCache, filter_publishable_pages
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.rules.confidence_band_rule import (
@@ -55,24 +55,21 @@ class QAStage:
         return "1.10"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
-        # S5U-701 — resolve the FULL published page set from the artifact
-        # store BEFORE applying any `--pages` selection.  The dead-page-ref
-        # rule uses this set as the authoritative manifest; if we built it
-        # from the filtered subset, a partial QA run with ``--pages`` would
-        # misclassify every reference to an unselected-but-published page
-        # as dead (regression flagged by Codex cross-system review round 1).
-        #
-        # Round 2 (Codex) flagged a cross-system contract gap: the web
-        # reader's ``manifest.json`` is narrower than EN IR — ``export_pages``
-        # skips non-facsimile pages with no renderable blocks (see
-        # ``scripts/export_to_web.py`` Lines 221-248).  A QA-known page that
-        # gets dropped at export time would still be dead from the reader's
-        # perspective.  The manifest the QA rule checks against must match
-        # the exporter's filter so the suppression set never includes pages
-        # the reader will not actually publish.
+        # S5U-701 — resolve the FULL published page set BEFORE any `--pages`
+        # selection: the dead-page-ref rule uses it as the authoritative
+        # manifest, so building it from the filtered subset would misclassify
+        # references to unselected-but-published pages as dead (Codex round 1).
+        # Round 2: the manifest must match the exporter's narrower filter
+        # (``export_pages`` drops non-facsimile, blockless pages) so the
+        # suppression set never includes pages the reader will not publish.
         all_page_ids = self._resolve_page_ids(ctx)
+        # S5U-1229 — the publishability filter selects+parses every page's
+        # render_page.v1; render_cache captures each so the per-page eval loop
+        # reuses it instead of reloading (eval pages ⊆ all_page_ids, so the
+        # edition-scoped cache always covers them).
+        render_cache: RenderCache = {}
         publishable_page_ids = self._filter_publishable_pages(
-            ctx, all_page_ids, edition=ctx.edition
+            ctx, all_page_ids, edition=ctx.edition, render_cache=render_cache
         )
         known_page_numbers = _page_ids_to_numbers(publishable_page_ids)
         page_ids = ctx.filter_pages(all_page_ids)
@@ -93,7 +90,7 @@ class QAStage:
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
             ru_ir = self._load_ir(ctx, "page_ir.v1.ru", page_id) if not source_only else en_ir
-            render = self._load_render(ctx, page_id, edition=ctx.edition)
+            render = self._load_render(ctx, page_id, edition=ctx.edition, render_cache=render_cache)
 
             if en_ir is None or ru_ir is None or render is None:
                 ctx.logger.warning("Skipping QA for %s: missing artifacts", page_id)
@@ -259,21 +256,27 @@ class QAStage:
 
     @staticmethod
     def _filter_publishable_pages(
-        ctx: StageContext, page_ids: list[str], *, edition: str = ""
+        ctx: StageContext,
+        page_ids: list[str],
+        *,
+        edition: str = "",
+        render_cache: RenderCache | None = None,
     ) -> list[str]:
         """Delegate to ``stages.qa.publishable.filter_publishable_pages``.
 
         Kept as an instance method for backwards-compat call sites; the
         real logic lives in the shared module so the CLI ``atr qa``
-        entrypoint and the stage runner cannot drift on what
-        "publishable" means (S5U-701 Codex REVISE round 2 / S5U-730).
-        S5U-731 added the ``edition`` kwarg so the publishability filter
-        loads the same render the exporter would publish for the
-        targeted edition (mixed EN/RU artifact dirs are the common
-        case after a full pipeline run).
+        entrypoint and the stage runner cannot drift on what "publishable"
+        means (S5U-701 / S5U-730). ``edition`` (S5U-731) targets the
+        exporter's render; ``render_cache`` (S5U-1229) lets the per-page
+        eval loop reuse each render selected here instead of reloading it.
         """
         return filter_publishable_pages(
-            ctx.artifact_store, ctx.document_id, page_ids, edition=edition
+            ctx.artifact_store,
+            ctx.document_id,
+            page_ids,
+            edition=edition,
+            render_cache=render_cache,
         )
 
     @staticmethod
@@ -325,24 +328,33 @@ class QAStage:
         return records
 
     @staticmethod
-    def _load_render(ctx: StageContext, page_id: str, *, edition: str = "") -> RenderPageV1 | None:
+    def _load_render(
+        ctx: StageContext,
+        page_id: str,
+        *,
+        edition: str = "",
+        render_cache: RenderCache | None = None,
+    ) -> RenderPageV1 | None:
         """Load a RenderPageV1 from the artifact store.
 
-        S5U-731 — selection is edition-aware so a mixed EN/RU artifact
-        directory (the common case after a full pipeline run) does not
-        leak the wrong-edition render into QA's rule evaluation. The
-        underlying policy lives in
-        :func:`atr_pipeline.store.edition_selection.load_latest_json_for_edition`
-        and is shared with the web exporter so the two cannot drift.
+        S5U-731 — selection is edition-aware (shared with the exporter via
+        ``load_latest_json_for_edition``) so a mixed EN/RU dir does not leak
+        the wrong-edition render into QA. S5U-1229 — when *render_cache* has
+        an entry for *page_id* (populated by the publishability filter under
+        the same edition) reuse it; ``in`` (not truthiness) honors a cached
+        ``None`` so an absent-render page is not redundantly reloaded.
         """
-        data = load_latest_json_for_edition(
-            ctx.artifact_store,
-            document_id=ctx.document_id,
-            schema_family="render_page.v1",
-            scope="page",
-            entity_id=page_id,
-            edition=edition,
-        )
+        if render_cache is not None and page_id in render_cache:
+            data = render_cache[page_id]
+        else:
+            data = load_latest_json_for_edition(
+                ctx.artifact_store,
+                document_id=ctx.document_id,
+                schema_family="render_page.v1",
+                scope="page",
+                entity_id=page_id,
+                edition=edition,
+            )
         return RenderPageV1.model_validate(data) if data else None
 
 

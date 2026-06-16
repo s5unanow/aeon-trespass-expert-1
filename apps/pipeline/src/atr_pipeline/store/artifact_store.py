@@ -14,6 +14,19 @@ from atr_pipeline.store.pathing import artifact_path, build_ref
 from atr_pipeline.utils.hashing import content_hash
 
 
+def latest_sort_key(path: Path) -> tuple[float, str]:
+    """Deterministic "latest" ordering key for artifact selection (S5U-1229).
+
+    Primary signal is mtime (newest wins). The filename — the content hash —
+    is a stable secondary key so that artifacts sharing an mtime resolve to a
+    single reproducible winner instead of depending on ``glob`` iteration
+    order. This is the intra-pipeline analog of the export path's run-id
+    binding (S5U-869): the export path resolves a deterministic ref from the
+    registry; here we make the filesystem fallback deterministic on ties.
+    """
+    return (path.stat().st_mtime, path.name)
+
+
 class ArtifactStore:
     """Immutable artifact store backed by the filesystem.
 
@@ -119,14 +132,23 @@ class ArtifactStore:
         Selects by file modification time (updated on every ``put_json``
         call) so that partial rebuilds always pick the current-run artifact.
         Returns ``None`` if no artifact exists.
+
+        S5U-1229 — mtime is the primary signal but is **not** a unique key:
+        two artifacts can share an mtime (fast runs, ``os.utime`` on
+        content-reuse, coarse filesystem mtime granularity, or a copied
+        artifact store). The intra-pipeline analog of the export path's
+        run-id binding (S5U-869) is a *deterministic* secondary key — we
+        break mtime ties by the content-hash filename so the winner is
+        reproducible across runs instead of depending on ``glob`` order.
         """
-        entity_dir = self._root / document_id / schema_family / scope / entity_id
-        if not entity_dir.exists():
+        latest = self.resolve_latest_path(
+            document_id=document_id,
+            schema_family=schema_family,
+            scope=scope,
+            entity_id=entity_id,
+        )
+        if latest is None:
             return None
-        jsons = list(entity_dir.glob("*.json"))
-        if not jsons:
-            return None
-        latest = max(jsons, key=lambda p: p.stat().st_mtime)
         with open(latest, encoding="utf-8") as f:
             return json.load(f)  # type: ignore[no-any-return]
 
@@ -143,6 +165,10 @@ class ArtifactStore:
 
         Like ``load_latest_json`` but returns the filesystem path instead
         of parsed content, useful for binary artifacts (PNGs, etc.).
+
+        S5U-1229 — ties on mtime are broken deterministically by filename
+        (the content hash) so the selection is reproducible rather than
+        ``glob``-order dependent. See ``load_latest_json``.
         """
         entity_dir = self._root / document_id / schema_family / scope / entity_id
         if not entity_dir.exists():
@@ -150,4 +176,4 @@ class ArtifactStore:
         files = list(entity_dir.glob(glob_pattern))
         if not files:
             return None
-        return max(files, key=lambda p: p.stat().st_mtime)
+        return max(files, key=latest_sort_key)

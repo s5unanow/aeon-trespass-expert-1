@@ -164,6 +164,55 @@ class TestPickLatestForEdition:
         with pytest.raises(json.JSONDecodeError):
             pick_latest_for_edition([bad], "en")
 
+    def test_malformed_candidate_in_target_tier_propagates(self, tmp_path: Path) -> None:
+        """S5U-1229: the two-pass refactor must NOT silently skip a corrupt
+        candidate. A malformed EN-tagged file alongside a valid EN-tagged
+        file still raises (the field-read pass parses every candidate; a
+        broken one is a regression to surface, never silently mis-selected).
+        """
+        good = _write_render(tmp_path / "good.json", document_version="en", body="OK")
+        os.utime(good, (1_000_000, 1_000_000))
+        bad = tmp_path / "bad.json"
+        bad.write_text("{ not valid json")
+        os.utime(bad, (3_000_000, 3_000_000))
+
+        with pytest.raises(json.JSONDecodeError):
+            pick_latest_for_edition([good, bad], "en")
+
+    def test_mtime_tie_deterministic_by_filename(self, tmp_path: Path) -> None:
+        """S5U-1229: two same-edition candidates with an identical mtime
+        resolve to the lexicographically-max filename, independent of the
+        input list order.
+
+        Red-before: the pre-fix selection compared a bare ``st_mtime`` float
+        (``mtime > best_exact_mtime``) so on an exact tie the *first* candidate
+        in iteration order won — i.e. swapping the input list order flipped the
+        winner. The ``latest_sort_key`` tiebreak makes the result order-stable.
+        """
+        lo = _write_render(tmp_path / "aaa.json", document_version="en", body="LO")
+        hi = _write_render(tmp_path / "bbb.json", document_version="en", body="HI")
+        tied = (5_000_000, 5_000_000)
+        os.utime(lo, tied)
+        os.utime(hi, tied)
+
+        # Both input orders must pick the lex-max filename ("bbb" → body "HI").
+        r1 = pick_latest_for_edition([lo, hi], "en")
+        r2 = pick_latest_for_edition([hi, lo], "en")
+        assert r1 is not None and r1["blocks"][0]["children"][0]["text"] == "HI"
+        assert r2 is not None and r2["blocks"][0]["children"][0]["text"] == "HI"
+
+    def test_winner_payload_identical_to_full_parse(self, tmp_path: Path) -> None:
+        """S5U-1229: the two-pass selection returns the same payload the
+        legacy parse-everything path would have — the winner is parsed once
+        and returned verbatim (no field-only/lossy projection)."""
+        en = _write_render(tmp_path / "en.json", document_version="en", body="Example")
+        os.utime(en, (2_000_000, 2_000_000))
+        ru = _write_render(tmp_path / "ru.json", document_version="ru", body="Пример")
+        os.utime(ru, (1_000_000, 1_000_000))
+
+        result = pick_latest_for_edition([en, ru], "en")
+        assert result == json.loads(en.read_text())
+
 
 class TestLoadLatestJsonForEdition:
     """Exercise the ArtifactStore-backed entrypoint used by QAStage."""

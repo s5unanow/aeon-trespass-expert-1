@@ -13,8 +13,15 @@ codepaths cannot drift on what "publishable" means.
 
 from __future__ import annotations
 
+from typing import Any
+
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_pipeline.store.edition_selection import load_latest_json_for_edition
+
+# S5U-1229 — shared render-cache type so the QA stage and this module agree
+# on the (invariant) dict type threaded between the publishability filter and
+# the per-page eval loop. ``None`` value means "no render for this edition".
+RenderCache = dict[str, "dict[str, Any] | None"]
 
 # S5U-730 — exporter image-injection rescue threshold (must match the
 # values in ``scripts/_export_images.extract_images``: ``min_width=100``,
@@ -69,7 +76,12 @@ def page_has_rescuable_images(store: ArtifactStore, document_id: str, page_id: s
 
 
 def filter_publishable_pages(
-    store: ArtifactStore, document_id: str, page_ids: list[str], *, edition: str = ""
+    store: ArtifactStore,
+    document_id: str,
+    page_ids: list[str],
+    *,
+    edition: str = "",
+    render_cache: RenderCache | None = None,
 ) -> list[str]:
     """Return the subset of *page_ids* the web exporter will publish.
 
@@ -98,6 +110,14 @@ def filter_publishable_pages(
     publishability set matches the reader's edition-isolated view
     on mixed EN/RU artifact dirs. Empty / ``"all"`` edition preserves
     the pre-S5U-731 newest-by-mtime semantics for legacy callers.
+
+    S5U-1229 — when *render_cache* is supplied, the render dict selected
+    for each page (including ``None`` when no render exists) is recorded
+    in it keyed by page_id. ``QAStage.run`` passes the same dict to its
+    per-page eval loop so each page's render is selected+parsed once
+    instead of twice (this filter pass + the eval-loop ``_load_render``).
+    The cache is valid only for the *edition* it was populated under;
+    callers must not reuse it across editions.
     """
     publishable: list[str] = []
     manifest_present = page_images_manifest_present(store, document_id)
@@ -110,6 +130,8 @@ def filter_publishable_pages(
             entity_id=pid,
             edition=edition,
         )
+        if render_cache is not None:
+            render_cache[pid] = data
         if not data:
             # No render artifact → exporter skips it entirely (the
             # ``if not jsons: continue`` branch in

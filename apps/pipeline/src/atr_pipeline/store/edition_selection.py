@@ -47,7 +47,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from atr_pipeline.store.artifact_store import ArtifactStore
+from atr_pipeline.store.artifact_store import ArtifactStore, latest_sort_key
 
 DEFAULT_EDITION_FIELD = "document_version"
 
@@ -87,6 +87,15 @@ def pick_latest_for_edition(
 
     Returns the parsed JSON dict of the winning artifact, or ``None``
     when no artifact matches.
+
+    S5U-1229 — selection resolves the winning *path* first and parses
+    only that one file, instead of parsing (and retaining) every
+    candidate. The field-read pass still does a full, fail-loud
+    ``json.load`` per candidate (no fragile substring/regex peek — a
+    corrupt candidate must surface, not be silently mis-selected), but
+    the returned payload is parsed exactly once. mtime ties are broken
+    deterministically by the same ``latest_sort_key`` the store uses, so
+    the winner is reproducible rather than ``glob``-order dependent.
     """
     if not files:
         return None
@@ -94,29 +103,45 @@ def pick_latest_for_edition(
     if not _is_filterable_edition(edition):
         # Newest by mtime, no filtering — backwards-compatible with the
         # pre-S5U-731 ``load_latest_json`` behavior.
-        latest = max(files, key=lambda p: p.stat().st_mtime)
-        return _read_json(latest)
+        return _read_json(max(files, key=latest_sort_key))
 
+    return _select_edition_payload(files, edition, edition_field)
+
+
+def _select_edition_payload(
+    files: list[Path],
+    edition: str,
+    edition_field: str,
+) -> dict[str, Any] | None:
+    """Two-tier edition selection over *files*, returning the winner's payload.
+
+    Each candidate is parsed once (a full, fail-loud ``json.load`` — a
+    corrupt candidate raises here rather than being silently skipped) and
+    classified as exact-match / other-tagged / untagged. Only the winning
+    payload per tier is retained; the rest are discarded after their tag is
+    read. mtime ties are broken deterministically by ``latest_sort_key``.
+    The winner is therefore parsed exactly once and never re-read from disk.
+    """
     best_exact: dict[str, Any] | None = None
-    best_exact_mtime: float = 0.0
+    best_exact_key: tuple[float, str] | None = None
     best_untagged: dict[str, Any] | None = None
-    best_untagged_mtime: float = 0.0
+    best_untagged_key: tuple[float, str] | None = None
     has_any_tagged = False
 
     for path in files:
         data = _read_json(path)
-        tag = data.get(edition_field, "")
-        mtime = path.stat().st_mtime
+        tag = str(data.get(edition_field, ""))
+        key = latest_sort_key(path)
 
         if tag == edition:
-            if mtime > best_exact_mtime:
+            if best_exact_key is None or key > best_exact_key:
                 best_exact = data
-                best_exact_mtime = mtime
+                best_exact_key = key
         elif tag != "":
             has_any_tagged = True
-        elif mtime > best_untagged_mtime:
+        elif best_untagged_key is None or key > best_untagged_key:
             best_untagged = data
-            best_untagged_mtime = mtime
+            best_untagged_key = key
 
     if best_exact is not None:
         return best_exact
