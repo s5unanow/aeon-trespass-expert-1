@@ -5,6 +5,7 @@ import {
   useGlossary,
   useGlossaryShape,
 } from '../../src/contexts/GlossaryContext';
+import { clearGlossaryCache } from '../../src/lib/api/loadGlossary';
 import type { glossaryPayloadV1 } from '@atr/schemas';
 
 const sampleGlossary: glossaryPayloadV1.GlossaryPayloadV1 = {
@@ -63,6 +64,7 @@ describe('GlossaryContext', () => {
 
   afterEach(() => {
     fetchSpy.mockReset();
+    clearGlossaryCache();
     cleanup();
   });
 

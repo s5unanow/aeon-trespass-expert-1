@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router';
 import { loadManifest, type DocumentManifest } from '../../lib/api/loadManifest';
 import { DEFAULT_READER_LANG, langForEdition } from '../../lib/editionLang';
+import { GlossaryProvider } from '../../contexts/GlossaryContext';
 import { AppHeader } from './AppHeader';
 import { PageSidebar } from './PageSidebar';
 
@@ -94,29 +95,36 @@ export function ReaderLayout() {
   const documentTitle = formatDocumentTitle(documentId);
 
   return (
-    <div className="reader-layout">
-      <AppHeader
-        documentId={documentId}
-        edition={edition}
-        pageId={pageId}
-        documentTitle={documentTitle}
-        totalPages={pages.length}
-        currentPageIndex={currentIndex}
-        sidebarOpen={sidebarOpen}
-        onToggleSidebar={toggleSidebar}
-      />
-      <PageSidebar
-        pages={pages}
-        documentId={documentId}
-        edition={edition}
-        currentPageId={pageId}
-        pageOffset={manifest?.page_offset}
-        isOpen={sidebarOpen}
-        onClose={closeSidebar}
-      />
-      <main className="layout-content">
-        <Outlet context={{ pageOffset: manifest?.page_offset ?? 0 }} />
-      </main>
-    </div>
+    // GlossaryProvider lives here (not in ReaderPage) so the shared glossary
+    // context survives ReaderPage's `page=null` loading reset on every page
+    // turn — keeping it below ReaderPage's early return unmounted the provider
+    // and re-fetched the 213 KB bundle each navigation ("flash of unlinked
+    // text"). It depends only on documentId/edition, both layout-level params.
+    <GlossaryProvider documentId={documentId} edition={edition}>
+      <div className="reader-layout">
+        <AppHeader
+          documentId={documentId}
+          edition={edition}
+          pageId={pageId}
+          documentTitle={documentTitle}
+          totalPages={pages.length}
+          currentPageIndex={currentIndex}
+          sidebarOpen={sidebarOpen}
+          onToggleSidebar={toggleSidebar}
+        />
+        <PageSidebar
+          pages={pages}
+          documentId={documentId}
+          edition={edition}
+          currentPageId={pageId}
+          pageOffset={manifest?.page_offset}
+          isOpen={sidebarOpen}
+          onClose={closeSidebar}
+        />
+        <main className="layout-content">
+          <Outlet context={{ pageOffset: manifest?.page_offset ?? 0 }} />
+        </main>
+      </div>
+    </GlossaryProvider>
   );
 }

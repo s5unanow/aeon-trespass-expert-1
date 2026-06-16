@@ -21,8 +21,13 @@
   text-decoration-color: var(--color-link-hover);
 }
 
-/* Highlight the block matching the URL fragment (e.g. QA dashboard click-through). */
-.reader-content :target {
+/* Highlight the block matching the URL fragment (e.g. QA dashboard
+   click-through). `.anchor-highlight` is the SPA-navigation path: ReaderPage
+   toggles the class instead of re-bouncing the hash, which pushed spurious
+   history entries (S5U-1225, mirroring the glossary's S5U-584 fix). `:target`
+   is retained so a native (non-SPA) anchor load still highlights. */
+.reader-content :target,
+.reader-content .anchor-highlight {
   outline: 2px solid var(--color-accent);
   outline-offset: 4px;
   background: color-mix(in srgb, var(--color-accent) 8%, transparent);
@@ -465,6 +470,14 @@ h2.reader-heading {
 .index-empty {
   text-align: center;
   color: var(--color-text-muted);
+  padding: var(--space-8) 0;
+}
+
+/* Distinct from .index-empty: surfaces a real discovery/fetch failure rather
+   than a legitimately empty document list (S5U-1225). */
+.index-error {
+  text-align: center;
+  color: var(--color-callout-warning);
   padding: var(--space-8) 0;
 }
 

@@ -18,10 +18,12 @@ interface QaPageBadgeProps {
 export function QaPageBadge({ documentId, edition, pageId }: QaPageBadgeProps) {
   const [count, setCount] = useState<number | null>(null);
 
+  // `loadQa` is now a per-document/edition cached promise (S5U-1225), so this
+  // effect re-running on every `pageId` change costs one Map lookup, not a
+  // ~60 KB re-download — only the derived per-page count is recomputed.
   useEffect(() => {
-    const controller = new AbortController();
     let stale = false;
-    loadQa(documentId, edition, controller.signal)
+    loadQa(documentId, edition)
       .then((bundle) => {
         if (stale) return;
         const n = bundle.records.filter((r) => r.page_id === pageId && !r.waived).length;
@@ -32,7 +34,6 @@ export function QaPageBadge({ documentId, edition, pageId }: QaPageBadgeProps) {
       });
     return () => {
       stale = true;
-      controller.abort();
     };
   }, [documentId, edition, pageId]);
 

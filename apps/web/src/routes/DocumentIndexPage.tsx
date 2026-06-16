@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 import { loadDocumentIndex } from '../lib/api/loadDocumentIndex';
 import { loadManifest, type DocumentManifest } from '../lib/api/loadManifest';
 
@@ -43,6 +44,7 @@ async function discoverDocuments(): Promise<{ docId: string; edition: string }[]
 export function DocumentIndexPage() {
   const [manifests, setManifests] = useState<ManifestWithEdition[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     discoverDocuments()
@@ -67,7 +69,14 @@ export function DocumentIndexPage() {
         setManifests(unique);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      // Distinct from the empty-success branch below: this fires only when
+      // document *discovery* itself failed (e.g. the index lookup threw), not
+      // when individual manifest fetches 404'd — those are tolerated per-doc
+      // above and legitimately yield "No documents found".
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -83,6 +92,10 @@ export function DocumentIndexPage() {
           <div className="skeleton-bone skeleton-block" />
           <div className="skeleton-bone skeleton-block" />
         </div>
+      ) : error ? (
+        <p className="index-error" role="alert">
+          Could not load the document list. Check your connection and try again.
+        </p>
       ) : manifests.length === 0 ? (
         <p className="index-empty">No documents found</p>
       ) : (
@@ -101,14 +114,14 @@ export function DocumentIndexPage() {
                 aria-label={`Pages for ${formatDocumentTitle(manifest.document_id)} ${manifest.edition.toUpperCase()}`}
               >
                 {manifest.pages.map((p) => (
-                  <a
+                  <Link
                     key={p.page_id}
-                    href={`/documents/${manifest.document_id}/${manifest.edition}/${p.page_id}`}
+                    to={`/documents/${manifest.document_id}/${manifest.edition}/${p.page_id}`}
                     className="page-pill"
                     title={p.title || `Page ${formatPageNumber(p.page_id)}`}
                   >
                     {formatPageNumber(p.page_id)}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </article>

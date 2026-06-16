@@ -125,4 +125,66 @@ describe('ReaderPage', () => {
       expect(screen.queryByRole('alert')).toBeNull();
     });
   });
+
+  // --- S5U-1225: deep-link anchor highlight (replaces the :target hash bounce) ---
+
+  describe('hash anchor deep link', () => {
+    // jsdom does not implement scrollIntoView; stub it so the effect can run.
+    const scrollSpy = vi.fn();
+    const originalScroll = Element.prototype.scrollIntoView;
+
+    afterEach(() => {
+      Element.prototype.scrollIntoView = originalScroll;
+      scrollSpy.mockReset();
+    });
+
+    function mockPage() {
+      fetchSpy.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(sampleRenderPage),
+      } as Response);
+      Element.prototype.scrollIntoView = scrollSpy;
+    }
+
+    it('applies the anchor-highlight class to the target element', async () => {
+      mockPage();
+      // p0001.b001 is the first block id in the sample render page.
+      renderPage('/documents/walking_skeleton/ru/p0001#p0001.b001');
+
+      await waitFor(() => {
+        expect(screen.getByText('Проверка атаки')).toBeDefined();
+      });
+      await waitFor(() => {
+        const el = document.getElementById('p0001.b001');
+        expect(el?.className).toContain('anchor-highlight');
+      });
+      expect(scrollSpy).toHaveBeenCalled();
+    });
+
+    it('does not push spurious history entries when deep-linking to a hash', async () => {
+      mockPage();
+      const lengthBefore = window.history.length;
+
+      renderPage('/documents/walking_skeleton/ru/p0001#p0001.b001');
+
+      await waitFor(() => {
+        const el = document.getElementById('p0001.b001');
+        expect(el?.className).toContain('anchor-highlight');
+      });
+
+      // The old implementation re-bounced window.location.hash ('' then hash),
+      // pushing two history entries; the highlight-class approach pushes none.
+      expect(window.history.length).toBe(lengthBefore);
+    });
+
+    it('does not highlight anything when no hash is present', async () => {
+      mockPage();
+      renderPage('/documents/walking_skeleton/ru/p0001');
+
+      await waitFor(() => {
+        expect(screen.getByText('Проверка атаки')).toBeDefined();
+      });
+      expect(document.querySelector('.anchor-highlight')).toBeNull();
+    });
+  });
 });

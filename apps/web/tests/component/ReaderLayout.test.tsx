@@ -3,6 +3,8 @@ import { describe, expect, it, vi, afterEach, beforeEach } from 'vitest';
 import { MemoryRouter, Route, Routes, useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { ReaderLayout } from '../../src/components/layout/ReaderLayout';
+import { useGlossaryShape } from '../../src/contexts/GlossaryContext';
+import { clearGlossaryCache } from '../../src/lib/api/loadGlossary';
 
 const MANIFEST = {
   document_id: 'ato_core_v1_1',
@@ -37,6 +39,7 @@ describe('ReaderLayout', () => {
 
   afterEach(() => {
     fetchSpy.mockReset();
+    clearGlossaryCache();
     cleanup();
     document.documentElement.removeAttribute('lang');
   });
@@ -229,6 +232,42 @@ describe('ReaderLayout', () => {
 
     await waitFor(() => {
       expect(document.documentElement.lang).toBe('en');
+    });
+  });
+
+  // --- S5U-1225: GlossaryProvider lifted to the layout ---
+
+  it('provides glossary context to child routes', async () => {
+    const glossary = {
+      schema_version: 'glossary_payload.v1',
+      document_id: 'ato_core_v1_1',
+      entries: [{ concept_id: 'concept.x', preferred_term: 'X', icon_binding: 'sym.x' }],
+    };
+    fetchSpy.mockImplementation((url) => {
+      const u = String(url);
+      if (u.endsWith('glossary.json')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(glossary) } as Response);
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve(MANIFEST) } as Response);
+    });
+
+    function GlossaryProbe() {
+      const shape = useGlossaryShape();
+      return <span data-testid="glossary-entry-count">{shape.entries.length}</span>;
+    }
+
+    render(
+      <MemoryRouter initialEntries={['/documents/ato_core_v1_1/ru/p0002']}>
+        <Routes>
+          <Route path="/documents/:documentId/:edition" element={<ReaderLayout />}>
+            <Route path=":pageId" element={<GlossaryProbe />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('glossary-entry-count').textContent).toBe('1');
     });
   });
 
