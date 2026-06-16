@@ -74,7 +74,9 @@ def test_translation_implements_stage_protocol() -> None:
     # were added to the persisted translation QA record set.
     # S5U-1226 — bumped to 1.4 after translation_meta.v1 began persisting
     # ``primary_error`` (a new observable side-effect of run()).
-    assert stage.version == "1.4"
+    # S5U-1227 — bumped to 1.5 after TranslationResult became content-bearing
+    # (page_refs), changing the summary artifact shape.
+    assert stage.version == "1.5"
 
 
 def test_translation_translates_pages(tmp_path: Path) -> None:

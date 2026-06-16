@@ -44,12 +44,20 @@ from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 
 
 class StructureResult(BaseModel):
-    """Summary of structure recovery across all pages."""
+    """Summary of structure recovery across all pages.
+
+    ``page_refs`` (page_id -> content-addressed EN ``page_ir.v1.en`` path) makes
+    the summary content-bearing rather than count-only, so its own content hash
+    — threaded into the next stage's cache key via ``upstream_refs`` — changes
+    whenever any per-page EN IR changes, even at an unchanged page count. Mirrors
+    ``RenderResult.page_refs`` (S5U-1227).
+    """
 
     document_id: str
     pages_built: int = Field(ge=0)
     total_blocks: int = Field(ge=0)
     hard_pages: int = Field(ge=0, default=0)
+    page_refs: dict[str, str] = Field(default_factory=dict)
 
 
 class StructureStage:
@@ -71,7 +79,10 @@ class StructureStage:
     def version(self) -> str:
         # S5U-733 1.4 -> 1.5: _resolve_tables row re-inference + Option 2 fallback.
         # S5U-589 1.5 -> 1.6: ResolvedBlock.fallback populated on non-primary paths.
-        return "1.6"
+        # S5U-1227 1.6 -> 1.7: StructureResult carries content-bearing page_refs
+        # (was count-only), so downstream stages re-key on changed EN IR even at
+        # an unchanged page count. Bumped per .claude/rules/pipeline.md (S5U-662).
+        return "1.7"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> StructureResult:
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx, input_data))
@@ -79,6 +90,7 @@ class StructureStage:
         pages_built = 0
         total_blocks = 0
         hard_pages = 0
+        page_refs: dict[str, str] = {}
 
         # Pre-load all native pages for furniture detection (reused below)
         furniture_map = FurnitureMap()
@@ -111,17 +123,10 @@ class StructureStage:
             if is_hard:
                 hard_pages += 1
                 ctx.logger.warning(
-                    "Hard page %s (route=%s), using native-only path",
-                    page_id,
-                    route,
+                    "Hard page %s (route=%s), using native-only path", page_id, route
                 )
 
-            ctx.logger.info(
-                "Building IR for %s (builder=%s, route=%s)",
-                page_id,
-                builder,
-                route,
-            )
+            ctx.logger.info("Building IR for %s (builder=%s, route=%s)", page_id, builder, route)
             ir = self._build_page_ir(
                 ctx,
                 native,
@@ -143,7 +148,7 @@ class StructureStage:
                 page_ir=ir,
             )
 
-            ctx.artifact_store.put_json(
+            en_ref = ctx.artifact_store.put_json(
                 document_id=ctx.document_id,
                 schema_family="page_ir.v1.en",
                 scope="page",
@@ -152,18 +157,17 @@ class StructureStage:
             )
             pages_built += 1
             total_blocks += len(ir.blocks)
+            page_refs[page_id] = en_ref.relative_path
 
         ctx.logger.info(
-            "Built %d blocks across %d pages (%d hard)",
-            total_blocks,
-            pages_built,
-            hard_pages,
+            "Built %d blocks across %d pages (%d hard)", total_blocks, pages_built, hard_pages
         )
         return StructureResult(
             document_id=ctx.document_id,
             pages_built=pages_built,
             total_blocks=total_blocks,
             hard_pages=hard_pages,
+            page_refs=page_refs,
         )
 
     def _build_page_ir(
@@ -250,11 +254,7 @@ class StructureStage:
         ir_regions = segment_regions(evidence, ctx.config.structure)
         if not ir_regions:
             return [], None, evidence
-        ctx.logger.info(
-            "Segmented %d regions for %s",
-            len(ir_regions),
-            page_id,
-        )
+        ctx.logger.info("Segmented %d regions for %s", len(ir_regions), page_id)
         order = compute_reading_order(ir_regions)
         ctx.logger.info(
             "Reading order for %s: %d main-flow, %d aside edges (conf=%.2f)",
