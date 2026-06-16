@@ -46,6 +46,11 @@ Bump history:
   the exporter's two-tier ``document_version`` policy. On mixed EN/RU
   artifact dirs cached v1.8 events would still load whichever render
   is newest by mtime — potentially the wrong edition.
+- "1.9" → "1.10" (S5U-1226): the stage now folds a run-level
+  translation-fallback summary into ``qa_metrics.v1`` and emits a
+  TRANSLATION_FALLBACK_RATE_HIGH QA record when the fallback rate
+  exceeds the configured threshold. Both are new persisted side-effects
+  of ``run()``; cached v1.9 events would short-circuit them.
 """
 
 from __future__ import annotations
@@ -62,7 +67,7 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
     declare the affected outputs as cache-aware (larger refactor; see
     plan-s5u-640-641.md).
     """
-    assert QAStage().version == "1.9", (
+    assert QAStage().version == "1.10", (
         "QAStage.version must be bumped past earlier pins so pre-existing "
         "cached events invalidate and re-emit the full current output set "
         "(manifest-aware DEAD_PAGE_REF suppression, PLACEHOLDER_PROSE_LEAKED "
@@ -71,7 +76,8 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
         "CHART_TITLE_MERGE records with real document_id, the seven "
         "S5U-735 rules sourcing document_id from source_map.document_id, "
         "the S5U-736 TABLE_PARITY_* records, the S5U-730 image-rescue "
-        "publishability filter reading page_images.v1, and the S5U-731 "
+        "publishability filter reading page_images.v1, the S5U-731 "
         "edition-aware render-load that honors document_version on mixed "
-        "EN/RU artifact dirs)."
+        "EN/RU artifact dirs, and the S5U-1226 run-level translation-fallback "
+        "summary in qa_metrics + TRANSLATION_FALLBACK_RATE_HIGH record)."
     )

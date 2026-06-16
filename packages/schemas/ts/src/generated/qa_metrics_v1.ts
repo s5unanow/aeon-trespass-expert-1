@@ -18,6 +18,10 @@ export type FindingsByCodeTop10 = FindingCodeCount[];
 export type WaivedCount = number;
 export type BlockingCount = number;
 export type AvgFindingsPerPage = number;
+export type PagesWithMeta = number;
+export type FallbackPages = number;
+export type FallbackRate = number;
+export type PrimaryErrors = string[];
 
 /**
  * Per-run QA metrics artifact.
@@ -42,6 +46,7 @@ export interface QAMetricsV1 {
   waived_count?: WaivedCount;
   blocking_count?: BlockingCount;
   avg_findings_per_page?: AvgFindingsPerPage;
+  translation_fallback?: FallbackSummary;
 }
 /**
  * Counts by severity level.
@@ -61,4 +66,21 @@ export interface FindingsByLayer {
 export interface FindingCodeCount {
   code: Code;
   count?: Count;
+}
+/**
+ * Run-level translation provider-fallback aggregate (S5U-1226).
+ *
+ * The translate stage records ``fallback_used`` + ``primary_error`` per page
+ * in the ``translation_meta.v1`` artifact; the QA stage folds those into this
+ * aggregate so a whole-run quality degradation ("N/M pages used the fallback
+ * provider") is visible in the persisted QA metrics instead of being buried
+ * in per-page metadata. ``pages_with_meta`` is the denominator — only pages
+ * that actually have a translation_meta artifact count toward the rate, so a
+ * source-only (EN) QA run reports ``pages_with_meta == 0`` and a 0.0 rate.
+ */
+export interface FallbackSummary {
+  pages_with_meta?: PagesWithMeta;
+  fallback_pages?: FallbackPages;
+  fallback_rate?: FallbackRate;
+  primary_errors?: PrimaryErrors;
 }
