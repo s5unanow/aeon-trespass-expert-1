@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [main]
 
+# S5U-1224: cancel superseded runs on the SAME non-main ref so rapid
+# push-fix-push loops don't queue redundant full runs of the two longest jobs.
+# cancel-in-progress is guarded to evaluate FALSE on `refs/heads/main`: the
+# required main-HEAD-green merge check (CLAUDE.md step 9) and the post-merge
+# coordinator-ack audit (S5U-693) both depend on every main push run completing.
+# group is keyed on github.ref (distinct from visual-regression.yml's
+# `visual-regression-` group), so parent and child never cancel across groups.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   python:
     uses: ./.github/workflows/python-tests.yml

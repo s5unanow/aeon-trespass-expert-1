@@ -20,6 +20,13 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
+          # S5U-1224: cache ~/.cache/uv keyed on the resolved dependency set.
+          # cache-dependency-glob hashes uv.lock into the key, so any lockfile
+          # edit yields a fresh key (cold resolve) — a stale cache cannot mask a
+          # dependency change. On a miss, the subsequent `uv sync` cold-resolves
+          # exactly as today (pure speedup, no guard semantics depend on a hit).
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
       - name: Set up Python
         run: uv python install 3.12
@@ -56,13 +63,23 @@ jobs:
       - name: Make/doc parity check
         run: uv run python scripts/check_make_doc_parity.py
 
+      # S5U-1224: pin pnpm to version 10 (matching web-tests.yml /
+      # visual-regression.yml) instead of the unpinned `npm install -g pnpm`.
+      # action-setup runs BEFORE setup-node so pnpm is on PATH when
+      # `cache: 'pnpm'` resolves the store path (documented ordering).
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Install Node (for TS codegen check)
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'pnpm'
 
-      - name: Install pnpm
-        run: npm install -g pnpm && pnpm install
+      - name: Install JS dependencies
+        run: pnpm install
 
       - name: Check codegen freshness
         run: bash scripts/check_codegen_fresh.sh
