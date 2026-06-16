@@ -6,6 +6,7 @@ against synthetic inputs to validate safety gating logic.
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 from pathlib import Path
@@ -535,9 +536,15 @@ def _run_pre_commit_hook(
     branch guards, and Gate 0 hermetically — gates 1-8 are never reached in
     these scenarios because either Gate 0 exits first (secret staged) or the
     amend-skip exits right after Gate 0 (clean amend).
+
+    `command` may contain real newlines; the envelope is JSON-encoded via
+    json.dumps so a multi-line command round-trips through the hook's
+    `jq -r '.command'` extraction exactly as the harness would deliver it
+    (jq DECODES the JSON \\n escape back into a real newline byte — the exact
+    condition that produced the S5U-1247 fail-open).
     """
     env = {
-        "CLAUDE_TOOL_INPUT": f'{{"command": {command!r}}}'.replace("'", '"'),
+        "CLAUDE_TOOL_INPUT": json.dumps({"command": command}),
         "CLAUDE_PROJECT_DIR": str(project_dir or repo),
         "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
         "HOME": os.environ.get("HOME", str(repo)),
@@ -549,6 +556,22 @@ def _run_pre_commit_hook(
         env=env,
         timeout=30,
     )
+
+
+# Synthetic secret used to exercise Gate 0. Assembled from fragments at runtime so
+# the SOURCE line does NOT itself match the hook's content-scan regex
+# (`sk-[a-zA-Z0-9_-]{8,}`) — otherwise committing this very test file would be
+# blocked by the gate it tests (and would rely on the sub-agent harness not firing
+# the PreToolUse hook). The runtime VALUE is a contiguous `sk-…` string, so when
+# written into a staged .env it trips Gate 0 exactly as a real key would.
+_SECRET_VALUE = "sk-" + "abcdefgh12345678901224"
+_SECRET_ENV_CONTENT = f"API_KEY={_SECRET_VALUE}\n"
+
+
+def _stage_secret_env(repo: Path) -> None:
+    """Write + stage a .env carrying a synthetic sk- key (trips Gate 0)."""
+    (repo / ".env").write_text(_SECRET_ENV_CONTENT)
+    subprocess.run(["git", "-C", str(repo), "add", ".env"], check=True, capture_output=True)
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -689,3 +712,86 @@ class TestPreCommitCheckTrigger:
         assert result.returncode == 0, (
             f"empty CLAUDE_TOOL_INPUT must exit 0; stderr={result.stderr!r}"
         )
+
+
+class TestPreCommitCheckMultilineTrigger:
+    """S5U-1247: multi-line `git commit` must not skip the trigger (the fail-open).
+
+    `jq -r '.command'` DECODES a JSON \\n escape into a REAL newline byte. The
+    trigger grep is line-oriented, so before the fix a command whose `git` and
+    `commit` tokens straddled a newline — most naturally a shell line-continuation
+    `git \\<newline>commit -m x` (the shell strips the backslash-newline and runs a
+    normal `git commit`) — did NOT match, and the hook `exit 0`d before reaching
+    ANY guard, including Gate 0 (the secret scan). A worker could stage a fresh
+    .env/sk- key and commit it with zero scanning.
+
+    These tests apply the three-input discipline (.claude/rules/hooks.md):
+    happy-path (single-line still triggers), failure input (multi-line now blocks
+    the staged secret), adversarial (a multi-line non-git-commit must NOT trigger).
+    """
+
+    def test_multiline_line_continuation_commit_blocks_secret(self, tmp_path: Path) -> None:
+        """FAILURE INPUT (the bug): `git \\<newline>commit` staging a secret → BLOCKED.
+
+        Red-before: without the `tr '\\n\\r'` normalization the trigger grep skips
+        this multi-line command, the hook exits 0, and the staged secret is never
+        scanned (returncode 0, no "BLOCKED"). With the fix the command folds onto
+        one logical line, the trigger matches, and Gate 0 blocks.
+        """
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        _stage_secret_env(repo)
+        # Real newline after the line-continuation backslash, exactly as the
+        # shell line-continuation form `git \<LF>commit -m x` is delivered.
+        result = _run_pre_commit_hook(repo, "git \\\ncommit -m x")
+        assert result.returncode != 0, (
+            "multi-line `git \\<newline>commit` staging a secret must be BLOCKED by "
+            f"Gate 0; stdout={result.stdout!r} stderr={result.stderr!r}"
+        )
+        assert "BLOCKED" in result.stdout, result.stdout
+
+    def test_multiline_two_newlines_commit_blocks_secret(self, tmp_path: Path) -> None:
+        """FAILURE INPUT variant: multiple newlines between tokens still triggers."""
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        _stage_secret_env(repo)
+        result = _run_pre_commit_hook(repo, "git \\\n\\\ncommit -m x")
+        assert result.returncode != 0 and "BLOCKED" in result.stdout, (
+            f"multi-newline `git`/`commit` must reach Gate 0; stdout={result.stdout!r}"
+        )
+
+    def test_single_line_commit_still_blocks_secret(self, tmp_path: Path) -> None:
+        """HAPPY PATH: a normal single-line `git commit` still triggers Gate 0.
+
+        Regression-pins that the newline normalization does not break the
+        ordinary path.
+        """
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        _stage_secret_env(repo)
+        result = _run_pre_commit_hook(repo, "git commit -m x")
+        assert result.returncode != 0 and "BLOCKED" in result.stdout, (
+            f"single-line `git commit` must reach Gate 0; stdout={result.stdout!r}"
+        )
+
+    def test_multiline_non_git_commit_is_noop(self, tmp_path: Path) -> None:
+        """ADVERSARIAL: a multi-line command that is NOT a git commit must be a no-op.
+
+        Guards against the normalization introducing a false positive that would
+        block unrelated multi-line commands. Even with a staged secret, a
+        `echo … \\<newline> ls` command must exit 0 (the secret scan only runs for
+        git-commit commands).
+        """
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        _init_feature_repo(repo)
+        _stage_secret_env(repo)
+        result = _run_pre_commit_hook(repo, "echo hi \\\nls")
+        assert result.returncode == 0, (
+            "multi-line non-git-commit command must be a no-op exit 0 (no false "
+            f"positive); stdout={result.stdout!r} stderr={result.stderr!r}"
+        )
+        assert "BLOCKED" not in result.stdout

@@ -3,8 +3,17 @@
 # Receives CLAUDE_TOOL_INPUT as JSON with the Bash command
 set -euo pipefail
 
+# S5U-1247: normalize CR/LF to spaces (then squeeze whitespace runs) before the
+# line-oriented trigger grep so a multi-line `git checkout -b` / `git switch -c`
+# cannot straddle a line and skip the guard. This hook reads the RAW envelope (no
+# `jq` decode), so the harness today JSON-escapes any newline (harmless no-op);
+# this is defense-in-depth if a real newline ever reaches the input. The squeeze
+# (`tr -s ' '`) collapses the resulting double-space so the multi-word substring
+# trigger still matches. Sibling parity with pre-commit-check.sh.
+TOOL_INPUT_ONELINE=$(printf '%s' "${CLAUDE_TOOL_INPUT:-}" | tr '\n\r' '  ' | tr -s ' ')
+
 # Only intercept git checkout -b (branch creation)
-if ! echo "$CLAUDE_TOOL_INPUT" | grep -qE 'git checkout -b|git switch -c'; then
+if ! printf '%s' "$TOOL_INPUT_ONELINE" | grep -qE 'git checkout -b|git switch -c'; then
   exit 0
 fi
 
