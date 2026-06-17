@@ -178,10 +178,12 @@ def test_only_violating_policy_reported(corpus_cov: ModuleType) -> None:
 def test_unresolvable_base_fails_closed(
     corpus_cov: ModuleType, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    # S5U-1232: _verify_ref_exists was consolidated into scripts/_git_baseline.py
+    # and re-exported via the caller's `from _git_baseline import verify_ref_exists`.
     _init_repo(tmp_path)
     monkeypatch.chdir(tmp_path)
     with pytest.raises(SystemExit, match="cannot resolve ref"):
-        corpus_cov._verify_ref_exists("origin/nonexistent-base")
+        corpus_cov.verify_ref_exists("origin/nonexistent-base")
 
 
 def test_diff_failure_fails_closed_outside_repo(
