@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
@@ -81,6 +83,7 @@ def test_translation_implements_stage_protocol() -> None:
     assert stage.version == "1.6"
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_translation_translates_pages(tmp_path: Path) -> None:
     """TranslationStage produces RU IR after full prerequisite chain."""
     ctx = _make_ctx(tmp_path)
@@ -110,6 +113,7 @@ def test_translation_translates_pages(tmp_path: Path) -> None:
         )
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_translation_persists_metadata(tmp_path: Path) -> None:
     """TranslationStage stores translation_meta.v1 with provenance fields."""
     ctx = _make_ctx(tmp_path)
@@ -138,6 +142,7 @@ def test_translation_persists_metadata(tmp_path: Path) -> None:
         assert len(checksum) == 12
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_translation_copies_bbox_to_ru_blocks(tmp_path: Path) -> None:
     """TranslationStage copies bbox from EN source blocks to RU blocks."""
     ctx = _make_ctx(tmp_path)

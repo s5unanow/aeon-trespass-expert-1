@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
@@ -154,6 +156,7 @@ def _flat_table_ir() -> PageIRV1:
     )
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_rematerializer_preserves_row_cell_structure(tmp_path: Path) -> None:
     """RU TableBlock has the same row/cell structure as the EN source."""
     ctx = _make_ctx(tmp_path)

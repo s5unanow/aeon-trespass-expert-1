@@ -51,6 +51,7 @@ def test_publish_implements_stage_protocol() -> None:
     assert stage.version == "1.2"
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_publish_builds_release_bundle(tmp_path: Path) -> None:
     """PublishStage creates a release bundle after full pipeline."""
     ctx = _make_ctx(tmp_path)
@@ -78,6 +79,7 @@ def test_publish_builds_release_bundle(tmp_path: Path) -> None:
 # --- S5U-870 blocking-QA gate ------------------------------------------------
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_publish_refuses_on_blocking_qa(tmp_path: Path) -> None:
     """Default mode: blocking, non-waived QA refuses the publish, naming codes/pages.
 
@@ -101,6 +103,7 @@ def test_publish_refuses_on_blocking_qa(tmp_path: Path) -> None:
     assert result.artifact_ref is None
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_publish_review_only_produces_draft(tmp_path: Path) -> None:
     """--review-only (publish_review_only=True) builds a draft over blocking QA.
 
@@ -118,6 +121,7 @@ def test_publish_review_only_produces_draft(tmp_path: Path) -> None:
     assert result.files_published >= 1
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_publish_review_only_does_not_flip_for_non_blocking(tmp_path: Path) -> None:
     """A non-blocking run is never marked a draft even with review_only set.
 
@@ -134,6 +138,7 @@ def test_publish_review_only_does_not_flip_for_non_blocking(tmp_path: Path) -> N
     assert not (result.blocking and result.review_only)
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_publish_fails_closed_when_no_qa_summary(tmp_path: Path) -> None:
     """G1: a run with render but no QA stage event refuses (not pass-by-absent).
 
@@ -154,6 +159,7 @@ def test_publish_fails_closed_when_no_qa_summary(tmp_path: Path) -> None:
         PublishStage().run(ctx, None)
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_publish_cache_hit_does_not_serve_stale_pass_on_blocking(tmp_path: Path) -> None:
     """S5U-662: a blocking run can never be served from a cached 'publish succeeded'.
 

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
@@ -28,6 +30,9 @@ from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.qa_summary_v1 import QASummaryV1
 from atr_schemas.review_pack_v1 import ReviewPackV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
+
+# S5U-1230: full ingest→…→render chain; excluded from the fast pre-commit subset.
+pytestmark = pytest.mark.slow
 
 
 def _repo_root() -> Path:

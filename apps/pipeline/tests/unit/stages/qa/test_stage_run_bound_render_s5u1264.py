@@ -18,6 +18,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.events import record_stage_finish, record_stage_start
@@ -85,6 +87,7 @@ def _page_ids(ctx: StageContext) -> list[str]:
     return sorted(p.name for p in en_dir.iterdir() if p.is_dir())
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_qa_loads_run_bound_render_over_mtime_newer(tmp_path: Path) -> None:
     """QA evaluates the current run's render (by ref), NOT a newer-mtime stray.
 
@@ -179,6 +182,7 @@ def test_resolve_run_page_refs_empty_when_artifact_missing(tmp_path: Path) -> No
     assert resolve_run_page_refs(ctx) == {}
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_qa_runs_with_mtime_fallback_when_no_render_event(tmp_path: Path) -> None:
     """QA still produces a summary when the run has no render index (fail-safe).
 
@@ -235,6 +239,7 @@ def _forge_prior_version_qa_event(ctx: StageContext, prior_version: str) -> str:
     return prior_key
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_version_bump_invalidates_prior_qa_cache_for_run_bound_render(
     tmp_path: Path,
 ) -> None:
