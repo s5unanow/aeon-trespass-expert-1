@@ -13,13 +13,22 @@ import { test, expect, type Page, type ConsoleMessage } from '@playwright/test';
 // Console error collector — shared across all tests
 // ---------------------------------------------------------------------------
 
+// The manifest fetch (loadManifest) is best-effort: it probes an
+// edition-specific then a root `manifest.json`, and a 404 on either is a normal
+// fallback path — that specific URL is the ONLY resource-load failure we ignore.
+// We match on msg.location().url (the actual failing resource), NOT the generic
+// "Failed to load resource" text, so genuine 404s on any other URL still fail
+// the test (S5U-1234 defect 2: the old text filter swallowed every 404).
+function isAllowlistedResourceError(msg: ConsoleMessage): boolean {
+  const url = msg.location()?.url ?? '';
+  return url.endsWith('/manifest.json');
+}
+
 function collectConsoleErrors(page: Page): ConsoleMessage[] {
   const errors: ConsoleMessage[] = [];
   page.on('console', (msg) => {
     if (msg.type() === 'error') {
-      // Ignore 404s from manifest fetches — layout sidebar is best-effort
-      const text = msg.text();
-      if (text.includes('manifest.json') || text.includes('Failed to load resource')) return;
+      if (isAllowlistedResourceError(msg)) return;
       errors.push(msg);
     }
   });

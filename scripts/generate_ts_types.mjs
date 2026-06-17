@@ -18,44 +18,29 @@ const ROOT = join(__dirname, '..');
 const SCHEMA_DIR = join(ROOT, 'packages', 'schemas', 'jsonschema');
 const OUTPUT_DIR = join(ROOT, 'packages', 'schemas', 'ts', 'src', 'generated');
 
-// Map from schema file stem to the primary exported type name
-const PRIMARY_TYPES = {
-  assistant_citation_v1: 'AssistantCitationV1',
-  assistant_pack_v1: 'AssistantPackV1',
-  asset_class_v1: 'AssetClassV1',
-  asset_occurrence_v1: 'AssetOccurrenceV1',
-  asset_registry_v1: 'AssetRegistryV1',
-  asset_v1: 'AssetV1',
-  build_manifest_v1: 'BuildManifestV1',
-  concept_registry_v1: 'ConceptRegistryV1',
-  feedback_submission_v1: 'FeedbackSubmissionV1',
-  glossary_payload_v1: 'GlossaryPayloadV1',
-  layout_page_v1: 'LayoutPageV1',
-  native_page_v1: 'NativePageV1',
-  nav_payload_v1: 'NavPayloadV1',
-  page_evidence_v1: 'PageEvidenceV1',
-  page_ir_v1: 'PageIRV1',
-  patch_set_v1: 'PatchSetV1',
-  public_qa_record_set_v1: 'PublicQARecordSetV1',
-  public_qa_summary_v1: 'PublicQASummaryV1',
-  qa_metrics_v1: 'QAMetricsV1',
-  qa_record_v1: 'QARecordV1',
-  qa_summary_v1: 'QASummaryV1',
-  render_page_v1: 'RenderPageV1',
-  resolved_page_v1: 'ResolvedPageV1',
-  review_pack_v1: 'ReviewPackV1',
-  rule_chunk_v1: 'RuleChunkV1',
-  run_manifest_v1: 'RunManifestV1',
-  search_docs_v1: 'SearchDocsV1',
-  source_manifest_v1: 'SourceManifestV1',
-  symbol_catalog_v1: 'SymbolCatalogV1',
-  symbol_match_set_v1: 'SymbolMatchSetV1',
-  translation_batch_v1: 'TranslationBatchV1',
-  translation_result_v1: 'TranslationResultV1',
-  translation_style_critic_v1: 'TranslationStyleCriticPageV1',
-  translation_style_repair_v1: 'TranslationStyleRepairPageV1',
-  waiver_set_v1: 'WaiverSetV1',
-};
+/**
+ * Derive the primary exported type name for a schema, content-derived from its
+ * `title` field (the same value `json-schema-to-typescript` uses as the root
+ * type name). This replaces the former hand-maintained `PRIMARY_TYPES` map,
+ * which silently skipped any schema not listed in it (5 existing schemas were
+ * being dropped — S5U-1234). Fail loud, not silent: a schema with no usable
+ * `title` throws rather than being quietly omitted from the direct exports.
+ *
+ * @param {string} stem schema file stem, e.g. `native_page_v1`
+ * @param {{ title?: unknown }} schema parsed JSON Schema object
+ * @returns {string} the primary type name (the schema `title`)
+ */
+export function derivePrimaryType(stem, schema) {
+  const title = schema?.title;
+  if (typeof title !== 'string' || title.trim() === '') {
+    throw new Error(
+      `Schema '${stem}.schema.json' has no usable 'title' — cannot derive a ` +
+        `primary TypeScript type name. Add a title to the Pydantic model (or ` +
+        `its schema) so codegen can export it; do not silently skip it.`,
+    );
+  }
+  return title;
+}
 
 async function main() {
   await mkdir(OUTPUT_DIR, { recursive: true });
@@ -63,6 +48,10 @@ async function main() {
   const files = (await readdir(SCHEMA_DIR)).filter((f) => f.endsWith('.schema.json'));
 
   const exportLines = [];
+  // Direct top-level type exports — one per schema, content-derived from the
+  // schema `title`. derivePrimaryType throws (→ non-zero exit) on any schema
+  // without a usable title, so no schema is ever silently skipped (S5U-1234).
+  const directExports = [];
 
   for (const file of files.sort()) {
     const schemaPath = join(SCHEMA_DIR, file);
@@ -70,7 +59,8 @@ async function main() {
     const schema = JSON.parse(raw);
 
     const tsName = basename(file, '.schema.json');
-    const ts = await compile(schema, schema.title || tsName, {
+    const primary = derivePrimaryType(tsName, schema);
+    const ts = await compile(schema, primary, {
       bannerComment: '/* Auto-generated from JSON Schema — do not edit */\n',
       additionalProperties: false,
       style: { semi: true, singleQuote: true },
@@ -83,16 +73,7 @@ async function main() {
     // Use namespace-style re-export to avoid name collisions
     const camelName = tsName.replace(/_([a-z0-9])/g, (_, c) => c.toUpperCase());
     exportLines.push(`export * as ${camelName} from './generated/${tsName}';`);
-  }
-
-  // Also export the primary types directly for convenience
-  const directExports = [];
-  for (const file of files.sort()) {
-    const tsName = basename(file, '.schema.json');
-    const primary = PRIMARY_TYPES[tsName];
-    if (primary) {
-      directExports.push(`export type { ${primary} } from './generated/${tsName}';`);
-    }
+    directExports.push(`export type { ${primary} } from './generated/${tsName}';`);
   }
 
   const indexPath = join(OUTPUT_DIR, '..', 'index.ts');
@@ -108,7 +89,11 @@ async function main() {
   console.log(`  wrote packages/schemas/ts/src/index.ts`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Run only when invoked directly (`node scripts/generate_ts_types.mjs`), not
+// when imported by a test for `derivePrimaryType`.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
