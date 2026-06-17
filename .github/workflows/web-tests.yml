@@ -8,26 +8,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # S5U-1233: full history so the docs-only detector can diff
+          # origin/<base_ref>...HEAD. A shallow checkout would make the diff
+          # unresolvable, which the detector fails CLOSED on (docs_only=false →
+          # full run). fetch-depth:0 lets a genuine docs-only PR short-circuit.
+          fetch-depth: 0
+
+      # S5U-1233: in-job change detection. For a pull_request whose change set
+      # is non-empty AND every file is a *.md doc, the heavy steps below
+      # short-circuit to a GREEN result (this required check still POSTS
+      # success — never `paths:`/`paths-ignore:`, which would leave it pending
+      # and permanently block merge). The detector (scripts/check_docs_only.py)
+      # is conservative (inverted Rule G2: docs-only ⇔ every file is *.md) and
+      # fail-closed (Rule G1: indeterminate diff → docs_only=false → full run).
+      # It runs ONLY for pull_request events; push events (incl. main) skip it,
+      # leaving docs_only unset so the heavy steps always run on push.
+      - name: Detect docs-only change set
+        id: docs_only
+        if: github.event_name == 'pull_request'
+        env:
+          PYTHONPATH: scripts
+        run: |
+          python3 scripts/check_docs_only.py \
+            --base "origin/${{ github.base_ref }}" --head HEAD
 
       # S5U-1224: pnpm/action-setup runs BEFORE setup-node so pnpm is on PATH
       # when `cache: 'pnpm'` resolves the store path (documented ordering).
       - name: Install pnpm
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         uses: pnpm/action-setup@v4
 
       - name: Setup Node
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
       - name: Install dependencies
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: pnpm install
 
       - name: Lint
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: pnpm -r run lint
 
       - name: Typecheck
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: pnpm -r run typecheck
 
       - name: Test
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: pnpm -r run test

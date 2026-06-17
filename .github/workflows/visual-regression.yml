@@ -22,19 +22,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # S5U-1233: full history so the docs-only detector can diff
+          # origin/<base_ref>...HEAD. Shallow → detector fails CLOSED
+          # (docs_only=false → full run). fetch-depth:0 lets a genuine
+          # docs-only PR short-circuit this Playwright job.
+          fetch-depth: 0
+
+      # S5U-1233: in-job change detection. A pure *.md docs PR has zero
+      # rendering impact, so the Playwright build + e2e/visual steps below
+      # short-circuit to a GREEN result for it. This required check still
+      # POSTS success — never `paths:`/`paths-ignore:` (which would leave the
+      # context pending and permanently block merge). The detector
+      # (scripts/check_docs_only.py) is conservative (inverted Rule G2:
+      # docs-only ⇔ every changed file is *.md) and fail-closed (Rule G1:
+      # indeterminate diff → docs_only=false → full run). It runs ONLY for
+      # pull_request events; on push the heavy steps always run.
+      - name: Detect docs-only change set
+        id: docs_only
+        if: github.event_name == 'pull_request'
+        env:
+          PYTHONPATH: scripts
+        run: |
+          python3 scripts/check_docs_only.py \
+            --base "origin/${{ github.base_ref }}" --head HEAD
 
       # S5U-1224: pnpm/action-setup runs BEFORE setup-node so pnpm is on PATH
       # when `cache: 'pnpm'` resolves the store path (documented ordering).
       - name: Install pnpm
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         uses: pnpm/action-setup@v4
 
       - name: Setup Node
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
       - name: Install dependencies
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: pnpm install
 
       # S5U-1224: cache the Chromium download keyed on the resolved
@@ -45,19 +72,23 @@ jobs:
       # correctness never depends on a hit (pure speedup).
       - name: Resolve Playwright version
         id: pw
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         working-directory: apps/web
         run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
 
       - name: Install Playwright browsers
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: pnpm --filter @atr/web exec playwright install --with-deps chromium
 
       - name: Build
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: pnpm --filter @atr/web run build
 
       # Defense in depth. The primary check is `visual-gate-scope / scan`
@@ -67,6 +98,7 @@ jobs:
       # S5U-608 for the full threat model (flag enumeration intentionally
       # not inlined here to avoid tripping the visual-gate-scope scanner).
       - name: Guard against in-CI baseline regeneration
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: bash scripts/check_test_e2e_flags.sh
 
       # S5U-657: implements bullet 4 of S5U-608's fix sketch — block
@@ -75,14 +107,17 @@ jobs:
       # as a job-step inside the already-required `visual-regression /
       # visual` job; no branch-protection edit needed.
       - name: Setup Python
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Block unjustified per-test maxDiffPixelRatio overrides
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         run: python scripts/check_visual_test_overrides.py apps/web/tests/e2e
 
       - name: Run e2e and visual regression tests
+        if: github.event_name != 'pull_request' || steps.docs_only.outputs.docs_only != 'true'
         # CI=true (set by GitHub Actions automatically) makes Playwright fail
         # when a baseline PNG is missing instead of silently creating one.
         run: pnpm --filter @atr/web run test:e2e
