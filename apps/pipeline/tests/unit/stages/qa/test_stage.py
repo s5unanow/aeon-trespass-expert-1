@@ -118,7 +118,12 @@ def test_qa_implements_stage_protocol() -> None:
     # 1.9 → 1.10 in S5U-1226: the stage folds a run-level translation-fallback
     # summary into qa_metrics.v1 and emits a TRANSLATION_FALLBACK_RATE_HIGH
     # record when the fallback rate exceeds the configured threshold.
-    assert stage.version == "1.10"
+    # 1.10 → 1.11 in S5U-1264: ``_load_render`` / ``_filter_publishable_pages``
+    # now select each per-page render by its run-id-bound ref
+    # (``RenderResult.page_refs``) instead of newest-by-mtime; cached v1.10
+    # events would feed QA a different run's mtime-winner render on a
+    # copied / multi-run store.
+    assert stage.version == "1.11"
 
 
 def test_qa_persists_summary_clean_pipeline(tmp_path: Path) -> None:

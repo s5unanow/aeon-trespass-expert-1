@@ -51,6 +51,15 @@ Bump history:
   TRANSLATION_FALLBACK_RATE_HIGH QA record when the fallback rate
   exceeds the configured threshold. Both are new persisted side-effects
   of ``run()``; cached v1.9 events would short-circuit them.
+- "1.10" → "1.11" (S5U-1264): ``_load_render`` and
+  ``_filter_publishable_pages`` now select each per-page ``render_page.v1``
+  by its **run-id-bound** ref (``RenderResult.page_refs`` resolved from the
+  current run's render stage event) instead of newest-by-mtime. On a copied
+  / multi-run store cached v1.10 events would still feed QA the
+  mtime-winner render — potentially a different run's page — so the bump
+  forces re-evaluation under the run-bound selection. No new artifact
+  write; the bump is for selection-behavior cache-correctness (mirrors
+  the S5U-731 render-selection bump).
 """
 
 from __future__ import annotations
@@ -67,7 +76,7 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
     declare the affected outputs as cache-aware (larger refactor; see
     plan-s5u-640-641.md).
     """
-    assert QAStage().version == "1.10", (
+    assert QAStage().version == "1.11", (
         "QAStage.version must be bumped past earlier pins so pre-existing "
         "cached events invalidate and re-emit the full current output set "
         "(manifest-aware DEAD_PAGE_REF suppression, PLACEHOLDER_PROSE_LEAKED "
@@ -78,6 +87,7 @@ def test_qa_stage_version_is_bumped_for_metrics_emission() -> None:
         "the S5U-736 TABLE_PARITY_* records, the S5U-730 image-rescue "
         "publishability filter reading page_images.v1, the S5U-731 "
         "edition-aware render-load that honors document_version on mixed "
-        "EN/RU artifact dirs, and the S5U-1226 run-level translation-fallback "
-        "summary in qa_metrics + TRANSLATION_FALLBACK_RATE_HIGH record)."
+        "EN/RU artifact dirs, the S5U-1226 run-level translation-fallback "
+        "summary in qa_metrics + TRANSLATION_FALLBACK_RATE_HIGH record, and "
+        "the S5U-1264 run-id-bound per-page render selection)."
     )

@@ -55,6 +55,8 @@ from atr_schemas.render_page_v1 import (
 )
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
+from ._render_binding_helpers import rebind_run_render
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[6]
@@ -223,6 +225,8 @@ def test_qa_manifest_includes_image_only_pages_via_page_images(tmp_path: Path) -
     _seed_empty_render(ctx, "p0999", page_number=999)
     _seed_page_images_manifest(ctx, "p0999", page_number=999, width_px=200, height_px=200)
     _seed_cross_ref_render(ctx, real_page_id, target_page=999)
+    # S5U-1264 — bind out-of-band render seeds into the run's render index.
+    rebind_run_render(ctx, [real_page_id, "p0999"])
 
     result = execute_stage(QAStage(), ctx)
     assert result.success
@@ -259,6 +263,8 @@ def test_qa_dead_ref_still_fires_when_no_image_no_render(tmp_path: Path) -> None
 
     # Reference a page (1234) we never seed at all.
     _seed_cross_ref_render(ctx, real_page_id, target_page=1234)
+    # S5U-1264 — bind the out-of-band cross-ref render into the run's index.
+    rebind_run_render(ctx, [real_page_id])
 
     result = execute_stage(QAStage(), ctx)
     assert result.success
@@ -298,6 +304,8 @@ def test_qa_manifest_excludes_pages_with_subthreshold_images(tmp_path: Path) -> 
     _seed_empty_render(ctx, "p0999", page_number=999)
     _seed_page_images_manifest(ctx, "p0999", page_number=999, width_px=60, height_px=60)
     _seed_cross_ref_render(ctx, real_page_id, target_page=999)
+    # S5U-1264 — bind out-of-band render seeds into the run's render index.
+    rebind_run_render(ctx, [real_page_id, "p0999"])
 
     result = execute_stage(QAStage(), ctx)
     assert result.success

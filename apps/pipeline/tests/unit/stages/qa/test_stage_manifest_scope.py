@@ -44,6 +44,8 @@ from atr_schemas.render_page_v1 import (
 )
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
+from ._render_binding_helpers import rebind_run_render
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[6]
@@ -155,6 +157,9 @@ def test_qa_manifest_respects_full_page_set_under_page_filter(tmp_path: Path) ->
         entity_id=real_page_id,
         data=render_page,
     )
+    # S5U-1264 — make the out-of-band render seeds part of the run's render
+    # index so QA's run-bound selection reads them (not the RenderStage original).
+    rebind_run_render(ctx, [real_page_id, "p0999"])
 
     ctx.page_filter = frozenset({real_page_id})
 
@@ -249,6 +254,8 @@ def test_qa_manifest_excludes_empty_non_facsimile_pages(tmp_path: Path) -> None:
         entity_id=real_page_id,
         data=ref_render,
     )
+    # S5U-1264 — bind the out-of-band render seeds into the run's render index.
+    rebind_run_render(ctx, [real_page_id, "p0999"])
 
     result = execute_stage(QAStage(), ctx)
     assert result.success
