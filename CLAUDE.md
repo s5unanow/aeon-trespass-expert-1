@@ -24,7 +24,8 @@ docs/                Architecture docs (read on demand, not memorized)
 
 ```bash
 make bootstrap                # Install all deps (uv sync + pnpm install)
-make lint                     # ruff check + ruff format --check + mypy + import-linter + file-length + fixture-manifest + make/doc parity + codegen freshness + pnpm lint
+make lint                     # ruff check + ruff format --check + mypy + import-linter + file-length + fixture-manifest + instruction-drift + make/doc parity + codegen freshness + pnpm lint
+make check                    # Aggregate: lint + typecheck + test (the canonical local "definition of done")
 make typecheck test codegen   # mypy + tsc / all tests / regenerate JSON Schema + TS types from Pydantic
 make check-codegen            # Verify generated schemas match Pydantic sources
 make verify-branch-protection # Audit live main branch protection against workflow policy
@@ -103,7 +104,7 @@ All work is tracked in **Linear** (project **ATE1**, team **S5U**). Every change
 - [ ] **Coverage table** — required when the rule fires (table below). Full format in `.claude/prompts/linear-conventions.md` § "Coverage table format".
 - [ ] **No task-created tech debt or shortcuts remain** — before PR, re-read `git diff main...HEAD` and remove any shortcuts introduced by this branch: temporary code, TODO/FIXME placeholders, duplicated one-off logic, hardcoded test-only assumptions, swallowed errors, skipped validation, narrow parsing where a structured API exists, or incomplete cleanup. If a tradeoff is intentionally deferred, it must be explicitly documented in the Linear issue/PR and linked to a follow-up issue; otherwise it is a blocker.
 - [ ] No violations of the **NEVER** list (see below)
-- [ ] Local gates pass: `make lint && make typecheck && make test`
+- [ ] Local gates pass: `make check` (aggregate of `make lint && make typecheck && make test`)
 - [ ] CI green after push (all 18 gates — local green alone is not sufficient)
 - [ ] If adding/modifying a safety gate: adversarial scenarios documented in `tmp/plan-s5u-<NUMBER>.md` and each one either holds or has been fixed
 

@@ -135,6 +135,7 @@ _DOC_ALIASES: dict[str, frozenset[str]] = {
     "validate_fixture_manifest": frozenset({"fixture-manifest", "validate-fixtures", "fixtures"}),
     "check_codegen_fresh": frozenset({"codegen", "codegen-freshness", "codegen-fresh"}),
     "check_file_length": frozenset({"file-length"}),
+    "check_instruction_drift": frozenset({"instruction-drift", "instruction_drift"}),
     "check_make_doc_parity": frozenset({"make-doc-parity", "make/doc-parity", "doc-parity"}),
     "lint-imports": frozenset({"import-linter", "import-linter,", "imports"}),
     "pnpm": frozenset({"pnpm-lint", "oxlint"}),
