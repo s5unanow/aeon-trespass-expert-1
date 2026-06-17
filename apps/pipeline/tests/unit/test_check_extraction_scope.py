@@ -42,6 +42,24 @@ def guard(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
     sys.modules.pop("check_extraction_scope", None)
 
 
+@pytest.fixture()
+def git_baseline(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
+    """Import the shared scripts/_git_baseline.py helper (S5U-1232).
+
+    `get_changed_files` was extracted out of check_extraction_scope.py into
+    this shared module, so the subprocess-failure unit tests below now patch
+    and call the consolidated helper directly.
+    """
+    monkeypatch.syspath_prepend(str(SCRIPT_DIR))
+    spec = importlib.util.spec_from_file_location("_git_baseline", SCRIPT_DIR / "_git_baseline.py")
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["_git_baseline"] = mod
+    spec.loader.exec_module(mod)
+    yield mod
+    sys.modules.pop("_git_baseline", None)
+
+
 def _run_git_cmd(repo: Path, *args: str) -> None:
     env = {
         "GIT_AUTHOR_NAME": "Test",
@@ -186,11 +204,12 @@ def test_shallow_checkout_hard_errors(tmp_path: Path) -> None:
 
 
 def test_diff_subprocess_failure_hard_errors(
-    guard: ModuleType, monkeypatch: pytest.MonkeyPatch
+    git_baseline: ModuleType, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """S5U-686 / G1: if BOTH `git diff A...B` and `git diff A B` fail
-    (non-zero exit), the guard must raise SystemExit — not silently
-    return []. Simulated via monkeypatched subprocess.run.
+    (non-zero exit), the shared helper must raise SystemExit — not silently
+    return []. Simulated via monkeypatched subprocess.run. (S5U-1232: the
+    helper now lives in scripts/_git_baseline.py.)
     """
 
     class _FakeCompleted:
@@ -203,18 +222,19 @@ def test_diff_subprocess_failure_hard_errors(
         # Both primary and fallback git diff invocations fail.
         return _FakeCompleted(returncode=128, stderr="fatal: bad revision 'X...Y'")
 
-    monkeypatch.setattr(guard.subprocess, "run", fake_run)
+    monkeypatch.setattr(git_baseline.subprocess, "run", fake_run)
     with pytest.raises(SystemExit) as excinfo:
-        guard.get_changed_files("X", "Y")
+        git_baseline.get_changed_files("X", "Y")
     assert "git diff failed" in str(excinfo.value)
 
 
 def test_diff_primary_fails_fallback_succeeds_is_carve_out(
-    guard: ModuleType, monkeypatch: pytest.MonkeyPatch
+    git_baseline: ModuleType, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """S5U-686 legitimate carve-out (A6 in plan): disjoint histories mean
     `A...B` has no merge-base and fails, but `A B` still works. We must NOT
-    hard-fail in this case — we must return the fallback output.
+    hard-fail in this case — we must return the fallback output. (S5U-1232:
+    the helper now lives in scripts/_git_baseline.py.)
     """
 
     class _FakeCompleted:
@@ -233,5 +253,5 @@ def test_diff_primary_fails_fallback_succeeds_is_carve_out(
         # fallback `A B` succeeds
         return _FakeCompleted(returncode=0, stdout="configs/qa/thresholds.toml\n")
 
-    monkeypatch.setattr(guard.subprocess, "run", fake_run)
-    assert guard.get_changed_files("X", "Y") == ["configs/qa/thresholds.toml"]
+    monkeypatch.setattr(git_baseline.subprocess, "run", fake_run)
+    assert git_baseline.get_changed_files("X", "Y") == ["configs/qa/thresholds.toml"]

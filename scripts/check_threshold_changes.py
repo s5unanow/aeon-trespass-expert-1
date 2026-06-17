@@ -22,6 +22,8 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
+from _git_baseline import verify_ref_exists
+
 THRESHOLDS_PATH = "configs/qa/thresholds.toml"
 
 # S5U-643: per-finding commit-message sentinel.
@@ -61,19 +63,6 @@ class ThresholdEntry:
 
 def _run_git(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(["git", *args], capture_output=True, text=True, check=False)
-
-
-def _verify_ref_exists(ref: str) -> None:
-    """S5U-642: fail-closed if `ref` doesn't resolve (shallow-checkout guard)."""
-    result = _run_git("rev-parse", "--verify", f"{ref}^{{commit}}")
-    if result.returncode != 0:
-        raise SystemExit(
-            f"ERROR: cannot resolve ref '{ref}' to a commit.\n"
-            "  This usually means the CI checkout is shallow and the base\n"
-            "  branch is unreachable. Set `fetch-depth: 0` on the\n"
-            "  actions/checkout step (see .github/workflows/python-tests.yml).\n"
-            f"  git rev-parse stderr: {result.stderr.strip()}"
-        )
 
 
 def _git_show(ref: str, path: str) -> str | None:
@@ -341,8 +330,8 @@ def main() -> int:
 
     # S5U-642: resolve both refs BEFORE attempting `git show`; shallow
     # checkouts otherwise present as "every threshold is net-new."
-    _verify_ref_exists(args.base)
-    _verify_ref_exists(args.head)
+    verify_ref_exists(args.base)
+    verify_ref_exists(args.head)
 
     base_text = _git_show(args.base, THRESHOLDS_PATH)
     head_text = _git_show(args.head, THRESHOLDS_PATH)

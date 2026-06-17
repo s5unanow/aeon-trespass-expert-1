@@ -45,11 +45,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import subprocess
 import sys
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
+
+from _git_baseline import get_changed_files, verify_ref_exists
 
 DEFAULT_CORPUS_DIR = Path("apps/pipeline/tests/safety_gate_corpus")
 
@@ -61,63 +62,6 @@ class Policy:
     name: str
     corpus_rel: str
     detector_sources: tuple[str, ...]
-
-
-def _verify_ref_exists(ref: str, cwd: str | None = None) -> None:
-    """Fail-closed if ``ref`` does not resolve to a commit (Rule G1).
-
-    A shallow CI checkout leaves the base ref unreachable; an unverified diff
-    then silently returns empty and the guard fails open. Hard-fail instead.
-    ``cwd`` pins the git invocation to the repo root so it cannot diverge from
-    the ``--repo-root`` used to compute corpus-relative paths.
-    """
-    result = subprocess.run(
-        ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
-        capture_output=True,
-        text=True,
-        check=False,
-        cwd=cwd,
-    )
-    if result.returncode != 0:
-        raise SystemExit(
-            f"ERROR: cannot resolve ref '{ref}' to a commit.\n"
-            "  This usually means the CI checkout is shallow and the ref is\n"
-            "  unreachable. Set `fetch-depth: 0` on actions/checkout, or pass\n"
-            "  --base / --head explicitly.\n"
-            f"  git rev-parse stderr: {result.stderr.strip()}"
-        )
-
-
-def get_changed_files(base: str, head: str, cwd: str | None = None) -> set[str]:
-    """Repo-relative paths changed between ``base`` and ``head`` (Rule G1).
-
-    Fails closed when BOTH the merge-base (``A...B``) and direct (``A B``)
-    diffs fail — never silently treats subprocess failure as "no changes."
-    ``cwd`` pins the git invocation to the repo root (see ``_verify_ref_exists``).
-    """
-    primary = subprocess.run(
-        ["git", "diff", "--name-only", f"{base}...{head}"],
-        capture_output=True,
-        text=True,
-        check=False,
-        cwd=cwd,
-    )
-    if primary.returncode == 0:
-        return {line.strip() for line in primary.stdout.splitlines() if line.strip()}
-    fallback = subprocess.run(
-        ["git", "diff", "--name-only", base, head],
-        capture_output=True,
-        text=True,
-        check=False,
-        cwd=cwd,
-    )
-    if fallback.returncode == 0:
-        return {line.strip() for line in fallback.stdout.splitlines() if line.strip()}
-    raise SystemExit(
-        f"ERROR: git diff failed for both '{base}...{head}' and '{base} {head}'.\n"
-        f"  primary stderr: {primary.stderr.strip()}\n"
-        f"  fallback stderr: {fallback.stderr.strip()}"
-    )
 
 
 def load_policies(repo_root: Path, corpus_dir: Path) -> list[Policy]:
@@ -196,9 +140,9 @@ def main(argv: list[str] | None = None) -> int:
     # Pin git to repo_root so the diff cannot diverge from the root used to
     # compute corpus-relative paths (review NIT: CWD vs --repo-root).
     git_cwd = str(repo_root)
-    _verify_ref_exists(args.base, cwd=git_cwd)
-    _verify_ref_exists(args.head, cwd=git_cwd)
-    changed = get_changed_files(args.base, args.head, cwd=git_cwd)
+    verify_ref_exists(args.base, cwd=git_cwd)
+    verify_ref_exists(args.head, cwd=git_cwd)
+    changed = set(get_changed_files(args.base, args.head, cwd=git_cwd))
     policies = load_policies(repo_root, args.corpus_dir)
 
     covered = ", ".join(p.name for p in policies) or "(none)"

@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import TypedDict
 
 from _erosion_report_fmt import print_report
+from _git_baseline import get_changed_files
 from _hotspot_budgets import (
     BudgetViolation,
     HotspotConfig,
@@ -124,23 +125,6 @@ def analyze_source(source: str) -> list[FunctionMetrics]:
 
 
 # -- Git helpers ---------------------------------------------------------------
-
-
-def get_changed_files(base: str, head: str) -> list[str]:
-    result = subprocess.run(
-        ["git", "diff", "--name-only", f"{base}...{head}"],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if result.returncode != 0:
-        result = subprocess.run(
-            ["git", "diff", "--name-only", base, head],
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-    return [ln.strip() for ln in result.stdout.splitlines() if ln.strip()]
 
 
 def get_file_at_ref(ref: str, path: str) -> str | None:
