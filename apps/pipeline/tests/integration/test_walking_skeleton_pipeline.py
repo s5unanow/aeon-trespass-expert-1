@@ -6,6 +6,8 @@ This test proves the architecture by running the full chain:
 
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.services.llm.mock_translator import MockTranslator
 from atr_pipeline.services.pdf.rasterizer import render_page_png
@@ -20,6 +22,10 @@ from atr_pipeline.stages.translation.planner import build_translation_batch
 from atr_pipeline.stages.translation.validator import validate_translation
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import PageIRV1
+
+# S5U-1230: full-pipeline-chain integration tests — excluded from the
+# fast pre-commit subset via `-m "not slow"`. CI runs the full suite.
+pytestmark = pytest.mark.slow
 
 
 def _repo_root() -> Path:

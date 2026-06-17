@@ -19,6 +19,8 @@ import sys
 from pathlib import Path
 from types import ModuleType
 
+import pytest
+
 from atr_pipeline.runner.executor import execute_stage
 from atr_pipeline.stages.publish.qa_gate import QAGateResult
 from atr_pipeline.stages.publish.stage import PublishStage
@@ -30,6 +32,10 @@ from ._publish_fixtures import (
     run_prerequisites,
     seed_blocking_summary,
 )
+
+# S5U-1230: full-pipeline-chain integration tests — excluded from the
+# fast pre-commit subset via `-m "not slow"`. CI runs the full suite.
+pytestmark = pytest.mark.slow
 
 
 def _load_export_gate_module() -> ModuleType:

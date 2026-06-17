@@ -103,6 +103,7 @@ def test_clean_repo_passes(tmp_path: Path) -> None:
     assert result.returncode == 0, f"stdout={result.stdout}\nstderr={result.stderr}"
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_real_repo_is_clean() -> None:
     """The actual repository must pass the fallback guard."""
     result = subprocess.run(

@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.services.pdf.rasterizer import render_page_png
 from atr_pipeline.stages.extract_native.pymupdf_extractor import extract_native_page
 from atr_pipeline.stages.symbols.catalog_loader import load_symbol_catalog
@@ -15,6 +17,7 @@ def _repo_root() -> Path:
 FIXTURE_DIR = _repo_root() / "packages" / "fixtures" / "sample_documents" / "walking_skeleton"
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_match_finds_progress_icon(tmp_path: Path) -> None:
     """Template matching finds sym.progress on the walking skeleton page."""
     pdf_path = FIXTURE_DIR / "source" / "sample_page_01.pdf"
@@ -44,6 +47,7 @@ def test_match_finds_progress_icon(tmp_path: Path) -> None:
     assert match.bbox.y0 > 0
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_match_with_template_cache(tmp_path: Path) -> None:
     """Template cache reuse produces identical results."""
     pdf_path = FIXTURE_DIR / "source" / "sample_page_01.pdf"

@@ -25,6 +25,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
@@ -114,6 +116,7 @@ def test_extract_layout_result_carries_page_refs(tmp_path: Path) -> None:
         assert ref.endswith(".json")
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_structure_result_carries_page_refs(tmp_path: Path) -> None:
     """StructureResult.page_refs maps every built page to its page_ir.v1.en
     content-addressed path.
@@ -132,6 +135,7 @@ def test_structure_result_carries_page_refs(tmp_path: Path) -> None:
         assert ref.endswith(".json")
 
 
+@pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
 def test_translation_result_carries_page_refs(tmp_path: Path) -> None:
     """TranslationResult.page_refs maps every translated page to its
     page_ir.v1.ru content-addressed path.

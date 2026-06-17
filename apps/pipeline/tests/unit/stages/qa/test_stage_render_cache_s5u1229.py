@@ -12,6 +12,8 @@ from __future__ import annotations
 from collections import Counter
 from pathlib import Path
 
+import pytest
+
 import atr_pipeline.stages.qa.render_binding as render_binding_mod
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
@@ -27,6 +29,10 @@ from atr_pipeline.stages.symbols.stage import SymbolsStage
 from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.source_manifest_v1 import SourceManifestV1
+
+# S5U-1230: full-pipeline-chain integration tests — excluded from the
+# fast pre-commit subset via `-m "not slow"`. CI runs the full suite.
+pytestmark = pytest.mark.slow
 
 
 def _repo_root() -> Path:

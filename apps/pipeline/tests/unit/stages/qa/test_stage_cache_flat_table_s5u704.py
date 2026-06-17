@@ -28,6 +28,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.events import record_stage_finish, record_stage_start
@@ -56,6 +58,10 @@ from atr_schemas.render_page_v1 import (
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 from ._render_binding_helpers import rebind_run_render
+
+# S5U-1230: full-pipeline-chain integration tests — excluded from the
+# fast pre-commit subset via `-m "not slow"`. CI runs the full suite.
+pytestmark = pytest.mark.slow
 
 
 def _repo_root() -> Path:
