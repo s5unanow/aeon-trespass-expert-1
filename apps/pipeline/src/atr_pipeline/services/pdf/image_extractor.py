@@ -23,6 +23,13 @@ _BLANK_VARIANCE_THRESHOLD = 50.0
 
 _logger = logging.getLogger(__name__)
 
+# Concrete exceptions PyMuPDF raises when an xref can't be decoded:
+# ``fitz.mupdf.FzErrorBase`` subclasses (subclass ``Exception`` directly),
+# ``RuntimeError`` (covers ``fitz.FileDataError`` / ``EmptyFileError``), and
+# ``ValueError`` for an invalid xref argument. Narrowing keeps programming
+# errors (TypeError, KeyError) loud rather than swallowed.
+_PYMUPDF_IMAGE_ERRORS = (fitz.mupdf.FzErrorBase, RuntimeError, ValueError)
+
 
 @dataclass(frozen=True)
 class ExtractedImage:
@@ -102,7 +109,16 @@ def extract_page_images(
         xref = img_info[0]
         try:
             img_data = doc.extract_image(xref)
-        except Exception:
+        except _PYMUPDF_IMAGE_ERRORS as exc:
+            # Skip images that can't be decoded, but never silently — a dropped
+            # image is real lost content, not background noise.
+            _logger.warning(
+                "Skipping image: could not decode page %d xref %d (%s): %s",
+                page_number,
+                xref,
+                type(exc).__name__,
+                exc,
+            )
             continue
 
         if not img_data or not img_data.get("image"):

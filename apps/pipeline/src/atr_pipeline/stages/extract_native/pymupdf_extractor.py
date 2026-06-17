@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import fitz
@@ -13,6 +14,16 @@ from atr_schemas.native_page_v1 import (
     SpanEvidence,
     WordEvidence,
 )
+
+_logger = logging.getLogger(__name__)
+
+# Concrete exceptions PyMuPDF raises when an xref can't be located:
+# - ``fitz.mupdf.FzErrorBase`` subclasses (``FzErrorArgument``, ``FzErrorFormat``,
+#   …) subclass ``Exception`` directly, NOT ``RuntimeError``.
+# - ``fitz.FileDataError`` / ``EmptyFileError`` subclass ``RuntimeError``.
+# - an invalid xref argument raises ``ValueError``.
+# Narrowing to these keeps programming errors (TypeError, KeyError) loud.
+_PYMUPDF_IMAGE_ERRORS = (fitz.mupdf.FzErrorBase, RuntimeError, ValueError)
 
 
 def extract_native_page(
@@ -91,8 +102,17 @@ def extract_native_page(
                         xref=xref,
                     )
                 )
-        except Exception:
-            pass  # Skip images that can't be located
+        except _PYMUPDF_IMAGE_ERRORS as exc:
+            # Skip images that can't be located, but never silently — a dropped
+            # image block is real lost evidence, not background noise.
+            _logger.warning(
+                "Skipping image block: could not locate rect for page %d xref %d (%s): %s",
+                page_number,
+                xref,
+                type(exc).__name__,
+                exc,
+            )
+            continue
 
     doc.close()
 
