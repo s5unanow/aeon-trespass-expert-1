@@ -10,6 +10,11 @@ from atr_pipeline.stages.qa.fallback_alert import apply_fallback_alert
 from atr_pipeline.stages.qa.metrics import compute_qa_metrics, format_metrics_digest
 from atr_pipeline.stages.qa.publishable import RenderCache, filter_publishable_pages
 from atr_pipeline.stages.qa.registry import QAPageContext, get_all_rules
+from atr_pipeline.stages.qa.render_binding import (
+    RenderPageRefs,
+    load_run_bound_render,
+    resolve_run_page_refs,
+)
 from atr_pipeline.stages.qa.review_pack import build_review_pack
 from atr_pipeline.stages.qa.rules.confidence_band_rule import (
     CODE_QA_REQUIRED,
@@ -17,7 +22,6 @@ from atr_pipeline.stages.qa.rules.confidence_band_rule import (
 )
 from atr_pipeline.stages.qa.user_feedback import load_user_feedback_records
 from atr_pipeline.stages.qa.waivers import apply_waivers, load_waivers
-from atr_pipeline.store.edition_selection import load_latest_json_for_edition
 from atr_schemas.enums import QALayer, Severity, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
 from atr_schemas.qa_metrics_v1 import FallbackSummary
@@ -46,30 +50,35 @@ class QAStage:
     @property
     def version(self) -> str:
         # Part of the executor cache key; bump on any new observable side-effect
-        # of run(). The full bump history (1.0 → 1.10) with per-bump rationale
-        # is the authoritative record in
+        # of run(). The full bump history (1.0 → 1.11) with per-bump rationale is
+        # the authoritative record in
         # ``tests/unit/stages/qa/test_stage_version.py``'s module docstring.
-        # Latest: 1.9 -> 1.10 (S5U-1226) — run-level translation-fallback
-        # summary folded into ``qa_metrics.v1`` + a TRANSLATION_FALLBACK_RATE_HIGH
-        # QA record when the fallback rate exceeds the configured threshold.
-        return "1.10"
+        # Latest: 1.10 -> 1.11 (S5U-1264) — per-page render selection is now
+        # run-id-bound (via ``RenderResult.page_refs``) instead of mtime; a
+        # cached 1.10 event would re-introduce the cross-run splice the binding
+        # prevents. No new artifact write; selection-behavior cache-correctness
+        # bump (cf. the S5U-731 1.8 -> 1.9 render-selection bump, S5U-662).
+        return "1.11"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> QASummaryV1:
         # S5U-701 — resolve the FULL published page set BEFORE any `--pages`
-        # selection: the dead-page-ref rule uses it as the authoritative
-        # manifest, so building it from the filtered subset would misclassify
-        # references to unselected-but-published pages as dead (Codex round 1).
-        # Round 2: the manifest must match the exporter's narrower filter
-        # (``export_pages`` drops non-facsimile, blockless pages) so the
-        # suppression set never includes pages the reader will not publish.
+        # selection so the dead-page-ref manifest matches the exporter's narrower
+        # filter (drops non-facsimile, blockless pages), not the filtered subset.
         all_page_ids = self._resolve_page_ids(ctx)
+        # S5U-1264 — resolve the run's render index ONCE so every per-page render
+        # select below is run-id-bound, not newest-by-mtime. Empty ⇒ mtime
+        # fallback (legacy / partial store); see ``render_binding``.
+        page_refs = resolve_run_page_refs(ctx)
         # S5U-1229 — the publishability filter selects+parses every page's
         # render_page.v1; render_cache captures each so the per-page eval loop
-        # reuses it instead of reloading (eval pages ⊆ all_page_ids, so the
-        # edition-scoped cache always covers them).
+        # reuses it (eval pages ⊆ all_page_ids → cache always covers them).
         render_cache: RenderCache = {}
         publishable_page_ids = self._filter_publishable_pages(
-            ctx, all_page_ids, edition=ctx.edition, render_cache=render_cache
+            ctx,
+            all_page_ids,
+            edition=ctx.edition,
+            render_cache=render_cache,
+            page_refs=page_refs,
         )
         known_page_numbers = _page_ids_to_numbers(publishable_page_ids)
         page_ids = ctx.filter_pages(all_page_ids)
@@ -90,7 +99,13 @@ class QAStage:
         for page_id in page_ids:
             en_ir = self._load_ir(ctx, "page_ir.v1.en", page_id)
             ru_ir = self._load_ir(ctx, "page_ir.v1.ru", page_id) if not source_only else en_ir
-            render = self._load_render(ctx, page_id, edition=ctx.edition, render_cache=render_cache)
+            render = self._load_render(
+                ctx,
+                page_id,
+                edition=ctx.edition,
+                render_cache=render_cache,
+                page_refs=page_refs,
+            )
 
             if en_ir is None or ru_ir is None or render is None:
                 ctx.logger.warning("Skipping QA for %s: missing artifacts", page_id)
@@ -113,11 +128,10 @@ class QAStage:
                 ctx.logger.warning("QA %s: %s", r.severity.value, r.message)
             all_records.extend(records)
 
-        # S5U-1226 — run-level provider-fallback aggregate + alert. Computed
-        # from the per-page translation_meta.v1 artifacts the translate stage
-        # persists. The summary feeds qa_metrics; an over-threshold rate emits
-        # a document-scope QA record that flows through waivers/blocking like
-        # any other finding.
+        # S5U-1226 — run-level provider-fallback aggregate + alert from the
+        # per-page translation_meta.v1 artifacts. Feeds qa_metrics; an
+        # over-threshold rate emits a document-scope QA record that flows
+        # through waivers/blocking like any other finding.
         fallback_summary = apply_fallback_alert(
             store=ctx.artifact_store,
             document_id=ctx.document_id,
@@ -187,10 +201,8 @@ class QAStage:
             blocking=blocking,
             record_refs=record_refs,
             review_pack_ref=review_pack_ref,
-            # S5U-641: bind the specific metrics artifact to this summary so
-            # the export layer can pick the ref-bound file instead of the
-            # latest-by-mtime metrics, which could be a stray from an
-            # interrupted prior run.
+            # S5U-641: bind the specific metrics artifact to this summary so the
+            # export layer picks the ref-bound file, not a latest-by-mtime stray.
             qa_metrics_ref=metrics_ref,
         )
 
@@ -203,9 +215,7 @@ class QAStage:
         block_on: set[str],
         fallback_summary: FallbackSummary,
     ) -> str:
-        """Compute, attach the fallback aggregate to, persist, and log the
-        ``qa_metrics.v1`` artifact. Returns the relative artifact ref.
-        """
+        """Compute, attach the fallback aggregate, persist + log ``qa_metrics.v1``."""
         metrics = compute_qa_metrics(
             document_id=ctx.document_id,
             run_id=ctx.run_id,
@@ -214,9 +224,8 @@ class QAStage:
             records=all_records,
             block_on=block_on,
         )
-        # S5U-1226 — attach the run-level fallback aggregate. Kept off
-        # ``compute_qa_metrics``'s signature to hold its param count under the
-        # lint ceiling; the model field is mutable.
+        # S5U-1226 — attach the run-level fallback aggregate (kept off
+        # ``compute_qa_metrics``'s signature to hold its param count).
         metrics.translation_fallback = fallback_summary
         metrics_ref = ctx.artifact_store.put_json(
             document_id=ctx.document_id,
@@ -261,15 +270,13 @@ class QAStage:
         *,
         edition: str = "",
         render_cache: RenderCache | None = None,
+        page_refs: RenderPageRefs | None = None,
     ) -> list[str]:
         """Delegate to ``stages.qa.publishable.filter_publishable_pages``.
 
-        Kept as an instance method for backwards-compat call sites; the
-        real logic lives in the shared module so the CLI ``atr qa``
-        entrypoint and the stage runner cannot drift on what "publishable"
-        means (S5U-701 / S5U-730). ``edition`` (S5U-731) targets the
-        exporter's render; ``render_cache`` (S5U-1229) lets the per-page
-        eval loop reuse each render selected here instead of reloading it.
+        Shared with the CLI ``atr qa`` entrypoint so the two cannot drift on
+        "publishable" (S5U-701 / S5U-730). ``edition`` (S5U-731), ``render_cache``
+        (S5U-1229) and ``page_refs`` (S5U-1264) pass through unchanged.
         """
         return filter_publishable_pages(
             ctx.artifact_store,
@@ -277,6 +284,7 @@ class QAStage:
             page_ids,
             edition=edition,
             render_cache=render_cache,
+            page_refs=page_refs,
         )
 
     @staticmethod
@@ -308,11 +316,8 @@ class QAStage:
     def _load_user_feedback_records(ctx: StageContext, page_id: str) -> list[QARecordV1]:
         """Load reader-feedback QA records persisted by the ingest script.
 
-        When the QA stage runs edition-specific (``ctx.edition`` is ``"en"``
-        or ``"ru"``), only that edition's feedback is loaded. When the stage
-        runs with the default ``edition="all"`` — still common in mixed
-        builds — both editions' feedback is merged so the summary doesn't
-        silently drop reader-submitted findings.
+        Edition-specific runs load only that edition's feedback; the default
+        ``edition="all"`` merges both so the summary doesn't drop findings.
         """
         editions = ("en", "ru") if ctx.edition == "all" else (ctx.edition,)
         records: list[QARecordV1] = []
@@ -334,25 +339,22 @@ class QAStage:
         *,
         edition: str = "",
         render_cache: RenderCache | None = None,
+        page_refs: RenderPageRefs | None = None,
     ) -> RenderPageV1 | None:
         """Load a RenderPageV1 from the artifact store.
 
-        S5U-731 — selection is edition-aware (shared with the exporter via
-        ``load_latest_json_for_edition``) so a mixed EN/RU dir does not leak
-        the wrong-edition render into QA. S5U-1229 — when *render_cache* has
-        an entry for *page_id* (populated by the publishability filter under
-        the same edition) reuse it; ``in`` (not truthiness) honors a cached
-        ``None`` so an absent-render page is not redundantly reloaded.
+        S5U-1229 — reuse *render_cache* on hit (``in`` honors a cached ``None``).
+        S5U-1264 — a miss resolves through the run-bound selection (``page_refs``,
+        with edition-aware mtime fallback in ``load_run_bound_render``).
         """
         if render_cache is not None and page_id in render_cache:
             data = render_cache[page_id]
         else:
-            data = load_latest_json_for_edition(
+            data = load_run_bound_render(
                 ctx.artifact_store,
+                page_refs=page_refs or {},
                 document_id=ctx.document_id,
-                schema_family="render_page.v1",
-                scope="page",
-                entity_id=page_id,
+                page_id=page_id,
                 edition=edition,
             )
         return RenderPageV1.model_validate(data) if data else None

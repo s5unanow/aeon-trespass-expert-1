@@ -15,8 +15,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from atr_pipeline.stages.qa.render_binding import RenderPageRefs, load_run_bound_render
 from atr_pipeline.store.artifact_store import ArtifactStore
-from atr_pipeline.store.edition_selection import load_latest_json_for_edition
 
 # S5U-1229 — shared render-cache type so the QA stage and this module agree
 # on the (invariant) dict type threaded between the publishability filter and
@@ -82,6 +82,7 @@ def filter_publishable_pages(
     *,
     edition: str = "",
     render_cache: RenderCache | None = None,
+    page_refs: RenderPageRefs | None = None,
 ) -> list[str]:
     """Return the subset of *page_ids* the web exporter will publish.
 
@@ -118,16 +119,23 @@ def filter_publishable_pages(
     instead of twice (this filter pass + the eval-loop ``_load_render``).
     The cache is valid only for the *edition* it was populated under;
     callers must not reuse it across editions.
+
+    S5U-1264 — when *page_refs* (the current run's ``RenderResult.page_refs``)
+    is supplied, each page's render is selected by its **run-bound ref** instead
+    of newest-by-mtime, so a stray render from another run cannot be spliced
+    into the publishability set on a copied / multi-run store. Pages not covered
+    by *page_refs* (legacy stores, ``--pages`` subsets) fall back to the mtime
+    selection. ``page_refs=None`` preserves the pre-S5U-1264 mtime behavior.
     """
     publishable: list[str] = []
     manifest_present = page_images_manifest_present(store, document_id)
+    refs: RenderPageRefs = page_refs or {}
     for pid in page_ids:
-        data = load_latest_json_for_edition(
+        data = load_run_bound_render(
             store,
+            page_refs=refs,
             document_id=document_id,
-            schema_family="render_page.v1",
-            scope="page",
-            entity_id=pid,
+            page_id=pid,
             edition=edition,
         )
         if render_cache is not None:

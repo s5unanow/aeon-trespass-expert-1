@@ -58,6 +58,8 @@ from atr_schemas.render_page_v1 import (
 )
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
+from ._render_binding_helpers import rebind_run_render
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[6]
@@ -196,6 +198,9 @@ def test_version_bump_invalidates_prior_qa_cache_s5u705(tmp_path: Path) -> None:
 
     page_id = "p0001"
     _seed_glue_heading_render(ctx, page_id)
+    # S5U-1264 — bind the seeded glue-heading render into the run's render index
+    # so QA's run-bound selection evaluates it (not the RenderStage original).
+    rebind_run_render(ctx, [page_id])
     ctx.page_filter = frozenset({page_id})
 
     prior_key = _forge_prior_version_event(ctx, prior_version="1.5")

@@ -108,12 +108,16 @@ layers = [
 # calls the deterministic scorer to compute ConfidenceMetrics in production.
 # stages.qa → eval.confidence_policy is intentional: the QA stage loads the
 # versioned confidence-band policy and routes pages by it.
+# stages.qa.render_binding → runner.stage_context is intentional (S5U-1264): the
+# run-id-bound render resolver needs the runtime context (run_id + registry_conn)
+# to read the current run's render stage event, mirroring the qa/publish stages.
 # services.pdf.raster_provider → store.artifact_store is intentional: the raster
 # provider bridges rendering (service) and content-addressed storage (store).
 ignore_imports = [
     "atr_pipeline.stages.structure.stage -> atr_pipeline.eval.confidence_scorer",
     "atr_pipeline.stages.qa.stage -> atr_pipeline.eval.confidence_policy",
     "atr_pipeline.stages.qa.rules.confidence_band_rule -> atr_pipeline.eval.confidence_policy",
+    "atr_pipeline.stages.qa.render_binding -> atr_pipeline.runner.stage_context",
     "atr_pipeline.services.pdf.raster_provider -> atr_pipeline.store.artifact_store",
     "atr_pipeline.stages.ingest.stage -> atr_pipeline.runner.stage_context",
     "atr_pipeline.stages.extract_native.stage -> atr_pipeline.runner.stage_context",

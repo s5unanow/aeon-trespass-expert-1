@@ -12,8 +12,7 @@ from __future__ import annotations
 from collections import Counter
 from pathlib import Path
 
-import atr_pipeline.stages.qa.publishable as publishable_mod
-import atr_pipeline.stages.qa.stage as qa_stage_mod
+import atr_pipeline.stages.qa.render_binding as render_binding_mod
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
@@ -74,13 +73,12 @@ def _run_prerequisites(ctx: StageContext) -> None:
 def test_qa_run_selects_each_render_once(tmp_path: Path, monkeypatch) -> None:
     """Each page's ``render_page.v1`` is selected (and thus parsed) once per run.
 
-    Red-before: prior to S5U-1229 ``QAStage.run`` called
-    ``load_latest_json_for_edition`` for every page in the publishability filter
-    *and* again in the per-page eval loop — 2 selections per page. The render
-    cache reuses the filter's result, so the count drops to 1 per page.
-
-    We spy on ``load_latest_json_for_edition`` in BOTH modules that import it
-    by name (``publishable`` and ``stage``) and count selections per page_id.
+    Red-before: prior to S5U-1229 ``QAStage.run`` selected each page's render
+    in the publishability filter *and* again in the per-page eval loop — 2
+    selections per page. The render cache reuses the filter's result, so the
+    count drops to 1 per page. S5U-1264 routes both paths through the single
+    per-page render chokepoint ``render_binding.load_run_bound_render``; spying
+    on it counts selections per page_id regardless of run-bound vs mtime path.
     """
     ctx = _make_ctx(tmp_path)
     _run_prerequisites(ctx)
@@ -90,16 +88,17 @@ def test_qa_run_selects_each_render_once(tmp_path: Path, monkeypatch) -> None:
     assert page_ids, "fixture produced no EN IR pages"
 
     selections: Counter[str] = Counter()
-    real = publishable_mod.load_latest_json_for_edition
+    real = render_binding_mod.load_run_bound_render
 
     def _spy(*args: object, **kwargs: object) -> object:
-        # render selections are keyed by entity_id=page_id, schema render_page.v1
-        if kwargs.get("schema_family") == "render_page.v1":
-            selections[str(kwargs.get("entity_id"))] += 1
+        # one call per page-render selection; keyed by entity page_id
+        selections[str(kwargs.get("page_id"))] += 1
         return real(*args, **kwargs)
 
-    monkeypatch.setattr(publishable_mod, "load_latest_json_for_edition", _spy)
-    monkeypatch.setattr(qa_stage_mod, "load_latest_json_for_edition", _spy)
+    monkeypatch.setattr(render_binding_mod, "load_run_bound_render", _spy)
+    # both call sites import the symbol by name from their own module
+    monkeypatch.setattr("atr_pipeline.stages.qa.publishable.load_run_bound_render", _spy)
+    monkeypatch.setattr("atr_pipeline.stages.qa.stage.load_run_bound_render", _spy)
 
     summary = QAStage().run(ctx, None)
     assert summary.document_id == ctx.document_id
@@ -113,9 +112,14 @@ def test_qa_run_selects_each_render_once(tmp_path: Path, monkeypatch) -> None:
 
 
 def test_qa_run_reuses_cached_none_render(tmp_path: Path, monkeypatch) -> None:
-    """A page whose render is absent for the edition (cached ``None``) is not
-    re-selected by the eval loop — the cache distinguishes "cached None" from
-    "absent from cache" via ``in`` membership.
+    """A page whose render is absent (cached ``None``) is not re-selected by the
+    eval loop — the cache distinguishes "cached None" from "absent from cache"
+    via ``in`` membership.
+
+    To force a ``None`` render under S5U-1264 run-binding (where a covered
+    ``page_refs`` entry would otherwise load the artifact by ref), delete the
+    target page's render artifact entirely so BOTH the run-bound ref load and
+    the mtime fallback miss.
     """
     ctx = _make_ctx(tmp_path)
     _run_prerequisites(ctx)
@@ -124,28 +128,20 @@ def test_qa_run_reuses_cached_none_render(tmp_path: Path, monkeypatch) -> None:
     page_ids = sorted(p.name for p in en_dir.iterdir() if p.is_dir())
     target = page_ids[0]
 
-    # Make the target page's render unresolvable for an EN-edition run by
-    # retagging its render to a sibling edition so the two-tier filter returns
-    # None (tier-2 suppressed once a sibling tag exists).
     render_dir = ctx.artifact_store.root / ctx.document_id / "render_page.v1" / "page" / target
-    import json
-
     for f in render_dir.glob("*.json"):
-        data = json.loads(f.read_text())
-        data["document_version"] = "ru"
-        f.write_text(json.dumps(data))
-    ctx.edition = "en"
+        f.unlink()
 
     selections: Counter[str] = Counter()
-    real = publishable_mod.load_latest_json_for_edition
+    real = render_binding_mod.load_run_bound_render
 
     def _spy(*args: object, **kwargs: object) -> object:
-        if kwargs.get("schema_family") == "render_page.v1":
-            selections[str(kwargs.get("entity_id"))] += 1
+        selections[str(kwargs.get("page_id"))] += 1
         return real(*args, **kwargs)
 
-    monkeypatch.setattr(publishable_mod, "load_latest_json_for_edition", _spy)
-    monkeypatch.setattr(qa_stage_mod, "load_latest_json_for_edition", _spy)
+    monkeypatch.setattr(render_binding_mod, "load_run_bound_render", _spy)
+    monkeypatch.setattr("atr_pipeline.stages.qa.publishable.load_run_bound_render", _spy)
+    monkeypatch.setattr("atr_pipeline.stages.qa.stage.load_run_bound_render", _spy)
 
     QAStage().run(ctx, None)
 
