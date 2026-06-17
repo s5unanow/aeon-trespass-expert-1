@@ -65,7 +65,7 @@ _List all issues that must be Done before this can start._
 
 ### Quality Gates
 
-- [ ] `make lint` passes (ruff check + ruff format --check + mypy + lint-imports + file-length + fixture-manifest + make/doc parity + codegen freshness + pnpm lint)
+- [ ] `make lint` passes (ruff check + ruff format --check + mypy + lint-imports + file-length + fixture-manifest + instruction-drift + make/doc parity + codegen freshness + pnpm lint)
 - [ ] `make typecheck` passes (mypy + tsc)
 - [ ] `make test` passes (pytest + pnpm test)
 - [ ] No file exceeds 400 lines

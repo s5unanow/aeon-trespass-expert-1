@@ -1,4 +1,4 @@
-.PHONY: help bootstrap lint format typecheck test test-hooks codegen check-codegen verify export clean validate-fixtures config-health erosion-report verify-branch-protection
+.PHONY: help bootstrap lint format typecheck test check test-hooks codegen check-codegen verify export clean validate-fixtures config-health erosion-report verify-branch-protection
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
@@ -7,13 +7,14 @@ bootstrap: ## Install all deps (uv sync + pnpm install)
 	uv sync
 	pnpm install
 
-lint: ## Run ruff check + ruff format --check + mypy + import-linter + file-length + fixtures + make/doc parity + codegen freshness + pnpm lint
+lint: ## Run ruff check + ruff format --check + mypy + import-linter + file-length + fixtures + instruction-drift + make/doc parity + codegen freshness + pnpm lint
 	uv run ruff check .
 	uv run ruff format --check .
 	uv run mypy apps/pipeline/src packages/schemas/python
 	uv run lint-imports
 	uv run python scripts/check_file_length.py
 	uv run python scripts/validate_fixture_manifest.py
+	uv run python scripts/check_instruction_drift.py
 	uv run python scripts/check_make_doc_parity.py
 	bash scripts/check_codegen_fresh.sh
 	pnpm -r run lint
@@ -30,6 +31,8 @@ typecheck: ## Run mypy + tsc
 test: ## Run all tests (pytest + pnpm test)
 	uv run pytest
 	pnpm -r run test
+
+check: lint typecheck test ## Run the full local gate set (lint + typecheck + test) — the canonical "definition of done" aggregate
 
 test-hooks: ## Run hook integration tests (fast, no external deps)
 	uv run pytest apps/pipeline/tests/integration/test_hooks.py -v --timeout=10
