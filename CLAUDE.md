@@ -1,5 +1,9 @@
 # CLAUDE.md — Aeon Trespass Expert
 
+<!-- ai-run-init:guide-imports start -->
+**SDLC Factory guide index**: [`AGENTS.md`](AGENTS.md) holds the generated per-module `.ai-run/guides/` index and task classifier. This file remains authoritative for workflow, quality gates, and the `NEVER` list below — `AGENTS.md`'s tables defer to this file on any conflict.
+<!-- ai-run-init:guide-imports end -->
+
 ## What this is
 
 IR-first document compiler + static web reader for Aeon Trespass rulebook translation (EN->RU).
