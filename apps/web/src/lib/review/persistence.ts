@@ -4,6 +4,7 @@ import type { RenderPageData } from '../render/types';
 import { applyPatchOperations } from './patches';
 
 export type ReviewDraft = Required<Pick<PatchSetV1, 'operations' | 'reason' | 'author'>>;
+type StoredReviewDraft = ReviewDraft & Pick<PatchSetV1, 'target_artifact_ref'>;
 
 const EMPTY_DRAFT: ReviewDraft = { operations: [], reason: '', author: '' };
 const PATCH_OPS = new Set(['replace', 'insert', 'delete']);
@@ -24,8 +25,13 @@ export function reviewStorageKey(documentId: string, edition: string, pageId: st
     .join(':');
 }
 
-export function saveReviewDraft(key: string, draft: ReviewDraft): void {
-  localStorage.setItem(key, JSON.stringify(draft));
+export function saveReviewDraft(
+  key: string,
+  draft: ReviewDraft,
+  targetArtifactRef: PatchSetV1['target_artifact_ref'],
+): void {
+  const stored: StoredReviewDraft = { ...draft, target_artifact_ref: targetArtifactRef };
+  localStorage.setItem(key, JSON.stringify(stored));
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -52,6 +58,7 @@ function isOperation(value: unknown): value is patchSetV1.PatchOperation {
 export function loadReviewDraft(key: string, target: RenderPageData): ReviewDraft {
   const stored = localStorage.getItem(key);
   if (stored === null) return { ...EMPTY_DRAFT };
+  const targetArtifactRef = target.build_meta?.artifact_ref ?? '';
   try {
     const parsed: unknown = JSON.parse(stored);
     if (
@@ -59,7 +66,9 @@ export function loadReviewDraft(key: string, target: RenderPageData): ReviewDraf
       !Array.isArray(parsed.operations) ||
       !parsed.operations.every(isOperation) ||
       typeof parsed.reason !== 'string' ||
-      typeof parsed.author !== 'string'
+      typeof parsed.author !== 'string' ||
+      targetArtifactRef === '' ||
+      parsed.target_artifact_ref !== targetArtifactRef
     ) {
       return { ...EMPTY_DRAFT };
     }

@@ -273,7 +273,11 @@ describe('review draft persistence', () => {
 
   it('restores operations, reason, and author for the same page', () => {
     const operations = [buildTextOperation(page.blocks, 1, 0, 'Corrected')];
-    saveReviewDraft(key(), { operations, reason: 'OCR typo', author: 'reviewer' });
+    saveReviewDraft(
+      key(),
+      { operations, reason: 'OCR typo', author: 'reviewer' },
+      targetArtifactRef,
+    );
 
     expect(loadReviewDraft(key(), page)).toEqual({
       operations,

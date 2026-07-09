@@ -44,8 +44,8 @@ export function ReviewWorkspace({
 
   useEffect(() => {
     const draft: ReviewDraft = { operations, reason, author };
-    saveReviewDraft(storageKey, draft);
-  }, [storageKey, operations, reason, author]);
+    saveReviewDraft(storageKey, draft, targetArtifactRef);
+  }, [storageKey, targetArtifactRef, operations, reason, author]);
 
   function addOperation(operation: patchSetV1.PatchOperation) {
     setOperations((current) => {
