@@ -46,6 +46,17 @@ style_repair_provider = ""          # empty = inherit critic/provider
 style_repair_model = ""             # empty = inherit critic/model_hard/model_default
 style_repair_reasoning_effort = "high"
 
+[translation.hardness]
+# Opt-in deterministic routing from model_default to model_hard. Keep disabled
+# unless a document has calibrated the weights against representative pages.
+enabled = false
+threshold = 2.0
+inline_icon_density_weight = 2.0
+cross_reference_density_weight = 2.0
+table_presence_weight = 1.0
+segment_count_weight = 0.05
+segment_length_weight = 0.001
+
 # Provider-specific options live in the per-document config so the mock
 # fixture documents that override ``provider = "mock"`` don't inherit
 # Codex-specific knobs the factory would then reject under the

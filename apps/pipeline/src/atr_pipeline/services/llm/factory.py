@@ -178,7 +178,7 @@ def _create_single_adapter(
     if provider == "mock":
         from atr_pipeline.services.llm.mock_translator import MockTranslator
 
-        return MockTranslator()
+        return MockTranslator(model=model or "mock-v1")
 
     if provider == "openai":
         from atr_pipeline.services.llm.openai_adapter import OpenAIAdapter
@@ -233,6 +233,7 @@ def create_translator(
     config: TranslationConfig,
     *,
     concept_registry: ConceptRegistryV1 | None = None,
+    primary_model_override: str | None = None,
 ) -> TranslatorAdapter:
     """Instantiate the adapter specified by *config.provider*.
 
@@ -245,6 +246,10 @@ def create_translator(
     the primary and ``config.fallback_options`` for the fallback. Cross-
     provider option leakage (CLI options on an API provider, or vice-versa)
     is rejected with a clear error before any adapter is constructed.
+
+    ``primary_model_override`` changes only the primary adapter's model. The
+    configured fallback adapter still receives ``config.fallback_model``.
+    Translation hardness routing uses this to preserve fallback semantics.
     """
     primary_provider = config.provider.lower()
     _check_options_match_provider(
@@ -253,9 +258,15 @@ def create_translator(
         label="primary",
     )
 
+    primary_model = (
+        config.model_default if primary_model_override is None else primary_model_override
+    )
+    if primary_provider == "mock" and primary_model_override is None:
+        primary_model = ""
+
     primary = _create_single_adapter(
         primary_provider,
-        config.model_default,
+        primary_model,
         config.temperature,
         config.provider_options,
         concept_registry,

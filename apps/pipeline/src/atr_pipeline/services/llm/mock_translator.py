@@ -21,6 +21,11 @@ _MOCK_TRANSLATIONS: dict[str, list[dict[str, str]]] = {
 class MockTranslator:
     """Deterministic mock translator for the walking skeleton."""
 
+    _model = "mock-v1"
+
+    def __init__(self, *, model: str = "mock-v1") -> None:
+        self._model = model
+
     def translate_batch(
         self,
         batch: TranslationBatchV1,
@@ -79,7 +84,7 @@ class MockTranslator:
         )
         meta = TranslationResponseMeta(
             provider="mock",
-            model="mock-v1",
+            model=self._model,
             raw_response=result.model_dump_json(),
         )
         return TranslationResponse(result=result, meta=meta)

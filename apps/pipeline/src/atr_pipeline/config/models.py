@@ -7,6 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from atr_pipeline.config.translation_hardness import TranslationHardnessConfig
 from atr_pipeline.config.translation_providers import (
     translation_provider_requires_model,
     validate_translation_provider_name,
@@ -165,6 +166,7 @@ class TranslationConfig(BaseModel):
     style_repair_reasoning_effort: str = "high"
     max_retries: int = Field(default=2, ge=0)
     retry_delay_seconds: float = Field(default=1.0, ge=0.0)
+    hardness: TranslationHardnessConfig = Field(default_factory=TranslationHardnessConfig)
 
     provider_options: TranslationProviderOptions = Field(
         default_factory=TranslationProviderOptions,
