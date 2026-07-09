@@ -233,6 +233,10 @@ class RenderSourceMap(BaseModel):
 class RenderBuildMeta(BaseModel):
     build_id: str = ""
     generated_at: str = ""
+    artifact_ref: str = Field(
+        default="",
+        description="Ingestible artifact-store ref for PatchSetV1 corrections",
+    )
 
 
 # --- RenderPageV1 ---

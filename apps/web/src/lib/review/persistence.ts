@@ -1,4 +1,7 @@
 import type { patchSetV1, PatchSetV1 } from '@atr/schemas';
+import { normalizeRenderPage } from '../render/normalize';
+import type { RenderPageData } from '../render/types';
+import { applyPatchOperations } from './patches';
 
 export type ReviewDraft = Required<Pick<PatchSetV1, 'operations' | 'reason' | 'author'>>;
 
@@ -46,7 +49,7 @@ function isOperation(value: unknown): value is patchSetV1.PatchOperation {
   );
 }
 
-export function loadReviewDraft(key: string): ReviewDraft {
+export function loadReviewDraft(key: string, target: RenderPageData): ReviewDraft {
   const stored = localStorage.getItem(key);
   if (stored === null) return { ...EMPTY_DRAFT };
   try {
@@ -60,6 +63,7 @@ export function loadReviewDraft(key: string): ReviewDraft {
     ) {
       return { ...EMPTY_DRAFT };
     }
+    normalizeRenderPage(applyPatchOperations(target, parsed.operations));
     return { operations: parsed.operations, reason: parsed.reason, author: parsed.author };
   } catch {
     return { ...EMPTY_DRAFT };

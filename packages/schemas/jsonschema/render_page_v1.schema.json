@@ -94,6 +94,12 @@
           "default": "",
           "title": "Generated At",
           "type": "string"
+        },
+        "artifact_ref": {
+          "default": "",
+          "description": "Ingestible artifact-store ref for PatchSetV1 corrections",
+          "title": "Artifact Ref",
+          "type": "string"
         }
       },
       "title": "RenderBuildMeta",

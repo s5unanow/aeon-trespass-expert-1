@@ -12,6 +12,7 @@ from atr_pipeline.stages.render.annotation_builder import (
 )
 from atr_pipeline.stages.render.page_builder import build_render_page, is_garbage_title
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
+from atr_pipeline.stages.render.review_target import store_reviewable_render_page
 from atr_pipeline.utils.hashing import sha256_file
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.enums import StageScope
@@ -159,14 +160,9 @@ class RenderStage:
         # Store pages with nav populated
         page_refs: dict[str, str] = {}
         for render in rendered_pages:
-            ref = ctx.artifact_store.put_json(
-                document_id=ctx.document_id,
-                schema_family="render_page.v1",
-                scope="page",
-                entity_id=render.page.id,
-                data=render,
+            page_refs[render.page.id] = store_reviewable_render_page(
+                ctx.artifact_store, ctx.document_id, render
             )
-            page_refs[render.page.id] = ref.relative_path
 
         ctx.logger.info("Rendered %d pages", len(rendered_pages))
 

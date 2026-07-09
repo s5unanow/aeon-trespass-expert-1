@@ -87,6 +87,10 @@ export type PageId = string;
 export type BlockRefs = string[];
 export type BuildId = string;
 export type GeneratedAt = string;
+/**
+ * Ingestible artifact-store ref for PatchSetV1 corrections
+ */
+export type ArtifactRef = string;
 
 /**
  * Frontend-ready page payload.
@@ -270,4 +274,5 @@ export interface RenderSourceMap {
 export interface RenderBuildMeta {
   build_id?: BuildId;
   generated_at?: GeneratedAt;
+  artifact_ref?: ArtifactRef;
 }

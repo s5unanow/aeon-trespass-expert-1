@@ -303,6 +303,7 @@ function normalizeBuildMeta(raw: unknown): RenderBuildMeta | null {
   return {
     build_id: asString(raw.build_id, 'build_meta.build_id', ''),
     generated_at: asString(raw.generated_at, 'build_meta.generated_at', ''),
+    artifact_ref: asString(raw.artifact_ref, 'build_meta.artifact_ref', ''),
   };
 }
 

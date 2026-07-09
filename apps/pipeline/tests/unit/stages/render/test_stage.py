@@ -124,12 +124,16 @@ def test_render_builds_pages(tmp_path: Path) -> None:
     jsons = list(render_dir.glob("*.json"))
     assert len(jsons) == 2
     page_ref = render_result.page_refs["p0001"]
-    rendered_page = RenderPageV1.model_validate(ctx.artifact_store.get_json(page_ref))
+    rendered_page = RenderPageV1.model_validate_json(
+        (tmp_path / "artifacts" / page_ref).read_text(encoding="utf-8")
+    )
     assert rendered_page.build_meta is not None
     source_ref = rendered_page.build_meta.artifact_ref
     assert source_ref.startswith("walking_skeleton/render_page.v1/page/p0001/")
     assert source_ref != page_ref
-    RenderPageV1.model_validate(ctx.artifact_store.get_json(source_ref))
+    RenderPageV1.model_validate_json(
+        (tmp_path / "artifacts" / source_ref).read_text(encoding="utf-8")
+    )
 
     # Verify companion artifacts have refs
     assert render_result.glossary_ref != ""

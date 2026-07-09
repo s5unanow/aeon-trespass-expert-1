@@ -4,6 +4,7 @@ interface PatchDrawerProps {
   operations: patchSetV1.PatchOperation[];
   reason: string;
   author: string;
+  targetReady: boolean;
   exportError: string | null;
   onReasonChange: (reason: string) => void;
   onAuthorChange: (author: string) => void;
@@ -16,6 +17,7 @@ export function PatchDrawer({
   operations,
   reason,
   author,
+  targetReady,
   exportError,
   onReasonChange,
   onAuthorChange,
@@ -23,7 +25,8 @@ export function PatchDrawer({
   onClear,
   onExport,
 }: PatchDrawerProps) {
-  const canExport = operations.length > 0 && reason.trim() !== '' && author.trim() !== '';
+  const canExport =
+    targetReady && operations.length > 0 && reason.trim() !== '' && author.trim() !== '';
   return (
     <aside className="review-patch-drawer" aria-labelledby="review-patch-title">
       <div className="review-patch-heading">
@@ -69,7 +72,11 @@ export function PatchDrawer({
       <button type="button" disabled={!canExport} onClick={onExport}>
         Export patch JSON
       </button>
-      <p className="review-export-hint">Author, reason, and at least one operation are required.</p>
+      <p className="review-export-hint">
+        {targetReady
+          ? 'Author, reason, and at least one operation are required.'
+          : 'This exported page has no ingestible patch target. Re-export it from the pipeline.'}
+      </p>
       {exportError && <p role="alert">{exportError}</p>}
     </aside>
   );

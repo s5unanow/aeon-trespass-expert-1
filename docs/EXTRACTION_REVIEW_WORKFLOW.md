@@ -86,6 +86,16 @@ The review UI only drafts and downloads patch artifacts. It never mutates or
 applies changes to generated output; apply and validate the patch through the
 pipeline workflow before committing it, per ADR-003.
 
+Each exported render page carries the immutable artifact-store reference that
+the patch targets. Apply a downloaded draft with:
+
+```bash
+atr patch --doc <DOC_ID> --patch-file <PATCH_JSON>
+```
+
+If a legacy page has no ingestible artifact reference, the review drawer keeps
+export disabled; rebuild and export that document before drafting corrections.
+
 The reader has an **EN/RU edition switcher** in the navigation bar. When both
 editions are exported, you can toggle between them to compare extraction output
 against translation output.

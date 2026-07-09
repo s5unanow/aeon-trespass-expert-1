@@ -80,9 +80,7 @@ describe('review patch operations', () => {
     const projected = applyPatchOperations(page, [text, reorder, suppress]);
 
     expect(projected.blocks.map((block) => block.id)).toEqual(['p0001.b002', 'p0001.b001']);
-    expect(resolvePointer(projected, '/blocks/0/children/0/text')).toBe(
-      'Move up to two spaces.',
-    );
+    expect(resolvePointer(projected, '/blocks/0/children/0/text')).toBe('Move up to two spaces.');
   });
 
   it('targets text correctly when reading order is drafted first', () => {
@@ -94,9 +92,7 @@ describe('review patch operations', () => {
     const projected = applyPatchOperations(page, [reorder, text]);
 
     expect(projected.blocks[0].id).toBe('p0001.b002');
-    expect(resolvePointer(projected, '/blocks/0/children/0/text')).toBe(
-      'Move up to two spaces.',
-    );
+    expect(resolvePointer(projected, '/blocks/0/children/0/text')).toBe('Move up to two spaces.');
   });
 });
 
@@ -231,7 +227,14 @@ describe('review patch export', () => {
         createdAt,
       );
     expect(() =>
-      exportWith([{ op: 'replace', path: '/blocks/999', value: {}, scope: 'text' }]),
+      exportWith([
+        {
+          op: 'replace',
+          path: '/blocks/999/children/0/text',
+          value: 'stale',
+          scope: 'text',
+        },
+      ]),
     ).toThrow(/bounds/i);
     expect(() => exportWith([{ op: 'replace', path: '/blocks/0', scope: 'text' }])).toThrow(
       /value/i,
@@ -283,7 +286,14 @@ describe('review draft persistence', () => {
     localStorage.setItem(
       key(),
       JSON.stringify({
-        operations: [{ op: 'replace', path: '/blocks/999', value: {}, scope: 'text' }],
+        operations: [
+          {
+            op: 'replace',
+            path: '/blocks/999/children/0/text',
+            value: 'stale',
+            scope: 'text',
+          },
+        ],
         reason: 'stale draft',
         author: 'reviewer',
       }),

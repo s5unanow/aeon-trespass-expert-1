@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { patchSetV1 } from '@atr/schemas';
 import type { RenderPageData } from '../../lib/render/types';
-import { buildPatchSet } from '../../lib/review/patches';
+import { applyPatchOperations, buildPatchSet } from '../../lib/review/patches';
 import { downloadPatchSet } from '../../lib/review/download';
 import { loadReviewDraft, saveReviewDraft, type ReviewDraft } from '../../lib/review/persistence';
 import { PageGlossaryProvider } from '../../contexts/PageContext';
@@ -25,16 +25,18 @@ export function ReviewWorkspace({
   pageId,
   storageKey,
 }: ReviewWorkspaceProps) {
-  const [initialDraft] = useState(() => loadReviewDraft(storageKey));
+  const [initialDraft] = useState(() => loadReviewDraft(storageKey, page));
   const [operations, setOperations] = useState(initialDraft.operations);
   const [reason, setReason] = useState(initialDraft.reason);
   const [author, setAuthor] = useState(initialDraft.author);
   const [hoveredBlockRef, setHoveredBlockRef] = useState<string | null>(null);
   const [selectedBlockRef, setSelectedBlockRef] = useState<string | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
+  const projectedPage = applyPatchOperations(page, operations);
   const selectedIndex = selectedBlockRef
-    ? page.blocks.findIndex((block) => block.id === selectedBlockRef)
+    ? projectedPage.blocks.findIndex((block) => block.id === selectedBlockRef)
     : -1;
+  const targetArtifactRef = page.build_meta?.artifact_ref ?? '';
 
   useEffect(() => {
     const draft: ReviewDraft = { operations, reason, author };
@@ -42,7 +44,11 @@ export function ReviewWorkspace({
   }, [storageKey, operations, reason, author]);
 
   function addOperation(operation: patchSetV1.PatchOperation) {
-    setOperations((current) => [...current, operation]);
+    setOperations((current) => {
+      const next = [...current, operation];
+      applyPatchOperations(page, next);
+      return next;
+    });
   }
 
   function exportPatch() {
@@ -51,6 +57,8 @@ export function ReviewWorkspace({
         documentId,
         edition,
         pageId,
+        targetArtifactRef,
+        page,
         operations,
         reason,
         author,
@@ -114,7 +122,7 @@ export function ReviewWorkspace({
 
         {selectedIndex >= 0 && (
           <CorrectionPanel
-            blocks={page.blocks}
+            blocks={projectedPage.blocks}
             selectedIndex={selectedIndex}
             onAdd={addOperation}
           />
@@ -123,6 +131,7 @@ export function ReviewWorkspace({
           operations={operations}
           reason={reason}
           author={author}
+          targetReady={targetArtifactRef !== ''}
           exportError={exportError}
           onReasonChange={setReason}
           onAuthorChange={setAuthor}
