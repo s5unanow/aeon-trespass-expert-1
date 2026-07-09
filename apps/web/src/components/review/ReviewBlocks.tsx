@@ -38,6 +38,7 @@ export function ReviewBlocks({
             onBlur={() => onHover(null)}
             onClick={() => onSelect(block.id)}
             onKeyDown={(event) => {
+              if (event.target !== event.currentTarget) return;
               if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
                 onSelect(block.id);
