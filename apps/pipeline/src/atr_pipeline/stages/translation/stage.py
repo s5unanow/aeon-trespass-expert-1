@@ -96,9 +96,10 @@ class TranslationStage:
         # translation_resume.v1 record (new observable side-effect) enabling
         # mid-run failure resume. Bumped so cached pages re-run and emit the
         # resume artifact. Per .claude/rules/pipeline.md (S5U-662).
-        # S5U-1555 1.6 -> 1.7: enabled hardness routing enriches per-page
-        # translation metadata with deterministic score/model provenance.
-        return "1.7"
+        # S5U-1555 does not require a version bump: disabled routing preserves
+        # output bytes, while enabled routing changes the executor config hash
+        # and therefore cannot reuse a pre-feature stage cache entry.
+        return "1.6"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)

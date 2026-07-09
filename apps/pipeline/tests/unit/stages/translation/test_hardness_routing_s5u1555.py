@@ -90,7 +90,14 @@ def _load_meta(ctx: StageContext, page_id: str) -> tuple[dict[str, object], str]
         entity_id=page_id,
     )
     assert path is not None
-    return json.loads(path.read_text()), path.read_text()
+    data = ctx.artifact_store.load_latest_json(
+        document_id=ctx.document_id,
+        schema_family="translation_meta.v1",
+        scope="page",
+        entity_id=page_id,
+    )
+    assert data is not None
+    return data, path.read_text()
 
 
 def test_enabled_hardness_routes_hard_and_easy_pages_and_records_metadata(
