@@ -283,6 +283,21 @@ describe('review draft persistence', () => {
     expect(reviewStorageKey('extraction_review', 'en', 'p0002')).not.toBe(key());
   });
 
+  it('rejects a structurally valid draft from a different immutable artifact', () => {
+    const operations = [buildTextOperation(page.blocks, 1, 0, 'Corrected')];
+    localStorage.setItem(
+      key(),
+      JSON.stringify({
+        operations,
+        reason: 'OCR typo',
+        author: 'reviewer',
+        target_artifact_ref: 'extraction_review/render_page.v1/page/p0001/older.json',
+      }),
+    );
+
+    expect(loadReviewDraft(key(), page)).toEqual({ operations: [], reason: '', author: '' });
+  });
+
   it('fails closed when persisted JSON is malformed', () => {
     localStorage.setItem(key(), '{broken');
     expect(loadReviewDraft(key(), page)).toEqual({ operations: [], reason: '', author: '' });
