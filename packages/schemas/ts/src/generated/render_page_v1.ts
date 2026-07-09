@@ -7,6 +7,7 @@ export type Id = string;
 export type Title = string;
 export type SectionPath = string[];
 export type SourcePageNumber = number;
+export type SourceConfidence = number | null;
 export type Prev = string | null;
 export type Next = string | null;
 export type ParentSection = string;
@@ -72,6 +73,7 @@ export type WidthPx = number;
 export type HeightPx = number;
 export type Text1 = string;
 export type TranslatedText = string;
+export type BlockRef = string;
 export type X0 = number;
 export type Y0 = number;
 export type X1 = number;
@@ -108,6 +110,7 @@ export interface RenderPageMeta {
   title?: Title;
   section_path?: SectionPath;
   source_page_number?: SourcePageNumber;
+  source_confidence?: SourceConfidence;
 }
 export interface RenderNav {
   prev?: Prev;
@@ -229,6 +232,7 @@ export interface RenderFacsimile {
 export interface FacsimileAnnotation {
   text: Text1;
   translated_text?: TranslatedText;
+  block_ref?: BlockRef;
   bbox: NormRect;
   kind?: Kind13;
   priority?: Priority;

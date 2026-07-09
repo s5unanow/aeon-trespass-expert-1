@@ -9,6 +9,15 @@ export type TargetArtifactRef = string;
 export type PatchTargetKind = 'page_ir' | 'resolved_page' | 'layout_page' | 'page_evidence' | 'render_page';
 export type Op = string;
 export type Path = string;
+export type PatchValue =
+  | string
+  | number
+  | boolean
+  | PatchValue[]
+  | {
+      [k: string]: PatchValue;
+    }
+  | null;
 /**
  * Classification of what a patch operation corrects.
  */
@@ -57,14 +66,19 @@ export interface PatchSetV1 {
 export interface PatchOperation {
   op: Op;
   path: Path;
-  value?: Value;
+  value?:
+    | string
+    | number
+    | boolean
+    | PatchValue[]
+    | {
+        [k: string]: PatchValue;
+      }
+    | null;
   /**
    * Classification of what this operation corrects
    */
   scope?: PatchScope | null;
-}
-export interface Value {
-  [k: string]: unknown;
 }
 /**
  * Tracks who/what created the patch and its expected confidence impact.

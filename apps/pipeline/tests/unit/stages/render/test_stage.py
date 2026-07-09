@@ -76,6 +76,8 @@ def test_render_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "render"
     assert stage.scope == StageScope.DOCUMENT
+    # 1.7 → 1.8 (S5U-1554): render metadata now includes page source
+    # confidence and facsimile annotations include stable block refs.
     # 1.6 → 1.7 (S5U-737): orphan ``CaptionBlock`` instances now emit a
     # ``RenderCaptionBlock`` instead of being silently dropped at the top of
     # the page_builder block loop. The render_page.v1 artifact shape changes
@@ -95,7 +97,7 @@ def test_render_implements_stage_protocol() -> None:
     # from page_ir.document_id); the render_page.v1 artifact shape changed,
     # so cached 1.3 pages must be regenerated for QA rules to pick up the
     # real document id.
-    assert stage.version == "1.7"
+    assert stage.version == "1.8"
 
 
 @pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset

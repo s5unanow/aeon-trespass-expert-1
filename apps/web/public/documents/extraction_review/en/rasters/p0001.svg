@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="960" viewBox="0 0 720 960">
+  <rect width="720" height="960" fill="#eee7d4" />
+  <rect x="42" y="40" width="636" height="880" rx="4" fill="#fffdf6" stroke="#b9aa87" stroke-width="2" />
+  <text x="86" y="145" fill="#2e2b26" font-family="Georgia, serif" font-size="42" font-weight="700">Movement Review</text>
+  <line x1="86" y1="170" x2="610" y2="170" stroke="#947749" stroke-width="3" />
+  <text x="86" y="292" fill="#37322b" font-family="Georgia, serif" font-size="28">Move up to tree spaces.</text>
+  <rect x="78" y="430" width="560" height="150" rx="12" fill="#f4ead0" stroke="#947749" stroke-width="3" />
+  <text x="106" y="500" fill="#37322b" font-family="Georgia, serif" font-size="25">Terrain may reduce movement.</text>
+  <text x="620" y="885" fill="#776d5d" font-family="Georgia, serif" font-size="20">1</text>
+</svg>
