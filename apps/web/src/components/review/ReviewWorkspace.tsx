@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { patchSetV1 } from '@atr/schemas';
 import type { RenderPageData } from '../../lib/render/types';
 import { applyPatchOperations, buildPatchSet } from '../../lib/review/patches';
@@ -32,7 +32,10 @@ export function ReviewWorkspace({
   const [hoveredBlockRef, setHoveredBlockRef] = useState<string | null>(null);
   const [selectedBlockRef, setSelectedBlockRef] = useState<string | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
-  const projectedPage = applyPatchOperations(page, operations);
+  const projectedPage = useMemo(
+    () => applyPatchOperations(page, operations),
+    [page, operations],
+  );
   const selectedIndex = selectedBlockRef
     ? projectedPage.blocks.findIndex((block) => block.id === selectedBlockRef)
     : -1;
