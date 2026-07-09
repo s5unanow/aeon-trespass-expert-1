@@ -235,12 +235,12 @@ class TranslationStage:
             prompt_profile=ctx.config.translation.prompt_profile,
         )
         assessment: HardnessAssessment | None = None
-        chosen_model = ctx.config.translation.model_default
+        selected_primary_model = ctx.config.translation.model_default
         if hard_translator is not None:
             assessment = classify_hardness(en_ir, batch, ctx.config.translation.hardness)
             if assessment.is_hard:
                 translator = hard_translator
-                chosen_model = ctx.config.translation.model_hard
+                selected_primary_model = ctx.config.translation.model_hard
         response = translator.translate_batch(batch)
         result = response.result
         expanded_batch = _expand_grouped_translation_batch(batch)
@@ -265,7 +265,10 @@ class TranslationStage:
             "primary_error": response.meta.extra.get("primary_error"),
         }
         if assessment is not None:
-            meta_data["hardness"] = assessment.metadata(chosen_model)
+            meta_data["hardness"] = assessment.metadata(
+                selected_primary_model=selected_primary_model,
+                chosen_model=response.meta.model,
+            )
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,
             schema_family="translation_meta.v1",

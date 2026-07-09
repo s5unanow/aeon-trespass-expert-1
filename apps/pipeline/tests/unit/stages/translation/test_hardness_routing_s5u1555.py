@@ -5,17 +5,22 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.config.translation_hardness import TranslationHardnessConfig
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
 from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.services.llm.base import TranslationResponse
 from atr_pipeline.services.llm.mock_translator import MockTranslator
+from atr_pipeline.stages.translation import stage as translation_stage
 from atr_pipeline.stages.translation.planner import build_translation_batch
 from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import IconInline, InlineNode, PageIRV1, ParagraphBlock, TextInline
+from atr_schemas.translation_batch_v1 import TranslationBatchV1
 
 
 def _repo_root() -> Path:
@@ -133,10 +138,12 @@ def test_enabled_hardness_routes_hard_and_easy_pages_and_records_metadata(
         },
         "threshold": 1.0,
         "is_hard": False,
+        "selected_primary_model": "mock-easy",
         "chosen_model": "mock-easy",
     }
     assert hard_meta["hardness"]["score"] == 2.0  # type: ignore[index]
     assert hard_meta["hardness"]["is_hard"] is True  # type: ignore[index]
+    assert hard_meta["hardness"]["selected_primary_model"] == "mock-hard"  # type: ignore[index]
     assert hard_meta["hardness"]["chosen_model"] == "mock-hard"  # type: ignore[index]
 
 
@@ -198,3 +205,53 @@ def test_enabling_hardness_invalidates_legacy_page_resume(tmp_path: Path) -> Non
     routed_meta, _ = _load_meta(ctx, "p0001")
     assert routed_meta["model"] == "mock-hard"
     assert routed_meta["hardness"]["is_hard"] is True  # type: ignore[index]
+
+
+def test_empty_model_default_records_adapter_resolved_model(tmp_path: Path) -> None:
+    """Chosen-model provenance uses the adapter's resolved default, not an empty config."""
+    ctx = _context(tmp_path, enabled=True)
+    ctx.config.translation.model_default = ""
+    ctx.config.translation.model_hard = ""
+    _put_page(ctx, _page("p0001", hard=True))
+
+    TranslationStage().run(ctx, None)
+
+    meta, _ = _load_meta(ctx, "p0001")
+    assert meta["model"] == "mock-v1"
+    assert meta["hardness"]["chosen_model"] == "mock-v1"  # type: ignore[index]
+    assert meta["hardness"]["selected_primary_model"] == ""  # type: ignore[index]
+
+
+class _FallbackWinningTranslator:
+    """Deterministic adapter whose metadata represents a winning fallback."""
+
+    def translate_batch(
+        self,
+        batch: TranslationBatchV1,
+        model_profile: str = "",
+    ) -> TranslationResponse:
+        response = MockTranslator(model="fallback-model").translate_batch(batch, model_profile)
+        response.meta.provider = "anthropic"
+        response.meta.extra["fallback_used"] = True
+        return response
+
+
+def test_fallback_winner_records_actual_and_selected_primary_models(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Routing provenance distinguishes model_hard selection from the fallback winner."""
+    ctx = _context(tmp_path, enabled=True)
+    _put_page(ctx, _page("p0001", hard=True))
+    monkeypatch.setattr(
+        translation_stage,
+        "create_translator",
+        lambda *args, **kwargs: _FallbackWinningTranslator(),
+    )
+
+    TranslationStage().run(ctx, None)
+
+    meta, _ = _load_meta(ctx, "p0001")
+    assert meta["model"] == "fallback-model"
+    assert meta["hardness"]["chosen_model"] == "fallback-model"  # type: ignore[index]
+    assert meta["hardness"]["selected_primary_model"] == "mock-hard"  # type: ignore[index]

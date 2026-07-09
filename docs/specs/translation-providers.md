@@ -141,9 +141,11 @@ Translation can opt into deterministic per-page routing from `model_default`
 to `model_hard` with `[translation.hardness]`. The classifier uses only the
 planned source batch and PageIR: inline-icon density, cross-reference density,
 table presence, segment count, and average segment length. Its raw signals,
-weighted contributions, threshold, and chosen model are persisted in
-`translation_meta.v1` when enabled. The default is `enabled = false`, which
-preserves the legacy adapter call and metadata shape.
+weighted contributions, threshold, selected primary model, and actual winning
+model are persisted in `translation_meta.v1` when enabled. The distinction
+keeps fallback wins and provider-resolved model defaults auditable. The default
+is `enabled = false`, which preserves the legacy adapter call and metadata
+shape.
 
 ```toml
 [translation.hardness]

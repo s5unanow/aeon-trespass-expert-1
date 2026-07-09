@@ -20,7 +20,12 @@ class HardnessAssessment:
     threshold: float
     is_hard: bool
 
-    def metadata(self, chosen_model: str) -> dict[str, object]:
+    def metadata(
+        self,
+        *,
+        selected_primary_model: str,
+        chosen_model: str,
+    ) -> dict[str, object]:
         """Return the JSON-ready provenance stored beside a translated batch."""
         return {
             "score": self.score,
@@ -28,6 +33,7 @@ class HardnessAssessment:
             "contributions": self.contributions,
             "threshold": self.threshold,
             "is_hard": self.is_hard,
+            "selected_primary_model": selected_primary_model,
             "chosen_model": chosen_model,
         }
 
