@@ -1,0 +1,70 @@
+{
+  "schema_version": "patch_set.v1",
+  "patch_id": "review_sample-en-p0001-reorder",
+  "target_artifact_ref": "review_sample/en/data/render_page.p0001.json",
+  "target_kind": "render_page",
+  "operations": [
+    {
+      "op": "replace",
+      "path": "/blocks",
+      "value": [
+        {
+          "kind": "paragraph",
+          "id": "p0001.b002",
+          "children": [
+            {
+              "kind": "text",
+              "text": "Roll dice equal to the titan's Attack value.",
+              "marks": []
+            }
+          ]
+        },
+        {
+          "kind": "heading",
+          "id": "p0001.b001",
+          "level": 2,
+          "children": [
+            {
+              "kind": "text",
+              "text": "Attack Phase",
+              "marks": [
+                "bold"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "id": "p0001.b003",
+          "children": [
+            {
+              "kind": "text",
+              "text": "Apply damage to the closest survivor.",
+              "marks": []
+            }
+          ]
+        },
+        {
+          "kind": "callout",
+          "id": "p0001.b004",
+          "variant": "warning",
+          "children": [
+            {
+              "kind": "text",
+              "text": "Cursed weapons cannot be removed once equipped.",
+              "marks": []
+            }
+          ]
+        }
+      ],
+      "scope": "reading_order"
+    }
+  ],
+  "reason": "heading and intro were swapped in extraction",
+  "author": "reviewer@example.com",
+  "provenance": {
+    "author": "reviewer@example.com",
+    "created_at": "2026-07-09T12:00:00+00:00",
+    "source_confidence": null
+  }
+}

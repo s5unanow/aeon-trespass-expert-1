@@ -69,6 +69,7 @@ apps/web/public/documents/*
 !apps/web/public/documents/target_p0065/
 !apps/web/public/documents/target_p0075/
 !apps/web/public/documents/target_p0082/
+!apps/web/public/documents/review_sample/
 
 # Runtime state
 var/*.db
@@ -84,7 +85,10 @@ var/*.db-shm
 HANDOFF.md
 
 # Review artifacts and temp files
-review/
+# Anchored to the repo-root artifacts dir only — an unanchored `review/` also
+# matched legitimate source packages named `review` (e.g. atr_pipeline/review,
+# apps/web/src/lib/review), silently dropping new files from those trees.
+/review/
 tmp/
 
 # Playwright MCP runtime logs
