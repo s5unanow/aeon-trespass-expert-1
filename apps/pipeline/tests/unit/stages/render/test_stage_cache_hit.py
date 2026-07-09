@@ -64,6 +64,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from pydantic import TypeAdapter
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
@@ -92,7 +94,7 @@ def _published_render_page(page_dir: Path) -> RenderPageV1:
     """Return the wrapper that carries the immutable review target ref."""
     page_files = list(page_dir.glob("*.json"))
     assert len(page_files) == 2, f"expected target + published render pages, got {page_files}"
-    pages = [RenderPageV1.model_validate_json(path.read_bytes()) for path in page_files]
+    pages = [TypeAdapter(RenderPageV1).validate_json(path.read_bytes()) for path in page_files]
     published = [page for page in pages if page.build_meta and page.build_meta.artifact_ref]
     assert len(published) == 1, f"expected one published wrapper, got {published}"
     wrapper = published[0]

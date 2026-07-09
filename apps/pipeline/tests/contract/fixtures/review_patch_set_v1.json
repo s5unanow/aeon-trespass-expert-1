@@ -1,7 +1,7 @@
 {
   "schema_version": "patch_set.v1",
   "patch_id": "patch-extraction_review-en-p0001-2026-07-10T00-00-00-000Z",
-  "target_artifact_ref": "extraction_review/render_page.v1/page/p0001/review-source.json",
+  "target_artifact_ref": "extraction_review/render_page.v1/page/p0001/16edb2309b69.json",
   "target_kind": "render_page",
   "operations": [
     {

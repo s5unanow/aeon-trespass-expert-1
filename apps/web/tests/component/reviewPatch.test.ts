@@ -19,7 +19,7 @@ import {
 } from '../../src/lib/review/persistence';
 
 const page = normalizeRenderPage(renderFixture);
-const targetArtifactRef = 'extraction_review/render_page.v1/page/p0001/review-source.json';
+const targetArtifactRef = 'extraction_review/render_page.v1/page/p0001/16edb2309b69.json';
 
 describe('review patch operations', () => {
   it('builds a text pointer that resolves to the selected inline', () => {
