@@ -35,7 +35,7 @@ export function createTextCorrectionOp(
   return {
     op: 'replace',
     path: inlineTextPath(blockIndex, childIndex),
-    value: correctedText,
+    value: correctedText as any,
     scope: 'text' as PatchScope,
   };
 }
@@ -45,7 +45,7 @@ export function createBlockSuppressOp(blockIndex: number): PatchOp {
   return {
     op: 'delete',
     path: blockPath(blockIndex),
-    value: null,
+    // value omitted / undefined to satisfy generated PatchOperation.Value shape
     scope: 'block_structure' as PatchScope,
   };
 }
@@ -98,7 +98,6 @@ export function createReadingOrderOps(
   const deleteOp: PatchOp = {
     op: 'delete',
     path: blockPath(fromIndex),
-    value: null,
     scope: 'reading_order' as PatchScope,
   };
   ops.push(deleteOp);
@@ -113,7 +112,7 @@ export function createReadingOrderOps(
   const insertOp: PatchOp = {
     op: 'insert',
     path: blockPath(insertAt),
-    value: { __patch_move_marker: true, from: fromIndex, to: toIndex },
+    value: { __patch_move_marker: true, from: fromIndex, to: toIndex } as any,
     scope: 'reading_order' as PatchScope,
   };
   ops.push(insertOp);

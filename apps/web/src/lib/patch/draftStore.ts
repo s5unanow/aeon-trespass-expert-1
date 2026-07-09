@@ -1,7 +1,7 @@
 // localStorage-backed draft persistence for the review route.
 // Keyed by document/edition/page so reloads on the same review URL restore ops.
 
-import type { PatchDraft, PatchOp } from './schema';
+import type { PatchDraft } from './schema';
 import { createEmptyPatchSet } from './schema';
 
 const STORAGE_PREFIX = 'patch-draft-';

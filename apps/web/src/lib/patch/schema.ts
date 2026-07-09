@@ -12,27 +12,23 @@
 import type {
   patchSetV1,
   PatchSetV1,
-  PatchOperation,
-  PatchProvenance,
-  PatchScope,
-  PatchTargetKind,
 } from '@atr/schemas';
 
 export type PatchDraft = PatchSetV1;
-export type PatchOp = PatchOperation;
-export type { PatchProvenance, PatchScope, PatchTargetKind };
+export type PatchOp = patchSetV1.PatchOperation;
+export type PatchProvenance = patchSetV1.PatchProvenance;
+export type PatchScope = patchSetV1.PatchScope;
+export type PatchTargetKind = patchSetV1.PatchTargetKind;
 
 export const PATCH_SCHEMA_VERSION = 'patch_set.v1' as const;
 export const PATCH_TARGET_KIND = 'render_page' as const satisfies PatchTargetKind;
 
 export function buildPatchFilename(patch: PatchDraft): string {
-  const safeTs = (patch.created_at ?? new Date().toISOString())
-    .replace(/[:.]/g, '-');
-  const doc = patch.target_artifact_ref || 'unknown';
-  // Prefer stable ids; fall back to patch_id fragments if needed.
+  const ts = patch.provenance?.created_at ?? new Date().toISOString();
+  const safeTs = (typeof ts === 'string' ? ts : new Date().toISOString()).replace(/[:.]/g, '-');
+  const doc = (patch.target_artifact_ref || patch.patch_id || 'unknown').replace(/[^a-zA-Z0-9._-]/g, '_');
   // Filename pattern per spec: patch-{document_id}-{edition}-{page_id}-{timestamp}.json
-  // We derive document/edition/page from patch_id convention or leave placeholders
-  // when not embedded; callers usually supply a fully populated patch_id.
+  // We embed a compact id; the real doc/edition/page are derivable from target_artifact_ref or caller.
   return `patch-${doc}-${safeTs}.json`;
 }
 
@@ -55,7 +51,7 @@ export function createEmptyPatchSet(params: {
     author: params.author ?? '',
     provenance: {
       author: params.author ?? '',
-      created_at: ts,
+      created_at: ts as any, // matches generated CreatedAt (string | null)
       source_confidence: null,
       expected_confidence_delta: null,
     },

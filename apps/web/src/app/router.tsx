@@ -11,6 +11,12 @@ const QaDashboard = lazy(() =>
   import('../routes/QaDashboard').then((m) => ({ default: m.QaDashboard })),
 );
 
+// S5U-1538: extraction review drafting route is lazy so the main reader bundle
+// (article/facsimile rendering, navigation, glossary) is completely unaffected.
+const ReviewPage = lazy(() =>
+  import('../routes/ReviewPage').then((m) => ({ default: m.ReviewPage })),
+);
+
 function QaFallback() {
   return (
     <div className="skeleton" aria-busy="true" aria-label="Loading QA findings">
@@ -19,6 +25,17 @@ function QaFallback() {
     </div>
   );
 }
+
+function ReviewFallback() {
+  return (
+    <div className="skeleton" aria-busy="true" aria-label="Loading extraction review">
+      <div className="skeleton-bone skeleton-heading" />
+      <div className="skeleton-bone skeleton-block" />
+      <div className="skeleton-bone skeleton-block" />
+    </div>
+  );
+}
+
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +55,16 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<QaFallback />}>
             <QaDashboard />
+          </Suspense>
+        ),
+      },
+      {
+        // S5U-1538: lazy review route for typed PatchSetV1 drafting.
+        // URL: /documents/:documentId/:edition/review/:pageId
+        path: 'review/:pageId',
+        element: (
+          <Suspense fallback={<ReviewFallback />}>
+            <ReviewPage />
           </Suspense>
         ),
       },
