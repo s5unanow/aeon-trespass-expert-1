@@ -357,8 +357,8 @@ def test_patch_application_roundtrips_ui_export_shape() -> None:
     from pathlib import Path
 
     from atr_pipeline.stages.patch.applicator import apply_patches
+    from atr_schemas.enums import PatchScope, PatchTargetKind
     from atr_schemas.patch_set_v1 import PatchOperation, PatchSetV1
-    from atr_schemas.enums import PatchTargetKind, PatchScope
 
     # Committed fixture (stable across exports)
     fixture_path = Path(
@@ -407,7 +407,8 @@ def test_patch_application_roundtrips_ui_export_shape() -> None:
     RenderPageV1.model_validate(patched_dict)
 
     # Sanity: the text change landed
-    assert patched_dict["blocks"][0]["children"][0]["text"] == "Patched via review route (S5U-1538 contract)"
+    expected = "Patched via review route (S5U-1538 contract)"
+    assert patched_dict["blocks"][0]["children"][0]["text"] == expected
 
 
 def test_translation_batch_roundtrip() -> None:
