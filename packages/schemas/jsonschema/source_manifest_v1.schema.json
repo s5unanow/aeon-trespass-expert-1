@@ -1,5 +1,75 @@
 {
   "$defs": {
+    "ImageEntryV1": {
+      "description": "Descriptor for one page image within an image-set source.\n\n- page_id uses the canonical pNNNN form for stable page identity.\n- sha256 is the hex digest of the raw image file bytes (filled by ingest).\n- path is relative to the manifest or repo root (resolved safely at ingest).",
+      "properties": {
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "media_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Media Type"
+        }
+      },
+      "required": [
+        "page_id",
+        "path"
+      ],
+      "title": "ImageEntryV1",
+      "type": "object"
+    },
     "PageEntry": {
       "description": "Metadata for a single source page.",
       "properties": {
@@ -34,7 +104,7 @@
       "type": "object"
     }
   },
-  "description": "Registered source document and its pages.",
+  "description": "Registered source document and its pages.\n\nPDF sources populate source_pdf_sha256 (historical field).\nImage-set sources populate the complement source_image_set_sha256 and\nmay list per-image details in image_entries. The two fingerprint fields\ncoexist; neither overloads the other.",
   "properties": {
     "schema_version": {
       "default": "source_manifest.v1",
@@ -47,6 +117,7 @@
       "type": "string"
     },
     "source_pdf_sha256": {
+      "default": "",
       "title": "Source Pdf Sha256",
       "type": "string"
     },
@@ -71,11 +142,22 @@
       "default": "",
       "title": "Extractor Version",
       "type": "string"
+    },
+    "source_image_set_sha256": {
+      "default": "",
+      "title": "Source Image Set Sha256",
+      "type": "string"
+    },
+    "image_entries": {
+      "items": {
+        "$ref": "#/$defs/ImageEntryV1"
+      },
+      "title": "Image Entries",
+      "type": "array"
     }
   },
   "required": [
     "document_id",
-    "source_pdf_sha256",
     "page_count",
     "pages"
   ],

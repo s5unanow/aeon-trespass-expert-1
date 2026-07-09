@@ -15,13 +15,23 @@ from atr_schemas.common import Rect
 
 
 class DocumentConfig(BaseModel):
-    """Document-specific configuration."""
+    """Document-specific configuration (source_kind normalizes legacy source_pdf)."""
 
     id: str
-    source_pdf: str
+    source_pdf: str = ""
+    source_kind: Literal["pdf", "image_set"] = "pdf"
+    source_image_set: str = ""
     source_lang: str = "en"
     target_langs: list[str] = Field(default_factory=lambda: ["ru"])
     structure_builder: Literal["real", "simple"] = "real"
+
+    @model_validator(mode="after")
+    def _normalize_source_variant(self) -> DocumentConfig:
+        if self.source_kind == "pdf" and not self.source_pdf:
+            raise ValueError("source_kind='pdf' requires non-empty source_pdf")
+        if self.source_kind == "image_set" and not self.source_image_set:
+            raise ValueError("source_kind='image_set' requires non-empty source_image_set")
+        return self
 
 
 class PipelineConfig(BaseModel):
@@ -367,8 +377,14 @@ class DocumentBuildConfig(BaseModel):
 
     @property
     def source_pdf_path(self) -> Path:
-        """Resolved path to source PDF."""
         p = Path(self.document.source_pdf)
+        if p.is_absolute():
+            return p
+        return self.repo_root / p
+
+    @property
+    def source_image_set_manifest_path(self) -> Path:
+        p = Path(self.document.source_image_set)
         if p.is_absolute():
             return p
         return self.repo_root / p

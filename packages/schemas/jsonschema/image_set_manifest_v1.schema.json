@@ -1,0 +1,95 @@
+{
+  "$defs": {
+    "ImageEntryV1": {
+      "description": "Descriptor for one page image within an image-set source.\n\n- page_id uses the canonical pNNNN form for stable page identity.\n- sha256 is the hex digest of the raw image file bytes (filled by ingest).\n- path is relative to the manifest or repo root (resolved safely at ingest).",
+      "properties": {
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "media_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Media Type"
+        }
+      },
+      "required": [
+        "page_id",
+        "path"
+      ],
+      "title": "ImageEntryV1",
+      "type": "object"
+    }
+  },
+  "description": "On-disk manifest describing the ordered images for an image-set source.\n\nThis is the input artifact referenced by an ImageSetSourceV1.\nIt is validated for duplicates, path safety (by ingest), and media types\nbefore any raw image bytes are registered as artifacts.",
+  "properties": {
+    "schema_version": {
+      "default": "image_set_manifest.v1",
+      "pattern": "^image_set_manifest\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/ImageEntryV1"
+      },
+      "title": "Images",
+      "type": "array"
+    }
+  },
+  "required": [
+    "images"
+  ],
+  "title": "ImageSetManifestV1",
+  "type": "object"
+}

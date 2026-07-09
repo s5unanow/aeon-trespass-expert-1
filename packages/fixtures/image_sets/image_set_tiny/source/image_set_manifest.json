@@ -1,0 +1,9 @@
+{
+  "schema_version": "image_set_manifest.v1",
+  "images": [
+    {
+      "page_id": "p0001",
+      "path": "p0001.png"
+    }
+  ]
+}

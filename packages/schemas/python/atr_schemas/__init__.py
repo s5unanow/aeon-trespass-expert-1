@@ -118,6 +118,13 @@ from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.run_summary_v1 import RunSummaryV1
 from atr_schemas.search_docs_v1 import SearchDocEntry, SearchDocsV1
 from atr_schemas.source_manifest_v1 import PageEntry, SourceManifestV1
+from atr_schemas.source_ref_v1 import (
+    ImageEntryV1,
+    ImageSetManifestV1,
+    ImageSetSourceV1,
+    PdfSourceV1,
+    SourceRefV1,
+)
 from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1, SymbolEntry
 from atr_schemas.symbol_match_set_v1 import SymbolMatch, SymbolMatchSetV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
@@ -178,6 +185,9 @@ __all__ = [
     "HeadingBlock",
     "IconInline",
     "ImageBlockEvidence",
+    "ImageEntryV1",
+    "ImageSetManifestV1",
+    "ImageSetSourceV1",
     "InlineNode",
     "InlineType",
     "LanguageCode",
@@ -203,6 +213,7 @@ __all__ = [
     "PatchScope",
     "PatchSetV1",
     "PatchTargetKind",
+    "PdfSourceV1",
     "ProvenanceRef",
     "PublicQARecordSetV1",
     "PublicQARecordV1",
@@ -246,6 +257,7 @@ __all__ = [
     "SemanticConfidence",
     "Severity",
     "SourceManifestV1",
+    "SourceRefV1",
     "SpanEvidence",
     "StageScope",
     "SymbolAnchorKind",
