@@ -167,3 +167,18 @@ owner = "s5unanow"
 reviewer = "s5unanow"
 retirement_policy = "replace when real-page version available"
 notes = "3-page fixture — goldens annotate primary/qa_required/publish_blocking bands (S5U-590)"
+
+[[fixtures]]
+fixture_id = "image_set_smoke"
+source_document = "Synthetic generated image set"
+source_edition = "synthetic_image_set_v1"
+source_pages = [1, 2]
+source_checksum = ""
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["image_set_ingest", "source_identity"]
+eval_dimensions = ["source_manifest"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "permanent — image-set ingest smoke fixture"
+notes = "Two generated 1x1 PNG pages with manifest-declared SHA-256 values"

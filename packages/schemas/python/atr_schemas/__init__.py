@@ -47,6 +47,7 @@ from atr_schemas.evidence_primitives_v1 import (
     EvidenceVectorPath,
 )
 from atr_schemas.glossary_payload_v1 import GlossaryEntryV1, GlossaryPageRef, GlossaryPayloadV1
+from atr_schemas.image_set_manifest_v1 import ImageSetImageV1, ImageSetManifestV1
 from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
 from atr_schemas.native_page_v1 import (
     ImageBlockEvidence,
@@ -178,6 +179,8 @@ __all__ = [
     "HeadingBlock",
     "IconInline",
     "ImageBlockEvidence",
+    "ImageSetImageV1",
+    "ImageSetManifestV1",
     "InlineNode",
     "InlineType",
     "LanguageCode",
