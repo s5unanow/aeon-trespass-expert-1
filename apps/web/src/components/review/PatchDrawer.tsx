@@ -49,10 +49,10 @@ export function PatchDrawer({
             <code>{operation.path}</code>
             <button
               type="button"
-              aria-label={`Remove operation ${index + 1}`}
+              aria-label={`Remove operation ${index + 1} and later operations`}
               onClick={() => onRemove(index)}
             >
-              Remove
+              Remove from here
             </button>
           </li>
         ))}

@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { patchSetV1 } from '@atr/schemas';
 import type { RenderPageData } from '../../lib/render/types';
-import { applyPatchOperations, buildPatchSet } from '../../lib/review/patches';
+import {
+  applyPatchOperations,
+  buildPatchSet,
+  removeOperationAndDependents,
+} from '../../lib/review/patches';
 import { downloadPatchSet } from '../../lib/review/download';
 import { loadReviewDraft, saveReviewDraft, type ReviewDraft } from '../../lib/review/persistence';
 import { PageGlossaryProvider } from '../../contexts/PageContext';
@@ -32,10 +36,7 @@ export function ReviewWorkspace({
   const [hoveredBlockRef, setHoveredBlockRef] = useState<string | null>(null);
   const [selectedBlockRef, setSelectedBlockRef] = useState<string | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
-  const projectedPage = useMemo(
-    () => applyPatchOperations(page, operations),
-    [page, operations],
-  );
+  const projectedPage = useMemo(() => applyPatchOperations(page, operations), [page, operations]);
   const selectedIndex = selectedBlockRef
     ? projectedPage.blocks.findIndex((block) => block.id === selectedBlockRef)
     : -1;
@@ -138,7 +139,9 @@ export function ReviewWorkspace({
           exportError={exportError}
           onReasonChange={setReason}
           onAuthorChange={setAuthor}
-          onRemove={(index) => setOperations((current) => current.filter((_, i) => i !== index))}
+          onRemove={(index) =>
+            setOperations((current) => removeOperationAndDependents(current, index))
+          }
           onClear={() => setOperations([])}
           onExport={exportPatch}
         />

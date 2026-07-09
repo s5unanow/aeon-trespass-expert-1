@@ -237,6 +237,21 @@ export function buildSuppressOperation(blocks: RenderBlock[], blockIndex: number
   return { op: 'delete', path: `/blocks/${blockIndex}`, scope: 'block_structure' };
 }
 
+/** Positional operations form a dependency chain, so removal is stack-like. */
+export function removeOperationAndDependents(
+  operations: PatchOperation[],
+  operationIndex: number,
+): PatchOperation[] {
+  if (
+    !Number.isInteger(operationIndex) ||
+    operationIndex < 0 ||
+    operationIndex >= operations.length
+  ) {
+    throw new Error(`Operation index ${operationIndex} is out of bounds`);
+  }
+  return operations.slice(0, operationIndex);
+}
+
 function safeTimestamp(date: Date): string {
   return date.toISOString().replace(/[:.]/g, '-');
 }
