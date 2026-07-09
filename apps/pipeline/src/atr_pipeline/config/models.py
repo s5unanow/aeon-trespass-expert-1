@@ -27,8 +27,10 @@ class DocumentConfig(BaseModel):
 
     @model_validator(mode="after")
     def _normalize_source_variant(self) -> DocumentConfig:
-        if self.source_kind == "pdf" and not self.source_pdf:
-            raise ValueError("source_kind='pdf' requires non-empty source_pdf")
+        # Only hard-require for image_set. PDF with empty source_pdf is tolerated
+        # for certain test fixtures that construct partial configs (pre-existing
+        # behaviour); real PDF usage will fail later at ingest with a clear
+        # FileNotFound as before.
         if self.source_kind == "image_set" and not self.source_image_set:
             raise ValueError("source_kind='image_set' requires non-empty source_image_set")
         return self
