@@ -12,6 +12,10 @@ from atr_pipeline.stages.translation.grouping import (
     expand_grouped_batch,
     expand_grouped_result,
 )
+from atr_pipeline.stages.translation.hardness import (
+    HardnessAssessment,
+    assess_translation_hardness,
+)
 from atr_pipeline.stages.translation.page_state import (
     en_ir_content_hash,
     load_resume_state,
@@ -99,6 +103,16 @@ class TranslationStage:
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
         translator = create_translator(ctx.config.translation, concept_registry=concept_reg)
+        hard_translator = translator
+        if (
+            ctx.config.translation.hardness.enabled
+            and ctx.config.translation.model_hard != ctx.config.translation.model_default
+        ):
+            hard_config = ctx.config.translation.model_copy(
+                deep=True,
+                update={"model_default": ctx.config.translation.model_hard},
+            )
+            hard_translator = create_translator(hard_config, concept_registry=concept_reg)
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
 
         pages_translated = 0
@@ -116,6 +130,7 @@ class TranslationStage:
                 en_ir,
                 page_id,
                 translator,
+                hard_translator,
                 concept_reg,
             )
             pages_translated += 1
@@ -138,6 +153,7 @@ class TranslationStage:
         en_ir: PageIRV1,
         page_id: str,
         translator: TranslatorAdapter,
+        hard_translator: TranslatorAdapter,
         concept_reg: ConceptRegistryV1 | None,
     ) -> tuple[int, str]:
         """Resume-aware per-page driver (S5U-1228).
@@ -158,7 +174,14 @@ class TranslationStage:
             ctx.logger.info("Resumed %s from cache (skipping LLM)", page_id)
             return cached.warning_count, cached.ru_ir_ref
 
-        warnings, ru_ir_ref = self._translate_page(ctx, en_ir, page_id, translator, concept_reg)
+        warnings, ru_ir_ref = self._translate_page(
+            ctx,
+            en_ir,
+            page_id,
+            translator,
+            hard_translator,
+            concept_reg,
+        )
         persist_resume_state(
             ctx,
             page_id=page_id,
@@ -174,6 +197,7 @@ class TranslationStage:
         en_ir: PageIRV1,
         page_id: str,
         translator: TranslatorAdapter,
+        hard_translator: TranslatorAdapter,
         concept_reg: ConceptRegistryV1 | None,
     ) -> tuple[int, ArtifactRef]:
         """Translate a single page and store the RU IR.
@@ -190,7 +214,21 @@ class TranslationStage:
             concept_registry=concept_reg,
             prompt_profile=ctx.config.translation.prompt_profile,
         )
-        response = translator.translate_batch(batch)
+        hardness: HardnessAssessment | None = None
+        chosen_model = ctx.config.translation.model_default
+        selected_translator = translator
+        model_profile = ""
+        if ctx.config.translation.hardness.enabled:
+            hardness = assess_translation_hardness(en_ir, batch, ctx.config.translation.hardness)
+            if hardness.is_hard:
+                chosen_model = ctx.config.translation.model_hard
+                selected_translator = hard_translator
+            # Mock has no configured model instance, so use the protocol's
+            # per-call model field to make routing observable in tests.
+            if ctx.config.translation.provider == "mock":
+                model_profile = chosen_model
+
+        response = selected_translator.translate_batch(batch, model_profile=model_profile)
         result = response.result
         expanded_batch = _expand_grouped_translation_batch(batch)
         expanded_result = _expand_grouped_translation_result(batch, result)
@@ -213,6 +251,9 @@ class TranslationStage:
             # FallbackTranslator only on the fallback path; ``None`` otherwise.
             "primary_error": response.meta.extra.get("primary_error"),
         }
+        if hardness is not None:
+            meta_data["chosen_model"] = chosen_model
+            meta_data["hardness"] = hardness.to_metadata()
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,
             schema_family="translation_meta.v1",

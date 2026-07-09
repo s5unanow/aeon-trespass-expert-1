@@ -56,6 +56,21 @@ style_repair_reasoning_effort = "high"
 # for the recommended Codex CLI block (reasoning_effort = "xhigh",
 # sandbox = "read-only", approval_policy = "never", timeout_seconds = 600).
 
+[translation.hardness]
+enabled = false
+threshold = 1.0
+icon_density_reference = 0.20
+xref_density_reference = 0.10
+segment_count_reference = 24
+segment_length_reference = 1200
+
+[translation.hardness.weights]
+inline_icon_density = 1.0
+cross_reference_density = 1.0
+table_presence = 1.0
+segment_count = 0.5
+segment_length = 0.5
+
 [structure]
 heading_fonts = ["GreenleafLightPro", "Goobascript"]
 decorative_fonts = ["GreenleafBannersRegularL"]
