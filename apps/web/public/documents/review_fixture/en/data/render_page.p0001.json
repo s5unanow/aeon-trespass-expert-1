@@ -1,0 +1,85 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "review-fixture",
+  "presentation_mode": "facsimile",
+  "source_confidence": 0.82,
+  "page": {
+    "id": "p0001",
+    "title": "Review Fixture",
+    "section_path": [],
+    "source_page_number": 1
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": ""
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 2,
+      "children": [
+        { "kind": "text", "text": "Review Fixture", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b002",
+      "children": [
+        { "kind": "text", "text": "Original body text.", "marks": [] }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b003",
+      "children": [
+        { "kind": "text", "text": "Duplicate footer text.", "marks": [] }
+      ]
+    }
+  ],
+  "figures": {},
+  "facsimile": {
+    "raster_src": "/icons/stat_progress.png",
+    "raster_src_hires": "",
+    "width_px": 640,
+    "height_px": 800,
+    "annotations": [
+      {
+        "text": "Review Fixture",
+        "translated_text": "Review Fixture",
+        "bbox": { "x0": 0.1, "y0": 0.08, "x1": 0.9, "y1": 0.18 },
+        "kind": "title",
+        "priority": 0
+      },
+      {
+        "text": "Original body text.",
+        "translated_text": "Original body text.",
+        "bbox": { "x0": 0.12, "y0": 0.24, "x1": 0.82, "y1": 0.38 },
+        "kind": "body",
+        "priority": 0
+      },
+      {
+        "text": "Duplicate footer text.",
+        "translated_text": "Duplicate footer text.",
+        "bbox": { "x0": 0.14, "y0": 0.76, "x1": 0.76, "y1": 0.86 },
+        "kind": "body",
+        "priority": 0
+      }
+    ]
+  },
+  "glossary_mentions": [],
+  "search": {
+    "raw_text": "Review Fixture Original body text Duplicate footer text",
+    "normalized_terms": ["review", "fixture", "original", "body", "duplicate", "footer"]
+  },
+  "source_map": {
+    "document_id": "review_fixture",
+    "page_id": "p0001",
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003"]
+  },
+  "build_meta": {
+    "build_id": "review-fixture",
+    "generated_at": "2026-07-09T08:00:00.000Z"
+  }
+}

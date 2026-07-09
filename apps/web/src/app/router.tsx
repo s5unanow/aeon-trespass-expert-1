@@ -11,6 +11,12 @@ const QaDashboard = lazy(() =>
   import('../routes/QaDashboard').then((m) => ({ default: m.QaDashboard })),
 );
 
+// Extraction review is reviewer-only and patch-drafting heavy, so it stays out
+// of the reader's initial bundle just like /qa.
+const ExtractionReviewPage = lazy(() =>
+  import('../routes/ExtractionReviewPage').then((m) => ({ default: m.ExtractionReviewPage })),
+);
+
 function QaFallback() {
   return (
     <div className="skeleton" aria-busy="true" aria-label="Loading QA findings">
@@ -38,6 +44,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<QaFallback />}>
             <QaDashboard />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'review/:pageId',
+        element: (
+          <Suspense fallback={<QaFallback />}>
+            <ExtractionReviewPage />
           </Suspense>
         ),
       },
