@@ -7,6 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from atr_pipeline.config.translation_hardness import TranslationHardnessConfig
 from atr_pipeline.config.translation_providers import (
     translation_provider_requires_model,
     validate_translation_provider_name,
@@ -172,6 +173,7 @@ class TranslationConfig(BaseModel):
     fallback_options: TranslationProviderOptions = Field(
         default_factory=TranslationProviderOptions,
     )
+    hardness: TranslationHardnessConfig = Field(default_factory=TranslationHardnessConfig)
 
     @model_validator(mode="after")
     def _normalize_and_validate(self) -> TranslationConfig:

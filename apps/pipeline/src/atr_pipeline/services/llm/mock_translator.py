@@ -79,7 +79,7 @@ class MockTranslator:
         )
         meta = TranslationResponseMeta(
             provider="mock",
-            model="mock-v1",
+            model=model_profile or "mock-v1",
             raw_response=result.model_dump_json(),
         )
         return TranslationResponse(result=result, meta=meta)
