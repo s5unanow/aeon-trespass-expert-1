@@ -19,7 +19,7 @@ const blocks: RenderBlock[] = [
 ];
 
 describe('ReviewBlocks', () => {
-  it('leaves descendant-link keyboard activation to the link', () => {
+  it('keeps descendant links independent from block selection', () => {
     const onSelect = vi.fn();
     render(
       <MemoryRouter>
@@ -38,9 +38,12 @@ describe('ReviewBlocks', () => {
     expect(fireEvent.keyDown(link, { key: 'Enter' })).toBe(true);
     expect(onSelect).not.toHaveBeenCalled();
 
-    fireEvent.keyDown(screen.getByRole('button', { name: /Select p0001\.b001/ }), {
-      key: 'Enter',
-    });
+    const selectButton = screen.getByRole('button', { name: /Select p0001\.b001/ });
+    expect(selectButton.contains(link)).toBe(false);
+    fireEvent.click(link);
+    expect(onSelect).not.toHaveBeenCalled();
+
+    fireEvent.click(selectButton);
     expect(onSelect).toHaveBeenCalledOnce();
     expect(onSelect).toHaveBeenCalledWith('p0001.b001');
   });
