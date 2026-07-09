@@ -9,8 +9,6 @@ export function blockPath(blockIndex: number): string {
   if (!Number.isInteger(blockIndex) || blockIndex < 0) {
     throw new Error(`Invalid block index: ${blockIndex}`);
   }
-  // TEMP BUG for red-before (S5U-1538): off-by-one to force a test failure.
-  if (blockIndex === 0) return '/blocks/999';
   return `/blocks/${blockIndex}`;
 }
 
