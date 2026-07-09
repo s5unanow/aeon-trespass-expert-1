@@ -7,6 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from atr_pipeline.config import source as source_util
 from atr_pipeline.config.translation_providers import (
     translation_provider_requires_model,
     validate_translation_provider_name,
@@ -15,13 +16,26 @@ from atr_schemas.common import Rect
 
 
 class DocumentConfig(BaseModel):
-    """Document-specific configuration."""
+    """Document config; exactly one source — ``source_pdf`` or ``[document.source]``.
+
+    See ``config.source`` for the discriminated-union variants.
+    """
 
     id: str
-    source_pdf: str
+    source_pdf: str | None = None
+    source: source_util.SourceSpec | None = None
     source_lang: str = "en"
     target_langs: list[str] = Field(default_factory=lambda: ["ru"])
     structure_builder: Literal["real", "simple"] = "real"
+
+    @model_validator(mode="after")
+    def _check_exactly_one_source(self) -> DocumentConfig:
+        source_util.validate_exactly_one_source(self.source_pdf, self.source)
+        return self
+
+    @property
+    def resolved_source(self) -> source_util.SourceSpec:
+        return source_util.resolve_source(self.source_pdf, self.source)
 
 
 class PipelineConfig(BaseModel):
@@ -367,11 +381,13 @@ class DocumentBuildConfig(BaseModel):
 
     @property
     def source_pdf_path(self) -> Path:
-        """Resolved path to source PDF."""
-        p = Path(self.document.source_pdf)
-        if p.is_absolute():
-            return p
-        return self.repo_root / p
+        """Resolved source-PDF path; raises if the document source is not a PDF."""
+        return source_util.resolve_pdf_path(self.document.resolved_source, self.repo_root)
+
+    @property
+    def image_set_manifest_path(self) -> Path:
+        """Resolved image-set manifest path; raises if the source is not an image set."""
+        return source_util.resolve_manifest_path(self.document.resolved_source, self.repo_root)
 
     @property
     def symbol_catalog_path(self) -> Path | None:

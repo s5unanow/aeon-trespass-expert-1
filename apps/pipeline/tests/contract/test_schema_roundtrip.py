@@ -16,6 +16,11 @@ from atr_schemas import (
     SourceManifestV1,
 )
 from atr_schemas.enums import LanguageCode, QALayer, Severity
+from atr_schemas.image_set_manifest_v1 import (
+    CaptureMetadata,
+    ImageSetImageEntry,
+    ImageSetManifestV1,
+)
 from atr_schemas.page_ir_v1 import (
     HeadingBlock,
     IconInline,
@@ -29,7 +34,7 @@ from atr_schemas.render_page_v1 import (
     RenderParagraphBlock,
     RenderTextInline,
 )
-from atr_schemas.source_manifest_v1 import PageEntry
+from atr_schemas.source_manifest_v1 import PageEntry, SourceImageRef
 
 
 def _roundtrip(model_instance: object) -> None:
@@ -47,6 +52,52 @@ def test_source_manifest_roundtrip() -> None:
         source_pdf_sha256="abc123",
         page_count=1,
         pages=[PageEntry(page_id="p0001", page_number=1)],
+    )
+    _roundtrip(manifest)
+
+
+def test_source_manifest_image_set_roundtrip() -> None:
+    manifest = SourceManifestV1(
+        document_id="tiny_image_set",
+        source_kind="image_set",
+        source_image_set_sha256="d" * 64,
+        page_count=1,
+        pages=[PageEntry(page_id="p0001", page_number=1)],
+        images=[
+            SourceImageRef(
+                image_id="page_01_a",
+                sha256="a" * 64,
+                page_number=1,
+                media_type="image/png",
+                extension=".png",
+                width_px=16,
+                height_px=16,
+                artifact_ref="tiny_image_set/source_image/page/page_01_a/abc123def456.png",
+            )
+        ],
+    )
+    _roundtrip(manifest)
+
+
+def test_image_set_manifest_roundtrip() -> None:
+    manifest = ImageSetManifestV1(
+        document_id="tiny_image_set",
+        images=[
+            ImageSetImageEntry(
+                image_id="page_01_a",
+                path="images/page_01_a.png",
+                page_number=1,
+                media_type="image/png",
+                capture=CaptureMetadata(
+                    camera_make="Synthetic",
+                    camera_model="atr-fixture",
+                    captured_at="2026-07-09T00:00:00Z",
+                    orientation=1,
+                    exif={"ISO": "100"},
+                ),
+            ),
+            ImageSetImageEntry(image_id="page_02_a", path="images/page_02_a.png", page_number=2),
+        ],
     )
     _roundtrip(manifest)
 

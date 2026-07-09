@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "CaptureMetadata": {
+      "description": "Optional EXIF/capture metadata for a single photographed image.\n\nEvery field is optional — a synthetic or metadata-stripped image simply\nomits them. ``exif`` is a free-form bag for tags not modelled explicitly so\na capture pipeline can preserve provenance without a schema change.",
+      "properties": {
+        "camera_make": {
+          "default": "",
+          "title": "Camera Make",
+          "type": "string"
+        },
+        "camera_model": {
+          "default": "",
+          "title": "Camera Model",
+          "type": "string"
+        },
+        "captured_at": {
+          "default": "",
+          "title": "Captured At",
+          "type": "string"
+        },
+        "orientation": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Orientation"
+        },
+        "exif": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Exif",
+          "type": "object"
+        }
+      },
+      "title": "CaptureMetadata",
+      "type": "object"
+    },
+    "ImageSetImageEntry": {
+      "description": "One source image in the ordered image set.",
+      "properties": {
+        "image_id": {
+          "description": "Stable, author-supplied identifier for this image. Must be unique within the manifest; ingest refuses duplicates. Used verbatim as the artifact entity id, so it is restricted to a filesystem-safe charset.",
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Image Id",
+          "type": "string"
+        },
+        "path": {
+          "description": "Relative path to the image file, resolved against the manifest's own directory. Must stay under the repository root after realpath resolution — ingest refuses traversal, absolute escapes, and symlink escapes.",
+          "title": "Path",
+          "type": "string"
+        },
+        "page_number": {
+          "description": "1-based page this image belongs to.",
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "media_type": {
+          "default": "",
+          "description": "Optional IANA media type hint (e.g. ``image/png``). When empty, ingest derives it from the decoded image format.",
+          "title": "Media Type",
+          "type": "string"
+        },
+        "capture": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CaptureMetadata"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "image_id",
+        "path",
+        "page_number"
+      ],
+      "title": "ImageSetImageEntry",
+      "type": "object"
+    }
+  },
+  "description": "Ordered manifest of source images for an ``image_set`` document.",
+  "properties": {
+    "schema_version": {
+      "default": "image_set_manifest.v1",
+      "pattern": "^image_set_manifest\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/ImageSetImageEntry"
+      },
+      "minItems": 1,
+      "title": "Images",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id",
+    "images"
+  ],
+  "title": "ImageSetManifestV1",
+  "type": "object"
+}

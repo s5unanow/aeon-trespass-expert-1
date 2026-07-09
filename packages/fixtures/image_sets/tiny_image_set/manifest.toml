@@ -1,0 +1,25 @@
+# Tiny image-set authoring manifest (S5U-1536).
+#
+# Ordered source images for the `tiny_image_set` document. Paths resolve
+# against this file's directory. Regenerate the PNGs with:
+#   uv run python scripts/bootstrap_image_set_fixture.py
+
+schema_version = "image_set_manifest.v1"
+document_id = "tiny_image_set"
+
+[[images]]
+image_id = "page_01_a"
+path = "images/page_01_a.png"
+page_number = 1
+media_type = "image/png"
+capture = { camera_make = "Synthetic", camera_model = "atr-fixture", captured_at = "2026-07-09T00:00:00Z", orientation = 1 }
+
+[[images]]
+image_id = "page_01_b"
+path = "images/page_01_b.png"
+page_number = 1
+
+[[images]]
+image_id = "page_02_a"
+path = "images/page_02_a.png"
+page_number = 2
