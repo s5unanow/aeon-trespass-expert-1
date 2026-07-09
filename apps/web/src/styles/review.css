@@ -160,7 +160,6 @@
 }
 
 .review-block:hover,
-.review-block:focus-visible,
 .review-block.is-active {
   border-color: var(--color-accent);
   outline: none;
@@ -176,8 +175,19 @@
   position: absolute;
   top: var(--space-1);
   right: var(--space-2);
+  padding: 0;
   color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
   font-size: var(--text-xs);
+}
+
+.review-block-index:focus-visible {
+  color: var(--color-accent);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .review-correction-panel,

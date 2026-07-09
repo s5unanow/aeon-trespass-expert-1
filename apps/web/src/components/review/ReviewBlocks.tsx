@@ -28,24 +28,29 @@ export function ReviewBlocks({
             key={block.id}
             className={`review-block${isActive ? ' is-active' : ''}${isSelected ? ' is-selected' : ''}`}
             data-block-ref={block.id}
-            role="button"
-            tabIndex={0}
-            aria-label={`Select ${block.id} rendered block`}
-            aria-pressed={isSelected}
             onMouseEnter={() => onHover(block.id)}
             onMouseLeave={() => onHover(null)}
             onFocus={() => onHover(block.id)}
             onBlur={() => onHover(null)}
-            onClick={() => onSelect(block.id)}
-            onKeyDown={(event) => {
-              if (event.target !== event.currentTarget) return;
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                onSelect(block.id);
+            onClick={(event) => {
+              if (
+                event.target instanceof Element &&
+                event.target.closest('a, button, input, select, textarea')
+              ) {
+                return;
               }
+              onSelect(block.id);
             }}
           >
-            <span className="review-block-index">{index + 1}</span>
+            <button
+              type="button"
+              className="review-block-index"
+              aria-label={`Select ${block.id} rendered block`}
+              aria-pressed={isSelected}
+              onClick={() => onSelect(block.id)}
+            >
+              {index + 1}
+            </button>
             <BlockRenderer block={block} figures={figures} />
           </div>
         );
