@@ -173,6 +173,7 @@ def _build_candidates(
             FacsimileAnnotation(
                 text=en_text,
                 translated_text=ru_text,
+                block_ref=block.block_id,
                 bbox=bbox,
                 kind=kind,
                 priority=priority,

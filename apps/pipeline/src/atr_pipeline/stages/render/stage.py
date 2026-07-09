@@ -52,6 +52,10 @@ class RenderStage:
 
     @property
     def version(self) -> str:
+        # 1.8 (S5U-1554): render-page metadata now carries page source
+        #   confidence and facsimile annotations carry stable block refs.
+        #   Cached 1.7 payloads must be regenerated so the extraction-review
+        #   route can link overlays to blocks and populate patch provenance.
         # 1.7 (S5U-737): orphan ``CaptionBlock`` instances now emit a
         #   ``RenderCaptionBlock`` instead of being silently dropped.
         #   The render_page.v1 artifact shape changes for any page whose
@@ -78,7 +82,7 @@ class RenderStage:
         #   1.2 (S5U-700) — attached CaptionBlocks fold into
         #     RenderFigure.caption.
         #   1.1 (S5U-697) — annotation filtering semantics changed.
-        return "1.7"
+        return "1.8"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is

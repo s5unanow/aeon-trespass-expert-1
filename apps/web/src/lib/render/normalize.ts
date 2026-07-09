@@ -192,6 +192,10 @@ function normalizePageMeta(raw: unknown): RenderPageMeta {
     title: asString(raw.title, 'page.title', ''),
     section_path: asStringArray(raw.section_path ?? [], 'page.section_path'),
     source_page_number: asNumber(raw.source_page_number, 'page.source_page_number', 0),
+    source_confidence:
+      raw.source_confidence === undefined || raw.source_confidence === null
+        ? null
+        : asNumber(raw.source_confidence, 'page.source_confidence', 0),
   };
 }
 
@@ -250,6 +254,7 @@ function normalizeFacsimileAnnotation(raw: unknown, path: string): FacsimileAnno
   return {
     text: asString(raw.text, `${path}.text`),
     translated_text: asString(raw.translated_text, `${path}.translated_text`, ''),
+    block_ref: asString(raw.block_ref, `${path}.block_ref`, ''),
     bbox: {
       x0: asNumber(bboxRaw.x0, `${path}.bbox.x0`, 0),
       y0: asNumber(bboxRaw.y0, `${path}.bbox.y0`, 0),
