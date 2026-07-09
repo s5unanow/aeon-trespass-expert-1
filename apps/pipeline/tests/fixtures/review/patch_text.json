@@ -1,0 +1,21 @@
+{
+  "schema_version": "patch_set.v1",
+  "patch_id": "review_sample-en-p0001-text",
+  "target_artifact_ref": "review_sample/en/data/render_page.p0001.json",
+  "target_kind": "render_page",
+  "operations": [
+    {
+      "op": "replace",
+      "path": "/blocks/1/children/0/text",
+      "value": "Roll dice equal to the titan's ATTACK value.",
+      "scope": "text"
+    }
+  ],
+  "reason": "fix casing of ATTACK",
+  "author": "reviewer@example.com",
+  "provenance": {
+    "author": "reviewer@example.com",
+    "created_at": "2026-07-09T12:00:00+00:00",
+    "source_confidence": null
+  }
+}

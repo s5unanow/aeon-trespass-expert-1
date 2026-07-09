@@ -11,9 +11,15 @@ const QaDashboard = lazy(() =>
   import('../routes/QaDashboard').then((m) => ({ default: m.QaDashboard })),
 );
 
-function QaFallback() {
+// The extraction-review surface is lazy too (S5U-1539) — only reviewers visit
+// it, so its code + the patch-drafting lib must not grow the reader bundle.
+const ReviewPage = lazy(() =>
+  import('../routes/ReviewPage').then((m) => ({ default: m.ReviewPage })),
+);
+
+function LazyFallback({ label }: { label: string }) {
   return (
-    <div className="skeleton" aria-busy="true" aria-label="Loading QA findings">
+    <div className="skeleton" aria-busy="true" aria-label={label}>
       <div className="skeleton-bone skeleton-heading" />
       <div className="skeleton-bone skeleton-block" />
     </div>
@@ -36,8 +42,16 @@ export const router = createBrowserRouter([
       {
         path: 'qa',
         element: (
-          <Suspense fallback={<QaFallback />}>
+          <Suspense fallback={<LazyFallback label="Loading QA findings" />}>
             <QaDashboard />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'review/:pageId',
+        element: (
+          <Suspense fallback={<LazyFallback label="Loading review page" />}>
+            <ReviewPage />
           </Suspense>
         ),
       },
