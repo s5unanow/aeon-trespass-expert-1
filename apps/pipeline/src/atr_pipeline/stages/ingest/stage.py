@@ -1,12 +1,18 @@
-"""Ingest stage — fingerprint PDF, rasterize pages, extract images, emit SourceManifestV1."""
+"""Ingest stage — fingerprint PDF or image-set source, register artifacts, emit SourceManifestV1."""
 
 from __future__ import annotations
+
+from pathlib import Path
 
 from pydantic import BaseModel
 
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.pdf.image_extractor import extract_page_images
 from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
+from atr_pipeline.stages.ingest.image_set import (
+    register_image_set,
+    resolve_safe_path,
+)
 from atr_pipeline.stages.ingest.manifest_builder import build_manifest
 from atr_pipeline.stages.ingest.pdf_fingerprint import fingerprint_pdf
 from atr_pipeline.utils.hashing import sha256_file
@@ -46,30 +52,73 @@ class IngestStage:
         return "1.2"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
-        """Fold the source-PDF content hash into the ingest cache key (S5U-1221).
+        """Fold source content identity into the ingest cache key (S5U-1221 + S5U-1535).
 
-        ``DocumentBuildConfig`` carries the PDF *path*, not its bytes, and
-        ``fingerprint_pdf`` runs only inside :meth:`run` (on a cache miss). The
-        executor checks the cache *before* calling ``run``, so a replaced PDF at
-        the same path would otherwise cache-hit the stale ``SourceManifestV1``
-        and every downstream stage would cache-hit in turn — the whole run
-        silently reflecting the previous PDF (an S5U-662-class hazard;
-        previously only the web export caught it via ``verify_source_pdf_sha``,
-        S5U-889). Hashing the file bytes here invalidates ingest — and the
-        downstream chain — whenever the source PDF changes.
+        For PDF sources: hash the PDF bytes (unchanged from prior behavior).
+        For image-set sources: include per-image sha256 entries derived from the
+        resolved manifest. Changing any single image byte changes the returned
+        list and thus invalidates the cache key.
 
-        Uses a plain ``sha256_file`` rather than ``fingerprint_pdf`` to avoid a
-        full PyMuPDF parse on every invocation (the page count is recomputed in
-        :meth:`run`). A missing PDF returns the ``pdf_sha256:missing`` sentinel
-        rather than raising — :meth:`run` already raises ``FileNotFoundError``
-        with a clear message and remains the authoritative failure point.
+        A missing source returns a sentinel without raising (run() remains the
+        authoritative failure site).
         """
+        kind = getattr(ctx.config.document, "source_kind", "pdf")
+        if kind == "image_set":
+            try:
+                mpath = ctx.config.source_image_set_manifest_path
+                # Resolve safely just to read; do not write here.
+                resolved = resolve_safe_path(
+                    candidate=str(mpath),
+                    repo_root=ctx.repo_root,
+                )
+                # Load manifest bytes + referenced image shas for identity.
+                # We avoid full register path; we only need stable content hashes.
+                raw_manifest = resolved.read_bytes()
+                h = sha256_file(resolved)  # manifest itself
+                # Fold image content hashes for cache identity (S5U-1221 pattern).
+                from atr_schemas.source_ref_v1 import ImageSetManifestV1
+
+                try:
+                    man = ImageSetManifestV1.model_validate_json(
+                        raw_manifest.decode("utf-8", errors="replace")
+                    )
+                    img_hashes: list[str] = []
+                    manifest_dir = resolved.parent
+                    for e in man.images:
+                        ip = Path(e.path)
+                        imgp = ip if ip.is_absolute() else (manifest_dir / ip).resolve()
+                        if imgp.exists() and imgp.is_file():
+                            img_hashes.append(f"{e.page_id}:{sha256_file(imgp)}")
+                        else:
+                            img_hashes.append(f"{e.page_id}:missing")
+                    img_hashes.sort()
+                    return [f"imgset_manifest:{h}"] + [f"imgset:{ih}" for ih in img_hashes]
+                except Exception:
+                    return [f"imgset_manifest:{h}", "imgset:malformed"]
+            except Exception:
+                return ["imgset:missing"]
+        # PDF path (exact prior behavior preserved)
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
             return ["pdf_sha256:missing"]
         return [f"pdf_sha256:{sha256_file(pdf_path)}"]
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> SourceManifestV1:
+        kind = getattr(ctx.config.document, "source_kind", "pdf")
+
+        if kind == "image_set":
+            # Image-set path (S5U-1535). All safety + registration delegated.
+            # No PDF raster or embedded-PDF image extraction is performed.
+            mpath = ctx.config.source_image_set_manifest_path
+            manifest, _ = register_image_set(
+                document_id=ctx.document_id,
+                manifest_path=mpath,
+                repo_root=ctx.repo_root,
+                store=ctx.artifact_store,
+            )
+            return manifest
+
+        # --- PDF path below is intentionally untouched (behavior + structure) ---
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
             msg = f"Source PDF not found: {pdf_path}"

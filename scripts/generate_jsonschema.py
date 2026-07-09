@@ -41,6 +41,7 @@ from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.run_summary_v1 import RunSummaryV1
 from atr_schemas.search_docs_v1 import SearchDocsV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
+from atr_schemas.source_ref_v1 import ImageSetManifestV1
 from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1
 from atr_schemas.symbol_match_set_v1 import SymbolMatchSetV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1
@@ -83,6 +84,7 @@ MODELS: dict[str, type[BaseModel]] = {
     "run_summary_v1": RunSummaryV1,
     "search_docs_v1": SearchDocsV1,
     "source_manifest_v1": SourceManifestV1,
+    "image_set_manifest_v1": ImageSetManifestV1,
     "symbol_catalog_v1": SymbolCatalogV1,
     "symbol_match_set_v1": SymbolMatchSetV1,
     "translation_batch_v1": TranslationBatchV1,

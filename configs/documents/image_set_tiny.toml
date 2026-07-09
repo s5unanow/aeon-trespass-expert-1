@@ -1,0 +1,15 @@
+# Synthetic image-set source fixture for S5U-1535 foundation.
+# Uses a tiny generated PNG (no bloat) + manifest to exercise the new ingest path.
+
+[document]
+id = "image_set_tiny"
+source_kind = "image_set"
+source_image_set = "packages/fixtures/image_sets/image_set_tiny/source/image_set_manifest.json"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"
+
+# No symbols catalog needed for ingest-only verification.
