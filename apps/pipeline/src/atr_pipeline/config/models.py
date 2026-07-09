@@ -15,8 +15,6 @@ from atr_schemas.common import Rect
 
 
 class DocumentConfig(BaseModel):
-    """Document-specific configuration (source_kind normalizes legacy source_pdf)."""
-
     id: str
     source_pdf: str = ""
     source_kind: Literal["pdf", "image_set"] = "pdf"
