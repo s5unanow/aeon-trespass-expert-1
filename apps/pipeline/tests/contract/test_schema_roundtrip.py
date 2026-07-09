@@ -347,6 +347,17 @@ def test_symbol_match_set_roundtrip() -> None:
     _roundtrip(matches)
 
 
+def test_patch_application_roundtrips_ui_export_shape() -> None:
+    """S5U-1538 contract: a PatchSetV1 shaped exactly like the web review export
+    must parse, apply via apply_patches to a committed render_page fixture, and
+    the result must still validate as RenderPageV1.
+
+    Red-before for this new test function recorded in introducing commit.
+    """
+    # TEMP RED stub for S5U-1538 red-before (will be replaced by real impl)
+    assert False, "red-before stub for patch contract test"
+
+
 def test_translation_batch_roundtrip() -> None:
     from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
 
