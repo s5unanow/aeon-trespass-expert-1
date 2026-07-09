@@ -36,6 +36,9 @@ test('drafts, persists, and downloads a typed text correction', async ({ page })
   expect(downloadPath).toBeTruthy();
   const exported = JSON.parse(await readFile(downloadPath!, 'utf-8'));
   expect(exported.target_kind).toBe('render_page');
+  expect(exported.target_artifact_ref).toBe(
+    'extraction_review/render_page.v1/page/p0001/review-source.json',
+  );
   expect(exported.reason).toBe('Correct OCR typo');
   expect(exported.author).toBe('e2e-reviewer');
   expect(exported.provenance.source_confidence).toBe(0.82);

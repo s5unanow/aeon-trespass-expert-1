@@ -111,6 +111,7 @@
   },
   "build_meta": {
     "build_id": "extraction-review-fixture",
-    "generated_at": "2026-07-10T00:00:00Z"
+    "generated_at": "2026-07-10T00:00:00Z",
+    "artifact_ref": "extraction_review/render_page.v1/page/p0001/review-source.json"
   }
 }

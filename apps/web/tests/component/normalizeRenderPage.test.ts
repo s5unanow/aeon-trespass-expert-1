@@ -257,7 +257,7 @@ describe('normalizeRenderPage — defaulted-field materialization', () => {
       },
       search: { raw_text: 'abc', normalized_terms: ['a', 'b'] },
       source_map: { page_id: 'p0001' },
-      build_meta: { build_id: 'b1' },
+      build_meta: { build_id: 'b1', artifact_ref: 'doc/render_page.v1/page/p0001/hash.json' },
     });
     expect(out.presentation_mode).toBe('facsimile');
     expect(out.facsimile?.raster_src).toBe('/r.png');
@@ -267,7 +267,11 @@ describe('normalizeRenderPage — defaulted-field materialization', () => {
     expect(out.search.raw_text).toBe('abc');
     expect(out.search.normalized_terms).toEqual(['a', 'b']);
     expect(out.source_map).toEqual({ document_id: '', page_id: 'p0001', block_refs: [] });
-    expect(out.build_meta).toEqual({ build_id: 'b1', generated_at: '' });
+    expect(out.build_meta).toEqual({
+      build_id: 'b1',
+      generated_at: '',
+      artifact_ref: 'doc/render_page.v1/page/p0001/hash.json',
+    });
   });
 });
 

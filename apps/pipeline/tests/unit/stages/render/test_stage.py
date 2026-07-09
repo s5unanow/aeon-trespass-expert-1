@@ -21,6 +21,7 @@ from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import LanguageCode, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
+from atr_schemas.render_page_v1 import RenderPageV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 
@@ -121,7 +122,14 @@ def test_render_builds_pages(tmp_path: Path) -> None:
     render_dir = tmp_path / "artifacts" / "walking_skeleton" / "render_page.v1" / "page" / "p0001"
     assert render_dir.exists()
     jsons = list(render_dir.glob("*.json"))
-    assert len(jsons) == 1
+    assert len(jsons) == 2
+    page_ref = render_result.page_refs["p0001"]
+    rendered_page = RenderPageV1.model_validate(ctx.artifact_store.get_json(page_ref))
+    assert rendered_page.build_meta is not None
+    source_ref = rendered_page.build_meta.artifact_ref
+    assert source_ref.startswith("walking_skeleton/render_page.v1/page/p0001/")
+    assert source_ref != page_ref
+    RenderPageV1.model_validate(ctx.artifact_store.get_json(source_ref))
 
     # Verify companion artifacts have refs
     assert render_result.glossary_ref != ""

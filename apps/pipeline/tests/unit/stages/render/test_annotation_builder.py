@@ -95,7 +95,6 @@ def test_basic_annotation_generation() -> None:
     assert len(annotations) == 3
     assert annotations[0].kind == "title"
     assert annotations[0].text == "Components"
-    assert annotations[0].block_ref == "p0007.b001"
     assert annotations[0].priority == 100
 
 

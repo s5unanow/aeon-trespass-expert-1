@@ -4,6 +4,7 @@ import patchSetSchema from '../../../../packages/schemas/jsonschema/patch_set_v1
 import renderFixture from '../../public/documents/extraction_review/en/data/render_page.p0001.json';
 import { normalizeRenderPage } from '../../src/lib/render/normalize';
 import {
+  applyPatchOperations,
   buildPatchFilename,
   buildPatchSet,
   buildReadingOrderOperation,
@@ -18,6 +19,7 @@ import {
 } from '../../src/lib/review/persistence';
 
 const page = normalizeRenderPage(renderFixture);
+const targetArtifactRef = 'extraction_review/render_page.v1/page/p0001/review-source.json';
 
 describe('review patch operations', () => {
   it('builds a text pointer that resolves to the selected inline', () => {
@@ -65,6 +67,37 @@ describe('review patch operations', () => {
       scope: 'block_structure',
     });
   });
+
+  it('composes text, reading-order, and suppression operations against projected blocks', () => {
+    const text = buildTextOperation(page.blocks, 1, 0, 'Move up to two spaces.');
+    const afterText = applyPatchOperations(page, [text]);
+    const movedIndex = afterText.blocks.findIndex((block) => block.id === 'p0001.b002');
+    const reorder = buildReadingOrderOperation(afterText.blocks, movedIndex, 'earlier');
+    const afterReorder = applyPatchOperations(page, [text, reorder]);
+    const suppressedIndex = afterReorder.blocks.findIndex((block) => block.id === 'p0001.b003');
+    const suppress = buildSuppressOperation(afterReorder.blocks, suppressedIndex);
+
+    const projected = applyPatchOperations(page, [text, reorder, suppress]);
+
+    expect(projected.blocks.map((block) => block.id)).toEqual(['p0001.b002', 'p0001.b001']);
+    expect(resolvePointer(projected, '/blocks/0/children/0/text')).toBe(
+      'Move up to two spaces.',
+    );
+  });
+
+  it('targets text correctly when reading order is drafted first', () => {
+    const reorder = buildReadingOrderOperation(page.blocks, 1, 'earlier');
+    const afterReorder = applyPatchOperations(page, [reorder]);
+    const movedIndex = afterReorder.blocks.findIndex((block) => block.id === 'p0001.b002');
+    const text = buildTextOperation(afterReorder.blocks, movedIndex, 0, 'Move up to two spaces.');
+
+    const projected = applyPatchOperations(page, [reorder, text]);
+
+    expect(projected.blocks[0].id).toBe('p0001.b002');
+    expect(resolvePointer(projected, '/blocks/0/children/0/text')).toBe(
+      'Move up to two spaces.',
+    );
+  });
 });
 
 describe('review patch export', () => {
@@ -76,6 +109,8 @@ describe('review patch export', () => {
       'extraction_review',
       'en',
       'p0001',
+      targetArtifactRef,
+      page,
       [operation()],
       ' Correct OCR typo ',
       ' reviewer@example.com ',
@@ -86,7 +121,7 @@ describe('review patch export', () => {
     expect(patchSet).toEqual({
       schema_version: 'patch_set.v1',
       patch_id: 'patch-extraction_review-en-p0001-2026-07-10T00-00-00-000Z',
-      target_artifact_ref: 'documents/extraction_review/en/data/render_page.p0001.json',
+      target_artifact_ref: targetArtifactRef,
       target_kind: 'render_page',
       operations: [operation()],
       reason: 'Correct OCR typo',
@@ -110,6 +145,8 @@ describe('review patch export', () => {
       'extraction_review',
       'en',
       'p0001',
+      targetArtifactRef,
+      page,
       [operation()],
       'Correct OCR typo',
       'reviewer@example.com',
@@ -122,14 +159,93 @@ describe('review patch export', () => {
 
   it('blocks export without operations, reason, or author', () => {
     expect(() =>
-      buildPatchSet('doc', 'en', 'p0001', [], 'reason', 'author', null, createdAt),
+      buildPatchSet(
+        'extraction_review',
+        'en',
+        'p0001',
+        targetArtifactRef,
+        page,
+        [],
+        'reason',
+        'author',
+        null,
+        createdAt,
+      ),
     ).toThrow(/operation/i);
     expect(() =>
-      buildPatchSet('doc', 'en', 'p0001', [operation()], ' ', 'author', null, createdAt),
+      buildPatchSet(
+        'extraction_review',
+        'en',
+        'p0001',
+        targetArtifactRef,
+        page,
+        [operation()],
+        ' ',
+        'author',
+        null,
+        createdAt,
+      ),
     ).toThrow(/reason/i);
     expect(() =>
-      buildPatchSet('doc', 'en', 'p0001', [operation()], 'reason', ' ', null, createdAt),
+      buildPatchSet(
+        'extraction_review',
+        'en',
+        'p0001',
+        targetArtifactRef,
+        page,
+        [operation()],
+        'reason',
+        ' ',
+        null,
+        createdAt,
+      ),
     ).toThrow(/author/i);
+  });
+
+  it('rejects invalid refs, stale pointers, missing values, and no-op replacements', () => {
+    expect(() =>
+      buildPatchSet(
+        'extraction_review',
+        'en',
+        'p0001',
+        'documents/extraction_review/en/data/render_page.p0001.json',
+        page,
+        [operation()],
+        'reason',
+        'author',
+        null,
+        createdAt,
+      ),
+    ).toThrow(/artifact ref/i);
+    const exportWith = (operations: Parameters<typeof buildPatchSet>[5]) =>
+      buildPatchSet(
+        'extraction_review',
+        'en',
+        'p0001',
+        targetArtifactRef,
+        page,
+        operations,
+        'reason',
+        'author',
+        null,
+        createdAt,
+      );
+    expect(() =>
+      exportWith([{ op: 'replace', path: '/blocks/999', value: {}, scope: 'text' }]),
+    ).toThrow(/bounds/i);
+    expect(() => exportWith([{ op: 'replace', path: '/blocks/0', scope: 'text' }])).toThrow(
+      /value/i,
+    );
+    expect(() =>
+      exportWith([
+        {
+          op: 'replace',
+          path: '/blocks/1/children/0/text',
+          value: 'Move up to tree spaces.',
+          scope: 'text',
+        },
+      ]),
+    ).toThrow(/change/i);
   });
 });
 
@@ -142,7 +258,7 @@ describe('review draft persistence', () => {
     const operations = [buildTextOperation(page.blocks, 1, 0, 'Corrected')];
     saveReviewDraft(key(), { operations, reason: 'OCR typo', author: 'reviewer' });
 
-    expect(loadReviewDraft(key())).toEqual({
+    expect(loadReviewDraft(key(), page)).toEqual({
       operations,
       reason: 'OCR typo',
       author: 'reviewer',
@@ -152,7 +268,7 @@ describe('review draft persistence', () => {
 
   it('fails closed when persisted JSON is malformed', () => {
     localStorage.setItem(key(), '{broken');
-    expect(loadReviewDraft(key())).toEqual({ operations: [], reason: '', author: '' });
+    expect(loadReviewDraft(key(), page)).toEqual({ operations: [], reason: '', author: '' });
 
     localStorage.setItem(
       key(),
@@ -162,6 +278,16 @@ describe('review draft persistence', () => {
         author: 'reviewer',
       }),
     );
-    expect(loadReviewDraft(key())).toEqual({ operations: [], reason: '', author: '' });
+    expect(loadReviewDraft(key(), page)).toEqual({ operations: [], reason: '', author: '' });
+
+    localStorage.setItem(
+      key(),
+      JSON.stringify({
+        operations: [{ op: 'replace', path: '/blocks/999', value: {}, scope: 'text' }],
+        reason: 'stale draft',
+        author: 'reviewer',
+      }),
+    );
+    expect(loadReviewDraft(key(), page)).toEqual({ operations: [], reason: '', author: '' });
   });
 });

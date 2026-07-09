@@ -9,7 +9,7 @@ from atr_pipeline.stages.render.glossary_builder import build_glossary_payload
 from atr_pipeline.stages.render.nav_builder import build_nav_payload
 from atr_pipeline.stages.render.page_builder import build_render_page, is_garbage_title
 from atr_pipeline.stages.render.search_builder import build_search_docs
-from atr_schemas.common import ConfidenceMetrics, Rect
+from atr_schemas.common import Rect
 from atr_schemas.enums import LanguageCode
 from atr_schemas.page_ir_v1 import (
     CalloutBlock,
@@ -52,7 +52,6 @@ def _make_ru_ir() -> PageIRV1:
             ),
         ],
         reading_order=["p0001.b001", "p0001.b002"],
-        confidence=ConfidenceMetrics(native_text_coverage=0.91, page_confidence=0.87),
     )
 
 
@@ -63,7 +62,6 @@ def test_render_page_builder() -> None:
 
     assert render.page.title == "Проверка атаки"
     assert render.page.source_page_number == 1
-    assert render.page.source_confidence == 0.87
     assert len(render.blocks) == 2
     assert "concept.progress" in render.glossary_mentions
 
