@@ -1,0 +1,126 @@
+{
+  "$defs": {
+    "ImageSetImageV1": {
+      "description": "Metadata for one raw source image.",
+      "properties": {
+        "image_id": {
+          "pattern": "^img\\.p\\d{4}\\.[0-9a-f]{12}$",
+          "title": "Image Id",
+          "type": "string"
+        },
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "media_type": {
+          "enum": [
+            "image/png",
+            "image/jpeg"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "capture": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Capture",
+          "type": "object"
+        },
+        "exif": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Exif",
+          "type": "object"
+        }
+      },
+      "required": [
+        "image_id",
+        "page_id",
+        "page_number",
+        "path",
+        "media_type",
+        "sha256"
+      ],
+      "title": "ImageSetImageV1",
+      "type": "object"
+    }
+  },
+  "description": "Authoritative ordered mapping from source pages to raw image files.",
+  "properties": {
+    "schema_version": {
+      "default": "image_set_manifest.v1",
+      "pattern": "^image_set_manifest\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_kind": {
+      "const": "image_set",
+      "default": "image_set",
+      "title": "Source Kind",
+      "type": "string"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/ImageSetImageV1"
+      },
+      "minItems": 1,
+      "title": "Images",
+      "type": "array"
+    }
+  },
+  "required": [
+    "images"
+  ],
+  "title": "ImageSetManifestV1",
+  "type": "object"
+}

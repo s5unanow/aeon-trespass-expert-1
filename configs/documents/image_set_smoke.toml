@@ -1,0 +1,13 @@
+[document]
+id = "image_set_smoke"
+source_kind = "image_set"
+image_set_manifest = "packages/fixtures/sample_documents/image_set_smoke/source/manifest.json"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"
+fallback_provider = "mock"
+model_default = "mock"
+fallback_model = "mock"

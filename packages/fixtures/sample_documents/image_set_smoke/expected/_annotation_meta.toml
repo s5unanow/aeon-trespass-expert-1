@@ -1,0 +1,8 @@
+schema_version = "annotation_meta.v1"
+annotation_format_version = 1
+last_refresh_timestamp = "2026-07-09T00:00:00Z"
+last_refresh_issue = "S5U-1537"
+last_refresh_commit = ""
+reviewer = "s5unanow"
+
+[checksums]

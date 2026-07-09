@@ -7,12 +7,17 @@ from pydantic import BaseModel
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.pdf.image_extractor import extract_page_images
 from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
+from atr_pipeline.stages.ingest.image_set import (
+    ImageSetIngestError,
+    PreparedImageSet,
+    prepare_image_set_source,
+)
 from atr_pipeline.stages.ingest.manifest_builder import build_manifest
 from atr_pipeline.stages.ingest.pdf_fingerprint import fingerprint_pdf
 from atr_pipeline.utils.hashing import sha256_file
 from atr_schemas.enums import StageScope
 from atr_schemas.page_images_v1 import PageImageEntry, PageImagesV1
-from atr_schemas.source_manifest_v1 import SourceManifestV1
+from atr_schemas.source_manifest_v1 import PageEntry, SourceManifestV1
 
 
 class IngestStage:
@@ -28,6 +33,9 @@ class IngestStage:
 
     @property
     def version(self) -> str:
+        # 1.2 -> 1.3 (S5U-1537): IngestStage supports image-set sources,
+        # folds image source identity into cache keys, and registers raw-image
+        # bytes plus metadata artifacts on image-set cache misses.
         # 1.1 -> 1.2 (S5U-1221): IngestStage now contributes
         # ``extra_cache_inputs`` that fold the source-PDF *content* hash
         # into the cache key (the config hash only carries the PDF
@@ -43,7 +51,7 @@ class IngestStage:
         # 1.0 -> 1.1 (S5U-730): IngestStage emits a per-page
         # ``page_images.v1`` manifest after the PDF image-extraction loop,
         # consumed by the QA stage's ``_filter_publishable_pages``.
-        return "1.2"
+        return "1.3"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         """Fold the source-PDF content hash into the ingest cache key (S5U-1221).
@@ -64,12 +72,32 @@ class IngestStage:
         rather than raising — :meth:`run` already raises ``FileNotFoundError``
         with a clear message and remains the authoritative failure point.
         """
+        if ctx.config.document.source_kind == "image_set":
+            try:
+                prepared = prepare_image_set_source(
+                    manifest_path=ctx.config.image_set_manifest_path,
+                    repo_root=ctx.repo_root,
+                )
+            except ImageSetIngestError:
+                return ["image_set_sha256:invalid"]
+            return [
+                f"image_set_sha256:{prepared.source_image_set_sha256}",
+                f"image_set_manifest_sha256:{prepared.manifest_sha256}",
+            ]
+
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
             return ["pdf_sha256:missing"]
         return [f"pdf_sha256:{sha256_file(pdf_path)}"]
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> SourceManifestV1:
+        if ctx.config.document.source_kind == "image_set":
+            prepared = prepare_image_set_source(
+                manifest_path=ctx.config.image_set_manifest_path,
+                repo_root=ctx.repo_root,
+            )
+            return _run_image_set_ingest(ctx, prepared)
+
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
             msg = f"Source PDF not found: {pdf_path}"
@@ -157,3 +185,52 @@ class IngestStage:
             page_count=page_count,
         )
         return manifest
+
+
+def _run_image_set_ingest(ctx: StageContext, prepared: PreparedImageSet) -> SourceManifestV1:
+    """Register raw image-set bytes and metadata artifacts."""
+    pages: list[PageEntry] = []
+
+    for prepared_image in prepared.images:
+        entry = prepared_image.entry
+        extension = ".jpg" if entry.media_type == "image/jpeg" else ".png"
+        raw_path = ctx.artifact_store.put_bytes(
+            document_id=ctx.document_id,
+            schema_family="raw_image",
+            scope="page",
+            entity_id=entry.image_id,
+            data=prepared_image.data,
+            extension=extension,
+        )
+        raw_ref = raw_path.relative_to(ctx.artifact_store.root).as_posix()
+        ctx.artifact_store.put_json(
+            document_id=ctx.document_id,
+            schema_family="raw_image_metadata.v1",
+            scope="page",
+            entity_id=entry.image_id,
+            data={
+                "schema_version": "raw_image_metadata.v1",
+                "document_id": ctx.document_id,
+                "image": entry.model_dump(mode="json"),
+                "raw_image_ref": raw_ref,
+            },
+        )
+        pages.append(
+            PageEntry(
+                page_id=entry.page_id,
+                page_number=entry.page_number,
+                source_image_id=entry.image_id,
+                raw_image_ref=raw_ref,
+            )
+        )
+
+    return SourceManifestV1(
+        document_id=ctx.document_id,
+        source_kind="image_set",
+        source_pdf_sha256="",
+        source_image_set_sha256=prepared.source_image_set_sha256,
+        source_image_set_manifest_sha256=prepared.manifest_sha256,
+        page_count=len(pages),
+        pages=pages,
+        image_set=prepared.manifest,
+    )

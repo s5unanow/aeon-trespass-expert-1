@@ -7,21 +7,12 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from atr_pipeline.config.source import DocumentConfig
 from atr_pipeline.config.translation_providers import (
     translation_provider_requires_model,
     validate_translation_provider_name,
 )
 from atr_schemas.common import Rect
-
-
-class DocumentConfig(BaseModel):
-    """Document-specific configuration."""
-
-    id: str
-    source_pdf: str
-    source_lang: str = "en"
-    target_langs: list[str] = Field(default_factory=lambda: ["ru"])
-    structure_builder: Literal["real", "simple"] = "real"
 
 
 class PipelineConfig(BaseModel):
@@ -369,6 +360,14 @@ class DocumentBuildConfig(BaseModel):
     def source_pdf_path(self) -> Path:
         """Resolved path to source PDF."""
         p = Path(self.document.source_pdf)
+        if p.is_absolute():
+            return p
+        return self.repo_root / p
+
+    @property
+    def image_set_manifest_path(self) -> Path:
+        """Resolved path to an image-set manifest."""
+        p = Path(self.document.image_set_manifest)
         if p.is_absolute():
             return p
         return self.repo_root / p

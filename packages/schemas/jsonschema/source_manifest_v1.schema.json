@@ -1,5 +1,129 @@
 {
   "$defs": {
+    "ImageSetImageV1": {
+      "description": "Metadata for one raw source image.",
+      "properties": {
+        "image_id": {
+          "pattern": "^img\\.p\\d{4}\\.[0-9a-f]{12}$",
+          "title": "Image Id",
+          "type": "string"
+        },
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "media_type": {
+          "enum": [
+            "image/png",
+            "image/jpeg"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "capture": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Capture",
+          "type": "object"
+        },
+        "exif": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Exif",
+          "type": "object"
+        }
+      },
+      "required": [
+        "image_id",
+        "page_id",
+        "page_number",
+        "path",
+        "media_type",
+        "sha256"
+      ],
+      "title": "ImageSetImageV1",
+      "type": "object"
+    },
+    "ImageSetManifestV1": {
+      "description": "Authoritative ordered mapping from source pages to raw image files.",
+      "properties": {
+        "schema_version": {
+          "default": "image_set_manifest.v1",
+          "pattern": "^image_set_manifest\\.v\\d+$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_kind": {
+          "const": "image_set",
+          "default": "image_set",
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "images": {
+          "items": {
+            "$ref": "#/$defs/ImageSetImageV1"
+          },
+          "minItems": 1,
+          "title": "Images",
+          "type": "array"
+        }
+      },
+      "required": [
+        "images"
+      ],
+      "title": "ImageSetManifestV1",
+      "type": "object"
+    },
     "PageEntry": {
       "description": "Metadata for a single source page.",
       "properties": {
@@ -24,6 +148,30 @@
           ],
           "default": null,
           "title": "Raster Ref"
+        },
+        "source_image_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Image Id"
+        },
+        "raw_image_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Raw Image Ref"
         }
       },
       "required": [
@@ -46,8 +194,28 @@
       "title": "Document Id",
       "type": "string"
     },
+    "source_kind": {
+      "default": "pdf",
+      "enum": [
+        "pdf",
+        "image_set"
+      ],
+      "title": "Source Kind",
+      "type": "string"
+    },
     "source_pdf_sha256": {
+      "default": "",
       "title": "Source Pdf Sha256",
+      "type": "string"
+    },
+    "source_image_set_sha256": {
+      "default": "",
+      "title": "Source Image Set Sha256",
+      "type": "string"
+    },
+    "source_image_set_manifest_sha256": {
+      "default": "",
+      "title": "Source Image Set Manifest Sha256",
       "type": "string"
     },
     "page_count": {
@@ -62,6 +230,17 @@
       "title": "Pages",
       "type": "array"
     },
+    "image_set": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ImageSetManifestV1"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
     "config_hash": {
       "default": "",
       "title": "Config Hash",
@@ -75,7 +254,6 @@
   },
   "required": [
     "document_id",
-    "source_pdf_sha256",
     "page_count",
     "pages"
   ],
