@@ -1,0 +1,12 @@
+# Tiny image-set source fixture (S5U-1536) — foundation for epic S5U-777.
+# Exercises the `image_set` source variant end to end through `atr ingest`.
+
+[document]
+id = "tiny_image_set"
+
+[document.source]
+source_kind = "image_set"
+manifest = "packages/fixtures/image_sets/tiny_image_set/manifest.toml"
+
+[translation]
+provider = "mock"

@@ -32,6 +32,74 @@
       ],
       "title": "PageEntry",
       "type": "object"
+    },
+    "SourceImageRef": {
+      "description": "A raw source image registered by image-set ingest.\n\n``sha256`` is the hex digest of the raw file bytes as stored (the artifact\nis content-addressed by the same digest). ``artifact_ref`` is the relative\npath within the artifact store.",
+      "properties": {
+        "image_id": {
+          "title": "Image Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "media_type": {
+          "title": "Media Type",
+          "type": "string"
+        },
+        "extension": {
+          "description": "File extension including the leading dot.",
+          "title": "Extension",
+          "type": "string"
+        },
+        "width_px": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width Px"
+        },
+        "height_px": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height Px"
+        },
+        "artifact_ref": {
+          "default": "",
+          "title": "Artifact Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "image_id",
+        "sha256",
+        "page_number",
+        "media_type",
+        "extension"
+      ],
+      "title": "SourceImageRef",
+      "type": "object"
     }
   },
   "description": "Registered source document and its pages.",
@@ -46,8 +114,23 @@
       "title": "Document Id",
       "type": "string"
     },
+    "source_kind": {
+      "default": "pdf",
+      "enum": [
+        "pdf",
+        "image_set"
+      ],
+      "title": "Source Kind",
+      "type": "string"
+    },
     "source_pdf_sha256": {
+      "default": "",
       "title": "Source Pdf Sha256",
+      "type": "string"
+    },
+    "source_image_set_sha256": {
+      "default": "",
+      "title": "Source Image Set Sha256",
       "type": "string"
     },
     "page_count": {
@@ -60,6 +143,13 @@
         "$ref": "#/$defs/PageEntry"
       },
       "title": "Pages",
+      "type": "array"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/SourceImageRef"
+      },
+      "title": "Images",
       "type": "array"
     },
     "config_hash": {
@@ -75,7 +165,6 @@
   },
   "required": [
     "document_id",
-    "source_pdf_sha256",
     "page_count",
     "pages"
   ],

@@ -7,6 +7,11 @@ from pydantic import BaseModel
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.pdf.image_extractor import extract_page_images
 from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
+from atr_pipeline.stages.ingest.image_set import (
+    ImageSetError,
+    image_set_fingerprint,
+    ingest_image_set,
+)
 from atr_pipeline.stages.ingest.manifest_builder import build_manifest
 from atr_pipeline.stages.ingest.pdf_fingerprint import fingerprint_pdf
 from atr_pipeline.utils.hashing import sha256_file
@@ -46,6 +51,30 @@ class IngestStage:
         return "1.2"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
+        """Fold the source *content* identity into the ingest cache key.
+
+        Dispatches on the resolved source kind. For an image set (S5U-1536) the
+        aggregate fingerprint of the raw image bytes is folded in (the S5U-1221
+        pattern applied to a multi-file source) so changing one image byte
+        invalidates the cache and an identical re-run hits it. A validation
+        failure returns an ``image_set_sha256:unresolved`` sentinel and lets
+        :meth:`run` raise the precise error (mirroring the PDF ``:missing``
+        sentinel below).
+        """
+        if ctx.config.document.resolved_source.source_kind == "image_set":
+            try:
+                fingerprint = image_set_fingerprint(
+                    ctx.config.image_set_manifest_path,
+                    repo_root=ctx.config.repo_root,
+                    document_id=ctx.document_id,
+                )
+            except (ImageSetError, OSError) as exc:
+                ctx.logger.debug("image-set fingerprint unresolved (run will raise): %s", exc)
+                return ["image_set_sha256:unresolved"]
+            return [f"image_set_sha256:{fingerprint}"]
+        return self._pdf_extra_cache_inputs(ctx)
+
+    def _pdf_extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         """Fold the source-PDF content hash into the ingest cache key (S5U-1221).
 
         ``DocumentBuildConfig`` carries the PDF *path*, not its bytes, and
@@ -70,6 +99,17 @@ class IngestStage:
         return [f"pdf_sha256:{sha256_file(pdf_path)}"]
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> SourceManifestV1:
+        if ctx.config.document.resolved_source.source_kind == "image_set":
+            return ingest_image_set(
+                store=ctx.artifact_store,
+                document_id=ctx.document_id,
+                manifest_path=ctx.config.image_set_manifest_path,
+                repo_root=ctx.config.repo_root,
+                logger=ctx.logger,
+            )
+        return self._run_pdf(ctx)
+
+    def _run_pdf(self, ctx: StageContext) -> SourceManifestV1:
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
             msg = f"Source PDF not found: {pdf_path}"
