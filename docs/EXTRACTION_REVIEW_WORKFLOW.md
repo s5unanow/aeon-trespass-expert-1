@@ -60,7 +60,41 @@ Start the dev server:
 cd apps/web && pnpm dev
 ```
 
-Navigate to `http://localhost:3001/documents/{doc_id}/en/{page_id}`.
+For ordinary reading, navigate to
+`http://localhost:3001/documents/{doc_id}/en/{page_id}`.
+
+For correction review, open the lazy review route:
+
+```
+http://localhost:3001/documents/{doc_id}/en/review/{page_id}
+```
+
+The review route shows the facsimile and rendered blocks side by side. Hover
+or select a linked bbox/block to keep both views synchronized, then draft one
+of the supported `PatchSetV1` corrections:
+
+- `text` — replace a selected text inline
+- `reading_order` — move a rendered block earlier or later
+- `block_structure` — suppress a rendered block
+
+Add a reason and author in the patch drawer, then download the typed JSON.
+Draft operations persist in local storage for that document, edition, and
+page. The downloaded filename is
+`patch-{document_id}-{edition}-{page_id}-{timestamp}.json`.
+
+The review UI only drafts and downloads patch artifacts. It never mutates or
+applies changes to generated output; apply and validate the patch through the
+pipeline workflow before committing it, per ADR-003.
+
+Each exported render page carries the immutable artifact-store reference that
+the patch targets. Apply a downloaded draft with:
+
+```bash
+atr patch --doc <DOC_ID> --patch-file <PATCH_JSON>
+```
+
+If a legacy page has no ingestible artifact reference, the review drawer keeps
+export disabled; rebuild and export that document before drafting corrections.
 
 The reader has an **EN/RU edition switcher** in the navigation bar. When both
 editions are exported, you can toggle between them to compare extraction output
@@ -68,7 +102,8 @@ against translation output.
 
 ### 4. Iterate
 
-After reviewing, fix extraction issues and re-run:
+After reviewing, apply the downloaded patch through the pipeline or fix the
+underlying extraction issue, then re-run:
 
 ```bash
 atr run --doc ato_core_v1_1 --edition en --pages 15

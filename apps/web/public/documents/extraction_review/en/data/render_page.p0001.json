@@ -1,0 +1,117 @@
+{
+  "schema_version": "render_page.v1",
+  "document_version": "extraction-review-fixture.v1",
+  "presentation_mode": "facsimile",
+  "page": {
+    "id": "p0001",
+    "title": "Movement Review",
+    "section_path": ["Rules", "Movement"],
+    "source_page_number": 1,
+    "source_confidence": 0.82
+  },
+  "nav": {
+    "prev": null,
+    "next": null,
+    "parent_section": "rules"
+  },
+  "blocks": [
+    {
+      "kind": "heading",
+      "id": "p0001.b001",
+      "level": 2,
+      "children": [
+        {
+          "kind": "text",
+          "text": "Movement Review",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "id": "p0001.b002",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Move up to tree spaces.",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "kind": "callout",
+      "id": "p0001.b003",
+      "variant": "tip",
+      "children": [
+        {
+          "kind": "text",
+          "text": "Terrain may reduce movement.",
+          "marks": []
+        }
+      ]
+    }
+  ],
+  "figures": {},
+  "facsimile": {
+    "raster_src": "/documents/extraction_review/en/rasters/p0001.svg",
+    "raster_src_hires": "",
+    "width_px": 720,
+    "height_px": 960,
+    "annotations": [
+      {
+        "text": "Movement Review",
+        "translated_text": "",
+        "block_ref": "p0001.b001",
+        "bbox": {
+          "x0": 0.12,
+          "y0": 0.1,
+          "x1": 0.76,
+          "y1": 0.18
+        },
+        "kind": "title",
+        "priority": 100
+      },
+      {
+        "text": "Move up to tree spaces.",
+        "translated_text": "",
+        "block_ref": "p0001.b002",
+        "bbox": {
+          "x0": 0.12,
+          "y0": 0.26,
+          "x1": 0.78,
+          "y1": 0.34
+        },
+        "kind": "body",
+        "priority": 40
+      },
+      {
+        "text": "Terrain may reduce movement.",
+        "translated_text": "",
+        "block_ref": "p0001.b003",
+        "bbox": {
+          "x0": 0.12,
+          "y0": 0.46,
+          "x1": 0.84,
+          "y1": 0.58
+        },
+        "kind": "callout",
+        "priority": 80
+      }
+    ]
+  },
+  "glossary_mentions": [],
+  "search": {
+    "raw_text": "Movement Review Move up to tree spaces. Terrain may reduce movement.",
+    "normalized_terms": ["movement", "terrain"]
+  },
+  "source_map": {
+    "document_id": "extraction_review",
+    "page_id": "p0001",
+    "block_refs": ["p0001.b001", "p0001.b002", "p0001.b003"]
+  },
+  "build_meta": {
+    "build_id": "extraction-review-fixture",
+    "generated_at": "2026-07-10T00:00:00Z",
+    "artifact_ref": "extraction_review/render_page.v1/page/p0001/16edb2309b69.json"
+  }
+}

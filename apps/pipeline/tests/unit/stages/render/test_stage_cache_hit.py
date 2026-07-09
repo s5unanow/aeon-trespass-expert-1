@@ -64,6 +64,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from pydantic import TypeAdapter
+
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
@@ -86,6 +88,19 @@ from tests.unit.stages.qa.test_stage_cache_hit import (
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[6]
+
+
+def _published_render_page(page_dir: Path) -> RenderPageV1:
+    """Return the wrapper that carries the immutable review target ref."""
+    page_files = list(page_dir.glob("*.json"))
+    assert len(page_files) == 2, f"expected target + published render pages, got {page_files}"
+    pages = [TypeAdapter(RenderPageV1).validate_json(path.read_bytes()) for path in page_files]
+    published = [page for page in pages if page.build_meta and page.build_meta.artifact_ref]
+    assert len(published) == 1, f"expected one published wrapper, got {published}"
+    wrapper = published[0]
+    assert wrapper.build_meta is not None
+    assert (page_dir / Path(wrapper.build_meta.artifact_ref).name).exists()
+    return wrapper
 
 
 def _make_ctx(tmp_path: Path) -> StageContext:
@@ -196,9 +211,7 @@ def test_render_stage_cache_hit_preserves_callout_output(tmp_path: Path) -> None
     # replay. If a future regression silently drops callout dispatch
     # again, this assertion fails before the cache-hit invariant does.
     page_dir = tmp_path / "artifacts" / "walking_skeleton" / "render_page.v1" / "page" / "p0001"
-    page_files = list(page_dir.glob("*.json"))
-    assert len(page_files) == 1, f"expected single render_page artifact, got {page_files}"
-    render_page = RenderPageV1.model_validate_json(page_files[0].read_bytes())
+    render_page = _published_render_page(page_dir)
     callout_blocks = [b for b in render_page.blocks if b.kind == "callout"]
     assert len(callout_blocks) == 1, (
         "expected exactly one RenderCalloutBlock in the persisted render page; "
@@ -349,15 +362,13 @@ def test_render_stage_cache_hit_preserves_term_mark_dispatch(tmp_path: Path) -> 
     # a future regression silently drops term_mark dispatch again, this
     # assertion fails before the cache-hit invariant does.
     page_dir = tmp_path / "artifacts" / "walking_skeleton" / "render_page.v1" / "page" / "p0001"
-    page_files = list(page_dir.glob("*.json"))
-    assert len(page_files) == 1, f"expected single render_page artifact, got {page_files}"
-    render_page = RenderPageV1.model_validate_json(page_files[0].read_bytes())
+    render_page = _published_render_page(page_dir)
     para_blocks = [b for b in render_page.blocks if b.kind == "paragraph"]
     assert len(para_blocks) == 1, (
         f"expected one paragraph; got {[b.kind for b in render_page.blocks]}"
     )
     para = para_blocks[0]
-    text_kinds = [c.kind for c in para.children]  # type: ignore[union-attr]
+    text_kinds = [c.kind for c in para.children]
     assert text_kinds == ["text", "text"], (
         f"expected ['text', 'text'] (TextInline + flattened TermMarkInline); "
         f"got {text_kinds} — has the S5U-745 term_mark dispatch in "

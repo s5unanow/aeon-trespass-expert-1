@@ -8,6 +8,8 @@ from pydantic import BaseModel, Field
 
 from atr_schemas.enums import PatchScope, PatchTargetKind
 
+type PatchValue = str | int | float | bool | None | list[PatchValue] | dict[str, PatchValue]
+
 
 class PatchProvenance(BaseModel):
     """Tracks who/what created the patch and its expected confidence impact."""
@@ -30,7 +32,7 @@ class PatchOperation(BaseModel):
 
     op: str  # replace, insert, delete
     path: str  # JSON pointer or block reference
-    value: object = None
+    value: PatchValue = None
     scope: PatchScope | None = Field(
         default=None, description="Classification of what this operation corrects"
     )

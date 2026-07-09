@@ -10,6 +10,9 @@ import { ReaderLayout } from '../components/layout/ReaderLayout';
 const QaDashboard = lazy(() =>
   import('../routes/QaDashboard').then((m) => ({ default: m.QaDashboard })),
 );
+const ExtractionReviewPage = lazy(() =>
+  import('../routes/ExtractionReviewPage').then((m) => ({ default: m.ExtractionReviewPage })),
+);
 
 function QaFallback() {
   return (
@@ -38,6 +41,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<QaFallback />}>
             <QaDashboard />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'review/:pageId',
+        element: (
+          <Suspense fallback={<QaFallback />}>
+            <ExtractionReviewPage />
           </Suspense>
         ),
       },

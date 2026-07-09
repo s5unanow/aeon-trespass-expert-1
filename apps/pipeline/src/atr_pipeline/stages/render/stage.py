@@ -12,6 +12,7 @@ from atr_pipeline.stages.render.annotation_builder import (
 )
 from atr_pipeline.stages.render.page_builder import build_render_page, is_garbage_title
 from atr_pipeline.stages.render.presentation_classifier import classify_presentation_mode
+from atr_pipeline.stages.render.review_target import store_reviewable_render_page
 from atr_pipeline.utils.hashing import sha256_file
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
 from atr_schemas.enums import StageScope
@@ -52,6 +53,10 @@ class RenderStage:
 
     @property
     def version(self) -> str:
+        # 1.8 (S5U-1554): render-page metadata now carries page source
+        #   confidence and facsimile annotations carry stable block refs.
+        #   Cached 1.7 payloads must be regenerated so the extraction-review
+        #   route can link overlays to blocks and populate patch provenance.
         # 1.7 (S5U-737): orphan ``CaptionBlock`` instances now emit a
         #   ``RenderCaptionBlock`` instead of being silently dropped.
         #   The render_page.v1 artifact shape changes for any page whose
@@ -78,7 +83,7 @@ class RenderStage:
         #   1.2 (S5U-700) — attached CaptionBlocks fold into
         #     RenderFigure.caption.
         #   1.1 (S5U-697) — annotation filtering semantics changed.
-        return "1.7"
+        return "1.8"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         # concepts.toml is read inside run() via load_concept_registry but is
@@ -155,14 +160,9 @@ class RenderStage:
         # Store pages with nav populated
         page_refs: dict[str, str] = {}
         for render in rendered_pages:
-            ref = ctx.artifact_store.put_json(
-                document_id=ctx.document_id,
-                schema_family="render_page.v1",
-                scope="page",
-                entity_id=render.page.id,
-                data=render,
+            page_refs[render.page.id] = store_reviewable_render_page(
+                ctx.artifact_store, ctx.document_id, render
             )
-            page_refs[render.page.id] = ref.relative_path
 
         ctx.logger.info("Rendered %d pages", len(rendered_pages))
 

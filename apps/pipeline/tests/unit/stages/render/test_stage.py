@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from pydantic import TypeAdapter
 
 from atr_pipeline.config import load_document_config
 from atr_pipeline.registry.db import open_registry
@@ -21,6 +22,7 @@ from atr_pipeline.stages.translation.stage import TranslationStage
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.enums import LanguageCode, StageScope
 from atr_schemas.page_ir_v1 import PageIRV1
+from atr_schemas.render_page_v1 import RenderPageV1
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
 
@@ -76,6 +78,8 @@ def test_render_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "render"
     assert stage.scope == StageScope.DOCUMENT
+    # 1.7 → 1.8 (S5U-1554): render metadata now includes page source
+    # confidence and facsimile annotations include stable block refs.
     # 1.6 → 1.7 (S5U-737): orphan ``CaptionBlock`` instances now emit a
     # ``RenderCaptionBlock`` instead of being silently dropped at the top of
     # the page_builder block loop. The render_page.v1 artifact shape changes
@@ -95,7 +99,7 @@ def test_render_implements_stage_protocol() -> None:
     # from page_ir.document_id); the render_page.v1 artifact shape changed,
     # so cached 1.3 pages must be regenerated for QA rules to pick up the
     # real document id.
-    assert stage.version == "1.7"
+    assert stage.version == "1.8"
 
 
 @pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
@@ -119,7 +123,18 @@ def test_render_builds_pages(tmp_path: Path) -> None:
     render_dir = tmp_path / "artifacts" / "walking_skeleton" / "render_page.v1" / "page" / "p0001"
     assert render_dir.exists()
     jsons = list(render_dir.glob("*.json"))
-    assert len(jsons) == 1
+    assert len(jsons) == 2
+    page_ref = render_result.page_refs["p0001"]
+    rendered_page = TypeAdapter(RenderPageV1).validate_json(
+        (tmp_path / "artifacts" / page_ref).read_text(encoding="utf-8")
+    )
+    assert rendered_page.build_meta is not None
+    source_ref = rendered_page.build_meta.artifact_ref
+    assert source_ref.startswith("walking_skeleton/render_page.v1/page/p0001/")
+    assert source_ref != page_ref
+    TypeAdapter(RenderPageV1).validate_json(
+        (tmp_path / "artifacts" / source_ref).read_text(encoding="utf-8")
+    )
 
     # Verify companion artifacts have refs
     assert render_result.glossary_ref != ""

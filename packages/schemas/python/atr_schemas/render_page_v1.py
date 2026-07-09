@@ -16,6 +16,7 @@ class FacsimileAnnotation(BaseModel):
 
     text: str
     translated_text: str = ""
+    block_ref: str = ""
     bbox: NormRect
     kind: Literal["title", "body", "caption", "callout", "label"] = "body"
     priority: int = Field(default=0, ge=0)
@@ -195,6 +196,7 @@ class RenderPageMeta(BaseModel):
     title: str = ""
     section_path: list[str] = Field(default_factory=list)
     source_page_number: int = 0
+    source_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
 
 
 class RenderNav(BaseModel):
@@ -231,6 +233,10 @@ class RenderSourceMap(BaseModel):
 class RenderBuildMeta(BaseModel):
     build_id: str = ""
     generated_at: str = ""
+    artifact_ref: str = Field(
+        default="",
+        description="Ingestible artifact-store ref for PatchSetV1 corrections",
+    )
 
 
 # --- RenderPageV1 ---

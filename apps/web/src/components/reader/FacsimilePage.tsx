@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FacsimileAnnotation, RenderFacsimile } from '../../lib/render/types';
+import { facsimileStackRanks, sortFacsimileAnnotations } from '../../lib/render/facsimileOverlay';
 
 interface FacsimilePageProps {
   facsimile: RenderFacsimile;
@@ -7,50 +8,18 @@ interface FacsimilePageProps {
   pageNumber: number;
 }
 
-/** Vertical tolerance (fraction of page height) for same-row grouping. */
-const ROW_TOLERANCE = 0.02;
-
-/** Sort annotations in reading order: top-to-bottom, then left-to-right. */
-function readingOrder(a: FacsimileAnnotation, b: FacsimileAnnotation): number {
-  const ay = (a.bbox.y0 + a.bbox.y1) / 2;
-  const by = (b.bbox.y0 + b.bbox.y1) / 2;
-  if (Math.abs(ay - by) > ROW_TOLERANCE) return ay - by;
-  return a.bbox.x0 - b.bbox.x0;
-}
-
-/**
- * Normalized bbox area (unit square). Smaller-area annotations are
- * more specific hotspots and must paint on top of larger ones, otherwise
- * a large enclosing region silently intercepts clicks meant for an inner
- * marker (S5U-697 — observed as "one hotspot is hidden behind another").
- */
-function bboxArea(ann: FacsimileAnnotation): number {
-  const w = Math.max(0, ann.bbox.x1 - ann.bbox.x0);
-  const h = Math.max(0, ann.bbox.y1 - ann.bbox.y0);
-  return w * h;
-}
-
 export function FacsimilePage({ facsimile, pageTitle, pageNumber }: FacsimilePageProps) {
   const [rasterLoaded, setRasterLoaded] = useState(false);
   const handleRasterLoad = useCallback(() => setRasterLoaded(true), []);
   const annotations = useMemo(
-    () => [...((facsimile.annotations ?? []) as FacsimileAnnotation[])].sort(readingOrder),
+    () => sortFacsimileAnnotations((facsimile.annotations ?? []) as FacsimileAnnotation[]),
     [facsimile.annotations],
   );
   // S5U-697: assign a stacking rank so smaller bboxes render above larger
   // ones — this keeps inner (more-specific) hotspots clickable even if the
   // pipeline-side occlusion filter missed a near-miss pair. Rank 0 is the
   // largest bbox; higher ranks paint later and therefore stack higher.
-  const stackRanks = useMemo(() => {
-    const indexed = annotations.map((ann, i) => ({ i, area: bboxArea(ann) }));
-    // Descending area → smallest bbox gets the highest rank.
-    indexed.sort((a, b) => b.area - a.area);
-    const ranks = Array.from({ length: annotations.length }, () => 0);
-    indexed.forEach((entry, rank) => {
-      ranks[entry.i] = rank;
-    });
-    return ranks;
-  }, [annotations]);
+  const stackRanks = useMemo(() => facsimileStackRanks(annotations), [annotations]);
   const hasAnnotations = annotations.length > 0;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);

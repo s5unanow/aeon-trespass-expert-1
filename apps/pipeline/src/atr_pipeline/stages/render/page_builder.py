@@ -112,7 +112,6 @@ def build_render_page(
     block_refs: list[str] = []
     figures: dict[str, RenderFigure] = {}
     title = ""
-
     caption_for_figure, consumed_caption_ids = _resolve_caption_attachments(page_ir)
 
     for block in page_ir.blocks:
@@ -181,6 +180,7 @@ def build_render_page(
             id=page_ir.page_id,
             title=title,
             source_page_number=page_ir.page_number,
+            source_confidence=page_ir.confidence.page_confidence if page_ir.confidence else None,
         ),
         blocks=render_blocks,
         figures=figures,

@@ -12,6 +12,11 @@
           "title": "Translated Text",
           "type": "string"
         },
+        "block_ref": {
+          "default": "",
+          "title": "Block Ref",
+          "type": "string"
+        },
         "bbox": {
           "$ref": "#/$defs/NormRect"
         },
@@ -88,6 +93,12 @@
         "generated_at": {
           "default": "",
           "title": "Generated At",
+          "type": "string"
+        },
+        "artifact_ref": {
+          "default": "",
+          "description": "Ingestible artifact-store ref for PatchSetV1 corrections",
+          "title": "Artifact Ref",
           "type": "string"
         }
       },
@@ -473,6 +484,20 @@
           "default": 0,
           "title": "Source Page Number",
           "type": "integer"
+        },
+        "source_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Confidence"
         }
       },
       "required": [

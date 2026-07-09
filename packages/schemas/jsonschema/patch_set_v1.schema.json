@@ -12,8 +12,8 @@
           "type": "string"
         },
         "value": {
-          "default": null,
-          "title": "Value"
+          "$ref": "#/$defs/PatchValue",
+          "default": null
         },
         "scope": {
           "anyOf": [
@@ -116,6 +116,37 @@
       ],
       "title": "PatchTargetKind",
       "type": "string"
+    },
+    "PatchValue": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/PatchValue"
+          },
+          "type": "array"
+        },
+        {
+          "additionalProperties": {
+            "$ref": "#/$defs/PatchValue"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
   },
   "description": "A set of typed patches for a specific artifact.",

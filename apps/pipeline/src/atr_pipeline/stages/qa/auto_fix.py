@@ -39,10 +39,12 @@ import re
 import uuid
 from typing import Any
 
+from pydantic import TypeAdapter
+
 from atr_pipeline.stages.qa.rules.decorative_icon_rule import DECORATIVE_PATTERNS
 from atr_pipeline.store.artifact_ref import ArtifactRef
 from atr_schemas.enums import PatchScope, PatchTargetKind
-from atr_schemas.patch_set_v1 import PatchOperation, PatchSetV1
+from atr_schemas.patch_set_v1 import PatchOperation, PatchSetV1, PatchValue
 from atr_schemas.qa_record_v1 import QARecordV1
 from atr_schemas.render_page_v1 import (
     RenderDividerBlock,
@@ -51,6 +53,7 @@ from atr_schemas.render_page_v1 import (
 )
 
 logger = logging.getLogger(__name__)
+_PATCH_VALUE_ADAPTER: TypeAdapter[PatchValue] = TypeAdapter(PatchValue)
 
 # ── Sentence boundary for paragraph splitting ─────────────────────────
 
@@ -213,9 +216,11 @@ def _fix_split_paragraph(
     if not first_children or not second_children:
         return []
 
-    first_ser = [_serialize_inline(c) for c in first_children]
-    second_ser = [_serialize_inline(c) for c in second_children]
-    new_block: dict[str, Any] = block.model_dump()
+    first_ser: list[PatchValue] = [_serialize_inline(c) for c in first_children]
+    second_ser: list[PatchValue] = [_serialize_inline(c) for c in second_children]
+    new_block = _PATCH_VALUE_ADAPTER.validate_python(block.model_dump(mode="json"))
+    if not isinstance(new_block, dict):
+        return []
     new_block["id"] = f"{block.id}_split"
     new_block["children"] = second_ser
 
@@ -295,8 +300,8 @@ def _find_block_index(page: RenderPageV1, block_id: str) -> int | None:
     return None
 
 
-def _serialize_inline(child: Any) -> dict[str, Any]:
-    return child.model_dump()  # type: ignore[no-any-return]
+def _serialize_inline(child: Any) -> PatchValue:
+    return _PATCH_VALUE_ADAPTER.validate_python(child.model_dump(mode="json"))
 
 
 def _clone_text(original: Any, new_text: str) -> RenderTextInline:
