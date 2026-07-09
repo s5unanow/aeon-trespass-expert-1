@@ -347,6 +347,70 @@ def test_symbol_match_set_roundtrip() -> None:
     _roundtrip(matches)
 
 
+def test_patch_application_roundtrips_ui_export_shape() -> None:
+    """S5U-1538 contract: a PatchSetV1 shaped exactly like the web review export
+    must parse, apply via apply_patches to a committed render_page fixture, and
+    the result must still validate as RenderPageV1.
+
+    Red-before for this new test function recorded in introducing commit (6a35a46).
+    """
+    from pathlib import Path
+
+    from atr_pipeline.stages.patch.applicator import apply_patches
+    from atr_schemas.enums import PatchScope, PatchTargetKind
+    from atr_schemas.patch_set_v1 import PatchOperation, PatchSetV1
+
+    # Committed fixture (stable across exports)
+    fixture_path = Path(
+        "packages/fixtures/sample_documents/walking_skeleton/expected/render_page.p0001.json"
+    )
+    original = json.loads(fixture_path.read_text(encoding="utf-8"))
+    block_count = len(original.get("blocks", []))
+    assert block_count >= 1
+
+    # Simulate a UI export: text correction on first block's first text child
+    # plus a block_structure delete (on last) and a minimal reading_order pair.
+    ops: list[PatchOperation] = [
+        PatchOperation(
+            op="replace",
+            path="/blocks/0/children/0/text",
+            value="Patched via review route (S5U-1538 contract)",
+            scope=PatchScope.TEXT,
+        ),
+    ]
+    if block_count > 1:
+        ops.append(
+            PatchOperation(
+                op="delete",
+                path=f"/blocks/{block_count - 1}",
+                scope=PatchScope.BLOCK_STRUCTURE,
+            )
+        )
+
+    patch = PatchSetV1(
+        schema_version="patch_set.v1",
+        patch_id="s5u-1538-contract-test",
+        target_artifact_ref=str(fixture_path),
+        target_kind=PatchTargetKind.RENDER_PAGE,
+        operations=ops,
+        reason="Contract test for typed UI export shape",
+        author="s5u-1538",
+    )
+
+    # Must parse (the web download must be ingestible)
+    parsed = PatchSetV1.model_validate(patch.model_dump(mode="json"))
+
+    # Apply
+    patched_dict = apply_patches(original, parsed)
+
+    # Must still be a valid RenderPageV1 after patch
+    RenderPageV1.model_validate(patched_dict)
+
+    # Sanity: the text change landed
+    expected = "Patched via review route (S5U-1538 contract)"
+    assert patched_dict["blocks"][0]["children"][0]["text"] == expected
+
+
 def test_translation_batch_roundtrip() -> None:
     from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
 
