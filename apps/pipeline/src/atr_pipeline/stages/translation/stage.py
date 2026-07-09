@@ -12,10 +12,12 @@ from atr_pipeline.stages.translation.grouping import (
     expand_grouped_batch,
     expand_grouped_result,
 )
+from atr_pipeline.stages.translation.hardness import HardnessAssessment, classify_hardness
 from atr_pipeline.stages.translation.page_state import (
     en_ir_content_hash,
     load_resume_state,
     persist_resume_state,
+    translation_config_hash,
 )
 from atr_pipeline.stages.translation.planner import build_translation_batch
 from atr_pipeline.stages.translation.rematerialize import rematerialize_ru_blocks
@@ -94,11 +96,31 @@ class TranslationStage:
         # translation_resume.v1 record (new observable side-effect) enabling
         # mid-run failure resume. Bumped so cached pages re-run and emit the
         # resume artifact. Per .claude/rules/pipeline.md (S5U-662).
-        return "1.6"
+        # S5U-1555 1.6 -> 1.7: enabled hardness routing enriches per-page
+        # translation metadata with deterministic score/model provenance.
+        return "1.7"
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
-        translator = create_translator(ctx.config.translation, concept_registry=concept_reg)
+        hardness_config = ctx.config.translation.hardness
+        if hardness_config.enabled:
+            translator = create_translator(
+                ctx.config.translation,
+                concept_registry=concept_reg,
+                primary_model_override=ctx.config.translation.model_default,
+            )
+            hard_translator = (
+                translator
+                if ctx.config.translation.model_hard == ctx.config.translation.model_default
+                else create_translator(
+                    ctx.config.translation,
+                    concept_registry=concept_reg,
+                    primary_model_override=ctx.config.translation.model_hard,
+                )
+            )
+        else:
+            translator = create_translator(ctx.config.translation, concept_registry=concept_reg)
+            hard_translator = None
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
 
         pages_translated = 0
@@ -116,6 +138,7 @@ class TranslationStage:
                 en_ir,
                 page_id,
                 translator,
+                hard_translator,
                 concept_reg,
             )
             pages_translated += 1
@@ -138,6 +161,7 @@ class TranslationStage:
         en_ir: PageIRV1,
         page_id: str,
         translator: TranslatorAdapter,
+        hard_translator: TranslatorAdapter | None,
         concept_reg: ConceptRegistryV1 | None,
     ) -> tuple[int, str]:
         """Resume-aware per-page driver (S5U-1228).
@@ -153,16 +177,34 @@ class TranslationStage:
         freshly-translated paths.
         """
         en_hash = en_ir_content_hash(en_ir)
-        cached = load_resume_state(ctx, page_id, expected_en_hash=en_hash)
+        config_hash = (
+            translation_config_hash(ctx.config.translation)
+            if ctx.config.translation.hardness.enabled
+            else None
+        )
+        cached = load_resume_state(
+            ctx,
+            page_id,
+            expected_en_hash=en_hash,
+            expected_config_hash=config_hash,
+        )
         if cached is not None:
             ctx.logger.info("Resumed %s from cache (skipping LLM)", page_id)
             return cached.warning_count, cached.ru_ir_ref
 
-        warnings, ru_ir_ref = self._translate_page(ctx, en_ir, page_id, translator, concept_reg)
+        warnings, ru_ir_ref = self._translate_page(
+            ctx,
+            en_ir,
+            page_id,
+            translator,
+            hard_translator,
+            concept_reg,
+        )
         persist_resume_state(
             ctx,
             page_id=page_id,
             en_ir_hash=en_hash,
+            config_hash=config_hash,
             ru_ir_ref=ru_ir_ref,
             warning_count=warnings,
         )
@@ -174,6 +216,7 @@ class TranslationStage:
         en_ir: PageIRV1,
         page_id: str,
         translator: TranslatorAdapter,
+        hard_translator: TranslatorAdapter | None,
         concept_reg: ConceptRegistryV1 | None,
     ) -> tuple[int, ArtifactRef]:
         """Translate a single page and store the RU IR.
@@ -190,6 +233,13 @@ class TranslationStage:
             concept_registry=concept_reg,
             prompt_profile=ctx.config.translation.prompt_profile,
         )
+        assessment: HardnessAssessment | None = None
+        chosen_model = ctx.config.translation.model_default
+        if hard_translator is not None:
+            assessment = classify_hardness(en_ir, batch, ctx.config.translation.hardness)
+            if assessment.is_hard:
+                translator = hard_translator
+                chosen_model = ctx.config.translation.model_hard
         response = translator.translate_batch(batch)
         result = response.result
         expanded_batch = _expand_grouped_translation_batch(batch)
@@ -213,6 +263,8 @@ class TranslationStage:
             # FallbackTranslator only on the fallback path; ``None`` otherwise.
             "primary_error": response.meta.extra.get("primary_error"),
         }
+        if assessment is not None:
+            meta_data["hardness"] = assessment.metadata(chosen_model)
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,
             schema_family="translation_meta.v1",

@@ -18,11 +18,12 @@ stage-level cache: a fully-successful run still hits the executor cache and skip
 ``run()`` entirely; only a failed-mid-run retry re-enters ``run()`` and benefits
 from per-page resume.
 
-Validity is keyed on the EN IR content hash so a *changed* EN source can never
-reuse a stale RU translation — a hash mismatch forces a re-translate. Reads are
-fail-safe: a missing, unparseable, hash-mismatched, or dangling-ref record
-yields ``None`` ("no resume state — re-translate") and is logged; it never
-crashes and never silently reuses wrong content.
+Validity is keyed on the EN IR content hash and, for opt-in model routing, the
+translation configuration. A changed source or routing policy can therefore
+never reuse a stale RU translation. Reads are fail-safe: a missing,
+unparseable, hash-mismatched, or dangling-ref record yields ``None`` ("no
+resume state — re-translate") and is logged; it never crashes and never
+silently reuses wrong content.
 """
 
 from __future__ import annotations
@@ -33,6 +34,7 @@ from typing import Protocol
 
 from pydantic import BaseModel, Field, ValidationError
 
+from atr_pipeline.config.models import TranslationConfig
 from atr_pipeline.store.artifact_ref import ArtifactRef
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_pipeline.utils.hashing import content_hash
@@ -62,13 +64,14 @@ class PageResumeState(BaseModel):
 
     Persisted only after the page's RU IR + meta + QA artifacts are all on
     disk, so its presence means "this page completed". ``en_ir_content_hash``
-    is the validity key: the record is reused only when the current EN IR
-    hashes identically, guaranteeing a changed EN source never reuses a stale
-    RU translation.
+    always guards the source. ``translation_config_hash`` additionally guards
+    enabled model routing; it remains absent for disabled routing so legacy
+    resume artifacts and behavior stay unchanged.
     """
 
     page_id: str
     en_ir_content_hash: str
+    translation_config_hash: str | None = None
     ru_ir_ref: str
     warning_count: int = Field(ge=0)
 
@@ -76,6 +79,11 @@ class PageResumeState(BaseModel):
 def en_ir_content_hash(en_ir: PageIRV1) -> str:
     """Stable content hash of an EN ``PageIRV1`` (the resume validity key)."""
     return content_hash(en_ir.model_dump(mode="json"))
+
+
+def translation_config_hash(config: TranslationConfig) -> str:
+    """Stable hash of every translation setting that can affect page output."""
+    return content_hash(config.model_dump(mode="json"))
 
 
 def _ru_ir_ref_exists(ctx: ResumeStageContext, ru_ir_ref: str) -> bool:
@@ -94,6 +102,7 @@ def load_resume_state(
     page_id: str,
     *,
     expected_en_hash: str,
+    expected_config_hash: str | None = None,
 ) -> PageResumeState | None:
     """Load a valid resume record for ``page_id`` or return ``None``.
 
@@ -103,6 +112,8 @@ def load_resume_state(
     * it parses as :class:`PageResumeState`,
     * its ``en_ir_content_hash`` equals ``expected_en_hash`` (EN source
       unchanged since the cached translation), and
+    * its optional ``translation_config_hash`` equals ``expected_config_hash``
+      (enabled routing policy unchanged), and
     * the referenced RU IR artifact still exists on disk.
 
     On ANY failure — missing, corrupt/partial JSON, validation error, hash
@@ -138,6 +149,13 @@ def load_resume_state(
         ctx.logger.info("Resume state for %s stale (EN IR changed); will re-translate", page_id)
         return None
 
+    if state.translation_config_hash != expected_config_hash:
+        ctx.logger.info(
+            "Resume state for %s stale (translation config changed); will re-translate",
+            page_id,
+        )
+        return None
+
     if not _ru_ir_ref_exists(ctx, state.ru_ir_ref):
         ctx.logger.warning(
             "Resume state for %s references missing RU IR %s; will re-translate",
@@ -154,6 +172,7 @@ def persist_resume_state(
     *,
     page_id: str,
     en_ir_hash: str,
+    config_hash: str | None = None,
     ru_ir_ref: ArtifactRef,
     warning_count: int,
 ) -> None:
@@ -166,6 +185,7 @@ def persist_resume_state(
     state = PageResumeState(
         page_id=page_id,
         en_ir_content_hash=en_ir_hash,
+        translation_config_hash=config_hash,
         ru_ir_ref=ru_ir_ref.relative_path,
         warning_count=warning_count,
     )
@@ -174,5 +194,5 @@ def persist_resume_state(
         schema_family=RESUME_SCHEMA_FAMILY,
         scope="page",
         entity_id=page_id,
-        data=state,
+        data=state.model_dump(mode="json", exclude_none=True),
     )

@@ -80,7 +80,8 @@ def test_translation_implements_stage_protocol() -> None:
     # (page_refs), changing the summary artifact shape.
     # S5U-1228 — bumped to 1.6 after run() began persisting a per-page
     # translation_resume.v1 record (new observable side-effect of run()).
-    assert stage.version == "1.6"
+    # S5U-1555 — bumped to 1.7 for opt-in hardness provenance metadata.
+    assert stage.version == "1.7"
 
 
 @pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset
