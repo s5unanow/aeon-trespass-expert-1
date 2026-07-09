@@ -253,6 +253,16 @@ def test_refuse_unsupported_media_type_gif(tmp_path: Path) -> None:
     _assert_refused(tmp_path, manifest)
 
 
+def test_refuse_decompression_bomb(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    # A modest PNG exceeds an artificially tiny pixel limit → Pillow raises
+    # DecompressionBombError, which must surface as a clean ImageSetError refusal.
+    monkeypatch.setattr(Image, "MAX_IMAGE_PIXELS", 10)
+    _png(tmp_path / "images" / "a.png", size=(64, 64))
+    manifest = tmp_path / "manifest.toml"
+    manifest.write_text(_manifest_toml([("x", "images/a.png", 1)]))
+    _assert_refused(tmp_path, manifest)
+
+
 def test_refuse_duplicate_image_id(tmp_path: Path) -> None:
     _png(tmp_path / "images" / "a.png")
     _png(tmp_path / "images" / "b.png", color=(1, 1, 1))

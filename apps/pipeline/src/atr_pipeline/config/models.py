@@ -16,10 +16,7 @@ from atr_schemas.common import Rect
 
 
 class DocumentConfig(BaseModel):
-    """Document config; exactly one source — ``source_pdf`` or ``[document.source]``.
-
-    See ``config.source`` for the discriminated-union variants.
-    """
+    """Document config; one source: ``source_pdf`` or ``[document.source]`` (see config.source)."""
 
     id: str
     source_pdf: str | None = None

@@ -105,7 +105,9 @@ def _probe_image(path: Path, image_id: str) -> tuple[str, str, int, int]:
         with Image.open(path) as img:
             fmt = img.format
             width, height = img.size
-    except (UnidentifiedImageError, OSError) as exc:
+    except (UnidentifiedImageError, Image.DecompressionBombError, OSError) as exc:
+        # DecompressionBombError guards a maliciously huge decoded size; like the
+        # other cases it becomes a clean refusal, never a partial write.
         msg = f"unsupported or unreadable image for {image_id!r}: {path} ({exc})"
         raise ImageSetError(msg) from exc
     if fmt not in _ALLOWED_FORMATS:
