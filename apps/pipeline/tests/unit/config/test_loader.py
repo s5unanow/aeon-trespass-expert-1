@@ -159,6 +159,7 @@ def test_ato_core_inherits_codex_cli_translation_defaults() -> None:
     assert cfg.translation.provider == "codex-cli"
     assert cfg.translation.model_default == "gpt-5.5"
     assert cfg.translation.model_hard == "gpt-5.5"
+    assert cfg.translation.hardness.enabled is False
     assert cfg.translation.fallback_provider == "gemini-cli"
     assert cfg.translation.fallback_model == "gemini-2.5-flash"
     assert cfg.translation.provider_options.cli.reasoning_effort == "xhigh"
