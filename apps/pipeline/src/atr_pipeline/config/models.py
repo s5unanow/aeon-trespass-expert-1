@@ -119,6 +119,19 @@ class APIProviderOptions(BaseModel):
     """Provider API key. Empty -> rely on the SDK's environment fallback."""
 
 
+class HardnessConfig(BaseModel):
+    """S5U-1541 hardness (default disabled, extra=forbid)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    enabled: bool = False
+    threshold: float = Field(default=0.50, ge=0.0, le=2.0)
+    icon_weight: float = Field(default=0.35, ge=0.0)
+    xref_weight: float = Field(default=0.25, ge=0.0)
+    table_weight: float = Field(default=0.25, ge=0.0)
+    length_weight: float = Field(default=0.15, ge=0.0)
+
+
 class TranslationProviderOptions(BaseModel):
     """Provider-specific options bundle, namespaced by provider shape.
 
@@ -141,8 +154,8 @@ class TranslationConfig(BaseModel):
     The flat ``provider`` / ``model_default`` / ``fallback_provider`` /
     ``fallback_model`` / ``temperature`` / ``max_retries`` /
     ``retry_delay_seconds`` keys remain the supported authoring surface. The
-    nested ``provider_options`` / ``fallback_options`` namespaces carry
-    provider-specific knobs without leaking across providers (S5U-746).
+    nested ``provider_options`` / ``fallback_options`` + ``hardness``
+    namespaces (S5U-746, S5U-1541).
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -155,6 +168,8 @@ class TranslationConfig(BaseModel):
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     batch_size: int = Field(default=24, ge=1)
     prompt_profile: str = "translate_rules_ru.v1"
+    hardness: HardnessConfig = Field(default_factory=HardnessConfig)
+    """S5U-1541: [translation.hardness]; default disabled (regression)."""
     style_critic_enabled: bool = True
     style_critic_provider: str = ""
     style_critic_model: str = ""

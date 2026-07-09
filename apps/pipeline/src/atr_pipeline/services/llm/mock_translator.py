@@ -26,7 +26,12 @@ class MockTranslator:
         batch: TranslationBatchV1,
         model_profile: str = "",
     ) -> TranslationResponse:
-        """Translate segments using hard-coded fixture data."""
+        """Translate segments using hard-coded fixture data.
+
+        Honors model_profile so tests can assert hard vs default routing.
+        When empty, falls back to "mock-v1" (preserves pre-change behavior).
+        """
+        model = model_profile or "mock-v1"
         translated: list[TranslatedSegment] = []
 
         for segment in batch.segments:
@@ -79,7 +84,7 @@ class MockTranslator:
         )
         meta = TranslationResponseMeta(
             provider="mock",
-            model="mock-v1",
+            model=model,
             raw_response=result.model_dump_json(),
         )
         return TranslationResponse(result=result, meta=meta)

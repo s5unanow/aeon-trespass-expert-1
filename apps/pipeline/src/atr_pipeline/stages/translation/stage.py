@@ -12,6 +12,7 @@ from atr_pipeline.stages.translation.grouping import (
     expand_grouped_batch,
     expand_grouped_result,
 )
+from atr_pipeline.stages.translation.hardness import compute_hardness
 from atr_pipeline.stages.translation.page_state import (
     en_ir_content_hash,
     load_resume_state,
@@ -190,7 +191,19 @@ class TranslationStage:
             concept_registry=concept_reg,
             prompt_profile=ctx.config.translation.prompt_profile,
         )
-        response = translator.translate_batch(batch)
+
+        # Hardness routing (S5U-1541): only when explicitly enabled in config.
+        # When disabled, model_profile="", meta shape, and chosen model are
+        # byte-identical to pre-S5U-1541 (regression invariant).
+        tcfg = ctx.config.translation
+        model_profile = tcfg.model_default
+        hardness_meta: dict[str, object] | None = None
+        if tcfg.hardness.enabled:
+            hres = compute_hardness(batch, tcfg.hardness, tcfg.model_default, tcfg.model_hard)
+            model_profile = hres.chosen_model
+            hardness_meta = hres.to_meta_dict()
+
+        response = translator.translate_batch(batch, model_profile=model_profile)
         result = response.result
         expanded_batch = _expand_grouped_translation_batch(batch)
         expanded_result = _expand_grouped_translation_result(batch, result)
@@ -213,6 +226,9 @@ class TranslationStage:
             # FallbackTranslator only on the fallback path; ``None`` otherwise.
             "primary_error": response.meta.extra.get("primary_error"),
         }
+        if hardness_meta is not None:
+            meta_data["hardness"] = hardness_meta
+            meta_data["hardness_chosen_model"] = model_profile
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,
             schema_family="translation_meta.v1",
