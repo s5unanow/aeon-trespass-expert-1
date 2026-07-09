@@ -167,3 +167,18 @@ owner = "s5unanow"
 reviewer = "s5unanow"
 retirement_policy = "replace when real-page version available"
 notes = "3-page fixture — goldens annotate primary/qa_required/publish_blocking bands (S5U-590)"
+
+[[fixtures]]
+fixture_id = "review_fixture"
+source_document = "Synthetic extraction review route fixture"
+source_edition = "synthetic_v1"
+source_pages = [1]
+source_checksum = ""
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["typed_patch_export", "render_page_patch_application"]
+eval_dimensions = ["patches", "reader_review"]
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "permanent — UI/pipeline patch contract fixture"
+notes = "Small render-page payload used to validate review-route patch_set.v1 exports"
