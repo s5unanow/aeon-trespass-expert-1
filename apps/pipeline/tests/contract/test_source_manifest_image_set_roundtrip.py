@@ -6,6 +6,8 @@ not grow) so the image-set additions live in a focused, sub-ceiling module.
 
 import json
 
+from pydantic import BaseModel
+
 from atr_schemas.image_set_manifest_v1 import (
     CaptureMetadata,
     ImageSetImageEntry,
@@ -14,9 +16,9 @@ from atr_schemas.image_set_manifest_v1 import (
 from atr_schemas.source_manifest_v1 import PageEntry, SourceImageRef, SourceManifestV1
 
 
-def _roundtrip(model_instance: object) -> None:
+def _roundtrip[M: BaseModel](model_instance: M) -> None:
     model_cls = type(model_instance)
-    json_str = model_cls.model_validate(model_instance).model_dump_json()
+    json_str = model_instance.model_dump_json()
     restored = model_cls.model_validate(json.loads(json_str))
     assert restored == model_instance
 
