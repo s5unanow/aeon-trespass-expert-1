@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { patchSetV1 } from '@atr/schemas';
 import type { RenderBlock } from '../../lib/render/types';
 import {
@@ -21,18 +21,13 @@ export function CorrectionPanel({ blocks, selectedIndex, onAdd }: CorrectionPane
       .map((child, index) => ({ child, index }))
       .filter((entry) => entry.child.kind === 'text');
   }, [block]);
+  const firstTextInline = textInlines[0];
   const [scope, setScope] = useState<patchSetV1.PatchScope>('text');
-  const [inlineIndex, setInlineIndex] = useState(0);
-  const [correctedText, setCorrectedText] = useState('');
+  const [inlineIndex, setInlineIndex] = useState(firstTextInline?.index ?? 0);
+  const [correctedText, setCorrectedText] = useState(
+    firstTextInline?.child.kind === 'text' ? firstTextInline.child.text : '',
+  );
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const first = textInlines[0];
-    setInlineIndex(first?.index ?? 0);
-    setCorrectedText(first && first.child.kind === 'text' ? first.child.text : '');
-    setScope('text');
-    setError(null);
-  }, [block?.id, textInlines]);
 
   if (!block) return null;
 

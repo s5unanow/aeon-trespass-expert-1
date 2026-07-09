@@ -126,6 +126,7 @@ export function ReviewWorkspace({
 
         {selectedIndex >= 0 && (
           <CorrectionPanel
+            key={selectedBlockRef}
             blocks={projectedPage.blocks}
             selectedIndex={selectedIndex}
             onAdd={addOperation}
