@@ -65,6 +65,5 @@ test('review route loads on committed fixture, supports block select + text corr
   const hasTextOp = json.operations.some(
     (op: any) => op.op === 'replace' && /\/children\//.test(op.path) && op.scope === 'text',
   );
-  // TEMP to produce red for new test(): force fail (will be reverted in next commit)
-  expect(hasTextOp).toBe(false);
+  expect(hasTextOp).toBe(true);
 });
