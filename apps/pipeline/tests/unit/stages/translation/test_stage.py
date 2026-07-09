@@ -31,6 +31,10 @@ def _make_ctx(tmp_path: Path) -> StageContext:
     config = load_document_config("walking_skeleton", repo_root=_repo_root())
     # Use mock translator so tests don't hit real APIs
     config.translation.provider = "mock"
+    # Keep model names mock-flavored so metadata assertions and
+    # hardness-disabled byte-identity checks remain stable.
+    config.translation.model_default = "mock-v1"
+    config.translation.model_hard = "mock-hard"
     store = ArtifactStore(tmp_path / "artifacts")
     conn = open_registry(tmp_path / "registry.db")
     start_run(
@@ -140,6 +144,11 @@ def test_translation_persists_metadata(tmp_path: Path) -> None:
     # Each checksum should be a 12-char hex string
     for checksum in meta["source_checksums"].values():
         assert len(checksum) == 12
+    # S5U-1541 regression: hardness disabled by default -> no hardness keys,
+    # model and top-level shape identical to pre-change.
+    assert "hardness" not in meta
+    assert "hardness_chosen_model" not in meta
+    assert meta["model"] == "mock-v1"
 
 
 @pytest.mark.slow  # S5U-1230: full-pipeline-chain; excluded from fast pre-commit subset

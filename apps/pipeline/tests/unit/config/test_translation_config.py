@@ -387,3 +387,14 @@ def test_recommended_codex_cli_translation_block_validates() -> None:
     assert cfg.translation.provider_options.cli.sandbox == "read-only"
     assert cfg.translation.provider_options.cli.approval_policy == "never"
     assert cfg.translation.provider_options.cli.timeout_seconds == 600
+
+
+# fmt: off
+def test_translation_config_accepts_hardness_section() -> None:
+    raw={"document":{"id":"x","source_pdf":"x.pdf"},"translation":{"provider":"mock","model_default":"def","model_hard":"hard","hardness":{"enabled":True,"threshold":0.65}}}
+    assert DocumentBuildConfig.model_validate(raw).translation.hardness.enabled
+def test_translation_config_hardness_rejects_unknown_keys() -> None:
+    raw={"document":{"id":"x","source_pdf":"x.pdf"},"translation":{"provider":"mock","model_default":"def","hardness":{"enabled":True,"junk":1}}}
+    with pytest.raises(ValueError):
+        DocumentBuildConfig.model_validate(raw)
+# fmt: on
