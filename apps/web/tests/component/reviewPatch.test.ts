@@ -10,6 +10,7 @@ import {
   buildReadingOrderOperation,
   buildSuppressOperation,
   buildTextOperation,
+  removeOperationAndDependents,
   resolvePointer,
 } from '../../src/lib/review/patches';
 import {
@@ -93,6 +94,19 @@ describe('review patch operations', () => {
 
     expect(projected.blocks[0].id).toBe('p0001.b002');
     expect(resolvePointer(projected, '/blocks/0/children/0/text')).toBe('Move up to two spaces.');
+  });
+
+  it('removes a selected operation and all later positional dependents', () => {
+    const reorder = buildReadingOrderOperation(page.blocks, 1, 'earlier');
+    const projected = applyPatchOperations(page, [reorder]);
+    const text = buildTextOperation(projected.blocks, 0, 0, 'Move up to two spaces.');
+    const suppress = buildSuppressOperation(projected.blocks, 2);
+    const operations = [reorder, text, suppress];
+
+    expect(removeOperationAndDependents(operations, 0)).toEqual([]);
+    expect(removeOperationAndDependents(operations, 1)).toEqual([reorder]);
+    expect(removeOperationAndDependents(operations, 2)).toEqual([reorder, text]);
+    expect(() => removeOperationAndDependents(operations, 3)).toThrow(/out of bounds/i);
   });
 });
 
