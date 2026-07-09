@@ -6,8 +6,9 @@ import {
   collectExportErrors,
   firstEditableText,
   isBlockIndexInBounds,
+  orderedOperations,
 } from '../../src/lib/review/patchSet';
-import { buildTextOp } from '../../src/lib/review/operations';
+import { buildReorderOp, buildSuppressOp, buildTextOp } from '../../src/lib/review/operations';
 import { validateAgainstSchema } from '../../src/lib/review/schemaValidate';
 import { normalizeRenderPage } from '../../src/lib/render/normalize';
 import type { ReviewDraft } from '../../src/lib/review/draft';
@@ -30,6 +31,30 @@ function textEntry(blockIndex = 1) {
     reason: 'fix casing',
     summary: 'Text: "…" → "…"',
     operation: buildTextOp(blockIndex, 0, "Roll dice equal to the titan's ATTACK value."),
+  };
+}
+
+function suppressEntry(blockIndex: number) {
+  return {
+    id: `suppress-${blockIndex}`,
+    scope: 'block_structure' as const,
+    blockRef: page.blocks[blockIndex]?.id ?? 'missing',
+    blockIndex,
+    reason: 'duplicated',
+    summary: `Suppress block ${blockIndex + 1}`,
+    operation: buildSuppressOp(blockIndex),
+  };
+}
+
+function reorderEntry(blockIndex: number) {
+  return {
+    id: `reorder-${blockIndex}`,
+    scope: 'reading_order' as const,
+    blockRef: page.blocks[blockIndex]?.id ?? 'missing',
+    blockIndex,
+    reason: 'swapped',
+    summary: `Move block ${blockIndex + 1}`,
+    operation: buildReorderOp(fixture.blocks as unknown[], blockIndex, 'earlier'),
   };
 }
 
@@ -107,6 +132,38 @@ describe('export guards (collectExportErrors)', () => {
     const bad = { ...textEntry(1), reason: '   ' };
     const errors = collectExportErrors(draftWith([bad]), page);
     expect(errors.join(' ')).toContain('missing a reason');
+  });
+
+  it('rejects a reading-order op combined with any other correction', () => {
+    const errors = collectExportErrors(draftWith([reorderEntry(1), textEntry(2)]), page);
+    expect(errors.join(' ')).toContain('cannot be combined');
+  });
+
+  it('allows a reading-order op on its own', () => {
+    const errors = collectExportErrors(draftWith([reorderEntry(1)]), page);
+    expect(errors.join(' ')).not.toContain('cannot be combined');
+  });
+});
+
+describe('orderedOperations (applicator-safe sequencing)', () => {
+  it('emits text ops before deletes, with deletes highest-index-first', () => {
+    // Insertion order interleaves a low delete before a high one — which would
+    // mis-apply sequentially. The export must reorder to [text, delete@3, delete@1].
+    const ops = orderedOperations([suppressEntry(1), textEntry(2), suppressEntry(3)]);
+    expect(ops.map((o) => o.path)).toEqual(['/blocks/2/children/0/text', '/blocks/3', '/blocks/1']);
+    expect(ops.map((o) => o.op)).toEqual(['replace', 'delete', 'delete']);
+  });
+
+  it('sorts multiple deletes descending regardless of insertion order', () => {
+    const ops = orderedOperations([suppressEntry(0), suppressEntry(2), suppressEntry(1)]);
+    expect(ops.map((o) => o.path)).toEqual(['/blocks/2', '/blocks/1', '/blocks/0']);
+  });
+
+  it('returns a lone reorder op unchanged', () => {
+    const ops = orderedOperations([reorderEntry(1)]);
+    expect(ops).toHaveLength(1);
+    expect(ops[0].path).toBe('/blocks');
+    expect(ops[0].scope).toBe('reading_order');
   });
 });
 

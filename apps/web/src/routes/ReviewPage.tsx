@@ -73,6 +73,13 @@ export function ReviewWorkspace({
 
   const highlightRef = hoveredRef ?? selectedRef;
 
+  // MVP limitation (S5U-787 follow-up): `render_page.v1` facsimile annotations
+  // carry no block ref, so a marker is paired to a block by array position
+  // (annotation[i] ↔ block[i]). This is correct when annotation reading order
+  // matches block order (as in the committed fixtures) but is fragile on real
+  // multi-column / reflowed pages where the two orders diverge. Keying the
+  // pairing on a shared ref needs a schema field and is deferred with the
+  // photo-evidence / symbol / table-cell overlays.
   const overlayItems = useMemo<OverlayItem[]>(() => {
     const annotations = page.facsimile?.annotations ?? [];
     const items: OverlayItem[] = [];

@@ -57,6 +57,12 @@ def _combined(result: dict[str, Any]) -> bool:
     return _text_corrected(result) and len(result["blocks"]) == 3
 
 
+def _multi_suppressed(result: dict[str, Any]) -> bool:
+    # Deleting /blocks/3 then /blocks/1 (highest-index-first, as the reader
+    # export orders it) must remove exactly b002 + b004, leaving b001 + b003.
+    return [b["id"] for b in result["blocks"]] == ["p0001.b001", "p0001.b003"]
+
+
 @pytest.mark.parametrize(
     ("fixture_name", "expected_scopes", "postcondition"),
     [
@@ -64,6 +70,7 @@ def _combined(result: dict[str, Any]) -> bool:
         ("patch_suppress.json", {"block_structure"}, _callout_suppressed),
         ("patch_reorder.json", {"reading_order"}, _reordered),
         ("patch_combined.json", {"text", "block_structure"}, _combined),
+        ("patch_multi_suppress.json", {"block_structure"}, _multi_suppressed),
     ],
 )
 def test_ui_export_roundtrips_through_applicator(
