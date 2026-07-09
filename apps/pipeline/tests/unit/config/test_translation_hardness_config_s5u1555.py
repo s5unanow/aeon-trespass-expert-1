@@ -51,3 +51,21 @@ def test_translation_hardness_rejects_negative_weight() -> None:
     """Signal weights cannot be negative."""
     with pytest.raises(ValueError):
         TranslationHardnessConfig(inline_icon_density_weight=-0.01)
+
+
+def test_translation_hardness_rejects_non_finite_values() -> None:
+    """NaN and infinity cannot poison score arithmetic or JSON provenance."""
+    with pytest.raises(ValueError):
+        TranslationHardnessConfig(threshold=float("nan"))
+    with pytest.raises(ValueError):
+        TranslationHardnessConfig(threshold=float("inf"))
+    with pytest.raises(ValueError):
+        TranslationHardnessConfig(inline_icon_density_weight=float("inf"))
+    with pytest.raises(ValueError):
+        TranslationHardnessConfig(cross_reference_density_weight=float("inf"))
+    with pytest.raises(ValueError):
+        TranslationHardnessConfig(table_presence_weight=float("inf"))
+    with pytest.raises(ValueError):
+        TranslationHardnessConfig(segment_count_weight=float("inf"))
+    with pytest.raises(ValueError):
+        TranslationHardnessConfig(segment_length_weight=float("inf"))
