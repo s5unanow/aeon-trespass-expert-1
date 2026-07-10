@@ -7,6 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from atr_pipeline.config.translation_hardness import TranslationHardnessConfig
 from atr_pipeline.config.translation_providers import (
     translation_provider_requires_model,
     validate_translation_provider_name,
@@ -171,6 +172,13 @@ class TranslationConfig(BaseModel):
     )
     fallback_options: TranslationProviderOptions = Field(
         default_factory=TranslationProviderOptions,
+    )
+
+    # S5U-1542 — deterministic hard-page routing to ``model_hard``. Default
+    # OFF (see ``TranslationHardnessConfig``); enabling it is the only thing
+    # that changes model selection.
+    hardness: TranslationHardnessConfig = Field(
+        default_factory=TranslationHardnessConfig,
     )
 
     @model_validator(mode="after")
