@@ -74,7 +74,10 @@ class IngestStage:
         with a clear message and remains the authoritative failure point.
         """
         if isinstance(ctx.config.document.source, ImageSetSourceConfig):
-            return image_set_cache_inputs(ctx)
+            return image_set_cache_inputs(
+                source=ctx.config.document.source,
+                repo_root=ctx.config.repo_root,
+            )
 
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
@@ -83,7 +86,12 @@ class IngestStage:
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> SourceManifestV1:
         if isinstance(ctx.config.document.source, ImageSetSourceConfig):
-            return ingest_image_set(ctx)
+            return ingest_image_set(
+                document_id=ctx.document_id,
+                source=ctx.config.document.source,
+                repo_root=ctx.config.repo_root,
+                artifact_store=ctx.artifact_store,
+            )
 
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
@@ -178,4 +186,4 @@ class IngestStage:
         if not isinstance(ctx.config.document.source, ImageSetSourceConfig):
             return True
         manifest = SourceManifestV1.model_validate(ctx.artifact_store.get_json(ref))
-        return image_set_raw_artifacts_present(ctx, manifest)
+        return image_set_raw_artifacts_present(ctx.artifact_store, manifest)

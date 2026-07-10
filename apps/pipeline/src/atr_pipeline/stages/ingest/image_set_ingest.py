@@ -6,12 +6,13 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from atr_pipeline.runner.stage_context import StageContext
+from atr_pipeline.config.source import ImageSetSourceConfig
 from atr_pipeline.stages.ingest.image_set_preflight import (
     ImageSetIngestPlan,
     preflight_image_set,
 )
 from atr_pipeline.stages.ingest.path_safety import resolve_allowed_path
+from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_pipeline.utils.hashing import sha256_bytes, sha256_str
 from atr_schemas.image_set_manifest_v1 import ImageSetManifestV1
 from atr_schemas.source_manifest_v1 import (
@@ -21,31 +22,37 @@ from atr_schemas.source_manifest_v1 import (
 )
 
 
-def ingest_image_set(ctx: StageContext) -> SourceManifestV1:
+def ingest_image_set(
+    *,
+    document_id: str,
+    source: ImageSetSourceConfig,
+    repo_root: Path,
+    artifact_store: ArtifactStore,
+) -> SourceManifestV1:
     """Preflight every input, then register all raw bytes immutably."""
-    source = ctx.config.document.source
-    if source.source_kind != "image_set":
-        msg = "ingest_image_set requires an image_set source"
-        raise ValueError(msg)
     plan = preflight_image_set(
         source.manifest_path,
-        base_dir=ctx.config.repo_root,
-        allowed_roots=_allowed_roots(ctx),
+        base_dir=repo_root,
+        allowed_roots=_allowed_roots(repo_root),
     )
-    return _register_plan(ctx, plan)
+    return _register_plan(
+        document_id=document_id,
+        artifact_store=artifact_store,
+        plan=plan,
+    )
 
 
-def image_set_cache_inputs(ctx: StageContext) -> list[str]:
+def image_set_cache_inputs(
+    *,
+    source: ImageSetSourceConfig,
+    repo_root: Path,
+) -> list[str]:
     """Hash manifest and ordered image bytes before executor cache lookup."""
-    source = ctx.config.document.source
-    if source.source_kind != "image_set":
-        msg = "image_set_cache_inputs requires an image_set source"
-        raise ValueError(msg)
-    roots = _allowed_roots(ctx)
+    roots = _allowed_roots(repo_root)
     try:
         manifest_path = resolve_allowed_path(
             source.manifest_path,
-            base_dir=ctx.config.repo_root,
+            base_dir=repo_root,
             allowed_roots=roots,
             label="image-set manifest",
         )
@@ -74,9 +81,12 @@ def image_set_cache_inputs(ctx: StageContext) -> list[str]:
     return inputs
 
 
-def image_set_raw_artifacts_present(ctx: StageContext, manifest: SourceManifestV1) -> bool:
+def image_set_raw_artifacts_present(
+    artifact_store: ArtifactStore,
+    manifest: SourceManifestV1,
+) -> bool:
     """Return whether every raw ref in a cached image-set manifest exists safely."""
-    root = ctx.artifact_store.root
+    root = artifact_store.root
     for image in manifest.source_images:
         relative = Path(image.raw_artifact_ref)
         if relative.is_absolute() or ".." in relative.parts:
@@ -87,12 +97,17 @@ def image_set_raw_artifacts_present(ctx: StageContext, manifest: SourceManifestV
     return True
 
 
-def _register_plan(ctx: StageContext, plan: ImageSetIngestPlan) -> SourceManifestV1:
+def _register_plan(
+    *,
+    document_id: str,
+    artifact_store: ArtifactStore,
+    plan: ImageSetIngestPlan,
+) -> SourceManifestV1:
     source_images: list[SourceImageEntryV1] = []
     pages: list[PageEntry] = []
     for image in plan.images:
-        artifact_path = ctx.artifact_store.put_bytes(
-            document_id=ctx.document_id,
+        artifact_path = artifact_store.put_bytes(
+            document_id=document_id,
             schema_family="raw_image",
             scope="page",
             entity_id=image.raw_image_id,
@@ -106,7 +121,7 @@ def _register_plan(ctx: StageContext, plan: ImageSetIngestPlan) -> SourceManifes
                 page_number=image.entry.page_number,
                 media_type=image.media_type,
                 sha256=image.entry.sha256,
-                raw_artifact_ref=artifact_path.relative_to(ctx.artifact_store.root).as_posix(),
+                raw_artifact_ref=artifact_path.relative_to(artifact_store.root).as_posix(),
                 capture=image.capture,
             )
         )
@@ -114,12 +129,12 @@ def _register_plan(ctx: StageContext, plan: ImageSetIngestPlan) -> SourceManifes
             PageEntry(
                 page_id=image.entry.page_id,
                 page_number=image.entry.page_number,
-                raster_ref=artifact_path.relative_to(ctx.artifact_store.root).as_posix(),
+                raster_ref=artifact_path.relative_to(artifact_store.root).as_posix(),
             )
         )
 
     return SourceManifestV1(
-        document_id=ctx.document_id,
+        document_id=document_id,
         source_kind="image_set",
         source_pdf_sha256="",
         source_manifest_sha256=plan.manifest_sha256,
@@ -130,9 +145,9 @@ def _register_plan(ctx: StageContext, plan: ImageSetIngestPlan) -> SourceManifes
     )
 
 
-def _allowed_roots(ctx: StageContext) -> tuple[Path, ...]:
-    repo_root = ctx.config.repo_root.resolve(strict=True)
-    materials_root = repo_root / "materials"
+def _allowed_roots(repo_root: Path) -> tuple[Path, ...]:
+    resolved_repo_root = repo_root.resolve(strict=True)
+    materials_root = resolved_repo_root / "materials"
     if materials_root.is_dir():
-        return (repo_root, materials_root.resolve(strict=True))
-    return (repo_root,)
+        return (resolved_repo_root, materials_root.resolve(strict=True))
+    return (resolved_repo_root,)
