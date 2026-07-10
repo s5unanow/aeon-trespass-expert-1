@@ -5,13 +5,13 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from atr_pipeline.runner.stage_context import StageContext
-from atr_pipeline.services.llm.base import TranslatorAdapter
 from atr_pipeline.services.llm.factory import create_translator
 from atr_pipeline.stages.glossary.registry_loader import load_concept_registry
 from atr_pipeline.stages.translation.grouping import (
     expand_grouped_batch,
     expand_grouped_result,
 )
+from atr_pipeline.stages.translation.hardness import classify_hardness
 from atr_pipeline.stages.translation.page_state import (
     en_ir_content_hash,
     load_resume_state,
@@ -19,6 +19,7 @@ from atr_pipeline.stages.translation.page_state import (
 )
 from atr_pipeline.stages.translation.planner import build_translation_batch
 from atr_pipeline.stages.translation.rematerialize import rematerialize_ru_blocks
+from atr_pipeline.stages.translation.routing import TranslatorRouter
 from atr_pipeline.stages.translation.validator import validate_translation
 from atr_pipeline.store.artifact_ref import ArtifactRef
 from atr_schemas.concept_registry_v1 import ConceptRegistryV1
@@ -98,7 +99,16 @@ class TranslationStage:
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> TranslationResult:
         concept_reg = self._load_concept_registry(ctx)
-        translator = create_translator(ctx.config.translation, concept_registry=concept_reg)
+        # S5U-1542 — the router owns the model_default translator (built now,
+        # identical to the pre-S5U-1542 path) and lazily builds the model_hard
+        # translator when the first hard page is routed. Passing the module's
+        # ``create_translator`` binding keeps existing monkeypatch-based tests
+        # effective.
+        router = TranslatorRouter(
+            ctx.config.translation,
+            concept_registry=concept_reg,
+            translator_factory=create_translator,
+        )
         page_ids = ctx.filter_pages(self._resolve_page_ids(ctx))
 
         pages_translated = 0
@@ -115,7 +125,7 @@ class TranslationStage:
                 ctx,
                 en_ir,
                 page_id,
-                translator,
+                router,
                 concept_reg,
             )
             pages_translated += 1
@@ -137,7 +147,7 @@ class TranslationStage:
         ctx: StageContext,
         en_ir: PageIRV1,
         page_id: str,
-        translator: TranslatorAdapter,
+        router: TranslatorRouter,
         concept_reg: ConceptRegistryV1 | None,
     ) -> tuple[int, str]:
         """Resume-aware per-page driver (S5U-1228).
@@ -158,7 +168,7 @@ class TranslationStage:
             ctx.logger.info("Resumed %s from cache (skipping LLM)", page_id)
             return cached.warning_count, cached.ru_ir_ref
 
-        warnings, ru_ir_ref = self._translate_page(ctx, en_ir, page_id, translator, concept_reg)
+        warnings, ru_ir_ref = self._translate_page(ctx, en_ir, page_id, router, concept_reg)
         persist_resume_state(
             ctx,
             page_id=page_id,
@@ -173,7 +183,7 @@ class TranslationStage:
         ctx: StageContext,
         en_ir: PageIRV1,
         page_id: str,
-        translator: TranslatorAdapter,
+        router: TranslatorRouter,
         concept_reg: ConceptRegistryV1 | None,
     ) -> tuple[int, ArtifactRef]:
         """Translate a single page and store the RU IR.
@@ -182,6 +192,12 @@ class TranslationStage:
         ``page_ir.v1.ru`` ref (its ``relative_path`` feeds
         ``TranslationResult.page_refs``; the ref also threads into the resume
         record so a resumed run can rebuild ``page_refs`` without re-translating).
+
+        S5U-1542 — when ``translation.hardness`` is enabled, the page's batch is
+        scored and hard pages route to ``model_hard``; the score, signal
+        breakdown, threshold, and chosen model are recorded in the per-page
+        ``translation_meta.v1`` provenance. With hardness disabled (default) the
+        batch is not scored and the metadata is byte-identical to before.
         """
         ctx.logger.info("Translating %s", page_id)
 
@@ -190,6 +206,18 @@ class TranslationStage:
             concept_registry=concept_reg,
             prompt_profile=ctx.config.translation.prompt_profile,
         )
+        hardness_cfg = ctx.config.translation.hardness
+        hardness = classify_hardness(batch, hardness_cfg) if hardness_cfg.enabled else None
+        translator, chosen_model = router.select(hardness)
+        if hardness is not None:
+            ctx.logger.info(
+                "Hardness %s for %s (score=%.4f threshold=%.4f) -> %s",
+                "HARD" if hardness.is_hard else "easy",
+                page_id,
+                hardness.score,
+                hardness.threshold,
+                chosen_model,
+            )
         response = translator.translate_batch(batch)
         result = response.result
         expanded_batch = _expand_grouped_translation_batch(batch)
@@ -213,6 +241,10 @@ class TranslationStage:
             # FallbackTranslator only on the fallback path; ``None`` otherwise.
             "primary_error": response.meta.extra.get("primary_error"),
         }
+        # S5U-1542 — record the routing decision only when hardness is enabled,
+        # so the disabled path stays byte-identical to before (AC 2).
+        if hardness is not None:
+            meta_data["hardness"] = {**hardness.to_metadata(), "chosen_model": chosen_model}
         ctx.artifact_store.put_json(
             document_id=ctx.document_id,
             schema_family="translation_meta.v1",

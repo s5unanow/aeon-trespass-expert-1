@@ -86,6 +86,51 @@ Field semantics:
 * `--dangerously-bypass-approvals-and-sandbox` is **never** emitted by
   the adapter (pinned by `test_codex_cli_argv_never_uses_dangerous_bypass`).
 
+## Hard-page routing (S5U-1542)
+
+Icon-dense / xref-dense / table-heavy pages can be routed to `model_hard`
+deterministically. The routing is **off by default** — existing configs are
+byte-identical unless the `[translation.hardness]` section turns it on:
+
+```toml
+[translation]
+provider = "codex-cli"
+model_default = "gpt-5.5"
+model_hard = "gpt-5.5-high"        # the model hard pages escalate to
+
+[translation.hardness]
+enabled = true
+threshold = 2.0                    # score >= threshold routes to model_hard
+weight_icon_density = 1.0          # inline icons per segment
+weight_xref_density = 1.0          # real cross-references per segment
+weight_table_ratio = 1.0          # fraction of segments that are table cells
+weight_segment_load = 0.05        # segment count (page-size proxy)
+```
+
+Semantics:
+
+* Each page's `TranslationBatchV1` is scored by a pure, deterministic linear
+  model: `score = Σ weight_i * signal_i`. A page whose score is `>= threshold`
+  is translated by `model_hard`; every other page keeps `model_default`.
+  Narrative-group boundary markers are synthetic and excluded from the
+  cross-reference count.
+* Provider **fallback semantics are unchanged**: the hard path is a second
+  translator whose primary uses `model_hard` while `fallback_provider` /
+  `fallback_model` stay as configured — hard pages do **not** change what the
+  fallback provider translates with.
+* The score, per-signal feature/contribution breakdown, threshold, verdict,
+  and chosen model are recorded in the per-page `translation_meta.v1` artifact
+  under a `hardness` key (present only when the section is enabled), so a
+  routing decision is reproducible and auditable across runs on identical
+  inputs.
+* All knobs are validated by Pydantic with `extra="forbid"`; an unknown key
+  (e.g. a typo) fails config load rather than being silently ignored.
+
+**Follow-up (out of scope here):** extraction-side confidence signals
+(S5U-191 groundwork) are not yet part of the hardness score — the classifier
+uses only signals derivable from the pre-translation `PageIRV1` / batch. Wiring
+per-page extraction confidence into the score is tracked as future work.
+
 ## Codex CLI smoke command
 
 The pipeline ships an opt-in smoke test that translates one fixture page
