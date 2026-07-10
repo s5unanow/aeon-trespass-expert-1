@@ -7,7 +7,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from atr_pipeline.config.source import DocumentConfig, ImageSetSourceConfig, PdfSourceConfig
+from atr_pipeline.config.source import DocumentConfig as DocumentConfig
+from atr_pipeline.config.source import ImageSetSourceConfig, PdfSourceConfig
 from atr_pipeline.config.translation_providers import (
     translation_provider_requires_model,
     validate_translation_provider_name,

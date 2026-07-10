@@ -11,11 +11,13 @@ import pytest
 from PIL import Image
 
 from atr_pipeline.config.models import DocumentBuildConfig, DocumentConfig
+from atr_pipeline.config.source import ImageSetSourceConfig
 from atr_pipeline.registry.db import open_registry
 from atr_pipeline.registry.runs import start_run
 from atr_pipeline.runner.executor import execute_stage
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.stages.ingest.stage import IngestStage
+from atr_pipeline.store.artifact_ref import ArtifactRef
 from atr_pipeline.store.artifact_store import ArtifactStore
 from atr_schemas.source_manifest_v1 import SourceManifestV1
 
@@ -91,9 +93,12 @@ def _make_ctx(root: Path, *, run_id: str = "image_set_run") -> StageContext:
     )
 
 
-def _load_manifest(ctx: StageContext, result_ref: object) -> SourceManifestV1:
+def _load_manifest(
+    ctx: StageContext,
+    result_ref: ArtifactRef | None,
+) -> SourceManifestV1:
     assert result_ref is not None
-    return SourceManifestV1.model_validate(ctx.artifact_store.get_json(result_ref))  # type: ignore[arg-type]
+    return SourceManifestV1.model_validate(ctx.artifact_store.get_json(result_ref))
 
 
 def test_image_set_ingest_registers_raw_images_and_source_manifest(tmp_path: Path) -> None:
@@ -130,7 +135,9 @@ def test_image_set_manifest_json_is_identical_across_fresh_runs(tmp_path: Path) 
         ctx.config.repo_root = tmp_path
         ctx.repo_root = tmp_path
         ctx.config.document.source_manifest = str(manifest_path)
-        ctx.config.document.source.manifest_path = str(manifest_path)  # type: ignore[union-attr]
+        source = ctx.config.document.source
+        assert isinstance(source, ImageSetSourceConfig)
+        source.manifest_path = str(manifest_path)
         result = execute_stage(IngestStage(), ctx)
         assert result.success
         assert result.artifact_ref is not None
@@ -146,8 +153,12 @@ def test_image_set_cache_hits_then_invalidates_on_changed_image_bytes(tmp_path: 
     first = execute_stage(IngestStage(), ctx)
     identical = execute_stage(IngestStage(), ctx)
 
+    before_byte_change = IngestStage().extra_cache_inputs(ctx)
     replacement = _png_bytes("green")
     (manifest_path.parent / "page_0001.png").write_bytes(replacement)
+    after_byte_change = IngestStage().extra_cache_inputs(ctx)
+    assert after_byte_change != before_byte_change
+
     payload = json.loads(manifest_path.read_text(encoding="utf-8"))
     payload["images"][0]["sha256"] = hashlib.sha256(replacement).hexdigest()
     manifest_path.write_text(json.dumps(payload), encoding="utf-8")

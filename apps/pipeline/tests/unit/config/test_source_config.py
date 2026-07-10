@@ -14,7 +14,7 @@ def _repo_root() -> Path:
 
 
 def test_legacy_source_pdf_normalizes_to_pdf_variant() -> None:
-    config = DocumentConfig(id="legacy", source_pdf="materials/book.pdf")
+    config = DocumentConfig.model_validate({"id": "legacy", "source_pdf": "materials/book.pdf"})
 
     assert config.source.source_kind == "pdf"
     assert config.source.path == "materials/book.pdf"

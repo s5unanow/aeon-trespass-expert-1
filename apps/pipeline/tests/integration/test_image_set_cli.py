@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sqlite3
 from pathlib import Path
 from unittest.mock import patch
 
@@ -22,7 +23,7 @@ def test_atr_ingest_image_set_writes_raw_artifacts_once(tmp_path: Path) -> None:
     config = load_document_config("image_set_sample", repo_root=_repo_root())
     config.artifact_root = tmp_path / "artifacts"
 
-    def _isolated_registry(_path: Path):  # type: ignore[no-untyped-def]
+    def _isolated_registry(_path: Path) -> sqlite3.Connection:
         return real_open_registry(tmp_path / "registry.db")
 
     with (
