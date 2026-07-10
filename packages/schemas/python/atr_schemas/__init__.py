@@ -47,6 +47,11 @@ from atr_schemas.evidence_primitives_v1 import (
     EvidenceVectorPath,
 )
 from atr_schemas.glossary_payload_v1 import GlossaryEntryV1, GlossaryPageRef, GlossaryPayloadV1
+from atr_schemas.image_set_manifest_v1 import (
+    CaptureMetadataV1,
+    ImageSetImageEntryV1,
+    ImageSetManifestV1,
+)
 from atr_schemas.layout_page_v1 import DifficultyScoreV1, LayoutPageV1, LayoutZone
 from atr_schemas.native_page_v1 import (
     ImageBlockEvidence,
@@ -117,7 +122,7 @@ from atr_schemas.rule_chunk_v1 import GlossaryConcept, RuleChunkV1
 from atr_schemas.run_manifest_v1 import RunManifestV1
 from atr_schemas.run_summary_v1 import RunSummaryV1
 from atr_schemas.search_docs_v1 import SearchDocEntry, SearchDocsV1
-from atr_schemas.source_manifest_v1 import PageEntry, SourceManifestV1
+from atr_schemas.source_manifest_v1 import PageEntry, SourceImageEntryV1, SourceManifestV1
 from atr_schemas.symbol_catalog_v1 import SymbolCatalogV1, SymbolEntry
 from atr_schemas.symbol_match_set_v1 import SymbolMatch, SymbolMatchSetV1
 from atr_schemas.translation_batch_v1 import TranslationBatchV1, TranslationSegment
@@ -151,6 +156,7 @@ __all__ = [
     "BuildManifestV1",
     "CalloutBlock",
     "CaptionBlock",
+    "CaptureMetadataV1",
     "ConceptRegistryV1",
     "ConceptV1",
     "ConfidenceMetrics",
@@ -178,6 +184,8 @@ __all__ = [
     "HeadingBlock",
     "IconInline",
     "ImageBlockEvidence",
+    "ImageSetImageEntryV1",
+    "ImageSetManifestV1",
     "InlineNode",
     "InlineType",
     "LanguageCode",
@@ -245,6 +253,7 @@ __all__ = [
     "SearchDocsV1",
     "SemanticConfidence",
     "Severity",
+    "SourceImageEntryV1",
     "SourceManifestV1",
     "SpanEvidence",
     "StageScope",
