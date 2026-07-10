@@ -1,0 +1,33 @@
+{
+  "schema_version": "image_set_manifest.v1",
+  "images": [
+    {
+      "image_id": "img.page-0001",
+      "path": "page_0001.png",
+      "media_type": "image/png",
+      "sha256": "a2edb4a8dea58ac5d2bee95237293584a42612f500d1421a845886aed3f0955d",
+      "page_id": "p0001",
+      "page_number": 1,
+      "capture": {
+        "captured_at": "2026-07-10T09:30:00Z",
+        "camera_make": "Synthetic",
+        "camera_model": "Pillow fixture",
+        "exif_orientation": 1
+      }
+    },
+    {
+      "image_id": "img.page-0002",
+      "path": "page_0002.png",
+      "media_type": "image/png",
+      "sha256": "96fd12627c103121cf1d0fe79f3ed1fce736d4b4d5c95205f21e3f1656355088",
+      "page_id": "p0002",
+      "page_number": 2,
+      "capture": {
+        "captured_at": "2026-07-10T09:31:00Z",
+        "camera_make": "Synthetic",
+        "camera_model": "Pillow fixture",
+        "exif_orientation": 1
+      }
+    }
+  ]
+}

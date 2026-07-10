@@ -1,0 +1,12 @@
+# Tiny generated image-set fixture for source-ingest contract tests.
+
+[document]
+id = "image_set_sample"
+source_kind = "image_set"
+source_manifest = "packages/fixtures/sample_documents/image_set_sample/source/image_set_manifest.json"
+source_lang = "en"
+target_langs = ["ru"]
+structure_builder = "simple"
+
+[translation]
+provider = "mock"

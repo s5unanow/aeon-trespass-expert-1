@@ -7,21 +7,13 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from atr_pipeline.config.source import DocumentConfig as DocumentConfig
+from atr_pipeline.config.source import ImageSetSourceConfig, PdfSourceConfig
 from atr_pipeline.config.translation_providers import (
     translation_provider_requires_model,
     validate_translation_provider_name,
 )
 from atr_schemas.common import Rect
-
-
-class DocumentConfig(BaseModel):
-    """Document-specific configuration."""
-
-    id: str
-    source_pdf: str
-    source_lang: str = "en"
-    target_langs: list[str] = Field(default_factory=lambda: ["ru"])
-    structure_builder: Literal["real", "simple"] = "real"
 
 
 class PipelineConfig(BaseModel):
@@ -368,7 +360,21 @@ class DocumentBuildConfig(BaseModel):
     @property
     def source_pdf_path(self) -> Path:
         """Resolved path to source PDF."""
-        p = Path(self.document.source_pdf)
+        if not isinstance(self.document.source, PdfSourceConfig):
+            msg = f"Document {self.document.id!r} does not use a PDF source"
+            raise ValueError(msg)
+        p = Path(self.document.source_pdf or self.document.source.path)
+        if p.is_absolute():
+            return p
+        return self.repo_root / p
+
+    @property
+    def source_manifest_path(self) -> Path:
+        """Resolved path to the configured image-set manifest."""
+        if not isinstance(self.document.source, ImageSetSourceConfig):
+            msg = f"Document {self.document.id!r} does not use an image-set source"
+            raise ValueError(msg)
+        p = Path(self.document.source_manifest or self.document.source.manifest_path)
         if p.is_absolute():
             return p
         return self.repo_root / p

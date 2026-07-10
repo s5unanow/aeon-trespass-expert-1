@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "CaptureMetadataV1": {
+      "description": "Capture and EXIF metadata retained with a photographed page.",
+      "properties": {
+        "captured_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Captured At"
+        },
+        "camera_make": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Camera Make"
+        },
+        "camera_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Camera Model"
+        },
+        "exif_orientation": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exif Orientation"
+        }
+      },
+      "title": "CaptureMetadataV1",
+      "type": "object"
+    },
+    "ImageSetImageEntryV1": {
+      "description": "One ordered image in an image-set input manifest.",
+      "properties": {
+        "image_id": {
+          "pattern": "^img\\.[a-z0-9][a-z0-9._-]*$",
+          "title": "Image Id",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "media_type": {
+          "enum": [
+            "image/png",
+            "image/jpeg"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "capture": {
+          "$ref": "#/$defs/CaptureMetadataV1"
+        }
+      },
+      "required": [
+        "image_id",
+        "path",
+        "media_type",
+        "sha256",
+        "page_id",
+        "page_number"
+      ],
+      "title": "ImageSetImageEntryV1",
+      "type": "object"
+    }
+  },
+  "description": "Ordered image-set source declaration.",
+  "properties": {
+    "schema_version": {
+      "default": "image_set_manifest.v1",
+      "pattern": "^image_set_manifest\\.v\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/ImageSetImageEntryV1"
+      },
+      "minItems": 1,
+      "title": "Images",
+      "type": "array"
+    }
+  },
+  "required": [
+    "images"
+  ],
+  "title": "ImageSetManifestV1",
+  "type": "object"
+}

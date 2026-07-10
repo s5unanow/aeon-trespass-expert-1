@@ -4,11 +4,18 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
+from atr_pipeline.config.source import ImageSetSourceConfig
 from atr_pipeline.runner.stage_context import StageContext
 from atr_pipeline.services.pdf.image_extractor import extract_page_images
 from atr_pipeline.services.pdf.raster_provider import PageRasterProvider
+from atr_pipeline.stages.ingest.image_set_ingest import (
+    image_set_cache_inputs,
+    image_set_raw_artifacts_present,
+    ingest_image_set,
+)
 from atr_pipeline.stages.ingest.manifest_builder import build_manifest
 from atr_pipeline.stages.ingest.pdf_fingerprint import fingerprint_pdf
+from atr_pipeline.store.artifact_ref import ArtifactRef
 from atr_pipeline.utils.hashing import sha256_file
 from atr_schemas.enums import StageScope
 from atr_schemas.page_images_v1 import PageImageEntry, PageImagesV1
@@ -28,6 +35,8 @@ class IngestStage:
 
     @property
     def version(self) -> str:
+        # 1.2 -> 1.3 (S5U-1553): image-set dispatch registers immutable raw
+        # images and folds manifest plus ordered image bytes into the cache key.
         # 1.1 -> 1.2 (S5U-1221): IngestStage now contributes
         # ``extra_cache_inputs`` that fold the source-PDF *content* hash
         # into the cache key (the config hash only carries the PDF
@@ -43,7 +52,7 @@ class IngestStage:
         # 1.0 -> 1.1 (S5U-730): IngestStage emits a per-page
         # ``page_images.v1`` manifest after the PDF image-extraction loop,
         # consumed by the QA stage's ``_filter_publishable_pages``.
-        return "1.2"
+        return "1.3"
 
     def extra_cache_inputs(self, ctx: StageContext) -> list[str]:
         """Fold the source-PDF content hash into the ingest cache key (S5U-1221).
@@ -64,12 +73,26 @@ class IngestStage:
         rather than raising — :meth:`run` already raises ``FileNotFoundError``
         with a clear message and remains the authoritative failure point.
         """
+        if isinstance(ctx.config.document.source, ImageSetSourceConfig):
+            return image_set_cache_inputs(
+                source=ctx.config.document.source,
+                repo_root=ctx.config.repo_root,
+            )
+
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
             return ["pdf_sha256:missing"]
         return [f"pdf_sha256:{sha256_file(pdf_path)}"]
 
     def run(self, ctx: StageContext, input_data: BaseModel | None) -> SourceManifestV1:
+        if isinstance(ctx.config.document.source, ImageSetSourceConfig):
+            return ingest_image_set(
+                document_id=ctx.document_id,
+                source=ctx.config.document.source,
+                repo_root=ctx.config.repo_root,
+                artifact_store=ctx.artifact_store,
+            )
+
         pdf_path = ctx.config.source_pdf_path
         if not pdf_path.exists():
             msg = f"Source PDF not found: {pdf_path}"
@@ -157,3 +180,10 @@ class IngestStage:
             page_count=page_count,
         )
         return manifest
+
+    def cached_artifacts_present(self, ctx: StageContext, ref: ArtifactRef) -> bool:
+        """Reject image-set cache hits whose referenced raw bytes are missing."""
+        if not isinstance(ctx.config.document.source, ImageSetSourceConfig):
+            return True
+        manifest = SourceManifestV1.model_validate(ctx.artifact_store.get_json(ref))
+        return image_set_raw_artifacts_present(ctx.artifact_store, manifest)
