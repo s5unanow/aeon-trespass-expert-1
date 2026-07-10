@@ -18,7 +18,7 @@ from atr_pipeline.store.artifact_store import ArtifactStore
 def ingest(
     doc: str = typer.Option(..., "--doc", help="Document id from configs/documents/"),
 ) -> None:
-    """Ingest a source PDF: fingerprint, rasterize, and emit a manifest."""
+    """Ingest a configured PDF or image-set source and emit a manifest."""
     config = load_document_config(doc)
     store = ArtifactStore(config.artifact_root)
     conn = open_registry(config.repo_root / "var" / "registry.db")

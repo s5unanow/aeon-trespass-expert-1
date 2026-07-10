@@ -180,6 +180,13 @@ def _cached_artifact_present(
             cached_ref_str,
         )
         return False
+    side_effects_present = getattr(stage, "cached_artifacts_present", None)
+    if callable(side_effects_present) and not side_effects_present(ctx, ref):
+        ctx.logger.warning(
+            "Cache hit for %s but referenced side-effect artifacts are missing; re-running stage",
+            stage.name,
+        )
+        return False
     return True
 
 

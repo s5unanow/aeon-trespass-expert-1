@@ -45,7 +45,7 @@ def test_ingest_implements_stage_protocol() -> None:
     assert isinstance(stage, Stage)
     assert stage.name == "ingest"
     assert stage.scope == StageScope.DOCUMENT
-    assert stage.version == "1.2"  # S5U-1221: PDF content hash folded into cache key
+    assert stage.version == "1.3"  # S5U-1553: image-set raw artifacts + cache identity
 
 
 def test_ingest_produces_manifest(tmp_path: Path) -> None:
