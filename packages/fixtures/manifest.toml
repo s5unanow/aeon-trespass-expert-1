@@ -1,6 +1,20 @@
 schema_version = "fixture_manifest.v1"
 
 [[fixtures]]
+fixture_id = "image_set_sample"
+source_document = "Synthetic photographed-page image set"
+source_edition = "synthetic_v1"
+source_pages = [1, 2]
+redistribution = "synthetic"
+redaction_status = "none"
+failure_modes = ["image_set_source_ingest", "raw_image_identity"]
+eval_dimensions = []
+owner = "s5unanow"
+reviewer = "s5unanow"
+retirement_policy = "permanent — image-set source contract fixture"
+notes = "Two generated 2x2 PNG pages for S5U-1553; no extraction golden output"
+
+[[fixtures]]
 fixture_id = "walking_skeleton"
 source_document = "Synthetic walking skeleton"
 source_edition = "synthetic_v1"

@@ -1,5 +1,63 @@
 {
   "$defs": {
+    "CaptureMetadataV1": {
+      "description": "Capture and EXIF metadata retained with a photographed page.",
+      "properties": {
+        "captured_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Captured At"
+        },
+        "camera_make": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Camera Make"
+        },
+        "camera_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Camera Model"
+        },
+        "exif_orientation": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exif Orientation"
+        }
+      },
+      "title": "CaptureMetadataV1",
+      "type": "object"
+    },
     "PageEntry": {
       "description": "Metadata for a single source page.",
       "properties": {
@@ -32,6 +90,57 @@
       ],
       "title": "PageEntry",
       "type": "object"
+    },
+    "SourceImageEntryV1": {
+      "description": "Registered immutable raw image and its source-page mapping.",
+      "properties": {
+        "image_id": {
+          "pattern": "^img\\.[a-z0-9][a-z0-9._-]*$",
+          "title": "Image Id",
+          "type": "string"
+        },
+        "page_id": {
+          "pattern": "^p\\d{4}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "media_type": {
+          "enum": [
+            "image/png",
+            "image/jpeg"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "raw_artifact_ref": {
+          "minLength": 1,
+          "title": "Raw Artifact Ref",
+          "type": "string"
+        },
+        "capture": {
+          "$ref": "#/$defs/CaptureMetadataV1"
+        }
+      },
+      "required": [
+        "image_id",
+        "page_id",
+        "page_number",
+        "media_type",
+        "sha256",
+        "raw_artifact_ref"
+      ],
+      "title": "SourceImageEntryV1",
+      "type": "object"
     }
   },
   "description": "Registered source document and its pages.",
@@ -46,8 +155,29 @@
       "title": "Document Id",
       "type": "string"
     },
+    "source_kind": {
+      "default": "pdf",
+      "enum": [
+        "pdf",
+        "image_set"
+      ],
+      "title": "Source Kind",
+      "type": "string"
+    },
     "source_pdf_sha256": {
       "title": "Source Pdf Sha256",
+      "type": "string"
+    },
+    "source_manifest_sha256": {
+      "default": "",
+      "pattern": "^(?:[0-9a-f]{64})?$",
+      "title": "Source Manifest Sha256",
+      "type": "string"
+    },
+    "source_image_set_sha256": {
+      "default": "",
+      "pattern": "^(?:[0-9a-f]{64})?$",
+      "title": "Source Image Set Sha256",
       "type": "string"
     },
     "page_count": {
@@ -60,6 +190,13 @@
         "$ref": "#/$defs/PageEntry"
       },
       "title": "Pages",
+      "type": "array"
+    },
+    "source_images": {
+      "items": {
+        "$ref": "#/$defs/SourceImageEntryV1"
+      },
+      "title": "Source Images",
       "type": "array"
     },
     "config_hash": {

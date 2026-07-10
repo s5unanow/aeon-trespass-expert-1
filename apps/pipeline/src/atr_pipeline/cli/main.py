@@ -43,7 +43,7 @@ def version_cmd() -> None:
 def ingest(
     doc: str = typer.Option(..., "--doc", help="Document id from configs/documents/"),
 ) -> None:
-    """Ingest a source PDF: fingerprint, rasterize, emit manifest."""
+    """Ingest a configured PDF or image-set source and emit a manifest."""
     from atr_pipeline.cli.commands.ingest import ingest as _ingest
 
     _ingest(doc=doc)
